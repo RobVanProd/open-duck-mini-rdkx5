@@ -54,10 +54,23 @@ frozen `0.15` threshold. The independent audit reports zero issues. This earns
 only a zero-training, state-coherent support-to-locomotion handoff screen; no
 hosted training is yet earned.
 
+T8 completed that handoff screen. Both V121 checkpoints, both measured
+actuator fits, and all three moving commands pass: `12/12` moving cells are
+full 600-tick walks with tracking p95 at most `0.151526 rad`, positive
+body-frame velocity, zero saturation/rate excess, corrected servo protection,
+and exact response/recurrent/applied-target state continuity. The four x=0
+cells are stable, stationary, and otherwise green, but fail one frozen
+quantity at scored tick 0. The exact-zero deadband action follows the universal
+support action directly, producing a one-tick six-joint rate-envelope excess
+up to `3.989999 rad/s`; ticks 1–599 have zero excess. T8 therefore holds
+`12/16` and earns no training. A corrected independent audit passes with zero
+issues after preserving and fixing a reporting-only world-X/body-frame error
+that could not change the hold.
+
 Current gate:
 
 ```text
-HOLD_GATE_5_PENDING_STATE_COHERENT_SUPPORT_TO_LOCOMOTION_CPU_SCREEN
+HOLD_GATE_5_PENDING_COMMAND_AWARE_X0_PREFIX_BYPASS_CPU_SCREEN
 ```
 
 Read these first:
@@ -71,19 +84,22 @@ outputs/analysis/T6_CORRECTED_ROBUSTNESS_SCREEN_RESULT_20260725.md
 outputs/analysis/T6_CORRECTED_ROBUSTNESS_SCREEN_INDEPENDENT_AUDIT_20260725.md
 outputs/analysis/T7_UNIVERSAL_RESPONSE_SUPPORT_RESULT_20260725.md
 outputs/analysis/T7_UNIVERSAL_RESPONSE_SUPPORT_INDEPENDENT_AUDIT_20260725.md
+outputs/analysis/T8_STATE_COHERENT_HANDOFF_RESULT_20260726.md
+outputs/analysis/T8_STATE_COHERENT_HANDOFF_INDEPENDENT_AUDIT_V2_20260726.md
+outputs/analysis/T8_STATE_COHERENT_HANDOFF_FAILURE_ANALYSIS_20260726.md
 outputs/analysis/WINNER_V177_NOMINAL_BEHAVIOR_RESULT_20260725.md
 ```
 
-The next step is the separately preregistered, CPU-only, zero-training
-state-coherent handoff screen earned by T7. It must start locomotion from the
-stable universal support state without the old evaluator's action mismatch or
-the known-bad zero-action home return, while preserving the final applied
-target, previous-action chain, response context, phase, and policy recurrent
-state deliberately. The robot may be reassembled, have pieces changed, or
-have mass distribution move, so the mechanism continues to infer useful
-configuration state only from runtime-available signals; it requires no
-weighing, calipers, or static COM entry. No Colab continuation is authorized
-until this handoff screen and its subsequent CPU contract explicitly earn one.
+The next earned falsifier is a separately preregistered, CPU-only,
+zero-training command-aware startup screen. While paused/x=0, the robot remains
+at home and bypasses response excitation because the frozen deadband output is
+context-independent exact zero. Moving commands retain the already-green T8
+direct handoff from universal support. Four new x=0 cells are required; the
+twelve immutable audited T8 moving cells are reused without rerunning them.
+The mechanism continues to infer configuration only from runtime-available
+signals and requires no weighing, calipers, or static COM entry. No Colab
+continuation is authorized until this branch and a subsequent CPU contract
+explicitly earn one.
 
 Current candidate:
 

@@ -17,14 +17,20 @@ pass for 600 ticks on both actuator fits, the two repeats are bit-exact, and
 the signed 64-D context separation clears the frozen `0.15` threshold. The
 independent audit has zero issues.
 
-The next authorized step is an offline, CPU-only, zero-training
-state-coherent support-to-locomotion handoff screen. It must preserve the
-universal support state's applied target and previous-action chain while
-passing the automatic response context into locomotion. It must not require
-manual mass, caliper, or static COM measurements. Hosted training is allowed
-only if the subsequent prospective CPU contract explicitly earns one run.
-Robot access, policy deployment, Gate 5, torque, and motion remain
-unauthorized.
+T8 completed the state-coherent handoff screen. All `12/12` moving cells pass
+across both V121 checkpoints and both measured actuator fits. The four x=0
+cells remain stable and otherwise green, but each has one rate-envelope event
+at scored tick 0 when the exact-zero deadband action follows the universal
+support action. No later tick exceeds, so direct unconditional handoff closes
+at `12/16` and no training is earned.
+
+The next authorized step is an offline, CPU-only, zero-training command-aware
+startup screen: bypass response excitation while paused/x=0 and keep the
+already-green direct handoff for moving commands. It requires four new x=0
+cells and reuses the twelve audited T8 moving cells. It must not require manual
+mass, caliper, or static COM measurements. Hosted training is allowed only if
+the subsequent prospective CPU contract explicitly earns one run. Robot
+access, policy deployment, Gate 5, torque, and motion remain unauthorized.
 
 ## Phase 0: Repo Safety And Evidence Hygiene
 

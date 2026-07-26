@@ -195,3 +195,85 @@ def test_t8_preoutcome_abi_amendment_is_narrow_and_canonical() -> None:
         "previous_action_out",
     ]
     assert value["unchanged_contract"]["training_steps"] == 0
+
+
+def test_t8_result_audit_and_failure_localization_are_canonical() -> None:
+    analysis = ROOT / "outputs" / "analysis"
+    result_path = analysis / "t8_state_coherent_handoff_result.json"
+    result = json.loads(result_path.read_text(encoding="utf-8"))
+    result_basis = {
+        key: value
+        for key, value in result.items()
+        if key != "result_sha256"
+    }
+    assert hashlib.sha256(
+        json.dumps(
+            result_basis,
+            allow_nan=False,
+            separators=(",", ":"),
+            sort_keys=True,
+        ).encode()
+    ).hexdigest() == result["result_sha256"]
+    assert result["status"] == "HOLD_T8_STATE_COHERENT_HANDOFF"
+    assert (
+        result["decision"]
+        == "CLOSE_DIRECT_STATE_COHERENT_V121_HANDOFF_WITHOUT_TRAINING"
+    )
+    assert result["completed_cells"] == result["expected_cells"] == 16
+    assert result["passing_cells"] == 12
+    assert result["summary"]["all_handoff_contracts_pass"] is True
+    assert result["execution"]["training_steps"] == 0
+    assert result["execution"]["robot_or_rdk_access"] == 0
+
+    original_audit = json.loads(
+        (
+            analysis / "t8_state_coherent_handoff_independent_audit.json"
+        ).read_text(encoding="utf-8")
+    )
+    assert original_audit["passing_cells"] == 10
+    assert original_audit["independent_classification"]["status"] == (
+        "HOLD_T8_STATE_COHERENT_HANDOFF"
+    )
+    correction = json.loads(
+        (
+            analysis / "t8_state_coherent_handoff_audit_correction.json"
+        ).read_text(encoding="utf-8")
+    )
+    assert correction["decision_invariance"]["status_cannot_change"] is True
+    assert correction["decision_invariance"]["decision_cannot_change"] is True
+
+    audit = json.loads(
+        (
+            analysis
+            / "t8_state_coherent_handoff_independent_audit_v2.json"
+        ).read_text(encoding="utf-8")
+    )
+    audit_basis = {
+        key: value for key, value in audit.items() if key != "audit_sha256"
+    }
+    assert hashlib.sha256(
+        json.dumps(
+            audit_basis,
+            allow_nan=False,
+            separators=(",", ":"),
+            sort_keys=True,
+        ).encode()
+    ).hexdigest() == audit["audit_sha256"]
+    assert audit["status"] == (
+        "PASS_T8_STATE_COHERENT_HANDOFF_INDEPENDENT_AUDIT"
+    )
+    assert audit["issues"] == []
+    assert audit["audited_cells"] == 16
+    assert audit["passing_cells"] == 12
+
+    failure = json.loads(
+        (
+            analysis / "t8_state_coherent_handoff_failure_analysis.json"
+        ).read_text(encoding="utf-8")
+    )
+    assert failure["status"] == "T8_FAILURE_LOCALIZED_X0_PREFIX_TRANSITION"
+    assert all(failure["checks"].values())
+    assert failure["selected_next_falsifier"]["training_steps"] == 0
+    assert failure["selected_next_falsifier"][
+        "new_behavior_cells_required"
+    ] == 4

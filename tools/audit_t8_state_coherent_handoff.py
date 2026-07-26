@@ -19,9 +19,15 @@ ABI_AMENDMENT = (
     ANALYSIS / "t8_state_coherent_handoff_abi_amendment.json"
 )
 RESULT = ANALYSIS / "t8_state_coherent_handoff_result.json"
-AUDIT = ANALYSIS / "t8_state_coherent_handoff_independent_audit.json"
+ORIGINAL_AUDIT = (
+    ANALYSIS / "t8_state_coherent_handoff_independent_audit.json"
+)
+AUDIT_CORRECTION = (
+    ANALYSIS / "t8_state_coherent_handoff_audit_correction.json"
+)
+AUDIT = ANALYSIS / "t8_state_coherent_handoff_independent_audit_v2.json"
 MARKDOWN = (
-    ANALYSIS / "T8_STATE_COHERENT_HANDOFF_INDEPENDENT_AUDIT_20260726.md"
+    ANALYSIS / "T8_STATE_COHERENT_HANDOFF_INDEPENDENT_AUDIT_V2_20260726.md"
 )
 PITCH_INDICES = (2, 3, 4, 11, 12, 13)
 
@@ -74,6 +80,40 @@ def load_abi_amendment(prereg: dict[str, Any]) -> dict[str, Any]:
         != prereg["preregistered_contract_sha256"]
     ):
         raise RuntimeError("invalid T8 pre-outcome ABI amendment")
+    return value
+
+
+def load_audit_correction(
+    prereg: dict[str, Any], amendment: dict[str, Any]
+) -> dict[str, Any]:
+    value = json.loads(AUDIT_CORRECTION.read_text(encoding="utf-8"))
+    basis = {
+        key: value[key]
+        for key in (
+            "original_audit",
+            "cause",
+            "authorized_change",
+            "corrected_auditor",
+            "decision_invariance",
+            "authority",
+        )
+    }
+    if (
+        value.get("status")
+        != "T8_POSTOUTCOME_AUDIT_BODY_FRAME_CORRECTION"
+        or canonical_sha256(basis) != value["correction_contract_sha256"]
+        or value["original_audit"]["preregistered_contract_sha256"]
+        != prereg["preregistered_contract_sha256"]
+        or value["original_audit"]["abi_amendment_contract_sha256"]
+        != amendment["amendment_contract_sha256"]
+    ):
+        raise RuntimeError("invalid T8 audit correction")
+    corrected = value["corrected_auditor"]
+    if (
+        Path(corrected["path"]).resolve() != Path(__file__).resolve()
+        or sha256(Path(__file__)) != corrected["sha256"]
+    ):
+        raise RuntimeError("T8 corrected auditor changed")
     return value
 
 
@@ -160,7 +200,6 @@ def audit_cell(
     contacts = np.asarray(
         [row["foot_contacts"] for row in rows], dtype=np.int64
     )
-    base_x = np.asarray([row["base_x_m"] for row in rows], dtype=float)
     observations = np.asarray(
         [row["obs_state"] for row in rows], dtype=np.float32
     )
@@ -315,7 +354,7 @@ def audit_cell(
         else [0, 0]
     )
     progress = (
-        float(base_x[-1] - base_x[0]) if len(base_x) >= 2 else math.nan
+        float(np.sum(velocity) * 0.02) if len(velocity) else math.nan
     )
     zero = abs(command) <= 1.0e-12
     core = (
@@ -419,6 +458,7 @@ def main() -> int:
     prereg = json.loads(PREREG.read_text(encoding="utf-8"))
     result = json.loads(RESULT.read_text(encoding="utf-8"))
     amendment = load_abi_amendment(prereg)
+    audit_correction = load_audit_correction(prereg, amendment)
     prereg_basis = {
         key: prereg[key]
         for key in (
@@ -454,7 +494,7 @@ def main() -> int:
         canonical_sha256(result_basis) == result["result_sha256"],
         "result_canonical_sha256",
     )
-    corrected_labels = {"runner", "worker", "independent_auditor"}
+    corrected_labels = {"runner", "worker"}
     for label, value in prereg["repository_inputs"].items():
         if label in corrected_labels:
             corrected = amendment["corrected_files"][label]
@@ -469,6 +509,20 @@ def main() -> int:
                 and path.stat().st_size == corrected["bytes"]
                 and sha256(path) == corrected["sha256"],
                 f"corrected_repository_input:{label}",
+            )
+        elif label == "independent_auditor":
+            corrected = audit_correction["corrected_auditor"]
+            path = Path(corrected["path"])
+            append_if(
+                issues,
+                amendment["original_preregistration"][
+                    "repository_inputs"
+                ][label]
+                == value
+                and path.is_file()
+                and path.stat().st_size == corrected["bytes"]
+                and sha256(path) == corrected["sha256"],
+                "audit_corrected_repository_input",
             )
         else:
             path = Path(value["path"])
@@ -651,6 +705,9 @@ def main() -> int:
         ),
         "result_file_sha256": sha256(RESULT),
         "result_canonical_sha256": result["result_sha256"],
+        "audit_correction_contract_sha256": audit_correction[
+            "correction_contract_sha256"
+        ],
         "preregistered_contract_sha256": prereg[
             "preregistered_contract_sha256"
         ],

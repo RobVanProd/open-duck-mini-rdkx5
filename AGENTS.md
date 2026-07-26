@@ -4430,3 +4430,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   may unlock only the already frozen Winner-v103 CPU matrix. No deployment,
   Gate 5, RDK-X5/robot access, torque, motion, grounded walking, or robot
   clearance is authorized.
+- 2026-07-26: T8 completed the T7-earned, zero-training state-coherent
+  support-to-locomotion screen. Both V121 checkpoints and both measured
+  actuator fits pass all three moving commands (`12/12`), with exact
+  response-context, previous-action, hidden-state, applied-target-slot, and
+  graph-authoritative chains. All four x=0 cells are stable and otherwise
+  green, but the universal support action is followed by the exact-zero
+  deadband output on scored tick 0, causing a one-tick six-joint rate excess
+  up to `3.989999 rad/s`; ticks 1–599 have zero excess. T8 therefore holds
+  `12/16`, direct unconditional handoff is closed, and no training is earned.
+  The only authorized next falsifier is a separately preregistered
+  command-aware startup branch that bypasses response excitation while
+  paused/x=0 and reuses the twelve immutable audited moving cells. No hosted
+  compute, robot/RDK-X5 access, Gate 5, torque, motion, deployment, or grounded
+  replay is authorized.

@@ -20,7 +20,11 @@ robust survivor. T7 has now passed the prospective automatic-response support
 falsifier on the exact current stack: the frozen universal target holds
 nominal and both signed COM endpoints for 600 ticks and produces a repeatable,
 configuration-sensitive context. A hosted training run remains unearned until
-the state-coherent support-to-locomotion handoff and its CPU contract pass.
+the command-aware x=0 startup branch and its subsequent response-conditioned
+CPU contract pass. T8 proved the direct state-coherent handoff works in all
+`12/12` moving cells, but its four x=0 cells each violate the frozen rate
+envelope on the first scored tick when exact-zero deadband action follows the
+universal support action. T8 therefore holds `12/16` and earns no training.
 Only a policy that clears the reviewed offline gates can be prepared for
 robot-side suspended validation.
 
@@ -103,6 +107,18 @@ separation is `0.156809`/`0.156854` against the frozen `0.15` threshold. The
 independent audit found zero issues. This establishes a stable automatic
 excitation and observable response signal, not yet a locomotion policy.
 
+T8 then preserved the final support action, the applied-target observer, the
+64-D context, phase reset, and both recurrent chains while starting V121
+locomotion directly. Both checkpoints and both actuator fits pass every moving
+command (`12/12`). All four x=0 cells also remain upright, stationary, and
+within tracking and servo-duration gates, but exact-zero policy action follows
+the universal support vector at scored tick 0 and creates a single six-joint
+rate excess up to `3.989999 rad/s`. No later tick exceeds. The corrected
+independent audit reproduces `12/16` with zero issues. Direct unconditional
+handoff is closed; the next zero-training falsifier bypasses response
+excitation while paused/x=0 and preserves the successful direct handoff only
+for moving commands.
+
 ## Known Policy Contract
 
 Policy file:
@@ -154,13 +170,13 @@ Runtime then applies rate limiting before sending servo targets.
 2. Dynamic actuator bandwidth / delay mismatch between sim and the real
    pitch-chain joints. This remains independently supported, but is no longer
    ranked ahead of the measured observation mismatch.
-3. State-coherent support-to-locomotion handoff is now the leading offline
+3. Command-aware calibration startup is now the leading offline
    replacement-policy blocker. T6 proves that none of the four frozen nominal
    winners adapts to the first failed torso-COM endpoint. T7 proves that the
    current stack can safely generate a repeatable configuration-sensitive
-   response while holding the universal support target. The next screen must
-   hand that physical/applied-target and recurrent state into locomotion
-   without the old action mismatch or zero-action home return.
+   response. T8 proves the physical/applied-target and recurrent handoff
+   succeeds for all moving commands, while isolating the remaining failure to
+   the unnecessary universal-support-to-exact-zero transition at x=0.
 4. Policy target waveform and training objective remain possible contributors,
    but no new optimizer run is earned until that mechanism passes a
    prospective CPU-only falsifier.
@@ -201,8 +217,8 @@ The sim-to-real bridge is done when:
 
 ## Non-Goals For Now
 
-- No retraining before the T7-earned state-coherent handoff screen and its
-  subsequent CPU contract explicitly earn a hosted continuation.
+- No retraining before the T8-selected command-aware x=0 prefix-bypass screen
+  and its subsequent CPU contract explicitly earn a hosted continuation.
 - No gain tuning.
 - No joint offset edits.
 - No IMU remap edits.

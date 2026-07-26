@@ -1,0 +1,73 @@
+{
+  "authority": {
+    "rerun_corrected_independent_audit": true,
+    "robot_rdkx5_gate5_torque_motion": false,
+    "training_or_hosted_compute": false
+  },
+  "authorized_change": {
+    "behavior_or_result_change": false,
+    "new_audit_progress": "sum(local_linvel_m_s[:,0]) * 0.02",
+    "old_audit_progress": "base_x[-1] - base_x[0]",
+    "raw_trace_change": false
+  },
+  "cause": {
+    "affected_cells": [
+      [
+        "V121_TRAIN_MATCHED_FINAL",
+        "p30",
+        0.08
+      ],
+      [
+        "V121_TRAIN_MATCHED_FINAL",
+        "p31_34",
+        0.08
+      ]
+    ],
+    "correct_reconstruction": "sum(recorded local_linvel_m_s[0] * 0.02 s)",
+    "frozen_gate_quantity": "body-frame forward progress",
+    "incorrect_quantity": "world-X displacement, which becomes negative after yaw",
+    "reproduced_body_forward_progress_m": [
+      1.2727714599855244,
+      1.2692105245217682
+    ]
+  },
+  "corrected_auditor": {
+    "bytes": 25772,
+    "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\audit_t8_state_coherent_handoff.py",
+    "sha256": "869b845f3d62e309fc74c09e9672819cbd5cf9bb7099462b582a3214121fea69"
+  },
+  "correction_contract_sha256": "9cde95cbaced2cbbe65fe829fc4fe3576d586489319c6b30a18d3b04bbe56a0e",
+  "decision_invariance": {
+    "all_16_required_for_pass": true,
+    "corrected_maximum_possible_passing_cells": 12,
+    "decision_cannot_change": true,
+    "four_x0_failures_unchanged": true,
+    "original_result_decision": "CLOSE_DIRECT_STATE_COHERENT_V121_HANDOFF_WITHOUT_TRAINING",
+    "original_result_status": "HOLD_T8_STATE_COHERENT_HANDOFF",
+    "status_cannot_change": true
+  },
+  "original_audit": {
+    "abi_amendment_contract_sha256": "a3f1141d761352f493dafd7416a36c62703b8c4d4489cc76fefff04be1ce2a04",
+    "bytes": 1083,
+    "classification": {
+      "decision": "CLOSE_DIRECT_STATE_COHERENT_V121_HANDOFF_WITHOUT_TRAINING",
+      "status": "HOLD_T8_STATE_COHERENT_HANDOFF"
+    },
+    "issues": [
+      "cell_classification:('V121_TRAIN_MATCHED_FINAL', 'p30'):3",
+      "cell_classification:('V121_TRAIN_MATCHED_FINAL', 'p31_34'):3",
+      "result_passing_cells"
+    ],
+    "markdown": {
+      "bytes": 835,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\T8_STATE_COHERENT_HANDOFF_INDEPENDENT_AUDIT_20260726.md",
+      "sha256": "9df19911becd2af8336b99c4e874c481b1c954e8ceef6dce721639bdf1b91337"
+    },
+    "passing_cells": 10,
+    "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t8_state_coherent_handoff_independent_audit.json",
+    "preregistered_contract_sha256": "548a0b1cd5967e1e0976871a01983996b48bed5b43619969eaa5c472b2cbe7ce",
+    "sha256": "6846b62d315f1760b69327d87460d5ab0cbc6af0f4571b053d518e0882c6bb04"
+  },
+  "schema_version": "open_duck.t8_audit_correction.v1",
+  "status": "T8_POSTOUTCOME_AUDIT_BODY_FRAME_CORRECTION"
+}
