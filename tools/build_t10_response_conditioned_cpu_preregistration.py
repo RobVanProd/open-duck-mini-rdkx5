@@ -88,10 +88,62 @@ def main() -> int:
         default=DEFAULT_ASSETS,
     )
     parser.add_argument("--write", action="store_true")
+    parser.add_argument(
+        "--amend-preexecution-path-fix",
+        action="store_true",
+        help=(
+            "replace the unexecuted v1 contract after the reset preflight "
+            "proved its cwd was wrong; no optimizer step may have run"
+        ),
+    )
     args = parser.parse_args()
     if not args.write:
         raise SystemExit("T10 preregistration requires --write")
-    if OUTPUT.exists() or MARKDOWN.exists():
+    amendment = None
+    if args.amend_preexecution_path_fix:
+        if not OUTPUT.exists() or not MARKDOWN.exists():
+            raise FileNotFoundError(
+                "T10 path-fix amendment requires the frozen v1 contract"
+            )
+        prior = json.loads(OUTPUT.read_text(encoding="utf-8"))
+        result = (
+            ANALYSIS
+            / "t10_response_conditioned_continuation_cpu_result.json"
+        )
+        if result.exists() or any(prior["execution_now"].values()):
+            raise RuntimeError(
+                "T10 path-fix amendment is forbidden after formal execution"
+            )
+        failed_stdout = Path(
+            r"D:\CodexArtifacts\open-duck-policy"
+            r"\t10_cpu_launcher_v1.stdout.log"
+        )
+        failed_stderr = Path(
+            r"D:\CodexArtifacts\open-duck-policy"
+            r"\t10_cpu_launcher_v1.stderr.log"
+        )
+        amendment = {
+            "prior_contract_sha256": prior[
+                "preregistered_contract_sha256"
+            ],
+            "failure_class": "RESET_PREFLIGHT_RELATIVE_PATH",
+            "failure_point": (
+                "environment construction before either reset completed"
+            ),
+            "formal_optimizer_steps_observed": 0,
+            "hosted_or_colab_compute": 0,
+            "formal_behavior_cells": 0,
+            "robot_or_rdk_access": 0,
+            "authorized_change": (
+                "run reset-only environment construction from the frozen "
+                "composed playground root"
+            ),
+            "unchanged_decision_rule": True,
+            "unchanged_optimizer_steps_exact": 1024,
+            "failed_attempt_stdout": receipt(failed_stdout),
+            "failed_attempt_stderr": receipt(failed_stderr),
+        }
+    elif OUTPUT.exists() or MARKDOWN.exists():
         raise FileExistsError("refusing to overwrite T10 preregistration")
     playground = args.playground_root.resolve()
     assets = args.assets_root.resolve()
@@ -190,7 +242,7 @@ def main() -> int:
         ],
     }
     basis = {
-        "schema_version": "open_duck.t10_response_cpu_preregistration.v1",
+        "schema_version": "open_duck.t10_response_cpu_preregistration.v2",
         "status": "PREREGISTERED_T10_RESPONSE_CONDITIONED_CPU_CONTRACT",
         "question": (
             "Can the T9-selected command-aware response architecture be "
@@ -328,6 +380,7 @@ def main() -> int:
             "hosted_or_colab_compute": 0,
             "robot_or_rdk_access": 0,
         },
+        "preexecution_amendment": amendment,
     }
     value = {
         **basis,
@@ -353,6 +406,8 @@ def main() -> int:
         "- Hosted/Colab compute authorized: `no`\n"
         "- Behavior cells authorized: `0`\n"
         "- Robot/RDK-X5 access: `0`\n"
+        "- Pre-execution amendment: reset-only cwd correction after `0` "
+        "optimizer steps.\n"
         "- Pass earns only a separately preregistered hosted continuation.\n"
         f"- Canonical contract SHA-256: "
         f"`{value['preregistered_contract_sha256']}`\n",

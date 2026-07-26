@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+from contextlib import chdir
 import hashlib
 import json
 import math
@@ -169,11 +170,12 @@ def validate_preregistration(value: dict[str, Any]) -> None:
             "decision_rule",
             "authority",
             "execution_now",
+            "preexecution_amendment",
         )
     }
     if (
         value.get("schema_version")
-        != "open_duck.t10_response_cpu_preregistration.v1"
+        != "open_duck.t10_response_cpu_preregistration.v2"
         or value.get("status")
         != "PREREGISTERED_T10_RESPONSE_CONDITIONED_CPU_CONTRACT"
         or canonical_sha256(basis)
@@ -285,11 +287,16 @@ def reset_receipt(
     command_x: float,
     seed: int,
 ) -> dict[str, Any]:
-    environment = configure_environment(
-        playground,
-        calibrator,
-        command_x=command_x,
-    )
+    # The preserved simulator loads its polynomial reference through a
+    # repository-relative path during environment construction.  The training
+    # subprocess already runs with this cwd; give the reset-only preflight the
+    # same source-root context.
+    with chdir(playground):
+        environment = configure_environment(
+            playground,
+            calibrator,
+            command_x=command_x,
+        )
     state = jax.jit(environment.reset)(jax.random.PRNGKey(seed))
     observation = {
         key: np.asarray(jax.device_get(value))

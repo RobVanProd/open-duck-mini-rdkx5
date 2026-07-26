@@ -114,6 +114,7 @@ def test_t10_preregistration_is_canonical_and_spends_no_hosted_compute() -> None
             "decision_rule",
             "authority",
             "execution_now",
+            "preexecution_amendment",
         )
     }
     assert canonical_sha256(basis) == value[
@@ -133,6 +134,11 @@ def test_t10_preregistration_is_canonical_and_spends_no_hosted_compute() -> None
         "hosted_or_colab_compute": 0,
         "robot_or_rdk_access": 0,
     }
+    amendment = value["preexecution_amendment"]
+    assert amendment["failure_class"] == "RESET_PREFLIGHT_RELATIVE_PATH"
+    assert amendment["formal_optimizer_steps_observed"] == 0
+    assert amendment["unchanged_decision_rule"] is True
+    assert amendment["unchanged_optimizer_steps_exact"] == 1024
 
 
 def test_t10_independent_auditor_does_not_import_runner() -> None:

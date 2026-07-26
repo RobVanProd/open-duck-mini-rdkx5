@@ -7,5 +7,6 @@
 - Hosted/Colab compute authorized: `no`
 - Behavior cells authorized: `0`
 - Robot/RDK-X5 access: `0`
+- Pre-execution amendment: reset-only cwd correction after `0` optimizer steps.
 - Pass earns only a separately preregistered hosted continuation.
-- Canonical contract SHA-256: `01c4d7d5519c78a548285a6446957299035ae98d2e3e09cc253e8338aa3fae28`
+- Canonical contract SHA-256: `e0b6f7f65f42434fcaabffb2ff00fdde31c678067aa24e522ba161007087b7de`
