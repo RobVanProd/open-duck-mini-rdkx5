@@ -71,3 +71,19 @@ def test_tree_mean_and_dot() -> None:
     mean = T14.tree_mean([first, second])
     assert jnp.array_equal(mean["a"], jnp.asarray([2.0, 3.0]))
     assert T14.tree_dot(mean, mean) == 13.0
+
+
+def test_formal_dimensions_distinguish_sequences_from_observations() -> None:
+    dimensions = {
+        "environments_per_domain": 256,
+        "ticks_per_environment": 80,
+        "unroll_length": 20,
+        "minibatches": 4,
+        "sequences_per_domain": 1024,
+        "observations_per_domain": 20_480,
+        "optimizer_steps": 0,
+        "behavior_cells": 0,
+    }
+    assert T14.formal_dimensions_are_exact(dimensions)
+    wrong = {**dimensions, "sequences_per_domain": 20_480}
+    assert not T14.formal_dimensions_are_exact(wrong)

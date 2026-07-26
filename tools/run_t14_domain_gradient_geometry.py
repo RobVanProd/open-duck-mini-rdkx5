@@ -82,6 +82,21 @@ VELOCITY_LIMITS = (
 )
 
 
+def formal_dimensions_are_exact(dimensions: dict[str, int]) -> bool:
+    return dimensions == {
+        "environments_per_domain": FORMAL_ENVIRONMENTS,
+        "ticks_per_environment": FORMAL_TICKS,
+        "unroll_length": UNROLL_LENGTH,
+        "minibatches": MINIBATCHES,
+        "sequences_per_domain": (
+            FORMAL_ENVIRONMENTS * FORMAL_TICKS // UNROLL_LENGTH
+        ),
+        "observations_per_domain": FORMAL_ENVIRONMENTS * FORMAL_TICKS,
+        "optimizer_steps": 0,
+        "behavior_cells": 0,
+    }
+
+
 def sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as stream:
@@ -768,13 +783,21 @@ def run(
     expected_negative_x = nominal_x + COM_NEGATIVE_OFFSET_M
 
     source_after = flax.serialization.to_bytes(source)
+    dimensions = {
+        "environments_per_domain": environments,
+        "ticks_per_environment": ticks,
+        "unroll_length": unroll_length,
+        "minibatches": minibatches,
+        "sequences_per_domain": (
+            environments * ticks // unroll_length
+        ),
+        "observations_per_domain": environments * ticks,
+        "optimizer_steps": 0,
+        "behavior_cells": 0,
+    }
     checks = {
         "cpu_only": True,
-        "formal_dimensions_exact": (
-            environments == FORMAL_ENVIRONMENTS
-            and ticks == FORMAL_TICKS
-            and len(permutation) == 20_480
-        ),
+        "formal_dimensions_exact": formal_dimensions_are_exact(dimensions),
         "all_rollouts_finite": all(
             row["finite"] for row in rollout_metadata.values()
         ),
@@ -910,18 +933,7 @@ def run(
                 else "FIX_SMOKE_BEFORE_PREREGISTRATION"
             )
         ),
-        "dimensions": {
-            "environments_per_domain": environments,
-            "ticks_per_environment": ticks,
-            "unroll_length": unroll_length,
-            "minibatches": minibatches,
-            "sequences_per_domain": (
-                environments * ticks // unroll_length
-            ),
-            "observations_per_domain": environments * ticks,
-            "optimizer_steps": 0,
-            "behavior_cells": 0,
-        },
+        "dimensions": dimensions,
         "rollouts": {
             name: {
                 key: value

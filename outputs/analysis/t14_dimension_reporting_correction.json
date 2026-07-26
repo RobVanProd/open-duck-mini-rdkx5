@@ -1,0 +1,56 @@
+{
+  "authority": {
+    "behavior_cells": 0,
+    "classification_only": true,
+    "gate5": false,
+    "hosted_compute": false,
+    "new_rollouts": 0,
+    "optimizer_steps": 0,
+    "rdkx5_or_robot": false
+  },
+  "checks": {
+    "all_four_minibatches_align_not_conflict": true,
+    "preregistration_was_green": true,
+    "primary_and_sensitivity_dots_positive": true,
+    "raw_decision_already_closes_route": true,
+    "raw_dimension_check_only_reporting_defect": true,
+    "raw_dimensions_payload_exact": true,
+    "raw_result_is_hold": true
+  },
+  "corrected_classification": {
+    "decision": "CLOSE_WORST_DOMAIN_OBJECTIVE_FROM_V121_HALF",
+    "failed_checks": [
+      "at_least_three_of_four_minibatches_show_harm",
+      "primary_broad_and_negative_gradients_conflict",
+      "primary_broad_descent_strictly_harms_negative_com",
+      "source_normalizer_sensitivity_preserves_harm_sign"
+    ],
+    "status": "HOLD_T14_DOMAIN_GRADIENT_GEOMETRY"
+  },
+  "correction": {
+    "corrected_dimensions": {
+      "behavior_cells": 0,
+      "environments_per_domain": 256,
+      "minibatches": 4,
+      "observations_per_domain": 20480,
+      "optimizer_steps": 0,
+      "sequences_per_domain": 1024,
+      "ticks_per_environment": 80,
+      "unroll_length": 20
+    },
+    "defect": "The frozen permutation indexes 1,024 20-tick sequences; 20,480 is the observation count, not permutation length.",
+    "formal_dimensions_exact": true,
+    "formal_execution_rerun": false,
+    "original_predicate": "environments == 256 and ticks == 80 and len(permutation) == 20480",
+    "raw_result_mutated": false,
+    "threshold_or_geometry_changed": false
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "corrected_runner": "9e908cb803733aa116591892e9c626d4424635cc61a0e28126d124f3a3f56059",
+    "preregistration": "bdbfb89180661864d80ae562c92ae83fab79a792b64f066894d1ebdc5cf59fa3",
+    "raw_result": "681c627e563cfc29c3b99eb53f2cda4dc010f0d396f74e711c1d8f44c7a644d8"
+  },
+  "schema_version": "open_duck.t14_dimension_reporting_correction.v1",
+  "status": "APPROVED_T14_DIMENSION_REPORTING_CORRECTION"
+}
