@@ -1,0 +1,85 @@
+{
+  "authority": {
+    "checkpoint_selection": false,
+    "cpu_only": true,
+    "deployment_or_gate5": false,
+    "hosted_or_colab_compute": false,
+    "new_behavior_cells": 0,
+    "optimizer_steps": 0,
+    "rdkx5_or_robot": false,
+    "read_only": true,
+    "torque_or_motion": false
+  },
+  "causal_basis": {
+    "scope": "This is an audit of an action-branch invariant, not a new policy, threshold, simulator run, or relaxation of the moving-command robustness gate.",
+    "t6_observation": "T6 reports sixteen x=0 cells spanning four policy pairs, two checkpoints, and two actuator fits under the same negative-COM condition.",
+    "t7_counterexample": "T7 applies the exact universal support action for 600 ticks under nominal and both signed COM endpoints.",
+    "t9_mechanism": "T9 deliberately bypasses the response prefix at x=0 and requires the authoritative action chain to remain exact zero."
+  },
+  "checks": {
+    "t6_has_no_frozen_robust_survivor": true,
+    "t7_universal_support_is_green": true,
+    "t9_unconditional_x0_bypass_is_green_nominally": true
+  },
+  "decision_rule": {
+    "fail": "Keep the x=0 deadband frozen and close configuration-aware support retention; do not alter the population, action definition, thresholds, or source artifacts.",
+    "no_threshold_changes_after_execution": true,
+    "partial_results_selection_weight": 0,
+    "pass": "Classify the unconditional x=0 exact-zero deadband as a structural blocker for variable-configuration clearance. Reopen only the x=0 branch for a separately preregistered configuration-aware support-retention CPU contract. This does not reopen moving-command wrappers and earns no training or hosted run."
+  },
+  "execution_now": {
+    "hosted_compute_units": 0,
+    "new_behavior_cells": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "runner": "e93a4d9650969e804f074def9b9cb223133bb9ce4d597ddf826bec145f58ecaa",
+    "t10_network": "cfafa8a31e1824e2c877e3d5e76af9e11056a7808e9434138483b181e29893e3",
+    "t6_result": "31317e52fe4dae94567b7ce633fd8542507973c7e7168a0887f7a5267970f932",
+    "t7_result": "411cd8ca398a1da45bf5e4ed2da4601e8d2e18eff4b75c67c41a308c1a60e7ac",
+    "t9_result": "b5342eab2993f4c14a7aab62795ad211f131033ce926bd236c21237530b0cff4",
+    "t9_runner": "8fd54ed024e026ef33dc8798b6ef85cb5fb8406f869b71eaa1a3a2a41effc05f"
+  },
+  "pass_rule": {
+    "all_16_actions_exact_zero_on_every_recorded_tick": true,
+    "all_16_cells_fail_with_identical_behavior_metrics": true,
+    "all_16_t6_x0_cells_present": true,
+    "all_bound_trace_hashes_match_committed_receipts": true,
+    "all_four_t7_negative_com_support_cells_pass": true,
+    "each_checkpoint_pair_is_fit_invariant": true,
+    "t7_support_duration_protection_green": true,
+    "t7_support_mean_abs_vx_at_most_m_s": 0.001,
+    "t7_support_rate_excess_exact_zero": true
+  },
+  "population": {
+    "actuator_fits": [
+      "p30",
+      "p31_34"
+    ],
+    "checkpoints_per_family": 2,
+    "command_x_m_s": 0.0,
+    "condition": "TORSO_COM_X_NEG",
+    "policy_families": [
+      "V121",
+      "V123",
+      "V128",
+      "V177"
+    ],
+    "t6_x0_cells": 16,
+    "t7_counterexample_cells": {
+      "condition": "TORSO_COM_X_NEG",
+      "duration_ticks": 600,
+      "fits": [
+        "p30",
+        "p31_34"
+      ],
+      "repeats_per_fit": 2
+    }
+  },
+  "preregistered_contract_sha256": "0e3057a9dce0e2ea3e972ed9a8b4fb20755efc419ea1db554947704b5270304e",
+  "question": "Does the unconditional x=0 exact-zero deadband make the TORSO_COM_X_NEG x=0 gate policy-independent and therefore structurally impossible, even though the already-frozen universal support action holds the same plant condition?",
+  "schema_version": "open_duck.t15_x0_deadband_structural_preregistration.v1",
+  "status": "PREREGISTERED_T15_X0_DEADBAND_STRUCTURAL_AUDIT"
+}
