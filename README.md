@@ -67,10 +67,20 @@ up to `3.989999 rad/s`; ticks 1–599 have zero excess. T8 therefore holds
 issues after preserving and fixing a reporting-only world-X/body-frame error
 that could not change the hold.
 
+T9 then tested the one-variable command-aware startup remedy. At paused/x=0,
+response excitation is bypassed and the unchanged context-ABI V121 graph
+starts at home with immutable zero context, zero recurrent state, zero previous
+action, and the exact applied-target observation. All four new x=0 cells pass
+with exact-zero action, zero rate excess, tracking p95 `0.030258 rad`, and zero
+corrected protection runs. Combined with the immutable audited T8 moving
+cells, the command-aware architecture is `16/16`. The corrected independent
+audit passes with zero issues. T9 earns only the response-conditioned
+continuation CPU software contract; hosted training remains unearned.
+
 Current gate:
 
 ```text
-HOLD_GATE_5_PENDING_COMMAND_AWARE_X0_PREFIX_BYPASS_CPU_SCREEN
+HOLD_GATE_5_PENDING_RESPONSE_CONDITIONED_CONTINUATION_CPU_CONTRACT
 ```
 
 Read these first:
@@ -87,19 +97,20 @@ outputs/analysis/T7_UNIVERSAL_RESPONSE_SUPPORT_INDEPENDENT_AUDIT_20260725.md
 outputs/analysis/T8_STATE_COHERENT_HANDOFF_RESULT_20260726.md
 outputs/analysis/T8_STATE_COHERENT_HANDOFF_INDEPENDENT_AUDIT_V2_20260726.md
 outputs/analysis/T8_STATE_COHERENT_HANDOFF_FAILURE_ANALYSIS_20260726.md
+outputs/analysis/T9_COMMAND_AWARE_PREFIX_BYPASS_RESULT_20260726.md
+outputs/analysis/T9_COMMAND_AWARE_PREFIX_BYPASS_INDEPENDENT_AUDIT_V2_20260726.md
 outputs/analysis/WINNER_V177_NOMINAL_BEHAVIOR_RESULT_20260725.md
 ```
 
-The next earned falsifier is a separately preregistered, CPU-only,
-zero-training command-aware startup screen. While paused/x=0, the robot remains
-at home and bypasses response excitation because the frozen deadband output is
-context-independent exact zero. Moving commands retain the already-green T8
-direct handoff from universal support. Four new x=0 cells are required; the
-twelve immutable audited T8 moving cells are reused without rerunning them.
-The mechanism continues to infer configuration only from runtime-available
-signals and requires no weighing, calipers, or static COM entry. No Colab
-continuation is authorized until this branch and a subsequent CPU contract
-explicitly earn one.
+The next earned step is a separately preregistered CPU software contract for
+one response-conditioned continuation initialized from V121-half. It must
+prove exact restore, default-off source equivalence, the command-aware x=0
+startup branch, trainable use of the frozen 64-D response context, graph-owned
+action/history/applied-target semantics, finite update behavior, and valid
+step-0/step-1,024 ONNX exports. The mechanism continues to infer configuration
+only from runtime-available signals and requires no weighing, calipers, or
+static COM entry. No Colab continuation is authorized unless that complete
+contract prospectively earns exactly one run.
 
 Current candidate:
 

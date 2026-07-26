@@ -4444,3 +4444,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   paused/x=0 and reuses the twelve immutable audited moving cells. No hosted
   compute, robot/RDK-X5 access, Gate 5, torque, motion, deployment, or grounded
   replay is authorized.
+- 2026-07-26: T9 passes the command-aware x=0 response-prefix bypass. The four
+  new V121 checkpoint/fit x=0 cells start directly from home with immutable
+  zero context, exact-zero recurrent state and previous action, exact
+  applied-target observation, graph-authoritative zero action, zero rate
+  excess, and zero corrected protection runs. Combined with the twelve
+  immutable audited T8 moving cells, the architecture is `16/16`; the
+  corrected independent audit has zero issues. This earns only a separately
+  preregistered response-conditioned V121 continuation CPU software contract.
+  No hosted optimizer run, robot/RDK-X5 access, Gate 5, torque, motion,
+  deployment, grounded replay, or robot clearance is authorized yet.

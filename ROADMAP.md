@@ -32,6 +32,15 @@ mass, caliper, or static COM measurements. Hosted training is allowed only if
 the subsequent prospective CPU contract explicitly earns one run. Robot
 access, policy deployment, Gate 5, torque, and motion remain unauthorized.
 
+T9 passes that screen: all four new x=0 cells and all twelve reused T8 moving
+cells are green (`16/16` combined), and the corrected independent audit has
+zero issues. The next authorized step is the response-conditioned continuation
+CPU software contract. It must prove exact V121-half restore, default-off
+equivalence, command-aware startup, trainable context use, finite update
+behavior, and valid step-0/step-1,024 exports before exactly one hosted
+continuation can be earned. Training, robot access, policy deployment, Gate 5,
+torque, and motion remain unauthorized until that contract says otherwise.
+
 ## Phase 0: Repo Safety And Evidence Hygiene
 
 Goal: keep the RDK runtime, evidence, docs, tools, and policy baseline organized and reviewable.

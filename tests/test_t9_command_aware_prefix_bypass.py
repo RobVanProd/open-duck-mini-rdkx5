@@ -118,3 +118,66 @@ def test_t9_independent_auditor_does_not_import_runner() -> None:
     ).read_text(encoding="utf-8")
     forbidden = "run_" + "t9_command_aware_prefix_bypass"
     assert forbidden not in source
+
+
+def test_t9_result_and_corrected_audit_are_canonical_and_green() -> None:
+    analysis = ROOT / "outputs" / "analysis"
+    result = json.loads(
+        (
+            analysis / "t9_command_aware_prefix_bypass_result.json"
+        ).read_text(encoding="utf-8")
+    )
+    result_basis = {
+        key: value
+        for key, value in result.items()
+        if key != "result_sha256"
+    }
+    assert canonical_sha256(result_basis) == result["result_sha256"]
+    assert result["status"] == "PASS_T9_COMMAND_AWARE_PREFIX_BYPASS"
+    assert result["decision"] == (
+        "EARN_RESPONSE_CONDITIONED_V121_CONTINUATION_CPU_CONTRACT"
+    )
+    assert result["new_passing_cells"] == result["new_expected_cells"] == 4
+    assert result["combined_passing_cells"] == (
+        result["combined_expected_cells"]
+    ) == 16
+    assert result["execution"]["training_steps"] == 0
+    assert result["execution"]["robot_or_rdk_access"] == 0
+
+    original = json.loads(
+        (
+            analysis
+            / "t9_command_aware_prefix_bypass_independent_audit.json"
+        ).read_text(encoding="utf-8")
+    )
+    assert original["new_passing_cells"] == 4
+    assert original["combined_passing_cells"] == 16
+    assert len(original["issues"]) == 4
+    assert original["classification"]["status"] == (
+        "PASS_T9_COMMAND_AWARE_PREFIX_BYPASS"
+    )
+    correction = json.loads(
+        (
+            analysis / "t9_command_aware_prefix_bypass_audit_correction.json"
+        ).read_text(encoding="utf-8")
+    )
+    assert correction["authorized_change"]["boolean_values_changed"] is False
+    assert correction["decision_invariance"]["status_cannot_change"] is True
+    assert correction["decision_invariance"]["decision_cannot_change"] is True
+
+    audit = json.loads(
+        (
+            analysis
+            / "t9_command_aware_prefix_bypass_independent_audit_v2.json"
+        ).read_text(encoding="utf-8")
+    )
+    audit_basis = {
+        key: value for key, value in audit.items() if key != "audit_sha256"
+    }
+    assert canonical_sha256(audit_basis) == audit["audit_sha256"]
+    assert audit["status"] == (
+        "PASS_T9_COMMAND_AWARE_PREFIX_BYPASS_INDEPENDENT_AUDIT"
+    )
+    assert audit["issues"] == []
+    assert audit["new_passing_cells"] == 4
+    assert audit["combined_passing_cells"] == 16

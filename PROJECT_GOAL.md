@@ -24,7 +24,10 @@ the command-aware x=0 startup branch and its subsequent response-conditioned
 CPU contract pass. T8 proved the direct state-coherent handoff works in all
 `12/12` moving cells, but its four x=0 cells each violate the frozen rate
 envelope on the first scored tick when exact-zero deadband action follows the
-universal support action. T8 therefore holds `12/16` and earns no training.
+universal support action. T8 therefore holds `12/16`. T9 resolves exactly that
+startup branch: all four new x=0 cells pass and the combined command-aware
+architecture is `16/16`. Hosted training remains unearned until the
+response-conditioned continuation CPU contract passes.
 Only a policy that clears the reviewed offline gates can be prepared for
 robot-side suspended validation.
 
@@ -119,6 +122,14 @@ handoff is closed; the next zero-training falsifier bypasses response
 excitation while paused/x=0 and preserves the successful direct handoff only
 for moving commands.
 
+T9 passes that command-aware falsifier. Both checkpoints and both fits hold
+x=0 from home for 600 ticks with immutable zero context, exact-zero action,
+zero rate excess, tracking p95 `0.030258 rad`, and zero corrected protection
+runs. The corrected independent audit reproduces all four new cells and the
+twelve reused T8 moving cells with zero issues. The architecture is now
+`16/16`, which earns only a response-conditioned continuation CPU software
+contract—not a hosted optimizer run.
+
 ## Known Policy Contract
 
 Policy file:
@@ -170,13 +181,12 @@ Runtime then applies rate limiting before sending servo targets.
 2. Dynamic actuator bandwidth / delay mismatch between sim and the real
    pitch-chain joints. This remains independently supported, but is no longer
    ranked ahead of the measured observation mismatch.
-3. Command-aware calibration startup is now the leading offline
-   replacement-policy blocker. T6 proves that none of the four frozen nominal
-   winners adapts to the first failed torso-COM endpoint. T7 proves that the
-   current stack can safely generate a repeatable configuration-sensitive
-   response. T8 proves the physical/applied-target and recurrent handoff
-   succeeds for all moving commands, while isolating the remaining failure to
-   the unnecessary universal-support-to-exact-zero transition at x=0.
+3. Response-conditioned continuation software fidelity is now the leading
+   offline replacement-policy blocker. T7 proves a stable
+   configuration-sensitive response; T8 proves the moving physical/recurrent
+   handoff; and T9 proves the command-aware x=0 branch. The next contract must
+   combine those mechanisms with exact V121 restore/update/export behavior
+   before any hosted optimizer run is earned.
 4. Policy target waveform and training objective remain possible contributors,
    but no new optimizer run is earned until that mechanism passes a
    prospective CPU-only falsifier.
@@ -217,8 +227,8 @@ The sim-to-real bridge is done when:
 
 ## Non-Goals For Now
 
-- No retraining before the T8-selected command-aware x=0 prefix-bypass screen
-  and its subsequent CPU contract explicitly earn a hosted continuation.
+- No retraining before the T9-earned response-conditioned continuation CPU
+  contract explicitly earns a hosted continuation.
 - No gain tuning.
 - No joint offset edits.
 - No IMU remap edits.

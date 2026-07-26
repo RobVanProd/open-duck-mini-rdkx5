@@ -15,10 +15,18 @@ ROOT = Path(__file__).resolve().parents[1]
 ANALYSIS = ROOT / "outputs" / "analysis"
 PREREG = ANALYSIS / "t9_command_aware_prefix_bypass_preregistration.json"
 RESULT = ANALYSIS / "t9_command_aware_prefix_bypass_result.json"
-AUDIT = ANALYSIS / "t9_command_aware_prefix_bypass_independent_audit.json"
+ORIGINAL_AUDIT = (
+    ANALYSIS / "t9_command_aware_prefix_bypass_independent_audit.json"
+)
+AUDIT_CORRECTION = (
+    ANALYSIS / "t9_command_aware_prefix_bypass_audit_correction.json"
+)
+AUDIT = (
+    ANALYSIS / "t9_command_aware_prefix_bypass_independent_audit_v2.json"
+)
 MARKDOWN = (
     ANALYSIS
-    / "T9_COMMAND_AWARE_PREFIX_BYPASS_INDEPENDENT_AUDIT_20260726.md"
+    / "T9_COMMAND_AWARE_PREFIX_BYPASS_INDEPENDENT_AUDIT_V2_20260726.md"
 )
 PITCH_INDICES = (2, 3, 4, 11, 12, 13)
 
@@ -45,6 +53,35 @@ def canonical_sha256(value: Any) -> str:
 def append_if(issues: list[str], condition: bool, label: str) -> None:
     if not condition:
         issues.append(label)
+
+
+def load_audit_correction(prereg: dict[str, Any]) -> dict[str, Any]:
+    value = json.loads(AUDIT_CORRECTION.read_text(encoding="utf-8"))
+    basis = {
+        key: value[key]
+        for key in (
+            "original_audit",
+            "cause",
+            "authorized_change",
+            "corrected_auditor",
+            "decision_invariance",
+            "authority",
+        )
+    }
+    if (
+        value.get("status") != "T9_POSTOUTCOME_AUDIT_LABEL_CORRECTION"
+        or canonical_sha256(basis) != value["correction_contract_sha256"]
+        or value["original_audit"]["preregistered_contract_sha256"]
+        != prereg["preregistered_contract_sha256"]
+    ):
+        raise RuntimeError("invalid T9 audit correction")
+    corrected = value["corrected_auditor"]
+    if (
+        Path(corrected["path"]).resolve() != Path(__file__).resolve()
+        or sha256(Path(__file__)) != corrected["sha256"]
+    ):
+        raise RuntimeError("T9 corrected auditor changed")
+    return value
 
 
 def longest_run(mask: np.ndarray) -> int:
@@ -144,28 +181,35 @@ def audit_cell(
         "prefix_disabled": response.get("enabled") is False
         and response.get("calibration_ticks") == 0
         and response.get("home_return_ticks") == 0,
-        "zero_context_bypass": response.get("zero_context_bypass") is True,
+        "zero_context_bypass_enabled": response.get(
+            "zero_context_bypass"
+        )
+        is True,
         "zero_context_exact": response.get("context_sha256")
         == zero_context_sha,
-        "context_shape_finite": response.get("context_shape") == [1, 64]
+        "context_shape_and_finite": response.get("context_shape") == [1, 64]
         and response.get("context_finite") is True,
-        "phase_reset": response.get("locomotion_phase_reset") == [1.0, 0.0],
-        "hidden_zero": response.get("locomotion_hidden_exact_zero") is True
+        "phase_reset_exact": response.get("locomotion_phase_reset")
+        == [1.0, 0.0],
+        "initial_hidden_zero": response.get(
+            "locomotion_hidden_exact_zero"
+        )
+        is True
         and bool(rows)
         and np.count_nonzero(hidden_in[0]) == 0,
-        "previous_action_zero": response.get(
+        "initial_previous_action_zero": response.get(
             "locomotion_previous_action_exact_zero"
         )
         is True
         and bool(rows)
         and np.count_nonzero(previous_in[0]) == 0,
-        "observer_exact": response.get(
+        "applied_target_observer_exact": response.get(
             "applied_target_observation_matches_bridge"
         )
         is True,
-        "actions_zero": actions.shape == (len(rows), 14)
+        "actions_exact_zero": actions.shape == (len(rows), 14)
         and np.count_nonzero(actions) == 0,
-        "state_chains": bool(rows)
+        "recurrent_chains_exact": bool(rows)
         and np.array_equal(previous_in[1:], previous_out[:-1])
         and np.array_equal(hidden_in[1:], hidden_out[:-1]),
         "context_immutable": all(
@@ -173,14 +217,14 @@ def audit_cell(
             == zero_context_sha
             for row in rows
         ),
-        "graph_authoritative": bool(rows)
+        "graph_authoritative_no_host_delta": bool(rows)
         and all(
             row.get("policy_graph_authoritative_output") is True
             and row.get("policy_host_action_delta_max_abs") == 0.0
             for row in rows
         ),
-        "full_obs": observations.shape == (len(rows), 115),
-        "applied_slot_continuity": observations.shape
+        "full_observation_traced": observations.shape == (len(rows), 115),
+        "applied_target_slot_continuity": observations.shape
         == (len(rows), 115)
         and applied.shape == (len(rows), 14)
         and np.array_equal(observations[1:, 83:97], applied[:-1]),
@@ -269,6 +313,7 @@ def main() -> int:
         raise FileExistsError("refusing to overwrite the T9 audit")
     prereg = json.loads(PREREG.read_text(encoding="utf-8"))
     result = json.loads(RESULT.read_text(encoding="utf-8"))
+    audit_correction = load_audit_correction(prereg)
     issues: list[str] = []
     prereg_basis = {
         key: prereg[key]
@@ -305,14 +350,29 @@ def main() -> int:
         "result_canonical",
     )
     for label, frozen in prereg["repository_inputs"].items():
-        path = Path(frozen["path"])
-        append_if(
-            issues,
-            path.is_file()
-            and path.stat().st_size == frozen["bytes"]
-            and sha256(path) == frozen["sha256"],
-            f"repository_input:{label}",
-        )
+        if label == "independent_auditor":
+            corrected = audit_correction["corrected_auditor"]
+            path = Path(corrected["path"])
+            append_if(
+                issues,
+                audit_correction["original_audit"][
+                    "preregistered_auditor"
+                ]
+                == frozen
+                and path.is_file()
+                and path.stat().st_size == corrected["bytes"]
+                and sha256(path) == corrected["sha256"],
+                "audit_corrected_repository_input",
+            )
+        else:
+            path = Path(frozen["path"])
+            append_if(
+                issues,
+                path.is_file()
+                and path.stat().st_size == frozen["bytes"]
+                and sha256(path) == frozen["sha256"],
+                f"repository_input:{label}",
+            )
     reused = prereg["reused_t8_evidence"]
     t8_result = json.loads(
         Path(reused["result"]["path"]).read_text(encoding="utf-8")
@@ -461,6 +521,9 @@ def main() -> int:
         ),
         "result_file_sha256": sha256(RESULT),
         "result_canonical_sha256": result["result_sha256"],
+        "audit_correction_contract_sha256": audit_correction[
+            "correction_contract_sha256"
+        ],
         "preregistered_contract_sha256": prereg[
             "preregistered_contract_sha256"
         ],
