@@ -6,6 +6,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ANALYSIS = ROOT / "outputs/analysis"
+VALIDATOR = ROOT / "tools/validate_t23_recovered_training.py"
 
 
 def load(name: str) -> dict:
@@ -92,3 +93,15 @@ def test_t23b_launch_is_one_exact_cache_free_colab_session() -> None:
     assert value["authority"]["one_exact_cache_free_cli_launch"] is True
     assert value["authority"]["behavior_evaluation"] is False
     assert value["authority"]["gate5"] is False
+
+
+def test_t23_cpu_validator_requires_exact_artifacts_before_behavior() -> None:
+    text = VALIDATOR.read_text(encoding="utf-8")
+    assert "PASS_T23_TRAINING_ARTIFACT_PENDING_CPU_VALIDATION" in text
+    assert "COMPLETED_T23B_COLAB_LAUNCH" in text
+    assert "step_zero_source_parameters_bit_exact" in text
+    assert "every_policy_leaf_updated_at_both_checkpoints" in text
+    assert "every_critic_leaf_updated_at_both_checkpoints" in text
+    assert "all_onnx_contracts_pass" in text
+    assert '"behavior_evaluation_authorized": False' in text
+    assert '"gate5_authorized": False' in text
