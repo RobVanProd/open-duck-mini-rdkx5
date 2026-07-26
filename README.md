@@ -23,18 +23,28 @@ feasibility boundary unless it is relaxed to baseline evidence; it may instead
 remain explicitly labeled as a stretch goal. T4 makes no automatic gate
 change.
 
-The read-only T5 protection-envelope audit has also changed the policy
-decision boundary. Feetech documents duration-triggered over-current and
-overload protection, not a one-tick rejection at stall torque/current. When
-the frozen V121, V123, and V128 traces are reclassified using the documented
-two-second rules, all three become complete `16/16` nominal passes. V177 also
-becomes `16/16` as a post-handoff diagnostic. This meets the preregistered
-reopen rule, but it does not select a policy or authorize training.
+The read-only T5 protection-envelope audit changed the policy decision
+boundary. Feetech documents duration-triggered over-current and overload
+protection, not a one-tick rejection at stall torque/current. When the frozen
+V121, V123, and V128 traces are reclassified using the documented two-second
+rules, all three become complete `16/16` nominal passes. V177 also becomes
+`16/16` as a post-handoff diagnostic.
+
+T6 then tested all four reopened frozen policy pairs against the prospectively
+selected R2 `TORSO_COM_X_NEG` endpoint (`-0.05 m`), which was the first
+configuration failure of the prior winner. The complete `64/64` CPU matrix has
+no robust survivor: V121, V123, and V128 score `0/16`; V177 scores `1/16`.
+All four have negative worst-case moving velocity, while their worst strict
+over-current/overload runs are only `3`–`5` ticks against the corrected
+`100`-tick trip rule. An independent auditor reproduced all `16` manifests,
+`16` evaluations, `64` trace hashes, `64` exact COM readbacks, every aggregate,
+and the final decision with zero issues. The frozen-policy comparison is
+closed; no hosted training is yet earned.
 
 Current gate:
 
 ```text
-HOLD_GATE_5_PENDING_CORRECTED_GATE_ROBUSTNESS_REVALIDATION
+HOLD_GATE_5_PENDING_AUTOMATIC_CONFIGURATION_RESPONSE_CPU_FALSIFIER
 ```
 
 Read these first:
@@ -44,14 +54,20 @@ PROJECT_GOAL.md
 outputs/analysis/T1_ACCEL_BIAS_V4_DOSE_RESPONSE_RESULT_20260725.md
 outputs/analysis/T4_BASELINE_ALL_GATES_RESULT_20260725.md
 outputs/analysis/T5_ACTUATOR_PROTECTION_REANALYSIS_RESULT_20260725.md
+outputs/analysis/T6_CORRECTED_ROBUSTNESS_SCREEN_RESULT_20260725.md
+outputs/analysis/T6_CORRECTED_ROBUSTNESS_SCREEN_INDEPENDENT_AUDIT_20260725.md
 outputs/analysis/WINNER_V177_NOMINAL_BEHAVIOR_RESULT_20260725.md
 ```
 
-The next step is to preregister the corrected-gate robustness comparison of
-the already-frozen surviving policies, using T4 to distinguish baseline
-feasibility boundaries from stretch goals and T5 for the manufacturer-derived
-servo-protection rules. No new optimizer run is earned while a frozen policy
-may already satisfy that corrected contract.
+The next step is a prospective, CPU-only mechanism review and falsifier for
+automatic configuration response. The robot may be reassembled, have pieces
+changed, or have mass distribution move, so the solution must infer useful
+configuration state from runtime-available signals; it must not require Rob
+to weigh parts or enter a static COM measurement. The previous passive
+73-value response context remains closed because the corrected `-0.05 m`
+support reset itself falls. It may supply evidence, but it is not silently
+resurrected. No Colab continuation is authorized until a new mechanism passes
+its preregistered CPU contract and explicitly earns one run.
 
 Current candidate:
 

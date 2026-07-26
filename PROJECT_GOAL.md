@@ -12,12 +12,14 @@ policy actions, joint commands, and real joint movement matched the policy and
 simulation contract closely enough to rerun the known baseline responsibly.
 That evidence has now shifted the project into an offline root-cause and
 gate-reconciliation phase. T1 has reported, T2 is held by unavailable raw
-evidence, and T4 is complete and independently audited. T5 has now proved that the
+evidence, and T4 is complete and independently audited. T5 proved that the
 instantaneous stall-torque/current rule wrongly rejected at least three
-complete policy matrices. A new hosted training run is not earned while a
-frozen policy may already clear the corrected physical gate. Only a policy
-that clears the reviewed offline gates can be prepared for robot-side
-suspended validation.
+complete policy matrices. T6 has now evaluated all four reopened frozen policy
+pairs under the first previously failed configuration endpoint and found no
+robust survivor. A hosted training run remains unearned until an automatic
+configuration-response mechanism passes a prospective CPU-only falsifier.
+Only a policy that clears the reviewed offline gates can be prepared for
+robot-side suspended validation.
 
 The repository itself is part of the robot state. Keep documentation, evidence manifests, snapshots, runbooks, and status notes current whenever the board runtime, robot config, diagnostic results, or recommended next gate changes.
 
@@ -73,6 +75,18 @@ V121, V123, and V128 traces with those two 100-tick rules changes all three to
 complete `16/16` passes; post-handoff V177 also becomes `16/16`. This reopens
 the affected closures but does not select a deployment policy.
 
+T6 prospectively selected the existing R2 `TORSO_COM_X_NEG` (`-0.05 m`)
+condition because it was the first failure after six prior R2 passes. It then
+ran both checkpoints, both measured actuator fits, and all four commands for
+V121, V123, V128, and V177: `64/64` cells in total. No frozen pair survives.
+V121, V123, and V128 have `0/16` green cells; V177 has `1/16`. Worst moving
+velocity is negative for every candidate (`-0.3216` to `-0.4140 m/s`), while
+the longest corrected servo-protection run is only `5` ticks. This localizes
+the blocker to configuration/support response rather than the old
+instantaneous current/torque rule. A runner-independent audit reproduced all
+source hashes, readbacks, trace metrics, classifications, aggregates, and the
+zero-survivor decision with no issue.
+
 ## Known Policy Contract
 
 Policy file:
@@ -124,14 +138,18 @@ Runtime then applies rate limiting before sending servo targets.
 2. Dynamic actuator bandwidth / delay mismatch between sim and the real
    pitch-chain joints. This remains independently supported, but is no longer
    ranked ahead of the measured observation mismatch.
-3. Policy target waveform and training objective remain possible contributors,
-   but the V121-V175 torque-optimization campaign was evaluated against an
-   invalid one-tick stall constraint. Existing frozen policies must be
-   revalidated under the duration-based protection rule before more training.
-4. Servo bus CRC/read retries are a watch item, but not the leading cause
+3. Configuration/support observability and response are now the leading
+   offline replacement-policy blocker. T6 proves that none of the four frozen
+   nominal winners adapts to the first failed torso-COM endpoint. The next
+   mechanism must infer configuration from runtime-available signals rather
+   than require static mass or millimeter measurements.
+4. Policy target waveform and training objective remain possible contributors,
+   but no new optimizer run is earned until that mechanism passes a
+   prospective CPU-only falsifier.
+5. Servo bus CRC/read retries are a watch item, but not the leading cause
    unless they correlate with control damage.
-5. Ground contact/load dynamics remain untested with a new candidate.
-6. Contact/friction and TPU effects come later, after suspended candidate gates
+6. Ground contact/load dynamics remain untested with a new candidate.
+7. Contact/friction and TPU effects come later, after suspended candidate gates
    pass.
 
 Gross IMU frame, foot-contact polarity, joint identity, and zero-command policy
@@ -165,8 +183,8 @@ The sim-to-real bridge is done when:
 
 ## Non-Goals For Now
 
-- No retraining before T4 is complete and the T5-reopened frozen candidates
-  have been compared under a preregistered corrected-gate robustness matrix.
+- No retraining before an automatic configuration-response mechanism passes a
+  prospective CPU-only falsifier and explicitly earns a hosted continuation.
 - No gain tuning.
 - No joint offset edits.
 - No IMU remap edits.

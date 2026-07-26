@@ -40,19 +40,27 @@ two seconds above 2 A and two seconds blocked above 80% stall.
 
 The preregistered read-only reanalysis verified every stored cell/trace hash and
 recomputed both duration rules per joint. V121, V123, and V128 each change to
-complete 16/16 passes, meeting the exact three-candidate reopen trigger.
-V157's and V162's early-stop cells also pass, so their stop rules are
-invalidated but their unrun cells remain missing. V174 remains green over its
-recorded endpoint population. Post-handoff V177 changes from 8/16 to 16/16.
-No audited V121-V177 trace hits the canonical +/-3.23-N.m MuJoCo force clamp,
-and exact force reconstruction closes within 5e-6 N.m.
+complete 16/16 nominal passes, meeting the exact three-candidate reopen
+trigger. Post-handoff V177 also changes to 16/16.
 
-T5 reopens the V121-V175 campaign closures; it does not select a policy. The
-next step is to preregister a corrected-gate robustness comparison of the
-already-frozen surviving policies, using T4 for baseline feasibility and T5
-for manufacturer-derived servo protection, before considering any new
-optimizer run. No robot, RDK-X5, serial, torque, motion, hosted training,
-Gate 5, checkpoint selection, or deployment action is authorized.
+T6 is complete. It prospectively selected the existing R2
+TORSO_COM_X_NEG=-0.05-m endpoint, then evaluated V121, V123, V128, and V177
+across both checkpoints, both measured actuator fits, and x=0/.074/.077/.080:
+64/64 cells. No pair survives. V121/V123/V128 score 0/16 and V177 scores 1/16.
+Every candidate has negative worst-case moving velocity; corrected
+over-current/overload runs remain only 3-5 ticks. The independent auditor,
+which does not import the runner, reproduced 16 manifests, 16 evaluations, 64
+trace hashes, 64 exact COM readbacks, all metrics/aggregates, and the final
+zero-survivor decision. Audit SHA:
+70a9b3ca045522ceda1df86f4712878e81aaba07d97283441f8a2ea82bb4d9c3.
+
+The next step is to preregister a CPU-only automatic
+configuration-response mechanism falsifier. It must use runtime-available
+signals and cannot require manual weighing, calipers, or a static COM ledger.
+The old passive response73 route remains closed because its corrected -0.05-m
+support reset falls; do not resurrect it without new prospective evidence.
+No robot, RDK-X5, serial, torque, motion, hosted training, Gate 5, checkpoint
+selection, or deployment action is authorized.
 ```
 
 Robotics operating model:

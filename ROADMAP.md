@@ -2,6 +2,21 @@
 
 This roadmap is ordered to avoid tuning before evidence. Each phase has explicit gates. Do not advance to hardware walking until the earlier gates pass.
 
+## Current Policy Gate (2026-07-25)
+
+The ground-up runtime has cleared supported no-policy hardware Gates 1–4, but
+Gate 5 remains closed. T5 corrected the servo-protection rule, and T6 then ran
+the four reopened frozen policy pairs through the first previously failed R2
+configuration endpoint (`TORSO_COM_X_NEG=-0.05 m`). The complete `64/64`
+matrix and its independent audit found no robust survivor.
+
+The next authorized step is an offline, CPU-only automatic
+configuration-response mechanism falsifier using runtime-available signals.
+It must not require manual mass, caliper, or static COM measurements. Hosted
+training is allowed only if that prospective contract explicitly earns one
+run. Robot access, policy deployment, Gate 5, torque, and motion remain
+unauthorized by this result.
+
 ## Phase 0: Repo Safety And Evidence Hygiene
 
 Goal: keep the RDK runtime, evidence, docs, tools, and policy baseline organized and reviewable.
