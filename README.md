@@ -8,46 +8,58 @@ The repository and its documentation are part of the robot's working state. Keep
 
 ## Current Next Step
 
-The corrected left-knee offset removed the large knee asymmetry, the actuator
-bridge was re-fit, and the corrected candidate cleared stand/suspended transfer
-at both `x=0.0` and `x=0.08`. A first bounded grounded telemetry test at
-`x=0.08` completed its 5 second runtime, but the office-chair plastic mat was
-likely too slippery and grounded tracking rose enough to require review. A
-repeated bounded run on medium carpet improved telemetry and cleared the
-low-command hardware summary, but the operator reported that the robot only
-stepped in place / did not lift its feet enough to walk forward. The current
-hold is visual/insufficient-foot-clearance, not actuator tracking.
+The ground-up RDK-X5 runtime has cleared the supported, no-policy hardware
+gates through Gate 4. Policy work remains offline and Gate 5 remains closed.
+
+The completed T1 accelerometer-bias dose response proves that the robot's
+upright `accel_x` mismatch is behaviorally first-order: `+1.6 m/s^2` reduced
+the unmodified baseline's simulated forward velocity by `86.41%`. T2 is held
+because the exact corrected-replay raw JSONL is unavailable. T4 is complete
+and independently audited: all `32/32` baseline cells, cell contracts, raw
+result hashes, aggregates, and gate rows reproduce exactly. The baseline
+finishes all cells without a fall but fails `13` current gate rows. Under the
+preregistered decision rule, a gate the baseline fails cannot remain a minimum
+feasibility boundary unless it is relaxed to baseline evidence; it may instead
+remain explicitly labeled as a stretch goal. T4 makes no automatic gate
+change.
+
+The read-only T5 protection-envelope audit has also changed the policy
+decision boundary. Feetech documents duration-triggered over-current and
+overload protection, not a one-tick rejection at stall torque/current. When
+the frozen V121, V123, and V128 traces are reclassified using the documented
+two-second rules, all three become complete `16/16` nominal passes. V177 also
+becomes `16/16` as a post-handoff diagnostic. This meets the preregistered
+reopen rule, but it does not select a policy or authorize training.
 
 Current gate:
 
 ```text
-HOLD_INSUFFICIENT_FOOT_CLEARANCE_ON_CARPET
+HOLD_GATE_5_PENDING_CORRECTED_GATE_ROBUSTNESS_REVALIDATION
 ```
 
 Read these first:
 
 ```text
-outputs/analysis/CORRECTED_CANDIDATE_STAND_TRANSFER_DECISION.md
-outputs/analysis/CORRECTED_CANDIDATE_FIRST_GROUNDED_TEST_PLAN.md
-outputs/analysis/CORRECTED_CANDIDATE_FIRST_GROUNDED_TEST_DECISION.md
-outputs/analysis/CORRECTED_CANDIDATE_SECOND_SURFACE_GROUNDED_TEST_DECISION.md
-policy/candidates/corrected_bridge_cmd_conditioned_rate175_20260627/README.md
+PROJECT_GOAL.md
+outputs/analysis/T1_ACCEL_BIAS_V4_DOSE_RESPONSE_RESULT_20260725.md
+outputs/analysis/T4_BASELINE_ALL_GATES_RESULT_20260725.md
+outputs/analysis/T5_ACTUATOR_PROTECTION_REANALYSIS_RESULT_20260725.md
+outputs/analysis/WINNER_V177_NOMINAL_BEHAVIOR_RESULT_20260725.md
 ```
 
-The next step is offline review of why a trackable low-command waveform
-produced stepping without enough foot clearance/advance on carpet. Do not
-extend duration or run another grounded test from this candidate as-is.
+The next step is to preregister the corrected-gate robustness comparison of
+the already-frozen surviving policies, using T4 to distinguish baseline
+feasibility boundaries from stretch goals and T5 for the manufacturer-derived
+servo-protection rules. No new optimizer run is earned while a frozen policy
+may already satisfy that corrected contract.
 
 Current candidate:
 
 ```text
-policy/candidates/corrected_bridge_cmd_conditioned_rate175_20260627/candidate.onnx
-sha256 63506567f7a973be0ff6b2b222bba41736409da713466db442067c0f2a91415e
+NONE_SELECTED_FOR_RDK_OR_GATE_5
 ```
 
 Do not tune hardware gains, patch IMU remaps, edit offsets, change action
-scale, change phase timing, overwrite `BEST_WALK_ONNX_2.onnx`, or run grounded
-walking yet.
 
 Primary docs:
 

@@ -14,85 +14,45 @@ visual preference, or robot improvisation for preregistered behavior evidence.
 Current next step:
 
 ```text
-The G1/T2 composite remains the first persistent full-horizon nominal/R1
-winner, but it is held from the supported-configuration and robot roles. The
-single preregistered winner-v3 replacement branch is now complete and closes
-negative. No replacement graph is selected.
+Work only from the permanent checkout at
+`D:\CodexProjects\open-duck-mini-rdkx5-policy`; evidence caches and the Python
+environment live under `D:\CodexArtifacts`. Do not depend on Windows Temp.
 
-R64_ZERO_INIT_RECURRENT_ADAPTER completed its only seed-100 no-retry CPU
-curriculum and produced two persistent full-domain checkpoints. The evaluation
-graphs preserve the learned initializers and bake in the frozen hard-vector,
-actual-centered guard, conservative envelope and x=0 deadband. The exact
-1,024-cell matrix then ran once in one CPU process over nominal, 24 fixed
-anchors, 16 discovery samples, 16 independently seeded heldout samples and six
-sensor/transport conditions, crossed with both checkpoints, both measured
-actuator plants and x=0/.074/.077/.080.
+T1 is complete and proves the absolute accelerometer mismatch is first-order:
+adding the robot's measured +1.6 m/s^2 accel_x offset to the unmodified policy
+reduced vanilla-sim forward velocity by 86.41%. T2 is held because the exact
+corrected-replay raw JSONL is unavailable.
 
-The raw aggregate is preserved as INVALID because its reporter required a JAX
-device display string containing CpuDevice although this environment exposes
-TFRT_CPU_0, and because it treated each expected early-termination trace as
-missing evidence. The read-only reporting correction reran zero behavior cells
-and changed no graph, model, trace, threshold, seed, gate or physics value. It
-verifies all 1,024 cell/trace hashes, exact trace-row versus recorded-sample
-counts, finite/schema/reset audits and every per-run model readback; it accepts
-CPU through device.platform == cpu while preserving duration and trace-contract
-behavior failures.
+T4 is complete. All 32 baseline cells are hash-verified in
+`D:\CodexArtifacts\open-duck-policy\t4_baseline_all_gates_v1`. An independent
+audit reproduced every cell contract, raw result hash, condition aggregate,
+gate row, and final result hash. The baseline completes all 32 cells without a
+fall but fails 13 current gate rows. Per the frozen T4 rule, any gate the
+baseline fails must be relaxed to measured baseline evidence or explicitly
+relabeled as a stretch goal; T4 makes no automatic change.
 
-Corrected decision: HOLD_WINNER_V3_VARIABLE_CONFIGURATION_REPLACEMENT. Only
-48/1,024 cells pass the physical gates; each checkpoint passes 24/512 and fails
-the frozen all-cells rule. Nominal passes 0/32 and sensor/transport passes 0/96.
-There are 944 all-joint current-p95 failures against the frozen .65 A cap, 239
-early terminations, 251 candidate-gate failures, 107 wrong-direction moving
-cells, four tracking failures, 38 saturation failures, 34 guard-envelope
-failures and 12 rate failures. The signed X mechanism also persists: negative
-X reverses and falls, while positive X runs away forward and falls. No closest
-cell, sibling checkpoint, aggregate score or training reward is promoted.
+T5 is complete and changes the policy decision boundary. The old
+1.91229675-N.m one-tick torque gate was the 19.5-kgf.cm stall point, while V10
+forced MuJoCo's actuator range to its lower adjacent float32 value. The V10
+"baseline peak" is therefore a model clamp, and no float32 value exists between
+that clamp and the decimal gate. Feetech instead documents protection after
+two seconds above 2 A and two seconds blocked above 80% stall.
 
-The 7.6 GiB local trace corpus is preserved byte-for-byte and represented in
-Git by a verified 1,024-entry path/SHA/size/row manifest plus every compact cell
-and condition summary. The raw invalid result and corrected hold are both
-retained so the reporting history is auditable.
+The preregistered read-only reanalysis verified every stored cell/trace hash and
+recomputed both duration rules per joint. V121, V123, and V128 each change to
+complete 16/16 passes, meeting the exact three-candidate reopen trigger.
+V157's and V162's early-stop cells also pass, so their stop rules are
+invalidated but their unrun cells remain missing. V174 remains green over its
+recorded endpoint population. Post-handoff V177 changes from 8/16 to 16/16.
+No audited V121-V177 trace hits the canonical +/-3.23-N.m MuJoCo force clamp,
+and exact force reconstruction closes within 5e-6 N.m.
 
-The runtime-requested read-only causal audit is complete at policy commit
-`9663c059adb3919ee414550097bba6bd31cecdc4`. All 1,024 trace hashes and replayed
-current/tracking metrics match. Removing only current for attribution, never
-reclassification, leaves 753 otherwise-passing cells; 705 cells fail current
-alone. Current exceedance follows the wrong-direction event in all 107
-wrong-direction/current failures, so it does not explain the signed sagittal
-failure. Negative X readback is exact and reverses/falls; positive X readback
-is exact and overspeeds/falls.
-
-Primary-source correction: Feetech's 2024 catalog supports 0.65 A as the
-ST-3215-C001 rated current at 7.4 V. Feetech's detailed STS3215 A/0
-specification dated 2020-04-10 also explicitly supports the repository's exact
-8 kg.cm/A = 0.784532 N.m/A conversion and documents 2.5 A stall current plus
-over-current protection above 2 A for 2 seconds. Neither source defines p95
-over a 600-tick simulation as the rated-current safety rule. The frozen outcome
-remains unchanged: all eight nominal x=0 cells take exact-zero graph action for
-600 ticks, yet the identical home-hold result is 0.661276083 A, so policy
-training cannot make that frozen cell pass.
-
-The prospective current-gate application contract now passes without
-reclassifying winner-v3. It retains 0.65 A p95 as a diagnostic, applies the
-documented stall envelope and >2 A for 2 s protection semantics prospectively,
-and authorizes only response-interface preregistration.
-
-The proposed `winner-v4-response73-r64` ABI is frozen for runtime schema review.
-It preserves obs[115], final-action, phase, previous-action and recurrent-state
-semantics, and adds one separate immutable response_context[73] input flattened
-from the existing automatic profile-v4 metrics. No true configuration or manual
-measurement is present. Training remains held until runtime accepts the exact
-field map and a zero-PPO CPU contract proves flattening, profile reproduction,
-baseline identity, deterministic response and signed-X non-collapse.
-
-This exact winner-v3 replacement branch is closed. Runtime must keep its pending
-sentinels: REPLACEMENT_SELECTED_ONNX, POLICY_ROBOT_CLEARANCE_ARTIFACT and
-SUPPORTED_CONFIGURATION_ENVELOPE_V2 remain NOT_AVAILABLE; robot_clearance is
-false and X5_CPU_PREFLIGHT/AUTOMATIC_CONFIGURATION/GATE_5 remain NOT_RUN. The
-next evidence boundary is runtime review of the response-conditioned ABI. Only
-after that review and its CPU contract pass may one new training run be
-preregistered. No robot, RDK-X5, serial, torque, motion, local GPU/iGPU, hosted
-training, Gate 5 or deployment action is authorized.
+T5 reopens the V121-V175 campaign closures; it does not select a policy. The
+next step is to preregister a corrected-gate robustness comparison of the
+already-frozen surviving policies, using T4 for baseline feasibility and T5
+for manufacturer-derived servo protection, before considering any new
+optimizer run. No robot, RDK-X5, serial, torque, motion, hosted training,
+Gate 5, checkpoint selection, or deployment action is authorized.
 ```
 
 Robotics operating model:

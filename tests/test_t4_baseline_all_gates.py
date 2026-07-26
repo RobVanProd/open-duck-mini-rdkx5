@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import hashlib
+import json
 import sys
 from pathlib import Path
 
@@ -107,3 +109,32 @@ def test_x000_skips_coded_forward_ratio_and_checks_mean_abs_vx() -> None:
     assert next(
         row for row in result if row["metric"] == "mean_abs_vx_m_s"
     )["passed"]
+
+
+def test_complete_result_is_canonical_and_preserves_frozen_decision() -> None:
+    path = ROOT / "outputs/analysis/t4_baseline_all_gates_result.json"
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    claimed = payload.pop("result_sha256")
+    canonical = json.dumps(
+        payload,
+        allow_nan=False,
+        separators=(",", ":"),
+        sort_keys=True,
+    ).encode()
+    assert hashlib.sha256(canonical).hexdigest() == claimed
+    assert payload["status"] == "BASELINE_FAILS_CURRENT_FEASIBILITY_GATES"
+    assert payload["expected_cells"] == 32
+    assert payload["completed_cells"] == 32
+    assert payload["failed_gate_row_count"] == 13
+    assert len(payload["conditions"]) == 4
+    assert all(
+        item["aggregate"]["duration_complete_count"] == 8
+        and item["aggregate"]["fall_count"] == 0
+        for item in payload["conditions"]
+    )
+    assert {
+        row["required_action_if_failed"]
+        for row in payload["failed_gate_rows"]
+    } == {"RELAX_TO_BASELINE_OR_RELABEL_STRETCH"}
+    assert payload["authority"]["training_steps"] == 0
+    assert payload["authority"]["robot_or_rdk_access"] is False

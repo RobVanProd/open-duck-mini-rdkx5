@@ -11,10 +11,13 @@ The initial mission was to prove the deployed robot's sensor observations,
 policy actions, joint commands, and real joint movement matched the policy and
 simulation contract closely enough to rerun the known baseline responsibly.
 That evidence has now shifted the project into an offline root-cause and
-gate-reconciliation phase. A new hosted training run is not earned until the
-preregistered T1/T2/T4 evidence packet has reported and the resulting
-mechanism is reviewed. Only a policy that clears the frozen offline gates can
-be prepared for robot-side suspended validation.
+gate-reconciliation phase. T1 has reported, T2 is held by unavailable raw
+evidence, and T4 is complete and independently audited. T5 has now proved that the
+instantaneous stall-torque/current rule wrongly rejected at least three
+complete policy matrices. A new hosted training run is not earned while a
+frozen policy may already clear the corrected physical gate. Only a policy
+that clears the reviewed offline gates can be prepared for robot-side
+suspended validation.
 
 The repository itself is part of the robot state. Keep documentation, evidence manifests, snapshots, runbooks, and status notes current whenever the board runtime, robot config, diagnostic results, or recommended next gate changes.
 
@@ -48,8 +51,27 @@ reproduce or explain the direction of the physical forward lean.
 The actuator bridge also independently degrades the baseline and remains a
 real contributor. Its relative importance versus a static posture/IMU offset
 is unresolved because the exact T2 corrected-replay raw JSONL is unavailable.
-The next offline decision evidence is the preregistered T4 baseline-versus-all-
-gates matrix; no optimizer run is authorized before that report.
+The preregistered T4 baseline-versus-all-gates matrix is now complete. All
+`32/32` cells finish without a fall, and an independent audit reproduced every
+cell contract, raw result hash, condition aggregate, gate row, and result hash.
+The baseline nevertheless fails `13` current gate rows: its fitted-bridge
+`x=0.08` mean track ratio is `0.474323`, its worst pitch-chain tracking p95 is
+`0.266879 rad`, its worst p95 velocity-limit excess is `2.489999 rad/s`, and
+its worst instantaneous excess is `3.239999 rad/s`. T4 therefore requires
+those baseline-failed criteria to be relaxed to measured baseline evidence or
+explicitly relabeled as stretch goals before they are used as feasibility
+boundaries. It does not choose the replacement values automatically.
+
+T5 independently found that the policy campaign's instantaneous protection
+constraint was mis-specified. The V10 reference peak was the explicitly
+configured MuJoCo force clamp (`1.9122966527938843 N.m`), and the old decimal
+gate (`1.91229675 N.m`) lies below the next representable float32 value. No
+float32 actuator-force value can exist strictly between them. Feetech's
+documented protection is duration-triggered: current greater than `2 A` for
+`2 s`, and overload above `80%` of stall for `2 s`. Replaying the immutable
+V121, V123, and V128 traces with those two 100-tick rules changes all three to
+complete `16/16` passes; post-handoff V177 also becomes `16/16`. This reopens
+the affected closures but does not select a deployment policy.
 
 ## Known Policy Contract
 
@@ -102,9 +124,10 @@ Runtime then applies rate limiting before sending servo targets.
 2. Dynamic actuator bandwidth / delay mismatch between sim and the real
    pitch-chain joints. This remains independently supported, but is no longer
    ranked ahead of the measured observation mismatch.
-3. Policy target waveform and training objective may be too sharp for the
-   measured effective velocity limits; current feasibility gates themselves
-   still require T4 reconciliation against the baseline.
+3. Policy target waveform and training objective remain possible contributors,
+   but the V121-V175 torque-optimization campaign was evaluated against an
+   invalid one-tick stall constraint. Existing frozen policies must be
+   revalidated under the duration-based protection rule before more training.
 4. Servo bus CRC/read retries are a watch item, but not the leading cause
    unless they correlate with control damage.
 5. Ground contact/load dynamics remain untested with a new candidate.
@@ -142,8 +165,8 @@ The sim-to-real bridge is done when:
 
 ## Non-Goals For Now
 
-- No retraining before the T1/T2/T4 decision packet is complete and a new run
-  is earned by a preregistered falsifier.
+- No retraining before T4 is complete and the T5-reopened frozen candidates
+  have been compared under a preregistered corrected-gate robustness matrix.
 - No gain tuning.
 - No joint offset edits.
 - No IMU remap edits.
