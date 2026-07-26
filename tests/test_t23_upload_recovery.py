@@ -70,3 +70,25 @@ def test_recovery_package_is_cache_free_and_training_identical() -> None:
     assert value["recovery"]["excluded_path"] == "playground/.tmp"
     assert value["recovery"]["training_retry"] is False
     assert value["authority"]["gate5"] is False
+
+
+def test_t23b_launch_is_one_exact_cache_free_colab_session() -> None:
+    value = load("t23_colab_cli_recovery_contract.json")
+    assert value["status"] == (
+        "PASS_T23B_COLAB_CLI_RECOVERY_CONTRACT"
+    )
+    assert value["failed_checks"] == []
+    assert all(value["checks"].values())
+    assert value["package_bytes"] == 3_408_121
+    assert value["session"]["fresh_session_count"] == 1
+    assert (
+        value["session"]["prior_preexecution_transport_session_count"]
+        == 1
+    )
+    assert value["recovery"]["cache_free_package"] is True
+    assert value["recovery"]["training_payload_unchanged"] is True
+    assert value["recovery"]["retry"] is False
+    assert value["recovery"]["resume"] is False
+    assert value["authority"]["one_exact_cache_free_cli_launch"] is True
+    assert value["authority"]["behavior_evaluation"] is False
+    assert value["authority"]["gate5"] is False
