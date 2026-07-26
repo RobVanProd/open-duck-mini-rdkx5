@@ -1,0 +1,108 @@
+{
+  "authority": {
+    "gate5": false,
+    "hosted_or_colab_compute": false,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": false,
+    "simulator_behavior_cells": 0,
+    "torque_or_motion": false
+  },
+  "causal_basis": {
+    "exploratory_zero_selection_weight": {
+      "cases": 512,
+      "context_location_delta": 0.07761482149362564,
+      "random_previous_final_delta": 0.0,
+      "raw_action_delta": 0.007934391498565674,
+      "raw_coherent_previous_final_delta": 0.007934391498565674,
+      "seed": 10101
+    },
+    "known_updated_context_kernels": {
+      "context_hidden_projection": 0.008539136499166489,
+      "context_location": 0.007182755507528782
+    },
+    "t10_other_checks": "every other runner check passed",
+    "t10_single_hold": "trained final action context delta was zero"
+  },
+  "decision_rule": {
+    "fail": "hold hosted compute and close this response-conditioned action-binding architecture",
+    "no_closest_result_promotion": true,
+    "partial_results_selection_weight": 0,
+    "pass": "runner and independent auditor pass every frozen check; T10 remains red as written, but its sole hold is classified as an invalid state-incoherent observability test",
+    "pass_next_action": "earn only a separately preregistered single hosted response-conditioned continuation; do not launch it"
+  },
+  "execution_now": {
+    "hosted_or_colab_compute": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_behavior_cells": 0
+  },
+  "formal_contract": {
+    "device": "CPUExecutionProvider",
+    "disjoint_causal_sequence_test": {
+      "graph_owned_previous_action_and_hidden": true,
+      "minimum_divergent_sequence_fraction": 0.95,
+      "seed": 1111002,
+      "sequences": 128,
+      "ticks": 32
+    },
+    "disjoint_state_coherent_test": {
+      "cases": 2048,
+      "minimum_context_location_delta": 1e-06,
+      "minimum_effective_case_fraction": 0.95,
+      "minimum_final_action_delta": 1e-06,
+      "minimum_raw_action_delta": 1e-06,
+      "previous_action": "zero-context raw_continuous_actions for the same observation and recurrent state",
+      "seed": 1111001
+    },
+    "optimizer_steps": 0,
+    "original_test_reproduction": {
+      "cases": 256,
+      "expected_final_delta": 0.0,
+      "seed": 1010203
+    },
+    "rate_excess_tolerance": 1e-07,
+    "simulator_behavior_cells": 0,
+    "x0_context_invariance": "final action remains exact zero"
+  },
+  "preregistered_contract_sha256": "2763c7d727a837e198c50ab545ccde7a7cc7883b05d4ea468cb610129d5d58b6",
+  "question": "Did T10 learn a deployment-visible context-to-action path that its random, state-incoherent previous-action test masked by forcing both actions onto the same supreme rate boundary?",
+  "schema_version": "open_duck.t11_context_action_observability.v1",
+  "sources": {
+    "builder": {
+      "bytes": 7673,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t11_context_action_observability_preregistration.py",
+      "sha256": "9e257b38a6152f942fd92cf7e35f05227d2c02f4a81490fafd245f5f98328253"
+    },
+    "exploratory_debug_graph": {
+      "bytes": 977894,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t10_response_conditioned_cpu_contract_v2\\t10_step1024_debug.onnx",
+      "sha256": "d19e83fcba15c05a7c3922f290a82cd701abf1de44ffbc5bf75d9c77b493b8c2"
+    },
+    "independent_auditor": {
+      "bytes": 15834,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\audit_t11_context_action_observability.py",
+      "sha256": "c252f18580b71d2ca8dd8fe8297986ee1dedf7a801880cea1e12963fe40781c4"
+    },
+    "runner": {
+      "bytes": 18066,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t11_context_action_observability.py",
+      "sha256": "6435c30162f7a886b5d215221026a82835f4db4622734a48308ea23986114081"
+    },
+    "t10_final_onnx": {
+      "bytes": 977568,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t10_response_conditioned_cpu_contract_v2\\smoke\\2026_07_26_031228_1024.onnx",
+      "sha256": "b241ae7587972ea7800c8abb72718a53a27e7f45b412e3713445152a22ef0537"
+    },
+    "t10_independent_audit": {
+      "bytes": 3565,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t10_response_conditioned_continuation_cpu_independent_audit.json",
+      "sha256": "564fb0b3256d30cf63ea2df9068b4680a91591738e742c21c916903a22358f10"
+    },
+    "t10_result": {
+      "bytes": 13035,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t10_response_conditioned_continuation_cpu_result.json",
+      "sha256": "4e850284db9f187581ba0cb07abf0c8f04b03b61a4e9e7243de99dd266e97701"
+    }
+  },
+  "status": "PREREGISTERED_T11_CONTEXT_ACTION_OBSERVABILITY"
+}
