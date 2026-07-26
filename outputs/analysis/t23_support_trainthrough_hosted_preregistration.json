@@ -1,0 +1,146 @@
+{
+  "authority": {
+    "additional_training_or_retry": false,
+    "behavior_evaluation_after_valid_artifact": false,
+    "checkpoint_selection": false,
+    "deployment": false,
+    "gate5": false,
+    "one_hosted_gpu_continuation_after_package_contract": true,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "behavior_cells_during_training_zero": true,
+    "both_postupdate_exports_required": true,
+    "composed_v6_manifest_exact": true,
+    "driver_uses_source_and_external_rate_separation": true,
+    "no_reward_or_optimizer_search": true,
+    "robot_surface_absent": true,
+    "single_continuation_no_retry_resume": true,
+    "source_checkpoint_is_exact_v121_half": true,
+    "t22_passed_and_earned_hosted_preregistration": true
+  },
+  "decision": "AUTHORIZE_ONE_HASH_FROZEN_T23_L4_CONTINUATION_WITHOUT_RETRY",
+  "evidence_basis": {
+    "t20_training_selection_weight": 0,
+    "t21b_default_off_states": "9/9",
+    "t21b_prefix_ticks": "250/250",
+    "t21b_variable_configuration_prefixes": "64/64",
+    "t22_all_actor_and_critic_leaves_updated": true,
+    "t22_four_stage_step_zero_chain_byte_exact": true,
+    "t22_restore_exact": true
+  },
+  "execution_now": {
+    "colab_sessions": 0,
+    "formal_behavior_cells": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_locomotion_steps": 0
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "composed_manifest": "d7c9b615c32f0e2c8434e958a900cc38485c0db6fea107b6115a69bbd2122a77",
+    "cpu_result": "5525dc271ccb543103462a38d9fd808c40d52ed61164edb8376dbe81bd6a3189",
+    "driver": "17d4be227e6073bc3208c2e193d53e902386a18671ace4eb37351accba684029",
+    "reference_features": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212",
+    "source_checkpoint": "6f2d9856b5ab674f9f20f04c46be6dc00adc5eabc31826f16b4743c5172dfad8"
+  },
+  "paths": {
+    "playground": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v6",
+    "reference": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+    "source_checkpoint": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v119-extracted-20260724\\winner_v119_transition_continuation\\training\\2026_07_24_193907_1003520"
+  },
+  "post_training": {
+    "apply_exact_four_stage_deployment_chain_to": [
+      1003520,
+      2007040
+    ],
+    "behavior_cells_during_training": 0,
+    "both_postupdate_checkpoints_must_pass": true,
+    "checkpoint_cherry_pick": false,
+    "cpu_topology_validation_before_behavior": true,
+    "evaluate_nominal_16_cells_first": true,
+    "robustness_only_after_nominal_pass": true
+  },
+  "preregistered_contract_sha256": "6897e09cff133b8d419a1cd4f6806272de3631f61b7162e2e29abba01ed3092c",
+  "question": "Can training through the CPU-proven coherent support handoff preserve V121's gait while adapting the recurrent actor to the deployment coordinate transition at both frozen checkpoints?",
+  "schema_version": "open_duck.t23_support_trainthrough_hosted_preregistration.v1",
+  "sources": {
+    "builder_sha256": "a457b5b7ed3fde17a0980a8b5392feaa12b97717246392c3da29f3f9321088a5",
+    "driver_sha256": "17d4be227e6073bc3208c2e193d53e902386a18671ace4eb37351accba684029",
+    "manifest_sha256": "d7c9b615c32f0e2c8434e958a900cc38485c0db6fea107b6115a69bbd2122a77",
+    "t22_preregistration_sha256": "819c2e1612d4888309cbef12a635143be2e6025d8db47b81d37087bbc609ab01",
+    "t22_result_sha256": "5525dc271ccb543103462a38d9fd808c40d52ed61164edb8376dbe81bd6a3189"
+  },
+  "status": "PREREGISTERED_T23_SUPPORT_TRAINTHROUGH_HOSTED_CONTINUATION",
+  "training": {
+    "architecture": "reference_residual_recurrent_adapter",
+    "batch_size": 256,
+    "deviation_scale": 1.0,
+    "discounting": 0.97,
+    "entropy_cost": 0.005,
+    "episode_length": 600,
+    "exports": [
+      0,
+      1003520,
+      2007040
+    ],
+    "external_rate_limits_rad_s": [
+      1.0,
+      0.75,
+      1.5,
+      1.5,
+      1.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.75,
+      1.25,
+      1.0,
+      1.25
+    ],
+    "full_variable_configuration": true,
+    "learning_rate": 0.0003,
+    "linear_peak_torque_scale": -307.48131091308585,
+    "linear_peak_torque_threshold_nm": 1.91229675,
+    "num_envs": 256,
+    "num_minibatches": 4,
+    "num_updates_per_batch": 4,
+    "recurrent_hidden_size": 64,
+    "resume": false,
+    "retry": false,
+    "reward_curve_selection": false,
+    "scalar_sweep": false,
+    "seed": 100,
+    "source": "exact_V121_TRAIN_MATCHED_HALF_checkpoint",
+    "source_rate_limits_rad_s": [
+      1.0,
+      0.75,
+      1.4736209064722061,
+      1.4300791546702385,
+      1.3976470567286015,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.75,
+      1.25,
+      1.0,
+      1.2215287424623966
+    ],
+    "source_step": 1003520,
+    "squared_peak_torque_scale": 0.0,
+    "support_home_return_ticks": 0,
+    "support_prefix_ticks": 250,
+    "support_trainthrough": true,
+    "timesteps": 2007040,
+    "tracking_tail_scale": -6572.254964031055,
+    "tracking_tail_threshold_rad": 0.2,
+    "unroll_length": 20,
+    "wall_ceiling_seconds": 21600
+  }
+}
