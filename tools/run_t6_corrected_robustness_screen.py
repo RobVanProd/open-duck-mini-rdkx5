@@ -19,6 +19,9 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 ANALYSIS = ROOT / "outputs" / "analysis"
 PREREG = ANALYSIS / "t6_corrected_robustness_screen_preregistration.json"
+ABI_AMENDMENT = (
+    ANALYSIS / "t6_corrected_robustness_screen_abi_amendment.json"
+)
 RESULT = ANALYSIS / "t6_corrected_robustness_screen_result.json"
 MARKDOWN = ANALYSIS / "T6_CORRECTED_ROBUSTNESS_SCREEN_RESULT_20260725.md"
 
@@ -76,10 +79,15 @@ def verify_preregistration(prereg: dict[str, Any]) -> None:
     }
     if canonical_sha256(basis) != prereg["preregistered_contract_sha256"]:
         raise RuntimeError("T6 preregistered contract hash mismatch")
-    for item in prereg["repository_inputs"].values():
+    for name, item in prereg["repository_inputs"].items():
         path = Path(item["path"])
-        if not path.is_file() or sha256(path) != item["sha256"]:
+        if not path.is_file():
             raise RuntimeError(f"T6 repository input changed: {path}")
+        if name != "runner" and sha256(path) != item["sha256"]:
+            raise RuntimeError(f"T6 repository input changed: {path}")
+    amendment = load_abi_amendment(prereg)
+    if sha256(Path(__file__)) != amendment["corrected_runner_sha256"]:
+        raise RuntimeError("T6 runner does not match the ABI amendment")
     for candidate in prereg["candidate_pairs"]:
         for checkpoint in candidate["checkpoints"]:
             path = Path(checkpoint["path"])
@@ -95,12 +103,43 @@ def verify_preregistration(prereg: dict[str, Any]) -> None:
             raise RuntimeError(f"T6 composition manifest changed: {path}")
 
 
+def load_abi_amendment(prereg: dict[str, Any]) -> dict[str, Any]:
+    if not ABI_AMENDMENT.is_file():
+        raise RuntimeError("T6 recurrent ABI amendment is missing")
+    amendment = json.loads(ABI_AMENDMENT.read_text(encoding="utf-8"))
+    basis = {
+        key: amendment[key]
+        for key in (
+            "original_preregistration",
+            "preoutcome_evidence",
+            "onnx_abi",
+            "authorized_change",
+            "corrected_runner_sha256",
+            "unchanged_contract",
+        )
+    }
+    if (
+        amendment.get("status")
+        != "PREREGISTERED_T6_PREOUTCOME_RECURRENT_ABI_CORRECTION"
+        or canonical_sha256(basis) != amendment["amendment_contract_sha256"]
+        or amendment["original_preregistration"][
+            "preregistered_contract_sha256"
+        ]
+        != prereg["preregistered_contract_sha256"]
+        or amendment["original_preregistration"]["runner_sha256"]
+        != prereg["repository_inputs"]["runner"]["sha256"]
+    ):
+        raise RuntimeError("invalid T6 recurrent ABI amendment")
+    return amendment
+
+
 def block_contract(
     prereg: dict[str, Any],
     candidate: dict[str, Any],
     checkpoint: dict[str, Any],
     fit_id: str,
 ) -> dict[str, Any]:
+    amendment = load_abi_amendment(prereg)
     return {
         "preregistered_contract_sha256": prereg[
             "preregistered_contract_sha256"
@@ -113,6 +152,13 @@ def block_contract(
         "fit_sha256": prereg["repository_inputs"][f"fit_{fit_id}"]["sha256"],
         "repository_inputs": prereg["repository_inputs"],
         "playground": prereg["playground"],
+        "execution_amendment": {
+            "path": str(ABI_AMENDMENT.resolve()),
+            "sha256": sha256(ABI_AMENDMENT),
+            "amendment_contract_sha256": amendment[
+                "amendment_contract_sha256"
+            ],
+        },
     }
 
 
@@ -207,9 +253,9 @@ def run_or_load_block(
         "--expected-observation-dim",
         "115",
         "--policy-state-input-names",
-        "previous_action",
+        "previous_action,h_in",
         "--policy-state-output-names",
-        "previous_action_out",
+        "previous_action_out,h_out",
         "--policy-applied-target-observation",
         "--trace-dir",
         str(trace_dir),

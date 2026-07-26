@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -12,6 +13,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 
 from run_t6_corrected_robustness_screen import (  # noqa: E402
     classify_behavior,
+    load_abi_amendment,
     longest_true_run,
     selection_key,
     trace_summary,
@@ -153,3 +155,51 @@ def test_selection_prefers_duration_margin_before_tracking() -> None:
         lower_tracking,
         order,
     )
+
+
+def test_preoutcome_abi_amendment_is_canonical_and_narrow() -> None:
+    prereg = json.loads(
+        (
+            ROOT
+            / "outputs/analysis/t6_corrected_robustness_screen_preregistration.json"
+        ).read_text(encoding="utf-8")
+    )
+    amendment = load_abi_amendment(prereg)
+    basis = {
+        key: amendment[key]
+        for key in (
+            "original_preregistration",
+            "preoutcome_evidence",
+            "onnx_abi",
+            "authorized_change",
+            "corrected_runner_sha256",
+            "unchanged_contract",
+        )
+    }
+    canonical = json.dumps(
+        basis,
+        allow_nan=False,
+        separators=(",", ":"),
+        sort_keys=True,
+    ).encode()
+    assert (
+        hashlib.sha256(canonical).hexdigest()
+        == amendment["amendment_contract_sha256"]
+    )
+    assert amendment["preoutcome_evidence"][
+        "behavior_cells_with_decision_weight"
+    ] == 0
+    assert amendment["authorized_change"]["new_state_inputs"] == [
+        "previous_action",
+        "h_in",
+    ]
+    assert amendment["authorized_change"]["new_state_outputs"] == [
+        "previous_action_out",
+        "h_out",
+    ]
+    assert all(
+        value is True
+        for key, value in amendment["unchanged_contract"].items()
+        if key != "training_steps"
+    )
+    assert amendment["unchanged_contract"]["training_steps"] == 0
