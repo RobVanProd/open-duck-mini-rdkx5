@@ -1,0 +1,60 @@
+{
+  "authority": {
+    "additional_training_attempt": false,
+    "behavior_evaluation": false,
+    "gate5": false,
+    "one_cache_free_transport_recovery": true,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "training_resume": false,
+    "training_retry": false
+  },
+  "checks": {
+    "base_builder_excludes_only_nonsource_cache": true,
+    "hosted_training_contract_unchanged": true,
+    "no_robot_or_rdk_access": true,
+    "no_training_or_behavior_run_now": true,
+    "original_package_was_green": true,
+    "prior_executor_never_started": true,
+    "recovery_builder_preserves_training_inputs": true,
+    "upload_hold_attributed": true
+  },
+  "decision": "BUILD_AND_CONTRACT_ONE_CACHE_FREE_T23_PACKAGE",
+  "execution_now": {
+    "colab_sessions_opened": 0,
+    "formal_behavior_cells": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_locomotion_steps": 0
+  },
+  "failed_checks": [],
+  "frozen_correction": {
+    "hosted_driver": "BYTE_IDENTICAL",
+    "new_session_required": true,
+    "reference_features": "BYTE_IDENTICAL",
+    "removed_content": "disposable_jax_compilation_cache_only",
+    "removed_path": "playground/.tmp",
+    "source_checkpoint": "BYTE_IDENTICAL",
+    "training_hyperparameters": "BYTE_IDENTICAL",
+    "training_resume": false,
+    "training_retry": false,
+    "training_source": "BYTE_IDENTICAL",
+    "upload_attempts_exact": 1
+  },
+  "input_hashes": {
+    "base_package_builder": "550eb2e45f0cbbd743bbe7deafc262d2c29cbb7f12b50cc3d4a4981c5a712fa7",
+    "hosted_training_preregistration": "3c716c93cb1806ffa5bfb342bc4a6ad2afc0215efcd75852d9acb6ac5f9c4578",
+    "original_package_contract": "136f9ec2610cbc416f556bcab3aeb9cde3121332014a343daa2c44497113397c",
+    "recovery_package_builder": "d5ac65e07f74ae5473e49bfbabf18d14667b09610dac6776774ba64c37881a04",
+    "upload_hold_attribution": "e01c5a5093dd530f95c035aef2da415000a79bb7c1836348e925e2c74df2f2ed"
+  },
+  "preregistered_contract_sha256": "b95e3bb8f37e563ae4eb90ae751a95bd6c245a577a48ba17a858acbfadf595b8",
+  "schema_version": "open_duck.t23_upload_recovery_preregistration.v1",
+  "status": "PREREGISTERED_T23_CACHE_FREE_UPLOAD_RECOVERY",
+  "stop_rules": [
+    "stop_session_after_any_upload_or_executor_hold",
+    "do_not_retry_upload_inside_the_recovery_session",
+    "do_not_run_behavior_during_hosted_continuation",
+    "do_not_open_gate5_from_partial_or_unvalidated_outputs"
+  ]
+}

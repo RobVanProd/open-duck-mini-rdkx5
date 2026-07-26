@@ -120,6 +120,7 @@ def main() -> int:
         bundle / "playground",
         ignore=shutil.ignore_patterns(
             ".git",
+            ".tmp",
             "__pycache__",
             ".pytest_cache",
             "*.pyc",
