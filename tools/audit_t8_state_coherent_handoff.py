@@ -15,6 +15,9 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 ANALYSIS = ROOT / "outputs" / "analysis"
 PREREG = ANALYSIS / "t8_state_coherent_handoff_preregistration.json"
+ABI_AMENDMENT = (
+    ANALYSIS / "t8_state_coherent_handoff_abi_amendment.json"
+)
 RESULT = ANALYSIS / "t8_state_coherent_handoff_result.json"
 AUDIT = ANALYSIS / "t8_state_coherent_handoff_independent_audit.json"
 MARKDOWN = (
@@ -45,6 +48,33 @@ def canonical_sha256(value: Any) -> str:
 def append_if(issues: list[str], condition: bool, label: str) -> None:
     if not condition:
         issues.append(label)
+
+
+def load_abi_amendment(prereg: dict[str, Any]) -> dict[str, Any]:
+    value = json.loads(ABI_AMENDMENT.read_text(encoding="utf-8"))
+    basis = {
+        key: value[key]
+        for key in (
+            "original_preregistration",
+            "preoutcome_evidence",
+            "onnx_abi",
+            "authorized_change",
+            "corrected_files",
+            "unchanged_contract",
+            "authority",
+        )
+    }
+    if (
+        value.get("status")
+        != "PREREGISTERED_T8_PREOUTCOME_ABI_ORDER_CORRECTION"
+        or canonical_sha256(basis) != value["amendment_contract_sha256"]
+        or value["original_preregistration"][
+            "preregistered_contract_sha256"
+        ]
+        != prereg["preregistered_contract_sha256"]
+    ):
+        raise RuntimeError("invalid T8 pre-outcome ABI amendment")
+    return value
 
 
 def finite_array(value: np.ndarray) -> bool:
@@ -388,6 +418,7 @@ def main() -> int:
     issues: list[str] = []
     prereg = json.loads(PREREG.read_text(encoding="utf-8"))
     result = json.loads(RESULT.read_text(encoding="utf-8"))
+    amendment = load_abi_amendment(prereg)
     prereg_basis = {
         key: prereg[key]
         for key in (
@@ -423,15 +454,39 @@ def main() -> int:
         canonical_sha256(result_basis) == result["result_sha256"],
         "result_canonical_sha256",
     )
+    corrected_labels = {"runner", "worker", "independent_auditor"}
     for label, value in prereg["repository_inputs"].items():
-        path = Path(value["path"])
-        append_if(
-            issues,
-            path.is_file()
-            and path.stat().st_size == value["bytes"]
-            and sha256(path) == value["sha256"],
-            f"repository_input:{label}",
+        if label in corrected_labels:
+            corrected = amendment["corrected_files"][label]
+            path = Path(corrected["path"])
+            append_if(
+                issues,
+                amendment["original_preregistration"][
+                    "repository_inputs"
+                ][label]
+                == value
+                and path.is_file()
+                and path.stat().st_size == corrected["bytes"]
+                and sha256(path) == corrected["sha256"],
+                f"corrected_repository_input:{label}",
+            )
+        else:
+            path = Path(value["path"])
+            append_if(
+                issues,
+                path.is_file()
+                and path.stat().st_size == value["bytes"]
+                and sha256(path) == value["sha256"],
+                f"repository_input:{label}",
+            )
+    append_if(
+        issues,
+        result.get("abi_amendment", {}).get(
+            "amendment_contract_sha256"
         )
+        == amendment["amendment_contract_sha256"],
+        "result_abi_amendment",
+    )
 
     checkpoint_by_id = {
         item["checkpoint_id"]: item
@@ -464,6 +519,14 @@ def main() -> int:
             canonical_sha256(manifest["block_contract"])
             == manifest["block_contract_sha256"],
             f"block_contract:{key}",
+        )
+        append_if(
+            issues,
+            manifest["block_contract"].get("abi_amendment", {}).get(
+                "amendment_contract_sha256"
+            )
+            == amendment["amendment_contract_sha256"],
+            f"block_abi_amendment:{key}",
         )
         checkpoint = checkpoint_by_id.get(block["checkpoint_id"])
         append_if(

@@ -151,3 +151,47 @@ def test_frozen_t8_preregistration_is_canonical_when_present() -> None:
     assert observed == value["preregistered_contract_sha256"]
     assert value["matrix"]["total_cells"] == 16
     assert value["authority"]["training_or_hosted_compute"] is False
+
+
+def test_t8_preoutcome_abi_amendment_is_narrow_and_canonical() -> None:
+    path = (
+        ROOT
+        / "outputs"
+        / "analysis"
+        / "t8_state_coherent_handoff_abi_amendment.json"
+    )
+    value = json.loads(path.read_text(encoding="utf-8"))
+    basis = {
+        key: value[key]
+        for key in (
+            "original_preregistration",
+            "preoutcome_evidence",
+            "onnx_abi",
+            "authorized_change",
+            "corrected_files",
+            "unchanged_contract",
+            "authority",
+        )
+    }
+    observed = hashlib.sha256(
+        json.dumps(
+            basis,
+            allow_nan=False,
+            separators=(",", ":"),
+            sort_keys=True,
+        ).encode()
+    ).hexdigest()
+    assert observed == value["amendment_contract_sha256"]
+    assert value["preoutcome_evidence"][
+        "behavior_cells_with_decision_weight"
+    ] == 0
+    assert value["preoutcome_evidence"]["jsonl_trace_files"] == 0
+    assert value["authorized_change"]["new_state_inputs"] == [
+        "h_in",
+        "previous_action",
+    ]
+    assert value["authorized_change"]["new_state_outputs"] == [
+        "h_out",
+        "previous_action_out",
+    ]
+    assert value["unchanged_contract"]["training_steps"] == 0

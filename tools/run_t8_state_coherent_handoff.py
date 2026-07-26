@@ -24,6 +24,9 @@ from run_t6_corrected_robustness_screen import (
 ROOT = Path(__file__).resolve().parents[1]
 ANALYSIS = ROOT / "outputs" / "analysis"
 PREREG = ANALYSIS / "t8_state_coherent_handoff_preregistration.json"
+ABI_AMENDMENT = (
+    ANALYSIS / "t8_state_coherent_handoff_abi_amendment.json"
+)
 RESULT = ANALYSIS / "t8_state_coherent_handoff_result.json"
 MARKDOWN = ANALYSIS / "T8_STATE_COHERENT_HANDOFF_RESULT_20260726.md"
 DEFAULT_CACHE_ROOT = Path(
@@ -69,6 +72,43 @@ def verify_receipt(value: dict[str, Any], label: str) -> None:
         raise RuntimeError(f"T8 frozen receipt changed: {label}={path}")
 
 
+def load_abi_amendment(prereg: dict[str, Any]) -> dict[str, Any]:
+    if not ABI_AMENDMENT.is_file():
+        raise RuntimeError("T8 pre-outcome ABI amendment is missing")
+    value = json.loads(ABI_AMENDMENT.read_text(encoding="utf-8"))
+    basis = {
+        key: value[key]
+        for key in (
+            "original_preregistration",
+            "preoutcome_evidence",
+            "onnx_abi",
+            "authorized_change",
+            "corrected_files",
+            "unchanged_contract",
+            "authority",
+        )
+    }
+    if (
+        value.get("status")
+        != "PREREGISTERED_T8_PREOUTCOME_ABI_ORDER_CORRECTION"
+        or canonical_sha256(basis) != value["amendment_contract_sha256"]
+        or value["original_preregistration"][
+            "preregistered_contract_sha256"
+        ]
+        != prereg["preregistered_contract_sha256"]
+    ):
+        raise RuntimeError("invalid T8 pre-outcome ABI amendment")
+    for label, corrected in value["corrected_files"].items():
+        path = Path(corrected["path"])
+        if (
+            not path.is_file()
+            or path.stat().st_size != corrected["bytes"]
+            or sha256(path) != corrected["sha256"]
+        ):
+            raise RuntimeError(f"T8 corrected file changed: {label}={path}")
+    return value
+
+
 def load_preregistration() -> dict[str, Any]:
     value = json.loads(PREREG.read_text(encoding="utf-8"))
     if value.get("status") != "PREREGISTERED_T8_STATE_COHERENT_HANDOFF":
@@ -94,8 +134,18 @@ def load_preregistration() -> dict[str, Any]:
     }
     if canonical_sha256(basis) != value["preregistered_contract_sha256"]:
         raise RuntimeError("T8 preregistration canonical hash changed")
+    amendment = load_abi_amendment(value)
+    corrected_labels = {"runner", "worker", "independent_auditor"}
     for label, value_receipt in value["repository_inputs"].items():
-        verify_receipt(value_receipt, label)
+        if label not in corrected_labels:
+            verify_receipt(value_receipt, label)
+        elif (
+            amendment["original_preregistration"]["repository_inputs"][
+                label
+            ]
+            != value_receipt
+        ):
+            raise RuntimeError(f"T8 original receipt changed: {label}")
     verify_receipt(value["assets"]["manifest"], "asset_manifest")
     manifest = json.loads(
         Path(value["assets"]["manifest"]["path"]).read_text(encoding="utf-8")
@@ -131,6 +181,7 @@ def block_contract(
     checkpoint: dict[str, Any],
     fit_id: str,
 ) -> dict[str, Any]:
+    amendment = load_abi_amendment(prereg)
     return {
         "preregistered_contract_sha256": prereg[
             "preregistered_contract_sha256"
@@ -143,6 +194,13 @@ def block_contract(
         "assets_manifest_sha256": prereg["assets"][
             "manifest_canonical_sha256"
         ],
+        "abi_amendment": {
+            "path": str(ABI_AMENDMENT.resolve()),
+            "sha256": sha256(ABI_AMENDMENT),
+            "amendment_contract_sha256": amendment[
+                "amendment_contract_sha256"
+            ],
+        },
     }
 
 
@@ -463,8 +521,8 @@ def extract_block(
         "preserve_handoff_state": True,
         "expected_observation_dim": 115,
         "expected_action_dim": 14,
-        "policy_state_input_names": ["previous_action", "h_in"],
-        "policy_state_output_names": ["previous_action_out", "h_out"],
+        "policy_state_input_names": ["h_in", "previous_action"],
+        "policy_state_output_names": ["h_out", "previous_action_out"],
         "policy_context_input_name": "calibration_context",
         "policy_graph_authoritative_output": True,
         "policy_applied_target_observation": True,
@@ -651,6 +709,13 @@ def main() -> int:
         "preregistered_contract_sha256": prereg[
             "preregistered_contract_sha256"
         ],
+        "abi_amendment": {
+            "path": str(ABI_AMENDMENT.resolve()),
+            "sha256": sha256(ABI_AMENDMENT),
+            "amendment_contract_sha256": load_abi_amendment(prereg)[
+                "amendment_contract_sha256"
+            ],
+        },
         "expected_cells": prereg["matrix"]["total_cells"],
         "completed_cells": len(cells),
         "passing_cells": sum(cell["cell_green"] for cell in cells),
