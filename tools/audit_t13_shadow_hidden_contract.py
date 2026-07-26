@@ -17,8 +17,10 @@ ROOT = Path(__file__).resolve().parents[1]
 ANALYSIS = ROOT / "outputs" / "analysis"
 PREREG = ANALYSIS / "t13_shadow_hidden_preregistration.json"
 RESULT = ANALYSIS / "t13_shadow_hidden_result.json"
-AUDIT = ANALYSIS / "t13_shadow_hidden_independent_audit.json"
-MARKDOWN = ANALYSIS / "T13_SHADOW_HIDDEN_INDEPENDENT_AUDIT_20260726.md"
+AUDIT = ANALYSIS / "t13_shadow_hidden_independent_audit_v2.json"
+MARKDOWN = (
+    ANALYSIS / "T13_SHADOW_HIDDEN_INDEPENDENT_AUDIT_V2_20260726.md"
+)
 
 
 def sha256(path: Path) -> str:
@@ -87,6 +89,7 @@ def main() -> int:
     prereg = json.loads(PREREG.read_text(encoding="utf-8"))
     result = json.loads(RESULT.read_text(encoding="utf-8"))
     issues: list[str] = []
+    contract_failures: list[str] = []
     prereg_basis = {
         key: item
         for key, item in prereg.items()
@@ -229,9 +232,13 @@ def main() -> int:
         )
         action_delta = float(np.max(np.abs(left_action - right_action)))
         if hidden_delta <= 1.0e-7:
-            issues.append(f"{checkpoint_id}.plant_hidden_visibility")
+            contract_failures.append(
+                f"{checkpoint_id}.plant_hidden_visibility"
+            )
         if action_delta <= 1.0e-6:
-            issues.append(f"{checkpoint_id}.plant_action_visibility")
+            contract_failures.append(
+                f"{checkpoint_id}.plant_action_visibility"
+            )
         pair_metrics.append(
             {
                 "checkpoint_id": checkpoint_id,
@@ -242,7 +249,7 @@ def main() -> int:
             }
         )
 
-    expected_pass = not issues
+    expected_pass = not contract_failures
     expected_status = (
         "PASS_T13_SHADOW_HIDDEN_RESPONSE_CONTRACT"
         if expected_pass
@@ -257,19 +264,52 @@ def main() -> int:
         issues.append("status")
     if result["decision"] != expected_decision:
         issues.append("decision")
+    expected_checks = {
+        "all_cell_checks": not any(
+            item.endswith(
+                (
+                    ".hidden",
+                    ".context",
+                    ".shadow_steps",
+                    ".shadow_actions",
+                    ".hidden_sha",
+                    ".context_sha",
+                    ".handoff_hidden",
+                    ".trace_replay",
+                    ".previous_out",
+                    ".x0_action",
+                    ".x0_previous",
+                    ".shadow_action_visibility",
+                )
+            )
+            for item in issues
+        ),
+        "both_plant_hidden_states_separate": not any(
+            item.endswith(".plant_hidden_visibility")
+            for item in contract_failures
+        ),
+        "both_plant_hidden_states_actionable": not any(
+            item.endswith(".plant_action_visibility")
+            for item in contract_failures
+        ),
+    }
+    for name, expected in expected_checks.items():
+        if result["checks"].get(name) is not expected:
+            issues.append(f"reported_check.{name}")
     status = (
-        "PASS_T13_SHADOW_HIDDEN_INDEPENDENT_AUDIT"
+        "PASS_T13_SHADOW_HIDDEN_INDEPENDENT_AUDIT_V2"
         if not issues
-        else "HOLD_T13_SHADOW_HIDDEN_INDEPENDENT_AUDIT"
+        else "HOLD_T13_SHADOW_HIDDEN_INDEPENDENT_AUDIT_V2"
     )
     basis = {
-        "schema_version": "open_duck.t13_shadow_hidden_audit.v1",
+        "schema_version": "open_duck.t13_shadow_hidden_audit.v2",
         "status": status,
         "result_sha256": result["result_sha256"],
         "preregistered_contract_sha256": prereg[
             "preregistered_contract_sha256"
         ],
         "issues": issues,
+        "recomputed_contract_failures": contract_failures,
         "recomputed_cells": len(recomputed),
         "recomputed_pairs": pair_metrics,
         "decision": result["decision"],
