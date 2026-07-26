@@ -105,3 +105,32 @@ def test_t23_cpu_validator_requires_exact_artifacts_before_behavior() -> None:
     assert "all_onnx_contracts_pass" in text
     assert '"behavior_evaluation_authorized": False' in text
     assert '"gate5_authorized": False' in text
+
+
+def test_t23_recovered_training_passes_without_behavior_authority() -> None:
+    value = load("t23_recovered_training_validation.json")
+    assert value["status"] == "PASS_T23_RECOVERED_TRAINING_VALIDATION"
+    assert value["failed_checks"] == []
+    assert all(value["checks"].values())
+    assert value["classification"]["training_completed"] is True
+    assert value["classification"]["training_retry"] is False
+    assert value["classification"]["training_resume"] is False
+    assert value["classification"]["prior_upload_hold_decision_weight"] == 0
+    assert value["classification"]["behavior_cells"] == 0
+    assert [row["step"] for row in value["checkpoints"]] == [
+        0,
+        1_003_520,
+        2_007_040,
+    ]
+    assert all(
+        row["every_policy_leaf_updated"]
+        and row["every_critic_leaf_updated"]
+        and row["tree_finite"]
+        for row in value["trained_checkpoints"]
+    )
+    assert (
+        value["authority"]["postexport_transform_preregistration_authorized"]
+        is True
+    )
+    assert value["authority"]["behavior_evaluation_authorized"] is False
+    assert value["authority"]["gate5_authorized"] is False
