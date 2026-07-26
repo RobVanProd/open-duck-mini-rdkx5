@@ -80,8 +80,30 @@ RATE_LIMITS_RAD_S = np.asarray(
     ],
     dtype=np.float32,
 )
+SOURCE_RATE_LIMITS_RAD_S = np.asarray(
+    [
+        1.0,
+        0.75,
+        1.4736209064722061,
+        1.4300791546702385,
+        1.3976470567286015,
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.75,
+        1.25,
+        1.0,
+        1.2215287424623966,
+    ],
+    dtype=np.float32,
+)
 MAX_ACTION_DELTA = (
     RATE_LIMITS_RAD_S * np.float32(0.02) / ACTION_SCALE_RAD
+).astype(np.float32)
+SOURCE_MAX_ACTION_DELTA = (
+    SOURCE_RATE_LIMITS_RAD_S * np.float32(0.02) / ACTION_SCALE_RAD
 ).astype(np.float32)
 
 
@@ -210,10 +232,17 @@ class SupportPrefixWrapper(playground_wrapper.Wrapper):
         )
         return self.env._get_obs(state.data, info, contact)
 
-    def reset(self, rng: jax.Array) -> mjx_env.State:
-        initial = self.env.reset(rng)
-        locomotion_command = initial.info["command"]
-        initial = initial.replace(info=self._prefix_info(initial))
+    def _execute_prefix(
+        self,
+        initial: mjx_env.State,
+    ) -> tuple[
+        mjx_env.State,
+        jax.Array,
+        jax.Array,
+        jax.Array,
+        jax.Array,
+        jax.Array,
+    ]:
         previous = jnp.zeros(ACTION_SIZE, dtype=jnp.float32)
         valid = jnp.asarray(True)
 
@@ -225,14 +254,53 @@ class SupportPrefixWrapper(playground_wrapper.Wrapper):
                 state, inverse_action(external_action)
             )
             next_valid = support_valid & (next_state.done == 0)
-            return (next_state, external_action, next_valid), None
+            diagnostic = (
+                external_action,
+                next_state.info["motor_targets"],
+                next_state.info["t19_source_motor_targets"],
+            )
+            return (next_state, external_action, next_valid), diagnostic
 
-        (state, previous, valid), _ = jax.lax.scan(
+        (state, previous, valid), diagnostic = jax.lax.scan(
             body,
             (initial, previous, valid),
             xs=None,
             length=CALIBRATION_TICKS,
         )
+        actions, motor_targets, source_motor_targets = diagnostic
+        return (
+            state,
+            previous,
+            valid,
+            actions,
+            motor_targets,
+            source_motor_targets,
+        )
+
+    def prefix_diagnostic(self, rng: jax.Array) -> dict[str, jax.Array]:
+        """Return the complete unscored prefix trace without finalizing reset."""
+        initial = self.env.reset(rng)
+        initial = initial.replace(info=self._prefix_info(initial))
+        (
+            _,
+            _,
+            valid,
+            actions,
+            motor_targets,
+            source_motor_targets,
+        ) = self._execute_prefix(initial)
+        return {
+            "valid": valid,
+            "actions": actions,
+            "motor_targets": motor_targets,
+            "source_motor_targets": source_motor_targets,
+        }
+
+    def reset(self, rng: jax.Array) -> mjx_env.State:
+        initial = self.env.reset(rng)
+        locomotion_command = initial.info["command"]
+        initial = initial.replace(info=self._prefix_info(initial))
+        state, previous, valid, _, _, _ = self._execute_prefix(initial)
         info = dict(state.info)
         info["step"] = jnp.zeros_like(info["step"])
         info["command"] = locomotion_command

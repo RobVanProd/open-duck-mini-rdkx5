@@ -130,10 +130,15 @@ index 5bbdfcf..d29d5e1 100644
 +                self._default_actuator
 +                + external_unprojected_action * self._config.action_scale
 +            )
++            external_velocity_limits = jp.asarray(
++                t19.RATE_LIMITS_RAD_S, dtype=jp.float32
++            )
 +            motor_targets = jp.clip(
 +                external_target,
-+                state.info["motor_targets"] - velocity_limits * self.dt,
-+                state.info["motor_targets"] + velocity_limits * self.dt,
++                state.info["motor_targets"]
++                - external_velocity_limits * self.dt,
++                state.info["motor_targets"]
++                + external_velocity_limits * self.dt,
 +            )
 +            realized_external_action = (
 +                motor_targets - self._default_actuator
@@ -182,11 +187,11 @@ index 3c04098..8587e3d 100644
 -            )
 +            if args.winner_t19_support_trainthrough:
 +                from playground.common.t19_support_trainthrough import (
-+                    RATE_LIMITS_RAD_S,
++                    SOURCE_RATE_LIMITS_RAD_S,
 +                )
 +
 +                expected_limits = jp.asarray(
-+                    RATE_LIMITS_RAD_S, dtype=jp.float32
++                    SOURCE_RATE_LIMITS_RAD_S, dtype=jp.float32
 +                )
 +            else:
 +                expected_limits = (
@@ -207,6 +212,7 @@ index 3c04098..8587e3d 100644
 +        if args.winner_t19_support_trainthrough:
 +            from playground.common.t19_support_trainthrough import (
 +                RATE_LIMITS_RAD_S,
++                SOURCE_RATE_LIMITS_RAD_S,
 +                SupportPrefixWrapper,
 +            )
 +
@@ -224,10 +230,12 @@ index 3c04098..8587e3d 100644
 +            if not bool(
 +                jp.array_equal(
 +                    jp.asarray(limits, dtype=jp.float32),
-+                    jp.asarray(RATE_LIMITS_RAD_S, dtype=jp.float32),
++                    jp.asarray(SOURCE_RATE_LIMITS_RAD_S, dtype=jp.float32),
 +                )
 +            ):
-+                raise ValueError("T19 full measured rate vector changed")
++                raise ValueError("T19 trained source rate vector changed")
++            if RATE_LIMITS_RAD_S.shape != SOURCE_RATE_LIMITS_RAD_S.shape:
++                raise ValueError("T19 external physical rate vector changed")
 +            self.env = SupportPrefixWrapper(self.env)
 +            self.eval_env = SupportPrefixWrapper(self.eval_env)
          if args.policy_architecture == "response_conditioned_reference_residual":
