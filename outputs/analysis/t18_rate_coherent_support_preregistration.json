@@ -1,0 +1,487 @@
+{
+  "authority": {
+    "checkpoint_selection": false,
+    "cpu_only": true,
+    "deployment_or_gate5": false,
+    "hosted_or_colab_compute": false,
+    "optimizer_steps": 0,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false
+  },
+  "behavior_contract": {
+    "interpretation": {
+      "core": "minimum physical/semantic validity; thresholds passed by the T4 baseline where comparable",
+      "evaluator_candidate_gate_status": "diagnostic only because T4 invalidated its use as an unqualified feasibility classifier",
+      "replacement_quality": "explicit stretch goals for replacing the behaviorally bad baseline; T4 showed the baseline can fail some of these"
+    },
+    "moving_core": {
+      "bilateral_transitions": true,
+      "maximum_action_saturation_pct": 1.0,
+      "maximum_body_pitch_p95_rad": 0.25,
+      "minimum_base_height_m": 0.12,
+      "minimum_track_ratio": 0.25,
+      "positive_mean_local_velocity": true,
+      "samples": 600
+    },
+    "moving_replacement_quality": {
+      "maximum_action_saturation_pct": 0.0,
+      "maximum_pitch_tracking_p95_rad": 0.2,
+      "maximum_rate_excess_rad_s": 0.0
+    },
+    "x0_core": {
+      "maximum_absolute_mean_local_vx_m_s": 0.02,
+      "maximum_action_saturation_pct": 1.0,
+      "maximum_body_pitch_p95_rad": 0.25,
+      "minimum_base_height_m": 0.12,
+      "samples": 600
+    },
+    "x0_replacement_quality": {
+      "maximum_action_saturation_pct": 0.0,
+      "maximum_pitch_tracking_p95_rad": 0.2,
+      "maximum_rate_excess_rad_s": 0.0
+    }
+  },
+  "candidate": {
+    "calibrator": {
+      "bytes": 55573,
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v96-response-conditioned-mechanics\\winner_v96_universal_calibrator.onnx",
+      "sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576"
+    },
+    "checkpoints": [
+      {
+        "checkpoint_id": "V121_TRAIN_MATCHED_HALF",
+        "policy": {
+          "bytes": 958485,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t8_state_coherent_handoff_assets_v2\\policies\\V121_DEPLOYMENT_1003520_T8_CONTEXT_ABI.onnx",
+          "sha256": "8749ba91e98c18b8c2d123bae3558154bc7221cc8b58c1a8ad6c9adc39d8ae4a"
+        }
+      },
+      {
+        "checkpoint_id": "V121_TRAIN_MATCHED_FINAL",
+        "policy": {
+          "bytes": 958485,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t8_state_coherent_handoff_assets_v2\\policies\\V121_DEPLOYMENT_2007040_T8_CONTEXT_ABI.onnx",
+          "sha256": "76aed96802919921ad8cce378752f684c03aa1fc529a874268bc250334327d44"
+        }
+      }
+    ],
+    "context_policy_effect": "diagnostic only; exact zero-weight ABI",
+    "fits": {
+      "p30": {
+        "bytes": 18664,
+        "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p30_actuator_fit_20260712.json",
+        "sha256": "a58db8ffc505d2bb64cba7f5618d0e2c65904fc9f9ac37b560a1231e090f5f4f"
+      },
+      "p31_34": {
+        "bytes": 18788,
+        "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p31_34_actuator_fit_20260712.json",
+        "sha256": "2740513f6bdeb4ad3cc5dd6dc1709319389a593fd153c1ce5abae03b66131a57"
+      }
+    },
+    "policy_weights_changed": false,
+    "reference": {
+      "bytes": 259604,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+      "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+    }
+  },
+  "causal_basis": {
+    "materially_distinct_mechanism": "T18 does not alter T17's curve, support, observations, checkpoints, or thresholds. It composes the non-negotiable measured per-joint rate transition after the bounded map and feeds the realized final action back as previous_action_out. This is a stateful dynamical composition, not a new static homeomorphism or a selected scalar.",
+    "rate_anatomy": "Every one of the 24 T17 moving traces violates the physical rate vector on 222-397 ticks, so this is a gait-wide state transition mismatch rather than a startup seam.",
+    "t16": "Affine support translation rescued every moving cell but created 57-69 percent saturation.",
+    "t17": "The bounded map removed broad saturation and retained forward, bilateral, sub-0.2-rad behavior in almost every moving cell, but violated the frozen rate vector."
+  },
+  "checks": {
+    "candidate_pair_exact": true,
+    "fit_pair_exact": true,
+    "t17_bounded_map_closed_on_rate": true,
+    "t17_rate_failure_persistent": true
+  },
+  "decision_rule": {
+    "fail": "Close the zero-training rate-coherent support composition. Do not alter the rate vector, map, support action, joint subset, checkpoint pair, threshold, or closest result.",
+    "no_threshold_changes_after_execution": true,
+    "partial_results_selection_weight": 0,
+    "pass": "Both wrapped checkpoints pass all 32 nominal and negative-COM cells under both measured fits and all four commands; all x=0 ticks equal exact support; every wrapper, ABI, handoff, readback, physical-rate, saturation, behavior, and manufacturer-duration protection check passes.",
+    "pass_next_action": "Earn only a separately preregistered sequential full R2 screen of the exact two T18 graphs. No training, hardware, or Gate 5 is earned."
+  },
+  "execution_now": {
+    "behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "wrapped_policies": 0
+  },
+  "failed_checks": [],
+  "handoff_contract": {
+    "applied_target_slot": [
+      83,
+      97
+    ],
+    "boundary": {
+      "locomotion_phase_reset": [
+        1.0,
+        0.0
+      ],
+      "policy_hidden_state_exact_zero": true,
+      "preserve_applied_target_observer_bridge_state": true,
+      "preserve_final_support_action_as_policy_previous_action": true,
+      "response_context_finite_and_immutable": true,
+      "response_context_shape": [
+        1,
+        64
+      ],
+      "zero_action_home_return_ticks": 0
+    },
+    "calibration_context": "immutable diagnostic 64-D response context",
+    "calibration_ticks": 250,
+    "home_return_ticks": 0,
+    "locomotion": {
+      "applied_target_slot": [
+        83,
+        97
+      ],
+      "applied_target_slot_matches_prior_bridge_output_float32_exact": true,
+      "full_observation_dim": 115,
+      "graph_authoritative": true,
+      "maximum_host_action_delta": 0.0,
+      "policy_applied_target_observation": true,
+      "previous_action_and_hidden_chains_bit_exact": true,
+      "reference_start_phase": 0
+    },
+    "policy_hidden_at_handoff": "exact zero",
+    "previous_action_at_handoff": "exact final universal response action",
+    "scope": "T8 tests direct physical/state handoff feasibility only. Its V121 wrappers ignore context and perform no actor adaptation.",
+    "support_prefix": {
+      "action_semantics": "the preserved V91/V96 universal support action, proven by T7",
+      "calibrator_sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576",
+      "scored": false,
+      "ticks": 250
+    }
+  },
+  "matrix": {
+    "behavior_cells": 32,
+    "calibration_ticks": 250,
+    "checkpoints": [
+      "V121_TRAIN_MATCHED_HALF",
+      "V121_TRAIN_MATCHED_FINAL"
+    ],
+    "commands_x_m_s": [
+      0.0,
+      0.074,
+      0.077,
+      0.08
+    ],
+    "conditions": [
+      {
+        "id": "NOMINAL",
+        "torso_com_x_m": 0.0
+      },
+      {
+        "id": "TORSO_COM_X_NEG",
+        "torso_com_x_m": -0.05
+      }
+    ],
+    "duration_ticks": 600,
+    "fits": [
+      "p30",
+      "p31_34"
+    ],
+    "home_return_ticks": 0,
+    "seed": 167931544,
+    "worker_blocks": 8
+  },
+  "playground": {
+    "control_commit": "b9be205ac64488c23504ca42e5ec790337adeec3",
+    "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-v175",
+    "required_file_sha256": {
+      "playground/common/phase_moe_networks.py": "6480f59f4039884be6743828ffed1c31f76896830b2b38689cad038200283cb7",
+      "playground/common/recurrent_ppo_networks.py": "a501000c6f959276514ba56f935d027b05b171a9ea62bb6a2bc1ecdd2fe8cb4e",
+      "playground/common/reference_residual_ppo_networks.py": "eeb1b758f32bb8a7e53cf59b269bed7f97126cf37ccc4d11090a5f8312b380e6",
+      "playground/common/rewards.py": "9c327866f2632265f14ef81318046f887aafa64384a06efa6cb264e144bbb1d3",
+      "playground/common/runner.py": "27fb16f56eb3dbbeea09b4395dd6073d88092d16dd2bc21265767922204b4546",
+      "playground/open_duck_mini_v2/custom_rewards.py": "16fdf5ed409f9abcfa6f68465c4351081c0c255a6683c09aee110c557890cd0c",
+      "playground/open_duck_mini_v2/joystick.py": "5bbdfcf77dc36fcc2b02751fa7234b89c38fea53e35fbf09b37084102d9033d3",
+      "playground/open_duck_mini_v2/runner.py": "3c04098dcac6b4e22011645a70f6276e57da55dacfc5c6a82e68f1c3c7312457",
+      "playground/open_duck_mini_v2/xmls/open_duck_mini_v2_backlash.xml": "11e922dc9524716e9f54b2fd8be54133fa65efbc61de96ddc846d991de1c9d38",
+      "playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml": "33af97247d6a876cf47c9e37185cb71bd09f6793bc0f62d90cbe2a91caa3ba63"
+    }
+  },
+  "preregistered_contract_sha256": "a06305f28632c71b260605911be84d8503c579ec6a72a6ddfb0b5388445d53be",
+  "protection_contract": {
+    "force_limit_tolerance_nm": 5e-06,
+    "instantaneous_stall_current_and_torque": "diagnostic_only",
+    "motor_constant_nm_per_a": 0.784532,
+    "overcurrent_threshold_a": 2.0,
+    "overload_threshold_nm": 1.5298374,
+    "pass_max_consecutive_ticks": 99,
+    "simulator_force_limit_abs_nm": 3.23,
+    "simulator_force_limit_hits": "diagnostic_only",
+    "source": "T5 manufacturer-derived duration rules",
+    "strict_comparison": true,
+    "trip_ticks": 100
+  },
+  "question": "Does composing T17's bounded support-centered map with the already-frozen full measured physical rate transition produce a zero-training candidate that passes the complete nominal and negative-COM matrix?",
+  "schema_version": "open_duck.t18_rate_coherent_support_preregistration.v1",
+  "sources": {
+    "builder": {
+      "bytes": 10046,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t18_rate_coherent_support_preregistration.py",
+      "sha256": "63ed52b234c8c1d0c636f69c5e8bb71545fb9c4aa3cbf7922be9e7416f88e991"
+    },
+    "frozen_closed_loop_evaluator": {
+      "bytes": 153794,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\closed_loop_sim_eval.py",
+      "sha256": "352ea320936c83801fa47f76e35faea36a68f1d7f45c11b1869292e1955f4114"
+    },
+    "frozen_t16_worker": {
+      "bytes": 6966,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\evaluate_t16_support_coordinate.py",
+      "sha256": "4328b2a3b25df01b034436b847a4483682095ead5231bb2039b7a3af46840ae2"
+    },
+    "runner": {
+      "bytes": 12146,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t18_rate_coherent_support_screen.py",
+      "sha256": "1f69fd2fffc94ed3b7562b6f368c585c7c08f9eded6cbd33d1d49d891e279396"
+    },
+    "shared_t16_runner_helpers": {
+      "bytes": 18486,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t16_support_coordinate_screen.py",
+      "sha256": "56fc317523ef5ea6835f9c0d25f4e739eb1d854497189bac632db830bd561931"
+    },
+    "t17_preregistration": {
+      "bytes": 15540,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t17_support_homeomorphism_preregistration.json",
+      "sha256": "6457abfd6d0351d8ceedf5069a445aa62b1c803ac6159e7f2209bc557431de5a"
+    },
+    "t17_rate_anatomy": {
+      "bytes": 10372,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t17_rate_anatomy.json",
+      "sha256": "6f18d086f71e269979fa231013fa7010421351f20bbe1930708b57e0abeb81af"
+    },
+    "t17_result": {
+      "bytes": 275376,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t17_support_homeomorphism_result.json",
+      "sha256": "3c974e07cff794c555813619f552e666c50bce858461e45b20ab6ad2685d87e1"
+    },
+    "t17_transform": {
+      "bytes": 17272,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\t17_support_homeomorphism_onnx.py",
+      "sha256": "d936b705ad54169c4a05636c8713ac10a32e7357af11c8c86a2241f4904c9be4"
+    },
+    "t8_evaluator_adapter": {
+      "bytes": 13299,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\t8_state_coherent_eval_adapter.py",
+      "sha256": "13396bb1df49bba50556b67dd51cf5542be777b034d0c9235a8d2926dcdf8719"
+    },
+    "test": {
+      "bytes": 1664,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t18_rate_coherent_support.py",
+      "sha256": "3dc17bdc50d7f9050528936262af7761f0b928ad73f69196c3d7e12472853062"
+    },
+    "transform": {
+      "bytes": 11322,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\t18_rate_coherent_support_onnx.py",
+      "sha256": "330d6fd0959ce75ec6010452ce1fff737349d9ab2aa1d6b982d7ddbbb4bdb937"
+    }
+  },
+  "status": "PREREGISTERED_T18_RATE_COHERENT_SUPPORT_SCREEN",
+  "transition": {
+    "action_scale_rad": 0.25,
+    "base": {
+      "action_scale_rad": 0.25,
+      "command_and_phase": "unchanged",
+      "contract_cases": 256,
+      "contract_seed": 20260726,
+      "contract_tolerance": 3.814697265625e-06,
+      "contract_tolerance_derivation": "32 * IEEE-754 float32 machine epsilon; frozen before behavior execution",
+      "external_abi": {
+        "inputs": {
+          "calibration_context": [
+            1,
+            64
+          ],
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        }
+      },
+      "float32_epsilon": 1.1920928955078125e-07,
+      "forward": "F_s(a)=s+(1-s)*a for a>=0; F_s(a)=s+(1+s)*a for a<0",
+      "free_scalar_count": 0,
+      "hidden_state": "bit-exact source h_out",
+      "home_action_rad": [
+        0.0020000000949949026,
+        0.05299999937415123,
+        -0.6299999952316284,
+        1.3680000305175781,
+        -0.7839999794960022,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.003000000026077032,
+        -0.06499999761581421,
+        0.6349999904632568,
+        1.378999948501587,
+        -0.7960000038146973
+      ],
+      "input_inverse_slices": {
+        "action_history_1": [
+          41,
+          55
+        ],
+        "action_history_2": [
+          55,
+          69
+        ],
+        "action_history_3": [
+          69,
+          83
+        ],
+        "applied_absolute_target_rad": [
+          83,
+          97
+        ],
+        "joint_position_error_rad": [
+          13,
+          27
+        ],
+        "previous_action": [
+          0,
+          14
+        ]
+      },
+      "inverse": "G_s(y)=(y-s)/(1-s) for y>=s; G_s(y)=(y-s)/(1+s) for y<s",
+      "name": "bounded_support_centered_piecewise_affine_homeomorphism",
+      "output_clip_nodes": 0,
+      "reference_action_101_115": "unchanged",
+      "support_action": [
+        0.0,
+        0.0,
+        -0.5,
+        0.25,
+        0.25,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.5,
+        0.25,
+        0.25
+      ],
+      "unchanged_observation_slices": [
+        [
+          0,
+          13
+        ],
+        [
+          27,
+          41
+        ],
+        [
+          97,
+          115
+        ]
+      ]
+    },
+    "contract_cases": 256,
+    "contract_seed": 20260726,
+    "contract_tolerance": 3.814697265625e-06,
+    "control_dt_s": 0.019999999552965164,
+    "equation": "final=clip(mapped, previous_final-delta, previous_final+delta); bounds intersect [-1,1]",
+    "external_abi": {
+      "inputs": {
+        "calibration_context": [
+          1,
+          64
+        ],
+        "h_in": [
+          1,
+          64
+        ],
+        "obs": [
+          1,
+          115
+        ],
+        "previous_action": [
+          1,
+          14
+        ]
+      },
+      "outputs": {
+        "continuous_actions": [
+          1,
+          14
+        ],
+        "h_out": [
+          1,
+          64
+        ],
+        "previous_action_out": [
+          1,
+          14
+        ]
+      }
+    },
+    "free_scalar_count": 0,
+    "maximum_action_delta": [
+      0.07999999821186066,
+      0.05999999865889549,
+      0.11999999731779099,
+      0.11999999731779099,
+      0.11999999731779099,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.05999999865889549,
+      0.09999999403953552,
+      0.07999999821186066,
+      0.09999999403953552
+    ],
+    "rate_limits_rad_s": [
+      1.0,
+      0.75,
+      1.5,
+      1.5,
+      1.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.75,
+      1.25,
+      1.0,
+      1.25
+    ],
+    "source_previous_action": "T17 inverse maps external realized previous action before source inference",
+    "state_feedback": "previous_action_out equals realized final action bit-exact"
+  }
+}
