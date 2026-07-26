@@ -74,3 +74,34 @@ def test_t12_auditor_is_independent_of_runner() -> None:
         ROOT / "tools" / "audit_t12_response_prefix_com_screen.py"
     ).read_text(encoding="utf-8")
     assert "run_" + "t12_response_prefix_com_screen" not in source
+
+
+def test_t12_recovery_is_narrow_and_keeps_partial_weight_zero() -> None:
+    value = json.loads(
+        (
+            ANALYSIS / "t12_execution_recovery_amendment.json"
+        ).read_text(encoding="utf-8")
+    )
+    basis = {
+        key: item
+        for key, item in value.items()
+        if key != "amendment_contract_sha256"
+    }
+    assert canonical_sha256(basis) == value[
+        "amendment_contract_sha256"
+    ]
+    assert value["failed_execution"]["completed_cells"] == 3
+    assert value["failed_execution"]["decision_weight"] == 0
+    assert value["failed_execution"]["selection_use_forbidden"] is True
+    assert value["authorized_recovery"]["attempts_exact"] == 1
+    assert value["authorized_recovery"]["reuse_partial_v1_forbidden"] is True
+    assert value["unchanged_contract"]["decision_rule"] is True
+    assert value["unchanged_contract"][
+        "partial_results_selection_weight"
+    ] == 0
+    assert value["execution_now"] == {
+        "formal_decision_cells": 0,
+        "optimizer_steps": 0,
+        "hosted_or_colab_compute": 0,
+        "robot_or_rdk_access": 0,
+    }
