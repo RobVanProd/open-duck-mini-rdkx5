@@ -105,3 +105,60 @@ def test_t12_recovery_is_narrow_and_keeps_partial_weight_zero() -> None:
         "hosted_or_colab_compute": 0,
         "robot_or_rdk_access": 0,
     }
+
+
+def test_t12_result_is_canonical_and_closes_the_mechanism() -> None:
+    value = json.loads(
+        (
+            ANALYSIS / "t12_response_prefix_com_result.json"
+        ).read_text(encoding="utf-8")
+    )
+    basis = {
+        key: item
+        for key, item in value.items()
+        if key != "result_sha256"
+    }
+    assert canonical_sha256(basis) == value["result_sha256"]
+    assert value["status"] == "HOLD_T12_RESPONSE_PREFIX_COM_SCREEN"
+    assert value["decision"] == "CLOSE_RESPONSE_PREFIX_STATE_PREPARATION"
+    assert value["failed_checks"] == ["all_cells_green"]
+    assert value["summary"]["green_cells"] == 5
+    assert value["summary"]["total_cells"] == 12
+    assert value["summary"]["worst_rate_excess_rad_s"] == 0.0
+    assert value["checks"]["all_com_readbacks_exact"] is True
+    assert value["checks"]["all_handoff_chains_exact"] is True
+    assert value["execution"] == {
+        "hosted_or_colab_compute": 0,
+        "optimizer_steps": 0,
+        "robot_or_rdk_access": 0,
+        "simulator_behavior_cells": 12,
+    }
+
+
+def test_t12_independent_audit_reproduces_the_hold() -> None:
+    value = json.loads(
+        (
+            ANALYSIS
+            / "t12_response_prefix_com_independent_audit.json"
+        ).read_text(encoding="utf-8")
+    )
+    basis = {
+        key: item
+        for key, item in value.items()
+        if key != "audit_sha256"
+    }
+    assert canonical_sha256(basis) == value["audit_sha256"]
+    assert (
+        value["status"]
+        == "PASS_T12_RESPONSE_PREFIX_COM_INDEPENDENT_AUDIT"
+    )
+    assert value["decision"] == "CLOSE_RESPONSE_PREFIX_STATE_PREPARATION"
+    assert value["issues"] == []
+    assert value["recomputed_green_cells"] == 5
+    assert value["recomputed_total_cells"] == 12
+    assert value["execution"] == {
+        "hosted_or_colab_compute": 0,
+        "optimizer_steps": 0,
+        "robot_or_rdk_access": 0,
+        "simulator_behavior_cells": 0,
+    }
