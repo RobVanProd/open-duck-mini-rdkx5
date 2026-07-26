@@ -1,0 +1,79 @@
+{
+  "checks": {
+    "behavior_cells_zero": true,
+    "causal_sequence_effect_frequency": false,
+    "coherent_context_location_effect": true,
+    "coherent_effect_frequency": false,
+    "coherent_final_action_effect": true,
+    "coherent_raw_action_effect": true,
+    "cpu_provider": true,
+    "graph_owned_previous_action": true,
+    "hosted_compute_zero": true,
+    "optimizer_steps_zero": true,
+    "original_context_state_effect_reproduced": true,
+    "original_random_previous_hold_reproduced": true,
+    "rate_projection_preserved": true,
+    "robot_access_zero": true,
+    "x0_context_invariant": true
+  },
+  "debug_graph": {
+    "bytes": 977814,
+    "path": "D:\\CodexArtifacts\\open-duck-policy\\t11_context_action_observability_v1\\t11_final_debug.onnx",
+    "sha256": "f5c64b622395d80db54aafa5cd7ae6ba04509017ad2775122f9e565fe8542ab7"
+  },
+  "decision": "HOLD_RESPONSE_CONDITIONED_HOSTED_CONTINUATION",
+  "disjoint_causal_sequence_test": {
+    "divergent_sequence_fraction": 0.0078125,
+    "divergent_sequences": 1,
+    "maximum_action_delta": 0.002541780471801758,
+    "maximum_rate_excess": 2.9802322387695312e-08,
+    "seed": 1111002,
+    "sequences": 128,
+    "ticks": 32
+  },
+  "disjoint_state_coherent_test": {
+    "cases": 2048,
+    "effective_case_fraction": 0.00439453125,
+    "effective_cases": 9,
+    "maximum_previous_action_error": 0.0,
+    "maximum_rate_excess": 2.9802322387695312e-08,
+    "seed": 1111001,
+    "stage_maximum_abs_delta": {
+      "context_hidden_projected": 0.06319104880094528,
+      "context_location": 0.08040568232536316,
+      "continuous_actions": 0.01259644329547882,
+      "first_rate_action": 0.01259644329547882,
+      "h_out": 0.0027400851249694824,
+      "previous_action_out": 0.01259644329547882,
+      "raw_continuous_actions": 0.01259644329547882,
+      "v121_final_rate_action": 0.01259644329547882,
+      "v121_preprojection_action": 0.01259644329547882
+    },
+    "x0_exact_zero": true
+  },
+  "execution": {
+    "hosted_or_colab_compute": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_behavior_cells": 0
+  },
+  "failed_checks": [
+    "coherent_effect_frequency",
+    "causal_sequence_effect_frequency"
+  ],
+  "original_state_incoherent_test": {
+    "cases": 256,
+    "maximum_action_delta": 0.0,
+    "maximum_hidden_delta": 1.430511474609375e-05,
+    "seed": 1010203
+  },
+  "preregistered_contract_sha256": "2763c7d727a837e198c50ab545ccde7a7cc7883b05d4ea468cb610129d5d58b6",
+  "result_sha256": "d64717d0a916492e1a04dc3444da30dfb72c2aa905cd2576a1c1dab4cadbb044",
+  "schema_version": "open_duck.t11_context_action_result.v1",
+  "source_graph": {
+    "bytes": 977568,
+    "path": "D:\\CodexArtifacts\\open-duck-policy\\t10_response_conditioned_cpu_contract_v2\\smoke\\2026_07_26_031228_1024.onnx",
+    "sha256": "b241ae7587972ea7800c8abb72718a53a27e7f45b412e3713445152a22ef0537"
+  },
+  "status": "HOLD_T11_CONTEXT_ACTION_OBSERVABILITY"
+}
