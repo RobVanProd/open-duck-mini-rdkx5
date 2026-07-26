@@ -1,0 +1,191 @@
+{
+  "authority": {
+    "cpu_only": true,
+    "hosted_or_colab_compute_authorized": 0,
+    "optimizer_steps_authorized": 0,
+    "robot_or_rdk_access_authorized": 0
+  },
+  "causal_basis": {
+    "correction": "Initialize only the internal source-coordinate state for the unscored prefix; physical state, action scale, both rate vectors, source transition, and final reset remain frozen.",
+    "exact_attribution": "The zero-source initialization predicted the measured 0.041666664-rad excess. The coherent inverse-coordinate initialization has exactly zero algebraic excess.",
+    "scope": "fresh complete CPU contract with zero optimizer steps and no reuse of partial T21 worker results",
+    "t21_hold": "T21 passed default-off 9/9, all 64 variable configurations, and every external prefix check; only the source-rate history failed."
+  },
+  "checks": {
+    "algebraic_falsifier_was_exact": true,
+    "attribution_passed": true,
+    "composed_schema_exact": true,
+    "correction_is_prefix_initialization_only": true,
+    "no_optimizer_hosted_or_robot_authority": true,
+    "source_and_external_vectors_remain_distinct": true,
+    "t21_partial_result_has_zero_weight": true
+  },
+  "contract": {
+    "action_scale_rad": 0.25,
+    "action_size": 14,
+    "control_period_s": 0.02,
+    "default_off_requirement": "all nine canonical state digests byte-exact",
+    "default_off_states": 9,
+    "enabled_requirement": "all existing checks pass for all 64 frozen variable configurations",
+    "external_rate_limits_rad_s": [
+      1.0,
+      0.75,
+      1.5,
+      1.5,
+      1.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.75,
+      1.25,
+      1.0,
+      1.25
+    ],
+    "float_tolerance": "64 * float32 epsilon",
+    "observation_size": 115,
+    "prefix_requirement": "all 250 external targets and both rate histories pass; final support and source-home states are exact",
+    "prefix_ticks": 250,
+    "reference_path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+    "seed": 100,
+    "source_prefix_initialization": "home + inverse_action(zeros(14))*0.25",
+    "source_rate_limits_rad_s": [
+      1.0,
+      0.75,
+      1.4736209064722061,
+      1.4300791546702385,
+      1.3976470567286015,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.75,
+      1.25,
+      1.0,
+      1.2215287424623966
+    ],
+    "variable_configuration_envs": 64
+  },
+  "decision_rule": {
+    "fail": "close T21b; no optimizer, hosted training, or behavior run",
+    "partial_results": "zero decision weight",
+    "pass": "earn exactly one separately preregistered corrected 1,024-step CPU restore/update/export smoke (T22)"
+  },
+  "execution_now": {
+    "fresh_formal_cpu_contract": 1,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "playgrounds": {
+    "base": {
+      "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-v175",
+      "required_file_sha256": {
+        "playground/common/runner.py": "27fb16f56eb3dbbeea09b4395dd6073d88092d16dd2bc21265767922204b4546",
+        "playground/open_duck_mini_v2/joystick.py": "5bbdfcf77dc36fcc2b02751fa7234b89c38fea53e35fbf09b37084102d9033d3",
+        "playground/open_duck_mini_v2/runner.py": "3c04098dcac6b4e22011645a70f6276e57da55dacfc5c6a82e68f1c3c7312457"
+      }
+    },
+    "composed": {
+      "final_python_hashes": {
+        "playground/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "playground/common/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "playground/common/export_onnx.py": "30bc705bf59babb59c5ba3045b601c838db00ebb569bb9fc6aa520f1e61139cc",
+        "playground/common/onnx_infer.py": "e610c2b94d15cd0ea4be1c0cee8853dc33b10c3b440e6d9bb1b1bb73168f34f2",
+        "playground/common/phase_moe_networks.py": "6480f59f4039884be6743828ffed1c31f76896830b2b38689cad038200283cb7",
+        "playground/common/plot_saved_obs.py": "911fe1de5668c31fdc2a10a4285b8343c04fd4f662a38207d6f06a91fd4e0a8e",
+        "playground/common/poly_reference_motion.py": "cc2430d82a9e41bf2081a4a9bed45731a43aad8b860e5b168f5850eb3748cf21",
+        "playground/common/poly_reference_motion_numpy.py": "585e783722ffb403a14288aafc1fcdf86c8a5d1b39949171a3b2d918028c4406",
+        "playground/common/randomize.py": "c6e7a48f714a2267b3b19d75ffc9ce3938350aabceb3eda61727a3c48f2d6dd8",
+        "playground/common/recurrent_ppo_networks.py": "a501000c6f959276514ba56f935d027b05b171a9ea62bb6a2bc1ecdd2fe8cb4e",
+        "playground/common/reference_residual_ppo_networks.py": "eeb1b758f32bb8a7e53cf59b269bed7f97126cf37ccc4d11090a5f8312b380e6",
+        "playground/common/reference_residual_recurrent_adapter_ppo_networks.py": "ffd07d0a6e96d846aa1f62a8d131bf892f10db6b2a22710affe3946b7b145ebd",
+        "playground/common/rewards.py": "9c327866f2632265f14ef81318046f887aafa64384a06efa6cb264e144bbb1d3",
+        "playground/common/rewards_numpy.py": "f1dba8838b29fdc4701bc3759e2533fa9d51ec550c8f70b83a23d3de64b97f48",
+        "playground/common/runner.py": "cc33330735fb984c384f85e5b7fa63cc53b98e670773ba7a676fb7d76c5adec4",
+        "playground/common/t19_support_trainthrough.py": "dc6c4270a4a5569f4c82dc3f9d1f07c395512bea86c15cd62a634fe10c895057",
+        "playground/common/utils.py": "dbeb9fd88bb41aaca5ab242a954cbae7ae9755b7f13ff2d7d2b27cc9094a284c",
+        "playground/common/winner_v127_constrained_ppo_losses.py": "996e292f76a4071f2c3117b0f1dacd9b1a3bf9e31d6d97128ce2f054f9bc6ff1",
+        "playground/common/winner_v127_constrained_ppo_train.py": "9ac5b96d2f810644b4ee2e019c1a8e4f2e5a92b5f1e6455298df5c1ecaa896c0",
+        "playground/common/winner_v171_gradient_geometry.py": "dfbadab3ef4021c71c27c358135bed87307c04f53310fdf9093f6436e00008c3",
+        "playground/common/winner_v173_lexicographic_tangent.py": "b7ff83f8d68f1034ab1ddb5562d4a32a384756a330bb150b8ca69d92a63f3841",
+        "playground/common/winner_v3_variable_configuration.py": "daab44325e6dd98b8b4054fc5c5fe7391ca9e358e7aca97999ef1a2441285ab7",
+        "playground/common/winner_v98_response_calibration_wrapper.py": "04339bf7bbe16f2721ce92bbe62c458e70c1c8a5e9bdfe02424478ebc066a7ba",
+        "playground/common/winner_v98_response_conditioned_export.py": "83c8667828a51bdb379091fbf657725410bae5e0d655273f63cf47bdc913f28c",
+        "playground/common/winner_v98_response_conditioned_ppo_networks.py": "767b0d4dc7d72d6c126eca9ed1f0497ca38214a9e2caa57c8a1e6b5cea3ad17a",
+        "playground/open_duck_mini_v2/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "playground/open_duck_mini_v2/base.py": "0e90b98b113c2e5ff4abd34b64482e3f1b3d365ef95481d1838f8b855de99988",
+        "playground/open_duck_mini_v2/constants.py": "8fafc240bfb8e70c93b722d89148cffb03688882fd4e6250735eccdf53363374",
+        "playground/open_duck_mini_v2/custom_rewards.py": "16fdf5ed409f9abcfa6f68465c4351081c0c255a6683c09aee110c557890cd0c",
+        "playground/open_duck_mini_v2/custom_rewards_numpy.py": "51422e858c4058f5c114004ab6ebd7900cbae544f09aaf430f9398adf9032333",
+        "playground/open_duck_mini_v2/joystick.py": "c8ab4592ca3cae417fd9a35e90d88da9760757fded9916b0a477beacad18031f",
+        "playground/open_duck_mini_v2/mujoco_infer.py": "67a933e043fe54a3bf252524e71fbb8a7eff973e8bb693d9fe1f1d6f323b11ed",
+        "playground/open_duck_mini_v2/mujoco_infer_base.py": "4c8fd11e4659126d49985a9c048e1cb5a5cfde5f4d54cdfe433e4b165d3b0ab1",
+        "playground/open_duck_mini_v2/ref_motion_viewer.py": "78c267d86d7de9a942c9bd4007990369eb39a7dae7a410acaa316dd9da0a5322",
+        "playground/open_duck_mini_v2/runner.py": "d04a9e12c678faf7df9aeeeb1c5338a1e5dd1205670cad8276cf9ca392af10fc",
+        "playground/open_duck_mini_v2/standing.py": "123419cb68f3dcf0908b3c77e4c98206de48d719058d38998ddcd69ef32dcdd6"
+      },
+      "manifest_sha256": "d7c9b615c32f0e2c8434e958a900cc38485c0db6fea107b6115a69bbd2122a77",
+      "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v6"
+    }
+  },
+  "preregistered_contract_sha256": "f60bc8063f7a3ef5336ce45ca33b740d09e8e923c22d0ee29616b98378a8e52c",
+  "question": "Does initializing the unscored prefix's source target at home + inverse_action(external_zero)*0.25 eliminate T21's sole source-rate violation while preserving every green T21 check?",
+  "schema_version": "open_duck.t21b_source_initialization_preregistration.v1",
+  "sources": {
+    "attribution": {
+      "bytes": 2475,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t21_source_initialization_attribution.json",
+      "sha256": "8a7333388abf453bd316418eec5acd1b20574058a3ee56e0505e0f95ff1ac726"
+    },
+    "builder": {
+      "bytes": 10424,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t21b_source_initialization_preregistration.py",
+      "sha256": "bf4aa416246c61d0c53d6ee5c1690f4d38f42f449e9e9c717a45936a05829880"
+    },
+    "composed_manifest": {
+      "bytes": 5190,
+      "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v6\\T19_COMPOSED_SOURCE_MANIFEST.json",
+      "sha256": "d7c9b615c32f0e2c8434e958a900cc38485c0db6fea107b6115a69bbd2122a77"
+    },
+    "composer": {
+      "bytes": 3792,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\compose_t19_support_trainthrough_playground.py",
+      "sha256": "fc6af205e41eaac5f0bdd5dcfcd9a3021b66721484efb3e21141771ca4481114"
+    },
+    "module": {
+      "bytes": 13877,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\patches\\t19_support_trainthrough.py",
+      "sha256": "dc6c4270a4a5569f4c82dc3f9d1f07c395512bea86c15cd62a634fe10c895057"
+    },
+    "patch": {
+      "bytes": 11141,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\patches\\winner_t19_support_trainthrough.patch",
+      "sha256": "f20f00a86b04829a13ab8796bd52096613adb7e22cbb644db78598580bfebf2e"
+    },
+    "reference": {
+      "bytes": 259604,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+      "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+    },
+    "runner": {
+      "bytes": 15683,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t21b_source_initialization_cpu_contract.py",
+      "sha256": "ce7e31a0879c789a79e8baf85df22d39a0dd206a9b60e7fd86862dd54d4cb2e8"
+    },
+    "t21_formal_result": {
+      "bytes": 5518,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t21_two_rate_separation_cpu_result.json",
+      "sha256": "e6fa62c9a7beec147c489afc4065a266b963a4b184f629106a7c432c6516825f"
+    },
+    "test": {
+      "bytes": 4333,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t21_two_rate_separation.py",
+      "sha256": "c461f503710ee96dbdefb9304102ee318c481470e06888ead68fb86687cc3ecb"
+    }
+  },
+  "status": "PREREGISTERED_T21B_SOURCE_INITIALIZATION_CPU_CONTRACT"
+}

@@ -232,6 +232,20 @@ class SupportPrefixWrapper(playground_wrapper.Wrapper):
         )
         return self.env._get_obs(state.data, info, contact)
 
+    def _prepare_prefix_initial(
+        self,
+        initial: mjx_env.State,
+    ) -> mjx_env.State:
+        info = self._prefix_info(initial)
+        source_action = inverse_action(
+            jnp.zeros(ACTION_SIZE, dtype=jnp.float32)
+        )
+        info["t19_source_motor_targets"] = (
+            self.env._default_actuator
+            + source_action * jnp.float32(ACTION_SCALE_RAD)
+        )
+        return initial.replace(info=info)
+
     def _execute_prefix(
         self,
         initial: mjx_env.State,
@@ -280,7 +294,7 @@ class SupportPrefixWrapper(playground_wrapper.Wrapper):
     def prefix_diagnostic(self, rng: jax.Array) -> dict[str, jax.Array]:
         """Return the complete unscored prefix trace without finalizing reset."""
         initial = self.env.reset(rng)
-        initial = initial.replace(info=self._prefix_info(initial))
+        initial = self._prepare_prefix_initial(initial)
         (
             _,
             _,
@@ -299,7 +313,7 @@ class SupportPrefixWrapper(playground_wrapper.Wrapper):
     def reset(self, rng: jax.Array) -> mjx_env.State:
         initial = self.env.reset(rng)
         locomotion_command = initial.info["command"]
-        initial = initial.replace(info=self._prefix_info(initial))
+        initial = self._prepare_prefix_initial(initial)
         state, previous, valid, _, _, _ = self._execute_prefix(initial)
         info = dict(state.info)
         info["step"] = jnp.zeros_like(info["step"])

@@ -14,7 +14,7 @@ ATTRIBUTION = (
     ROOT / "outputs" / "analysis" / "t20_two_rate_mismatch_attribution.json"
 )
 COMPOSED = Path(
-    "D:/CodexProjects/Open_Duck_Playground-composed-t19-v5"
+    "D:/CodexProjects/Open_Duck_Playground-composed-t19-v6"
 )
 
 
@@ -107,7 +107,16 @@ def test_prefix_diagnostic_exposes_both_target_histories() -> None:
     assert "length=CALIBRATION_TICKS" in text
 
 
-def test_composed_v5_manifest_and_changed_file_scope() -> None:
+def test_prefix_initializes_source_coordinates_from_external_home() -> None:
+    text = MODULE.read_text(encoding="utf-8")
+    assert "def _prepare_prefix_initial(" in text
+    assert "source_action = inverse_action(" in text
+    assert 'info["t19_source_motor_targets"] = (' in text
+    assert "initial = self._prepare_prefix_initial(initial)" in text
+    assert text.count("initial = self._prepare_prefix_initial(initial)") == 2
+
+
+def test_composed_v6_manifest_and_changed_file_scope() -> None:
     manifest_path = COMPOSED / "T19_COMPOSED_SOURCE_MANIFEST.json"
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     assert manifest["schema_version"] == "open_duck.t19_composed_source.v1"
