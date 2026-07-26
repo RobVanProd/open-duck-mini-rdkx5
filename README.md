@@ -39,12 +39,25 @@ over-current/overload runs are only `3`–`5` ticks against the corrected
 `100`-tick trip rule. An independent auditor reproduced all `16` manifests,
 `16` evaluations, `64` trace hashes, `64` exact COM readbacks, every aggregate,
 and the final decision with zero issues. The frozen-policy comparison is
-closed; no hosted training is yet earned.
+closed.
+
+T7 then found and prospectively tested a concrete mismatch in the older
+response-conditioned campaign. Training generated its response context while
+commanding the frozen V91 universal support target, but the formal V103
+evaluator executed the calibrator ONNX action head instead. T7 ran the actual
+universal-target graph on the exact current composed stack for nominal and
+`±0.05 m` torso-COM, both actuator fits, and two independent repeats:
+`12/12` cells pass 600-tick support, corrected servo protection, action/state
+chaining, exact model readback, and response-signal gates. Repeats are
+bit-exact; signed COM context separation is `0.156809`/`0.156854`, above the
+frozen `0.15` threshold. The independent audit reports zero issues. This earns
+only a zero-training, state-coherent support-to-locomotion handoff screen; no
+hosted training is yet earned.
 
 Current gate:
 
 ```text
-HOLD_GATE_5_PENDING_AUTOMATIC_CONFIGURATION_RESPONSE_CPU_FALSIFIER
+HOLD_GATE_5_PENDING_STATE_COHERENT_SUPPORT_TO_LOCOMOTION_CPU_SCREEN
 ```
 
 Read these first:
@@ -56,18 +69,21 @@ outputs/analysis/T4_BASELINE_ALL_GATES_RESULT_20260725.md
 outputs/analysis/T5_ACTUATOR_PROTECTION_REANALYSIS_RESULT_20260725.md
 outputs/analysis/T6_CORRECTED_ROBUSTNESS_SCREEN_RESULT_20260725.md
 outputs/analysis/T6_CORRECTED_ROBUSTNESS_SCREEN_INDEPENDENT_AUDIT_20260725.md
+outputs/analysis/T7_UNIVERSAL_RESPONSE_SUPPORT_RESULT_20260725.md
+outputs/analysis/T7_UNIVERSAL_RESPONSE_SUPPORT_INDEPENDENT_AUDIT_20260725.md
 outputs/analysis/WINNER_V177_NOMINAL_BEHAVIOR_RESULT_20260725.md
 ```
 
-The next step is a prospective, CPU-only mechanism review and falsifier for
-automatic configuration response. The robot may be reassembled, have pieces
-changed, or have mass distribution move, so the solution must infer useful
-configuration state from runtime-available signals; it must not require Rob
-to weigh parts or enter a static COM measurement. The previous passive
-73-value response context remains closed because the corrected `-0.05 m`
-support reset itself falls. It may supply evidence, but it is not silently
-resurrected. No Colab continuation is authorized until a new mechanism passes
-its preregistered CPU contract and explicitly earns one run.
+The next step is the separately preregistered, CPU-only, zero-training
+state-coherent handoff screen earned by T7. It must start locomotion from the
+stable universal support state without the old evaluator's action mismatch or
+the known-bad zero-action home return, while preserving the final applied
+target, previous-action chain, response context, phase, and policy recurrent
+state deliberately. The robot may be reassembled, have pieces changed, or
+have mass distribution move, so the mechanism continues to infer useful
+configuration state only from runtime-available signals; it requires no
+weighing, calipers, or static COM entry. No Colab continuation is authorized
+until this handoff screen and its subsequent CPU contract explicitly earn one.
 
 Current candidate:
 

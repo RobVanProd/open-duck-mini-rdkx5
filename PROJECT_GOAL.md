@@ -16,8 +16,11 @@ evidence, and T4 is complete and independently audited. T5 proved that the
 instantaneous stall-torque/current rule wrongly rejected at least three
 complete policy matrices. T6 has now evaluated all four reopened frozen policy
 pairs under the first previously failed configuration endpoint and found no
-robust survivor. A hosted training run remains unearned until an automatic
-configuration-response mechanism passes a prospective CPU-only falsifier.
+robust survivor. T7 has now passed the prospective automatic-response support
+falsifier on the exact current stack: the frozen universal target holds
+nominal and both signed COM endpoints for 600 ticks and produces a repeatable,
+configuration-sensitive context. A hosted training run remains unearned until
+the state-coherent support-to-locomotion handoff and its CPU contract pass.
 Only a policy that clears the reviewed offline gates can be prepared for
 robot-side suspended validation.
 
@@ -87,6 +90,19 @@ instantaneous current/torque rule. A runner-independent audit reproduced all
 source hashes, readbacks, trace metrics, classifications, aggregates, and the
 zero-survivor decision with no issue.
 
+T7 audited the prior response-conditioned pipeline and found that its training
+wrapper used the V91 universal support action while the formal V103 evaluator
+ran the calibrator action head. The old negative-X prefix failure therefore
+did not falsify the mechanism used during training. A new preregistered
+current-stack screen ran nominal and `±0.05 m` torso-COM, both measured
+actuator fits, and two independent repeats. All `12/12` cells complete 600
+ticks with minimum base height at least `0.151467 m`, worst pitch p95
+`0.077343 rad`, zero rate excess, zero saturation, and zero corrected
+over-current/overload runs. Repeats are bit-exact, and signed context
+separation is `0.156809`/`0.156854` against the frozen `0.15` threshold. The
+independent audit found zero issues. This establishes a stable automatic
+excitation and observable response signal, not yet a locomotion policy.
+
 ## Known Policy Contract
 
 Policy file:
@@ -138,11 +154,13 @@ Runtime then applies rate limiting before sending servo targets.
 2. Dynamic actuator bandwidth / delay mismatch between sim and the real
    pitch-chain joints. This remains independently supported, but is no longer
    ranked ahead of the measured observation mismatch.
-3. Configuration/support observability and response are now the leading
-   offline replacement-policy blocker. T6 proves that none of the four frozen
-   nominal winners adapts to the first failed torso-COM endpoint. The next
-   mechanism must infer configuration from runtime-available signals rather
-   than require static mass or millimeter measurements.
+3. State-coherent support-to-locomotion handoff is now the leading offline
+   replacement-policy blocker. T6 proves that none of the four frozen nominal
+   winners adapts to the first failed torso-COM endpoint. T7 proves that the
+   current stack can safely generate a repeatable configuration-sensitive
+   response while holding the universal support target. The next screen must
+   hand that physical/applied-target and recurrent state into locomotion
+   without the old action mismatch or zero-action home return.
 4. Policy target waveform and training objective remain possible contributors,
    but no new optimizer run is earned until that mechanism passes a
    prospective CPU-only falsifier.
@@ -183,8 +201,8 @@ The sim-to-real bridge is done when:
 
 ## Non-Goals For Now
 
-- No retraining before an automatic configuration-response mechanism passes a
-  prospective CPU-only falsifier and explicitly earns a hosted continuation.
+- No retraining before the T7-earned state-coherent handoff screen and its
+  subsequent CPU contract explicitly earn a hosted continuation.
 - No gain tuning.
 - No joint offset edits.
 - No IMU remap edits.
