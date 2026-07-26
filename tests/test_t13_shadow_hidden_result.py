@@ -56,3 +56,37 @@ def test_t13_result_is_canonical_and_closes_the_handoff() -> None:
         "hosted_or_colab_compute": 0,
         "robot_or_rdk_access": 0,
     }
+
+
+def test_t13_v2_audit_independently_reproduces_the_hold() -> None:
+    value = json.loads(
+        (
+            ANALYSIS
+            / "t13_shadow_hidden_independent_audit_v2.json"
+        ).read_text(encoding="utf-8")
+    )
+    basis = {
+        key: item
+        for key, item in value.items()
+        if key != "audit_sha256"
+    }
+    assert canonical_sha256(basis) == value["audit_sha256"]
+    assert (
+        value["status"]
+        == "PASS_T13_SHADOW_HIDDEN_INDEPENDENT_AUDIT_V2"
+    )
+    assert (
+        value["decision"]
+        == "CLOSE_EXISTING_RECURRENT_SHADOW_HANDOFF"
+    )
+    assert value["issues"] == []
+    assert value["recomputed_contract_failures"] == [
+        "V121_TRAIN_MATCHED_HALF.plant_action_visibility"
+    ]
+    assert value["execution"] == {
+        "simulator_prefix_cells": 0,
+        "scored_behavior_cells": 0,
+        "optimizer_steps": 0,
+        "hosted_or_colab_compute": 0,
+        "robot_or_rdk_access": 0,
+    }
