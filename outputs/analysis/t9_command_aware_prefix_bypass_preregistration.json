@@ -1,0 +1,463 @@
+{
+  "authority": {
+    "gate5": false,
+    "offline_cpu_behavior_screen": true,
+    "policy_weight_or_simulator_modification": false,
+    "robot_rdkx5_torque_motion": false,
+    "training_or_hosted_compute": false
+  },
+  "behavior_contract": {
+    "interpretation": {
+      "core": "minimum physical/semantic validity; thresholds passed by the T4 baseline where comparable",
+      "evaluator_candidate_gate_status": "diagnostic only because T4 invalidated its use as an unqualified feasibility classifier",
+      "replacement_quality": "explicit stretch goals for replacing the behaviorally bad baseline; T4 showed the baseline can fail some of these"
+    },
+    "moving_core": {
+      "bilateral_transitions": true,
+      "maximum_action_saturation_pct": 1.0,
+      "maximum_body_pitch_p95_rad": 0.25,
+      "minimum_base_height_m": 0.12,
+      "minimum_track_ratio": 0.25,
+      "positive_mean_local_velocity": true,
+      "samples": 600
+    },
+    "moving_replacement_quality": {
+      "maximum_action_saturation_pct": 0.0,
+      "maximum_pitch_tracking_p95_rad": 0.2,
+      "maximum_rate_excess_rad_s": 0.0
+    },
+    "x0_core": {
+      "maximum_absolute_mean_local_vx_m_s": 0.02,
+      "maximum_action_saturation_pct": 1.0,
+      "maximum_body_pitch_p95_rad": 0.25,
+      "minimum_base_height_m": 0.12,
+      "samples": 600
+    },
+    "x0_replacement_quality": {
+      "maximum_action_saturation_pct": 0.0,
+      "maximum_pitch_tracking_p95_rad": 0.2,
+      "maximum_rate_excess_rad_s": 0.0
+    }
+  },
+  "bypass_contract": {
+    "default_off": "the versioned evaluator flag defaults false; the T8 response prefix remains unchanged outside the x=0 branch",
+    "moving_path": {
+      "change_from_T8": "none",
+      "commands_x_m_s": [
+        0.074,
+        0.077,
+        0.08
+      ],
+      "green_and_independently_audited": true,
+      "reused_cells": 12
+    },
+    "selection": {
+      "deployment_alignment": "startup is paused at home; exact-zero command requires no configuration excitation",
+      "only_when_command_x_equals_zero": true
+    },
+    "x0_path": {
+      "applied_target_observation": true,
+      "applied_target_slot": [
+        83,
+        97
+      ],
+      "calibration_context": "immutable float32 zeros [1,64]",
+      "graph_authoritative": true,
+      "home_return_ticks": 0,
+      "initial_physical_state": "home-support reset",
+      "maximum_host_action_delta": 0.0,
+      "policy_action": "exact zero on every scored tick",
+      "policy_hidden_state": "exact zeros [1,64]",
+      "previous_action": "exact zeros [1,14]",
+      "reference_phase": [
+        1.0,
+        0.0
+      ],
+      "response_calibration_ticks": 0,
+      "state_context_and_applied_target_chains_exact": true
+    }
+  },
+  "candidate": {
+    "candidate_id": "V121",
+    "checkpoints": [
+      {
+        "checkpoint_id": "V121_TRAIN_MATCHED_HALF",
+        "parity": {
+          "all_outputs_bit_exact": true,
+          "context_is_diagnostic_only": true,
+          "maximum_abs_errors": {
+            "continuous_actions": 0.0,
+            "h_out": 0.0,
+            "previous_action_out": 0.0
+          },
+          "source_io": {
+            "inputs": {
+              "h_in": [
+                1,
+                64
+              ],
+              "obs": [
+                1,
+                115
+              ],
+              "previous_action": [
+                1,
+                14
+              ]
+            },
+            "outputs": {
+              "continuous_actions": [
+                1,
+                14
+              ],
+              "h_out": [
+                1,
+                64
+              ],
+              "previous_action_out": [
+                1,
+                14
+              ]
+            }
+          },
+          "ticks": 1024,
+          "wrapped_io": {
+            "inputs": {
+              "calibration_context": [
+                1,
+                64
+              ],
+              "h_in": [
+                1,
+                64
+              ],
+              "obs": [
+                1,
+                115
+              ],
+              "previous_action": [
+                1,
+                14
+              ]
+            },
+            "outputs": {
+              "continuous_actions": [
+                1,
+                14
+              ],
+              "h_out": [
+                1,
+                64
+              ],
+              "previous_action_out": [
+                1,
+                14
+              ]
+            }
+          },
+          "zero_command_actions_exact_zero": true
+        },
+        "source": {
+          "bytes": 958446,
+          "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v121-deployment-policies-20260724\\V121_DEPLOYMENT_1003520.onnx",
+          "sha256": "d4f280e8ebb4accd5c5c983bbf83042ec0162647efb446f0f6c8bffda42bc17a"
+        },
+        "wrapped": {
+          "bytes": 958485,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t8_state_coherent_handoff_assets_v2\\policies\\V121_DEPLOYMENT_1003520_T8_CONTEXT_ABI.onnx",
+          "sha256": "8749ba91e98c18b8c2d123bae3558154bc7221cc8b58c1a8ad6c9adc39d8ae4a"
+        }
+      },
+      {
+        "checkpoint_id": "V121_TRAIN_MATCHED_FINAL",
+        "parity": {
+          "all_outputs_bit_exact": true,
+          "context_is_diagnostic_only": true,
+          "maximum_abs_errors": {
+            "continuous_actions": 0.0,
+            "h_out": 0.0,
+            "previous_action_out": 0.0
+          },
+          "source_io": {
+            "inputs": {
+              "h_in": [
+                1,
+                64
+              ],
+              "obs": [
+                1,
+                115
+              ],
+              "previous_action": [
+                1,
+                14
+              ]
+            },
+            "outputs": {
+              "continuous_actions": [
+                1,
+                14
+              ],
+              "h_out": [
+                1,
+                64
+              ],
+              "previous_action_out": [
+                1,
+                14
+              ]
+            }
+          },
+          "ticks": 1024,
+          "wrapped_io": {
+            "inputs": {
+              "calibration_context": [
+                1,
+                64
+              ],
+              "h_in": [
+                1,
+                64
+              ],
+              "obs": [
+                1,
+                115
+              ],
+              "previous_action": [
+                1,
+                14
+              ]
+            },
+            "outputs": {
+              "continuous_actions": [
+                1,
+                14
+              ],
+              "h_out": [
+                1,
+                64
+              ],
+              "previous_action_out": [
+                1,
+                14
+              ]
+            }
+          },
+          "zero_command_actions_exact_zero": true
+        },
+        "source": {
+          "bytes": 958446,
+          "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v121-deployment-policies-20260724\\V121_DEPLOYMENT_2007040.onnx",
+          "sha256": "bc54ea1bf39e617f76771e7416de91db2ccfe0b1bf903de08faaa64a67ce4aab"
+        },
+        "wrapped": {
+          "bytes": 958485,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t8_state_coherent_handoff_assets_v2\\policies\\V121_DEPLOYMENT_2007040_T8_CONTEXT_ABI.onnx",
+          "sha256": "76aed96802919921ad8cce378752f684c03aa1fc529a874268bc250334327d44"
+        }
+      }
+    ],
+    "selection_basis": "identical V121 pair and context-ABI wrappers used in T8; no policy weights or graph behavior change"
+  },
+  "causal_basis": {
+    "T8_localization": "T8's direct physical/state handoff is viable for every moving cell. At x=0 only, the graph's exact deadband action changes from the universal support action to exact zero on the first scored tick. That single commanded-target transition exceeds all six measured pitch-chain envelopes; no later tick fails.",
+    "one_variable": "change only whether the response-support prefix executes when command x is exactly zero",
+    "why_no_training": "the failed transition is deterministic startup orchestration, not actor behavior or credit assignment",
+    "why_reuse_moving": "T9 does not change their prefix, policy, state, context, dynamics, or gate; rerunning would add compute without new evidence"
+  },
+  "decision_rule": {
+    "combined_cells_required": 16,
+    "fail_next_action": "close the command-aware prefix-bypass mechanism and do not train",
+    "new_x0_cells_required": 4,
+    "no_closest_result_promotion": true,
+    "partial_results_selection_weight": 0,
+    "pass": "all four new x=0 cells pass stationary behavior, replacement tracking/rate/saturation, corrected servo-duration protection, exact nominal readback, zero-context bypass, and every recurrent/applied-target chain; combined with all twelve audited T8 moving cells this must be 16/16",
+    "pass_next_action": "earn one separately preregistered response-conditioned V121 continuation CPU software contract; do not authorize hosted training yet",
+    "reused_moving_cells_required": 12
+  },
+  "execution_contract": {
+    "cache_root": "D:\\CodexArtifacts\\open-duck-policy\\t9_command_aware_prefix_bypass_v1",
+    "cpu_only": true,
+    "new_simulator_behavior_cells": 4,
+    "one_subprocess_per_checkpoint_fit_cell": true,
+    "optimizer_updates": 0,
+    "raw_logs_external_to_repository": true,
+    "resumable_only_by_exact_block_contract_and_hashes": true,
+    "reused_behavior_cells": 12,
+    "robot_or_rdk_access": 0,
+    "runner_refuses_overwrite": true,
+    "training_steps": 0
+  },
+  "matrix": {
+    "checkpoints": 2,
+    "combined_cells": 16,
+    "duration_ticks": 600,
+    "dynamics_override": {
+      "torso_com_offset_m": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "fits": [
+      "p30",
+      "p31_34"
+    ],
+    "frequency_hz": 50,
+    "new_cells": 4,
+    "new_command_x_m_s": 0.0,
+    "reused_t8_moving_cells": 12,
+    "seed": 167931544
+  },
+  "playground": {
+    "composition_manifests": {
+      "base_v98": {
+        "bytes": 5525,
+        "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-v175\\WINNER_V98_COMPOSED_SOURCE_MANIFEST.json",
+        "sha256": "b4cde8ba531ba0695471970bb30ce0034b0e4ce637a05e15a73df2c75896625d"
+      },
+      "constrained_v127": {
+        "bytes": 5078,
+        "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-v175\\WINNER_V127_COMPOSED_SOURCE_MANIFEST.json",
+        "sha256": "3514416307e1f12e72feb4228f50a42ae02ca91b86d9dbc339448cf1b2ac6564"
+      },
+      "tangent_v173": {
+        "bytes": 5435,
+        "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-v175\\WINNER_V173_COMPOSED_SOURCE_MANIFEST.json",
+        "sha256": "ba33a3467893c59ed4ff57388ef61ce3c1257b6abd38702b982fa3230438bfe7"
+      }
+    },
+    "control_commit": "b9be205ac64488c23504ca42e5ec790337adeec3",
+    "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-v175",
+    "required_file_sha256": {
+      "playground/common/phase_moe_networks.py": "6480f59f4039884be6743828ffed1c31f76896830b2b38689cad038200283cb7",
+      "playground/common/recurrent_ppo_networks.py": "a501000c6f959276514ba56f935d027b05b171a9ea62bb6a2bc1ecdd2fe8cb4e",
+      "playground/common/reference_residual_ppo_networks.py": "eeb1b758f32bb8a7e53cf59b269bed7f97126cf37ccc4d11090a5f8312b380e6",
+      "playground/common/rewards.py": "9c327866f2632265f14ef81318046f887aafa64384a06efa6cb264e144bbb1d3",
+      "playground/common/runner.py": "27fb16f56eb3dbbeea09b4395dd6073d88092d16dd2bc21265767922204b4546",
+      "playground/open_duck_mini_v2/custom_rewards.py": "16fdf5ed409f9abcfa6f68465c4351081c0c255a6683c09aee110c557890cd0c",
+      "playground/open_duck_mini_v2/joystick.py": "5bbdfcf77dc36fcc2b02751fa7234b89c38fea53e35fbf09b37084102d9033d3",
+      "playground/open_duck_mini_v2/runner.py": "3c04098dcac6b4e22011645a70f6276e57da55dacfc5c6a82e68f1c3c7312457",
+      "playground/open_duck_mini_v2/xmls/open_duck_mini_v2_backlash.xml": "11e922dc9524716e9f54b2fd8be54133fa65efbc61de96ddc846d991de1c9d38",
+      "playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml": "33af97247d6a876cf47c9e37185cb71bd09f6793bc0f62d90cbe2a91caa3ba63"
+    }
+  },
+  "preregistered_contract_sha256": "7efdd08003c0096c7fab5bba4208b0369880b0feca836444030067b233d15195",
+  "protection_contract": {
+    "force_limit_tolerance_nm": 5e-06,
+    "instantaneous_stall_current_and_torque": "diagnostic_only",
+    "motor_constant_nm_per_a": 0.784532,
+    "overcurrent_threshold_a": 2.0,
+    "overload_threshold_nm": 1.5298374,
+    "pass_max_consecutive_ticks": 99,
+    "simulator_force_limit_abs_nm": 3.23,
+    "simulator_force_limit_hits": "diagnostic_only",
+    "source": "T5 manufacturer-derived duration rules",
+    "strict_comparison": true,
+    "trip_ticks": 100
+  },
+  "question": "Does bypassing response excitation only while paused/x=0 eliminate T8's single transition-rate failure while preserving the immutable 12/12 green moving handoff evidence?",
+  "repository_inputs": {
+    "adapter": {
+      "bytes": 8211,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\t9_command_aware_eval_adapter.py",
+      "sha256": "04f2ceb681167c17086a78ee6da77a819de4b51dec1bc7fd73a6d7a930ffa522"
+    },
+    "builder": {
+      "bytes": 12370,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t9_command_aware_prefix_bypass_preregistration.py",
+      "sha256": "9f6dd68e8542fb2461848ad6a0421c7bd05f4fe2b7a44f19249cc3e4dcf751a8"
+    },
+    "closed_loop_frozen_source": {
+      "bytes": 153794,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\closed_loop_sim_eval.py",
+      "sha256": "352ea320936c83801fa47f76e35faea36a68f1d7f45c11b1869292e1955f4114"
+    },
+    "fit_p30": {
+      "bytes": 18664,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "a58db8ffc505d2bb64cba7f5618d0e2c65904fc9f9ac37b560a1231e090f5f4f"
+    },
+    "fit_p31_34": {
+      "bytes": 18788,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p31_34_actuator_fit_20260712.json",
+      "sha256": "2740513f6bdeb4ad3cc5dd6dc1709319389a593fd153c1ce5abae03b66131a57"
+    },
+    "independent_auditor": {
+      "bytes": 17392,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\audit_t9_command_aware_prefix_bypass.py",
+      "sha256": "c7462b84508be96b66562541068a9b2ca9eb07b63128420f93ffcb9e4ae1aa45"
+    },
+    "reference_features": {
+      "bytes": 259604,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+      "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+    },
+    "runner": {
+      "bytes": 18701,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t9_command_aware_prefix_bypass.py",
+      "sha256": "8fd54ed024e026ef33dc8798b6ef85cb5fb8406f869b71eaa1a3a2a41effc05f"
+    },
+    "t6_helpers": {
+      "bytes": 29466,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t6_corrected_robustness_screen.py",
+      "sha256": "34d955a9443d8e0fba01a75b64243c865e5e78df23cadb43e871210cb9ba0e00"
+    },
+    "t8_adapter": {
+      "bytes": 13299,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\t8_state_coherent_eval_adapter.py",
+      "sha256": "13396bb1df49bba50556b67dd51cf5542be777b034d0c9235a8d2926dcdf8719"
+    },
+    "t8_asset_manifest": {
+      "bytes": 5775,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t8_state_coherent_handoff_assets_v2\\manifest.json",
+      "sha256": "696396c7bcd9d7c85340c3beb91bd0e89efedc0f88d1885a7a7fd8f633994bbe"
+    },
+    "t8_failure_analysis": {
+      "bytes": 12631,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t8_state_coherent_handoff_failure_analysis.json",
+      "sha256": "9f9fb33c28f193ed188834e838ba643d8e01df7417c181949e7e9101cb1fc296"
+    },
+    "t8_independent_audit": {
+      "bytes": 1023,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t8_state_coherent_handoff_independent_audit_v2.json",
+      "sha256": "3504829f9f1bbff61a1f67a12aa6a0aaa216035b8a6579a8e8fc54e8f39bfa53"
+    },
+    "t8_preregistration": {
+      "bytes": 19693,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t8_state_coherent_handoff_preregistration.json",
+      "sha256": "c4184d8bdba742034ec83fc30a6df4662d822150549298252e19bf19d58e19cd"
+    },
+    "t8_result": {
+      "bytes": 123271,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t8_state_coherent_handoff_result.json",
+      "sha256": "ed84bf9644e3ae5c364a8b66f5bf73386d44861569e0062d7e154a023746f368"
+    },
+    "worker": {
+      "bytes": 5788,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\evaluate_t9_x0_prefix_bypass.py",
+      "sha256": "650f26113b378fa56337d37bab7a039e538ec590b053b5950871fe0465e34b5c"
+    }
+  },
+  "reused_t8_evidence": {
+    "failure_analysis": {
+      "bytes": 12631,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t8_state_coherent_handoff_failure_analysis.json",
+      "sha256": "9f9fb33c28f193ed188834e838ba643d8e01df7417c181949e7e9101cb1fc296"
+    },
+    "green_moving_cells": 12,
+    "independent_audit": {
+      "bytes": 1023,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t8_state_coherent_handoff_independent_audit_v2.json",
+      "sha256": "3504829f9f1bbff61a1f67a12aa6a0aaa216035b8a6579a8e8fc54e8f39bfa53"
+    },
+    "result": {
+      "bytes": 123271,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t8_state_coherent_handoff_result.json",
+      "sha256": "ed84bf9644e3ae5c364a8b66f5bf73386d44861569e0062d7e154a023746f368"
+    },
+    "reuse_rule": "the mechanism makes no change to moving commands, so their exact immutable T8 traces carry decision weight without rerun"
+  },
+  "schema_version": "open_duck.t9_command_aware_prefix_bypass_preregistration.v1",
+  "status": "PREREGISTERED_T9_COMMAND_AWARE_PREFIX_BYPASS"
+}
