@@ -1,0 +1,84 @@
+{
+  "amendment_contract_sha256": "455c6018751ba6d90c841de570abbc09d320030756f6a17f95bf2ce6f547c20d",
+  "authorized_recovery": {
+    "all_four_cells_must_be_recomputed": true,
+    "attempts_exact": 1,
+    "fresh_work_root": "D:\\CodexArtifacts\\open-duck-policy\\t13_shadow_hidden_contract_v2",
+    "reuse_partial_v1_forbidden": true
+  },
+  "correction": {
+    "matrix_changed": false,
+    "mechanism_changed": false,
+    "one_tick_status": "require PASS_MODE_EVALUATED and no worker error; the candidate behavior status is intentionally not scored by T13",
+    "policy_or_prefix_changed": false,
+    "rate_excess": "take maximum absolute value over the already logged per-joint vector",
+    "thresholds_changed": false
+  },
+  "execution_now": {
+    "formal_decision_cells": 0,
+    "hosted_or_colab_compute": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "scored_behavior_cells": 0
+  },
+  "failed_execution": {
+    "completed_prefix_cells": 1,
+    "decision_weight": 0,
+    "evaluation": {
+      "bytes": 69274,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t13_shadow_hidden_contract_v1\\V121_TRAIN_MATCHED_HALF\\p30\\evaluation.json",
+      "sha256": "336a7c8e5819b4404e428bbc0f8223ee705565624b7054eb759de10c602ea15f"
+    },
+    "failure_class": "reporting aggregation treated a per-joint rate-excess vector as a scalar after the simulator cell completed",
+    "formal_result_written": false,
+    "hosted_or_colab_compute": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "selection_use_forbidden": true,
+    "stderr": {
+      "bytes": 707,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t13_shadow_hidden_contract_v1.stderr.log",
+      "sha256": "68172f36040738bb8bc469479be6a0de53424584ad2b1c737b199c6696da9992"
+    },
+    "trace": {
+      "bytes": 15792,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t13_shadow_hidden_contract_v1\\V121_TRAIN_MATCHED_HALF\\p30\\tick0.jsonl",
+      "sha256": "5007abf75a5c47591ca2f4a97e8ebe902ed008561a547bd6e761e53b396c435d"
+    },
+    "work_root": "D:\\CodexArtifacts\\open-duck-policy\\t13_shadow_hidden_contract_v1"
+  },
+  "original_runner": {
+    "bytes": 17658,
+    "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t13_shadow_hidden_contract.py",
+    "sha256": "7e2dac80767f411a90d4fd1eb1d39355c1e12d0fa8e5c5d75c6fb3dcaca8d865"
+  },
+  "preregistered_contract_sha256": "c3220901cd8f63858e6d4232c1320289d9992bfec1371632463027d444bfc622",
+  "recovery_runner": {
+    "bytes": 19393,
+    "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t13_shadow_hidden_contract.py",
+    "sha256": "f27de9d6e42f312c5c9fa3eefde76c78f49e09b0afc4f64fae6e1cc55f759e1d"
+  },
+  "schema_version": "open_duck.t13_execution_recovery_amendment.v1",
+  "status": "PREREGISTERED_T13_EXECUTION_RECOVERY",
+  "unchanged_contract": {
+    "decision_rule": {
+      "fail": "Close existing-recurrent shadow handoff. Do not train it, tune a hidden scale, remap coordinates, or run behavior.",
+      "no_threshold_changes_after_outcome": true,
+      "partial_results_selection_weight": 0,
+      "pass": "Authorize only a separately preregistered T14 12-cell negative-COM behavior screen using this exact handoff."
+    },
+    "partial_results_selection_weight": 0,
+    "pass_rule": {
+      "all_bounds_and_rate_checks_green": true,
+      "all_com_readbacks_exact": true,
+      "all_four_cells_complete_on_cpu": true,
+      "all_prefix_actions_ignored_and_250_shadow_steps_exact": true,
+      "all_shadow_hidden_states_finite_nonzero_and_exact_at_handoff": true,
+      "all_tick_zero_graph_replays_bit_exact": true,
+      "all_x0_counterfactual_actions_and_state_outputs_exact_zero": true,
+      "minimum_cross_plant_hidden_linf": 1e-07,
+      "minimum_same_observation_cross_plant_final_action_linf": 1e-06,
+      "minimum_shadow_vs_zero_final_action_linf": 1e-06
+    }
+  }
+}

@@ -20,6 +20,9 @@ ANALYSIS = ROOT / "outputs" / "analysis"
 PREREG = ANALYSIS / "t13_shadow_hidden_preregistration.json"
 RESULT = ANALYSIS / "t13_shadow_hidden_result.json"
 MARKDOWN = ANALYSIS / "T13_SHADOW_HIDDEN_RESULT_20260726.md"
+RECOVERY_AMENDMENT = (
+    ANALYSIS / "t13_execution_recovery_amendment.json"
+)
 
 
 def sha256(path: Path) -> str:
@@ -81,8 +84,35 @@ def load_preregistration() -> dict[str, Any]:
         != value["preregistered_contract_sha256"]
     ):
         raise RuntimeError("T13 preregistration identity changed")
+    amendment = None
+    if RECOVERY_AMENDMENT.is_file():
+        amendment = json.loads(
+            RECOVERY_AMENDMENT.read_text(encoding="utf-8")
+        )
+        amendment_basis = {
+            key: item
+            for key, item in amendment.items()
+            if key != "amendment_contract_sha256"
+        }
+        if (
+            amendment["schema_version"]
+            != "open_duck.t13_execution_recovery_amendment.v1"
+            or amendment["status"]
+            != "PREREGISTERED_T13_EXECUTION_RECOVERY"
+            or canonical_sha256(amendment_basis)
+            != amendment["amendment_contract_sha256"]
+            or amendment["preregistered_contract_sha256"]
+            != value["preregistered_contract_sha256"]
+        ):
+            raise RuntimeError("T13 recovery amendment identity changed")
     for name, item in value["sources"].items():
+        if name == "runner" and amendment is not None:
+            continue
         verify_receipt(item, name)
+    if amendment is not None:
+        verify_receipt(
+            amendment["recovery_runner"], "amended T13 runner"
+        )
     for checkpoint in value["candidate"]["checkpoints"]:
         verify_receipt(checkpoint["policy"], checkpoint["checkpoint_id"])
     for fit_id, item in value["candidate"]["fits"].items():
@@ -257,7 +287,8 @@ def replay_cell(
         "block_complete": (
             payload.get("status")
             == "COMPLETE_T13_SHADOW_HIDDEN_BLOCK"
-            and payload["run"].get("status") == "PASS"
+            and mode.get("status") == "PASS_MODE_EVALUATED"
+            and payload["run"].get("error") is None
         ),
         "com_readback_exact": exact_com_readback(
             payload["run"].get("dynamics_override")
@@ -315,10 +346,30 @@ def replay_cell(
             np.all(np.isfinite(shadow_action))
             and np.all(shadow_action >= -1.0)
             and np.all(shadow_action <= 1.0)
-            and float(row.get("sent_target_rate_excess_rad_s", 1.0))
+            and float(
+                np.max(
+                    np.abs(
+                        np.asarray(
+                            row.get(
+                                "sent_target_rate_excess_rad_s", [1.0]
+                            ),
+                            dtype=float,
+                        )
+                    )
+                )
+            )
             <= 1.0e-6
             and float(
-                row.get("conservative_rate_excess_rad_s", 1.0)
+                np.max(
+                    np.abs(
+                        np.asarray(
+                            row.get(
+                                "conservative_rate_excess_rad_s", [1.0]
+                            ),
+                            dtype=float,
+                        )
+                    )
+                )
             )
             <= 1.0e-6
         ),
