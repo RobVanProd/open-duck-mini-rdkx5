@@ -1,0 +1,41 @@
+{
+  "attribution": {
+    "correction_scope": "replace only the process-local PyTreeDef string with a canonical leaf count; rerun only the two default-off workers",
+    "falsifier": "the same frozen V175 playground, seed, actions, and worker contract produced nine of nine different hashes across the two formal processes",
+    "invalid_field": "str(PyTreeDef) was included in each trajectory digest even though it is process-local metadata, not transition data",
+    "mechanism_changes": 0,
+    "optimizer_steps": 0,
+    "rate_or_coordinate_changes": 0,
+    "support_prefix_changes": 0
+  },
+  "audit_sha256": "4f1ad8ce6e21702ae85549bdd7385d14ac6aa619fb21ccec983641f789a53ee8",
+  "checks": {
+    "all_same_base_hashes_disagree_across_processes": true,
+    "formal_hold_is_default_off_only": true,
+    "historical_contracts_present": true,
+    "same_unchanged_base_playground": true,
+    "same_worker_contract": true
+  },
+  "decision": "PREREGISTER_CANONICAL_LEAF_DIGEST_CORRECTION",
+  "failed_checks": [],
+  "input_hashes": {
+    "first_base": "de90348c52863597080f3707ef3f51c295e2c5f60f50db81b32cc3b8017a53fc",
+    "formal_result": "a6f4e93cc4bab040dfa779be5f17dffbc80f7884fb6e6910bb1653c81eb71b13",
+    "original_preregistration": "a556d5f607c8b247c568dddacb67dd866f908e03f9a0a1d8a9ba4a730dcdfa35",
+    "recovery_preregistration": "962a016ee1c4f10a2219f0b2b1808c3837fb013b3857dbf82b651eaab55f8fd1",
+    "second_base": "a63f3fc3f4aeb3f84000a006395802d6e7d193cba283c6b77065020c2a985578"
+  },
+  "same_base_digest_equal_by_tick": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "schema_version": "open_duck.t19_default_off_digest_attribution.v1",
+  "status": "PASS_T19_DEFAULT_OFF_DIGEST_INVALIDATION"
+}
