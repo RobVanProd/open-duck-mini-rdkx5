@@ -17,7 +17,7 @@ T27_PREREG = ANALYSIS / "t27_t23_robustness_matrix_preregistration.json"
 T28_TRANSFORM = ANALYSIS / "t28_t23_action_margin_transform_contract.json"
 T29_RESULT = ANALYSIS / "t29_t28_remaining_r2_result.json"
 RUNNER = ROOT / "tools" / "run_t30_t28_margin_causality.py"
-WORKER = ROOT / "tools" / "evaluate_t27_t23_robustness_condition.py"
+WORKER = ROOT / "tools" / "evaluate_t30_t28_margin_causal_cell.py"
 OUTPUT = ANALYSIS / "t30_t28_margin_causality_preregistration.json"
 OUTPUT_MD = (
     ANALYSIS / "T30_T28_MARGIN_CAUSALITY_PREREGISTRATION_20260726.md"
