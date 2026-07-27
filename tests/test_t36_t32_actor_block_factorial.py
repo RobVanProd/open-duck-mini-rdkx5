@@ -46,17 +46,34 @@ def test_t36_freezes_the_complete_six_variant_factorial() -> None:
     assert not payload["authority"]["rdkx5_or_robot"]
 
 
-def test_t36_result_never_promotes_a_hybrid_policy() -> None:
+def test_t36_result_selects_the_frozen_normalizer_freeze_precedence() -> None:
     path = ANALYSIS / "t36_t32_actor_block_factorial_result.json"
     if not path.is_file():
         pytest.skip("formal T36 result has not run")
     payload = json.loads(path.read_text(encoding="utf-8"))
-    assert payload["status"] in {
-        "PASS_T36_T32_ACTOR_BLOCK_FACTORIAL_NO_REPAIR",
-        "PASS_T36_T32_ACTOR_BLOCK_FACTORIAL_WITH_REPAIR",
-    }
+    assert (
+        payload["status"]
+        == "PASS_T36_T32_ACTOR_BLOCK_FACTORIAL_WITH_REPAIR"
+    )
+    assert payload["decision"] == (
+        "EARN_T37_NORMALIZER_HALF_"
+        "FREEZE_TRAINING_CPU_CONTRACT_PREREGISTRATION"
+    )
     assert payload["summary"]["formal_behavior_cells"] == 6
     assert payload["summary"]["valid_cells"] == 6
+    assert payload["summary"]["green_cells"] == 6
+    assert payload["summary"]["one_group_passing_variants"] == [
+        "NORMALIZER_HALF",
+        "BASE_HALF",
+        "ADAPTER_HALF",
+    ]
+    assert payload["summary"][
+        "selected_mechanism_variant_diagnostic"
+    ] == "NORMALIZER_HALF"
+    assert payload["summary"]["selected_half_groups"] == ["normalizer"]
+    assert all(cell["cell_green"] for cell in payload["cells"])
+    assert all(cell["behavior"]["samples"] == 600 for cell in payload["cells"])
+    assert payload["authority"]["mechanism_contract_preregistration"]
     assert not payload["authority"]["policy_promotion"]
     assert not payload["authority"]["checkpoint_selection"]
     assert not payload["authority"]["training"]
