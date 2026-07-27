@@ -53,3 +53,21 @@ def test_t31_all_frozen_receipts_have_explicit_kind() -> None:
     receipts = [*payload["sources"].values(), *payload["assets"].values()]
     assert receipts
     assert all(item["kind"] in {"file", "directory"} for item in receipts)
+
+
+def test_t31_cpu_smoke_passes_without_expanding_authority() -> None:
+    payload = load("t31_action_margin_trainthrough_cpu_result.json")
+    assert payload["status"] == (
+        "PASS_T31_ACTION_MARGIN_TRAINTHROUGH_CPU_SMOKE"
+    )
+    assert payload["decision"] == (
+        "EARN_T31_HOSTED_CONTINUATION_PREREGISTRATION"
+    )
+    assert payload["failed_checks"] == []
+    assert all(payload["checks"].values())
+    assert payload["authority"]["hosted_preregistration"]
+    assert not payload["authority"]["hosted_training"]
+    assert not payload["authority"]["behavior_evaluation"]
+    assert not payload["authority"]["gate5"]
+    assert not payload["authority"]["rdkx5_or_robot"]
+    assert not payload["authority"]["torque_or_motion"]
