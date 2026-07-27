@@ -66,3 +66,21 @@ def test_t38_hosted_package_contains_no_robot_or_secret_material() -> None:
     assert not payload["authority"]["behavior_evaluation"]
     assert not payload["authority"]["gate5"]
     assert not payload["authority"]["rdkx5_or_robot"]
+
+
+def test_t38_colab_contract_allows_one_l4_launch_only() -> None:
+    payload = load("t38_colab_cli_launch_contract.json")
+    assert payload["status"] == "PASS_T38_COLAB_CLI_LAUNCH_CONTRACT"
+    assert payload["failed_checks"] == []
+    assert payload["session"]["accelerator"] == "L4"
+    assert payload["session"]["count"] == 1
+    assert payload["session"]["max_wall_seconds"] == 21600
+    assert payload["recovery"]["download_result_archive_receipt_before_stop"]
+    assert payload["recovery"]["stop_session_after_pass_or_hold"]
+    assert not payload["recovery"]["retry"]
+    assert not payload["recovery"]["resume"]
+    assert payload["authority"]["one_exact_cli_launch"]
+    assert not payload["authority"]["additional_attempt"]
+    assert not payload["authority"]["behavior_evaluation"]
+    assert not payload["authority"]["gate5"]
+    assert not payload["authority"]["rdkx5_or_robot"]
