@@ -1,0 +1,207 @@
+{
+  "authority": {
+    "colab": false,
+    "conditions_two_through_twenty": false,
+    "execute_one_cpu_condition": true,
+    "gate5": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "behavior_contract": {
+    "interpretation": {
+      "core": "minimum physical/semantic validity; thresholds passed by the T4 baseline where comparable",
+      "evaluator_candidate_gate_status": "diagnostic only because T4 invalidated its use as an unqualified feasibility classifier",
+      "replacement_quality": "explicit stretch goals for replacing the behaviorally bad baseline; T4 showed the baseline can fail some of these"
+    },
+    "moving_core": {
+      "bilateral_transitions": true,
+      "maximum_action_saturation_pct": 1.0,
+      "maximum_body_pitch_p95_rad": 0.25,
+      "minimum_base_height_m": 0.12,
+      "minimum_track_ratio": 0.25,
+      "positive_mean_local_velocity": true,
+      "samples": 600
+    },
+    "moving_replacement_quality": {
+      "maximum_action_saturation_pct": 0.0,
+      "maximum_pitch_tracking_p95_rad": 0.2,
+      "maximum_rate_excess_rad_s": 0.0
+    },
+    "x0_core": {
+      "maximum_absolute_mean_local_vx_m_s": 0.02,
+      "maximum_action_saturation_pct": 1.0,
+      "maximum_body_pitch_p95_rad": 0.25,
+      "minimum_base_height_m": 0.12,
+      "samples": 600
+    },
+    "x0_replacement_quality": {
+      "maximum_action_saturation_pct": 0.0,
+      "maximum_pitch_tracking_p95_rad": 0.2,
+      "maximum_rate_excess_rad_s": 0.0
+    }
+  },
+  "calibrator": {
+    "bytes": 55573,
+    "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v96-response-conditioned-mechanics\\winner_v96_universal_calibrator.onnx",
+    "sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576"
+  },
+  "checks": {
+    "condition_is_original_r2_condition_one": true,
+    "exactly_two_uniformly_wrapped_policies": true,
+    "runner_and_worker_present": true,
+    "t27_runner_contract_green": true,
+    "t27_stopped_at_condition_one": true,
+    "transform_contract_green": true,
+    "transform_preregistered": true
+  },
+  "commands_x_m_s": [
+    0.0,
+    0.074,
+    0.077,
+    0.08
+  ],
+  "conditions": [
+    {
+      "condition_index": 1,
+      "id": "FLOOR_FRICTION_LO",
+      "override": {
+        "floor_friction": 0.5
+      }
+    }
+  ],
+  "decision_rule": {
+    "both_checkpoints_required": true,
+    "fail": "Close the exact T28 transform and attribute the first failed cell. No training is automatically earned.",
+    "no_checkpoint_selection": true,
+    "pass": "All 16 cells pass the unchanged T27 behavior, corrected duration-protection, handoff, and exact-readback checks. Authorize preregistration of conditions 2-20 only."
+  },
+  "failed_checks": [],
+  "fits": [
+    {
+      "bytes": 18664,
+      "fit_id": "p30",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "a58db8ffc505d2bb64cba7f5618d0e2c65904fc9f9ac37b560a1231e090f5f4f"
+    },
+    {
+      "bytes": 18788,
+      "fit_id": "p31_34",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p31_34_actuator_fit_20260712.json",
+      "sha256": "2740513f6bdeb4ad3cc5dd6dc1709319389a593fd153c1ce5abae03b66131a57"
+    }
+  ],
+  "frozen_inputs": {
+    "adapter": {
+      "bytes": 8272,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\t27_state_coherent_eval_adapter.py",
+      "sha256": "e53d6e74bad78e6ffa0423807e6dbe168730e881a47017f5343a0391ac5836cb"
+    },
+    "runner": {
+      "bytes": 8972,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t28_t23_action_margin_condition.py",
+      "sha256": "60d1ddfbc36df1aeea2a631216ccc994264f912bd46745aae56224364ad92fa4"
+    },
+    "t27_preregistration": {
+      "bytes": 12971,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t27_t23_robustness_matrix_preregistration.json",
+      "sha256": "a62c3bb66162d70b4c194f20a5cd16af5784822b0858c6adefab5a962a3fecc5"
+    },
+    "t27_result": {
+      "bytes": 123876,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t27_t23_robustness_matrix_result.json",
+      "sha256": "82d5797afc52182aaad6e8371a65ad9993e468850ca4b01d37d87b13ec265a33"
+    },
+    "t27_runner_contract": {
+      "bytes": 7158,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t27_t23_robustness_runner_contract.json",
+      "sha256": "282d4e44616addba93639acbfd31c35d49134938d9847b3990930619837ab50a"
+    },
+    "transform_contract": {
+      "bytes": 4745,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t28_t23_action_margin_transform_contract.json",
+      "sha256": "775d62394fc0ec2ca4fa2df263eaa703a1f0f80ddf3279fb8a4fd4572051e6fb"
+    },
+    "transform_preregistration": {
+      "bytes": 18366,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t28_t23_action_margin_preregistration.json",
+      "sha256": "7b8914ef8a75a469c043cbebc55655e4175c6bdd3556326d31996e64a376a13f"
+    },
+    "worker": {
+      "bytes": 7932,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\evaluate_t27_t23_robustness_condition.py",
+      "sha256": "93ff8c405d6bf1923cd8bea69ce5efde4cd97388f6b71a1d0f9ba5aa599b096c"
+    }
+  },
+  "matrix": {
+    "checkpoints": 2,
+    "commands": 4,
+    "condition_must_complete": true,
+    "conditions": 1,
+    "cpu_only": true,
+    "execution_order": "condition -> checkpoint half/final -> fit p30/p31_34 -> command 0/.074/.077/.080",
+    "fits": 2,
+    "maximum_cells": 16
+  },
+  "playground": {
+    "manifest": {
+      "bytes": 5190,
+      "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v6\\T19_COMPOSED_SOURCE_MANIFEST.json",
+      "sha256": "d7c9b615c32f0e2c8434e958a900cc38485c0db6fea107b6115a69bbd2122a77"
+    },
+    "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v6"
+  },
+  "policies": [
+    {
+      "bytes": 965047,
+      "checkpoint_id": "T23_SUPPORT_HALF",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t28_t23_action_margin_policies_v1\\T28_MARGIN_1003520.onnx",
+      "sha256": "b2450530ff3751cfc84ff56f023b880ece8dbc7ee21166d9af7b00e10e14fd24",
+      "step": 1003520
+    },
+    {
+      "bytes": 965047,
+      "checkpoint_id": "T23_SUPPORT_FINAL",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t28_t23_action_margin_policies_v1\\T28_MARGIN_2007040.onnx",
+      "sha256": "a5f1a57cbb8f7f3cc9b43cf227fc76a867041e2ccaf12756264b17d66fbbb8da",
+      "step": 2007040
+    }
+  ],
+  "preregistered_contract_sha256": "c4e855eb8a4ae8519071f23009a46b162295da103ac41c66e6383f958771f950",
+  "protection_contract": {
+    "force_limit_tolerance_nm": 5e-06,
+    "instantaneous_stall_current_and_torque": "diagnostic_only",
+    "motor_constant_nm_per_a": 0.784532,
+    "overcurrent_threshold_a": 2.0,
+    "overload_threshold_nm": 1.5298374,
+    "pass_max_consecutive_ticks": 99,
+    "simulator_force_limit_abs_nm": 3.23,
+    "simulator_force_limit_hits": "diagnostic_only",
+    "source": "T5 manufacturer-derived duration rules",
+    "strict_comparison": true,
+    "trip_ticks": 100
+  },
+  "question": "Does the uniform exact T28 action-margin transform make both T23 checkpoints pass the complete floor-friction-0.5 condition?",
+  "reference_feature_table": {
+    "bytes": 259604,
+    "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+    "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+  },
+  "schema_version": "open_duck.t28_t23_action_margin_condition_preregistration.v1",
+  "seed": 167931544,
+  "status": "PREREGISTERED_T28_T23_ACTION_MARGIN_CONDITION",
+  "support_handoff": {
+    "context_input_name": "calibration_context",
+    "context_is_diagnostic_only": true,
+    "locomotion_hidden_zero": true,
+    "locomotion_phase_reset": [
+      1.0,
+      0.0
+    ],
+    "preserve_applied_target_observer_state": true,
+    "preserve_final_support_action_as_previous_action": true,
+    "source": "T22/T24 exact support-train-through deployment chain and green T27 one-tick runner contract",
+    "unscored_calibration_ticks": 250,
+    "unscored_home_return_ticks": 0
+  }
+}
