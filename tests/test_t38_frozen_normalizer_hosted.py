@@ -46,3 +46,23 @@ def test_t38_freezes_one_no_retry_hosted_continuation() -> None:
     assert not payload["authority"]["additional_training_or_retry"]
     assert not payload["authority"]["gate5"]
     assert not payload["authority"]["rdkx5_or_robot"]
+
+
+def test_t38_hosted_package_contains_no_robot_or_secret_material() -> None:
+    payload = load("t38_frozen_normalizer_hosted_package_contract.json")
+    assert payload["status"] == "PASS_T38_FROZEN_NORMALIZER_HOSTED_PACKAGE"
+    assert payload["failed_checks"] == []
+    assert payload["checks"]["preregistration_exact"]
+    assert payload["checks"]["input_hashes_exact"]
+    assert payload["checks"]["source_checkpoint_copy_exact"]
+    assert payload["checks"]["playground_source_copy_exact"]
+    assert payload["checks"]["isolated_import_preflight_passed"]
+    assert payload["checks"]["credentials_absent"]
+    assert payload["checks"]["robot_access_material_absent"]
+    assert payload["checks"]["training_or_behavior_not_run"]
+    assert payload["archive"]["bytes"] > 0
+    assert payload["authority"]["one_hash_exact_hosted_continuation"]
+    assert not payload["authority"]["retry_or_resume"]
+    assert not payload["authority"]["behavior_evaluation"]
+    assert not payload["authority"]["gate5"]
+    assert not payload["authority"]["rdkx5_or_robot"]
