@@ -84,3 +84,23 @@ def test_t28_condition_is_exactly_sixteen_cells() -> None:
     assert payload["decision_rule"]["no_checkpoint_selection"]
     assert not payload["authority"]["training"]
     assert not payload["authority"]["gate5"]
+
+
+def test_t28_floor_friction_condition_passes_all_cells() -> None:
+    payload = load("t28_t23_action_margin_condition_result.json")
+    assert payload["status"] == "PASS_T28_T23_ACTION_MARGIN_CONDITION"
+    assert (
+        payload["decision"]
+        == "EARN_T28_REMAINING_R2_MATRIX_PREREGISTRATION"
+    )
+    assert payload["condition"]["condition_green"]
+    assert payload["condition"]["cells"] == 16
+    assert payload["condition"]["green_cells"] == 16
+    assert payload["condition"]["condition_id"] == "FLOOR_FRICTION_LO"
+    assert payload["condition"]["worst_tracking_p95_rad"] <= 0.2
+    assert (
+        payload["condition"]["worst_strict_overcurrent_run_ticks"] <= 99
+    )
+    assert payload["condition"]["worst_strict_overload_run_ticks"] <= 99
+    assert not payload["authority"]["training"]
+    assert not payload["authority"]["gate5"]
