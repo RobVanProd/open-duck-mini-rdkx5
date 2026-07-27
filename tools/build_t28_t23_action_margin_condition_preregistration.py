@@ -137,6 +137,7 @@ def main() -> int:
         "support_handoff": basis["support_handoff"],
         "behavior_contract": basis["behavior_contract"],
         "protection_contract": basis["protection_contract"],
+        "repository_inputs": basis["repository_inputs"],
         "matrix": {
             "conditions": 1,
             "checkpoints": 2,
