@@ -32,6 +32,9 @@ HOLD_ATTRIBUTION = (
 RECOVERY_CONTRACT = (
     ROOT / "outputs" / "analysis" / "t32b_colab_cli_recovery_contract.json"
 )
+RECOVERED_VALIDATION = (
+    ROOT / "outputs" / "analysis" / "t32_recovered_training_validation.json"
+)
 T31_RESULT = (
     ROOT
     / "outputs"
@@ -136,3 +139,19 @@ def test_t32b_recovery_changes_only_the_truncated_hash() -> None:
     assert not value["correction"]["training_change"]
     assert value["authority"]["one_exact_preexecution_recovery"]
     assert not value["authority"]["additional_attempt"]
+
+
+def test_t32_recovered_training_passes_cpu_topology_validation() -> None:
+    value = json.loads(RECOVERED_VALIDATION.read_text(encoding="utf-8"))
+    assert value["status"] == "PASS_T32_RECOVERED_TRAINING_VALIDATION"
+    assert value["failed_checks"] == []
+    assert all(value["checks"].values())
+    assert value["classification"]["training_completed"]
+    assert not value["classification"]["training_retry"]
+    assert not value["classification"]["training_resume"]
+    assert value["classification"]["action_margin_trainthrough"]
+    assert value["classification"]["behavior_cells"] == 0
+    assert value["authority"]["postexport_transform_preregistration_authorized"]
+    assert not value["authority"]["behavior_evaluation_authorized"]
+    assert not value["authority"]["gate5_authorized"]
+    assert not value["authority"]["rdkx5_or_robot"]
