@@ -1,0 +1,99 @@
+diff --git a/playground/common/runner.py b/playground/common/runner.py
+index 43dd457..907fe6d 100644
+--- a/playground/common/runner.py
++++ b/playground/common/runner.py
+@@ -285,8 +285,20 @@ class BaseRunner(ABC):
+ 
+             wrap_env_fn = wrap_for_brax_training
+ 
+-        _, params, _ = train_fn(
++        train_call = functools.partial(
++            train_fn,
+             environment=self.env,
+             eval_env=self.eval_env,
+             wrap_env_fn=wrap_env_fn,
+         )
++        if getattr(
++            self.args, "winner_t37_freeze_observation_normalizer", False
++        ):
++            from playground.common.t37_frozen_observation_normalizer import (
++                frozen_observation_statistics_updates,
++            )
++
++            with frozen_observation_statistics_updates():
++                _, params, _ = train_call()
++        else:
++            _, params, _ = train_call()
+diff --git a/playground/common/t37_frozen_observation_normalizer.py b/playground/common/t37_frozen_observation_normalizer.py
+new file mode 100644
+index 0000000..d841654
+--- /dev/null
++++ b/playground/common/t37_frozen_observation_normalizer.py
+@@ -0,0 +1,37 @@
++"""Freeze restored Welford observation statistics during T37 training."""
++
++from __future__ import annotations
++
++from collections.abc import Iterator
++from contextlib import contextmanager
++from typing import Any
++
++from brax.training.acme import running_statistics
++
++
++def _frozen_update(
++    state: running_statistics.RunningStatisticsState,
++    batch: Any,
++    **kwargs: Any,
++) -> running_statistics.RunningStatisticsState:
++    """Return the restored statistics without changing any leaf."""
++    del batch, kwargs
++    return state
++
++
++@contextmanager
++def frozen_observation_statistics_updates() -> Iterator[None]:
++    """Temporarily make Brax running-statistic updates exact identities.
++
++    Brax's ``normalize_until_count`` only suppresses the EMA update rate in
++    the installed version. The winner uses Welford statistics, so T37 must
++    freeze ``update`` itself while leaving observation normalization enabled.
++    """
++    original = running_statistics.update
++    if original is _frozen_update:
++        raise RuntimeError("T37 observation-statistics freeze is re-entrant")
++    running_statistics.update = _frozen_update
++    try:
++        yield
++    finally:
++        running_statistics.update = original
+diff --git a/playground/open_duck_mini_v2/runner.py b/playground/open_duck_mini_v2/runner.py
+index e621916..60685fc 100644
+--- a/playground/open_duck_mini_v2/runner.py
++++ b/playground/open_duck_mini_v2/runner.py
+@@ -112,6 +112,14 @@ class OpenDuckMiniV2Runner(BaseRunner):
+                 "T31 action-margin train-through requires T19 support "
+                 "train-through"
+             )
++        if (
++            args.winner_t37_freeze_observation_normalizer
++            and not args.winner_t31_action_margin_trainthrough
++        ):
++            raise ValueError(
++                "T37 frozen observation normalizer requires T31 "
++                "action-margin train-through"
++            )
+         self.env_config.winner_v127_constrained_cost = (
+             args.winner_v127_constrained_cost
+         )
+@@ -383,6 +391,10 @@ def main() -> None:
+         "--winner_t31_action_margin_trainthrough",
+         action="store_true",
+     )
++    parser.add_argument(
++        "--winner_t37_freeze_observation_normalizer",
++        action="store_true",
++    )
+     parser.add_argument("--winner_v127_constrained_cost", action="store_true")
+     parser.add_argument(
+         "--winner_v3_deviation_scale",
