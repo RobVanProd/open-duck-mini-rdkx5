@@ -110,10 +110,18 @@ def main() -> int:
     assets = {
         "source_checkpoint": t20.directory_receipt(SOURCE_CHECKPOINT),
         "cpu_topology_template": t22["assets"]["cpu_topology_template"],
-        "source_v121_half_onnx": t24_half["raw"],
-        "frozen_t18_context_abi_onnx": t24_half["context_abi"],
-        "frozen_t18_pre_margin_wrapped_onnx": t24_half["wrapped"],
-        "frozen_t18_wrapped_onnx": margin_half["wrapped"],
+        "source_v121_half_onnx": file_receipt(
+            Path(t24_half["raw"]["path"])
+        ),
+        "frozen_t18_context_abi_onnx": file_receipt(
+            Path(t24_half["context_abi"]["path"])
+        ),
+        "frozen_t18_pre_margin_wrapped_onnx": file_receipt(
+            Path(t24_half["wrapped"]["path"])
+        ),
+        "frozen_t18_wrapped_onnx": file_receipt(
+            Path(margin_half["wrapped"]["path"])
+        ),
     }
     sources = {
         "reference": t22["sources"]["reference"],
