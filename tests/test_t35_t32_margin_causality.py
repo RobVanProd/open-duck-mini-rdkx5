@@ -39,18 +39,38 @@ def test_t35_preregisters_only_the_failed_t34_cell() -> None:
     assert not payload["authority"]["rdkx5_or_robot"]
 
 
-def test_t35_result_has_zero_expanded_authority() -> None:
+def test_t35_result_attributes_the_final_hold_to_actor_drift() -> None:
     path = ANALYSIS / "t35_t32_margin_causality_result.json"
     if not path.is_file():
         pytest.skip("formal T35 result has not run")
     payload = json.loads(path.read_text(encoding="utf-8"))
-    assert payload["status"] in {
-        "PASS_T35_NO_RUNTIME_MARGIN_INTERVENTION",
-        "PASS_T35_T32_MARGIN_IS_CAUSAL",
-        "PASS_T35_T32_MARGIN_NOT_SUFFICIENT_CAUSE",
-    }
-    assert payload["execution"]["formal_behavior_cells"] in {0, 1}
+    assert payload["status"] == "PASS_T35_T32_MARGIN_NOT_SUFFICIENT_CAUSE"
+    assert (
+        payload["decision"]
+        == "ATTRIBUTE_T32_CONTINUED_TRAINING_ACTOR_STATE_DRIFT"
+    )
+    assert payload["execution"]["formal_behavior_cells"] == 1
     assert payload["execution"]["optimizer_steps"] == 0
+    assert payload["causal_comparison"]["pre_intervention_exact"]
+    assert (
+        payload["causal_comparison"][
+            "ticks_compared_before_first_intervention"
+        ]
+        == 157
+    )
+    cell = payload["pre_margin_cell"]
+    assert cell["behavior"]["samples"] == 600
+    assert cell["behavior"]["core_pass"]
+    assert not cell["behavior"]["replacement_quality_pass"]
+    assert not cell["behavior"]["replacement_quality_checks"][
+        "zero_saturation"
+    ]
+    assert cell["behavior"]["action_saturation_pct"] == pytest.approx(
+        2.0 / 3.0
+    )
+    assert cell["margin_event_count"] == 4
+    assert not cell["cell_green"]
+    assert cell["protection"]["duration_protection_pass"]
     assert not payload["authority"]["training"]
     assert not payload["authority"]["colab"]
     assert not payload["authority"]["gate5"]
