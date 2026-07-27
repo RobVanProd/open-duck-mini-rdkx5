@@ -108,7 +108,10 @@ def main() -> int:
         if item["checkpoint_id"] == "T23_SUPPORT_HALF"
     )
     assets = {
-        "source_checkpoint": t20.directory_receipt(SOURCE_CHECKPOINT),
+        "source_checkpoint": {
+            "kind": "directory",
+            **t20.directory_receipt(SOURCE_CHECKPOINT),
+        },
         "cpu_topology_template": t22["assets"]["cpu_topology_template"],
         "source_v121_half_onnx": file_receipt(
             Path(t24_half["raw"]["path"])

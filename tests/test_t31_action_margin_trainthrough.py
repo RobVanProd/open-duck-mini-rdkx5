@@ -44,3 +44,12 @@ def test_t31_authority_is_cpu_only() -> None:
     assert not payload["authority"]["gate5"]
     assert not payload["authority"]["rdkx5_or_robot"]
     assert not payload["authority"]["torque_or_motion"]
+
+
+def test_t31_all_frozen_receipts_have_explicit_kind() -> None:
+    payload = load(
+        "t31_action_margin_trainthrough_cpu_preregistration.json"
+    )
+    receipts = [*payload["sources"].values(), *payload["assets"].values()]
+    assert receipts
+    assert all(item["kind"] in {"file", "directory"} for item in receipts)
