@@ -1,0 +1,411 @@
+{
+  "authority": {
+    "colab": false,
+    "execute_remaining_cpu_matrix": true,
+    "gate5_hardware": false,
+    "gate5_package_preregistration": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "behavior_contract": {
+    "interpretation": {
+      "core": "minimum physical/semantic validity; thresholds passed by the T4 baseline where comparable",
+      "evaluator_candidate_gate_status": "diagnostic only because T4 invalidated its use as an unqualified feasibility classifier",
+      "replacement_quality": "explicit stretch goals for replacing the behaviorally bad baseline; T4 showed the baseline can fail some of these"
+    },
+    "moving_core": {
+      "bilateral_transitions": true,
+      "maximum_action_saturation_pct": 1.0,
+      "maximum_body_pitch_p95_rad": 0.25,
+      "minimum_base_height_m": 0.12,
+      "minimum_track_ratio": 0.25,
+      "positive_mean_local_velocity": true,
+      "samples": 600
+    },
+    "moving_replacement_quality": {
+      "maximum_action_saturation_pct": 0.0,
+      "maximum_pitch_tracking_p95_rad": 0.2,
+      "maximum_rate_excess_rad_s": 0.0
+    },
+    "x0_core": {
+      "maximum_absolute_mean_local_vx_m_s": 0.02,
+      "maximum_action_saturation_pct": 1.0,
+      "maximum_body_pitch_p95_rad": 0.25,
+      "minimum_base_height_m": 0.12,
+      "samples": 600
+    },
+    "x0_replacement_quality": {
+      "maximum_action_saturation_pct": 0.0,
+      "maximum_pitch_tracking_p95_rad": 0.2,
+      "maximum_rate_excess_rad_s": 0.0
+    }
+  },
+  "calibrator": {
+    "bytes": 55573,
+    "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v96-response-conditioned-mechanics\\winner_v96_universal_calibrator.onnx",
+    "sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576"
+  },
+  "checks": {
+    "condition_one_policy_and_gate_match": true,
+    "exactly_nineteen_remaining_conditions": true,
+    "remaining_indices_are_two_through_twenty": true,
+    "runner_and_worker_present": true,
+    "t27_runner_contract_green": true,
+    "t28_condition_one_green": true,
+    "t28_transform_contract_green": true,
+    "two_policies_two_fits_four_commands": true
+  },
+  "commands_x_m_s": [
+    0.0,
+    0.074,
+    0.077,
+    0.08
+  ],
+  "condition_one_basis": {
+    "green_cells": 16,
+    "preregistration": {
+      "bytes": 11629,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t28_t23_action_margin_condition_preregistration.json",
+      "sha256": "95e8a9dac3743571181078345a43e89dbeb088f4ce14261944c8f29cde6e857c"
+    },
+    "result": {
+      "bytes": 123456,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t28_t23_action_margin_condition_result.json",
+      "sha256": "1d20aab02f86b931df7e974a5f866f7cfa2cace3fbad03895a01ea0024378c77"
+    }
+  },
+  "conditions": [
+    {
+      "condition_index": 2,
+      "id": "FLOOR_FRICTION_HI",
+      "override": {
+        "floor_friction": 1.0
+      }
+    },
+    {
+      "condition_index": 3,
+      "id": "JOINT_FRICTIONLOSS_LO",
+      "override": {
+        "joint_frictionloss_scale": 0.9
+      }
+    },
+    {
+      "condition_index": 4,
+      "id": "JOINT_FRICTIONLOSS_HI",
+      "override": {
+        "joint_frictionloss_scale": 1.1
+      }
+    },
+    {
+      "condition_index": 5,
+      "id": "ARMATURE_LO",
+      "override": {
+        "armature_scale": 1.0
+      }
+    },
+    {
+      "condition_index": 6,
+      "id": "ARMATURE_HI",
+      "override": {
+        "armature_scale": 1.05
+      }
+    },
+    {
+      "condition_index": 7,
+      "id": "TORSO_COM_X_NEG",
+      "override": {
+        "torso_com_offset_m": [
+          -0.05,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "condition_index": 8,
+      "id": "TORSO_COM_X_POS",
+      "override": {
+        "torso_com_offset_m": [
+          0.05,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "condition_index": 9,
+      "id": "TORSO_COM_Y_NEG",
+      "override": {
+        "torso_com_offset_m": [
+          0.0,
+          -0.05,
+          0.0
+        ]
+      }
+    },
+    {
+      "condition_index": 10,
+      "id": "TORSO_COM_Y_POS",
+      "override": {
+        "torso_com_offset_m": [
+          0.0,
+          0.05,
+          0.0
+        ]
+      }
+    },
+    {
+      "condition_index": 11,
+      "id": "TORSO_COM_Z_NEG",
+      "override": {
+        "torso_com_offset_m": [
+          0.0,
+          0.0,
+          -0.05
+        ]
+      }
+    },
+    {
+      "condition_index": 12,
+      "id": "TORSO_COM_Z_POS",
+      "override": {
+        "torso_com_offset_m": [
+          0.0,
+          0.0,
+          0.05
+        ]
+      }
+    },
+    {
+      "condition_index": 13,
+      "id": "ALL_LINK_MASS_LO",
+      "override": {
+        "all_link_mass_scale": 0.9
+      }
+    },
+    {
+      "condition_index": 14,
+      "id": "ALL_LINK_MASS_HI",
+      "override": {
+        "all_link_mass_scale": 1.1
+      }
+    },
+    {
+      "condition_index": 15,
+      "id": "TORSO_MASS_NEG",
+      "override": {
+        "torso_mass_add_kg": -0.1
+      }
+    },
+    {
+      "condition_index": 16,
+      "id": "TORSO_MASS_POS",
+      "override": {
+        "torso_mass_add_kg": 0.1
+      }
+    },
+    {
+      "condition_index": 17,
+      "id": "HOME_JOINT_OFFSET_NEG",
+      "override": {
+        "joint_qpos0_offset_rad": -0.03
+      }
+    },
+    {
+      "condition_index": 18,
+      "id": "HOME_JOINT_OFFSET_POS",
+      "override": {
+        "joint_qpos0_offset_rad": 0.03
+      }
+    },
+    {
+      "condition_index": 19,
+      "id": "KP_LO",
+      "override": {
+        "kp_scale": 0.9
+      }
+    },
+    {
+      "condition_index": 20,
+      "id": "KP_HI",
+      "override": {
+        "kp_scale": 1.1
+      }
+    }
+  ],
+  "decision_rule": {
+    "all_remaining_pass": "All 304 new cells pass and combine with the frozen green condition 1 to yield 320/320. Authorize only Gate 5 package preregistration.",
+    "both_checkpoints_required": true,
+    "first_failure": "Finish that condition, stop, and attribute the failed cells. No training is automatically earned.",
+    "no_checkpoint_selection": true
+  },
+  "failed_checks": [],
+  "fits": [
+    {
+      "bytes": 18664,
+      "fit_id": "p30",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "a58db8ffc505d2bb64cba7f5618d0e2c65904fc9f9ac37b560a1231e090f5f4f"
+    },
+    {
+      "bytes": 18788,
+      "fit_id": "p31_34",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p31_34_actuator_fit_20260712.json",
+      "sha256": "2740513f6bdeb4ad3cc5dd6dc1709319389a593fd153c1ce5abae03b66131a57"
+    }
+  ],
+  "matrix": {
+    "checkpoints": 2,
+    "commands": 4,
+    "complete_current_sixteen_cell_condition_before_stop": true,
+    "cpu_only": true,
+    "fits": 2,
+    "maximum_new_cells": 304,
+    "no_retry": true,
+    "no_skip": true,
+    "plan_sha256": "4435998696f25a8529f0b67cfd7c196a1ed9ad3b654a289a10da930015b9cb65",
+    "remaining_conditions": 19,
+    "sequential_conditions": true,
+    "stop_after_first_failed_condition": true,
+    "total_r2_cells_with_condition_one": 320
+  },
+  "playground": {
+    "manifest": {
+      "bytes": 5190,
+      "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v6\\T19_COMPOSED_SOURCE_MANIFEST.json",
+      "sha256": "d7c9b615c32f0e2c8434e958a900cc38485c0db6fea107b6115a69bbd2122a77"
+    },
+    "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v6"
+  },
+  "policies": [
+    {
+      "bytes": 965047,
+      "checkpoint_id": "T23_SUPPORT_HALF",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t28_t23_action_margin_policies_v1\\T28_MARGIN_1003520.onnx",
+      "sha256": "b2450530ff3751cfc84ff56f023b880ece8dbc7ee21166d9af7b00e10e14fd24",
+      "step": 1003520
+    },
+    {
+      "bytes": 965047,
+      "checkpoint_id": "T23_SUPPORT_FINAL",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t28_t23_action_margin_policies_v1\\T28_MARGIN_2007040.onnx",
+      "sha256": "a5f1a57cbb8f7f3cc9b43cf227fc76a867041e2ccaf12756264b17d66fbbb8da",
+      "step": 2007040
+    }
+  ],
+  "preregistered_contract_sha256": "75576510ea7247a570fd142c890d43446f45a66a8545479cb832cd628b506572",
+  "protection_contract": {
+    "force_limit_tolerance_nm": 5e-06,
+    "instantaneous_stall_current_and_torque": "diagnostic_only",
+    "motor_constant_nm_per_a": 0.784532,
+    "overcurrent_threshold_a": 2.0,
+    "overload_threshold_nm": 1.5298374,
+    "pass_max_consecutive_ticks": 99,
+    "simulator_force_limit_abs_nm": 3.23,
+    "simulator_force_limit_hits": "diagnostic_only",
+    "source": "T5 manufacturer-derived duration rules",
+    "strict_comparison": true,
+    "trip_ticks": 100
+  },
+  "question": "After T28 passes R2 condition 1, do both uniformly wrapped checkpoints pass original R2 conditions 2 through 20?",
+  "reference_feature_table": {
+    "bytes": 259604,
+    "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+    "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+  },
+  "repository_inputs": {
+    "adapter": {
+      "bytes": 8272,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\t27_state_coherent_eval_adapter.py",
+      "sha256": "e53d6e74bad78e6ffa0423807e6dbe168730e881a47017f5343a0391ac5836cb"
+    },
+    "base_evaluator": {
+      "bytes": 155236,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\closed_loop_sim_eval.py",
+      "sha256": "a5bff87f2cce5e5f5c661a9fe73dee9de77a4c356912279e4771025c3379a4ac"
+    },
+    "r2_source": {
+      "bytes": 4221,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_robustness_r2_matrix_preregistration.json",
+      "sha256": "23ad95ed02d6302c321c8bd9f52b29512ee9c19a404a31eaf9fa0ca2807273b0"
+    },
+    "runner": {
+      "bytes": 11061,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t29_t28_remaining_r2_matrix.py",
+      "sha256": "5e4c2c65d77fb1d8a29b372dc1373887f6a1bb92026ce3808c7fcc0d60e6dfbb"
+    },
+    "t24_postexport_result": {
+      "bytes": 35792,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t24_t23_postexport_result.json",
+      "sha256": "accb2027b05b1d861f34d7844a81626eac5706887bef306a7f8858dc379604a1"
+    },
+    "t26_nominal_result": {
+      "bytes": 62433,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t26_t23_corrected_nominal_result.json",
+      "sha256": "015ae2652221d1926f21bb9b628b396bedde4e608bf722feb4147de93d1357cb"
+    },
+    "t27_runner_contract": {
+      "bytes": 7158,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t27_t23_robustness_runner_contract.json",
+      "sha256": "282d4e44616addba93639acbfd31c35d49134938d9847b3990930619837ab50a"
+    },
+    "t28_condition_preregistration": {
+      "bytes": 11629,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t28_t23_action_margin_condition_preregistration.json",
+      "sha256": "95e8a9dac3743571181078345a43e89dbeb088f4ce14261944c8f29cde6e857c"
+    },
+    "t28_condition_result": {
+      "bytes": 123456,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t28_t23_action_margin_condition_result.json",
+      "sha256": "1d20aab02f86b931df7e974a5f866f7cfa2cace3fbad03895a01ea0024378c77"
+    },
+    "t28_transform_contract": {
+      "bytes": 4745,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t28_t23_action_margin_transform_contract.json",
+      "sha256": "775d62394fc0ec2ca4fa2df263eaa703a1f0f80ddf3279fb8a4fd4572051e6fb"
+    },
+    "t6_corrected_gate_preregistration": {
+      "bytes": 14401,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t6_corrected_robustness_screen_preregistration.json",
+      "sha256": "0b3417f03a3ead733424605c867020578cca660ab97636bb071981965b5af467"
+    },
+    "t6_helpers": {
+      "bytes": 29466,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t6_corrected_robustness_screen.py",
+      "sha256": "34d955a9443d8e0fba01a75b64243c865e5e78df23cadb43e871210cb9ba0e00"
+    },
+    "t8_helpers": {
+      "bytes": 27023,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t8_state_coherent_handoff.py",
+      "sha256": "a941d2f9cf0c9a9da8da7759bb98fd84ec41ef08c46ec0506c37d585b6a338da"
+    },
+    "t8_support_preregistration": {
+      "bytes": 19693,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t8_state_coherent_handoff_preregistration.json",
+      "sha256": "c4184d8bdba742034ec83fc30a6df4662d822150549298252e19bf19d58e19cd"
+    },
+    "worker": {
+      "bytes": 7932,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\evaluate_t27_t23_robustness_condition.py",
+      "sha256": "93ff8c405d6bf1923cd8bea69ce5efde4cd97388f6b71a1d0f9ba5aa599b096c"
+    }
+  },
+  "schema_version": "open_duck.t29_t28_remaining_r2_preregistration.v1",
+  "seed": 167931544,
+  "status": "PREREGISTERED_T29_T28_REMAINING_R2_MATRIX",
+  "support_handoff": {
+    "context_input_name": "calibration_context",
+    "context_is_diagnostic_only": true,
+    "locomotion_hidden_zero": true,
+    "locomotion_phase_reset": [
+      1.0,
+      0.0
+    ],
+    "preserve_applied_target_observer_state": true,
+    "preserve_final_support_action_as_previous_action": true,
+    "source": "T22/T24 exact support-train-through deployment chain and green T27 one-tick runner contract",
+    "unscored_calibration_ticks": 250,
+    "unscored_home_return_ticks": 0
+  }
+}
