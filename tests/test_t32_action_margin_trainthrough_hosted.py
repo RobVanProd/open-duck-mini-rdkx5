@@ -23,6 +23,15 @@ PACKAGE_CONTRACT = (
 LAUNCH_CONTRACT = (
     ROOT / "outputs" / "analysis" / "t32_colab_cli_launch_contract.json"
 )
+HOLD_ATTRIBUTION = (
+    ROOT
+    / "outputs"
+    / "analysis"
+    / "t32_preexecution_identity_hold_attribution.json"
+)
+RECOVERY_CONTRACT = (
+    ROOT / "outputs" / "analysis" / "t32b_colab_cli_recovery_contract.json"
+)
 T31_RESULT = (
     ROOT
     / "outputs"
@@ -99,3 +108,31 @@ def test_t32_launch_contract_is_one_l4_without_retry() -> None:
     assert not value["authority"]["behavior_evaluation"]
     assert not value["authority"]["gate5"]
     assert not value["authority"]["rdkx5_or_robot"]
+
+
+def test_t32_identity_hold_is_zero_step_and_exactly_attributed() -> None:
+    value = json.loads(HOLD_ATTRIBUTION.read_text(encoding="utf-8"))
+    assert value["status"] == (
+        "PASS_T32_PREEXECUTION_IDENTITY_HOLD_ATTRIBUTION"
+    )
+    assert value["failed_checks"] == []
+    assert value["identity"]["mismatch_names"] == ["DRIVER_SHA256"]
+    assert value["attempt"]["failed_before_dependency_install"]
+    assert value["attempt"]["failed_before_training_driver"]
+    assert value["attempt"]["optimizer_steps"] == 0
+    assert value["attempt"]["formal_behavior_cells"] == 0
+    assert value["attempt"]["session_stopped"]
+
+
+def test_t32b_recovery_changes_only_the_truncated_hash() -> None:
+    value = json.loads(RECOVERY_CONTRACT.read_text(encoding="utf-8"))
+    assert value["status"] == "PASS_T32B_COLAB_CLI_RECOVERY_CONTRACT"
+    assert value["failed_checks"] == []
+    assert all(value["checks"].values())
+    assert value["correction"]["field"] == "DRIVER_SHA256"
+    assert value["correction"]["before_hex_chars"] == 62
+    assert value["correction"]["after_hex_chars"] == 64
+    assert not value["correction"]["package_change"]
+    assert not value["correction"]["training_change"]
+    assert value["authority"]["one_exact_preexecution_recovery"]
+    assert not value["authority"]["additional_attempt"]
