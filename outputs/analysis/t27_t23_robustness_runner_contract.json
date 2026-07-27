@@ -1,0 +1,252 @@
+{
+  "authority": {
+    "formal_robustness_execution_authorized": false,
+    "gate5_authorized": false,
+    "rdkx5_or_robot": false,
+    "robustness_preregistration_authorized": true,
+    "training_authorized": false
+  },
+  "checks": {
+    "context_is_proven_diagnostic_only": true,
+    "cpu_only": true,
+    "exact_support_handoff": true,
+    "graph_authoritative_no_host_delta": true,
+    "one_scored_tick_duration_complete": true,
+    "override_readback_exact": true,
+    "policy_is_exact_t24_final": true,
+    "trace_one_tick_finite_and_contiguous": true,
+    "worker_completed_nonformal_smoke": true,
+    "worker_inputs_exact": true
+  },
+  "dynamics_override": {
+    "enabled": true,
+    "key": "floor_friction",
+    "readback": {
+      "affected_dof_ids": [
+        6,
+        8,
+        10,
+        12,
+        14,
+        16,
+        17,
+        18,
+        19,
+        20,
+        22,
+        24,
+        26,
+        28
+      ],
+      "affected_joint_qpos_addrs": [
+        7,
+        9,
+        11,
+        13,
+        15,
+        17,
+        18,
+        19,
+        20,
+        21,
+        23,
+        25,
+        27,
+        29
+      ],
+      "after": 0.5,
+      "before": 1.0,
+      "changed_indices": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    "value": 0.5
+  },
+  "evaluation": {
+    "path": "D:\\CodexArtifacts\\open-duck-policy\\t27_runner_contract_v1\\evaluation.json",
+    "sha256": "d8c9e9a21089de7a346e75d8dcae0427c6e17365f6f0b1e3f3da343565dbc40d"
+  },
+  "execution": {
+    "formal_behavior_cells": 0,
+    "hosted_compute": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "scored_contract_ticks": 1,
+    "unscored_support_ticks": 250
+  },
+  "failed_checks": [],
+  "handoff": {
+    "all_checks_pass": true,
+    "calibration_final_action": [
+      0.0,
+      0.0,
+      -0.5,
+      0.25,
+      0.25,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.5,
+      0.25,
+      0.25
+    ],
+    "checks": {
+      "applied_target_observer_preserved": true,
+      "applied_target_slot_continuity": true,
+      "calibration_ticks_exact": true,
+      "calibrator_sha_exact": true,
+      "context_finite": true,
+      "context_immutable": true,
+      "context_shape": true,
+      "first_hidden_zero": true,
+      "first_previous_action_matches_calibration": true,
+      "full_observation_traced": true,
+      "graph_authoritative_no_host_delta": true,
+      "handoff_state_preserved": true,
+      "phase_reset_exact": true,
+      "policy_hidden_zero": true,
+      "previous_action_preserved": true,
+      "recurrent_state_chains_exact": true,
+      "response_enabled": true,
+      "zero_home_return_ticks": true
+    },
+    "context_sha256": "768d607d1a0bb41a4442fad51f0e93981438ce330a2235d3bdd1524e95435ba4",
+    "observer_bridge_applied_target_rad": [
+      0.0020000000949949026,
+      0.05299999937415123,
+      -0.7549999952316284,
+      1.4305000305175781,
+      -0.7214999794960022,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      -0.003000000026077032,
+      -0.06499999761581421,
+      0.7599999904632568,
+      1.441499948501587,
+      -0.7335000038146973
+    ],
+    "response_audit": {
+      "applied_target_observation_matches_bridge": true,
+      "calibration_final_action": [
+        0.0,
+        0.0,
+        -0.5,
+        0.25,
+        0.25,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.5,
+        0.25,
+        0.25
+      ],
+      "calibration_ticks": 250,
+      "calibrator_abi": {
+        "input_names": [
+          "obs",
+          "previous_action",
+          "h_in"
+        ],
+        "output_names": [
+          "calibration_actions",
+          "previous_action_out",
+          "h_out"
+        ]
+      },
+      "calibrator_sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576",
+      "context_finite": true,
+      "context_sha256": "768d607d1a0bb41a4442fad51f0e93981438ce330a2235d3bdd1524e95435ba4",
+      "context_shape": [
+        1,
+        64
+      ],
+      "enabled": true,
+      "handoff_state_preserved": true,
+      "home_return_ticks": 0,
+      "locomotion_applied_target_observation_rad": [
+        0.0020000000949949026,
+        0.05299999937415123,
+        -0.7549999952316284,
+        1.4305000305175781,
+        -0.7214999794960022,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.003000000026077032,
+        -0.06499999761581421,
+        0.7599999904632568,
+        1.441499948501587,
+        -0.7335000038146973
+      ],
+      "locomotion_hidden_exact_zero": true,
+      "locomotion_phase_reset": [
+        1.0,
+        0.0
+      ],
+      "locomotion_previous_action_exact_zero": false,
+      "locomotion_previous_action_matches_calibration": true,
+      "observer_bridge_applied_target_rad": [
+        0.0020000000949949026,
+        0.05299999937415123,
+        -0.7549999952316284,
+        1.4305000305175781,
+        -0.7214999794960022,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.003000000026077032,
+        -0.06499999761581421,
+        0.7599999904632568,
+        1.4414999485015867,
+        -0.7335000038146973
+      ]
+    }
+  },
+  "inputs": {
+    "calibrator": {
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v96-response-conditioned-mechanics\\winner_v96_universal_calibrator.onnx",
+      "sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576"
+    },
+    "fit": {
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "a58db8ffc505d2bb64cba7f5618d0e2c65904fc9f9ac37b560a1231e090f5f4f"
+    },
+    "override": {
+      "floor_friction": 0.5
+    },
+    "playground": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v6",
+    "policy": {
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t25_t23_nominal_policies_v1\\T23_SUPPORT_2007040.onnx",
+      "sha256": "06d96e32545a4666432dea2f4b30848691c0270949b03400213530a494c66060"
+    },
+    "reference": {
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+      "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+    },
+    "worker": {
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\evaluate_t27_t23_robustness_condition.py",
+      "sha256": "93ff8c405d6bf1923cd8bea69ce5efde4cd97388f6b71a1d0f9ba5aa599b096c"
+    }
+  },
+  "result_sha256": "48aec5ab3d22042c7cf184d4b2742ab17e2ed5a9d0a6bf6f330d70f886e579af",
+  "schema_version": "open_duck.t27_t23_robustness_runner_contract.v1",
+  "status": "PASS_T27_T23_ROBUSTNESS_RUNNER_CONTRACT",
+  "trace": {
+    "path": "D:\\CodexArtifacts\\open-duck-policy\\t27_runner_contract_v1\\traces\\x0.074_seed167931544_T23_SUPPORT_2007040.jsonl",
+    "rows": 1,
+    "sha256": "e8b8e1f274aedc03e24a33d423244ba29cee70a9f1a5ad9034a9624f5d608d82"
+  }
+}
