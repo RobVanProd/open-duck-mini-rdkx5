@@ -1,0 +1,45 @@
+{
+  "authority": {
+    "colab": false,
+    "gate5": false,
+    "mechanism_contract_review": true,
+    "posthoc_t28_candidate_closed": true,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "checks": {
+    "mixed_outcome_was_not_in_binary_decision_rule": true,
+    "pre_intervention_traces_are_exact": true,
+    "raw_result_matches_preregistration": true,
+    "source_fails_only_saturation_margin": true,
+    "source_runs_full_duration": true,
+    "wrapped_policy_falls_early": true
+  },
+  "decision": "CLOSE_T28_POSTHOC_MARGIN_TRANSFORM",
+  "facts": {
+    "first_margin_intervention_tick": 52,
+    "pre_intervention_exact": true,
+    "unwrapped_action_saturation_pct": 1.3333333333333335,
+    "unwrapped_samples": 600,
+    "unwrapped_termination": "duration_complete",
+    "unwrapped_tracking_p95_rad": 0.15599535703659057,
+    "wrapped_samples": 332
+  },
+  "failed_checks": [],
+  "interpretation": "The preregistered binary rule omitted a mixed outcome. The unwrapped source is not gate-green because it crosses the 0.98 margin, but it walks all 600 ticks. The post-hoc T28 clip removes that margin failure and creates an early fall. Therefore T28 is not a deployable repair and is closed; the source is also not a green candidate.",
+  "preregistration": {
+    "bytes": 7875,
+    "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t30_t28_margin_causality_preregistration.json",
+    "sha256": "642c882544539700265440752f368143853c3cfaf09e09f7943592b8293a0577"
+  },
+  "raw_result": {
+    "bytes": 10346,
+    "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t30_t28_margin_causality_result.json",
+    "sha256": "831a329e292707fa35fac3a4e79b59a55eabd4cb3781b0a6cca428456da25180"
+  },
+  "result_sha256": "f11a44076c0ff42e52e84a8afc4718241ae3756c845e4e882289914bbba68ecc",
+  "schema_version": "open_duck.t30_t28_margin_causality_reconciliation.v1",
+  "status": "PASS_T30_MIXED_OUTCOME_RECONCILIATION",
+  "supersedes_raw_binary_decision": "RETAIN_T28_CONTINUE_FAILURE_ATTRIBUTION"
+}

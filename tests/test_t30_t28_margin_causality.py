@@ -35,3 +35,21 @@ def test_t30_is_one_exact_unwrapped_cell() -> None:
     assert not payload["authority"]["training"]
     assert not payload["authority"]["gate5"]
     assert not payload["authority"]["rdkx5_or_robot"]
+
+
+def test_t30_mixed_outcome_closes_posthoc_t28() -> None:
+    raw = load("t30_t28_margin_causality_result.json")
+    payload = load("t30_t28_margin_causality_reconciliation.json")
+    assert raw["source_cell"]["behavior"]["samples"] == 600
+    assert not raw["source_cell"]["cell_green"]
+    assert raw["wrapped_cell"]["samples"] == 332
+    assert raw["causal_comparison"]["pre_intervention_exact"]
+    assert payload["status"] == "PASS_T30_MIXED_OUTCOME_RECONCILIATION"
+    assert payload["decision"] == "CLOSE_T28_POSTHOC_MARGIN_TRANSFORM"
+    assert payload["failed_checks"] == []
+    assert payload["facts"]["unwrapped_samples"] == 600
+    assert payload["facts"]["wrapped_samples"] == 332
+    assert payload["authority"]["posthoc_t28_candidate_closed"]
+    assert payload["authority"]["mechanism_contract_review"]
+    assert not payload["authority"]["training"]
+    assert not payload["authority"]["gate5"]

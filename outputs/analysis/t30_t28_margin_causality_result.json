@@ -1,0 +1,311 @@
+{
+  "authority": {
+    "close_t28": false,
+    "colab": false,
+    "continue_failure_attribution": true,
+    "gate5": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "causal_comparison": {
+    "pre_intervention_errors": {
+      "action": 0.0,
+      "applied_target_rad": 0.0,
+      "obs_state": 0.0,
+      "qpos": 0.0,
+      "qvel": 0.0,
+      "sent_target_rad": 0.0
+    },
+    "pre_intervention_exact": true,
+    "ticks_compared_before_first_intervention": 52,
+    "unwrapped_cell_green": false,
+    "unwrapped_samples": 600,
+    "wrapped_samples": 332
+  },
+  "decision": "RETAIN_T28_CONTINUE_FAILURE_ATTRIBUTION",
+  "execution": {
+    "command": [
+      "D:\\CodexArtifacts\\venvs\\open-duck-policy-py31213\\Scripts\\python.exe",
+      "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\evaluate_t30_t28_margin_causal_cell.py",
+      "--formal",
+      "--policy",
+      "D:\\CodexArtifacts\\open-duck-policy\\t25_t23_nominal_policies_v1\\T23_SUPPORT_2007040.onnx",
+      "--policy-sha256",
+      "06d96e32545a4666432dea2f4b30848691c0270949b03400213530a494c66060",
+      "--playground-root",
+      "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v6",
+      "--fit",
+      "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p30_actuator_fit_20260712.json",
+      "--reference-feature-table",
+      "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+      "--calibrator",
+      "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v96-response-conditioned-mechanics\\winner_v96_universal_calibrator.onnx",
+      "--calibrator-sha256",
+      "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576",
+      "--override-json",
+      "{\"joint_frictionloss_scale\":0.9}",
+      "--commands",
+      "0.077",
+      "--seed",
+      "167931544",
+      "--duration-s",
+      "12.0",
+      "--trace-dir",
+      "D:\\CodexArtifacts\\open-duck-policy\\t30_t28_margin_causality_v1\\traces",
+      "--output-json",
+      "D:\\CodexArtifacts\\open-duck-policy\\t30_t28_margin_causality_v1\\evaluation.json"
+    ],
+    "cpu_only": true,
+    "evaluation": {
+      "bytes": 81478,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t30_t28_margin_causality_v1\\evaluation.json",
+      "sha256": "20bfda470ddddcd98a77bc085a86a4ab8937f4cdb0c4ed7ab04827cc35a271e8"
+    },
+    "stdout": {
+      "bytes": 1963,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t30_t28_margin_causality_v1\\stdout.log",
+      "sha256": "0fbf47175f7544102ace9f8b11689ae11df6a0f6f5d1028d6f3ccec9fc965bd7"
+    }
+  },
+  "preregistered_contract_sha256": "218b1a4f7bc6bb231f3d325fb7ce59c22b68ba850bff54b8edaa626605d3b445",
+  "repository_commit": "50957a8fcc067029483456e465780897faab1ec2",
+  "result_sha256": "b364f541ba95e4ae6b140243b83450be805b7e2dc03ae45269cfa294ac7b94dc",
+  "schema_version": "open_duck.t30_t28_margin_causality_result.v1",
+  "source_cell": {
+    "behavior": {
+      "action_saturation_pct": 1.3333333333333335,
+      "body_pitch_p95_rad": 0.14734265077935002,
+      "command_x_m_s": 0.077,
+      "core_checks": {
+        "bilateral_transitions": true,
+        "body_pitch": true,
+        "duration": true,
+        "emergence": true,
+        "finite_mean_vx": true,
+        "height": true,
+        "minimum_track_ratio": true,
+        "positive_velocity": true,
+        "samples": true,
+        "saturation": false
+      },
+      "core_pass": false,
+      "emergence_pass": true,
+      "evaluator_candidate_gate_status_diagnostic": "HOLD_CANDIDATE_ACTION_SATURATION",
+      "instant_rate_excess_rad_s": 0.0,
+      "left_contact_transitions": 58,
+      "mean_local_vx_m_s": 0.05892746164453759,
+      "minimum_base_height_m": 0.1554638147354126,
+      "p95_rate_excess_rad_s": 0.0,
+      "pitch_tracking_p95_rad": 0.15599535703659057,
+      "replacement_quality_checks": {
+        "instant_rate": true,
+        "p95_rate": true,
+        "tracking": true,
+        "zero_saturation": false
+      },
+      "replacement_quality_pass": false,
+      "right_contact_transitions": 39,
+      "samples": 600,
+      "termination_reason": "duration_complete",
+      "track_ratio": 0.7652917096693194
+    },
+    "cell_green": false,
+    "handoff": {
+      "all_checks_pass": true,
+      "calibration_final_action": [
+        0.0,
+        0.0,
+        -0.5,
+        0.25,
+        0.25,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.5,
+        0.25,
+        0.25
+      ],
+      "checks": {
+        "applied_target_observer_preserved": true,
+        "applied_target_slot_continuity": true,
+        "calibration_ticks_exact": true,
+        "calibrator_sha_exact": true,
+        "context_finite": true,
+        "context_immutable": true,
+        "context_shape": true,
+        "first_hidden_zero": true,
+        "first_previous_action_matches_calibration": true,
+        "full_observation_traced": true,
+        "graph_authoritative_no_host_delta": true,
+        "handoff_state_preserved": true,
+        "phase_reset_exact": true,
+        "policy_hidden_zero": true,
+        "previous_action_preserved": true,
+        "recurrent_state_chains_exact": true,
+        "response_enabled": true,
+        "zero_home_return_ticks": true
+      },
+      "context_sha256": "8a0e1bf8d681fd35d7414876a00a62db1b4baeac63d371475cb5b5f88b2fa679",
+      "observer_bridge_applied_target_rad": [
+        0.0020000000949949026,
+        0.05299999937415123,
+        -0.7549999952316284,
+        1.4305000305175781,
+        -0.7214999794960022,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.003000000026077032,
+        -0.06499999761581421,
+        0.7599999904632568,
+        1.441499948501587,
+        -0.7335000038146973
+      ],
+      "response_audit": {
+        "applied_target_observation_matches_bridge": true,
+        "calibration_final_action": [
+          0.0,
+          0.0,
+          -0.5,
+          0.25,
+          0.25,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.5,
+          0.25,
+          0.25
+        ],
+        "calibration_ticks": 250,
+        "calibrator_abi": {
+          "input_names": [
+            "obs",
+            "previous_action",
+            "h_in"
+          ],
+          "output_names": [
+            "calibration_actions",
+            "previous_action_out",
+            "h_out"
+          ]
+        },
+        "calibrator_sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576",
+        "context_finite": true,
+        "context_sha256": "8a0e1bf8d681fd35d7414876a00a62db1b4baeac63d371475cb5b5f88b2fa679",
+        "context_shape": [
+          1,
+          64
+        ],
+        "enabled": true,
+        "handoff_state_preserved": true,
+        "home_return_ticks": 0,
+        "locomotion_applied_target_observation_rad": [
+          0.0020000000949949026,
+          0.05299999937415123,
+          -0.7549999952316284,
+          1.4305000305175781,
+          -0.7214999794960022,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          -0.003000000026077032,
+          -0.06499999761581421,
+          0.7599999904632568,
+          1.441499948501587,
+          -0.7335000038146973
+        ],
+        "locomotion_hidden_exact_zero": true,
+        "locomotion_phase_reset": [
+          1.0,
+          0.0
+        ],
+        "locomotion_previous_action_exact_zero": false,
+        "locomotion_previous_action_matches_calibration": true,
+        "observer_bridge_applied_target_rad": [
+          0.0020000000949949026,
+          0.05299999937415123,
+          -0.7549999952316284,
+          1.4305000305175781,
+          -0.7214999794960022,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          -0.003000000026077032,
+          -0.06499999761581421,
+          0.7599999904632568,
+          1.4414999485015867,
+          -0.7335000038146973
+        ]
+      }
+    },
+    "override_readback_exact": true,
+    "protection": {
+      "duration_protection_pass": true,
+      "maximum_full_measured_vector_excess_rad_s": 0.0,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t30_t28_margin_causality_v1\\traces\\x0.077_seed167931544_T23_SUPPORT_2007040.jsonl",
+      "rows": 600,
+      "sha256": "104ed80632a0b32543d61c9028b48de05c117d8d3b9ecf177d03dbb562880bcf",
+      "simulator_force_limit_hit_ticks_diagnostic": 0,
+      "ticks_contiguous_from_zero": true,
+      "worst_peak_current_a_diagnostic": 3.0633565476152302,
+      "worst_peak_torque_nm_diagnostic": 2.403301239013672,
+      "worst_strict_overcurrent_run_ticks": 14,
+      "worst_strict_overload_run_ticks": 15
+    },
+    "trace": {
+      "bytes": 10769880,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t30_t28_margin_causality_v1\\traces\\x0.077_seed167931544_T23_SUPPORT_2007040.jsonl",
+      "sha256": "104ed80632a0b32543d61c9028b48de05c117d8d3b9ecf177d03dbb562880bcf"
+    },
+    "trace_valid": true
+  },
+  "status": "PASS_T30_T28_MARGIN_NOT_SUFFICIENT_CAUSE",
+  "wrapped_cell": {
+    "first_intervention_tick": 52,
+    "intervention_count": 5,
+    "intervention_events": [
+      {
+        "action": 0.9799999594688416,
+        "joint_index": 4,
+        "tick": 52
+      },
+      {
+        "action": 0.9799999594688416,
+        "joint_index": 4,
+        "tick": 212
+      },
+      {
+        "action": 0.9799999594688416,
+        "joint_index": 11,
+        "tick": 232
+      },
+      {
+        "action": 0.9799999594688416,
+        "joint_index": 4,
+        "tick": 266
+      },
+      {
+        "action": 0.9799999594688416,
+        "joint_index": 4,
+        "tick": 267
+      }
+    ],
+    "samples": 332,
+    "termination_reason": "fall_or_nan",
+    "trace": {
+      "bytes": 5958105,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t29_t28_remaining_r2_matrix_v1\\03_JOINT_FRICTIONLOSS_LO\\T23_SUPPORT_FINAL\\p30\\traces\\x0.077_seed167931544_T28_MARGIN_2007040.jsonl",
+      "sha256": "de213475755f98fd86549bbce5aa82279a4c6e56edf194db13f1b14e1933c299"
+    }
+  }
+}
