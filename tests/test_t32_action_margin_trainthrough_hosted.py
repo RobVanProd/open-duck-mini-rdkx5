@@ -20,6 +20,9 @@ PACKAGE_CONTRACT = (
     / "analysis"
     / "t32_action_margin_trainthrough_hosted_package_contract.json"
 )
+LAUNCH_CONTRACT = (
+    ROOT / "outputs" / "analysis" / "t32_colab_cli_launch_contract.json"
+)
 T31_RESULT = (
     ROOT
     / "outputs"
@@ -80,5 +83,19 @@ def test_t32_package_is_the_only_training_authority() -> None:
     assert not value["authority"]["retry_or_resume"]
     assert not value["authority"]["behavior_evaluation"]
     assert not value["authority"]["checkpoint_selection"]
+    assert not value["authority"]["gate5"]
+    assert not value["authority"]["rdkx5_or_robot"]
+
+
+def test_t32_launch_contract_is_one_l4_without_retry() -> None:
+    value = json.loads(LAUNCH_CONTRACT.read_text(encoding="utf-8"))
+    assert value["status"] == "PASS_T32_COLAB_CLI_LAUNCH_CONTRACT"
+    assert value["failed_checks"] == []
+    assert all(value["checks"].values())
+    assert value["session"]["accelerator"] == "L4"
+    assert value["session"]["count"] == 1
+    assert value["authority"]["one_exact_cli_launch"]
+    assert not value["authority"]["additional_attempt"]
+    assert not value["authority"]["behavior_evaluation"]
     assert not value["authority"]["gate5"]
     assert not value["authority"]["rdkx5_or_robot"]
