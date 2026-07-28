@@ -49,6 +49,24 @@ def test_balance_reward_requires_correct_exact_single_support() -> None:
             gravity, gyro, jnp.asarray(contact), phase
         )
         assert float(reward) == 0.0
+    assert np.array_equal(
+        np.asarray(
+            t55.matched_support_sides(
+                jnp.asarray([True, False]),
+                left_phase,
+            )
+        ),
+        np.asarray([True, False]),
+    )
+    assert np.array_equal(
+        np.asarray(
+            t55.matched_support_sides(
+                jnp.asarray([False, True]),
+                right_phase,
+            )
+        ),
+        np.asarray([False, True]),
+    )
 
 
 def test_gate_and_control_horizon_are_derived_exactly() -> None:

@@ -38,10 +38,25 @@ def exact_target_single_support(
     imitation_phase: jax.Array,
 ) -> jax.Array:
     """Indicate exact one-foot contact on the phase-selected side."""
+    return jnp.any(
+        matched_support_sides(contact, imitation_phase)
+    )
+
+
+def matched_support_sides(
+    contact: jax.Array,
+    imitation_phase: jax.Array,
+) -> jax.Array:
+    """Return separate phase-matched [left, right] support indicators."""
     observed = jnp.asarray(contact, dtype=jnp.bool_)
     target = phase_target_support(imitation_phase)
-    one_foot = jnp.logical_xor(observed[0], observed[1])
-    return one_foot & jnp.all(observed == target)
+    exact_side = jnp.asarray(
+        [
+            observed[0] & ~observed[1],
+            observed[1] & ~observed[0],
+        ]
+    )
+    return exact_side & target
 
 
 def predicted_tilt_rad(

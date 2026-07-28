@@ -26,6 +26,8 @@ diff --git a/playground/open_duck_mini_v2/joystick.py b/playground/open_duck_min
 +            or self._config.winner_t55_transfer_stage
 +        ):
 +            metrics["reward/t55_single_support_balance"] = jp.zeros(())
++            metrics["reward/t55_left_support_match"] = jp.zeros(())
++            metrics["reward/t55_right_support_match"] = jp.zeros(())
  
          contact = jp.array(
              [
@@ -45,6 +47,16 @@ diff --git a/playground/open_duck_mini_v2/joystick.py b/playground/open_duck_min
 +            )
 +            state.metrics["reward/t55_single_support_balance"] = (
 +                support_reward
++            )
++            support_sides = t55.matched_support_sides(
++                contact,
++                state.info["imitation_phase"],
++            )
++            state.metrics["reward/t55_left_support_match"] = (
++                support_sides[0].astype(jp.float32)
++            )
++            state.metrics["reward/t55_right_support_match"] = (
++                support_sides[1].astype(jp.float32)
 +            )
 +            reward = t55.curriculum_reward(
 +                reward,
