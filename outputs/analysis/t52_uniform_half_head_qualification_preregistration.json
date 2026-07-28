@@ -1,0 +1,281 @@
+{
+  "authority": {
+    "colab": false,
+    "deployment": false,
+    "execute_one_64_cell_cpu_qualification": true,
+    "gate5": false,
+    "later_robustness_preregistration": false,
+    "policy_promotion": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "behavior_contract": {
+    "interpretation": {
+      "core": "minimum physical/semantic validity; thresholds passed by the T4 baseline where comparable",
+      "evaluator_candidate_gate_status": "diagnostic only because T4 invalidated its use as an unqualified feasibility classifier",
+      "replacement_quality": "explicit stretch goals for replacing the behaviorally bad baseline; T4 showed the baseline can fail some of these"
+    },
+    "moving_core": {
+      "bilateral_transitions": true,
+      "maximum_action_saturation_pct": 1.0,
+      "maximum_body_pitch_p95_rad": 0.25,
+      "minimum_base_height_m": 0.12,
+      "minimum_track_ratio": 0.25,
+      "positive_mean_local_velocity": true,
+      "samples": 600
+    },
+    "moving_replacement_quality": {
+      "maximum_action_saturation_pct": 0.0,
+      "maximum_pitch_tracking_p95_rad": 0.2,
+      "maximum_rate_excess_rad_s": 0.0
+    },
+    "x0_core": {
+      "maximum_absolute_mean_local_vx_m_s": 0.02,
+      "maximum_action_saturation_pct": 1.0,
+      "maximum_body_pitch_p95_rad": 0.25,
+      "minimum_base_height_m": 0.12,
+      "samples": 600
+    },
+    "x0_replacement_quality": {
+      "maximum_action_saturation_pct": 0.0,
+      "maximum_pitch_tracking_p95_rad": 0.2,
+      "maximum_rate_excess_rad_s": 0.0
+    }
+  },
+  "calibrator": {
+    "bytes": 55573,
+    "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v96-response-conditioned-mechanics\\winner_v96_universal_calibrator.onnx",
+    "sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576"
+  },
+  "checks": {
+    "all_repository_inputs_present": true,
+    "behavior_cells_zero": true,
+    "conditions_are_exactly_r2_one_through_four": true,
+    "final_target_changes_exactly_head": true,
+    "graph_topology_exact_across_sources_and_targets": true,
+    "half_target_is_bit_exact_identity": true,
+    "matrix_exactly_64_cells": true,
+    "output_head_is_uniform_half_values": true,
+    "robot_or_rdk_zero": true,
+    "t51_earned_only_remaining_half_head": true,
+    "target_endpoints_are_not_duplicates": true,
+    "target_endpoints_differ_exactly_core": true,
+    "training_or_colab_zero": true
+  },
+  "commands_x_m_s": [
+    0.0,
+    0.074,
+    0.077,
+    0.08
+  ],
+  "conditions": [
+    {
+      "condition_index": 1,
+      "id": "FLOOR_FRICTION_LO",
+      "override": {
+        "floor_friction": 0.5
+      }
+    },
+    {
+      "condition_index": 2,
+      "id": "FLOOR_FRICTION_HI",
+      "override": {
+        "floor_friction": 1.0
+      }
+    },
+    {
+      "condition_index": 3,
+      "id": "JOINT_FRICTIONLOSS_LO",
+      "override": {
+        "joint_frictionloss_scale": 0.9
+      }
+    },
+    {
+      "condition_index": 4,
+      "id": "JOINT_FRICTIONLOSS_HI",
+      "override": {
+        "joint_frictionloss_scale": 1.1
+      }
+    }
+  ],
+  "decision_rule": {
+    "fail_decision": "CLOSE_T52_ADAPTER_SUBBLOCK_TRANSFORM_FAMILY",
+    "no_additional_adapter_variant": true,
+    "no_checkpoint_selection": true,
+    "no_retry": true,
+    "pass": "All 64 cells across conditions 1-4 are green; this requalifies nominal and both encountered R2 boundaries.",
+    "pass_decision": "EARN_T52_R2_CONDITIONS_5_TO_20_PREREGISTRATION"
+  },
+  "execution_now": {
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "fits": [
+    {
+      "bytes": 18664,
+      "fit_id": "p30",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "a58db8ffc505d2bb64cba7f5618d0e2c65904fc9f9ac37b560a1231e090f5f4f"
+    },
+    {
+      "bytes": 18788,
+      "fit_id": "p31_34",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p31_34_actuator_fit_20260712.json",
+      "sha256": "2740513f6bdeb4ad3cc5dd6dc1709319389a593fd153c1ce5abae03b66131a57"
+    }
+  ],
+  "matrix": {
+    "both_checkpoints_required": true,
+    "cells_per_condition": 16,
+    "checkpoint_cherry_pick": false,
+    "checkpoints": 2,
+    "commands": 4,
+    "condition_two_is_nominal_matrix": true,
+    "conditions": 4,
+    "fits": 2,
+    "maximum_cells": 64,
+    "plan_sha256": "6fddc03a62e97d972d91054dcf525d7a492e2b3acd7353399388773203cdd5ad",
+    "stop_after_first_failed_condition": true,
+    "strictly_sequential_conditions": true
+  },
+  "mechanism": {
+    "checkpoint_endpoints_distinct": true,
+    "endpoint_differing_initializers": [
+      "adapter_hidden_bias",
+      "adapter_hidden_weight",
+      "adapter_obs_weight"
+    ],
+    "final_changed_initializers": [
+      "adapter_bias",
+      "adapter_weight"
+    ],
+    "half_changed_initializers": [],
+    "hosted_compute_units": 0,
+    "training_steps": 0,
+    "uniform_rule": "Use exact T32-half adapter output-head initializers at both checkpoints; preserve each checkpoint's recurrent core, final feed-forward base, and half normalizer."
+  },
+  "playground": {
+    "manifest": {
+      "bytes": 5190,
+      "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v6\\T19_COMPOSED_SOURCE_MANIFEST.json",
+      "sha256": "d7c9b615c32f0e2c8434e958a900cc38485c0db6fea107b6115a69bbd2122a77"
+    },
+    "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v6"
+  },
+  "policies": [
+    {
+      "bytes": 965047,
+      "checkpoint_id": "T52_UNIFORM_HALF_HEAD_HALF",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t43_forward_actor_block_factorial_v1\\HALF_WITH_FINAL_BASE\\action_margin.onnx",
+      "sha256": "628e7f67bb12f47f84e3d0926b16f0677857023513d94a1ab7a8cf5001eaa736",
+      "source_checkpoint": "T32_HALF",
+      "step": 1003520
+    },
+    {
+      "bytes": 965047,
+      "checkpoint_id": "T52_UNIFORM_HALF_HEAD_FINAL",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t48_final_adapter_core_head_factorial_v1\\FINAL_WITH_HALF_HEAD\\action_margin.onnx",
+      "sha256": "cb6342a39ba3c9780c49ad84d95e660296b313fe70cac62e8ae47002299359bc",
+      "source_checkpoint": "T32_FINAL",
+      "step": 2007040
+    }
+  ],
+  "preregistered_contract_sha256": "9e62787eb79f49d6037577d8f952427c252ccf2e2cccd2a26665a1f1822d899d",
+  "protection_contract": {
+    "force_limit_tolerance_nm": 5e-06,
+    "instantaneous_stall_current_and_torque": "diagnostic_only",
+    "motor_constant_nm_per_a": 0.784532,
+    "overcurrent_threshold_a": 2.0,
+    "overload_threshold_nm": 1.5298374,
+    "pass_max_consecutive_ticks": 99,
+    "simulator_force_limit_abs_nm": 3.23,
+    "simulator_force_limit_hits": "diagnostic_only",
+    "source": "T5 manufacturer-derived duration rules",
+    "strict_comparison": true,
+    "trip_ticks": 100
+  },
+  "question": "Does the sole remaining rule 'use half adapter output-head values at both checkpoints' preserve conditions 1-3 and repair condition 4 while retaining distinct recurrent cores?",
+  "reference_feature_table": {
+    "bytes": 259604,
+    "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+    "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+  },
+  "repository_inputs": {
+    "adapter": {
+      "bytes": 8272,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\t27_state_coherent_eval_adapter.py",
+      "sha256": "e53d6e74bad78e6ffa0423807e6dbe168730e881a47017f5343a0391ac5836cb"
+    },
+    "base_evaluator": {
+      "bytes": 155236,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\closed_loop_sim_eval.py",
+      "sha256": "a5bff87f2cce5e5f5c661a9fe73dee9de77a4c356912279e4771025c3379a4ac"
+    },
+    "matrix_helper": {
+      "bytes": 21782,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t27_t23_robustness_matrix.py",
+      "sha256": "142668ac3dbe27f65ccb1d113c90d854b9ff76201a70120fa1bec722038b8ea3"
+    },
+    "runner": {
+      "bytes": 10104,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t52_uniform_half_head_qualification.py",
+      "sha256": "30a0f02bcd3885d5761499818fff54ac654021cd893100f518eeca993e0a1157"
+    },
+    "t41_r2_source": {
+      "bytes": 12988,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t41_uniform_normalizer_r2_preregistration.json",
+      "sha256": "f0f8337b90d97e08b98db669000ddb43080717f5fe90153ab569d08c0cbd25d3"
+    },
+    "t45_preregistration": {
+      "bytes": 11255,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t45_uniform_final_base_qualification_preregistration.json",
+      "sha256": "67ed5a249ccdd0cd150b447e778507784a0c487dbbb7e834c649fbb05471d7eb"
+    },
+    "t49_result": {
+      "bytes": 26458,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t49_missing_combined_adapter_control_result.json",
+      "sha256": "685d98d06df7c96962b788d27b442326fb7010e2bfac071b7a7d1d0d6bd1f595"
+    },
+    "t51_attribution": {
+      "bytes": 9853,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t51_t50_half_core_failure_attribution.json",
+      "sha256": "4bb629e60c11b4ecbf8a24b02d6366a66385104acbe438ad9b36cd30f4147f59"
+    },
+    "t6_helpers": {
+      "bytes": 29466,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t6_corrected_robustness_screen.py",
+      "sha256": "34d955a9443d8e0fba01a75b64243c865e5e78df23cadb43e871210cb9ba0e00"
+    },
+    "t8_helpers": {
+      "bytes": 27023,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t8_state_coherent_handoff.py",
+      "sha256": "a941d2f9cf0c9a9da8da7759bb98fd84ec41ef08c46ec0506c37d585b6a338da"
+    },
+    "worker": {
+      "bytes": 7932,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\evaluate_t27_t23_robustness_condition.py",
+      "sha256": "93ff8c405d6bf1923cd8bea69ce5efde4cd97388f6b71a1d0f9ba5aa599b096c"
+    }
+  },
+  "schema_version": "open_duck.t52_uniform_half_head_qualification_preregistration.v1",
+  "seed": 167931544,
+  "status": "PREREGISTERED_T52_UNIFORM_HALF_HEAD_QUALIFICATION",
+  "support_handoff": {
+    "context_input_name": "calibration_context",
+    "context_is_diagnostic_only": true,
+    "locomotion_hidden_zero": true,
+    "locomotion_phase_reset": [
+      1.0,
+      0.0
+    ],
+    "preserve_applied_target_observer_state": true,
+    "preserve_final_support_action_as_previous_action": true,
+    "source": "T22/T24 exact support-train-through deployment chain and green T27 one-tick runner contract",
+    "unscored_calibration_ticks": 250,
+    "unscored_home_return_ticks": 0
+  }
+}
