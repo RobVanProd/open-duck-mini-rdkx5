@@ -12,7 +12,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = Path("D:/CodexProjects/Open_Duck_Playground-composed-t37-v1")
-OUTPUT = Path("D:/CodexProjects/Open_Duck_Playground-composed-t66-v1")
+OUTPUT = Path("D:/CodexProjects/Open_Duck_Playground-composed-t66-v2")
 MODULE = ROOT / "patches" / "t66_endpoint_core_continuation.py"
 MANIFEST = OUTPUT / "T66_COMPOSED_SOURCE_MANIFEST.json"
 
@@ -121,6 +121,11 @@ def main() -> int:
                 self.randomizer = make_endpoint_bank_randomizer(
                     self.randomizer,
                     torso_body_id=torso_body_id,
+                )
+                print(
+                    "T66_ENDPOINT_CORE_CONTINUATION="
+                    "strata=8,broad=1,isolated=7,"
+                    "actor_updates=recurrent_core_only"
                 )
             print(
 """,
