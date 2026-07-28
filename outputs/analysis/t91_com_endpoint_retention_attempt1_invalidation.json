@@ -1,0 +1,51 @@
+{
+  "attempt1_block_reuse": false,
+  "authority": {
+    "colab": false,
+    "deployment": false,
+    "gate5": false,
+    "rdkx5_or_robot": false,
+    "t91_v2_preregistration": true,
+    "training": false
+  },
+  "checks": {
+    "no_formal_result_emitted": true,
+    "no_training_colab_or_robot": true,
+    "one_complete_block_only": true,
+    "reporting_keyerror_exact": true,
+    "v1_preregistration_exact": true
+  },
+  "classification": "REPORTING_ONLY_ABORT_AFTER_ONE_COMPLETE_BLOCK",
+  "decision": "EARN_T91_V2_REPORTING_CORRECTION_PREREGISTRATION_ONLY",
+  "error": "KeyError: green_cells",
+  "execution": {
+    "completed_behavior_cells_without_decision": 4,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "formal_policy_decision": null,
+  "receipts": {
+    "completed_block_manifest": {
+      "bytes": 6764,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t91_com_endpoint_retention_v1\\07_TORSO_COM_X_NEG\\T84_ROLLING_HALF\\p30\\manifest.json",
+      "sha256": "c59f96ca7581df03aebed2d6b0c9fb7c3ea783e0764606316529b23c29912091"
+    },
+    "stderr": {
+      "bytes": 449,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t91_runner.stderr.log",
+      "sha256": "c191f05ecfd570d91daf74998a8e3471df15b6309a2e00c4a2c3ca94380d8388"
+    },
+    "v1_preregistration": {
+      "bytes": 10966,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t91_com_endpoint_retention_preregistration.json",
+      "sha256": "c993c5687b7ff0dc843e9e7912730c293200821e9f52fdea049483afb9e4442b"
+    }
+  },
+  "result_sha256": "a6eb6c5197a24cf29445eac0ef9fe42c4d0c492f9290a93cfb7a62d15e82f2a3",
+  "root_cause": "The evaluator block result contains cells and block_green, but the wrapper progress print requested a nonexistent green_cells field after the block had completed.",
+  "schema_version": "open_duck.t91_com_endpoint_retention_attempt1_invalidation.v1",
+  "status": "INVALIDATED_T91_ATTEMPT1_REPORTING_ONLY",
+  "v2_requirement": "Freeze the one-line reporting correction in a new preregistration and rerun all 16 cells from a fresh cache root."
+}

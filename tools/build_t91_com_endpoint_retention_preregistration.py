@@ -30,9 +30,12 @@ ADAPTER = ROOT / "tools" / "t27_state_coherent_eval_adapter.py"
 BASE_EVALUATOR = ROOT / "tools" / "closed_loop_sim_eval.py"
 T6_HELPERS = ROOT / "tools" / "run_t6_corrected_robustness_screen.py"
 T8_HELPERS = ROOT / "tools" / "run_t8_state_coherent_handoff.py"
-OUTPUT = ANALYSIS / "t91_com_endpoint_retention_preregistration.json"
+ATTEMPT1_INVALIDATION = (
+    ANALYSIS / "t91_com_endpoint_retention_attempt1_invalidation.json"
+)
+OUTPUT = ANALYSIS / "t91_com_endpoint_retention_preregistration_v2.json"
 MARKDOWN = (
-    ANALYSIS / "T91_COM_ENDPOINT_RETENTION_PREREGISTRATION_20260728.md"
+    ANALYSIS / "T91_COM_ENDPOINT_RETENTION_PREREGISTRATION_V2_20260728.md"
 )
 
 
@@ -75,6 +78,9 @@ def main() -> int:
     t85_prereg = json.loads(T85_PREREG.read_text(encoding="utf-8"))
     t86 = json.loads(T86_RESULT.read_text(encoding="utf-8"))
     t89 = json.loads(T89_RESULT.read_text(encoding="utf-8"))
+    invalidation = json.loads(
+        ATTEMPT1_INVALIDATION.read_text(encoding="utf-8")
+    )
     basis = json.loads(R2_BASIS.read_text(encoding="utf-8"))
     contract = json.loads(T27_CONTRACT.read_text(encoding="utf-8"))
     condition = next(
@@ -112,6 +118,7 @@ def main() -> int:
         "t85_nominal_preregistration": T85_PREREG,
         "t86_r2_result": T86_RESULT,
         "t89_terminal_result": T89_RESULT,
+        "attempt1_invalidation": ATTEMPT1_INVALIDATION,
         "r2_basis": R2_BASIS,
         "t27_runner_contract": T27_CONTRACT,
     }
@@ -125,6 +132,13 @@ def main() -> int:
             == "EARN_T91_COM_ENDPOINT_RETENTION_DIAGNOSTIC_"
             "PREREGISTRATION_ONLY"
             and not t90["interpretation"]["hosted_run_earned"]
+        ),
+        "attempt1_reporting_only_invalidation_exact": (
+            invalidation["status"]
+            == "INVALIDATED_T91_ATTEMPT1_REPORTING_ONLY"
+            and invalidation["decision"]
+            == "EARN_T91_V2_REPORTING_CORRECTION_PREREGISTRATION_ONLY"
+            and invalidation["formal_policy_decision"] is None
         ),
         "t85_nominal_pair_green": (
             t85_result["status"]
@@ -179,10 +193,10 @@ def main() -> int:
 
     value: dict[str, Any] = {
         "schema_version": (
-            "open_duck.t91_com_endpoint_retention_preregistration.v1"
+            "open_duck.t91_com_endpoint_retention_preregistration.v2"
         ),
         "status": (
-            "PREREGISTERED_T91_COM_ENDPOINT_RETENTION_DIAGNOSTIC"
+            "PREREGISTERED_T91_COM_ENDPOINT_RETENTION_DIAGNOSTIC_V2"
             if not failed
             else "HOLD_T91_COM_ENDPOINT_RETENTION_PREREGISTRATION"
         ),
@@ -249,6 +263,12 @@ def main() -> int:
             "hosted_compute_units": 0,
             "robot_or_rdk_access": 0,
         },
+        "attempt1_disposition": {
+            "classification": "REPORTING_ONLY_ABORT_AFTER_ONE_BLOCK",
+            "reuse_attempt1_block": False,
+            "v2_cache_root_must_be_fresh": True,
+            "formal_decision_from_attempt1": None,
+        },
         "authority": {
             "one_cpu_only_sixteen_cell_diagnostic": not failed,
             "full_endpoint_cpu_contract_preregistration": False,
@@ -267,12 +287,13 @@ def main() -> int:
     MARKDOWN.write_text(
         "\n".join(
             [
-                "# T91 COM-endpoint retention diagnostic preregistration",
+                "# T91 COM-endpoint retention diagnostic preregistration v2",
                 "",
                 f"- Status: `{value['status']}`",
                 "- Condition: `TORSO_COM_X_NEG`, exact `[-.05, 0, 0] m`",
                 "- Matrix: `2 checkpoints x 2 fits x 4 commands = 16`",
                 "- Pass: all `16/16` green",
+                "- Attempt 1: reporting-only abort; no evidence reused",
                 (
                     "- Pass earns only a full-R2 endpoint-replay CPU "
                     "contract preregistration"

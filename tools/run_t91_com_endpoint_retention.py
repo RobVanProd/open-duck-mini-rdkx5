@@ -15,12 +15,12 @@ from typing import Any, Mapping
 
 ROOT = Path(__file__).resolve().parents[1]
 ANALYSIS = ROOT / "outputs" / "analysis"
-PREREG = ANALYSIS / "t91_com_endpoint_retention_preregistration.json"
+PREREG = ANALYSIS / "t91_com_endpoint_retention_preregistration_v2.json"
 RESULT = ANALYSIS / "t91_com_endpoint_retention_result.json"
 MARKDOWN = ANALYSIS / "T91_COM_ENDPOINT_RETENTION_RESULT_20260728.md"
 DEFAULT_CACHE_ROOT = (
     Path("D:/CodexArtifacts/open-duck-policy")
-    / "t91_com_endpoint_retention_v1"
+    / "t91_com_endpoint_retention_v2"
 )
 
 sys.path.insert(0, str(ROOT / "tools"))
@@ -71,7 +71,7 @@ def load_preregistration() -> dict[str, Any]:
     }
     if (
         value.get("status")
-        != "PREREGISTERED_T91_COM_ENDPOINT_RETENTION_DIAGNOSTIC"
+        != "PREREGISTERED_T91_COM_ENDPOINT_RETENTION_DIAGNOSTIC_V2"
         or value.get("failed_checks")
         or canonical_sha256(basis)
         != value.get("preregistered_contract_sha256")
@@ -157,7 +157,10 @@ def main() -> int:
                             f"{policy['checkpoint_id']}:{fit['fit_id']}"
                         ),
                         "block_green": block_result["block_green"],
-                        "green_cells": block_result["green_cells"],
+                        "green_cells": sum(
+                            int(cell["cell_green"])
+                            for cell in block_result["cells"]
+                        ),
                         "elapsed_s": time.time() - started,
                     }
                 ),

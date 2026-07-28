@@ -8,7 +8,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 ANALYSIS = ROOT / "outputs" / "analysis"
-PREREG = ANALYSIS / "t91_com_endpoint_retention_preregistration.json"
+PREREG = ANALYSIS / "t91_com_endpoint_retention_preregistration_v2.json"
 RESULT = ANALYSIS / "t91_com_endpoint_retention_result.json"
 
 
@@ -17,7 +17,7 @@ def test_t91_preregistration_is_exact_and_bounded() -> None:
         pytest.skip("T91 preregistration has not been built")
     value = json.loads(PREREG.read_text(encoding="utf-8"))
     assert value["status"] == (
-        "PREREGISTERED_T91_COM_ENDPOINT_RETENTION_DIAGNOSTIC"
+        "PREREGISTERED_T91_COM_ENDPOINT_RETENTION_DIAGNOSTIC_V2"
     )
     assert value["failed_checks"] == []
     assert value["condition"] == {
@@ -28,6 +28,12 @@ def test_t91_preregistration_is_exact_and_bounded() -> None:
     assert value["matrix"]["cells"] == 16
     assert value["matrix"]["both_checkpoints_required"]
     assert not value["matrix"]["checkpoint_cherry_pick"]
+    assert value["attempt1_disposition"] == {
+        "classification": "REPORTING_ONLY_ABORT_AFTER_ONE_BLOCK",
+        "formal_decision_from_attempt1": None,
+        "reuse_attempt1_block": False,
+        "v2_cache_root_must_be_fresh": True,
+    }
     assert value["execution_now"] == {
         "formal_behavior_cells": 0,
         "hosted_compute_units": 0,
