@@ -30,6 +30,7 @@ EXPECTED_RAW = (
 REFERENCE = ANALYSIS / "ground_up_projected_reference_feature_table.npz"
 
 SOURCE_FILES = {
+    "builder": Path(__file__).resolve(),
     "t54_attribution": ANALYSIS
     / "t54_t53_condition7_failure_attribution.json",
     "t52_qualification": ANALYSIS
@@ -61,7 +62,6 @@ def directory_sha256(path: Path) -> str:
         with item.open("rb") as stream:
             for block in iter(lambda: stream.read(1024 * 1024), b""):
                 digest.update(block)
-        digest.update(b"\0")
     return digest.hexdigest()
 
 
