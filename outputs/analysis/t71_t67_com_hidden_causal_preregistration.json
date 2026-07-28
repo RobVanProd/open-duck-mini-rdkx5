@@ -1,0 +1,284 @@
+{
+  "authority": {
+    "behavior": false,
+    "colab": false,
+    "execute_read_only_paired_trace_attribution": true,
+    "gate5": false,
+    "rdkx5_or_robot": false,
+    "training": false
+  },
+  "checks": {
+    "auditor_and_test_present": true,
+    "exact_paired_trace_population": true,
+    "exact_two_deployment_policies": true,
+    "no_behavior_or_training_run": true,
+    "offline_only": true,
+    "policy_receipts_exact": true,
+    "postexport_contract_green": true,
+    "t67_closed_at_exact_com_boundary": true,
+    "t67_nominal_green": true
+  },
+  "decision_rule": {
+    "missing_signal_decision": "SELECT_OBSERVABILITY_OR_STATE_ESTIMATION_FALSIFIER",
+    "no_candidate_advancement": true,
+    "no_hosted_run_earned": true,
+    "wrong_control_response": "All replay checks pass; hidden separation and same-observation actionability clear every frozen threshold; x=0 remains exactly deadbanded.",
+    "wrong_control_response_decision": "SELECT_TRANSITION_CONTROL_RESCUE_FALSIFIER"
+  },
+  "execution_now": {
+    "hosted_compute_units": 0,
+    "new_simulator_cells": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "auditor": {
+      "bytes": 14496,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\audit_t71_t67_com_hidden_causality.py",
+      "sha256": "1e31dc78b8279268d473b0b52cb9e0e5d374ea6bf71cdb55def59ce1361a8ace"
+    },
+    "t68_postexport": {
+      "bytes": 41540,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t68_t67_postexport_result.json",
+      "sha256": "8e1a83dd527a253eb30daf064101239e222ddd8185247cb990b560ba47608846"
+    },
+    "t69_nominal_result": {
+      "bytes": 123351,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t69_t67_nominal_matrix_result.json",
+      "sha256": "298bd675e4401d9e3942e27f6d78c7b9f2b9e45bf4644bf60b807bf103a0cf4d"
+    },
+    "t69_preregistration": {
+      "bytes": 11214,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t69_t67_nominal_matrix_preregistration.json",
+      "sha256": "7a9ab4bceb6ba42ab241f02680d0d55dcef910e115564056dde212bb8a62d659"
+    },
+    "t70_condition7_result": {
+      "bytes": 123348,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t70_t67_condition7_result.json",
+      "sha256": "ed137273a1920a3707d0e93d73b38a765ed7f5d865c614baf45af0060c94545d"
+    },
+    "test": {
+      "bytes": 2297,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t71_t67_com_hidden_causality.py",
+      "sha256": "621bf7671932cc72c9c72a9e635c786229f650de914de3085ad9a96f8a7fe51f"
+    }
+  },
+  "hypotheses": {
+    "missing_signal": "The recurrent state does not separate nominal and shifted plants, or swapping the paired hidden state has no material effect on the deployed action.",
+    "wrong_control_response": "The recurrent state separates the plants and materially changes the deployed action under an identical observation, yet the formal shifted-plant behavior still fails."
+  },
+  "nominal_traces": {
+    "T67_ENDPOINT_CORE_FINAL|p30|0.000": {
+      "bytes": 8243041,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t69_t67_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T67_ENDPOINT_CORE_FINAL\\p30\\traces\\x0.000_seed167931544_action_margin.jsonl",
+      "sha256": "72cd814f6c1687f9e321832f9d26a02e476d3046f3951a8e83c49298e7a28eb0"
+    },
+    "T67_ENDPOINT_CORE_FINAL|p30|0.074": {
+      "bytes": 10773453,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t69_t67_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T67_ENDPOINT_CORE_FINAL\\p30\\traces\\x0.074_seed167931544_action_margin.jsonl",
+      "sha256": "d7ad964afb31918ef3dde8ef6e2a1dfdb84fe318a077613f0c5bf4ce597afa34"
+    },
+    "T67_ENDPOINT_CORE_FINAL|p30|0.077": {
+      "bytes": 10777008,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t69_t67_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T67_ENDPOINT_CORE_FINAL\\p30\\traces\\x0.077_seed167931544_action_margin.jsonl",
+      "sha256": "be8f2b945be11062bcbfbf179b8fe24239e5afc7062b90553f2d12cb25056068"
+    },
+    "T67_ENDPOINT_CORE_FINAL|p30|0.080": {
+      "bytes": 10772754,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t69_t67_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T67_ENDPOINT_CORE_FINAL\\p30\\traces\\x0.080_seed167931544_action_margin.jsonl",
+      "sha256": "fa1bee6664222113a3ef76677fae8d137054a8a4d7a5838feb9f5f1bac958e04"
+    },
+    "T67_ENDPOINT_CORE_FINAL|p31_34|0.000": {
+      "bytes": 8242388,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t69_t67_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T67_ENDPOINT_CORE_FINAL\\p31_34\\traces\\x0.000_seed167931544_action_margin.jsonl",
+      "sha256": "f4587c307d81c759e34c1f2788bb0c66119c4cd4eb345308dbd1f752b181d64c"
+    },
+    "T67_ENDPOINT_CORE_FINAL|p31_34|0.074": {
+      "bytes": 10774400,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t69_t67_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T67_ENDPOINT_CORE_FINAL\\p31_34\\traces\\x0.074_seed167931544_action_margin.jsonl",
+      "sha256": "bc37a2c9230098250ae91abc32d703b6dfb98d81fb86361cdf047960114f42c7"
+    },
+    "T67_ENDPOINT_CORE_FINAL|p31_34|0.077": {
+      "bytes": 10776239,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t69_t67_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T67_ENDPOINT_CORE_FINAL\\p31_34\\traces\\x0.077_seed167931544_action_margin.jsonl",
+      "sha256": "5113e62533bfaccd62c419a53e127907964a02e70db9b6fdf090b1b06969e2f2"
+    },
+    "T67_ENDPOINT_CORE_FINAL|p31_34|0.080": {
+      "bytes": 10776075,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t69_t67_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T67_ENDPOINT_CORE_FINAL\\p31_34\\traces\\x0.080_seed167931544_action_margin.jsonl",
+      "sha256": "21a07f5c58e3d97eb5e30f46825eb3880b0b2856378f7fdd4a4f62010331164e"
+    },
+    "T67_ENDPOINT_CORE_HALF|p30|0.000": {
+      "bytes": 8250805,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t69_t67_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T67_ENDPOINT_CORE_HALF\\p30\\traces\\x0.000_seed167931544_action_margin.jsonl",
+      "sha256": "f10942b1c10cf009f2f75efa43b186d934297303a51d92af24910f482de37ec5"
+    },
+    "T67_ENDPOINT_CORE_HALF|p30|0.074": {
+      "bytes": 10780404,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t69_t67_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T67_ENDPOINT_CORE_HALF\\p30\\traces\\x0.074_seed167931544_action_margin.jsonl",
+      "sha256": "fba224e7fb24cbea5b717034d784fe963a0a51b08a1df3b50c2a0c757930c73f"
+    },
+    "T67_ENDPOINT_CORE_HALF|p30|0.077": {
+      "bytes": 10779593,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t69_t67_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T67_ENDPOINT_CORE_HALF\\p30\\traces\\x0.077_seed167931544_action_margin.jsonl",
+      "sha256": "a46110f1156ca578402a79050efd5cc113dd48e15eb283680e0d1ddbb9a7b35b"
+    },
+    "T67_ENDPOINT_CORE_HALF|p30|0.080": {
+      "bytes": 10779035,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t69_t67_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T67_ENDPOINT_CORE_HALF\\p30\\traces\\x0.080_seed167931544_action_margin.jsonl",
+      "sha256": "33728b6ca122b8244b12090f7fbb1c218109005f9095e0b1d0bfb2929f52cef8"
+    },
+    "T67_ENDPOINT_CORE_HALF|p31_34|0.000": {
+      "bytes": 8250694,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t69_t67_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T67_ENDPOINT_CORE_HALF\\p31_34\\traces\\x0.000_seed167931544_action_margin.jsonl",
+      "sha256": "c5f32b8e1942ddc118b6d4a9c1e8bdff91cf901d4d77771ed9cadf360783cd27"
+    },
+    "T67_ENDPOINT_CORE_HALF|p31_34|0.074": {
+      "bytes": 10781758,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t69_t67_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T67_ENDPOINT_CORE_HALF\\p31_34\\traces\\x0.074_seed167931544_action_margin.jsonl",
+      "sha256": "5877969d613df9f4655a8f2c3e6d2081dd22e859afb4b6436808e251d7a83e70"
+    },
+    "T67_ENDPOINT_CORE_HALF|p31_34|0.077": {
+      "bytes": 10778489,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t69_t67_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T67_ENDPOINT_CORE_HALF\\p31_34\\traces\\x0.077_seed167931544_action_margin.jsonl",
+      "sha256": "6ef262fb36fc6ea06905fdfe6d6f7c0e932ec986e6ba193abb7293b663e5f029"
+    },
+    "T67_ENDPOINT_CORE_HALF|p31_34|0.080": {
+      "bytes": 10775326,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t69_t67_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T67_ENDPOINT_CORE_HALF\\p31_34\\traces\\x0.080_seed167931544_action_margin.jsonl",
+      "sha256": "d02a501fdefd126b50ac6b28c0646b83a0aadfb4b0634f39a78586b2de95b6bd"
+    }
+  },
+  "policies": [
+    {
+      "bytes": 965047,
+      "checkpoint_id": "T67_ENDPOINT_CORE_HALF",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t68_t67_postexport_v1\\1003520\\action_margin.onnx",
+      "sha256": "ce7620ae8f9f3b3bee10f44bda758b910bfa2ee23b6d00e347ed9045525bf952",
+      "step": 1003520
+    },
+    {
+      "bytes": 965047,
+      "checkpoint_id": "T67_ENDPOINT_CORE_FINAL",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t68_t67_postexport_v1\\2007040\\action_margin.onnx",
+      "sha256": "b79044256a3b3cf4a40bd1cdac2be18d00235112dd0b9a3b2212e1682fd9fa25",
+      "step": 2007040
+    }
+  ],
+  "population": {
+    "checkpoints": 2,
+    "commands_x_m_s": [
+      0.0,
+      0.074,
+      0.077,
+      0.08
+    ],
+    "fits": 2,
+    "moving_postreset_samples": 60,
+    "moving_trace_streams": 12,
+    "paired_trace_streams": 16,
+    "sample_ticks": [
+      0,
+      8,
+      16,
+      32,
+      64,
+      80
+    ]
+  },
+  "preregistered_contract_sha256": "cf42556ee56e2cc290509265ec36beabcf7e78784fc891d1375225132588e46b",
+  "question": "At the exact torso-COM-x-negative boundary, does T67's recurrent state distinguish the shifted plant and causally alter the deployed moving action when the current observation is held fixed?",
+  "schema_version": "open_duck.t71_t67_com_hidden_causal_preregistration.v1",
+  "shifted_traces": {
+    "T67_ENDPOINT_CORE_FINAL|p30|0.000": {
+      "bytes": 8256713,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t70_t67_condition7_v1\\07_TORSO_COM_X_NEG\\T67_ENDPOINT_CORE_FINAL\\p30\\traces\\x0.000_seed167931544_action_margin.jsonl",
+      "sha256": "50c6f2cc9c83dfdb675ff7896391affac4218dfe9028768ce97fd559584f2141"
+    },
+    "T67_ENDPOINT_CORE_FINAL|p30|0.074": {
+      "bytes": 10775230,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t70_t67_condition7_v1\\07_TORSO_COM_X_NEG\\T67_ENDPOINT_CORE_FINAL\\p30\\traces\\x0.074_seed167931544_action_margin.jsonl",
+      "sha256": "72e9eb3f82a61bc6d835d54573189a019a665a5cfef0f9350566d7d4c120596b"
+    },
+    "T67_ENDPOINT_CORE_FINAL|p30|0.077": {
+      "bytes": 1718836,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t70_t67_condition7_v1\\07_TORSO_COM_X_NEG\\T67_ENDPOINT_CORE_FINAL\\p30\\traces\\x0.077_seed167931544_action_margin.jsonl",
+      "sha256": "7841823b7ca95b998076ea225b44eef7a7cc9dd4ecc16b9125c5388562bd2af1"
+    },
+    "T67_ENDPOINT_CORE_FINAL|p30|0.080": {
+      "bytes": 2762894,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t70_t67_condition7_v1\\07_TORSO_COM_X_NEG\\T67_ENDPOINT_CORE_FINAL\\p30\\traces\\x0.080_seed167931544_action_margin.jsonl",
+      "sha256": "988143d162463effe694a4d864b7d25026f1449d71d07290e46718be1a80797f"
+    },
+    "T67_ENDPOINT_CORE_FINAL|p31_34|0.000": {
+      "bytes": 8255688,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t70_t67_condition7_v1\\07_TORSO_COM_X_NEG\\T67_ENDPOINT_CORE_FINAL\\p31_34\\traces\\x0.000_seed167931544_action_margin.jsonl",
+      "sha256": "151c423b9f24f6fae30e73de237cd6187dba7bf8209208fcfb8309843549a678"
+    },
+    "T67_ENDPOINT_CORE_FINAL|p31_34|0.074": {
+      "bytes": 3821431,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t70_t67_condition7_v1\\07_TORSO_COM_X_NEG\\T67_ENDPOINT_CORE_FINAL\\p31_34\\traces\\x0.074_seed167931544_action_margin.jsonl",
+      "sha256": "9ec9ee2196cb451a2035cb8d9efa7e20c41538b3f1d5ac83a5038548d54c0e18"
+    },
+    "T67_ENDPOINT_CORE_FINAL|p31_34|0.077": {
+      "bytes": 10776405,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t70_t67_condition7_v1\\07_TORSO_COM_X_NEG\\T67_ENDPOINT_CORE_FINAL\\p31_34\\traces\\x0.077_seed167931544_action_margin.jsonl",
+      "sha256": "20143244c81bbe376d4b1aac72d2df26cc155b00ba03d72fb31275df6b20f8be"
+    },
+    "T67_ENDPOINT_CORE_FINAL|p31_34|0.080": {
+      "bytes": 8623767,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t70_t67_condition7_v1\\07_TORSO_COM_X_NEG\\T67_ENDPOINT_CORE_FINAL\\p31_34\\traces\\x0.080_seed167931544_action_margin.jsonl",
+      "sha256": "be5e262caebc16cd775dda28ef37d9fa7c2790235c8fecb3fbde2d1a3784c5fb"
+    },
+    "T67_ENDPOINT_CORE_HALF|p30|0.000": {
+      "bytes": 8264121,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t70_t67_condition7_v1\\07_TORSO_COM_X_NEG\\T67_ENDPOINT_CORE_HALF\\p30\\traces\\x0.000_seed167931544_action_margin.jsonl",
+      "sha256": "f03534ec216cd731b63c212367f491754f83f9b6ae4ec160ee7c00fe2d31ecc5"
+    },
+    "T67_ENDPOINT_CORE_HALF|p30|0.074": {
+      "bytes": 5350888,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t70_t67_condition7_v1\\07_TORSO_COM_X_NEG\\T67_ENDPOINT_CORE_HALF\\p30\\traces\\x0.074_seed167931544_action_margin.jsonl",
+      "sha256": "cf1c64a9edcd10358bda99d903acb08291beae8f04cad93bda2822a3dd5ac4af"
+    },
+    "T67_ENDPOINT_CORE_HALF|p30|0.077": {
+      "bytes": 8691171,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t70_t67_condition7_v1\\07_TORSO_COM_X_NEG\\T67_ENDPOINT_CORE_HALF\\p30\\traces\\x0.077_seed167931544_action_margin.jsonl",
+      "sha256": "985541542986616ef8c505468db8528c949ddb91beba3ab304c090cbec79533a"
+    },
+    "T67_ENDPOINT_CORE_HALF|p30|0.080": {
+      "bytes": 2652918,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t70_t67_condition7_v1\\07_TORSO_COM_X_NEG\\T67_ENDPOINT_CORE_HALF\\p30\\traces\\x0.080_seed167931544_action_margin.jsonl",
+      "sha256": "622c4d2e34339d91f41f161e52aa628769ac5539b21ee8a4acf5134cfc29bbd0"
+    },
+    "T67_ENDPOINT_CORE_HALF|p31_34|0.000": {
+      "bytes": 8263119,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t70_t67_condition7_v1\\07_TORSO_COM_X_NEG\\T67_ENDPOINT_CORE_HALF\\p31_34\\traces\\x0.000_seed167931544_action_margin.jsonl",
+      "sha256": "874a427ddc9eec7ecd2692381a4b28ab43461f80df109e2840766ae6417b2fc8"
+    },
+    "T67_ENDPOINT_CORE_HALF|p31_34|0.074": {
+      "bytes": 6715098,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t70_t67_condition7_v1\\07_TORSO_COM_X_NEG\\T67_ENDPOINT_CORE_HALF\\p31_34\\traces\\x0.074_seed167931544_action_margin.jsonl",
+      "sha256": "29b038f0687c2b55d901b609b714327b3abb0d6762b95584da6cb93062651c0a"
+    },
+    "T67_ENDPOINT_CORE_HALF|p31_34|0.077": {
+      "bytes": 4109704,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t70_t67_condition7_v1\\07_TORSO_COM_X_NEG\\T67_ENDPOINT_CORE_HALF\\p31_34\\traces\\x0.077_seed167931544_action_margin.jsonl",
+      "sha256": "a3a1158a9e7ce140737d1368a341290e8ad712199b39024f8a37de394f5c16d5"
+    },
+    "T67_ENDPOINT_CORE_HALF|p31_34|0.080": {
+      "bytes": 3480252,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t70_t67_condition7_v1\\07_TORSO_COM_X_NEG\\T67_ENDPOINT_CORE_HALF\\p31_34\\traces\\x0.080_seed167931544_action_margin.jsonl",
+      "sha256": "35d9a394aeb6f35babbf9c2144eaea63e2611089d8f39ca9b8215b501335d555"
+    }
+  },
+  "status": "PREREGISTERED_T71_T67_COM_HIDDEN_CAUSAL_ATTRIBUTION",
+  "thresholds": {
+    "actionable_action_rms_floor": 0.0001,
+    "maximum_trace_replay_abs_error": 1e-07,
+    "maximum_x0_hidden_swap_action_abs": 0.0,
+    "minimum_fraction_moving_postreset_actionable": 0.95,
+    "minimum_moving_postreset_hidden_input_rms_median": 0.01,
+    "minimum_moving_postreset_hidden_swap_action_rms_median": 0.005
+  }
+}
