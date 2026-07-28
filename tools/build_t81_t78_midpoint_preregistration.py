@@ -19,6 +19,10 @@ RUNNER = ROOT / "tools" / "run_t81_t78_midpoint_transform.py"
 TEST = ROOT / "tests" / "test_t81_t78_midpoint_transform.py"
 OUTPUT = ANALYSIS / "t81_t78_midpoint_preregistration.json"
 MARKDOWN = ANALYSIS / "T81_T78_MIDPOINT_PREREGISTRATION_20260728.md"
+RAW_ROOT = Path(
+    "D:/CodexArtifacts/open-duck-policy/t78_extracted_20260728/"
+    "t78_endpoint_joint_adapter_continuation/training"
+)
 EXPECTED_DIFFERING_INITIALIZERS = [
     "adapter_bias",
     "adapter_hidden_bias",
@@ -51,6 +55,10 @@ def receipt(path: Path) -> dict[str, Any]:
     }
 
 
+def graph_step(path: Path) -> int:
+    return int(path.stem.rsplit("_", 1)[1])
+
+
 def main() -> int:
     for path in (OUTPUT, MARKDOWN):
         if path.exists():
@@ -64,11 +72,14 @@ def main() -> int:
     validation = json.loads(T78_VALIDATION.read_text(encoding="utf-8"))
     transform = json.loads(T79_TRANSFORM.read_text(encoding="utf-8"))
     nominal = json.loads(T80_RESULT.read_text(encoding="utf-8"))
-    graphs = {
+    validation_graphs = {
         int(row["step"]): row for row in validation["exports"]["onnx"]
     }
-    half_path = Path(graphs[1_003_520]["path"])
-    final_path = Path(graphs[2_007_040]["path"])
+    raw_paths = {
+        graph_step(path): path.resolve() for path in RAW_ROOT.glob("*.onnx")
+    }
+    half_path = raw_paths[1_003_520]
+    final_path = raw_paths[2_007_040]
     failed_cells = []
     for block in nominal["blocks"]:
         for cell in block["result"]["cells"]:
@@ -121,8 +132,11 @@ def main() -> int:
             failed_cells == expected_failed
         ),
         "raw_half_and_final_exact": (
-            sha256(half_path) == graphs[1_003_520]["sha256"]
-            and sha256(final_path) == graphs[2_007_040]["sha256"]
+            sorted(raw_paths) == [0, 1_003_520, 2_007_040]
+            and sha256(half_path)
+            == validation_graphs[1_003_520]["sha256"]
+            and sha256(final_path)
+            == validation_graphs[2_007_040]["sha256"]
         ),
         "runner_and_test_present": RUNNER.is_file() and TEST.is_file(),
         "zero_scalar_or_checkpoint_search": True,
