@@ -1,0 +1,277 @@
+{
+  "authority": {
+    "colab": false,
+    "gate5": false,
+    "half_head_qualification_preregistration": true,
+    "policy_promotion": false,
+    "qualification_execution": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "causal_successor": {
+    "half_groups": [
+      "head"
+    ],
+    "only_remaining_nonduplicating_one_group_variant": true,
+    "original_failed_cell_green": true,
+    "original_failed_cell_samples": 600,
+    "policy": {
+      "bytes": 965047,
+      "checkpoint_id": "T48_FINAL_WITH_HALF_HEAD",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t48_final_adapter_core_head_factorial_v1\\FINAL_WITH_HALF_HEAD\\action_margin.onnx",
+      "sha256": "cb6342a39ba3c9780c49ad84d95e660296b313fe70cac62e8ae47002299359bc"
+    },
+    "variant_id": "FINAL_WITH_HALF_HEAD"
+  },
+  "checks": {
+    "completed_factorial_both_one_group_variants_green": true,
+    "core_was_selected_and_is_now_closed": true,
+    "early_forward_pitch_collapse_exact": true,
+    "exactly_one_failed_cell": true,
+    "failure_contract_and_non_duration_quality_green": true,
+    "failure_identity_exact": true,
+    "head_is_only_remaining_nonduplicating_variant": true,
+    "head_policy_asset_exact": true,
+    "no_new_behavior_or_training": true,
+    "other_fifteen_cells_green": true,
+    "robot_or_rdk_zero": true,
+    "t50_stopped_at_first_condition": true
+  },
+  "closed_variants": {
+    "combined": {
+      "reason": "duplicates half endpoint",
+      "variant_id": "FINAL_WITH_HALF_CORE_HEAD"
+    },
+    "selected_core": {
+      "reason": "failed T50 qualification",
+      "variant_id": "FINAL_WITH_HALF_CORE"
+    }
+  },
+  "decision": "EARN_T52_FINAL_WITH_HALF_HEAD_UNIFORM_TRANSFORM_QUALIFICATION_PREREGISTRATION",
+  "execution": {
+    "hosted_compute_units": 0,
+    "new_behavior_cells": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "failure": {
+    "cell": {
+      "behavior": {
+        "action_saturation_pct": 0.0,
+        "body_pitch_p95_rad": 0.7912300343419358,
+        "command_x_m_s": 0.077,
+        "core_checks": {
+          "bilateral_transitions": true,
+          "body_pitch": false,
+          "duration": false,
+          "emergence": false,
+          "finite_mean_vx": true,
+          "height": false,
+          "minimum_track_ratio": true,
+          "positive_velocity": true,
+          "samples": false,
+          "saturation": true
+        },
+        "core_pass": false,
+        "emergence_pass": false,
+        "evaluator_candidate_gate_status_diagnostic": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "instant_rate_excess_rad_s": 0.0,
+        "left_contact_transitions": 13,
+        "mean_local_vx_m_s": 0.1563129766759937,
+        "minimum_base_height_m": -0.002960995538160205,
+        "p95_rate_excess_rad_s": 0.0,
+        "pitch_tracking_p95_rad": 0.15537375211715698,
+        "replacement_quality_checks": {
+          "instant_rate": true,
+          "p95_rate": true,
+          "tracking": true,
+          "zero_saturation": true
+        },
+        "replacement_quality_pass": true,
+        "right_contact_transitions": 9,
+        "samples": 163,
+        "termination_reason": "fall_or_nan",
+        "track_ratio": 2.0300386581297882
+      },
+      "cell_green": false,
+      "command_x_m_s": 0.077,
+      "handoff": {
+        "all_checks_pass": true,
+        "calibration_final_action": [
+          0.0,
+          0.0,
+          -0.5,
+          0.25,
+          0.25,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.5,
+          0.25,
+          0.25
+        ],
+        "checks": {
+          "applied_target_observer_preserved": true,
+          "applied_target_slot_continuity": true,
+          "calibration_ticks_exact": true,
+          "calibrator_sha_exact": true,
+          "context_finite": true,
+          "context_immutable": true,
+          "context_shape": true,
+          "first_hidden_zero": true,
+          "first_previous_action_matches_calibration": true,
+          "full_observation_traced": true,
+          "graph_authoritative_no_host_delta": true,
+          "handoff_state_preserved": true,
+          "phase_reset_exact": true,
+          "policy_hidden_zero": true,
+          "previous_action_preserved": true,
+          "recurrent_state_chains_exact": true,
+          "response_enabled": true,
+          "zero_home_return_ticks": true
+        },
+        "context_sha256": "c670f613f7c71565b7471892539aa8ae4222b3cd5f82d82f95db4a69cc249412",
+        "observer_bridge_applied_target_rad": [
+          0.0020000000949949026,
+          0.05299999937415123,
+          -0.7549999952316284,
+          1.4305000305175781,
+          -0.7214999794960022,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          -0.003000000026077032,
+          -0.06499999761581421,
+          0.7599999904632568,
+          1.441499948501587,
+          -0.7335000038146973
+        ],
+        "response_audit": {
+          "applied_target_observation_matches_bridge": true,
+          "calibration_final_action": [
+            0.0,
+            0.0,
+            -0.5,
+            0.25,
+            0.25,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.5,
+            0.25,
+            0.25
+          ],
+          "calibration_ticks": 250,
+          "calibrator_abi": {
+            "input_names": [
+              "obs",
+              "previous_action",
+              "h_in"
+            ],
+            "output_names": [
+              "calibration_actions",
+              "previous_action_out",
+              "h_out"
+            ]
+          },
+          "calibrator_sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576",
+          "context_finite": true,
+          "context_sha256": "c670f613f7c71565b7471892539aa8ae4222b3cd5f82d82f95db4a69cc249412",
+          "context_shape": [
+            1,
+            64
+          ],
+          "enabled": true,
+          "handoff_state_preserved": true,
+          "home_return_ticks": 0,
+          "locomotion_applied_target_observation_rad": [
+            0.0020000000949949026,
+            0.05299999937415123,
+            -0.7549999952316284,
+            1.4305000305175781,
+            -0.7214999794960022,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            -0.003000000026077032,
+            -0.06499999761581421,
+            0.7599999904632568,
+            1.441499948501587,
+            -0.7335000038146973
+          ],
+          "locomotion_hidden_exact_zero": true,
+          "locomotion_phase_reset": [
+            1.0,
+            0.0
+          ],
+          "locomotion_previous_action_exact_zero": false,
+          "locomotion_previous_action_matches_calibration": true,
+          "observer_bridge_applied_target_rad": [
+            0.0020000000949949026,
+            0.05299999937415123,
+            -0.7549999952316284,
+            1.4305000305175781,
+            -0.7214999794960022,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            -0.003000000026077032,
+            -0.06499999761581421,
+            0.7599999904632568,
+            1.4414999485015867,
+            -0.7335000038146973
+          ]
+        }
+      },
+      "override_readback_exact": true,
+      "protection": {
+        "duration_protection_pass": true,
+        "maximum_full_measured_vector_excess_rad_s": 0.0,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t50_uniform_half_core_qualification_v1\\01_FLOOR_FRICTION_LO\\T50_UNIFORM_HALF_CORE_FINAL\\p31_34\\traces\\x0.077_seed167931544_action_margin.jsonl",
+        "rows": 163,
+        "sha256": "0422e6ee757f155ae242e6fa9490464a873a9cffa270557b03a070a8eb45e336",
+        "simulator_force_limit_hit_ticks_diagnostic": 0,
+        "ticks_contiguous_from_zero": true,
+        "worst_peak_current_a_diagnostic": 3.120973388290975,
+        "worst_peak_torque_nm_diagnostic": 2.4485034942626953,
+        "worst_strict_overcurrent_run_ticks": 9,
+        "worst_strict_overload_run_ticks": 10
+      },
+      "trace_valid": false
+    },
+    "checkpoint_id": "T50_UNIFORM_HALF_CORE_FINAL",
+    "command_x_m_s": 0.077,
+    "condition_id": "FLOOR_FRICTION_LO",
+    "fit_id": "p31_34",
+    "trace": {
+      "bytes": 2924919,
+      "first_abs_pitch_over_0p25_tick": 136,
+      "first_abs_pitch_over_0p5_tick": 149,
+      "first_base_height_below_0p12_tick": 155,
+      "first_no_foot_contact_tick": 154,
+      "last_base_height_m": -0.002960995538160205,
+      "last_body_pitch_rad": 1.437023294822398,
+      "last_body_roll_rad": 2.1394350476682984,
+      "last_tick": 162,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t50_uniform_half_core_qualification_v1\\01_FLOOR_FRICTION_LO\\T50_UNIFORM_HALF_CORE_FINAL\\p31_34\\traces\\x0.077_seed167931544_action_margin.jsonl",
+      "rows": 163,
+      "sha256": "0422e6ee757f155ae242e6fa9490464a873a9cffa270557b03a070a8eb45e336",
+      "ticks_contiguous_from_zero": true
+    }
+  },
+  "finding": "The selected half-core transform repairs T46's condition-4 cell but creates one early final/P31-34/x=.077 collapse in condition 1. The completed causal factorial leaves exactly one nonduplicating, independently sufficient alternative: the half output head. It earns one full conditions 1-4 qualification, not policy promotion.",
+  "result_sha256": "3891cdfd357c4701089c23c6cebecab418cdc51846669b402185d6c08180833e",
+  "schema_version": "open_duck.t51_t50_half_core_failure_attribution.v1",
+  "status": "PASS_T51_T50_HALF_CORE_FAILURE_ATTRIBUTION"
+}
