@@ -11,7 +11,7 @@ PREREG = (
     ROOT
     / "outputs"
     / "analysis"
-    / "t94_r2_calibration_manifold_preregistration_v2.json"
+    / "t94_r2_calibration_manifold_preregistration_v3.json"
 )
 RESULT = (
     ROOT / "outputs" / "analysis" / "t94_r2_calibration_manifold_result.json"
@@ -22,7 +22,7 @@ def test_t94_preregistration_is_calibration_only() -> None:
     if not PREREG.exists():
         pytest.skip("T94 preregistration has not run")
     value = json.loads(PREREG.read_text(encoding="utf-8"))
-    assert value["status"] == "PREREGISTERED_T94_R2_CALIBRATION_MANIFOLD_V2"
+    assert value["status"] == "PREREGISTERED_T94_R2_CALIBRATION_MANIFOLD_V3"
     assert value["failed_checks"] == []
     assert value["matrix"]["cells"] == 40
     assert value["matrix"]["duration_ticks"] == 250

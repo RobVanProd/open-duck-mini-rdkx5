@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+from concurrent.futures import as_completed, ThreadPoolExecutor
 import hashlib
 import json
 from pathlib import Path
@@ -20,7 +21,7 @@ sys.path.insert(0, str(TOOLS))
 import run_t7_universal_response_support as t7  # noqa: E402
 
 
-PREREG = ANALYSIS / "t94_r2_calibration_manifold_preregistration_v2.json"
+PREREG = ANALYSIS / "t94_r2_calibration_manifold_preregistration_v3.json"
 OUTPUT = ANALYSIS / "t94_r2_calibration_manifold_result.json"
 MARKDOWN = ANALYSIS / "T94_R2_CALIBRATION_MANIFOLD_RESULT_20260728.md"
 
@@ -200,7 +201,7 @@ def analyze(
         )
         <= 0.25,
         "zero_saturation": not any(
-            bool(row["action_saturated"]) for row in records
+            bool(np.any(row["action_saturated"])) for row in records
         ),
         "zero_rate_excess": max(
             max(
@@ -246,7 +247,7 @@ def main() -> int:
             raise FileExistsError(f"refusing to overwrite T94 output: {path}")
     prereg = json.loads(PREREG.read_text(encoding="utf-8"))
     if (
-        prereg["status"] != "PREREGISTERED_T94_R2_CALIBRATION_MANIFOLD_V2"
+        prereg["status"] != "PREREGISTERED_T94_R2_CALIBRATION_MANIFOLD_V3"
         or canonical_sha256(prereg, "preregistered_contract_sha256")
         != prereg["preregistered_contract_sha256"]
     ):
@@ -258,20 +259,34 @@ def main() -> int:
     compatible = t7_compatible_prereg(prereg)
     prototypes = context_prototypes()
     args.cache_root.mkdir(parents=True)
+    plans = [
+        (configuration, fit)
+        for configuration in prereg["conditions"]
+        for fit in prereg["fits"]
+    ]
+
+    def execute(plan: tuple[dict[str, Any], str]) -> dict[str, Any]:
+        configuration, fit = plan
+        manifest, _ = t7.run_or_load_block(
+            compatible, configuration, fit, 0, args.cache_root
+        )
+        return analyze(prereg, manifest, prototypes)
+
     cells: list[dict[str, Any]] = []
-    for index, configuration in enumerate(prereg["conditions"], start=1):
-        for fit in prereg["fits"]:
-            manifest, _ = t7.run_or_load_block(
-                compatible, configuration, fit, 0, args.cache_root
-            )
-            cell = analyze(prereg, manifest, prototypes)
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        futures = [pool.submit(execute, plan) for plan in plans]
+        for future in as_completed(futures):
+            cell = future.result()
             cells.append(cell)
             print(
-                f"T94 {len(cells):02}/40 {configuration['id']} {fit} "
-                f"cell={cell['pass']} fit={cell['fit_correct']} "
+                f"T94 {len(cells):02}/40 {cell['configuration_id']} "
+                f"{cell['fit_id']} cell={cell['pass']} "
+                f"fit={cell['fit_correct']} "
                 f"negative={cell['negative_correct']}",
                 flush=True,
             )
+    fit_order = {name: index for index, name in enumerate(prereg["fits"])}
+    cells.sort(key=lambda item: (item["condition_index"], fit_order[item["fit_id"]]))
     anchors = {
         "FLOOR_FRICTION_HI": "NOMINAL",
         "ARMATURE_LO": "NOMINAL",
