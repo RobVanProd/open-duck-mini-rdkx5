@@ -1,0 +1,69 @@
+{
+  "authority": {
+    "behavior_matrix": false,
+    "cpu_recovery_execution": false,
+    "gate5": false,
+    "hosted_training": false,
+    "robot_or_rdk": false,
+    "t55b_cpu_recovery_preregistration": true
+  },
+  "checks": {
+    "failure_is_exact_velocity_vector_precondition": true,
+    "failure_precedes_runner_train_call": true,
+    "formal_result_absent": true,
+    "no_checkpoint_or_graph_written": true,
+    "only_empty_startup_event_file_may_exist": true,
+    "optimizer_behavior_hosted_robot_zero": true,
+    "original_preregistration_green": true
+  },
+  "correction": {
+    "curriculum_formula_change": false,
+    "gate_change": false,
+    "single_change": "install T31.VELOCITY_LIMITS into T20 only while building each T55 command, then restore the prior helper value",
+    "source_checkpoint_change": false,
+    "stage_order_change": false,
+    "step_count_change": false
+  },
+  "decision": "EARN_T55B_EXACT_CPU_RECOVERY_PREREGISTRATION_ONLY",
+  "execution": {
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "finding": "The T55 runner called T31's command helper without first installing T31's frozen source velocity vector into the shared T20 helper. The composed runner rejected the T20 vector during environment construction, before runner.train(), checkpoints, ONNX exports, optimizer steps, or behavior.",
+  "inputs": {
+    "log": {
+      "bytes": 683,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t55_dynamic_single_support_cpu_v1\\balance_training.log",
+      "sha256": "ec69c7b1263045a8203fb788456db4a48b4d23459da39dcceb16ef8ccfacf5bc"
+    },
+    "partial_root": "D:\\CodexArtifacts\\open-duck-policy\\t55_dynamic_single_support_cpu_v1",
+    "preregistration": {
+      "bytes": 13274,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t55_dynamic_single_support_cpu_preregistration.json",
+      "sha256": "4c0886f2b6c6242f11c3323cdc460e91c1bc2c03a1a3b2a306ef72d29c99f514"
+    },
+    "runner_before_correction": {
+      "bytes": 22541,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t55_dynamic_single_support_cpu_contract.py",
+      "sha256": "e9429834fd696155c55d25c0ad33384674f96adebdb024958ef58f7d6798b40c"
+    }
+  },
+  "observed": {
+    "checkpoint_directories": 0,
+    "event_files": [
+      {
+        "bytes": 40,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t55_dynamic_single_support_cpu_v1\\balance_smoke\\events.out.tfevents.1785234040.WinLSD",
+        "sha256": "b29e01657326c0e55d03d897dbcdbf7270d1f315b709e62fa35d8813af3408e9"
+      }
+    ],
+    "formal_result_exists": false,
+    "onnx_graphs": 0
+  },
+  "result_sha256": "f275ef0c267452de84dda0f5b70aa87f6baf0cdf567245d831962c56d0b600d2",
+  "schema_version": "open_duck.t55_preexecution_velocity_hold_attribution.v1",
+  "status": "PASS_T55_PREEXECUTION_VELOCITY_HOLD_ATTRIBUTION"
+}
