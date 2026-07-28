@@ -25,15 +25,25 @@ def test_t59_preregistration_requires_both_transfer_checkpoints() -> None:
     assert not value["authority"]["gate5"]
 
 
-def test_t59_result_is_full_persistence_pass() -> None:
+def test_t59_result_records_the_frozen_persistence_hold() -> None:
     if not RESULT.exists():
         pytest.skip("T59 nominal matrix has not run")
     value = json.loads(RESULT.read_text(encoding="utf-8"))
-    assert value["status"] == "PASS_T59_T56_NOMINAL_MATRIX"
-    assert value["decision"] == (
-        "EARN_T60_T56_R2_ROBUSTNESS_MATRIX_PREREGISTRATION"
-    )
-    assert value["condition"]["green_cells"] == 16
+    assert value["status"] == "HOLD_T59_T56_NOMINAL_MATRIX"
+    assert value["decision"] == "CLOSE_T56_DYNAMIC_SINGLE_SUPPORT_CURRICULUM"
+    assert value["condition"]["green_cells"] == 10
     assert value["execution"]["formal_behavior_cells"] == 16
-    assert value["authority"]["robustness_preregistration"]
+    blocks = {
+        (block["checkpoint_id"], block["fit_id"]): block["result"][
+            "block_green"
+        ]
+        for block in value["blocks"]
+    }
+    assert blocks == {
+        ("T56_TRANSFER_HALF", "p30"): False,
+        ("T56_TRANSFER_HALF", "p31_34"): False,
+        ("T56_TRANSFER_FINAL", "p30"): True,
+        ("T56_TRANSFER_FINAL", "p31_34"): True,
+    }
+    assert not value["authority"]["robustness_preregistration"]
     assert not value["authority"]["gate5"]
