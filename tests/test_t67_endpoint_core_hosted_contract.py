@@ -37,3 +37,22 @@ def test_t67_driver_is_exact_no_retry_two_checkpoint_run() -> None:
     assert '"--winner_t37_freeze_observation_normalizer"' in text
     assert "no-retry path exists" in text
     assert "formal_behavior_cells_executed" in text
+
+
+def test_t67_package_and_launch_contracts_are_green_when_present() -> None:
+    package_path = (
+        ANALYSIS / "t67_endpoint_core_hosted_package_contract.json"
+    )
+    launch_path = ANALYSIS / "t67_colab_cli_launch_contract.json"
+    if package_path.exists():
+        package = json.loads(package_path.read_text(encoding="utf-8"))
+        assert package["status"] == "PASS_T67_ENDPOINT_CORE_HOSTED_PACKAGE"
+        assert package["failed_checks"] == []
+        assert package["authority"]["retry_or_resume"] is False
+    if launch_path.exists():
+        launch = json.loads(launch_path.read_text(encoding="utf-8"))
+        assert launch["status"] == "PASS_T67_COLAB_CLI_LAUNCH_CONTRACT"
+        assert launch["failed_checks"] == []
+        assert launch["session"]["accelerator"] == "L4"
+        assert launch["recovery"]["retry"] is False
+        assert launch["recovery"]["resume"] is False
