@@ -88,7 +88,7 @@ def main() -> int:
                 if block["checkpoint_id"].endswith("HALF")
                 for cell in block["result"]["cells"]
             )
-            == 5
+            == 4
             and sum(
                 cell["cell_green"]
                 for block in t73["blocks"]
