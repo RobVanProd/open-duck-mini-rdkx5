@@ -1,0 +1,403 @@
+{
+  "authority": {
+    "colab": false,
+    "deployment": false,
+    "gate5": false,
+    "rdkx5_or_robot": false,
+    "t43_behavior_execution": false,
+    "t43_factorial_preregistration": true,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "checks": {
+    "action_graph_is_authoritative_without_host_delta": true,
+    "all_matched_controls_full_duration": true,
+    "endpoint_drift_is_exactly_base_plus_adapter": true,
+    "exactly_one_failed_cell": true,
+    "failed_identity_exact": true,
+    "failure_is_late_fall": true,
+    "late_attitude_escape_precedes_height_loss": true,
+    "no_new_behavior_or_training": true,
+    "normalizer_equal_across_endpoints": true,
+    "protection_and_handoff_green": true,
+    "robot_or_rdk_absent": true,
+    "t41_stopped_at_exact_first_failure": true,
+    "tracking_rate_saturation_quality_green_before_fall": true
+  },
+  "classification": {
+    "endpoint_trainable_drift_blocks": [
+      "base",
+      "adapter"
+    ],
+    "matched_final_checkpoint_passes": true,
+    "mechanism": "late_closed_loop_attitude_stability_loss_specific_to_half_checkpoint_p30_x0p08_under_joint_frictionloss_0p9",
+    "not_duration_protection_failure": true,
+    "not_handoff_or_readback_failure": true,
+    "not_rate_or_saturation_failure": true,
+    "not_tracking_gate_failure": true
+  },
+  "decision": "EARN_T43_HALF_FORWARD_ACTOR_BLOCK_FACTORIAL_PREREGISTRATION",
+  "endpoint_initializer_audit": {
+    "adapter_names": [
+      "adapter_weight",
+      "adapter_bias",
+      "adapter_obs_weight",
+      "adapter_hidden_weight",
+      "adapter_hidden_bias"
+    ],
+    "base_names": [
+      "trunk_0_weight",
+      "trunk_0_bias",
+      "trunk_1_weight",
+      "trunk_1_bias",
+      "trunk_2_weight",
+      "trunk_2_bias",
+      "base_residual_weight",
+      "base_residual_bias"
+    ],
+    "changed_initializers": [
+      "adapter_bias",
+      "adapter_hidden_bias",
+      "adapter_hidden_weight",
+      "adapter_obs_weight",
+      "adapter_weight",
+      "base_residual_bias",
+      "base_residual_weight",
+      "trunk_0_bias",
+      "trunk_0_weight",
+      "trunk_1_bias",
+      "trunk_1_weight",
+      "trunk_2_bias",
+      "trunk_2_weight"
+    ],
+    "expected_base_plus_adapter": [
+      "adapter_bias",
+      "adapter_hidden_bias",
+      "adapter_hidden_weight",
+      "adapter_obs_weight",
+      "adapter_weight",
+      "base_residual_bias",
+      "base_residual_weight",
+      "trunk_0_bias",
+      "trunk_0_weight",
+      "trunk_1_bias",
+      "trunk_1_weight",
+      "trunk_2_bias",
+      "trunk_2_weight"
+    ],
+    "final_policy": {
+      "bytes": 965047,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t36_t32_actor_block_factorial_v1\\NORMALIZER_HALF\\action_margin.onnx",
+      "sha256": "c74b37423508f707ad4e906e324e14a5b7900856e900837fe40054f159f35086"
+    },
+    "half_policy": {
+      "bytes": 965047,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t33_t32_postexport_v1\\1003520\\action_margin.onnx",
+      "sha256": "6407d5ebb0811bcb47018ef8817e372153b5f326d786e030921e77c08885e4c1"
+    },
+    "normalizer_names": [
+      "obs_mean",
+      "obs_std"
+    ]
+  },
+  "execution": {
+    "hosted_compute_units": 0,
+    "new_formal_behavior_cells": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "factorial": {
+    "diagnostic_precedence": [
+      "one changed block",
+      "base before adapter"
+    ],
+    "no_early_stop": true,
+    "only_combined_pass": "classify coupled drift; do not promote an endpoint-collapsing combined transform",
+    "run_all_variants": true,
+    "target": "exact_failed_cell_only",
+    "variants": [
+      "HALF_WITH_FINAL_BASE",
+      "HALF_WITH_FINAL_ADAPTER",
+      "HALF_WITH_FINAL_BASE_ADAPTER"
+    ]
+  },
+  "failed_cell": {
+    "behavior": {
+      "action_saturation_pct": 0.0,
+      "body_pitch_p95_rad": 0.222470523914026,
+      "command_x_m_s": 0.08,
+      "core_checks": {
+        "bilateral_transitions": true,
+        "body_pitch": true,
+        "duration": false,
+        "emergence": false,
+        "finite_mean_vx": true,
+        "height": false,
+        "minimum_track_ratio": true,
+        "positive_velocity": true,
+        "samples": false,
+        "saturation": true
+      },
+      "core_pass": false,
+      "emergence_pass": false,
+      "evaluator_candidate_gate_status_diagnostic": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "instant_rate_excess_rad_s": 0.0,
+      "left_contact_transitions": 50,
+      "mean_local_vx_m_s": 0.09591453517879761,
+      "minimum_base_height_m": -0.0065272655338048935,
+      "p95_rate_excess_rad_s": 0.0,
+      "pitch_tracking_p95_rad": 0.16922774314880368,
+      "replacement_quality_checks": {
+        "instant_rate": true,
+        "p95_rate": true,
+        "tracking": true,
+        "zero_saturation": true
+      },
+      "replacement_quality_pass": true,
+      "right_contact_transitions": 45,
+      "samples": 583,
+      "termination_reason": "fall_or_nan",
+      "track_ratio": 1.1989316897349702
+    },
+    "checkpoint_id": "T39_UNIFORM_NORMALIZER_HALF",
+    "command_x_m_s": 0.08,
+    "condition_id": "JOINT_FRICTIONLOSS_LO",
+    "fit_id": "p30",
+    "protection": {
+      "duration_protection_pass": true,
+      "maximum_full_measured_vector_excess_rad_s": 0.0,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t41_uniform_normalizer_r2_v1\\03_JOINT_FRICTIONLOSS_LO\\T39_UNIFORM_NORMALIZER_HALF\\p30\\traces\\x0.080_seed167931544_action_margin.jsonl",
+      "rows": 583,
+      "sha256": "1917e9a9e80f04a15fb367041453fb8e772b1de2f42e2ac39cd1fa63d524f4dd",
+      "simulator_force_limit_hit_ticks_diagnostic": 0,
+      "ticks_contiguous_from_zero": true,
+      "worst_peak_current_a_diagnostic": 3.0264923695838233,
+      "worst_peak_torque_nm_diagnostic": 2.374380111694336,
+      "worst_strict_overcurrent_run_ticks": 14,
+      "worst_strict_overload_run_ticks": 14
+    }
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "t36_factorial_preregistration": {
+      "bytes": 20948,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t36_t32_actor_block_factorial_preregistration.json",
+      "sha256": "1109f95249f343604f2d84db2340689e3ea4f387008792b1261ade312a76bab2"
+    },
+    "t39_preregistration": {
+      "bytes": 15011,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t39_uniform_normalizer_rollback_nominal_preregistration.json",
+      "sha256": "abab390c020247e790c8b21b897069ea7671f568967ebbeaa5e9b1434f165552"
+    },
+    "t41_result": {
+      "bytes": 369765,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t41_uniform_normalizer_r2_result.json",
+      "sha256": "3a87c6fc70ec2777be34e260818f96618e3beeb7cb37f7a88e5d276ad276852e"
+    }
+  },
+  "result_sha256": "fb43879a33038fbd752d5565afdce04f5fac871a29217de4023fd5914685fa5e",
+  "schema_version": "open_duck.t42_t41_condition3_failure_attribution.v1",
+  "status": "PASS_T42_T41_CONDITION3_FAILURE_ATTRIBUTION",
+  "trace_summaries": {
+    "failure": {
+      "action_pipeline": {
+        "changed_ticks": 0,
+        "guard_nonzero_ticks": 2,
+        "maximum_raw_to_final_delta": 0.0,
+        "maximum_sent_target_rate_excess_rad_s": 0.0,
+        "saturation_ticks": 0
+      },
+      "done": true,
+      "kinematics": {
+        "final_base_x_m": -0.3443596363067627,
+        "final_base_y_m": -0.4263625144958496,
+        "maximum_abs_pitch_rad": 1.50538470427883,
+        "maximum_abs_roll_rad": 2.914164621631005,
+        "mean_local_vx_m_s": 0.09591453517879761,
+        "minimum_base_height_m": -0.0065272655338048935
+      },
+      "last_tick": 582,
+      "onset_ticks": {
+        "abs_pitch_gt_0p25": 555,
+        "abs_roll_gt_0p25": 530,
+        "abs_roll_or_pitch_gt_0p5": 569,
+        "base_height_lt_0p12": 574
+      },
+      "rows": 583,
+      "torque": {
+        "peak_abs_nm": 2.374380111694336,
+        "peak_joint": "left_knee"
+      },
+      "trace": {
+        "bytes": 10471409,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t41_uniform_normalizer_r2_v1\\03_JOINT_FRICTIONLOSS_LO\\T39_UNIFORM_NORMALIZER_HALF\\p30\\traces\\x0.080_seed167931544_action_margin.jsonl",
+        "sha256": "1917e9a9e80f04a15fb367041453fb8e772b1de2f42e2ac39cd1fa63d524f4dd"
+      },
+      "tracking": {
+        "global_p95_rad": 0.07759642665954432,
+        "worst_joint": "right_knee",
+        "worst_joint_p95_rad": 0.11071066250180617
+      }
+    },
+    "same_fit_command_final_checkpoint": {
+      "action_pipeline": {
+        "changed_ticks": 0,
+        "guard_nonzero_ticks": 3,
+        "maximum_raw_to_final_delta": 0.0,
+        "maximum_sent_target_rate_excess_rad_s": 0.0,
+        "saturation_ticks": 0
+      },
+      "done": false,
+      "kinematics": {
+        "final_base_x_m": 0.2935290038585663,
+        "final_base_y_m": -0.5170407295227051,
+        "maximum_abs_pitch_rad": 0.17850785341392997,
+        "maximum_abs_roll_rad": 0.271619310885548,
+        "mean_local_vx_m_s": 0.057381159102333185,
+        "minimum_base_height_m": 0.15546685457229614
+      },
+      "last_tick": 599,
+      "onset_ticks": {
+        "abs_pitch_gt_0p25": null,
+        "abs_roll_gt_0p25": 126,
+        "abs_roll_or_pitch_gt_0p5": null,
+        "base_height_lt_0p12": null
+      },
+      "rows": 600,
+      "torque": {
+        "peak_abs_nm": 2.510782241821289,
+        "peak_joint": "left_knee"
+      },
+      "trace": {
+        "bytes": 10786518,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t41_uniform_normalizer_r2_v1\\03_JOINT_FRICTIONLOSS_LO\\T39_UNIFORM_NORMALIZER_FINAL\\p30\\traces\\x0.080_seed167931544_action_margin.jsonl",
+        "sha256": "0f53f8b7454b4278b6bc6fb91b1cb0f55030d929b3137e4da9a1dfa26e53a75b"
+      },
+      "tracking": {
+        "global_p95_rad": 0.0774812127642709,
+        "worst_joint": "left_knee",
+        "worst_joint_p95_rad": 0.11616015266538791
+      }
+    },
+    "same_policy_command_other_fit": {
+      "action_pipeline": {
+        "changed_ticks": 0,
+        "guard_nonzero_ticks": 0,
+        "maximum_raw_to_final_delta": 0.0,
+        "maximum_sent_target_rate_excess_rad_s": 0.0,
+        "saturation_ticks": 0
+      },
+      "done": false,
+      "kinematics": {
+        "final_base_x_m": -0.07184731215238571,
+        "final_base_y_m": -0.500283420085907,
+        "maximum_abs_pitch_rad": 0.16811756809933928,
+        "maximum_abs_roll_rad": 0.23342217885152275,
+        "mean_local_vx_m_s": 0.0709236211903044,
+        "minimum_base_height_m": 0.15453124046325684
+      },
+      "last_tick": 599,
+      "onset_ticks": {
+        "abs_pitch_gt_0p25": null,
+        "abs_roll_gt_0p25": null,
+        "abs_roll_or_pitch_gt_0p5": null,
+        "base_height_lt_0p12": null
+      },
+      "rows": 600,
+      "torque": {
+        "peak_abs_nm": 2.4947376251220703,
+        "peak_joint": "left_knee"
+      },
+      "trace": {
+        "bytes": 10773531,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t41_uniform_normalizer_r2_v1\\03_JOINT_FRICTIONLOSS_LO\\T39_UNIFORM_NORMALIZER_HALF\\p31_34\\traces\\x0.080_seed167931544_action_margin.jsonl",
+        "sha256": "3db0724e0955206b350dc0d54556ceef6eb36dcdcd88bb30e9cf657b4a848923"
+      },
+      "tracking": {
+        "global_p95_rad": 0.07820283480803517,
+        "worst_joint": "left_knee",
+        "worst_joint_p95_rad": 0.11109266975746127
+      }
+    },
+    "same_policy_fit_command_default_dynamics": {
+      "action_pipeline": {
+        "changed_ticks": 0,
+        "guard_nonzero_ticks": 2,
+        "maximum_raw_to_final_delta": 0.0,
+        "maximum_sent_target_rate_excess_rad_s": 0.0,
+        "saturation_ticks": 0
+      },
+      "done": false,
+      "kinematics": {
+        "final_base_x_m": -0.08206889033317566,
+        "final_base_y_m": -0.5923464298248291,
+        "maximum_abs_pitch_rad": 0.16295348195529993,
+        "maximum_abs_roll_rad": 0.252168265025838,
+        "mean_local_vx_m_s": 0.06932173350520315,
+        "minimum_base_height_m": 0.15494489669799805
+      },
+      "last_tick": 599,
+      "onset_ticks": {
+        "abs_pitch_gt_0p25": null,
+        "abs_roll_gt_0p25": 317,
+        "abs_roll_or_pitch_gt_0p5": null,
+        "base_height_lt_0p12": null
+      },
+      "rows": 600,
+      "torque": {
+        "peak_abs_nm": 2.234865188598633,
+        "peak_joint": "left_knee"
+      },
+      "trace": {
+        "bytes": 10775539,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t41_uniform_normalizer_r2_v1\\02_FLOOR_FRICTION_HI\\T39_UNIFORM_NORMALIZER_HALF\\p30\\traces\\x0.080_seed167931544_action_margin.jsonl",
+        "sha256": "cb87912b334451bfd6a9601ee6f86167294d6ffb285cead06d71fbcda2ea78d4"
+      },
+      "tracking": {
+        "global_p95_rad": 0.07891761565313703,
+        "worst_joint": "left_knee",
+        "worst_joint_p95_rad": 0.11049258539299067
+      }
+    },
+    "same_policy_fit_lower_command": {
+      "action_pipeline": {
+        "changed_ticks": 0,
+        "guard_nonzero_ticks": 2,
+        "maximum_raw_to_final_delta": 0.0,
+        "maximum_sent_target_rate_excess_rad_s": 0.0,
+        "saturation_ticks": 0
+      },
+      "done": false,
+      "kinematics": {
+        "final_base_x_m": 0.08824661374092102,
+        "final_base_y_m": -0.4953332543373108,
+        "maximum_abs_pitch_rad": 0.15977789066520218,
+        "maximum_abs_roll_rad": 0.22442615478617,
+        "mean_local_vx_m_s": 0.05852160993606958,
+        "minimum_base_height_m": 0.1550634354352951
+      },
+      "last_tick": 599,
+      "onset_ticks": {
+        "abs_pitch_gt_0p25": null,
+        "abs_roll_gt_0p25": null,
+        "abs_roll_or_pitch_gt_0p5": null,
+        "base_height_lt_0p12": null
+      },
+      "rows": 600,
+      "torque": {
+        "peak_abs_nm": 2.2057247161865234,
+        "peak_joint": "right_knee"
+      },
+      "trace": {
+        "bytes": 10773770,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t41_uniform_normalizer_r2_v1\\03_JOINT_FRICTIONLOSS_LO\\T39_UNIFORM_NORMALIZER_HALF\\p30\\traces\\x0.077_seed167931544_action_margin.jsonl",
+        "sha256": "7c79eab2ba07935b518d833612cba2691c15c1e4ee2ec8a1ea352ba1c519e767"
+      },
+      "tracking": {
+        "global_p95_rad": 0.07681348471930555,
+        "worst_joint": "right_knee",
+        "worst_joint_p95_rad": 0.10901616073502435
+      }
+    }
+  }
+}
