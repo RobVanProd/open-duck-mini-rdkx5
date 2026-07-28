@@ -1,0 +1,111 @@
+{
+  "authority": {
+    "additional_attempt": false,
+    "behavior_evaluation": false,
+    "checkpoint_selection": false,
+    "deployment": false,
+    "gate5": false,
+    "one_exact_cli_launch": true,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false
+  },
+  "checks": {
+    "executor_l4_exact": true,
+    "executor_no_retry_resume": true,
+    "executor_pinned_software_exact": true,
+    "executor_single_t62_driver_exact": true,
+    "hardware_or_robot_absent": true,
+    "package_contract_green": true,
+    "package_file_exact": true,
+    "preregistration_green": true,
+    "training_or_behavior_not_run": true
+  },
+  "commands": [
+    [
+      "colab",
+      "new",
+      "--session",
+      "t62-midpoint-gait-transfer-20260728",
+      "--gpu",
+      "L4"
+    ],
+    [
+      "colab",
+      "upload",
+      "--session",
+      "t62-midpoint-gait-transfer-20260728",
+      "D:\\CodexArtifacts\\open-duck-policy\\t62-midpoint-gait-transfer-hosted-20260728.tar.gz",
+      "/content/t62-midpoint-gait-transfer-hosted-20260728.tar.gz"
+    ],
+    [
+      "colab",
+      "exec",
+      "--session",
+      "t62-midpoint-gait-transfer-20260728",
+      "--file",
+      "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\execute_t62_colab_cli.py",
+      "--timeout",
+      "43200"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "t62-midpoint-gait-transfer-20260728",
+      "/content/t62_result.json",
+      "<LOCAL_RESULT>"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "t62-midpoint-gait-transfer-20260728",
+      "/content/t62_artifacts.tar.gz",
+      "<LOCAL_ARCHIVE>"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "t62-midpoint-gait-transfer-20260728",
+      "/content/t62_launch_receipt.json",
+      "<LOCAL_RECEIPT>"
+    ],
+    [
+      "colab",
+      "stop",
+      "--session",
+      "t62-midpoint-gait-transfer-20260728"
+    ]
+  ],
+  "execution_now": {
+    "colab_sessions_opened": 0,
+    "formal_behavior_cells": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_locomotion_steps": 0
+  },
+  "failed_checks": [],
+  "hashes": {
+    "executor": "3e56ab310e001203563b81f1bbfae41a581233da09050c46abbb0d8ffabb6c48",
+    "package": "39c3a7f9447488a465a0646a4ddd3a608d10b08af73c4eeb92acc7765c8a15ad",
+    "package_contract": "799fce40eae39cc0bc4fc0b19561aceaca4878fa291b673719af3d1d1f9bac87",
+    "preregistration": "59c194e147ad30644c8ee766a5ffcaaf6a2927e8c6123fd594097b46e4c51b7b"
+  },
+  "package_bytes": 3475036,
+  "recovery": {
+    "download_result_archive_receipt_before_stop": true,
+    "resume": false,
+    "retry": false,
+    "stop_session_after_pass_or_hold": true
+  },
+  "schema_version": "open_duck.t62_colab_cli_launch_contract.v1",
+  "session": {
+    "accelerator": "L4",
+    "count": 1,
+    "max_wall_seconds": 43200,
+    "maximum_compute_units_at_prior_rate": 6.42,
+    "name": "t62-midpoint-gait-transfer-20260728"
+  },
+  "status": "PASS_T62_COLAB_CLI_LAUNCH_CONTRACT"
+}
