@@ -452,7 +452,7 @@ def summarize_cell(
             "termination_reason"
         ],
         "mean_local_vx_m_s": negative_run["modes"]["fitted"][
-            "local_velocity_x_m_s"
+            "local_forward_velocity_m_s"
         ]["mean"],
         "tracking_p95_rad": negative_run["candidate_gate"]["metrics"][
             "max_pitch_tracking_p95_rad"
