@@ -71,3 +71,22 @@ def test_t67_recovery_validation_is_green_when_present() -> None:
     )
     assert value["classification"]["actor_update_scope"] == "recurrent_core_only"
     assert value["classification"]["behavior_cells"] == 0
+
+
+def test_t68_postexport_contract_is_green_when_present() -> None:
+    for name, status in (
+        (
+            "t68_t67_postexport_preregistration.json",
+            "PREREGISTERED_T68_T67_POSTEXPORT_TRANSFORM",
+        ),
+        (
+            "t68_t67_postexport_result.json",
+            "PASS_T68_T67_POSTEXPORT_TRANSFORM",
+        ),
+    ):
+        path = ANALYSIS / name
+        if not path.exists():
+            continue
+        value = json.loads(path.read_text(encoding="utf-8"))
+        assert value["status"] == status
+        assert value["failed_checks"] == []
