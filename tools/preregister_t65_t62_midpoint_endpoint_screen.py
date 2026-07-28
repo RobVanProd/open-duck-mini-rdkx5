@@ -12,7 +12,12 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 ANALYSIS = ROOT / "outputs" / "analysis"
-OUTPUT = ANALYSIS / "t65_t62_midpoint_endpoint_screen_preregistration.json"
+PREVIOUS = (
+    ANALYSIS / "t65_t62_midpoint_endpoint_screen_preregistration.json"
+)
+OUTPUT = (
+    ANALYSIS / "t65_t62_midpoint_endpoint_screen_preregistration_v2.json"
+)
 T63 = ANALYSIS / "t63_t62_postexport_result.json"
 T64_PREREG = ANALYSIS / "t64_t62_nominal_matrix_preregistration.json"
 T64_RESULT = ANALYSIS / "t64_t62_nominal_matrix_result.json"
@@ -65,6 +70,13 @@ def main() -> int:
     t64_result = json.loads(T64_RESULT.read_text(encoding="utf-8"))
     deployment = t63["deployments"]["0"]["wrapped"]
     checks = {
+        "previous_preregistration_preserved": PREVIOUS.is_file(),
+        "v1_failure_preceded_behavior_execution": not any(
+            (
+                Path("D:/CodexArtifacts/open-duck-policy")
+                / "t65_t62_midpoint_endpoint_screen_v1"
+            ).rglob("*.*")
+        ),
         "t63_transform_green": (
             t63["status"] == "PASS_T63_T62_POSTEXPORT_TRANSFORM"
             and deployment["sha256"] == sha256(POLICY)
@@ -90,9 +102,18 @@ def main() -> int:
     value: dict[str, Any] = {
         "schema_version": (
             "open_duck.t65_t62_midpoint_endpoint_screen_"
-            "preregistration.v1"
+            "preregistration.v2"
         ),
-        "status": "PREREGISTERED_T65_T62_MIDPOINT_ENDPOINT_SCREEN",
+        "status": "PREREGISTERED_T65_T62_MIDPOINT_ENDPOINT_SCREEN_V2",
+        "supersedes": {
+            **receipt(PREVIOUS),
+            "reason": (
+                "V1 omitted repository_inputs required by the frozen "
+                "matrix worker and failed with KeyError before any "
+                "behavior cell executed."
+            ),
+            "behavior_cells_executed": 0,
+        },
         "question": (
             "Did the fixed midpoint-objective stage itself produce a "
             "complete nominal policy before the full-transfer objective "
@@ -122,6 +143,7 @@ def main() -> int:
         "calibrator": t64_prereg["calibrator"],
         "reference_feature_table": t64_prereg["reference_feature_table"],
         "playground": t64_prereg["playground"],
+        "repository_inputs": t64_prereg["repository_inputs"],
         "commands_x_m_s": t64_prereg["commands_x_m_s"],
         "seed": t64_prereg["seed"],
         "conditions": t64_prereg["conditions"],

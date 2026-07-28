@@ -15,7 +15,9 @@ from typing import Any, Mapping
 
 ROOT = Path(__file__).resolve().parents[1]
 ANALYSIS = ROOT / "outputs" / "analysis"
-PREREG = ANALYSIS / "t65_t62_midpoint_endpoint_screen_preregistration.json"
+PREREG = (
+    ANALYSIS / "t65_t62_midpoint_endpoint_screen_preregistration_v2.json"
+)
 RESULT = ANALYSIS / "t65_t62_midpoint_endpoint_screen_result.json"
 RESULT_MD = (
     ANALYSIS / "T65_T62_MIDPOINT_ENDPOINT_SCREEN_RESULT_20260728.md"
@@ -67,7 +69,7 @@ def verify_preregistration(prereg: dict[str, Any]) -> None:
     if actual != expected:
         raise ValueError("changed T65 preregistration")
     if prereg["status"] != (
-        "PREREGISTERED_T65_T62_MIDPOINT_ENDPOINT_SCREEN"
+        "PREREGISTERED_T65_T62_MIDPOINT_ENDPOINT_SCREEN_V2"
     ):
         raise ValueError("T65 preregistration is not green")
     for item in prereg["frozen_inputs"].values():

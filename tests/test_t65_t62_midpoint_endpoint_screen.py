@@ -9,7 +9,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 ANALYSIS = ROOT / "outputs" / "analysis"
 PREREG = (
-    ANALYSIS / "t65_t62_midpoint_endpoint_screen_preregistration.json"
+    ANALYSIS / "t65_t62_midpoint_endpoint_screen_preregistration_v2.json"
 )
 RESULT = ANALYSIS / "t65_t62_midpoint_endpoint_screen_result.json"
 
@@ -19,8 +19,9 @@ def test_t65_preregistration_is_diagnostic_only() -> None:
         pytest.skip("T65 has not been preregistered")
     value = json.loads(PREREG.read_text(encoding="utf-8"))
     assert value["status"] == (
-        "PREREGISTERED_T65_T62_MIDPOINT_ENDPOINT_SCREEN"
+        "PREREGISTERED_T65_T62_MIDPOINT_ENDPOINT_SCREEN_V2"
     )
+    assert value["supersedes"]["behavior_cells_executed"] == 0
     assert value["failed_checks"] == []
     assert value["matrix"]["maximum_cells"] == 8
     assert value["matrix"]["diagnostic_only"]
