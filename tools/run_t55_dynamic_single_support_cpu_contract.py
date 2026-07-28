@@ -41,7 +41,7 @@ from run_winner_v111_peak_torque_cpu_smoke import (  # noqa: E402
 
 
 PREREGISTRATION = (
-    ANALYSIS / "t55_dynamic_single_support_cpu_preregistration.json"
+    ANALYSIS / "t55b_dynamic_single_support_cpu_recovery_preregistration.json"
 )
 RESULT = ANALYSIS / "t55_dynamic_single_support_cpu_result.json"
 MARKDOWN = (
@@ -59,7 +59,7 @@ def validate_preregistration(value: dict[str, Any]) -> None:
     }
     if (
         value.get("status")
-        != "PREREGISTERED_T55_DYNAMIC_SINGLE_SUPPORT_CPU_CONTRACT"
+        != "PREREGISTERED_T55B_DYNAMIC_SINGLE_SUPPORT_CPU_RECOVERY"
         or value.get("failed_checks") != []
         or t20.canonical_sha256(basis)
         != value.get("preregistered_contract_sha256")
@@ -161,12 +161,17 @@ def training_command(
 ) -> list[str]:
     if stage not in STAGES:
         raise ValueError(stage)
-    command = t31.training_command(
-        python=python,
-        output=output,
-        reference=reference,
-        restore=restore,
-    )
+    prior_velocity_limits = t20.VELOCITY_LIMITS
+    try:
+        t20.VELOCITY_LIMITS = t31.VELOCITY_LIMITS
+        command = t31.training_command(
+            python=python,
+            output=output,
+            reference=reference,
+            restore=restore,
+        )
+    finally:
+        t20.VELOCITY_LIMITS = prior_velocity_limits
     index = command.index("--critic_observation")
     command[index:index] = [f"--winner_t55_{stage}_stage"]
     return command
