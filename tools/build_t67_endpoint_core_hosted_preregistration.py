@@ -53,6 +53,11 @@ def main() -> int:
     ).resolve()
     playground = Path(cpu_prereg["playground"]["path"]).resolve()
     inventory = source_inventory(playground)
+    python_inventory = {
+        path: item["sha256"]
+        for path, item in inventory.items()
+        if path.endswith(".py")
+    }
     input_hashes = {
         "driver": sha256(DRIVER),
         "cpu_result": sha256(CPU_RESULT),
@@ -79,7 +84,7 @@ def main() -> int:
             == cpu_prereg["assets"]["expected_step_zero_raw"]["sha256"]
         ),
         "playground_inventory_exact": (
-            inventory == cpu_prereg["playground"]["python_inventory"]
+            python_inventory == cpu_prereg["playground"]["python_inventory"]
         ),
         "driver_enables_exact_mechanism": all(
             token in driver_text
