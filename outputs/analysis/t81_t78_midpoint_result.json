@@ -1,0 +1,626 @@
+{
+  "authority": {
+    "behavior_execution": false,
+    "candidate_promotion": false,
+    "checkpoint_selection": false,
+    "colab": false,
+    "gate5": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false,
+    "two_cell_behavior_preregistration": true
+  },
+  "checks": {
+    "context_parity_contract_pass": true,
+    "every_other_initializer_bit_exact": true,
+    "exact_five_expected_initializers_differ": true,
+    "formal_behavior_cells_zero": true,
+    "initializer_inventory_exact": true,
+    "initializer_shape_dtype_exact": true,
+    "margin_contract_pass": true,
+    "midpoint_formula_exact": true,
+    "midpoint_onnx_checker_passed": true,
+    "physical_wrapper_contract_pass": true,
+    "source_deployment_contract_pass": true,
+    "source_graph_structure_exact": true,
+    "training_colab_robot_zero": true
+  },
+  "decision": "EARN_T82_TWO_CELL_MIDPOINT_CROSSOVER_PREREGISTRATION_ONLY",
+  "execution": {
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "onnx_graphs_built": 1,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "midpoint": {
+    "deployment": {
+      "context_abi": {
+        "bytes": 958485,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t81_t78_midpoint_v1\\deployment\\pre_margin\\context_abi.onnx",
+        "sha256": "1634f3b24c7c04fbdaeb333bbf5e1f1d5fb7b7ffb4c423a0989bb9d885f3eddc"
+      },
+      "context_io": {
+        "inputs": {
+          "calibration_context": [
+            1,
+            64
+          ],
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        },
+        "providers": [
+          "CPUExecutionProvider"
+        ]
+      },
+      "context_parity": {
+        "all_outputs_bit_exact": true,
+        "context_is_diagnostic_only": true,
+        "maximum_abs_errors": {
+          "continuous_actions": 0.0,
+          "h_out": 0.0,
+          "previous_action_out": 0.0
+        },
+        "source_io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          }
+        },
+        "ticks": 1024,
+        "wrapped_io": {
+          "inputs": {
+            "calibration_context": [
+              1,
+              64
+            ],
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          }
+        },
+        "zero_command_actions_exact_zero": true
+      },
+      "margin_contract": {
+        "changed_action_values": 110,
+        "checks": {
+          "action_clip_bit_exact": true,
+          "all_outputs_finite": true,
+          "cpu_provider": true,
+          "hidden_output_bit_exact": true,
+          "previous_action_clip_bit_exact": true,
+          "realized_feedback_bit_exact": true,
+          "strict_margin": true
+        },
+        "pass": true
+      },
+      "pre_margin_wrapped": {
+        "bytes": 964682,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t81_t78_midpoint_v1\\deployment\\pre_margin\\rate_coherent_support.onnx",
+        "sha256": "f6a3ee2b258c925ea01f69df9b05fc2566168647ea0116bce49b55151cdfd594"
+      },
+      "pre_margin_wrapped_io": {
+        "inputs": {
+          "calibration_context": [
+            1,
+            64
+          ],
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        },
+        "providers": [
+          "CPUExecutionProvider"
+        ]
+      },
+      "raw": {
+        "bytes": 954952,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t81_t78_midpoint_v1\\raw_midpoint.onnx",
+        "sha256": "2df32c747b7f6e48b95d395f7bbb0ebf2f0573698276affeeb7e71d79ab2f08f"
+      },
+      "raw_io": {
+        "inputs": {
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        },
+        "providers": [
+          "CPUExecutionProvider"
+        ]
+      },
+      "source_deployed": {
+        "bytes": 958446,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t81_t78_midpoint_v1\\deployment\\pre_margin\\v121_source_deployed.onnx",
+        "sha256": "3a7386ebf5623ba9a63458902dd2dd90d15def56d9e290e72587736d7e01d3b6"
+      },
+      "source_deployed_io": {
+        "inputs": {
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        },
+        "providers": [
+          "CPUExecutionProvider"
+        ]
+      },
+      "source_deployment": {
+        "inference": {
+          "changed_projection_is_exercised": true,
+          "checks": {
+            "all_outputs_finite": true,
+            "changed_projection_is_exercised": true,
+            "cpu_provider_exact": true,
+            "g3_guard_preserved_in_consistent_chain": true,
+            "moving_rate_delta_enforced": true,
+            "realized_state_feedback_exact": true,
+            "recurrent_hidden_output_bit_exact": true,
+            "zero_action_exact": true,
+            "zero_previous_exact": true
+          },
+          "max_guard_excess_rad": 0.0,
+          "max_hidden_error": 0.0,
+          "max_moving_delta_excess": 2.2351741790771484e-08,
+          "max_state_error": 0.0,
+          "max_zero_action": 0.0,
+          "max_zero_previous": 0.0,
+          "pass": true
+        },
+        "io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          },
+          "providers": [
+            "CPUExecutionProvider"
+          ]
+        },
+        "node_counts": {
+          "deadbanded": 47,
+          "deployed": 56,
+          "guarded": 42,
+          "raw": 29
+        },
+        "receipt": {
+          "bytes": 958446,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t81_t78_midpoint_v1\\deployment\\pre_margin\\v121_source_deployed.onnx",
+          "sha256": "3a7386ebf5623ba9a63458902dd2dd90d15def56d9e290e72587736d7e01d3b6"
+        }
+      },
+      "verification": {
+        "cases": 256,
+        "contract_tolerance": 3.814697265625e-06,
+        "inputs_exact": true,
+        "maximum_action_error": 0.0,
+        "maximum_hidden_error": 0.0,
+        "maximum_normalized_rate_excess": 2.9802322387695312e-08,
+        "maximum_previous_action_error": 0.0,
+        "output_bounds_exact": true,
+        "outputs_exact": true,
+        "previous_action_out_equals_action_bit_exact": true,
+        "provider": "CPUExecutionProvider",
+        "seed": 20260726,
+        "x0_output_equals_support_action_bit_exact": true
+      },
+      "wrapped": {
+        "bytes": 965047,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t81_t78_midpoint_v1\\deployment\\action_margin.onnx",
+        "sha256": "24275abcc324fc6cb6677ff175f0c160f98cc9cee97ae4e6b016a43f1be7202d"
+      },
+      "wrapped_io": {
+        "inputs": {
+          "calibration_context": [
+            1,
+            64
+          ],
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        },
+        "providers": [
+          "CPUExecutionProvider"
+        ]
+      },
+      "wrapper": {
+        "base": {
+          "bytes": 963849,
+          "home_action_rad": [
+            0.0020000000949949026,
+            0.05299999937415123,
+            -0.6299999952316284,
+            1.3680000305175781,
+            -0.7839999794960022,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            -0.003000000026077032,
+            -0.06499999761581421,
+            0.6349999904632568,
+            1.378999948501587,
+            -0.7960000038146973
+          ],
+          "inputs": {
+            "calibration_context": [
+              1,
+              64
+            ],
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "output_path": "D:\\CodexArtifacts\\open-duck-policy\\t81_t78_midpoint_v1\\deployment\\pre_margin\\base\\support_homeomorphism.onnx",
+          "output_sha256": "13b6a00f8e265039df4b747f10e4b6717d56eb8545022cb6d0adaea1c5ef8e72",
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          },
+          "source_path": "D:\\CodexArtifacts\\open-duck-policy\\t81_t78_midpoint_v1\\deployment\\pre_margin\\context_abi.onnx",
+          "source_sha256": "1634f3b24c7c04fbdaeb333bbf5e1f1d5fb7b7ffb4c423a0989bb9d885f3eddc",
+          "support_action": [
+            0.0,
+            0.0,
+            -0.5,
+            0.25,
+            0.25,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.5,
+            0.25,
+            0.25
+          ]
+        },
+        "bytes": 964682,
+        "inputs": {
+          "calibration_context": [
+            1,
+            64
+          ],
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "maximum_action_delta": [
+          0.07999999821186066,
+          0.05999999865889549,
+          0.11999999731779099,
+          0.11999999731779099,
+          0.11999999731779099,
+          0.03999999910593033,
+          0.03999999910593033,
+          0.03999999910593033,
+          0.03999999910593033,
+          0.03999999910593033,
+          0.05999999865889549,
+          0.09999999403953552,
+          0.07999999821186066,
+          0.09999999403953552
+        ],
+        "output_path": "D:\\CodexArtifacts\\open-duck-policy\\t81_t78_midpoint_v1\\deployment\\pre_margin\\rate_coherent_support.onnx",
+        "output_sha256": "f6a3ee2b258c925ea01f69df9b05fc2566168647ea0116bce49b55151cdfd594",
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        },
+        "rate_limits_rad_s": [
+          1.0,
+          0.75,
+          1.5,
+          1.5,
+          1.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.75,
+          1.25,
+          1.0,
+          1.25
+        ],
+        "source_path": "D:\\CodexArtifacts\\open-duck-policy\\t81_t78_midpoint_v1\\deployment\\pre_margin\\context_abi.onnx",
+        "source_sha256": "1634f3b24c7c04fbdaeb333bbf5e1f1d5fb7b7ffb4c423a0989bb9d885f3eddc",
+        "support_action": [
+          0.0,
+          0.0,
+          -0.5,
+          0.25,
+          0.25,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.5,
+          0.25,
+          0.25
+        ]
+      }
+    },
+    "differing_initializers": [
+      "adapter_bias",
+      "adapter_hidden_bias",
+      "adapter_hidden_weight",
+      "adapter_obs_weight",
+      "adapter_weight"
+    ],
+    "initializer_deltas": {
+      "adapter_bias": {
+        "half_to_final_max_abs": 0.013669389300048351,
+        "half_to_final_rms": 0.00635007713791147
+      },
+      "adapter_hidden_bias": {
+        "half_to_final_max_abs": 0.015161614865064621,
+        "half_to_final_rms": 0.0062529686752932695
+      },
+      "adapter_hidden_weight": {
+        "half_to_final_max_abs": 0.031704798340797424,
+        "half_to_final_rms": 0.007763150401412587
+      },
+      "adapter_obs_weight": {
+        "half_to_final_max_abs": 0.03968367725610733,
+        "half_to_final_rms": 0.007991678494950218
+      },
+      "adapter_weight": {
+        "half_to_final_max_abs": 0.03587238863110542,
+        "half_to_final_rms": 0.0084197369918094
+      }
+    },
+    "raw": {
+      "bytes": 954952,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t81_t78_midpoint_v1\\raw_midpoint.onnx",
+      "sha256": "2df32c747b7f6e48b95d395f7bbb0ebf2f0573698276affeeb7e71d79ab2f08f"
+    },
+    "wrapped": {
+      "bytes": 965047,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t81_t78_midpoint_v1\\deployment\\action_margin.onnx",
+      "sha256": "24275abcc324fc6cb6677ff175f0c160f98cc9cee97ae4e6b016a43f1be7202d"
+    }
+  },
+  "preregistered_contract_sha256": "873320f5847379b26023a6506cda6f3d06631d3100945fc6fbba4b2a01c966b9",
+  "result_sha256": "77a6980eb95c875cc418b666b21ceecf30a592faa0393f171993f0d03440a4fd",
+  "schema_version": "open_duck.t81_t78_midpoint_result.v1",
+  "sources": {
+    "final": {
+      "bytes": 954952,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t78_extracted_20260728\\t78_endpoint_joint_adapter_continuation\\training\\2026_07_28_183936_2007040.onnx",
+      "sha256": "f63da30a9dc3ea1ab3ed45cde050566d19fa3599d715cb7e60050fbd8ed04472"
+    },
+    "half": {
+      "bytes": 954952,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t78_extracted_20260728\\t78_endpoint_joint_adapter_continuation\\training\\2026_07_28_183419_1003520.onnx",
+      "sha256": "6e1d0cbbf9c81e431fc967645461912b7b99f84cece29857e84c6be9b4763ccd"
+    }
+  },
+  "status": "PASS_T81_T78_EXACT_ADAPTER_MIDPOINT"
+}
