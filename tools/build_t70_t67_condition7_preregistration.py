@@ -161,6 +161,7 @@ def main() -> int:
             "fail_decision": "CLOSE_T67_ENDPOINT_CORE_CONTINUATION",
             "no_retry": True,
             "no_checkpoint_selection": True,
+            "both_checkpoints_required": True,
         },
         "frozen_inputs": {
             "t69_result": receipt(T69_RESULT),
