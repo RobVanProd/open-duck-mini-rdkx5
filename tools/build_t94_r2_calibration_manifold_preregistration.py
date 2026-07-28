@@ -11,9 +11,9 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 ANALYSIS = ROOT / "outputs" / "analysis"
-OUTPUT = ANALYSIS / "t94_r2_calibration_manifold_preregistration.json"
+OUTPUT = ANALYSIS / "t94_r2_calibration_manifold_preregistration_v2.json"
 MARKDOWN = (
-    ANALYSIS / "T94_R2_CALIBRATION_MANIFOLD_PREREGISTRATION_20260728.md"
+    ANALYSIS / "T94_R2_CALIBRATION_MANIFOLD_PREREGISTRATION_V2_20260728.md"
 )
 T7_PREREG = ANALYSIS / "t7_universal_response_support_preregistration.json"
 T7_RESULT = ANALYSIS / "t7_universal_response_support_result.json"
@@ -113,10 +113,10 @@ def main() -> int:
     failed = sorted(name for name, passed in checks.items() if not passed)
     value: dict[str, Any] = {
         "schema_version": (
-            "open_duck.t94_r2_calibration_manifold_preregistration.v1"
+            "open_duck.t94_r2_calibration_manifold_preregistration.v2"
         ),
         "status": (
-            "PREREGISTERED_T94_R2_CALIBRATION_MANIFOLD"
+            "PREREGISTERED_T94_R2_CALIBRATION_MANIFOLD_V2"
             if not failed
             else "HOLD_T94_R2_CALIBRATION_MANIFOLD_PREREGISTRATION"
         ),
@@ -124,6 +124,9 @@ def main() -> int:
             "Does the already frozen 250-tick automatic calibration state "
             "repeatably identify the negative-X COM condition and actuator fit "
             "across every one-axis R2 configuration, without manual geometry?"
+        ),
+        "attempt1_invalidation": receipt(
+            ANALYSIS / "t94_r2_calibration_manifold_attempt1_invalidation.json"
         ),
         "repository_inputs": {
             name: receipt(path) for name, path in repository_inputs.items()
@@ -218,7 +221,7 @@ def main() -> int:
     MARKDOWN.write_text(
         "\n".join(
             [
-                "# T94 R2 calibration-manifold preregistration",
+                "# T94 R2 calibration-manifold preregistration v2",
                 "",
                 f"- Status: `{value['status']}`",
                 f"- Failed checks: `{failed}`",

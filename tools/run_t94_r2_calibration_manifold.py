@@ -20,7 +20,7 @@ sys.path.insert(0, str(TOOLS))
 import run_t7_universal_response_support as t7  # noqa: E402
 
 
-PREREG = ANALYSIS / "t94_r2_calibration_manifold_preregistration.json"
+PREREG = ANALYSIS / "t94_r2_calibration_manifold_preregistration_v2.json"
 OUTPUT = ANALYSIS / "t94_r2_calibration_manifold_result.json"
 MARKDOWN = ANALYSIS / "T94_R2_CALIBRATION_MANIFOLD_RESULT_20260728.md"
 
@@ -204,12 +204,11 @@ def analyze(
         ),
         "zero_rate_excess": max(
             max(
-                row["sent_target_rate_excess_rad_s"],
-                row["conservative_rate_excess_rad_s"],
+                float(np.max(row["sent_target_rate_excess_rad_s"])),
+                float(np.max(row["conservative_rate_excess_rad_s"])),
             )
             for row in records
-        )
-        <= 0.0,
+        ) <= 0.0,
         "overcurrent_duration": longest_true(current > 2.0) <= 99,
         "overload_duration": longest_true(forces > 1.5298374) <= 99,
     }
@@ -247,7 +246,7 @@ def main() -> int:
             raise FileExistsError(f"refusing to overwrite T94 output: {path}")
     prereg = json.loads(PREREG.read_text(encoding="utf-8"))
     if (
-        prereg["status"] != "PREREGISTERED_T94_R2_CALIBRATION_MANIFOLD"
+        prereg["status"] != "PREREGISTERED_T94_R2_CALIBRATION_MANIFOLD_V2"
         or canonical_sha256(prereg, "preregistered_contract_sha256")
         != prereg["preregistered_contract_sha256"]
     ):
