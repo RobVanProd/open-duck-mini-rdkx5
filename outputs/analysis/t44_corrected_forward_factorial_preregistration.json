@@ -1,0 +1,363 @@
+{
+  "authority": {
+    "colab": false,
+    "execute_three_cpu_cells": true,
+    "gate5": false,
+    "policy_promotion": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false,
+    "uniform_transform_preregistration": false
+  },
+  "behavior_contract": {
+    "interpretation": {
+      "core": "minimum physical/semantic validity; thresholds passed by the T4 baseline where comparable",
+      "evaluator_candidate_gate_status": "diagnostic only because T4 invalidated its use as an unqualified feasibility classifier",
+      "replacement_quality": "explicit stretch goals for replacing the behaviorally bad baseline; T4 showed the baseline can fail some of these"
+    },
+    "moving_core": {
+      "bilateral_transitions": true,
+      "maximum_action_saturation_pct": 1.0,
+      "maximum_body_pitch_p95_rad": 0.25,
+      "minimum_base_height_m": 0.12,
+      "minimum_track_ratio": 0.25,
+      "positive_mean_local_velocity": true,
+      "samples": 600
+    },
+    "moving_replacement_quality": {
+      "maximum_action_saturation_pct": 0.0,
+      "maximum_pitch_tracking_p95_rad": 0.2,
+      "maximum_rate_excess_rad_s": 0.0
+    },
+    "x0_core": {
+      "maximum_absolute_mean_local_vx_m_s": 0.02,
+      "maximum_action_saturation_pct": 1.0,
+      "maximum_body_pitch_p95_rad": 0.25,
+      "minimum_base_height_m": 0.12,
+      "samples": 600
+    },
+    "x0_replacement_quality": {
+      "maximum_action_saturation_pct": 0.0,
+      "maximum_pitch_tracking_p95_rad": 0.2,
+      "maximum_rate_excess_rad_s": 0.0
+    }
+  },
+  "calibrator": {
+    "bytes": 55573,
+    "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v96-response-conditioned-mechanics\\winner_v96_universal_calibrator.onnx",
+    "sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576"
+  },
+  "cell": {
+    "command_x_m_s": 0.08,
+    "condition": {
+      "condition_index": 3,
+      "id": "JOINT_FRICTIONLOSS_LO",
+      "override": {
+        "joint_frictionloss_scale": 0.9
+      }
+    },
+    "duration_s": 12.0,
+    "fit_id": "p30",
+    "seed": 167931544
+  },
+  "checks": {
+    "all_support_assets_exact": true,
+    "behavior_cells_zero": true,
+    "corrected_worker_exact_x0p080": true,
+    "exact_same_three_assets": true,
+    "robot_or_rdk_zero": true,
+    "runner_and_worker_present": true,
+    "same_cell_except_corrected_worker": true,
+    "t43_formal_behavior_cells_zero": true,
+    "t43_invalidation_green_and_earned_t44": true,
+    "training_or_colab_zero": true
+  },
+  "correction": {
+    "only_change": "formal_worker_command_x0p077_to_x0p080",
+    "t43_policy_assets_reused_exact": true,
+    "t43_policy_outcomes_reused": false
+  },
+  "decision_rule": {
+    "both_one_group_pass": "Select base by frozen execution-order precedence.",
+    "diagnostic_precedence": [
+      "one changed block",
+      "base before adapter"
+    ],
+    "no_checkpoint_selection": true,
+    "no_early_stop": true,
+    "no_policy_promotion": true,
+    "no_retry": true,
+    "no_training_or_retry": true,
+    "no_variant_pass": "Close endpoint actor-block substitution and require a different persistence mechanism.",
+    "one_group_pass": "A passing one-block variant identifies a sufficient causal drift block and earns only a separate uniform forward-block transform contract. Nominal and conditions 1-3 must be rerun before later robustness.",
+    "one_group_pass_decision": "EARN_T45_SELECTED_ONE_BLOCK_UNIFORM_TRANSFORM_PREREGISTRATION",
+    "only_combined_pass": "Classify coupled drift and close post-hoc endpoint replacement because the combined hybrid semantically duplicates the final endpoint.",
+    "run_all_three": true
+  },
+  "execution_now": {
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "execution_order": [
+    "HALF_WITH_FINAL_BASE",
+    "HALF_WITH_FINAL_ADAPTER",
+    "HALF_WITH_FINAL_BASE_ADAPTER"
+  ],
+  "failed_checks": [],
+  "fit": {
+    "bytes": 18664,
+    "fit_id": "p30",
+    "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p30_actuator_fit_20260712.json",
+    "sha256": "a58db8ffc505d2bb64cba7f5618d0e2c65904fc9f9ac37b560a1231e090f5f4f"
+  },
+  "frozen_inputs": {
+    "runner": {
+      "bytes": 9213,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t44_corrected_forward_factorial.py",
+      "sha256": "9360620d62b77b251231543529a0cafcdf6ca650c4b820ae1be22781ea109e73"
+    },
+    "t43_invalidation": {
+      "bytes": 2381,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t43_worker_contract_invalidation.json",
+      "sha256": "75610de5eb30e199e9821ef261174097d9a02e1039740569522335c0604c3bca"
+    },
+    "t43_preregistration": {
+      "bytes": 12929,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t43_forward_actor_block_factorial_preregistration.json",
+      "sha256": "7cc5af79092f78ee80edfe367f7a6c3b253020f9b7571b0e20dd36f262782732"
+    },
+    "worker": {
+      "bytes": 278,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\evaluate_t44_t43_x008_causal_cell.py",
+      "sha256": "9f2e8fc86007c1646557f961002c8e6a36ae388c141150d5a0e0f57ab0081f48"
+    }
+  },
+  "groups": {
+    "adapter": [
+      "adapter_weight",
+      "adapter_bias",
+      "adapter_obs_weight",
+      "adapter_hidden_weight",
+      "adapter_hidden_bias"
+    ],
+    "base": [
+      "trunk_0_weight",
+      "trunk_0_bias",
+      "trunk_1_weight",
+      "trunk_1_bias",
+      "trunk_2_weight",
+      "trunk_2_bias",
+      "base_residual_weight",
+      "base_residual_bias"
+    ]
+  },
+  "playground": {
+    "manifest": {
+      "bytes": 5190,
+      "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v6\\T19_COMPOSED_SOURCE_MANIFEST.json",
+      "sha256": "d7c9b615c32f0e2c8434e958a900cc38485c0db6fea107b6115a69bbd2122a77"
+    },
+    "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v6"
+  },
+  "preregistered_contract_sha256": "b7de318e0c607cddef400e239a00727efb2d68c7fa637c68f6d1cd8e3e644d70",
+  "protection_contract": {
+    "force_limit_tolerance_nm": 5e-06,
+    "instantaneous_stall_current_and_torque": "diagnostic_only",
+    "motor_constant_nm_per_a": 0.784532,
+    "overcurrent_threshold_a": 2.0,
+    "overload_threshold_nm": 1.5298374,
+    "pass_max_consecutive_ticks": 99,
+    "simulator_force_limit_abs_nm": 3.23,
+    "simulator_force_limit_hits": "diagnostic_only",
+    "source": "T5 manufacturer-derived duration rules",
+    "strict_comparison": true,
+    "trip_ticks": 100
+  },
+  "question": "Is final-checkpoint feed-forward base state, recurrent-adapter state, or only their combination sufficient to prevent the half checkpoint's sole T41 failure?",
+  "reference_feature_table": {
+    "bytes": 259604,
+    "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+    "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+  },
+  "schema_version": "open_duck.t44_corrected_forward_factorial_preregistration.v1",
+  "status": "PREREGISTERED_T44_CORRECTED_FORWARD_ACTOR_FACTORIAL",
+  "support_handoff": {
+    "context_input_name": "calibration_context",
+    "context_is_diagnostic_only": true,
+    "locomotion_hidden_zero": true,
+    "locomotion_phase_reset": [
+      1.0,
+      0.0
+    ],
+    "preserve_applied_target_observer_state": true,
+    "preserve_final_support_action_as_previous_action": true,
+    "source": "T22/T24 exact support-train-through deployment chain and green T27 one-tick runner contract",
+    "unscored_calibration_ticks": 250,
+    "unscored_home_return_ticks": 0
+  },
+  "variants": [
+    {
+      "changed_initializers": [
+        "base_residual_bias",
+        "base_residual_weight",
+        "trunk_0_bias",
+        "trunk_0_weight",
+        "trunk_1_bias",
+        "trunk_1_weight",
+        "trunk_2_bias",
+        "trunk_2_weight"
+      ],
+      "contract": {
+        "changed_initializers_exact": true,
+        "graph_topology_exact_half": true,
+        "onnx_checker": true,
+        "selected_initializers_exact_final": true,
+        "unselected_initializers_exact_half": true
+      },
+      "final_group_count": 1,
+      "final_groups": [
+        "base"
+      ],
+      "inference_contract": {
+        "checks": {
+          "cpu_provider": true,
+          "feedback_exact": true,
+          "finite": true,
+          "shapes_exact": true,
+          "strict_action_margin": true
+        },
+        "pass": true
+      },
+      "pass": true,
+      "policy": {
+        "bytes": 965047,
+        "checkpoint_id": "T43_HALF_WITH_FINAL_BASE",
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t43_forward_actor_block_factorial_v1\\HALF_WITH_FINAL_BASE\\action_margin.onnx",
+        "sha256": "628e7f67bb12f47f84e3d0926b16f0677857023513d94a1ab7a8cf5001eaa736"
+      },
+      "selected_initializers": [
+        "base_residual_bias",
+        "base_residual_weight",
+        "trunk_0_bias",
+        "trunk_0_weight",
+        "trunk_1_bias",
+        "trunk_1_weight",
+        "trunk_2_bias",
+        "trunk_2_weight"
+      ],
+      "semantically_equals_final_endpoint": false,
+      "variant_id": "HALF_WITH_FINAL_BASE"
+    },
+    {
+      "changed_initializers": [
+        "adapter_bias",
+        "adapter_hidden_bias",
+        "adapter_hidden_weight",
+        "adapter_obs_weight",
+        "adapter_weight"
+      ],
+      "contract": {
+        "changed_initializers_exact": true,
+        "graph_topology_exact_half": true,
+        "onnx_checker": true,
+        "selected_initializers_exact_final": true,
+        "unselected_initializers_exact_half": true
+      },
+      "final_group_count": 1,
+      "final_groups": [
+        "adapter"
+      ],
+      "inference_contract": {
+        "checks": {
+          "cpu_provider": true,
+          "feedback_exact": true,
+          "finite": true,
+          "shapes_exact": true,
+          "strict_action_margin": true
+        },
+        "pass": true
+      },
+      "pass": true,
+      "policy": {
+        "bytes": 965047,
+        "checkpoint_id": "T43_HALF_WITH_FINAL_ADAPTER",
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t43_forward_actor_block_factorial_v1\\HALF_WITH_FINAL_ADAPTER\\action_margin.onnx",
+        "sha256": "18eb3e03feb24e752981a9801218ff89588782c11646a5f813212c8d81577d7d"
+      },
+      "selected_initializers": [
+        "adapter_bias",
+        "adapter_hidden_bias",
+        "adapter_hidden_weight",
+        "adapter_obs_weight",
+        "adapter_weight"
+      ],
+      "semantically_equals_final_endpoint": false,
+      "variant_id": "HALF_WITH_FINAL_ADAPTER"
+    },
+    {
+      "changed_initializers": [
+        "adapter_bias",
+        "adapter_hidden_bias",
+        "adapter_hidden_weight",
+        "adapter_obs_weight",
+        "adapter_weight",
+        "base_residual_bias",
+        "base_residual_weight",
+        "trunk_0_bias",
+        "trunk_0_weight",
+        "trunk_1_bias",
+        "trunk_1_weight",
+        "trunk_2_bias",
+        "trunk_2_weight"
+      ],
+      "contract": {
+        "changed_initializers_exact": true,
+        "graph_topology_exact_half": true,
+        "onnx_checker": true,
+        "selected_initializers_exact_final": true,
+        "unselected_initializers_exact_half": true
+      },
+      "final_group_count": 2,
+      "final_groups": [
+        "base",
+        "adapter"
+      ],
+      "inference_contract": {
+        "checks": {
+          "cpu_provider": true,
+          "feedback_exact": true,
+          "finite": true,
+          "shapes_exact": true,
+          "strict_action_margin": true
+        },
+        "pass": true
+      },
+      "pass": true,
+      "policy": {
+        "bytes": 965047,
+        "checkpoint_id": "T43_HALF_WITH_FINAL_BASE_ADAPTER",
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t43_forward_actor_block_factorial_v1\\HALF_WITH_FINAL_BASE_ADAPTER\\action_margin.onnx",
+        "sha256": "c74b37423508f707ad4e906e324e14a5b7900856e900837fe40054f159f35086"
+      },
+      "selected_initializers": [
+        "adapter_bias",
+        "adapter_hidden_bias",
+        "adapter_hidden_weight",
+        "adapter_obs_weight",
+        "adapter_weight",
+        "base_residual_bias",
+        "base_residual_weight",
+        "trunk_0_bias",
+        "trunk_0_weight",
+        "trunk_1_bias",
+        "trunk_1_weight",
+        "trunk_2_bias",
+        "trunk_2_weight"
+      ],
+      "semantically_equals_final_endpoint": true,
+      "variant_id": "HALF_WITH_FINAL_BASE_ADAPTER"
+    }
+  ]
+}
