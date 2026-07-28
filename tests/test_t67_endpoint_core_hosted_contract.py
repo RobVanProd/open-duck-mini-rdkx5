@@ -56,3 +56,18 @@ def test_t67_package_and_launch_contracts_are_green_when_present() -> None:
         assert launch["session"]["accelerator"] == "L4"
         assert launch["recovery"]["retry"] is False
         assert launch["recovery"]["resume"] is False
+
+
+def test_t67_recovery_validation_is_green_when_present() -> None:
+    path = ANALYSIS / "t67_recovered_training_validation.json"
+    if not path.exists():
+        return
+    value = json.loads(path.read_text(encoding="utf-8"))
+    assert value["status"] == "PASS_T67_RECOVERED_TRAINING_VALIDATION"
+    assert value["failed_checks"] == []
+    assert (
+        value["decision"]
+        == "EARN_T68_EXACT_DEPLOYMENT_TRANSFORM_PREREGISTRATION"
+    )
+    assert value["classification"]["actor_update_scope"] == "recurrent_core_only"
+    assert value["classification"]["behavior_cells"] == 0
