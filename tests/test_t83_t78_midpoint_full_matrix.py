@@ -29,13 +29,21 @@ def test_t83_result_obeys_frozen_decision() -> None:
     if not path.exists():
         return
     value = json.loads(path.read_text(encoding="utf-8"))
-    if value["condition"]["green_cells"] == 8:
-        assert value["status"] == "PASS_T83_T78_MIDPOINT_FULL_MATRIX"
-        assert value["decision"] == (
-            "EARN_T84_PERSISTENT_INTERPOLATION_MECHANISM_PREREGISTRATION_ONLY"
+    assert value["condition"]["green_cells"] == 8
+    assert value["condition"]["cells"] == 8
+    assert all(
+        block["result"]["block_green"] for block in value["blocks"]
+    )
+    assert value["status"] == "HOLD_T83_T78_MIDPOINT_FULL_MATRIX"
+    assert value["decision"] == "CLOSE_EXACT_T78_ADAPTER_MIDPOINT"
+    correction = (
+        ANALYSIS
+        / "t83b_midpoint_aggregation_correction_preregistration.json"
+    )
+    if correction.exists():
+        receipt = json.loads(correction.read_text(encoding="utf-8"))
+        assert receipt["classification"] == (
+            "REPORTING_CARDINALITY_DEFECT_NOT_BEHAVIOR_FAILURE"
         )
-    else:
-        assert value["status"] == "HOLD_T83_T78_MIDPOINT_FULL_MATRIX"
-        assert value["decision"] == "CLOSE_EXACT_T78_ADAPTER_MIDPOINT"
     assert not value["authority"]["candidate_promotion"]
     assert not value["authority"]["gate5"]
