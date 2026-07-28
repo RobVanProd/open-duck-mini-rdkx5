@@ -16,7 +16,7 @@ from typing import Any, Mapping
 ROOT = Path(__file__).resolve().parents[1]
 ANALYSIS = ROOT / "outputs" / "analysis"
 PREREG = (
-    ANALYSIS / "t65_t62_midpoint_endpoint_screen_preregistration_v2.json"
+    ANALYSIS / "t65_t62_midpoint_endpoint_screen_preregistration_v3.json"
 )
 RESULT = ANALYSIS / "t65_t62_midpoint_endpoint_screen_result.json"
 RESULT_MD = (
@@ -24,7 +24,7 @@ RESULT_MD = (
 )
 CACHE_ROOT = (
     Path("D:/CodexArtifacts/open-duck-policy")
-    / "t65_t62_midpoint_endpoint_screen_v1"
+    / "t65_t62_midpoint_endpoint_screen_v3"
 )
 
 sys.path.insert(0, str(ROOT / "tools"))
@@ -69,7 +69,7 @@ def verify_preregistration(prereg: dict[str, Any]) -> None:
     if actual != expected:
         raise ValueError("changed T65 preregistration")
     if prereg["status"] != (
-        "PREREGISTERED_T65_T62_MIDPOINT_ENDPOINT_SCREEN_V2"
+        "PREREGISTERED_T65_T62_MIDPOINT_ENDPOINT_SCREEN_V3"
     ):
         raise ValueError("T65 preregistration is not green")
     for item in prereg["frozen_inputs"].values():

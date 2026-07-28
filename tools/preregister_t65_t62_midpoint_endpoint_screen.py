@@ -13,10 +13,10 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 ANALYSIS = ROOT / "outputs" / "analysis"
 PREVIOUS = (
-    ANALYSIS / "t65_t62_midpoint_endpoint_screen_preregistration.json"
+    ANALYSIS / "t65_t62_midpoint_endpoint_screen_preregistration_v2.json"
 )
 OUTPUT = (
-    ANALYSIS / "t65_t62_midpoint_endpoint_screen_preregistration_v2.json"
+    ANALYSIS / "t65_t62_midpoint_endpoint_screen_preregistration_v3.json"
 )
 T63 = ANALYSIS / "t63_t62_postexport_result.json"
 T64_PREREG = ANALYSIS / "t64_t62_nominal_matrix_preregistration.json"
@@ -74,7 +74,7 @@ def main() -> int:
         "v1_failure_preceded_behavior_execution": not any(
             (
                 Path("D:/CodexArtifacts/open-duck-policy")
-                / "t65_t62_midpoint_endpoint_screen_v1"
+                / "t65_t62_midpoint_endpoint_screen_v3"
             ).rglob("*.*")
         ),
         "t63_transform_green": (
@@ -102,15 +102,15 @@ def main() -> int:
     value: dict[str, Any] = {
         "schema_version": (
             "open_duck.t65_t62_midpoint_endpoint_screen_"
-            "preregistration.v2"
+            "preregistration.v3"
         ),
-        "status": "PREREGISTERED_T65_T62_MIDPOINT_ENDPOINT_SCREEN_V2",
+        "status": "PREREGISTERED_T65_T62_MIDPOINT_ENDPOINT_SCREEN_V3",
         "supersedes": {
             **receipt(PREVIOUS),
             "reason": (
-                "V1 omitted repository_inputs required by the frozen "
-                "matrix worker and failed with KeyError before any "
-                "behavior cell executed."
+                "V2 reused the empty cache directory created by V1; the "
+                "frozen worker refused that directory before any behavior "
+                "cell executed. V3 uses a fresh immutable cache root."
             ),
             "behavior_cells_executed": 0,
         },
