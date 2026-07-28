@@ -66,7 +66,7 @@ def main() -> int:
     deployment = t63["deployments"]["0"]["wrapped"]
     checks = {
         "t63_transform_green": (
-            t63["status"] == "PASS_T63_T62_POSTEXPORT"
+            t63["status"] == "PASS_T63_T62_POSTEXPORT_TRANSFORM"
             and deployment["sha256"] == sha256(POLICY)
         ),
         "t64_midpoint_transfer_closed": (
