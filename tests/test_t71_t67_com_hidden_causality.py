@@ -24,7 +24,7 @@ def canonical_sha256(value: Any, hash_key: str) -> str:
 
 
 def test_t71_preregistration_is_frozen_when_present() -> None:
-    path = ANALYSIS / "t71_t67_com_hidden_causal_preregistration.json"
+    path = ANALYSIS / "t71_t67_com_hidden_causal_preregistration_v2.json"
     if not path.exists():
         return
     value = json.loads(path.read_text(encoding="utf-8"))
@@ -32,6 +32,7 @@ def test_t71_preregistration_is_frozen_when_present() -> None:
         value["status"]
         == "PREREGISTERED_T71_T67_COM_HIDDEN_CAUSAL_ATTRIBUTION"
     )
+    assert value["schema_version"].endswith(".v2")
     assert value["failed_checks"] == []
     assert value["population"] == {
         "checkpoints": 2,

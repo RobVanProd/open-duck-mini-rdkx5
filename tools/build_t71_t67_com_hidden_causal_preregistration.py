@@ -18,8 +18,12 @@ T69_RESULT = ANALYSIS / "t69_t67_nominal_matrix_result.json"
 T70_RESULT = ANALYSIS / "t70_t67_condition7_result.json"
 AUDITOR = ROOT / "tools" / "audit_t71_t67_com_hidden_causality.py"
 TEST = ROOT / "tests" / "test_t71_t67_com_hidden_causality.py"
-OUTPUT = ANALYSIS / "t71_t67_com_hidden_causal_preregistration.json"
-MARKDOWN = ANALYSIS / "T71_T67_COM_HIDDEN_CAUSAL_PREREGISTRATION_20260728.md"
+V1 = ANALYSIS / "t71_t67_com_hidden_causal_preregistration.json"
+INVALIDATION = ANALYSIS / "t71_t67_com_hidden_causal_v1_invalidation.json"
+OUTPUT = ANALYSIS / "t71_t67_com_hidden_causal_preregistration_v2.json"
+MARKDOWN = (
+    ANALYSIS / "T71_T67_COM_HIDDEN_CAUSAL_PREREGISTRATION_V2_20260728.md"
+)
 
 SAMPLE_TICKS = [0, 8, 16, 32, 64, 80]
 
@@ -32,9 +36,11 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-def canonical_sha256(value: Any) -> str:
+def canonical_sha256(
+    value: Any, hash_key: str = "preregistered_contract_sha256"
+) -> str:
     payload = dict(value)
-    payload.pop("preregistered_contract_sha256", None)
+    payload.pop(hash_key, None)
     return hashlib.sha256(
         json.dumps(
             payload,
@@ -69,7 +75,7 @@ def trace_receipts(result: dict[str, Any]) -> dict[str, dict[str, Any]]:
 
 
 def main() -> int:
-    for path in (OUTPUT, MARKDOWN):
+    for path in (INVALIDATION, OUTPUT, MARKDOWN):
         if path.exists():
             raise FileExistsError(f"refusing to overwrite T71: {path}")
     if subprocess.check_output(
@@ -77,6 +83,7 @@ def main() -> int:
     ).strip():
         raise RuntimeError("T71 preregistration requires a clean worktree")
 
+    v1 = json.loads(V1.read_text(encoding="utf-8"))
     t68 = json.loads(T68.read_text(encoding="utf-8"))
     t69_prereg = json.loads(T69_PREREG.read_text(encoding="utf-8"))
     t69 = json.loads(T69_RESULT.read_text(encoding="utf-8"))
@@ -117,13 +124,20 @@ def main() -> int:
             t68["status"] == "PASS_T68_T67_POSTEXPORT_TRANSFORM"
         ),
         "auditor_and_test_present": AUDITOR.is_file() and TEST.is_file(),
+        "v1_stopped_before_result": (
+            v1["status"]
+            == "PREREGISTERED_T71_T67_COM_HIDDEN_CAUSAL_ATTRIBUTION"
+            and not (
+                ANALYSIS / "t71_t67_com_hidden_causal_result.json"
+            ).exists()
+        ),
         "no_behavior_or_training_run": True,
         "offline_only": True,
     }
     checks = {name: bool(value) for name, value in checks.items()}
     failed = sorted(name for name, value in checks.items() if not value)
     value: dict[str, Any] = {
-        "schema_version": "open_duck.t71_t67_com_hidden_causal_preregistration.v1",
+        "schema_version": "open_duck.t71_t67_com_hidden_causal_preregistration.v2",
         "status": (
             "PREREGISTERED_T71_T67_COM_HIDDEN_CAUSAL_ATTRIBUTION"
             if not failed
@@ -183,6 +197,7 @@ def main() -> int:
             "no_hosted_run_earned": True,
         },
         "frozen_inputs": {
+            "v1_preregistration": receipt(V1),
             "t68_postexport": receipt(T68),
             "t69_preregistration": receipt(T69_PREREG),
             "t69_nominal_result": receipt(T69_RESULT),
@@ -208,6 +223,43 @@ def main() -> int:
         },
     }
     value["preregistered_contract_sha256"] = canonical_sha256(value)
+    invalidation_basis: dict[str, Any] = {
+        "schema_version": "open_duck.t71_t67_com_hidden_causal_v1_invalidation.v1",
+        "status": "INVALID_T71_V1_AUDITOR_OUTPUT_ORDER",
+        "v1_preregistered_contract_sha256": v1[
+            "preregistered_contract_sha256"
+        ],
+        "reason": (
+            "The v1 auditor unpacked unnamed ONNX outputs by list position; "
+            "the deployed graph's output order differs from the assumed "
+            "continuous_actions,h_out,previous_action_out order."
+        ),
+        "scope": (
+            "Auditor implementation only. No T71 result was written, no "
+            "simulator cell ran, and no threshold or decision rule changed."
+        ),
+        "correction": (
+            "Request outputs by their frozen names and freeze this v2 "
+            "auditor receipt before execution."
+        ),
+        "execution": {
+            "result_written": False,
+            "new_simulator_cells": 0,
+            "optimizer_steps": 0,
+            "hosted_compute_units": 0,
+            "robot_or_rdk_access": 0,
+        },
+    }
+    invalidation_basis["invalidation_sha256"] = canonical_sha256(
+        invalidation_basis, "invalidation_sha256"
+    )
+    INVALIDATION.write_text(
+        json.dumps(
+            invalidation_basis, allow_nan=False, indent=2, sort_keys=True
+        )
+        + "\n",
+        encoding="utf-8",
+    )
     OUTPUT.write_text(
         json.dumps(value, allow_nan=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
@@ -215,12 +267,13 @@ def main() -> int:
     MARKDOWN.write_text(
         "\n".join(
             [
-                "# T71 T67 COM-hidden causal preregistration",
+                "# T71 T67 COM-hidden causal preregistration v2",
                 "",
                 f"- Status: `{value['status']}`",
                 "- Evidence: paired T69 nominal and T70 COM-x-negative traces",
                 "- New behavior cells / optimizer / Colab / robot: `0/0/0/0`",
                 "- This attribution cannot advance a candidate or earn training.",
+                "- v1 stopped before result; v2 corrects named ONNX output routing only.",
                 "",
             ]
         ),

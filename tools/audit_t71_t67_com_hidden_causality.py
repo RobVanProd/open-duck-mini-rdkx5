@@ -15,7 +15,7 @@ import onnxruntime as ort
 
 ROOT = Path(__file__).resolve().parents[1]
 ANALYSIS = ROOT / "outputs" / "analysis"
-PREREG = ANALYSIS / "t71_t67_com_hidden_causal_preregistration.json"
+PREREG = ANALYSIS / "t71_t67_com_hidden_causal_preregistration_v2.json"
 OUTPUT = ANALYSIS / "t71_t67_com_hidden_causal_result.json"
 MARKDOWN = ANALYSIS / "T71_T67_COM_HIDDEN_CAUSAL_RESULT_20260728.md"
 
@@ -151,8 +151,17 @@ def main() -> int:
             srow = shifted[tick]
             nfeed = feed(nrow)
             sfeed = feed(srow)
-            n_action, n_hout, n_previous = ort_session.run(None, nfeed)
-            s_action, s_hout, s_previous = ort_session.run(None, sfeed)
+            output_names = [
+                "continuous_actions",
+                "h_out",
+                "previous_action_out",
+            ]
+            n_action, n_hout, n_previous = ort_session.run(
+                output_names, nfeed
+            )
+            s_action, s_hout, s_previous = ort_session.run(
+                output_names, sfeed
+            )
             n_trace_action = np.asarray(
                 nrow["action"], dtype=np.float32
             )[None, :]
