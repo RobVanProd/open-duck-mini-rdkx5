@@ -1,0 +1,64 @@
+{
+  "authority": {
+    "colab": false,
+    "gate5": false,
+    "negative_endpoint_preregistration": false,
+    "one_cpu_identity_reuse_audit": true,
+    "rdkx5_or_robot": false,
+    "training": false
+  },
+  "checks": {
+    "frozen_inputs_present": true,
+    "no_new_behavior_training_colab_or_robot": true,
+    "t102_nominal_green": true,
+    "t143c_transform_green": true
+  },
+  "decision_rule": {
+    "fail_decision": "REQUIRE_FRESH_NOMINAL_MATRIX",
+    "pass_decision": "EARN_T145_CONDITIONAL_PATH_NEGATIVE_ENDPOINT_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "hosted_compute_units": 0,
+    "inherited_behavior_cells": 0,
+    "new_behavior_cells": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 4339,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t144_nominal_identity_reuse_preregistration.py",
+      "sha256": "7fdb7462f531b4c552c4942e098f265a5923d91be36e474d396e5ea2e3327ee4"
+    },
+    "runner": {
+      "bytes": 6537,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t144_nominal_identity_reuse.py",
+      "sha256": "d1ec327ea0ec825e82be92eaa9c79c42ee30cb6b0db58603d5f883b47160734e"
+    },
+    "t102_prereg": {
+      "bytes": 10984,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t102_t100c_nominal_matrix_preregistration.json",
+      "sha256": "ea18266753d5ea08bc0b8607635fba2b72c17722e013105a9bacd22b0547888f"
+    },
+    "t102_result": {
+      "bytes": 120287,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t102_t100c_nominal_matrix_result.json",
+      "sha256": "c454808a28f697df9bad07bb2d2f2c8417c1b2d631855f9c91e4dbac66c584a8"
+    },
+    "t143c_result": {
+      "bytes": 8412,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t143c_runner_receipt_recovery_result.json",
+      "sha256": "7a40d747ae4b700b21eb2545bc9f9992a7967539afc7b4fd83b8f45efb8b3504"
+    },
+    "test": {
+      "bytes": 894,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t144_nominal_identity_reuse.py",
+      "sha256": "9f607e0d3bd23ba2398fcf3a8b9d9edffc150093dd22ad3dcb5289029f6e93c3"
+    }
+  },
+  "preregistered_contract_sha256": "88668e44a11e5019b6dd4d1f6ee4ce2935de8eb4ab6bf51875c6694000254f73",
+  "question": "Can the frozen T102 16/16 nominal matrix be inherited because T143C selects exact T100C outputs for both nominal contexts?",
+  "schema_version": "open_duck.t144_nominal_identity_reuse_preregistration.v1",
+  "status": "PREREGISTERED_T144_NOMINAL_IDENTITY_REUSE"
+}
