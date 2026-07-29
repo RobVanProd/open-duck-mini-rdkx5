@@ -1,0 +1,76 @@
+{
+  "authority": {
+    "behavior": false,
+    "corrected_cpu_contract_preregistration_after_pass": true,
+    "gate5": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "read_only_execution": true
+  },
+  "causal_basis": {
+    "audit_scope": "Read-only graph instrumentation and inference only. The T95 thresholds are copied unchanged.",
+    "t11_control": "T11 established the state-coherent construction: first evaluate the zero-context raw action, then use that raw action as previous_action for both counterfactual contexts.",
+    "t95": "The FiLM kernel changed by 0.007623818, all protected actor leaves remained exact, but only 2/2560 final actions changed."
+  },
+  "decision_rule": {
+    "fail": "Confirm T95 FiLM closure.",
+    "pass": "Every unchanged T95 action-binding threshold passes under the T11 state-coherent construction.",
+    "pass_decision": "Invalidate only T95's false-negative observability interpretation and earn a separately preregistered corrected CPU contract; do not authorize hosted training."
+  },
+  "execution_now": {
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_ticks": 0
+  },
+  "failed_checks": [],
+  "formal_contract": {
+    "both_negative_com_contexts_required": true,
+    "cases_per_context": 64,
+    "contexts": 40,
+    "effect_threshold_abs": 1e-08,
+    "minimum_context_pair_effect_fraction": 0.5,
+    "minimum_effect_tick_fraction": 0.05,
+    "minimum_maximum_action_delta": 1e-05,
+    "rate_excess_tolerance": 1e-07,
+    "recurrent_state_invariant": true,
+    "total_cases": 2560,
+    "x0_exact": true
+  },
+  "preregistered_contract_sha256": "72d91e20deea7440f5b7a1a382030957993ecaa53adf70cf3dab3642c06d8690",
+  "question": "Did T95 produce a real FiLM action effect that its random-observation recurrent sequence hid behind the frozen rate projection?",
+  "schema_version": "open_duck.t96_film_state_coherent_preregistration.v1",
+  "sources": {
+    "runner": {
+      "bytes": 13235,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t96_film_state_coherent_audit.py",
+      "sha256": "3277f1ca6c10b2a8d0106e9946f6356cd28eeb8b90962584939630ac812f93c0"
+    },
+    "t11_method": {
+      "bytes": 18066,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t11_context_action_observability.py",
+      "sha256": "6435c30162f7a886b5d215221026a82835f4db4622734a48308ea23986114081"
+    },
+    "t94_contexts": {
+      "bytes": 155619,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t94_r2_calibration_manifold_result.json",
+      "sha256": "fc4a652de5234744c3f08d158c5dd8d4086c87396aec19e8145300161d84db8c"
+    },
+    "t95_final_graph": {
+      "bytes": 973802,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t95_film_cpu_v3\\smoke\\2026_07_28_204734_1024.onnx",
+      "sha256": "7d0c7bc201c18976b11b6d3556921e67540dd21d7160c2d50b70cffa64f10b08"
+    },
+    "t95_result": {
+      "bytes": 15495,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t95_film_conditioned_cpu_result.json",
+      "sha256": "4f788220f8f12fb2136d9b7bc6028faefa1bed8393814fd9a5ea896bb313bac1"
+    },
+    "test": {
+      "bytes": 1501,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t96_film_state_coherent_audit.py",
+      "sha256": "4eddfc0f71d1de7d2aeda8a9556aa3b3e716c31422edce9121d93766bd510e69"
+    }
+  },
+  "status": "PREREGISTERED_T96_FILM_STATE_COHERENT_AUDIT"
+}
