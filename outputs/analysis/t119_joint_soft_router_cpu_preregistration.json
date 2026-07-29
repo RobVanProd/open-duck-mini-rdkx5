@@ -1,0 +1,238 @@
+{
+  "assets": {
+    "composed_manifest": {
+      "bytes": 5922,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\Open_Duck_Playground-t119-joint-soft-router-v1\\T119_COMPOSED_SOURCE_MANIFEST.json",
+      "sha256": "cb25b4e1973b4521c279958cb70c9280c2b773d191db0d5426ba56c7accda95a"
+    },
+    "expanded_checkpoint": {
+      "kind": "directory",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t119_joint_soft_router_assets_v2\\expanded_checkpoint",
+      "sha256": "d4a2a3681bc574ae6bfa4e193bab272fc9ce0bb874080dea5f6b35c2403ee770"
+    },
+    "expected_soft_graph": {
+      "bytes": 960260,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t119_joint_soft_router_assets_v2\\t100c_half_expected_soft.onnx",
+      "sha256": "1a2443367996b13fdc72c39430f92b42b3df08db96df76dce0bb18e16bb65c62"
+    },
+    "hidden_gate_static_asset": {
+      "bytes": 8085,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t98_hidden_gate_asset.json",
+      "sha256": "11381bb2208d1eb40f826b069c68983fdab348277e46c63ffc1ddd46b579b6e3"
+    },
+    "reference_features": {
+      "bytes": 259604,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+      "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+    },
+    "step_zero_asset_graph": {
+      "bytes": 960260,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t119_joint_soft_router_assets_v2\\t119_step_zero.onnx",
+      "sha256": "1a2443367996b13fdc72c39430f92b42b3df08db96df76dce0bb18e16bb65c62"
+    },
+    "t97_preregistration": {
+      "bytes": 16616,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t97_hidden_gate_preregistration.json",
+      "sha256": "df47922ab4eb79c1d547987319cc9644c03abce30703cbdc5c36dc38019a8252"
+    }
+  },
+  "authority": {
+    "behavior_evaluation": false,
+    "execute_one_cpu_contract": true,
+    "gate5": false,
+    "hosted_preregistration": false,
+    "hosted_training": false,
+    "policy_promotion": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false
+  },
+  "causal_basis": {
+    "closed_routes": "fixed hard routing is dynamically inconsistent; post-hoc soft routing, always-on routing, and always-on train-through are not persistent endpoint solutions",
+    "distinct_mechanism": "jointly optimize the continuous router and its expert through the closed loop, without changing the mature gait",
+    "failure": "T113's eleven moving failures are backward-pitch collapses spanning both supports and at least three phase quadrants"
+  },
+  "checks": {
+    "all_assets_present": true,
+    "no_behavior_hosted_or_robot_execution": true,
+    "no_reward_randomizer_optimizer_abi_or_runtime_change": true,
+    "step_zero_graph_exact": true,
+    "t118_selects_joint_training": true,
+    "zero_update_assets_pass": true
+  },
+  "decision_rule": {
+    "fail_decision": "CLOSE_JOINT_SOFT_ROUTER_TRAINTHROUGH",
+    "no_behavior_selection": true,
+    "pass": "Exact step-zero restore/export parity; only the expert, two router deltas, and critic change; all protected actor and normalizer leaves remain bit-exact; router weight and deployed raw action change on both frozen nominal and negative-COM trace populations; exported stateful ONNX graphs retain the frozen ABI and finite CPU execution.",
+    "pass_decision": "EARN_T120_JOINT_SOFT_ROUTER_HOSTED_PREREGISTRATION_ONLY"
+  },
+  "failed_checks": [],
+  "mechanism": {
+    "actor_equation": "anchored=mature+sigmoid((coef+delta)@standardized_h+intercept+delta)*negative_expert(h)",
+    "command_support_change": false,
+    "critic_trainable": true,
+    "endpoint_categories": [
+      "broad_random",
+      "nominal",
+      "torso_com_x_neg",
+      "torso_com_x_pos",
+      "torso_com_y_neg",
+      "torso_com_y_pos",
+      "torso_com_z_neg",
+      "torso_com_z_pos"
+    ],
+    "frozen_actor_groups": [
+      "residual_trunk",
+      "residual_location",
+      "scale_logits",
+      "adapter_obs_projection",
+      "adapter_hidden_projection",
+      "adapter_hidden_bias",
+      "adapter_location"
+    ],
+    "normalizer_frozen": true,
+    "optimizer_change": false,
+    "policy_abi_change": false,
+    "randomizer_change": false,
+    "reward_change": false,
+    "runtime_input_change": false,
+    "scalar_sweep": false,
+    "source": "exact_T100C_half_expanded_with_zero_router_deltas",
+    "trainable_actor_groups": [
+      "negative_adapter_location",
+      "soft_router_coefficient_delta",
+      "soft_router_intercept_delta"
+    ]
+  },
+  "playground": {
+    "path": "D:\\CodexProjects\\Open_Duck_Playground-t119-joint-soft-router-v1",
+    "python_inventory": {
+      "playground/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "playground/common/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "playground/common/export_onnx.py": "30bc705bf59babb59c5ba3045b601c838db00ebb569bb9fc6aa520f1e61139cc",
+      "playground/common/onnx_infer.py": "e610c2b94d15cd0ea4be1c0cee8853dc33b10c3b440e6d9bb1b1bb73168f34f2",
+      "playground/common/phase_moe_networks.py": "6480f59f4039884be6743828ffed1c31f76896830b2b38689cad038200283cb7",
+      "playground/common/plot_saved_obs.py": "911fe1de5668c31fdc2a10a4285b8343c04fd4f662a38207d6f06a91fd4e0a8e",
+      "playground/common/poly_reference_motion.py": "cc2430d82a9e41bf2081a4a9bed45731a43aad8b860e5b168f5850eb3748cf21",
+      "playground/common/poly_reference_motion_numpy.py": "585e783722ffb403a14288aafc1fcdf86c8a5d1b39949171a3b2d918028c4406",
+      "playground/common/randomize.py": "c6e7a48f714a2267b3b19d75ffc9ce3938350aabceb3eda61727a3c48f2d6dd8",
+      "playground/common/recurrent_ppo_networks.py": "a501000c6f959276514ba56f935d027b05b171a9ea62bb6a2bc1ecdd2fe8cb4e",
+      "playground/common/reference_residual_ppo_networks.py": "eeb1b758f32bb8a7e53cf59b269bed7f97126cf37ccc4d11090a5f8312b380e6",
+      "playground/common/reference_residual_recurrent_adapter_ppo_networks.py": "ffd07d0a6e96d846aa1f62a8d131bf892f10db6b2a22710affe3946b7b145ebd",
+      "playground/common/rewards.py": "9c327866f2632265f14ef81318046f887aafa64384a06efa6cb264e144bbb1d3",
+      "playground/common/rewards_numpy.py": "f1dba8838b29fdc4701bc3759e2533fa9d51ec550c8f70b83a23d3de64b97f48",
+      "playground/common/runner.py": "337b65d156e59dc8cd70abfe23f07c636ef1464df6635e94857388c6e5700664",
+      "playground/common/t19_support_trainthrough.py": "dc6c4270a4a5569f4c82dc3f9d1f07c395512bea86c15cd62a634fe10c895057",
+      "playground/common/t37_frozen_observation_normalizer.py": "324cb669821cd2964b62bdd1c2241a3bd6108c0ce37d34792f4e0adf8a75eab6",
+      "playground/common/t66_endpoint_core_continuation.py": "a5627f0109b842f37be5d87c327cbb3efeface040a5632e84893cba73c8a321f",
+      "playground/common/t77_endpoint_joint_adapter_continuation.py": "c8379e949967d877b919f96d5e6beab2c75f74056eba2941ba44a84fc73632bf",
+      "playground/common/t98_hidden_expert_continuation.py": "871157fb755f998414aac9f4d51b48a49e458001d56405ce10534e685145a154",
+      "playground/common/t98_hidden_expert_ppo_networks.py": "d02b212a9fc750f0aa0195683477491807696b79002a42f6d2b9917c16a53502",
+      "playground/common/utils.py": "dbeb9fd88bb41aaca5ab242a954cbae7ae9755b7f13ff2d7d2b27cc9094a284c",
+      "playground/common/winner_v127_constrained_ppo_losses.py": "996e292f76a4071f2c3117b0f1dacd9b1a3bf9e31d6d97128ce2f054f9bc6ff1",
+      "playground/common/winner_v127_constrained_ppo_train.py": "9ac5b96d2f810644b4ee2e019c1a8e4f2e5a92b5f1e6455298df5c1ecaa896c0",
+      "playground/common/winner_v171_gradient_geometry.py": "dfbadab3ef4021c71c27c358135bed87307c04f53310fdf9093f6436e00008c3",
+      "playground/common/winner_v173_lexicographic_tangent.py": "b7ff83f8d68f1034ab1ddb5562d4a32a384756a330bb150b8ca69d92a63f3841",
+      "playground/common/winner_v3_variable_configuration.py": "daab44325e6dd98b8b4054fc5c5fe7391ca9e358e7aca97999ef1a2441285ab7",
+      "playground/common/winner_v98_response_calibration_wrapper.py": "04339bf7bbe16f2721ce92bbe62c458e70c1c8a5e9bdfe02424478ebc066a7ba",
+      "playground/common/winner_v98_response_conditioned_export.py": "83c8667828a51bdb379091fbf657725410bae5e0d655273f63cf47bdc913f28c",
+      "playground/common/winner_v98_response_conditioned_ppo_networks.py": "767b0d4dc7d72d6c126eca9ed1f0497ca38214a9e2caa57c8a1e6b5cea3ad17a",
+      "playground/open_duck_mini_v2/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "playground/open_duck_mini_v2/base.py": "0e90b98b113c2e5ff4abd34b64482e3f1b3d365ef95481d1838f8b855de99988",
+      "playground/open_duck_mini_v2/constants.py": "8fafc240bfb8e70c93b722d89148cffb03688882fd4e6250735eccdf53363374",
+      "playground/open_duck_mini_v2/custom_rewards.py": "16fdf5ed409f9abcfa6f68465c4351081c0c255a6683c09aee110c557890cd0c",
+      "playground/open_duck_mini_v2/custom_rewards_numpy.py": "51422e858c4058f5c114004ab6ebd7900cbae544f09aaf430f9398adf9032333",
+      "playground/open_duck_mini_v2/joystick.py": "8e6b04c8e9f71e42f468ca559e0fbeb0651652fc83734d0ccf8348154808f4b3",
+      "playground/open_duck_mini_v2/mujoco_infer.py": "67a933e043fe54a3bf252524e71fbb8a7eff973e8bb693d9fe1f1d6f323b11ed",
+      "playground/open_duck_mini_v2/mujoco_infer_base.py": "4c8fd11e4659126d49985a9c048e1cb5a5cfde5f4d54cdfe433e4b165d3b0ab1",
+      "playground/open_duck_mini_v2/ref_motion_viewer.py": "78c267d86d7de9a942c9bd4007990369eb39a7dae7a410acaa316dd9da0a5322",
+      "playground/open_duck_mini_v2/runner.py": "92e323339c504092cc5297ba8b7ac3375d1333f14ff6a42efa60230c10a6ac85",
+      "playground/open_duck_mini_v2/standing.py": "123419cb68f3dcf0908b3c77e4c98206de48d719058d38998ddcd69ef32dcdd6"
+    },
+    "python_inventory_sha256": "0154fae2320c42c4c8297e2b07d412af193690421d69f0e3af635943e312df1f"
+  },
+  "preregistered_contract_sha256": "117c4c62e11adfbc3aed6a40d773f158cf9a24b84af3149c3300db5c76877bd9",
+  "question": "Can the T100C-half corrective expert and a zero-delta smooth state router learn jointly while the mature gait core and observation normalizer remain bit-exact?",
+  "repository_commit": "7ee39aa3b506074ed1898a2776dee3c774935760",
+  "schema_version": "open_duck.t119_joint_soft_router_cpu_preregistration.v1",
+  "sources": {
+    "asset_builder": {
+      "bytes": 16524,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t119_joint_soft_router_assets.py",
+      "sha256": "73d3687ffafc6e42c782565cf6f305740569debcd8ec915a6c4a89d5257f69e6"
+    },
+    "asset_result": {
+      "bytes": 3799,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t119_joint_soft_router_assets.json",
+      "sha256": "1eb826a7b3076fe4bf55c2c8c0758eef1fbf357ab57b4f037645b504e960be7f"
+    },
+    "builder": {
+      "bytes": 11464,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t119_joint_soft_router_cpu_preregistration.py",
+      "sha256": "6d15b4ed7ec0b6e00633ee9b4e50f52c981229d22166d50b3e71272d9d456493"
+    },
+    "composer": {
+      "bytes": 8509,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\compose_t119_joint_soft_router_playground.py",
+      "sha256": "ccba7fb44658fb04abfce51b0a976a0174e20f950b78af04a383a2aa1a8d6046"
+    },
+    "runner": {
+      "bytes": 22194,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t119_joint_soft_router_cpu_contract.py",
+      "sha256": "449b8f844480f9e12cee3a0fd79d27f16185305b9340ac81f5cb75150e2cd749"
+    },
+    "t100c_validation": {
+      "bytes": 9327,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t100c_recovered_training_validation.json",
+      "sha256": "c96c512ea7386537831a59f1ac914af8f73730426c04d7a04980f611d7c16d79"
+    },
+    "t118_result": {
+      "bytes": 7755,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t118_routing_failure_attribution_result.json",
+      "sha256": "9a4c91ca1e932792eceb8c851fd6b56a685074ec9f185e0423ee34a96f1e0385"
+    },
+    "test": {
+      "bytes": 1817,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t119_joint_soft_router.py",
+      "sha256": "ea10ff914d564decf457af28e41ae3f4ce8f3f9931993439a1e4a7dc77b73844"
+    },
+    "update_mask": {
+      "bytes": 1688,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\patches\\t119_joint_soft_router_updates.py",
+      "sha256": "871157fb755f998414aac9f4d51b48a49e458001d56405ce10534e685145a154"
+    }
+  },
+  "status": "PREREGISTERED_T119_JOINT_SOFT_ROUTER_CPU_CONTRACT",
+  "thresholds": {
+    "minimum_changed_rows_each_population": 1,
+    "minimum_raw_action_delta": 1e-07,
+    "minimum_router_weight_delta": 1e-07,
+    "step_zero_random_chain_bit_exact_steps": 256,
+    "step_zero_trace_bit_exact_rows": 72
+  },
+  "training": {
+    "batch_size": 8,
+    "cpu_only": true,
+    "exports": [
+      0,
+      1024
+    ],
+    "formal_behavior_cells": 0,
+    "num_envs": 8,
+    "timesteps": 1024
+  }
+}
