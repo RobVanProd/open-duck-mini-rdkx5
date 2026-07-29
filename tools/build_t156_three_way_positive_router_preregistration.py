@@ -104,7 +104,7 @@ def main() -> int:
         ),
         "t143c_source_green": (
             t143c["status"]
-            == "PASS_T143C_RUNNER_RECEIPT_RECOVERY"
+            == "PASS_T143C_CONDITIONAL_FORWARD_PATH_TRANSFORM"
             and t143c["failed_checks"] == []
         ),
         "t151_first_failure_positive_com": (
