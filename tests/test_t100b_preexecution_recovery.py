@@ -61,3 +61,16 @@ def test_t100c_validation_requires_only_negative_head_updates() -> None:
     assert "every_frozen_base_actor_leaf_exact" in text
     assert "normalizer_exact" in text
     assert "formal_behavior_cells_zero" in text
+
+
+def test_t101_reuses_t99_verified_deployment_chain() -> None:
+    prereg = (
+        ROOT / "tools" / "build_t101_t100c_postexport_preregistration.py"
+    ).read_text(encoding="utf-8")
+    transform = (
+        ROOT / "tools" / "run_t101_t100c_postexport_transform.py"
+    ).read_text(encoding="utf-8")
+    assert "t99_hidden_expert_deployment_coordinate_chain_green" in prereg
+    assert '"raw": 37' in prereg
+    assert "t31.deployment_graph" in transform
+    assert "formal_behavior_cells_zero" in transform
