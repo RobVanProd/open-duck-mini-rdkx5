@@ -1,0 +1,112 @@
+{
+  "authority": {
+    "behavior": false,
+    "colab": false,
+    "deployment": false,
+    "gate5": false,
+    "nominal_preregistration": false,
+    "one_cpu_graph_transform": true,
+    "rdkx5_or_robot": false,
+    "training": false
+  },
+  "checks": {
+    "all_repository_inputs_present": true,
+    "all_source_receipts_exact": true,
+    "exact_three_source_graphs": true,
+    "hard_gate_precedent_is_nine_of_sixteen": true,
+    "no_behavior_training_colab_or_robot": true,
+    "t104_proves_false_inactive_gate_rows": true,
+    "t108_closes_partial_continuous_mixture": true
+  },
+  "contract": {
+    "maximum_active_branch_output_error": 1e-07,
+    "maximum_step0_output_error": 1e-07,
+    "maximum_x0_output_error": 1e-07,
+    "minimum_inactive_branch_output_delta": 1e-06,
+    "sample_ticks": [
+      0,
+      8,
+      16,
+      32,
+      64,
+      "last"
+    ]
+  },
+  "decision_rule": {
+    "fail_decision": "CLOSE_T100C_ALWAYS_ON_EXPERT",
+    "no_behavior_or_training": true,
+    "pass_decision": "EARN_T110_ALWAYS_ON_EXPERT_NOMINAL_PREREGISTRATION_ONLY",
+    "training_selection_weight": 0
+  },
+  "execution_now": {
+    "behavior_cells": 0,
+    "graphs_transformed": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "policies": {
+    "0": {
+      "bytes": 970391,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t101_t100c_postexport_v1\\0\\action_margin.onnx",
+      "sha256": "546d083de9db78b8495dc07409d9f32ea8667ed446ce5b6f02df12254da86674"
+    },
+    "1003520": {
+      "bytes": 970391,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t101_t100c_postexport_v1\\1003520\\action_margin.onnx",
+      "sha256": "fcf4260ba6e866bba51d90a62d15027501098c693b1ca02fde6baf996e899564"
+    },
+    "2007040": {
+      "bytes": 970391,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t101_t100c_postexport_v1\\2007040\\action_margin.onnx",
+      "sha256": "f57f9e2055cab9aefbb190622dd1a5953a7391d4fdb52f4411f97ac4bdd218ab"
+    }
+  },
+  "preregistered_contract_sha256": "b3693f765238be3a1d7d9ece2d79a17b2399c31a7f27dfd40e1624b48ef9a894",
+  "question": "Is T100C's learned negative residual a universal correction whose only defect was intermittent routing?",
+  "repository_inputs": {
+    "builder": {
+      "bytes": 7396,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t109_always_on_expert_preregistration.py",
+      "sha256": "2a7bf0dd00375aaaab2a6ef16e1b6814cdfaadd5f2c0802d8a36a07bf4e5fa4f"
+    },
+    "runner": {
+      "bytes": 14404,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t109_always_on_expert_transform.py",
+      "sha256": "bb0718090a9ca0cf02e0bf57c0903592d6d989ff06773890249368c3730f0daf"
+    },
+    "t101_result": {
+      "bytes": 40047,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t101_t100c_postexport_result.json",
+      "sha256": "97f937e722e15bd46658305f9a8a977eef78db1a24e9a11d3def73c26901b88f"
+    },
+    "t104_result": {
+      "bytes": 79379,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t104_t100c_gate_dynamics_result.json",
+      "sha256": "54a7c3cb784a4182f2915723b12d9a94650e9bac491b2afed0de658ee5fb0622"
+    },
+    "t108_result": {
+      "bytes": 120952,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t108_soft_gate_negative_endpoint_result.json",
+      "sha256": "09378e29421ecf4b8ca16b67388456cb591765b761a8538f071a3ce6993869a4"
+    },
+    "test": {
+      "bytes": 1411,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t109_always_on_expert.py",
+      "sha256": "53e169848e5a93f72355b5d4de0ef709fdce0772d32939e11fcce9099757b6b2"
+    }
+  },
+  "schema_version": "open_duck.t109_always_on_expert_preregistration.v1",
+  "status": "PREREGISTERED_T109_ALWAYS_ON_EXPERT_TRANSFORM",
+  "transform": {
+    "action_protection_order_change": false,
+    "head_scale": 1.0,
+    "initializer_change": false,
+    "new_input_or_output": false,
+    "new_recurrent_state": false,
+    "replace": "Where(negative_com_gate, negative_adapter_location, 0)",
+    "scalar_search": false,
+    "with": "Identity(negative_adapter_location)"
+  }
+}
