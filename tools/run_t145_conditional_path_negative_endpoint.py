@@ -22,6 +22,7 @@ CACHE = Path(
     "t145_conditional_path_negative_endpoint_v1"
 )
 ALLOW_EXISTING_CACHE = False
+SOURCE_CACHE_PREREG: Mapping[str, Any] | None = None
 sys.path.insert(0, str(ROOT / "tools"))
 from run_t27_t23_robustness_matrix import (  # noqa: E402
     condition_summary,
@@ -89,10 +90,6 @@ def main() -> int:
     started = time.time()
     for policy in prereg["policies"]:
         for fit in prereg["fits"]:
-            manifest, cached = run_or_load_block(
-                prereg, condition, policy, fit, CACHE
-            )
-            block_result = extract_block(prereg, condition, manifest)
             manifest_path = (
                 CACHE
                 / f"{condition['condition_index']:02d}_{condition['id']}"
@@ -100,6 +97,15 @@ def main() -> int:
                 / fit["fit_id"]
                 / "manifest.json"
             )
+            block_prereg = (
+                SOURCE_CACHE_PREREG
+                if manifest_path.exists() and SOURCE_CACHE_PREREG is not None
+                else prereg
+            )
+            manifest, cached = run_or_load_block(
+                block_prereg, condition, policy, fit, CACHE
+            )
+            block_result = extract_block(block_prereg, condition, manifest)
             blocks.append(
                 {
                     "condition_id": condition["id"],
