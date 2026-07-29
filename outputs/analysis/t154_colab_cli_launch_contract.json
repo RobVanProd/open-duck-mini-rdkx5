@@ -1,0 +1,107 @@
+{
+  "authority": {
+    "additional_attempt_retry_or_same_run_resume": false,
+    "behavior_evaluation": false,
+    "checkpoint_selection": false,
+    "gate5": false,
+    "one_exact_cli_launch": true,
+    "rdkx5_or_robot": false
+  },
+  "checks": {
+    "executor_l4_and_pinned_software": true,
+    "executor_no_retry_or_same_run_resume": true,
+    "executor_uses_exact_driver": true,
+    "hardware_or_robot_absent": true,
+    "package_contract_green": true,
+    "package_file_exact": true,
+    "preregistration_green": true,
+    "training_or_behavior_not_run": true
+  },
+  "commands": [
+    [
+      "colab",
+      "new",
+      "--session",
+      "t154-positive-only-expert-20260729",
+      "--gpu",
+      "L4"
+    ],
+    [
+      "colab",
+      "upload",
+      "--session",
+      "t154-positive-only-expert-20260729",
+      "D:\\CodexArtifacts\\open-duck-policy\\t154_positive_only_expert_bundle_20260729.tar.gz",
+      "/content/t154-positive-only-expert-20260729.tar.gz"
+    ],
+    [
+      "colab",
+      "exec",
+      "--session",
+      "t154-positive-only-expert-20260729",
+      "--file",
+      "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\execute_t154_colab_cli.py",
+      "--timeout",
+      "43200"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "t154-positive-only-expert-20260729",
+      "/content/t154_result.json",
+      "<LOCAL_RESULT>"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "t154-positive-only-expert-20260729",
+      "/content/t154_artifacts.tar.gz",
+      "<LOCAL_ARCHIVE>"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "t154-positive-only-expert-20260729",
+      "/content/t154_launch_receipt.json",
+      "<LOCAL_RECEIPT>"
+    ],
+    [
+      "colab",
+      "stop",
+      "--session",
+      "t154-positive-only-expert-20260729"
+    ]
+  ],
+  "execution_now": {
+    "colab_sessions_opened": 0,
+    "formal_behavior_cells": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "hashes": {
+    "executor": "96590a9d04521cb59268a84639886032db1dee082ca805f7a65408eaea5f5bca",
+    "package": "3dcdf0598ccc8b586042042f98abf0eb27ab13ac18426edcd1a07931c10f25be",
+    "package_contract": "a112ed8b17233e15cd067195d945257ba867a07c4895698d63ad84f6a7c81e08",
+    "preregistration": "3441079174b06aaac3ae8df17fce1c45449d314376bfb6af7ab6d9e64c681e4d"
+  },
+  "package_bytes": 4331099,
+  "recovery": {
+    "download_result_archive_receipt_before_stop": true,
+    "retry": false,
+    "same_run_resume": false,
+    "stop_session_after_pass_or_hold": true
+  },
+  "schema_version": "open_duck.t154_colab_cli_launch_contract.v1",
+  "session": {
+    "accelerator": "L4",
+    "count": 1,
+    "max_wall_seconds": 43200,
+    "maximum_compute_units_at_prior_rate": 6.42,
+    "name": "t154-positive-only-expert-20260729"
+  },
+  "status": "PASS_T154_COLAB_CLI_LAUNCH_CONTRACT"
+}
