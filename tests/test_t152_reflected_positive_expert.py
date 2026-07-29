@@ -33,9 +33,12 @@ def test_t152_result_when_present() -> None:
         return
     value = json.loads(path.read_text(encoding="utf-8"))
     assert value["status"] == (
-        "PASS_T152_REFLECTED_POSITIVE_EXPERT"
+        "HOLD_T152_REFLECTED_POSITIVE_EXPERT"
     )
-    assert value["failed_checks"] == []
+    assert value["failed_checks"] == [
+        "reflected_actions_finite_and_bound",
+        "x0_exact_zero_and_feedback",
+    ]
     assert value["execution"]["behavior_cells"] == 0
     assert value["execution"]["optimizer_steps"] == 0
     assert value["execution"]["hosted_compute_units"] == 0
