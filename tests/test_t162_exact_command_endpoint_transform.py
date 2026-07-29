@@ -18,6 +18,7 @@ SOURCE = Path(
     "t159_mechanics_sagittal_compensation_v1/"
     "1003520/mechanics_compensated_router.onnx"
 )
+ANALYSIS = ROOT / "outputs" / "analysis"
 
 
 def contexts() -> list[dict]:
@@ -65,3 +66,35 @@ def test_t162_transform_is_exact_for_source_and_endpoint_paths(
     assert contract["x0_source_exact"]
     assert contract["nonpositive_context_source_exact"]
     assert contract["positive_moving_endpoint_exact"]
+
+
+def test_t162_preregistration_and_result_contracts() -> None:
+    prereg = json.loads(
+        (
+            ANALYSIS
+            / "t162_exact_command_endpoint_transform_preregistration.json"
+        ).read_text(encoding="utf-8")
+    )
+    assert (
+        prereg["status"]
+        == "PREREGISTERED_T162_EXACT_COMMAND_ENDPOINT_TRANSFORM"
+    )
+    assert not prereg["failed_checks"]
+    assert prereg["transform"]["scalar_search"] is False
+    assert prereg["transform"]["external_command_unchanged"]
+    assert not prereg["authority"]["behavior_matrix"]
+
+    result_path = (
+        ANALYSIS / "t162_exact_command_endpoint_transform_result.json"
+    )
+    if not result_path.exists():
+        return
+    result = json.loads(result_path.read_text(encoding="utf-8"))
+    assert result["status"] == "PASS_T162_EXACT_COMMAND_ENDPOINT_TRANSFORM"
+    assert not result["failed_checks"]
+    assert all(result["checks"].values())
+    assert result["execution"]["behavior_cells"] == 0
+    assert result["execution"]["optimizer_steps"] == 0
+    assert result["execution"]["hosted_compute_units"] == 0
+    assert not result["authority"]["behavior_matrix"]
+    assert not result["authority"]["gate5"]
