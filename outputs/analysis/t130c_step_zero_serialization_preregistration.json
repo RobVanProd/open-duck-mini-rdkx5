@@ -1,0 +1,111 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "gate5": false,
+    "one_corrected_read_only_recovery": true,
+    "postexport_preregistration": false,
+    "rdkx5_or_robot": false
+  },
+  "checks": {
+    "all_sources_present": true,
+    "expected_transform_is_distinct": true,
+    "hosted_matches_cpu_exporter_hash": true,
+    "no_optimizer_behavior_colab_or_robot": true,
+    "t128_cpu_contract_green": true,
+    "t130_single_hold_exact": true,
+    "t130b_precomparison_schema_failure_preserved": true
+  },
+  "correction_from_t130b": {
+    "cause": "The T130B verifier called a receipt helper requiring a kind field, but T130B froze plain file receipts.",
+    "changed_scientific_hypothesis": false,
+    "precomparison": true,
+    "result_written": false,
+    "work_root_created": false
+  },
+  "decision_rule": {
+    "fail_decision": "NO_BEHAVIOR_EVALUATION",
+    "pass_decision": "RECOVER_T130_VALIDATION_AND_EARN_T131_T129_HARD_GATE_POSTEXPORT_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_steps": 0
+  },
+  "expected_difference": {
+    "abi_bit_exact": true,
+    "actual_only_initializers": [],
+    "expected_only_initializers": [
+      "zero_adapter_location"
+    ],
+    "nodes_bit_exact": true,
+    "random_chain_steps_bit_exact": 256,
+    "shared_initializers_bit_exact": true,
+    "trace_rows_bit_exact": 72
+  },
+  "failed_checks": [],
+  "policies": {
+    "cpu_exporter_step_zero": {
+      "bytes": 960257,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t128_negative_only_expert_cpu_v1\\smoke\\2026_07_29_053759_0.onnx",
+      "sha256": "b34d8b2505185f6dad3934145fe61a4c88cc7814f81fa047ef942922a5bc4a91"
+    },
+    "expected_transform": {
+      "bytes": 960290,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t128_negative_only_expert_cpu_v1\\t100c_half_expected_always_on.onnx",
+      "sha256": "bbe1e2af5131d112a79d4a332a7837ee98476aec5ef40dc16676c88b17e7e39c"
+    },
+    "hosted_step_zero": {
+      "bytes": 960257,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t129_colab_extracted_20260729\\t129_negative_only_expert_continuation\\training\\2026_07_29_100419_0.onnx",
+      "sha256": "b34d8b2505185f6dad3934145fe61a4c88cc7814f81fa047ef942922a5bc4a91"
+    }
+  },
+  "preregistered_contract_sha256": "17e181055971976fa8481e33bd5c52a4e65c63a259e93d82ea87d7bb6c080e42",
+  "question": "Is T130's sole byte mismatch exactly the known omission of the unused zero_adapter_location initializer, with hosted and CPU exporter graphs otherwise identical and behavior bit-exact?",
+  "schema_version": "open_duck.t130c_step_zero_serialization_preregistration.v1",
+  "sources": {
+    "builder": {
+      "bytes": 7769,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t130c_step_zero_serialization_preregistration.py",
+      "sha256": "674b4e224a2d634abe26c35e03488ad6f06d7a5a015675062818ad5ad129f44e"
+    },
+    "runner": {
+      "bytes": 9700,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t130c_step_zero_serialization_recovery.py",
+      "sha256": "fd68ec6a4dc15f04f56e271c8fa7d63705b7db9e1e483ed74e5b613ddd6597e1"
+    },
+    "t128_cpu": {
+      "bytes": 12548,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t128_negative_only_expert_cpu_result.json",
+      "sha256": "5e14111da4a8edf18f095933d0768fb2c88576357382b259604fae629c59676f"
+    },
+    "t129_preregistration": {
+      "bytes": 26814,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t129_negative_only_expert_hosted_preregistration.json",
+      "sha256": "42a528a3324c09521c45c1700d2e01f6394b1a025b83498821fad31091e0bd10"
+    },
+    "t130_hold": {
+      "bytes": 9124,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t130_t129_recovered_training_validation.json",
+      "sha256": "2b160da919fb3ca283679c418942991af5eb11a4c6b3a11e9bba7f2fc52a09b4"
+    },
+    "t130b_preregistration": {
+      "bytes": 4248,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t130b_step_zero_serialization_preregistration.json",
+      "sha256": "bc473a72e79fced71d68213e7bf1f7e91a8f76fafd08e2f1f01725174417f75c"
+    },
+    "test": {
+      "bytes": 1655,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t130c_step_zero_serialization.py",
+      "sha256": "7a58d9f3cc28b79c248e8108af9455cf0d4d822b1835e402a64a06dd49c0f2fb"
+    },
+    "trace_population": {
+      "bytes": 16616,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t97_hidden_gate_preregistration.json",
+      "sha256": "df47922ab4eb79c1d547987319cc9644c03abce30703cbdc5c36dc38019a8252"
+    }
+  },
+  "status": "PREREGISTERED_T130C_STEP_ZERO_SERIALIZATION_RECOVERY"
+}
