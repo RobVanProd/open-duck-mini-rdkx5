@@ -1,0 +1,158 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "gate5": false,
+    "hosted_preregistration": false,
+    "hosted_training": false,
+    "one_read_only_postexport_audit": true,
+    "optimizer_or_simulator": false,
+    "policy_promotion": false,
+    "rdkx5_or_robot": false
+  },
+  "checks": {
+    "coordinate_cause_is_frozen_t17_inverse": true,
+    "frozen_graphs_present": true,
+    "no_behavior_hosted_or_robot_execution": true,
+    "no_retraining_threshold_or_mechanism_change": true,
+    "t98_hold_is_coordinate_audit_only": true,
+    "t98_training_mechanism_checks_green": true
+  },
+  "decision_rule": {
+    "fail_decision": "CLOSE_HIDDEN_EXPERT_AFTER_COORDINATE_CORRECTION",
+    "pass": "The frozen deployment transform itself passes; deployed T98 step zero is bit-exact to deployed T78 final over all 36 trace rows and 256 chained states; the fixed gate labels all 36 rows; postupdate h_out and all 18 nominal rows remain bit-exact; negative raw/final action binding meets the unchanged T98 fractional thresholds.",
+    "pass_decision": "EARN_T100_HIDDEN_EXPERT_HOSTED_PREREGISTRATION_ONLY"
+  },
+  "failed_checks": [],
+  "graphs": {
+    "source_deployed": {
+      "bytes": 965047,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t79_t78_postexport_v1\\2007040\\action_margin.onnx",
+      "sha256": "7732fbf124525d8116d0c90e3afb78ed6af21c252f4092113848cf0bf1441eff"
+    },
+    "source_raw": {
+      "bytes": 954952,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t78_extracted_20260728\\t78_endpoint_joint_adapter_continuation\\training\\2026_07_28_183936_2007040.onnx",
+      "sha256": "f63da30a9dc3ea1ab3ed45cde050566d19fa3599d715cb7e60050fbd8ed04472"
+    },
+    "t98_raw_final": {
+      "bytes": 960296,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t98_hidden_expert_cpu_v1\\smoke\\2026_07_28_214028_1024.onnx",
+      "sha256": "f40e98107a4037a954f41a7ac79c705846cec7b045372d8c9a8f9652109740fb"
+    },
+    "t98_raw_zero": {
+      "bytes": 960296,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t98_hidden_expert_cpu_v1\\smoke\\2026_07_28_213905_0.onnx",
+      "sha256": "08ad8ce94e19480add9e7df38d7a0b3cea14c2d37ced08c55934647bf0ebbed6"
+    }
+  },
+  "invalidation": {
+    "cause": "T98 fed deployed-coordinate obs_state directly to a raw training graph. The frozen T17 support homeomorphism instead rewires raw actor obs through t17_source_obs before obs_normalized.",
+    "gate_change": false,
+    "head_change": false,
+    "invalid_t98_checks": [
+      "step_zero_trace_outputs_bit_exact",
+      "final_gate_and_hidden_exact",
+      "final_nominal_branch_bit_exact"
+    ],
+    "optimizer_rerun": false,
+    "threshold_change": false,
+    "training_outcome_reused": true
+  },
+  "population": {
+    "checkpoint": "T78_JOINT_ADAPTER_FINAL",
+    "negative_com_rows": 18,
+    "nominal_rows": 18,
+    "reason": "T98 restores T78 final; half-checkpoint rows are excluded from source-output equality while remaining part of the frozen gate's cross-checkpoint derivation.",
+    "ticks": [
+      8,
+      16,
+      32
+    ],
+    "total_rows": 36
+  },
+  "preregistered_contract_sha256": "b4c762bfca7421aa48a8733a22a837286830e316815c6664dd5d58b0357276a8",
+  "question": "Do the already-produced T98 step-0 and step-1024 graphs satisfy the unchanged causal contract after the frozen T17/T18/T31 deployment transform maps deployed observations into the training actor's source coordinates?",
+  "repository_commit": "db15400e34ecba31b6e4a9deabbfa08b87df7030",
+  "schema_version": "open_duck.t99_deployment_coordinate_audit_preregistration.v1",
+  "sources": {
+    "builder": {
+      "bytes": 9453,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t99_deployment_coordinate_audit_preregistration.py",
+      "sha256": "c17ffdc9187dcc1202332fa4701413d28dd0d0b616bc9dc7c600d2fa0285866f"
+    },
+    "hidden_gate": {
+      "bytes": 8085,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t98_hidden_gate_asset.json",
+      "sha256": "11381bb2208d1eb40f826b069c68983fdab348277e46c63ffc1ddd46b579b6e3"
+    },
+    "runner": {
+      "bytes": 14920,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t99_deployment_coordinate_audit.py",
+      "sha256": "7110825e5a6a2fbb3846005bef43be1a792787cef1dbdeaac24680a517ff7708"
+    },
+    "t17_support_transform": {
+      "bytes": 17272,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\t17_support_homeomorphism_onnx.py",
+      "sha256": "d936b705ad54169c4a05636c8713ac10a32e7357af11c8c86a2241f4904c9be4"
+    },
+    "t18_support_transform": {
+      "bytes": 11322,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\t18_rate_coherent_support_onnx.py",
+      "sha256": "330d6fd0959ce75ec6010452ce1fff737349d9ab2aa1d6b982d7ddbbb4bdb937"
+    },
+    "t22_deployment_transform": {
+      "bytes": 8931,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t22_corrected_one_update_cpu_smoke.py",
+      "sha256": "d569ccda5fd2cbbc14600e9820e538dba7ce9e35b15379346c7ceeedd91487eb"
+    },
+    "t31_deployment_transform": {
+      "bytes": 9064,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t31_action_margin_trainthrough_cpu_smoke.py",
+      "sha256": "a0845fab1237836af5d9b9fe8ce47c7dc53e3ac1b4e784fa5abc647f39759d48"
+    },
+    "t97_preregistration": {
+      "bytes": 16616,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t97_hidden_gate_preregistration.json",
+      "sha256": "df47922ab4eb79c1d547987319cc9644c03abce30703cbdc5c36dc38019a8252"
+    },
+    "t98_preregistration": {
+      "bytes": 13523,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t98_hidden_expert_cpu_preregistration.json",
+      "sha256": "2d1ed71667bb85a664db3b6026590279d792b2094baeac4c748c14c5a48544b9"
+    },
+    "t98_result": {
+      "bytes": 11417,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t98_hidden_expert_cpu_result.json",
+      "sha256": "8b4c961f6151fa5a32d105f16ddda263aab2a7aaf203f770b3768e33d4ad6e1f"
+    },
+    "test": {
+      "bytes": 1713,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t99_deployment_coordinate_audit.py",
+      "sha256": "9083dbbab0c5ef4def8c68fddfe5658e28490f82da1a3ad842a1ebead527d5e5"
+    }
+  },
+  "status": "PREREGISTERED_T99_DEPLOYMENT_COORDINATE_AUDIT",
+  "thresholds": {
+    "final_nominal_bit_exact_rows": 18,
+    "minimum_maximum_negative_raw_action_delta": 1e-05,
+    "minimum_negative_final_action_changed_fraction": 0.1,
+    "minimum_negative_raw_action_changed_fraction": 0.5,
+    "step_zero_random_chain_bit_exact_steps": 256,
+    "step_zero_trace_bit_exact_rows": 36
+  }
+}
