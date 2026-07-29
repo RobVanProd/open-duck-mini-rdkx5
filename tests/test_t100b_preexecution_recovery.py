@@ -51,3 +51,13 @@ def test_t100c_executor_requires_wrapper_full_preflight_and_no_retry() -> None:
     assert '"retry": False' in text
     assert '"resume": False' in text
     assert '"robot_or_rdk_access": False' in text
+
+
+def test_t100c_validation_requires_only_negative_head_updates() -> None:
+    text = (ROOT / "tools" / "validate_t100c_recovered_training.py").read_text(
+        encoding="utf-8"
+    )
+    assert "both_exports_only_update_negative_head_and_critic" in text
+    assert "every_frozen_base_actor_leaf_exact" in text
+    assert "normalizer_exact" in text
+    assert "formal_behavior_cells_zero" in text
