@@ -1,0 +1,101 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "gate5": false,
+    "one_read_only_node_name_recovery": true,
+    "postexport_preregistration": false,
+    "rdkx5_or_robot": false
+  },
+  "checks": {
+    "all_sources_present": true,
+    "expected_transform_is_distinct": true,
+    "hosted_matches_cpu_exporter_hash": true,
+    "no_optimizer_behavior_colab_or_robot": true,
+    "t128_cpu_contract_green": true,
+    "t130c_structural_hold_exact": true
+  },
+  "decision_rule": {
+    "fail_decision": "NO_BEHAVIOR_EVALUATION",
+    "pass_decision": "RECOVER_T130_VALIDATION_AND_EARN_T131_T129_HARD_GATE_POSTEXPORT_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_steps": 0
+  },
+  "expected_difference": {
+    "expected_name": "t109_always_on_negative_adapter",
+    "hosted_name": "",
+    "inputs": [
+      "negative_adapter_location"
+    ],
+    "node_index": 27,
+    "op_type": "Identity",
+    "outputs": [
+      "conditional_adapter_location"
+    ],
+    "random_chain_steps_bit_exact": 256,
+    "trace_rows_bit_exact": 72
+  },
+  "failed_checks": [],
+  "policies": {
+    "cpu_exporter_step_zero": {
+      "bytes": 960257,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t128_negative_only_expert_cpu_v1\\smoke\\2026_07_29_053759_0.onnx",
+      "sha256": "b34d8b2505185f6dad3934145fe61a4c88cc7814f81fa047ef942922a5bc4a91"
+    },
+    "expected_transform": {
+      "bytes": 960290,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t128_negative_only_expert_cpu_v1\\t100c_half_expected_always_on.onnx",
+      "sha256": "bbe1e2af5131d112a79d4a332a7837ee98476aec5ef40dc16676c88b17e7e39c"
+    },
+    "hosted_step_zero": {
+      "bytes": 960257,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t129_colab_extracted_20260729\\t129_negative_only_expert_continuation\\training\\2026_07_29_100419_0.onnx",
+      "sha256": "b34d8b2505185f6dad3934145fe61a4c88cc7814f81fa047ef942922a5bc4a91"
+    }
+  },
+  "preregistered_contract_sha256": "362824cba7bfc9a1fd96d2252b35305f608c5ab4055c2e6f90072ff30d7dac0d",
+  "question": "Is T130C's residual structural delta exactly one optional NodeProto name field, with the complete model byte-identical after clearing that metadata field and behavior bit-exact?",
+  "schema_version": "open_duck.t130d_step_zero_node_name_preregistration.v1",
+  "sources": {
+    "builder": {
+      "bytes": 7132,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t130d_step_zero_node_name_preregistration.py",
+      "sha256": "c719d41d1655308c96f3d96c59c5ab4a133372a2635d58fa29e1243b122a6635"
+    },
+    "runner": {
+      "bytes": 10984,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t130d_step_zero_node_name_recovery.py",
+      "sha256": "066c3e5cbed0c7976e16fe926f3c457015cc841197dcc04eb7a485aa7038de2a"
+    },
+    "t128_cpu": {
+      "bytes": 12548,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t128_negative_only_expert_cpu_result.json",
+      "sha256": "5e14111da4a8edf18f095933d0768fb2c88576357382b259604fae629c59676f"
+    },
+    "t129_preregistration": {
+      "bytes": 26814,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t129_negative_only_expert_hosted_preregistration.json",
+      "sha256": "42a528a3324c09521c45c1700d2e01f6394b1a025b83498821fad31091e0bd10"
+    },
+    "t130c_hold": {
+      "bytes": 3307,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t130c_step_zero_serialization_result.json",
+      "sha256": "588f91222062594b9afaefeec44118989a9e508a2278f76b5f764fd945604115"
+    },
+    "test": {
+      "bytes": 1525,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t130d_step_zero_node_name.py",
+      "sha256": "11de9d2056de0e52925c13020af19d9181ff5b9de38cc01377d09540f636207f"
+    },
+    "trace_population": {
+      "bytes": 16616,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t97_hidden_gate_preregistration.json",
+      "sha256": "df47922ab4eb79c1d547987319cc9644c03abce30703cbdc5c36dc38019a8252"
+    }
+  },
+  "status": "PREREGISTERED_T130D_STEP_ZERO_NODE_NAME_RECOVERY"
+}
