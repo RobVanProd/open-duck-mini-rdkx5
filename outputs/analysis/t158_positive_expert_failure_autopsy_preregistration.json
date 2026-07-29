@@ -1,0 +1,275 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "gate5": false,
+    "mechanics_screen_preregistration": false,
+    "one_read_only_trace_autopsy": true,
+    "rdkx5_or_robot": false,
+    "training": false
+  },
+  "checks": {
+    "frozen_inputs_present": true,
+    "no_behavior_training_colab_or_robot": true,
+    "sixteen_old_and_new_traces": true,
+    "t151_positive_endpoint_is_original_failure": true,
+    "t157_positive_expert_closed": true
+  },
+  "decision_rule": {
+    "fail_decision": "HOLD_FOR_DIFFERENT_POSITIVE_COM_MECHANISM",
+    "mechanics_screen_if": [
+      "all 12 moving T157 cells fail but all four x0 pass",
+      "median moving survival improves over paired T151",
+      "at least one T157 moving cell reaches 570 ticks",
+      "positive pitch crosses 0.25 rad before roll/height in all T157 moving failures",
+      "all T157 moving cells retain zero saturation/rate excess and tracking p95 <= 0.20 rad",
+      "final-checkpoint median survival is below half"
+    ],
+    "pass_decision": "EARN_T159_MECHANICS_DERIVED_SAGITTAL_COMPENSATION_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "trace_rows_read": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 7452,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t158_positive_expert_failure_autopsy_preregistration.py",
+      "sha256": "737aa36e08fd0ad4922d2a555e05d79329bae3731b558f9808aee072ee2f6fc5"
+    },
+    "runner": {
+      "bytes": 12998,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t158_positive_expert_failure_autopsy.py",
+      "sha256": "1419ae4507c72defc38ef3e04c8acc44bcb1dbf611ac2f4c0e5f0d9677c23496"
+    },
+    "t151_result": {
+      "bytes": 960097,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t151_command_plateau_full_r2_result.json",
+      "sha256": "a6ce9ab4ff0d366fde794dba306371ea2c13bc96c4ad66ef1246f0d3a5cd2496"
+    },
+    "t157_result": {
+      "bytes": 120502,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t157_positive_com_endpoint_result.json",
+      "sha256": "95e3db62939accdb13ba5a57e59feaa368f4784a9f6525c4d8694aa694ed72a7"
+    },
+    "test": {
+      "bytes": 1558,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t158_positive_expert_failure_autopsy.py",
+      "sha256": "376047489dfb9cacfb00b7318ac16d2235d115f5e1a06bd33a03b85915767151"
+    }
+  },
+  "joint_order": [
+    "left_hip_yaw",
+    "left_hip_roll",
+    "left_hip_pitch",
+    "left_knee",
+    "left_ankle",
+    "neck_pitch",
+    "head_pitch",
+    "head_yaw",
+    "head_roll",
+    "right_hip_yaw",
+    "right_hip_roll",
+    "right_hip_pitch",
+    "right_knee",
+    "right_ankle"
+  ],
+  "measurements": [
+    "paired termination tick gain",
+    "first pitch/roll/height crossing order",
+    "pitch sign at first pitch crossing",
+    "pre-pitch mean body-forward velocity",
+    "per-joint action delta over paired common prefix",
+    "half-versus-final survival direction",
+    "saturation/rate/track-quality invariants"
+  ],
+  "new_traces": [
+    {
+      "bytes": 8233482,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t157_positive_com_endpoint_v1\\08_TORSO_COM_X_POS\\T156B_THREE_WAY_HALF\\p30\\traces\\x0.000_seed167931544_three_way_positive_router.jsonl",
+      "sha256": "4586003b52dadf5a1edaca94c6f8195632122543a2bbc4fcb93e716f0bd22d5f"
+    },
+    {
+      "bytes": 1789740,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t157_positive_com_endpoint_v1\\08_TORSO_COM_X_POS\\T156B_THREE_WAY_HALF\\p30\\traces\\x0.074_seed167931544_three_way_positive_router.jsonl",
+      "sha256": "9e29fbdfa59e222a5cee5b26809bd3a4648eb48ef510709ec2dcd7472ab78176"
+    },
+    {
+      "bytes": 2561341,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t157_positive_com_endpoint_v1\\08_TORSO_COM_X_POS\\T156B_THREE_WAY_HALF\\p30\\traces\\x0.077_seed167931544_three_way_positive_router.jsonl",
+      "sha256": "4efb739bcb7c4c34647b2877b7c78df27bfd5a8cf16bdcb496bcbc310811a432"
+    },
+    {
+      "bytes": 1807859,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t157_positive_com_endpoint_v1\\08_TORSO_COM_X_POS\\T156B_THREE_WAY_HALF\\p30\\traces\\x0.080_seed167931544_three_way_positive_router.jsonl",
+      "sha256": "8daf6621c6dc0d342becf80ba390e2bee75d45046be44bb6935e71ff51229ea3"
+    },
+    {
+      "bytes": 8232296,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t157_positive_com_endpoint_v1\\08_TORSO_COM_X_POS\\T156B_THREE_WAY_HALF\\p31_34\\traces\\x0.000_seed167931544_three_way_positive_router.jsonl",
+      "sha256": "755c280a1248be4bec1e524aae0ab57508d3158098c1078ae2c5ee801bb3c84e"
+    },
+    {
+      "bytes": 1735179,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t157_positive_com_endpoint_v1\\08_TORSO_COM_X_POS\\T156B_THREE_WAY_HALF\\p31_34\\traces\\x0.074_seed167931544_three_way_positive_router.jsonl",
+      "sha256": "80384c3d5b6f442b02da5a4e6c8ad494759b7e02d7e4562828884f8462638f89"
+    },
+    {
+      "bytes": 10677562,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t157_positive_com_endpoint_v1\\08_TORSO_COM_X_POS\\T156B_THREE_WAY_HALF\\p31_34\\traces\\x0.077_seed167931544_three_way_positive_router.jsonl",
+      "sha256": "21a1b0b40b16be6e521c69a780becdaa099a34e026f7bedb35b838957d39a1ef"
+    },
+    {
+      "bytes": 2005222,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t157_positive_com_endpoint_v1\\08_TORSO_COM_X_POS\\T156B_THREE_WAY_HALF\\p31_34\\traces\\x0.080_seed167931544_three_way_positive_router.jsonl",
+      "sha256": "f62bf9b8fe1778efacab42745ef723bf8ec10014ec787d03ddeb939df0461227"
+    },
+    {
+      "bytes": 8233482,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t157_positive_com_endpoint_v1\\08_TORSO_COM_X_POS\\T156B_THREE_WAY_FINAL\\p30\\traces\\x0.000_seed167931544_three_way_positive_router.jsonl",
+      "sha256": "4586003b52dadf5a1edaca94c6f8195632122543a2bbc4fcb93e716f0bd22d5f"
+    },
+    {
+      "bytes": 1466405,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t157_positive_com_endpoint_v1\\08_TORSO_COM_X_POS\\T156B_THREE_WAY_FINAL\\p30\\traces\\x0.074_seed167931544_three_way_positive_router.jsonl",
+      "sha256": "171884b1ba259406ddd4c94d9d35d09272d70c570cc69d8c4c44e799c3cb02d0"
+    },
+    {
+      "bytes": 1537111,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t157_positive_com_endpoint_v1\\08_TORSO_COM_X_POS\\T156B_THREE_WAY_FINAL\\p30\\traces\\x0.077_seed167931544_three_way_positive_router.jsonl",
+      "sha256": "b0ce4b7140096486a74d99cb28a076c260ed3c99525a9156133df5035e9ebd26"
+    },
+    {
+      "bytes": 1932532,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t157_positive_com_endpoint_v1\\08_TORSO_COM_X_POS\\T156B_THREE_WAY_FINAL\\p30\\traces\\x0.080_seed167931544_three_way_positive_router.jsonl",
+      "sha256": "f1d14711c32a1289373a882d5b3328143aed16d8857d6eaadcdf78fe2bddd952"
+    },
+    {
+      "bytes": 8232296,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t157_positive_com_endpoint_v1\\08_TORSO_COM_X_POS\\T156B_THREE_WAY_FINAL\\p31_34\\traces\\x0.000_seed167931544_three_way_positive_router.jsonl",
+      "sha256": "755c280a1248be4bec1e524aae0ab57508d3158098c1078ae2c5ee801bb3c84e"
+    },
+    {
+      "bytes": 1464841,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t157_positive_com_endpoint_v1\\08_TORSO_COM_X_POS\\T156B_THREE_WAY_FINAL\\p31_34\\traces\\x0.074_seed167931544_three_way_positive_router.jsonl",
+      "sha256": "81b6f274e2d0766caae2037cf75af47122327ff5cbae3be9bebab15dd5b34af6"
+    },
+    {
+      "bytes": 1537520,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t157_positive_com_endpoint_v1\\08_TORSO_COM_X_POS\\T156B_THREE_WAY_FINAL\\p31_34\\traces\\x0.077_seed167931544_three_way_positive_router.jsonl",
+      "sha256": "efabfa3014dc367f1c02acd487d6d3028115074764b3a715aec22e6c9fe38bfd"
+    },
+    {
+      "bytes": 1519429,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t157_positive_com_endpoint_v1\\08_TORSO_COM_X_POS\\T156B_THREE_WAY_FINAL\\p31_34\\traces\\x0.080_seed167931544_three_way_positive_router.jsonl",
+      "sha256": "49dd5716e72b37ef0b13046dffbd669955b5dcae5b116f15493a699773634e7c"
+    }
+  ],
+  "old_traces": [
+    {
+      "bytes": 8233482,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t151_command_plateau_full_r2_v1\\08_TORSO_COM_X_POS\\T149B_NEGATIVE_PLATEAU_HALF\\p30\\traces\\x0.000_seed167931544_negative_command_plateau.jsonl",
+      "sha256": "4586003b52dadf5a1edaca94c6f8195632122543a2bbc4fcb93e716f0bd22d5f"
+    },
+    {
+      "bytes": 1215058,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t151_command_plateau_full_r2_v1\\08_TORSO_COM_X_POS\\T149B_NEGATIVE_PLATEAU_HALF\\p30\\traces\\x0.074_seed167931544_negative_command_plateau.jsonl",
+      "sha256": "7973b9a7af2b78a8ea5b8eb61e693d6bc8320f5ddda10072ad1b8ffc80acfc93"
+    },
+    {
+      "bytes": 1215145,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t151_command_plateau_full_r2_v1\\08_TORSO_COM_X_POS\\T149B_NEGATIVE_PLATEAU_HALF\\p30\\traces\\x0.077_seed167931544_negative_command_plateau.jsonl",
+      "sha256": "225a96432d93abe6d39adb352cfb9e961c4b94796072c01e3dc91cd0a56a4ca5"
+    },
+    {
+      "bytes": 1359886,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t151_command_plateau_full_r2_v1\\08_TORSO_COM_X_POS\\T149B_NEGATIVE_PLATEAU_HALF\\p30\\traces\\x0.080_seed167931544_negative_command_plateau.jsonl",
+      "sha256": "f0fe66c05c0d89f2bdfcda78e9e01e6aca7d9ca5f2b2624ad87333d55b77c793"
+    },
+    {
+      "bytes": 8232296,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t151_command_plateau_full_r2_v1\\08_TORSO_COM_X_POS\\T149B_NEGATIVE_PLATEAU_HALF\\p31_34\\traces\\x0.000_seed167931544_negative_command_plateau.jsonl",
+      "sha256": "755c280a1248be4bec1e524aae0ab57508d3158098c1078ae2c5ee801bb3c84e"
+    },
+    {
+      "bytes": 1234193,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t151_command_plateau_full_r2_v1\\08_TORSO_COM_X_POS\\T149B_NEGATIVE_PLATEAU_HALF\\p31_34\\traces\\x0.074_seed167931544_negative_command_plateau.jsonl",
+      "sha256": "2e43ee8dd049659f9dce31257535e418b29b3972214ee0e54fbf05564a381163"
+    },
+    {
+      "bytes": 1269662,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t151_command_plateau_full_r2_v1\\08_TORSO_COM_X_POS\\T149B_NEGATIVE_PLATEAU_HALF\\p31_34\\traces\\x0.077_seed167931544_negative_command_plateau.jsonl",
+      "sha256": "aa0426fbff780e6a2e66c4333b606c91dadd3c805721655d8ebb2ca2364faadd"
+    },
+    {
+      "bytes": 1324224,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t151_command_plateau_full_r2_v1\\08_TORSO_COM_X_POS\\T149B_NEGATIVE_PLATEAU_HALF\\p31_34\\traces\\x0.080_seed167931544_negative_command_plateau.jsonl",
+      "sha256": "1911bba80c99fd40e0e5f318a9628b2213c7f226909a3b66f4e917c2b38573d5"
+    },
+    {
+      "bytes": 8233482,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t151_command_plateau_full_r2_v1\\08_TORSO_COM_X_POS\\T149B_NEGATIVE_PLATEAU_FINAL\\p30\\traces\\x0.000_seed167931544_negative_command_plateau.jsonl",
+      "sha256": "4586003b52dadf5a1edaca94c6f8195632122543a2bbc4fcb93e716f0bd22d5f"
+    },
+    {
+      "bytes": 1215299,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t151_command_plateau_full_r2_v1\\08_TORSO_COM_X_POS\\T149B_NEGATIVE_PLATEAU_FINAL\\p30\\traces\\x0.074_seed167931544_negative_command_plateau.jsonl",
+      "sha256": "e9fa4787280f06a58da7726e8465541a0610ad83f12b2bf322608922d162db9e"
+    },
+    {
+      "bytes": 1215119,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t151_command_plateau_full_r2_v1\\08_TORSO_COM_X_POS\\T149B_NEGATIVE_PLATEAU_FINAL\\p30\\traces\\x0.077_seed167931544_negative_command_plateau.jsonl",
+      "sha256": "800f17e6d3d55bcc81bd8e05dfeec1406fe26b398f20335e194a97d6dbebc9e5"
+    },
+    {
+      "bytes": 1359886,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t151_command_plateau_full_r2_v1\\08_TORSO_COM_X_POS\\T149B_NEGATIVE_PLATEAU_FINAL\\p30\\traces\\x0.080_seed167931544_negative_command_plateau.jsonl",
+      "sha256": "f0fe66c05c0d89f2bdfcda78e9e01e6aca7d9ca5f2b2624ad87333d55b77c793"
+    },
+    {
+      "bytes": 8232296,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t151_command_plateau_full_r2_v1\\08_TORSO_COM_X_POS\\T149B_NEGATIVE_PLATEAU_FINAL\\p31_34\\traces\\x0.000_seed167931544_negative_command_plateau.jsonl",
+      "sha256": "755c280a1248be4bec1e524aae0ab57508d3158098c1078ae2c5ee801bb3c84e"
+    },
+    {
+      "bytes": 1234155,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t151_command_plateau_full_r2_v1\\08_TORSO_COM_X_POS\\T149B_NEGATIVE_PLATEAU_FINAL\\p31_34\\traces\\x0.074_seed167931544_negative_command_plateau.jsonl",
+      "sha256": "0aba211df1acbab2b74f22cc5f9ba550a52accfb803264974fe5f30896f0ae97"
+    },
+    {
+      "bytes": 1269821,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t151_command_plateau_full_r2_v1\\08_TORSO_COM_X_POS\\T149B_NEGATIVE_PLATEAU_FINAL\\p31_34\\traces\\x0.077_seed167931544_negative_command_plateau.jsonl",
+      "sha256": "871ea31050c1f2344d0e3f87a6eb56d0a04fee0267ae09eb9905a05ca03d6db0"
+    },
+    {
+      "bytes": 1324351,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t151_command_plateau_full_r2_v1\\08_TORSO_COM_X_POS\\T149B_NEGATIVE_PLATEAU_FINAL\\p31_34\\traces\\x0.080_seed167931544_negative_command_plateau.jsonl",
+      "sha256": "000bd1407034a32ebd50a2571fef6456975135ba9dc3486f25e5b5e2989cc528"
+    }
+  ],
+  "populations": {
+    "moving_pairs": 12,
+    "new": "T157 T156B positive-COM condition",
+    "old": "T151 T149B positive-COM condition",
+    "paired_dimensions": [
+      "checkpoint step",
+      "actuator fit",
+      "command"
+    ],
+    "x0_pairs": 4
+  },
+  "preregistered_contract_sha256": "8d84cf76c5782eb07e7ab18c35714d0b87611531541b9c928c9b9b9edfff518c",
+  "question": "Did the positive expert improve survival while leaving a leading forward-pitch instability, and did continued training regress that improvement?",
+  "schema_version": "open_duck.t158_positive_expert_failure_autopsy_preregistration.v1",
+  "status": "PREREGISTERED_T158_POSITIVE_EXPERT_FAILURE_AUTOPSY",
+  "thresholds": {
+    "absolute_roll_rad": 0.25,
+    "forward_pitch_rad": 0.25,
+    "full_horizon_ticks": 600,
+    "minimum_base_height_m": 0.12,
+    "near_full_horizon_ticks": 570
+  }
+}
