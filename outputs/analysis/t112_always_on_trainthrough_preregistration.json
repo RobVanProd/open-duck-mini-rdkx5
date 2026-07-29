@@ -1,0 +1,234 @@
+{
+  "assets": {
+    "cpu_topology_template": {
+      "kind": "directory",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t98_hidden_expert_cpu_v1\\smoke\\2026_07_28_214028_1024",
+      "sha256": "1e45639bace9ff4f6a61f3e35396b9f20a51866098334bf2ba18e60ee5e97438"
+    },
+    "hidden_gate_static_asset": {
+      "bytes": 8085,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t98_hidden_gate_asset.json",
+      "sha256": "11381bb2208d1eb40f826b069c68983fdab348277e46c63ffc1ddd46b579b6e3"
+    },
+    "reference_features": {
+      "bytes": 259604,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+      "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+    },
+    "source_checkpoint": {
+      "kind": "directory",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t100c_colab_extracted_20260728\\t78_endpoint_joint_adapter_continuation\\training\\2026_07_29_023820_1003520",
+      "sha256": "182ab64f15e02eb5103b38e75100045c4274a192331d3fc3df08d890f2b0e458"
+    },
+    "source_raw_onnx": {
+      "bytes": 960296,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t100c_colab_extracted_20260728\\t78_endpoint_joint_adapter_continuation\\training\\2026_07_29_023820_1003520.onnx",
+      "sha256": "fc4d0722b1d7a55eaf02badd9246438f38f08284ac0eb0a7196e63c1c8085e37"
+    },
+    "trace_population": {
+      "bytes": 16616,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t97_hidden_gate_preregistration.json",
+      "sha256": "df47922ab4eb79c1d547987319cc9644c03abce30703cbdc5c36dc38019a8252"
+    }
+  },
+  "authority": {
+    "behavior_evaluation": false,
+    "execute_one_cpu_contract": true,
+    "gate5": false,
+    "hosted_preregistration": false,
+    "hosted_training": false,
+    "policy_promotion": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false
+  },
+  "causal_basis": {
+    "selection": "remove routing from both forward action and gradient flow; train the existing residual universally rather than tune another gate or scalar",
+    "t104": "the hard hidden gate is dynamically inconsistent: both nominal false-active and negative-COM false-inactive rates exceed 20 percent",
+    "t106_t108": "continuous sigmoid routing retained nominal behavior but failed the exact negative-COM endpoint at 4/16",
+    "t109_t111": "the exact always-on half checkpoint retained 16/16 nominal cells and repaired some endpoint cells, but the final checkpoint drifted and the pair reached only 6/16"
+  },
+  "checks": {
+    "always_on_half_retains_nominal": true,
+    "assets_present": true,
+    "composed_networks_match_frozen_patch": true,
+    "composed_runner_matches_frozen_patch": true,
+    "hard_gate_dynamics_closed": true,
+    "no_behavior_hosted_or_robot_execution": true,
+    "no_reward_scalar_randomizer_abi_or_runtime_change": true,
+    "posthoc_always_on_is_not_persistent": true,
+    "t100c_half_source_validated": true
+  },
+  "decision_rule": {
+    "fail_decision": "CLOSE_ALWAYS_ON_TRAINTHROUGH_MECHANISM",
+    "no_behavior_selection": true,
+    "pass": "The CPU-remapped T100C-half tree is exact; step-zero export matches the exact always-on transform on 72 trace rows and a 256-step stateful chain; only negative_adapter_location and critic leaves change; normalizer and every mature actor leaf remain bit-exact; the updated expert changes deployed actions materially; ONNX ABI and recurrent execution remain finite.",
+    "pass_decision": "EARN_T113_ALWAYS_ON_TRAINTHROUGH_HOSTED_PREREGISTRATION_ONLY"
+  },
+  "failed_checks": [],
+  "mechanism": {
+    "actor_equation": "anchored = mature_anchored + negative_adapter_location(h_out)",
+    "command_support_change": false,
+    "critic_trainable": true,
+    "endpoint_categories": [
+      "broad_random",
+      "nominal",
+      "torso_com_x_neg",
+      "torso_com_x_pos",
+      "torso_com_y_neg",
+      "torso_com_y_pos",
+      "torso_com_z_neg",
+      "torso_com_z_pos"
+    ],
+    "frozen_actor_groups": [
+      "residual_trunk",
+      "residual_location",
+      "scale_logits",
+      "adapter_obs_projection",
+      "adapter_hidden_projection",
+      "adapter_hidden_bias",
+      "adapter_location"
+    ],
+    "gate_action_path": "none_always_on",
+    "normalizer_frozen": true,
+    "optimizer_change": false,
+    "policy_abi_change": false,
+    "randomizer_change": false,
+    "reward_change": false,
+    "runtime_input_change": false,
+    "scalar_sweep": false,
+    "source": "exact_T100C_half_checkpoint",
+    "trainable_actor_groups": [
+      "negative_adapter_location"
+    ]
+  },
+  "playground": {
+    "path": "D:\\CodexProjects\\Open_Duck_Playground-t112-always-on-expert-v1",
+    "python_inventory": {
+      "playground/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "playground/common/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "playground/common/export_onnx.py": "30bc705bf59babb59c5ba3045b601c838db00ebb569bb9fc6aa520f1e61139cc",
+      "playground/common/onnx_infer.py": "e610c2b94d15cd0ea4be1c0cee8853dc33b10c3b440e6d9bb1b1bb73168f34f2",
+      "playground/common/phase_moe_networks.py": "6480f59f4039884be6743828ffed1c31f76896830b2b38689cad038200283cb7",
+      "playground/common/plot_saved_obs.py": "911fe1de5668c31fdc2a10a4285b8343c04fd4f662a38207d6f06a91fd4e0a8e",
+      "playground/common/poly_reference_motion.py": "cc2430d82a9e41bf2081a4a9bed45731a43aad8b860e5b168f5850eb3748cf21",
+      "playground/common/poly_reference_motion_numpy.py": "585e783722ffb403a14288aafc1fcdf86c8a5d1b39949171a3b2d918028c4406",
+      "playground/common/randomize.py": "c6e7a48f714a2267b3b19d75ffc9ce3938350aabceb3eda61727a3c48f2d6dd8",
+      "playground/common/recurrent_ppo_networks.py": "a501000c6f959276514ba56f935d027b05b171a9ea62bb6a2bc1ecdd2fe8cb4e",
+      "playground/common/reference_residual_ppo_networks.py": "eeb1b758f32bb8a7e53cf59b269bed7f97126cf37ccc4d11090a5f8312b380e6",
+      "playground/common/reference_residual_recurrent_adapter_ppo_networks.py": "ffd07d0a6e96d846aa1f62a8d131bf892f10db6b2a22710affe3946b7b145ebd",
+      "playground/common/rewards.py": "9c327866f2632265f14ef81318046f887aafa64384a06efa6cb264e144bbb1d3",
+      "playground/common/rewards_numpy.py": "f1dba8838b29fdc4701bc3759e2533fa9d51ec550c8f70b83a23d3de64b97f48",
+      "playground/common/runner.py": "337b65d156e59dc8cd70abfe23f07c636ef1464df6635e94857388c6e5700664",
+      "playground/common/t19_support_trainthrough.py": "dc6c4270a4a5569f4c82dc3f9d1f07c395512bea86c15cd62a634fe10c895057",
+      "playground/common/t37_frozen_observation_normalizer.py": "324cb669821cd2964b62bdd1c2241a3bd6108c0ce37d34792f4e0adf8a75eab6",
+      "playground/common/t66_endpoint_core_continuation.py": "a5627f0109b842f37be5d87c327cbb3efeface040a5632e84893cba73c8a321f",
+      "playground/common/t77_endpoint_joint_adapter_continuation.py": "c8379e949967d877b919f96d5e6beab2c75f74056eba2941ba44a84fc73632bf",
+      "playground/common/t98_hidden_expert_continuation.py": "d11c96efd74d355de76684ce5d69ba18f3fa2ca54cacc7060536be7bd64f7492",
+      "playground/common/t98_hidden_expert_ppo_networks.py": "f02f743de0a16143c25f6638787a90be85afeef7f2c580f523df3605b31de780",
+      "playground/common/utils.py": "dbeb9fd88bb41aaca5ab242a954cbae7ae9755b7f13ff2d7d2b27cc9094a284c",
+      "playground/common/winner_v127_constrained_ppo_losses.py": "996e292f76a4071f2c3117b0f1dacd9b1a3bf9e31d6d97128ce2f054f9bc6ff1",
+      "playground/common/winner_v127_constrained_ppo_train.py": "9ac5b96d2f810644b4ee2e019c1a8e4f2e5a92b5f1e6455298df5c1ecaa896c0",
+      "playground/common/winner_v171_gradient_geometry.py": "dfbadab3ef4021c71c27c358135bed87307c04f53310fdf9093f6436e00008c3",
+      "playground/common/winner_v173_lexicographic_tangent.py": "b7ff83f8d68f1034ab1ddb5562d4a32a384756a330bb150b8ca69d92a63f3841",
+      "playground/common/winner_v3_variable_configuration.py": "daab44325e6dd98b8b4054fc5c5fe7391ca9e358e7aca97999ef1a2441285ab7",
+      "playground/common/winner_v98_response_calibration_wrapper.py": "04339bf7bbe16f2721ce92bbe62c458e70c1c8a5e9bdfe02424478ebc066a7ba",
+      "playground/common/winner_v98_response_conditioned_export.py": "83c8667828a51bdb379091fbf657725410bae5e0d655273f63cf47bdc913f28c",
+      "playground/common/winner_v98_response_conditioned_ppo_networks.py": "767b0d4dc7d72d6c126eca9ed1f0497ca38214a9e2caa57c8a1e6b5cea3ad17a",
+      "playground/open_duck_mini_v2/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "playground/open_duck_mini_v2/base.py": "0e90b98b113c2e5ff4abd34b64482e3f1b3d365ef95481d1838f8b855de99988",
+      "playground/open_duck_mini_v2/constants.py": "8fafc240bfb8e70c93b722d89148cffb03688882fd4e6250735eccdf53363374",
+      "playground/open_duck_mini_v2/custom_rewards.py": "16fdf5ed409f9abcfa6f68465c4351081c0c255a6683c09aee110c557890cd0c",
+      "playground/open_duck_mini_v2/custom_rewards_numpy.py": "51422e858c4058f5c114004ab6ebd7900cbae544f09aaf430f9398adf9032333",
+      "playground/open_duck_mini_v2/joystick.py": "8e6b04c8e9f71e42f468ca559e0fbeb0651652fc83734d0ccf8348154808f4b3",
+      "playground/open_duck_mini_v2/mujoco_infer.py": "67a933e043fe54a3bf252524e71fbb8a7eff973e8bb693d9fe1f1d6f323b11ed",
+      "playground/open_duck_mini_v2/mujoco_infer_base.py": "4c8fd11e4659126d49985a9c048e1cb5a5cfde5f4d54cdfe433e4b165d3b0ab1",
+      "playground/open_duck_mini_v2/ref_motion_viewer.py": "78c267d86d7de9a942c9bd4007990369eb39a7dae7a410acaa316dd9da0a5322",
+      "playground/open_duck_mini_v2/runner.py": "15b9104e57cf82b78c739eeea7224d548f0870f840472d883fd2bd72ce042f51",
+      "playground/open_duck_mini_v2/standing.py": "123419cb68f3dcf0908b3c77e4c98206de48d719058d38998ddcd69ef32dcdd6"
+    },
+    "python_inventory_sha256": "0c89601b695d626edaa175453d4e6c03c7ba2730daab52163e709a7a1411a7c8"
+  },
+  "preregistered_contract_sha256": "2a3c845da1e70634766acb64134f0ef5f0dad84f5f9f9dae2f2c77d41c2cc703",
+  "question": "Can the useful T100C-half negative-COM residual become one persistent universal correction when it is applied and trained on every tick of the unchanged eight endpoint strata?",
+  "repository_commit": "9f28e88b545ffbc254fb07e513dec86fae766c29",
+  "schema_version": "open_duck.t112_always_on_trainthrough_preregistration.v1",
+  "sources": {
+    "builder": {
+      "bytes": 13020,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t112_always_on_trainthrough_preregistration.py",
+      "sha256": "1b53e9efbc14a3aeb26eccd0b03102a36edc860425a4d403472e4822c3fda5ca"
+    },
+    "patched_networks": {
+      "bytes": 22812,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\patches\\t112_always_on_hidden_expert_ppo_networks.py",
+      "sha256": "f02f743de0a16143c25f6638787a90be85afeef7f2c580f523df3605b31de780"
+    },
+    "patched_runner": {
+      "bytes": 23574,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\patches\\t112_open_duck_mini_v2_runner.py",
+      "sha256": "15b9104e57cf82b78c739eeea7224d548f0870f840472d883fd2bd72ce042f51"
+    },
+    "runner": {
+      "bytes": 21542,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t112_always_on_trainthrough_cpu_contract.py",
+      "sha256": "a7c0cec863c59c4db698f720ec830d83f4a089ff6a8849beadfaba2d985696f4"
+    },
+    "t100c_validation": {
+      "bytes": 9327,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t100c_recovered_training_validation.json",
+      "sha256": "c96c512ea7386537831a59f1ac914af8f73730426c04d7a04980f611d7c16d79"
+    },
+    "t104_gate_dynamics": {
+      "bytes": 79379,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t104_t100c_gate_dynamics_result.json",
+      "sha256": "54a7c3cb784a4182f2915723b12d9a94650e9bac491b2afed0de658ee5fb0622"
+    },
+    "t110_nominal": {
+      "bytes": 120240,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t110_always_on_nominal_result.json",
+      "sha256": "d79f53e505558ce0abd33afc8fb7872c0ada1a19d660d0119467543fae0ab120"
+    },
+    "t111_negative_endpoint": {
+      "bytes": 120733,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t111_always_on_negative_endpoint_result.json",
+      "sha256": "728ecdaf531df5fe3348bacc00f9763091641e2f986f52a6e5228d303a139186"
+    },
+    "test": {
+      "bytes": 1822,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t112_always_on_trainthrough.py",
+      "sha256": "3501752db13a8831676d0e20815b3629b3faf3dc84108a94fde7bce591691647"
+    }
+  },
+  "status": "PREREGISTERED_T112_ALWAYS_ON_TRAINTHROUGH_CPU_CONTRACT",
+  "thresholds": {
+    "minimum_random_raw_action_delta": 1e-06,
+    "minimum_trace_final_action_changed_fraction": 0.1,
+    "minimum_trace_raw_action_changed_fraction": 0.5,
+    "step_zero_random_chain_bit_exact_steps": 256,
+    "step_zero_trace_bit_exact_rows": 72
+  },
+  "training": {
+    "batch_size": 8,
+    "cpu_only": true,
+    "exports": [
+      0,
+      1024
+    ],
+    "formal_behavior_cells": 0,
+    "num_envs": 8,
+    "timesteps": 1024
+  }
+}
