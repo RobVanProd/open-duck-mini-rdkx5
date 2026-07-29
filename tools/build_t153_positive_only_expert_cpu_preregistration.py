@@ -156,8 +156,16 @@ def main() -> int:
             t151["status"] == "HOLD_T151_COMMAND_PLATEAU_FULL_R2"
             and len(positive_blocks) == 4
             and all(
-                block["result"]["summary"]["passed_cells"] == 1
-                and block["result"]["summary"]["failed_cells"] == 3
+                sum(
+                    bool(cell["cell_green"])
+                    for cell in block["result"]["cells"]
+                )
+                == 1
+                and sum(
+                    not bool(cell["cell_green"])
+                    for cell in block["result"]["cells"]
+                )
+                == 3
                 for block in positive_blocks
             )
         ),
