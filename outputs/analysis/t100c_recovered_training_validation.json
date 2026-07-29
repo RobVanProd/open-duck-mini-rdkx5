@@ -1,0 +1,217 @@
+{
+  "authority": {
+    "behavior_evaluation_authorized": false,
+    "checkpoint_selection_authorized": false,
+    "gate5_authorized": false,
+    "postexport_transform_preregistration_authorized": true,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "all_checkpoint_trees_finite": true,
+    "all_onnx_contracts_pass": true,
+    "archive_hash_matches_result_and_receipt": true,
+    "both_exports_only_update_negative_head_and_critic": true,
+    "both_preexecution_holds_exact_and_optimizer_zero": true,
+    "checkpoint_hashes_match_hosted_result": true,
+    "cpu_only_validation": true,
+    "exact_local_exports": true,
+    "formal_behavior_cells_zero": true,
+    "hidden_expert_readback_exact": true,
+    "hosted_artifact_passed_pending_cpu_validation": true,
+    "launch_receipt_complete": true,
+    "onnx_hashes_match_hosted_result": true,
+    "original_t100_validation_identity_exact": true,
+    "package_and_launch_contracts_green": true,
+    "result_hash_matches_receipt": true,
+    "source_checkpoint_exact": true,
+    "step_zero_raw_onnx_byte_exact": true,
+    "step_zero_tree_source_bit_exact": true,
+    "t100c_preregistration_green_and_exact": true,
+    "t99_cpu_authority_exact": true
+  },
+  "classification": {
+    "actor_update_scope": "negative_adapter_location_only",
+    "behavior_cells": 0,
+    "correction_method": "external dispatch wrapper around byte-exact T100 driver",
+    "endpoint_strata": 8,
+    "hosted_wall_seconds": 1532.5482097759998,
+    "training_completed": true,
+    "training_resume": false,
+    "training_retry": false
+  },
+  "decision": "EARN_T101_EXACT_DEPLOYMENT_TRANSFORM_PREREGISTRATION_ONLY",
+  "exports": {
+    "checkpoints": [
+      {
+        "directory_sha256": "5dcd74ccc32649c8c5f15e1c1d793cdc19f3375f4bcce739d516cc16f3808d27",
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t100c_colab_extracted_20260728\\t78_endpoint_joint_adapter_continuation\\training\\2026_07_29_023217_0",
+        "step": 0
+      },
+      {
+        "directory_sha256": "182ab64f15e02eb5103b38e75100045c4274a192331d3fc3df08d890f2b0e458",
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t100c_colab_extracted_20260728\\t78_endpoint_joint_adapter_continuation\\training\\2026_07_29_023820_1003520",
+        "step": 1003520
+      },
+      {
+        "directory_sha256": "1836da971dcbde860f0115c4ba7955cc91608312be9d15d48ec796c8e707b388",
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t100c_colab_extracted_20260728\\t78_endpoint_joint_adapter_continuation\\training\\2026_07_29_024350_2007040",
+        "step": 2007040
+      }
+    ],
+    "onnx": [
+      {
+        "abi_exact": true,
+        "chain_256_finite": true,
+        "cpu_provider_exact": true,
+        "initializers_finite": true,
+        "sha256": "08ad8ce94e19480add9e7df38d7a0b3cea14c2d37ced08c55934647bf0ebbed6",
+        "step": 0
+      },
+      {
+        "abi_exact": true,
+        "chain_256_finite": true,
+        "cpu_provider_exact": true,
+        "initializers_finite": true,
+        "sha256": "fc4d0722b1d7a55eaf02badd9246438f38f08284ac0eb0a7196e63c1c8085e37",
+        "step": 1003520
+      },
+      {
+        "abi_exact": true,
+        "chain_256_finite": true,
+        "cpu_provider_exact": true,
+        "initializers_finite": true,
+        "sha256": "772b72f191c2f95da83b50b428114e7b00e9fdbfb94883e8b76105615d139690",
+        "step": 2007040
+      }
+    ],
+    "updates": [
+      {
+        "adapter_actor_leaf_deltas": {
+          "1/params/negative_adapter_location/bias": 0.019540859386324883,
+          "1/params/negative_adapter_location/kernel": 0.054588090628385544
+        },
+        "all_adapter_groups_present": true,
+        "critic_leaf_deltas": {
+          "2/params/hidden_0/bias": 0.016945242881774902,
+          "2/params/hidden_0/kernel": 0.05443130433559418,
+          "2/params/hidden_1/bias": 0.014687180519104004,
+          "2/params/hidden_1/kernel": 0.037405744194984436,
+          "2/params/hidden_2/bias": 0.006406247615814209,
+          "2/params/hidden_2/kernel": 0.04765915870666504,
+          "2/params/hidden_3/bias": 0.0041139572858810425,
+          "2/params/hidden_3/kernel": 0.010210193693637848
+        },
+        "every_adapter_leaf_updated": true,
+        "every_critic_leaf_updated": true,
+        "every_frozen_base_actor_leaf_exact": true,
+        "frozen_base_actor_leaf_deltas": {
+          "1/params/adapter_hidden_bias": 0.0,
+          "1/params/adapter_hidden_projection/kernel": 0.0,
+          "1/params/adapter_location/bias": 0.0,
+          "1/params/adapter_location/kernel": 0.0,
+          "1/params/adapter_obs_projection/kernel": 0.0,
+          "1/params/residual_location/bias": 0.0,
+          "1/params/residual_location/kernel": 0.0,
+          "1/params/residual_trunk/hidden_0/bias": 0.0,
+          "1/params/residual_trunk/hidden_0/kernel": 0.0,
+          "1/params/residual_trunk/hidden_1/bias": 0.0,
+          "1/params/residual_trunk/hidden_1/kernel": 0.0,
+          "1/params/residual_trunk/hidden_2/bias": 0.0,
+          "1/params/residual_trunk/hidden_2/kernel": 0.0,
+          "1/params/scale_logits/bias": 0.0,
+          "1/params/scale_logits/kernel": 0.0
+        },
+        "normalizer_exact": true,
+        "normalizer_leaf_deltas": {
+          "0/count/hi": 0.0,
+          "0/count/lo": 0.0,
+          "0/mean/policy_hidden": 0.0,
+          "0/mean/privileged_state": 0.0,
+          "0/mean/state": 0.0,
+          "0/std/policy_hidden": 0.0,
+          "0/std/privileged_state": 0.0,
+          "0/std/state": 0.0,
+          "0/std_eps": 0.0,
+          "0/summed_variance/policy_hidden": 0.0,
+          "0/summed_variance/privileged_state": 0.0,
+          "0/summed_variance/state": 0.0
+        },
+        "step": 1003520,
+        "structure_exact": true,
+        "tree_finite": true
+      },
+      {
+        "adapter_actor_leaf_deltas": {
+          "1/params/negative_adapter_location/bias": 0.032415181398391724,
+          "1/params/negative_adapter_location/kernel": 0.05125264823436737
+        },
+        "all_adapter_groups_present": true,
+        "critic_leaf_deltas": {
+          "2/params/hidden_0/bias": 0.023624226450920105,
+          "2/params/hidden_0/kernel": 0.07115843892097473,
+          "2/params/hidden_1/bias": 0.01522151567041874,
+          "2/params/hidden_1/kernel": 0.05402664840221405,
+          "2/params/hidden_2/bias": 0.008553940802812576,
+          "2/params/hidden_2/kernel": 0.05859416350722313,
+          "2/params/hidden_3/bias": 0.006536506116390228,
+          "2/params/hidden_3/kernel": 0.013136953115463257
+        },
+        "every_adapter_leaf_updated": true,
+        "every_critic_leaf_updated": true,
+        "every_frozen_base_actor_leaf_exact": true,
+        "frozen_base_actor_leaf_deltas": {
+          "1/params/adapter_hidden_bias": 0.0,
+          "1/params/adapter_hidden_projection/kernel": 0.0,
+          "1/params/adapter_location/bias": 0.0,
+          "1/params/adapter_location/kernel": 0.0,
+          "1/params/adapter_obs_projection/kernel": 0.0,
+          "1/params/residual_location/bias": 0.0,
+          "1/params/residual_location/kernel": 0.0,
+          "1/params/residual_trunk/hidden_0/bias": 0.0,
+          "1/params/residual_trunk/hidden_0/kernel": 0.0,
+          "1/params/residual_trunk/hidden_1/bias": 0.0,
+          "1/params/residual_trunk/hidden_1/kernel": 0.0,
+          "1/params/residual_trunk/hidden_2/bias": 0.0,
+          "1/params/residual_trunk/hidden_2/kernel": 0.0,
+          "1/params/scale_logits/bias": 0.0,
+          "1/params/scale_logits/kernel": 0.0
+        },
+        "normalizer_exact": true,
+        "normalizer_leaf_deltas": {
+          "0/count/hi": 0.0,
+          "0/count/lo": 0.0,
+          "0/mean/policy_hidden": 0.0,
+          "0/mean/privileged_state": 0.0,
+          "0/mean/state": 0.0,
+          "0/std/policy_hidden": 0.0,
+          "0/std/privileged_state": 0.0,
+          "0/std/state": 0.0,
+          "0/std_eps": 0.0,
+          "0/summed_variance/policy_hidden": 0.0,
+          "0/summed_variance/privileged_state": 0.0,
+          "0/summed_variance/state": 0.0
+        },
+        "step": 2007040,
+        "structure_exact": true,
+        "tree_finite": true
+      }
+    ]
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "cpu_result": "a9ddefca6c724960402fdbe635da5618f812b6b8017d360f5c3bf988100d9be2",
+    "cpu_template": "45e1eba4a0d428acffc5f83cf622f3b391287a3c5189a07785129958a00a5d4b",
+    "hosted_result": "dd5c6f0396a5e5bac58df2bb7bdc00e6f6d0173073322b1d980e82e9f50d12d9",
+    "launch_contract": "c09d3db05dde4fd227d47ad676517c4b9a835724f40839cb106a7be6e838b678",
+    "launch_receipt": "046426d6ff0beac2604376af4d0c810f00e0a860d040fdcacbaf517c19569178",
+    "original_t100_preregistration": "5070971f91e98842f4444c53601f2cf28b4c1243a75cff12d8b419bb4d35986c",
+    "package_contract": "5a79b7db5bad1d1c8251e4333ae85d68832b687cc1c5110de9387da99dde914a",
+    "recovery_archive": "40aebdd9d0db134034798e25d33937b8519936a0640b563fc51b013261141335",
+    "source_checkpoint": "45e1eba4a0d428acffc5f83cf622f3b391287a3c5189a07785129958a00a5d4b",
+    "t100c_preregistration": "3a79d1406eb9be5c37faaf883628e939d5cad4949c6411ca038378fe1ba042cd"
+  },
+  "schema_version": "open_duck.t100c_recovered_training_validation.v1",
+  "status": "PASS_T100C_RECOVERED_TRAINING_VALIDATION"
+}
