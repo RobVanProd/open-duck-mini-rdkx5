@@ -16,6 +16,12 @@ PREREG = (
 RESULT = (
     ROOT / "outputs" / "analysis" / "t94_r2_calibration_manifold_result.json"
 )
+CORRECTION = (
+    ROOT
+    / "outputs"
+    / "analysis"
+    / "t94_home_offset_reporting_correction.json"
+)
 
 
 def test_t94_preregistration_is_calibration_only() -> None:
@@ -41,3 +47,20 @@ def test_t94_result_has_no_training_or_deployment_authority() -> None:
     assert not value["authority"]["hosted_training"]
     assert not value["authority"]["deployment"]
     assert not value["authority"]["gate5"]
+
+
+def test_t94_home_offset_reporting_correction_preserves_hold() -> None:
+    if not CORRECTION.exists():
+        pytest.skip("T94 reporting correction has not run")
+    value = json.loads(CORRECTION.read_text(encoding="utf-8"))
+    assert value["status"] == "CORRECTED_T94_HOME_OFFSET_REPORTING"
+    assert len(value["corrections"]) == 4
+    assert all(cell["corrected_cell_pass"] for cell in value["corrections"])
+    assert value["corrected_summary"]["passing_calibration_cells"] == 40
+    assert value["unchanged_routing_failures"]["fit_correct_cells"] == 23
+    assert value["unchanged_routing_failures"][
+        "negative_com_false_positives"
+    ] == 2
+    assert value["decision"] == "CLOSE_CALIBRATION_ROUTED_EXPERT_MECHANISM"
+    assert not value["authority"]["hosted_training"]
+    assert not value["authority"]["deployment"]
