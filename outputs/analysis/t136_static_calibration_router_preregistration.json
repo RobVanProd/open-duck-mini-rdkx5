@@ -1,0 +1,90 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "gate5": false,
+    "negative_matrix": false,
+    "nominal_matrix_preregistration": false,
+    "one_cpu_graph_transform": true,
+    "rdkx5_or_robot": false,
+    "training": false
+  },
+  "checks": {
+    "frozen_inputs_present": true,
+    "no_behavior_training_colab_or_robot": true,
+    "router_asset_receipt_exact": true,
+    "t131_source_chain_green": true,
+    "t135b_static_router_screen_green": true,
+    "three_source_graphs_present": true
+  },
+  "decision_rule": {
+    "fail_decision": "CLOSE_STATIC_CALIBRATION_ROUTER_TRANSFORM",
+    "pass_decision": "EARN_T137_STATIC_ROUTER_NOMINAL_MATRIX_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "formal_behavior_cells": 0,
+    "graphs_transformed": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 5780,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t136_static_calibration_router_preregistration.py",
+      "sha256": "c841ed2be5e1233650aaeef10e7699fbbbecc26b7c85f6acda9290a40f0864aa"
+    },
+    "router_asset": {
+      "bytes": 2431,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t135_calibration_context_router_v1\\calibration_context_router_asset.json",
+      "sha256": "8bf59871ef2a98771416b075f38b66480007edace26b121b549f456c92424a26"
+    },
+    "runner": {
+      "bytes": 15756,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t136_static_calibration_router_transform.py",
+      "sha256": "9ed19a2e1e0f3dc7e9d043cf87f1a1d2e8add928dcebb3e40c7f059223ef5c98"
+    },
+    "t131_result": {
+      "bytes": 42972,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t131_t129_postexport_result.json",
+      "sha256": "c59076dc63faaf63e46d0dd227d22cd521f60d2ab84a00b71a8629cbd0549c7d"
+    },
+    "t135b_result": {
+      "bytes": 14765,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t135b_interrupted_calibration_context_router_recovery_result.json",
+      "sha256": "b01f711e751490fab17d327eebf770473636285dfbc97102478dc5328dfcd540"
+    },
+    "test": {
+      "bytes": 1063,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t136_static_calibration_router.py",
+      "sha256": "0a353749d76351f50c3bb1e42c39a7521661d2a96b002e6e99e72c7fbe27e8ed"
+    }
+  },
+  "preregistered_contract_sha256": "83539f7b79ef9f9426a75c07362e9cb911856cf6f901d5ec9ee56e14b604b0f6",
+  "question": "Can the frozen calibration-context classifier replace only the conditional expert's drifting per-tick gate while preserving the complete deployment ABI and safety chain?",
+  "schema_version": "open_duck.t136_static_calibration_router_preregistration.v1",
+  "source_graphs": {
+    "0": {
+      "bytes": 970391,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t131_t129_deployments_v1\\0\\deployment\\action_margin.onnx",
+      "sha256": "fcf4260ba6e866bba51d90a62d15027501098c693b1ca02fde6baf996e899564"
+    },
+    "1003520": {
+      "bytes": 970391,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t131_t129_deployments_v1\\1003520\\deployment\\action_margin.onnx",
+      "sha256": "de0e24e1d719b76b274beb5202355c3915670a6feb64ed2f618e29b1d12b4171"
+    },
+    "2007040": {
+      "bytes": 970391,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t131_t129_deployments_v1\\2007040\\deployment\\action_margin.onnx",
+      "sha256": "0676a0fd52c13f11cefe051f416c25baf74ffc05e942436570a3c512890a2c20"
+    }
+  },
+  "status": "PREREGISTERED_T136_STATIC_CALIBRATION_ROUTER_TRANSFORM",
+  "transform": {
+    "conditional_expert_and_all_downstream_nodes_unchanged": true,
+    "dynamic_gate_retained_diagnostic_only": true,
+    "insert_before": "Where(negative_com_gate, negative_adapter_location, zero_adapter_location)",
+    "replacement_gate": "MatMul(calibration_context, coefficient) + intercept >= 0"
+  }
+}
