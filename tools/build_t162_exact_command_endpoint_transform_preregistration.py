@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 from pathlib import Path
 from typing import Any
@@ -19,8 +20,30 @@ OUTPUT = ANALYSIS / "t162_exact_command_endpoint_transform_preregistration.json"
 
 
 def main() -> int:
-    if OUTPUT.exists():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--replace-invalidated-preexecution",
+        action="store_true",
+        help=(
+            "Replace only the committed preregistration invalidated before "
+            "any transform/inference output by the verify-label call bug."
+        ),
+    )
+    args = parser.parse_args()
+    if OUTPUT.exists() and not args.replace_invalidated_preexecution:
         raise FileExistsError("refusing to overwrite T162 preregistration")
+    if args.replace_invalidated_preexecution:
+        result = (
+            ANALYSIS / "t162_exact_command_endpoint_transform_result.json"
+        )
+        work = Path(
+            "D:/CodexArtifacts/open-duck-policy/"
+            "t162_exact_command_endpoint_transform_v1"
+        )
+        if result.exists() or work.exists():
+            raise RuntimeError(
+                "cannot replace T162 preregistration after execution output"
+            )
     t161_path = ANALYSIS / "t161_command_endpoint_replay_autopsy.json"
     t159_path = ANALYSIS / "t159_mechanics_sagittal_compensation_result.json"
     t135b_path = (
@@ -125,6 +148,20 @@ def main() -> int:
             "endpoint exactly while preserving the external command, x=0, "
             "nonpositive contexts, ABI, guards, and feedback state?"
         ),
+        "preexecution_correction": {
+            "attempted_execution": True,
+            "failure": (
+                "Runner called the shared receipt verifier without its "
+                "required evidence label and stopped before WORK creation."
+            ),
+            "transform_graphs_created": 0,
+            "inference_samples": 0,
+            "behavior_cells": 0,
+            "optimizer_steps": 0,
+            "hosted_compute_units": 0,
+            "robot_or_rdk_access": 0,
+            "substantive_contract_unchanged": True,
+        },
         "frozen_inputs": frozen_inputs,
         "source_graphs": source_graphs,
         "contexts": contexts,

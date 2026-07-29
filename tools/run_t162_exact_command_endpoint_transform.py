@@ -331,10 +331,10 @@ def main() -> int:
         != prereg["preregistered_contract_sha256"]
     ):
         raise RuntimeError("T162 preregistration changed")
-    for item in prereg["frozen_inputs"].values():
-        verify(item)
-    for item in prereg["source_graphs"]:
-        verify(item)
+    for name, item in prereg["frozen_inputs"].items():
+        verify(item, f"frozen_inputs.{name}")
+    for index, item in enumerate(prereg["source_graphs"]):
+        verify(item, f"source_graphs[{index}]")
 
     contexts = prereg["contexts"]
     outputs = []
