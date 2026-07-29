@@ -1,0 +1,97 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "gate5": false,
+    "negative_matrix": false,
+    "nominal_identity_reuse_preregistration": false,
+    "one_cpu_graph_transform": true,
+    "rdkx5_or_robot": false,
+    "training": false
+  },
+  "checks": {
+    "frozen_inputs_present": true,
+    "no_behavior_training_colab_or_robot": true,
+    "paired_graphs_present": true,
+    "router_asset_exact": true,
+    "t138_expert_bank_causality_green": true
+  },
+  "decision_rule": {
+    "fail_decision": "CLOSE_CONTEXT_SELECTED_EXPERT_BANK",
+    "pass_decision": "EARN_T140_NOMINAL_IDENTITY_REUSE_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "formal_behavior_cells": 0,
+    "graphs_transformed": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 5757,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t139_context_selected_expert_bank_preregistration.py",
+      "sha256": "87c0bedd8bddaf26f7f645558457c4e551525742a0ab8f65330f0199067ae1f9"
+    },
+    "router_asset": {
+      "bytes": 2431,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t135_calibration_context_router_v1\\calibration_context_router_asset.json",
+      "sha256": "8bf59871ef2a98771416b075f38b66480007edace26b121b549f456c92424a26"
+    },
+    "runner": {
+      "bytes": 16441,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t139_context_selected_expert_bank_transform.py",
+      "sha256": "d9d075f7905a7621246668daaf37a2dbab4cca9d9b6aa4846cf8a7ea88093db5"
+    },
+    "t135b_result": {
+      "bytes": 14765,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t135b_interrupted_calibration_context_router_recovery_result.json",
+      "sha256": "b01f711e751490fab17d327eebf770473636285dfbc97102478dc5328dfcd540"
+    },
+    "t138_result": {
+      "bytes": 3205,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t138_expert_bank_causality_result.json",
+      "sha256": "ab497a364c3215d79801686415aa790d6dac76a17b816f9cb58d8c31f8d4e8ca"
+    },
+    "test": {
+      "bytes": 1103,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t139_context_selected_expert_bank.py",
+      "sha256": "9c61607e5057e659af8afc6e0091877916c244ec3fe55831029b2a402f658f5f"
+    }
+  },
+  "negative_graphs": {
+    "1003520": {
+      "bytes": 970391,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t131_t129_deployments_v1\\1003520\\deployment\\action_margin.onnx",
+      "sha256": "de0e24e1d719b76b274beb5202355c3915670a6feb64ed2f618e29b1d12b4171"
+    },
+    "2007040": {
+      "bytes": 970391,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t131_t129_deployments_v1\\2007040\\deployment\\action_margin.onnx",
+      "sha256": "0676a0fd52c13f11cefe051f416c25baf74ffc05e942436570a3c512890a2c20"
+    }
+  },
+  "nominal_graphs": {
+    "1003520": {
+      "bytes": 970391,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t101_t100c_postexport_v1\\1003520\\action_margin.onnx",
+      "sha256": "fcf4260ba6e866bba51d90a62d15027501098c693b1ca02fde6baf996e899564"
+    },
+    "2007040": {
+      "bytes": 970391,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t101_t100c_postexport_v1\\2007040\\action_margin.onnx",
+      "sha256": "f57f9e2055cab9aefbb190622dd1a5953a7391d4fdb52f4411f97ac4bdd218ab"
+    }
+  },
+  "preregistered_contract_sha256": "8b3de9a35e3e67f0fecbfd6e41ebc111e7aa9532ed2217c75a0a70f1c25aed58",
+  "question": "Can calibration context select only the T100C/T129 negative expert parameter bank while preserving the dynamic gate, deployment ABI, and every downstream safety transform?",
+  "schema_version": "open_duck.t139_context_selected_expert_bank_preregistration.v1",
+  "status": "PREREGISTERED_T139_CONTEXT_SELECTED_EXPERT_BANK_TRANSFORM",
+  "transform": {
+    "abi": "unchanged 115+14+64+64 to 14+14+64",
+    "context_negative": "T129 negative expert weight/bias",
+    "context_nominal": "T100C negative expert weight/bias",
+    "downstream_deployment_chain": "unchanged",
+    "dynamic_negative_com_gate": "unchanged"
+  }
+}
