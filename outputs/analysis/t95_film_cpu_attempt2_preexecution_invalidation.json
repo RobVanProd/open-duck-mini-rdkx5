@@ -1,0 +1,22 @@
+{
+  "authority": {
+    "behavior": false,
+    "gate5": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false
+  },
+  "classification": "PREEXECUTION_CALIBRATOR_SOURCE_PIN_MISMATCH",
+  "execution": {
+    "environment_constructions": 1,
+    "environment_resets": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_behavior_cells": 0,
+    "simulator_ticks": 0
+  },
+  "reason": "The composed prefix wrapper still pinned the older V22 calibrator while the T95 asset and T94 causal evidence pin the V96 universal calibrator.",
+  "remedy": "Pin the exact V96 calibrator hash in a T95-specific wrapper, recompose to a fresh source root, rebuild zero-step assets, and version the preregistration without changing the mechanism or thresholds.",
+  "schema_version": "open_duck.t95_film_cpu_attempt2_invalidation.v1",
+  "status": "INVALID_T95_FILM_CPU_ATTEMPT2_PREEXECUTION"
+}

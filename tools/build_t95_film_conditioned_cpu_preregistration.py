@@ -16,16 +16,16 @@ from onnx import numpy_helper
 ROOT = Path(__file__).resolve().parents[1]
 ANALYSIS = ROOT / "outputs" / "analysis"
 PLAYGROUND = Path(
-    r"D:\CodexProjects\Open_Duck_Playground-t95-film-v1"
+    r"D:\CodexProjects\Open_Duck_Playground-t95-film-v2"
 )
 ASSET_ROOT = Path(
     r"D:\CodexArtifacts\open-duck-policy"
-    r"\t95_film_conditioned_assets_v2"
+    r"\t95_film_conditioned_assets_v3"
 )
 ASSET_MANIFEST = ASSET_ROOT / "manifest.json"
-OUTPUT = ANALYSIS / "t95_film_conditioned_cpu_preregistration_v2.json"
+OUTPUT = ANALYSIS / "t95_film_conditioned_cpu_preregistration_v3.json"
 MARKDOWN = (
-    ANALYSIS / "T95_FILM_CONDITIONED_CPU_PREREGISTRATION_V2_20260728.md"
+    ANALYSIS / "T95_FILM_CONDITIONED_CPU_PREREGISTRATION_V3_20260728.md"
 )
 
 
@@ -211,9 +211,9 @@ def main() -> int:
     }
     failed = sorted(name for name, passed in checks.items() if not passed)
     basis = {
-        "schema_version": "open_duck.t95_film_cpu_preregistration.v2",
+        "schema_version": "open_duck.t95_film_cpu_preregistration.v3",
         "status": (
-            "PREREGISTERED_T95_FILM_CONDITIONED_CPU_CONTRACT_V2"
+            "PREREGISTERED_T95_FILM_CONDITIONED_CPU_CONTRACT_V3"
             if not failed
             else "HOLD_T95_FILM_CONDITIONED_CPU_PREREGISTRATION"
         ),
@@ -336,6 +336,18 @@ def main() -> int:
             "mechanism_or_threshold_change": False,
             "optimizer_steps": 0,
             "simulator_behavior_cells": 0,
+            "attempt2": (
+                "Stopped after environment construction and before reset "
+                "because the inherited wrapper pinned the older V22 "
+                "calibrator instead of the frozen V96 calibrator."
+            ),
+            "attempt2_change": (
+                "Use a T95-specific wrapper pinned to the exact V96 hash, "
+                "recompose into a fresh root, and rebuild step-zero assets."
+            ),
+            "attempt2_environment_constructions": 1,
+            "attempt2_environment_resets": 0,
+            "attempt2_simulator_ticks": 0,
         },
         "context_observability": observability,
     }

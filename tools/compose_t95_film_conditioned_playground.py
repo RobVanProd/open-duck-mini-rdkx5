@@ -17,7 +17,7 @@ NETWORK_SOURCE = (
     ROOT / "patches" / "t95_film_conditioned_v121_networks.py"
 )
 WRAPPER_SOURCE = (
-    ROOT / "patches" / "t10_command_aware_response_wrapper.py"
+    ROOT / "patches" / "t95_command_aware_response_wrapper.py"
 )
 UPDATE_MASK_SOURCE = ROOT / "patches" / "t95_film_only_updates.py"
 BASE_MANIFEST = "WINNER_V173_COMPOSED_SOURCE_MANIFEST.json"
