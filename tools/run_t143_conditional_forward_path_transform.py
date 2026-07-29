@@ -215,7 +215,7 @@ def transform(
         dynamic_index + len(before_dynamic) + 1, selected
     )
     onnx.checker.check_model(model)
-    destination.parent.mkdir(parents=True)
+    destination.parent.mkdir(parents=True, exist_ok=True)
     onnx.save(model, destination)
 
     after = onnx.load(destination)
