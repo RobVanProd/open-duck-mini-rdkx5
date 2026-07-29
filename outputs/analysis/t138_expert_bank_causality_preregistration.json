@@ -1,0 +1,99 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "expert_bank_transform_preregistration": false,
+    "gate5": false,
+    "one_read_only_cpu_audit": true,
+    "rdkx5_or_robot": false,
+    "training": false
+  },
+  "checks": {
+    "calibration_context_separation_green": true,
+    "frozen_inputs_present": true,
+    "paired_graphs_present": true,
+    "read_only_no_behavior_training_colab_or_robot": true,
+    "t137_closes_always_off_router": true
+  },
+  "decision_rule": {
+    "fail_decision": "CLOSE_CONTEXT_SELECTED_EXPERT_BANK",
+    "pass_decision": "EARN_T139_CONTEXT_SELECTED_EXPERT_BANK_TRANSFORM_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "onnx_pairs_compared": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 5534,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t138_expert_bank_causality_preregistration.py",
+      "sha256": "e721fb68fbfc73282c89c82af622ddcf0ea87db086143ba321aea5d460657e65"
+    },
+    "runner": {
+      "bytes": 10371,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t138_expert_bank_causality_audit.py",
+      "sha256": "da071d186b6f5516ebe3a128503b563c0abd94db65f7fccadcfae3919a859efa"
+    },
+    "t102_nominal": {
+      "bytes": 120287,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t102_t100c_nominal_matrix_result.json",
+      "sha256": "c454808a28f697df9bad07bb2d2f2c8417c1b2d631855f9c91e4dbac66c584a8"
+    },
+    "t103_negative": {
+      "bytes": 120754,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t103_t100c_negative_endpoint_result.json",
+      "sha256": "d801602acb8e3b147a64230f0526363a0e5c62a2d49fa951ceb6b8cf28966b24"
+    },
+    "t132_nominal": {
+      "bytes": 120422,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t132b_interrupted_nominal_recovery_result.json",
+      "sha256": "884d1eb55e533de61be4ba59d99d8277bb2c97d2fd487de11625e7a64d8a051f"
+    },
+    "t135b_context": {
+      "bytes": 14765,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t135b_interrupted_calibration_context_router_recovery_result.json",
+      "sha256": "b01f711e751490fab17d327eebf770473636285dfbc97102478dc5328dfcd540"
+    },
+    "t137_nominal": {
+      "bytes": 120473,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t137_static_router_nominal_result.json",
+      "sha256": "a9e51feba66264511a7e74637c74e557807efde70f9d38753fc41cc3786d36b0"
+    },
+    "test": {
+      "bytes": 1009,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t138_expert_bank_causality.py",
+      "sha256": "7a29582c5341f44f2c70d1c2c87539be4d1ca626923b4003165ed95c03788718"
+    }
+  },
+  "negative_graphs": {
+    "1003520": {
+      "bytes": 970391,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t131_t129_deployments_v1\\1003520\\deployment\\action_margin.onnx",
+      "sha256": "de0e24e1d719b76b274beb5202355c3915670a6feb64ed2f618e29b1d12b4171"
+    },
+    "2007040": {
+      "bytes": 970391,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t131_t129_deployments_v1\\2007040\\deployment\\action_margin.onnx",
+      "sha256": "0676a0fd52c13f11cefe051f416c25baf74ffc05e942436570a3c512890a2c20"
+    }
+  },
+  "nominal_graphs": {
+    "1003520": {
+      "bytes": 970391,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t101_t100c_postexport_v1\\1003520\\action_margin.onnx",
+      "sha256": "fcf4260ba6e866bba51d90a62d15027501098c693b1ca02fde6baf996e899564"
+    },
+    "2007040": {
+      "bytes": 970391,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t101_t100c_postexport_v1\\2007040\\action_margin.onnx",
+      "sha256": "f57f9e2055cab9aefbb190622dd1a5953a7391d4fdb52f4411f97ac4bdd218ab"
+    }
+  },
+  "preregistered_contract_sha256": "750a00acd659f12da1674ceec8ddb481ce1a9e2c5902dc0b831c9e2945421b5f",
+  "question": "Do T137 and the paired graph identities prove that calibration context should select T100C versus T129 expert parameters while the original hidden-state gate remains?",
+  "schema_version": "open_duck.t138_expert_bank_causality_preregistration.v1",
+  "status": "PREREGISTERED_T138_EXPERT_BANK_CAUSALITY_AUDIT"
+}
