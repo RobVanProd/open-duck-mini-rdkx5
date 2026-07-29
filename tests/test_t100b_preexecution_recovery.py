@@ -40,3 +40,14 @@ def test_t100c_wrapper_changes_only_frozen_command_dispatch() -> None:
     assert "return frozen_t100.main()" in text
     assert "train" not in text.lower()
     assert "reward" not in text.lower()
+
+
+def test_t100c_executor_requires_wrapper_full_preflight_and_no_retry() -> None:
+    text = (ROOT / "tools" / "execute_t100c_colab_cli.py").read_text(
+        encoding="utf-8"
+    )
+    assert "PASS_T100C_HOSTED_FULL_PREFLIGHT" in text
+    assert "colab_t100c_original_driver_wrapper.py" in text
+    assert '"retry": False' in text
+    assert '"resume": False' in text
+    assert '"robot_or_rdk_access": False' in text
