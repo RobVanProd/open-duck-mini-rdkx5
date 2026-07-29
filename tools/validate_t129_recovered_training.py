@@ -51,6 +51,10 @@ MARKDOWN = (
 )
 EXPECTED_STEPS = [0, 1_003_520, 2_007_040]
 TRAINABLE_ACTOR = {"negative_adapter_location"}
+CPU_TOPOLOGY = Path(
+    "D:/CodexArtifacts/open-duck-policy/"
+    "t128_negative_only_expert_cpu_v1/t100c_half_cpu_remap"
+)
 
 
 def restore_tree(path: Path, template: Any) -> Any:
@@ -156,7 +160,8 @@ def main() -> int:
     graph_rows = [onnx_contract(path) for path in graphs]
     graph_hashes = {int(row["step"]): row["sha256"] for row in graph_rows}
 
-    source_tree = ocp.PyTreeCheckpointer().restore(str(source_path))
+    cpu_topology = ocp.PyTreeCheckpointer().restore(str(CPU_TOPOLOGY))
+    source_tree = restore_tree(source_path, cpu_topology)
     trees = [restore_tree(path, source_tree) for path in checkpoints]
     zero_structure, zero_deltas = tree_deltas(source_tree, trees[0])
     update_rows = [
@@ -193,6 +198,12 @@ def main() -> int:
             and cpu["failed_checks"] == []
             and hosted["validation"]["input_hashes"]["cpu_result"]
             == sha256(CPU_RESULT)
+        ),
+        "cpu_topology_is_frozen_t128_remap": (
+            CPU_TOPOLOGY.resolve()
+            == Path(cpu["source_remap"]["cpu_remap"]["path"]).resolve()
+            and directory_sha256(CPU_TOPOLOGY)
+            == cpu["source_remap"]["cpu_remap"]["sha256"]
         ),
         "package_and_launch_contracts_green": (
             package["status"]
@@ -295,6 +306,7 @@ def main() -> int:
             "package_contract": sha256(PACKAGE_CONTRACT),
             "launch_contract": sha256(LAUNCH_CONTRACT),
             "source_checkpoint": directory_sha256(source_path),
+            "cpu_topology": directory_sha256(CPU_TOPOLOGY),
         },
         "exports": {
             "checkpoints": [
