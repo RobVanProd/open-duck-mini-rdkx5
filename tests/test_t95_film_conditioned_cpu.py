@@ -44,5 +44,5 @@ def test_t95_result_never_authorizes_hardware() -> None:
     assert value["execution"]["hosted_or_colab_compute"] == 0
     assert value["execution"]["robot_or_rdk_access"] == 0
     assert not value["authority"]["gate5_authorized"]
-    assert not value["authority"]["rdkx5_or_robot_access"]
+    assert not value["authority"]["robot_or_rdk_access"]
     assert not value["authority"]["hosted_training_authorized"]

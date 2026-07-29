@@ -1,0 +1,510 @@
+{
+  "authority": {
+    "behavior_matrix_authorized": false,
+    "gate5_authorized": false,
+    "hosted_preregistration_authorized": false,
+    "hosted_training_authorized": false,
+    "robot_clearance": false,
+    "robot_or_rdk_access": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "at_least_half_context_pairs_change_action": false,
+    "both_negative_com_contexts_change_action": false,
+    "context_action_effect_at_least_ten_x_t11": false,
+    "cpu_only": true,
+    "critic_updated": true,
+    "every_protected_actor_leaf_bit_exact": true,
+    "exact_exports_0_and_1024": true,
+    "exact_one_film_leaf_updated": true,
+    "expanded_restore_bit_exact": true,
+    "expanded_restore_structure_exact": true,
+    "film_does_not_mutate_recurrent_state": true,
+    "formal_behavior_cells_zero": true,
+    "hosted_or_colab_compute_zero": true,
+    "initial_graph_contract_green": true,
+    "maximum_context_action_delta_material": false,
+    "moving_response_receipt_exact": true,
+    "robot_or_rdk_access_zero": true,
+    "step_zero_export_bit_exact_to_asset": true,
+    "trained_graph_contract_green": true,
+    "trained_structure_exact": true,
+    "trained_tree_finite": true,
+    "wall_seconds_at_most_3600": true,
+    "x0_bypass_receipt_exact": true
+  },
+  "decision": "CLOSE_FILM_CONDITIONED_CONTINUATION_WITHOUT_HOSTED_RUN",
+  "execution": {
+    "formal_behavior_cells": 0,
+    "hosted_or_colab_compute": 0,
+    "optimizer_steps": 1024,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [
+    "at_least_half_context_pairs_change_action",
+    "both_negative_com_contexts_change_action",
+    "context_action_effect_at_least_ten_x_t11",
+    "maximum_context_action_delta_material"
+  ],
+  "initial_graph_contract": {
+    "abi": {
+      "inputs": {
+        "calibration_context": [
+          1,
+          64
+        ],
+        "h_in": [
+          1,
+          64
+        ],
+        "obs": [
+          1,
+          115
+        ],
+        "previous_action": [
+          1,
+          14
+        ]
+      },
+      "outputs": {
+        "continuous_actions": [
+          1,
+          14
+        ],
+        "h_out": [
+          1,
+          64
+        ],
+        "previous_action_out": [
+          1,
+          14
+        ]
+      }
+    },
+    "all_finite": true,
+    "all_hierarchy_checks": true,
+    "cases": 256,
+    "hierarchy": {
+      "actual_centered_guard": true,
+      "context_film_projection": true,
+      "context_state_bilinear_path": true,
+      "film_drives_action_head": true,
+      "film_hidden_composition": true,
+      "final_rate": true,
+      "first_deadband": true,
+      "graph_owned_state": true,
+      "restored_deadband": true
+    },
+    "initializers_finite": true,
+    "max_previous_action_error": 0.0,
+    "max_rate_excess": 3.725290298461914e-09,
+    "providers": [
+      "CPUExecutionProvider"
+    ],
+    "x0_exact_zero": true
+  },
+  "input_hashes": {
+    "asset_manifest": {
+      "bytes": 6454,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t95_film_conditioned_assets_v3\\manifest.json",
+      "sha256": "2d4e44ab5647fa4b3a2a8a41b8112a3c7f38782f799e1254cfac0519f70422c6"
+    },
+    "playground_manifest": {
+      "bytes": 3026,
+      "path": "D:\\CodexProjects\\Open_Duck_Playground-t95-film-v2\\T95_COMPOSED_SOURCE_MANIFEST.json",
+      "sha256": "72dee70236052ada623a7eb310fb800783ee35ccb0df36ec7391b698c3111531"
+    },
+    "preregistration": {
+      "bytes": 9146,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t95_film_conditioned_cpu_preregistration_v3.json",
+      "sha256": "eecee18a5471c1e331ee30a55aa64533262a77fe210517aba50180d2fa59affb"
+    }
+  },
+  "reset_contract": {
+    "moving": {
+      "applied_target_observation_matches_bridge": true,
+      "bypassed": false,
+      "calibration_ticks": 250,
+      "command": [
+        0.07700031250715256,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "command_x": 0.077,
+      "context_finite": true,
+      "context_linf": 0.8802069425582886,
+      "done": 0.0,
+      "hidden_linf": 0.0,
+      "observation_shapes": {
+        "calibration_context": [
+          64
+        ],
+        "policy_hidden": [
+          64
+        ],
+        "policy_previous_action": [
+          14
+        ],
+        "privileged_state": [
+          226
+        ],
+        "state": [
+          115
+        ]
+      },
+      "phase": [
+        1.0,
+        0.0
+      ],
+      "previous_action_linf": 0.5,
+      "previous_action_matches_realized": true,
+      "seed": 101,
+      "state_finite": true,
+      "step": 0,
+      "valid": true
+    },
+    "x0": {
+      "applied_target_observation_matches_bridge": true,
+      "bypassed": true,
+      "calibration_ticks": 0,
+      "command": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "command_x": 0.0,
+      "context_finite": true,
+      "context_linf": 0.0,
+      "done": 0.0,
+      "hidden_linf": 0.0,
+      "observation_shapes": {
+        "calibration_context": [
+          64
+        ],
+        "policy_hidden": [
+          64
+        ],
+        "policy_previous_action": [
+          14
+        ],
+        "privileged_state": [
+          226
+        ],
+        "state": [
+          115
+        ]
+      },
+      "phase": [
+        1.0,
+        0.0
+      ],
+      "previous_action_linf": 0.0,
+      "previous_action_matches_realized": true,
+      "seed": 100,
+      "state_finite": true,
+      "step": 0,
+      "valid": true
+    }
+  },
+  "result_sha256": "7ff74fc8e53767cd1fa3f401d7850325edc18ab3eb1aed3df330facc0a120cc9",
+  "schema_version": "open_duck.t95_film_cpu_result.v1",
+  "status": "HOLD_T95_FILM_CONDITIONED_CPU_CONTRACT",
+  "step_zero_export_parity": {
+    "all_outputs_bit_exact": true,
+    "bit_exact": {
+      "continuous_actions": true,
+      "h_out": true,
+      "previous_action_out": true
+    },
+    "cases": 256,
+    "maximum_abs_errors": {
+      "continuous_actions": 0.0,
+      "h_out": 0.0,
+      "previous_action_out": 0.0
+    }
+  },
+  "trained_context_sensitivity": {
+    "action_effect_tick_fraction": 0.00078125,
+    "action_effect_ticks": 2,
+    "both_negative_com_pairs_change_action": false,
+    "context_pair_effect_fraction": 0.05,
+    "context_pairs_with_action_effect": 2,
+    "context_state_path_remains_exactly_invariant": true,
+    "contexts": 40,
+    "maximum_action_delta": 8.702278137207031e-06,
+    "maximum_hidden_delta": 0.0,
+    "pair_effects": {
+      "ALL_LINK_MASS_HI:p30": false,
+      "ALL_LINK_MASS_HI:p31_34": false,
+      "ALL_LINK_MASS_LO:p30": false,
+      "ALL_LINK_MASS_LO:p31_34": false,
+      "ARMATURE_HI:p30": false,
+      "ARMATURE_HI:p31_34": false,
+      "ARMATURE_LO:p30": false,
+      "ARMATURE_LO:p31_34": false,
+      "FLOOR_FRICTION_HI:p30": false,
+      "FLOOR_FRICTION_HI:p31_34": false,
+      "FLOOR_FRICTION_LO:p30": true,
+      "FLOOR_FRICTION_LO:p31_34": false,
+      "HOME_JOINT_OFFSET_NEG:p30": false,
+      "HOME_JOINT_OFFSET_NEG:p31_34": true,
+      "HOME_JOINT_OFFSET_POS:p30": false,
+      "HOME_JOINT_OFFSET_POS:p31_34": false,
+      "JOINT_FRICTIONLOSS_HI:p30": false,
+      "JOINT_FRICTIONLOSS_HI:p31_34": false,
+      "JOINT_FRICTIONLOSS_LO:p30": false,
+      "JOINT_FRICTIONLOSS_LO:p31_34": false,
+      "KP_HI:p30": false,
+      "KP_HI:p31_34": false,
+      "KP_LO:p30": false,
+      "KP_LO:p31_34": false,
+      "TORSO_COM_X_NEG:p30": false,
+      "TORSO_COM_X_NEG:p31_34": false,
+      "TORSO_COM_X_POS:p30": false,
+      "TORSO_COM_X_POS:p31_34": false,
+      "TORSO_COM_Y_NEG:p30": false,
+      "TORSO_COM_Y_NEG:p31_34": false,
+      "TORSO_COM_Y_POS:p30": false,
+      "TORSO_COM_Y_POS:p31_34": false,
+      "TORSO_COM_Z_NEG:p30": false,
+      "TORSO_COM_Z_NEG:p31_34": false,
+      "TORSO_COM_Z_POS:p30": false,
+      "TORSO_COM_Z_POS:p31_34": false,
+      "TORSO_MASS_NEG:p30": false,
+      "TORSO_MASS_NEG:p31_34": false,
+      "TORSO_MASS_POS:p30": false,
+      "TORSO_MASS_POS:p31_34": false
+    },
+    "ticks_per_context": 64,
+    "total_ticks": 2560
+  },
+  "trained_graph_contract": {
+    "abi": {
+      "inputs": {
+        "calibration_context": [
+          1,
+          64
+        ],
+        "h_in": [
+          1,
+          64
+        ],
+        "obs": [
+          1,
+          115
+        ],
+        "previous_action": [
+          1,
+          14
+        ]
+      },
+      "outputs": {
+        "continuous_actions": [
+          1,
+          14
+        ],
+        "h_out": [
+          1,
+          64
+        ],
+        "previous_action_out": [
+          1,
+          14
+        ]
+      }
+    },
+    "all_finite": true,
+    "all_hierarchy_checks": true,
+    "cases": 256,
+    "hierarchy": {
+      "actual_centered_guard": true,
+      "context_film_projection": true,
+      "context_state_bilinear_path": true,
+      "film_drives_action_head": true,
+      "film_hidden_composition": true,
+      "final_rate": true,
+      "first_deadband": true,
+      "graph_owned_state": true,
+      "restored_deadband": true
+    },
+    "initializers_finite": true,
+    "max_previous_action_error": 0.0,
+    "max_rate_excess": 3.725290298461914e-09,
+    "providers": [
+      "CPUExecutionProvider"
+    ],
+    "x0_exact_zero": true
+  },
+  "training": {
+    "checkpoint_steps": [
+      0,
+      1024
+    ],
+    "command": [
+      "D:\\CodexArtifacts\\venvs\\open-duck-policy-py31213\\Scripts\\python.exe",
+      "playground/open_duck_mini_v2/runner.py",
+      "--task",
+      "flat_terrain_backlash",
+      "--env",
+      "joystick",
+      "--output_dir",
+      "D:\\CodexArtifacts\\open-duck-policy\\t95_film_cpu_v3\\smoke",
+      "--num_timesteps",
+      "1024",
+      "--ppo_seed",
+      "100",
+      "--ppo_num_envs",
+      "4",
+      "--ppo_num_evals",
+      "2",
+      "--ppo_episode_length",
+      "64",
+      "--ppo_unroll_length",
+      "8",
+      "--ppo_batch_size",
+      "4",
+      "--ppo_num_minibatches",
+      "1",
+      "--ppo_num_updates_per_batch",
+      "2",
+      "--ppo_learning_rate",
+      "0.0003",
+      "--ppo_discounting",
+      "0.97",
+      "--ppo_entropy_cost",
+      "0.005",
+      "--policy_architecture",
+      "response_conditioned_v121",
+      "--recurrent_hidden_size",
+      "64",
+      "--t10_response_calibrator_path",
+      "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v96-response-conditioned-mechanics\\winner_v96_universal_calibrator.onnx",
+      "--t10_response_calibration_ticks",
+      "250",
+      "--t10_response_home_return_ticks",
+      "0",
+      "--t10_command_aware_zero_bypass",
+      "--imitation_scale",
+      "1.0",
+      "--reference_feature_table_path",
+      "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+      "--nominal_reference_bootstrap",
+      "--ground_up_hard_vector_command_support",
+      "--ground_up_command_support_min_x",
+      "0.074",
+      "--ground_up_command_support_max_x",
+      "0.080",
+      "--ground_up_action_velocity_limits_rad_s",
+      "1.0,.75,1.4736209064722061,1.4300791546702385,1.3976470567286015,.5,.5,.5,.5,.5,.75,1.25,1.0,1.2215287424623966",
+      "--ground_up_measured_actuator_bridge",
+      "--ground_up_actuator_bridge_delay_ticks",
+      "3,3,3,3,3,3,2,3,3,3,2,3,2,3",
+      "--ground_up_actuator_bridge_tau_s",
+      ".015,.015,.005,.010,.010,.120,.120,.120,.120,.020,.035,.010,.030,.005",
+      "--ground_up_applied_target_observation",
+      "--ground_up_tracking_tail_exceedance_scale",
+      "-6572.254964031055",
+      "--ground_up_tracking_tail_threshold_rad",
+      "0.20",
+      "--ground_up_peak_torque_exceedance_scale",
+      "0",
+      "--ground_up_linear_peak_torque_exceedance_scale",
+      "-307.48131091308585",
+      "--reference_start_phase",
+      "0",
+      "--ground_up_signed_progress_objective",
+      "--winner_v3_variable_configuration",
+      "--winner_v3_deviation_scale",
+      "1.0",
+      "--winner_v119_train_transition_match",
+      "--critic_observation",
+      "privileged_state",
+      "--restore_checkpoint_path",
+      "D:\\CodexArtifacts\\open-duck-policy\\t95_film_conditioned_assets_v3\\expanded_checkpoint"
+    ],
+    "critic_leaf_deltas": {
+      "2/params/hidden_0/bias": 0.005782186985015869,
+      "2/params/hidden_0/kernel": 0.012276947498321533,
+      "2/params/hidden_1/bias": 0.008368920534849167,
+      "2/params/hidden_1/kernel": 0.011914923787117004,
+      "2/params/hidden_2/bias": 0.0027395859360694885,
+      "2/params/hidden_2/kernel": 0.00838007777929306,
+      "2/params/hidden_3/bias": 0.0009627267718315125,
+      "2/params/hidden_3/kernel": 0.003949200734496117
+    },
+    "elapsed_seconds": 797.2179999999935,
+    "film_leaf_deltas": {
+      "1/params/context_film_scale/kernel": 0.00762381823733449
+    },
+    "final_checkpoint": {
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t95_film_cpu_v3\\smoke\\2026_07_28_204734_1024",
+      "sha256": "98bf33e6202497b0f3e26c6bc515b601b077cdf8646b278696e3a354765b4c16"
+    },
+    "final_onnx": {
+      "bytes": 973802,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t95_film_cpu_v3\\smoke\\2026_07_28_204734_1024.onnx",
+      "sha256": "7d0c7bc201c18976b11b6d3556921e67540dd21d7160c2d50b70cffa64f10b08"
+    },
+    "initial_checkpoint": {
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t95_film_cpu_v3\\smoke\\2026_07_28_204557_0",
+      "sha256": "598fb7ce5113c91c79389d89e86d293a79ceaa15536f9cdd86102a8d10d688a0"
+    },
+    "initial_onnx": {
+      "bytes": 973802,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t95_film_cpu_v3\\smoke\\2026_07_28_204557_0.onnx",
+      "sha256": "499272666dfab0c256afea1ab4f7b399dbc9c6d35b1c5ff96382af993474f66b"
+    },
+    "log": {
+      "bytes": 6961,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t95_film_cpu_v3\\training.log",
+      "sha256": "392e486c24e6ce2b79744e9a2b1296b2291cec2623de77ee3091fd6636da957e"
+    },
+    "onnx_steps": [
+      0,
+      1024
+    ],
+    "policy_leaf_deltas": {
+      "1/params/adapter_hidden_bias": 0.0,
+      "1/params/adapter_hidden_projection/kernel": 0.0,
+      "1/params/adapter_location/bias": 0.0,
+      "1/params/adapter_location/kernel": 0.0,
+      "1/params/adapter_obs_projection/kernel": 0.0,
+      "1/params/context_film_scale/kernel": 0.00762381823733449,
+      "1/params/residual_location/bias": 0.0,
+      "1/params/residual_location/kernel": 0.0,
+      "1/params/residual_trunk/hidden_0/bias": 0.0,
+      "1/params/residual_trunk/hidden_0/kernel": 0.0,
+      "1/params/residual_trunk/hidden_1/bias": 0.0,
+      "1/params/residual_trunk/hidden_1/kernel": 0.0,
+      "1/params/residual_trunk/hidden_2/bias": 0.0,
+      "1/params/residual_trunk/hidden_2/kernel": 0.0,
+      "1/params/scale_logits/bias": 0.0,
+      "1/params/scale_logits/kernel": 0.0
+    },
+    "protected_actor_leaf_deltas": {
+      "1/params/adapter_hidden_bias": 0.0,
+      "1/params/adapter_hidden_projection/kernel": 0.0,
+      "1/params/adapter_location/bias": 0.0,
+      "1/params/adapter_location/kernel": 0.0,
+      "1/params/adapter_obs_projection/kernel": 0.0,
+      "1/params/residual_location/bias": 0.0,
+      "1/params/residual_location/kernel": 0.0,
+      "1/params/residual_trunk/hidden_0/bias": 0.0,
+      "1/params/residual_trunk/hidden_0/kernel": 0.0,
+      "1/params/residual_trunk/hidden_1/bias": 0.0,
+      "1/params/residual_trunk/hidden_1/kernel": 0.0,
+      "1/params/residual_trunk/hidden_2/bias": 0.0,
+      "1/params/residual_trunk/hidden_2/kernel": 0.0,
+      "1/params/scale_logits/bias": 0.0,
+      "1/params/scale_logits/kernel": 0.0
+    }
+  }
+}
