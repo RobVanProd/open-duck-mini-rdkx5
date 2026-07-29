@@ -34,3 +34,17 @@ def test_t154_package_when_present() -> None:
     )
     assert value["checks"]["exact_command_constructed_once"]
     assert value["execution"]["optimizer_steps"] == 0
+
+
+def test_t154_launch_contract_when_present() -> None:
+    path = ANALYSIS / "t154_colab_cli_launch_contract.json"
+    if not path.exists():
+        return
+    value = json.loads(path.read_text(encoding="utf-8"))
+    assert value["status"] == "PASS_T154_COLAB_CLI_LAUNCH_CONTRACT"
+    assert value["failed_checks"] == []
+    assert value["session"]["accelerator"] == "L4"
+    assert value["session"]["count"] == 1
+    assert value["recovery"]["retry"] is False
+    assert value["recovery"]["same_run_resume"] is False
+    assert value["execution_now"]["optimizer_steps"] == 0
