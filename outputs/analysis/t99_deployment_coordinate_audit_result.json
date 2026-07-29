@@ -1,0 +1,369 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "gate5": false,
+    "hosted_preregistration": true,
+    "hosted_training": false,
+    "policy_promotion": false,
+    "rdkx5_or_robot": false
+  },
+  "causal_contract": {
+    "postupdate_trace": {
+      "gate_correct_rows": 36,
+      "hidden_maximum_abs_delta": 0.0,
+      "maximum_negative_final_action_delta": 0.0892406702041626,
+      "maximum_negative_head_abs": 0.11636928468942642,
+      "maximum_negative_raw_action_delta": 0.10878418385982513,
+      "negative_final_changed_fraction": 1.0,
+      "negative_final_changed_rows": 18,
+      "negative_raw_changed_fraction": 1.0,
+      "negative_raw_changed_rows": 18,
+      "negative_rows": 18,
+      "nominal_final_bit_exact_rows": 18,
+      "nominal_raw_bit_exact_rows": 18,
+      "nominal_rows": 18,
+      "rows": 36
+    },
+    "step_zero_random_chain": {
+      "bit_exact_steps": 256,
+      "maximum_abs_error": 0.0,
+      "steps": 256
+    },
+    "step_zero_trace": {
+      "bit_exact_rows": 36,
+      "gate_correct_rows": 36,
+      "maximum_abs_error": 0.0,
+      "rows": 36,
+      "zero_head_rows": 36
+    }
+  },
+  "checks": {
+    "coordinate_mismatch_proven": true,
+    "final_gate_and_hidden_exact": true,
+    "final_negative_deployed_action_binding": true,
+    "final_negative_raw_action_binding": true,
+    "final_nominal_branch_bit_exact": true,
+    "frozen_deployment_transform_passes": true,
+    "optimizer_simulator_behavior_hosted_robot_zero": true,
+    "population_exact": true,
+    "step_zero_random_chain_bit_exact": true,
+    "step_zero_trace_outputs_bit_exact": true
+  },
+  "decision": "EARN_T100_HIDDEN_EXPERT_HOSTED_PREREGISTRATION_ONLY",
+  "deployment_graphs": {
+    "0": {
+      "context_parity": {
+        "all_outputs_bit_exact": true,
+        "context_is_diagnostic_only": true,
+        "maximum_abs_errors": {
+          "continuous_actions": 0.0,
+          "h_out": 0.0,
+          "previous_action_out": 0.0
+        },
+        "source_io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          }
+        },
+        "ticks": 1024,
+        "wrapped_io": {
+          "inputs": {
+            "calibration_context": [
+              1,
+              64
+            ],
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          }
+        },
+        "zero_command_actions_exact_zero": true
+      },
+      "margin_contract": {
+        "changed_action_values": 110,
+        "checks": {
+          "action_clip_bit_exact": true,
+          "all_outputs_finite": true,
+          "cpu_provider": true,
+          "hidden_output_bit_exact": true,
+          "previous_action_clip_bit_exact": true,
+          "realized_feedback_bit_exact": true,
+          "strict_margin": true
+        },
+        "pass": true
+      },
+      "verification": {
+        "cases": 256,
+        "contract_tolerance": 3.814697265625e-06,
+        "inputs_exact": true,
+        "maximum_action_error": 0.0,
+        "maximum_hidden_error": 0.0,
+        "maximum_normalized_rate_excess": 2.9802322387695312e-08,
+        "maximum_previous_action_error": 0.0,
+        "output_bounds_exact": true,
+        "outputs_exact": true,
+        "previous_action_out_equals_action_bit_exact": true,
+        "provider": "CPUExecutionProvider",
+        "seed": 20260726,
+        "x0_output_equals_support_action_bit_exact": true
+      },
+      "wrapped": {
+        "bytes": 970391,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t99_deployment_coordinate_audit_v1\\0\\action_margin.onnx",
+        "sha256": "546d083de9db78b8495dc07409d9f32ea8667ed446ce5b6f02df12254da86674"
+      },
+      "wrapped_io": {
+        "inputs": {
+          "calibration_context": [
+            1,
+            64
+          ],
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        },
+        "providers": [
+          "CPUExecutionProvider"
+        ]
+      }
+    },
+    "1024": {
+      "context_parity": {
+        "all_outputs_bit_exact": true,
+        "context_is_diagnostic_only": true,
+        "maximum_abs_errors": {
+          "continuous_actions": 0.0,
+          "h_out": 0.0,
+          "previous_action_out": 0.0
+        },
+        "source_io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          }
+        },
+        "ticks": 1024,
+        "wrapped_io": {
+          "inputs": {
+            "calibration_context": [
+              1,
+              64
+            ],
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          }
+        },
+        "zero_command_actions_exact_zero": true
+      },
+      "margin_contract": {
+        "changed_action_values": 110,
+        "checks": {
+          "action_clip_bit_exact": true,
+          "all_outputs_finite": true,
+          "cpu_provider": true,
+          "hidden_output_bit_exact": true,
+          "previous_action_clip_bit_exact": true,
+          "realized_feedback_bit_exact": true,
+          "strict_margin": true
+        },
+        "pass": true
+      },
+      "verification": {
+        "cases": 256,
+        "contract_tolerance": 3.814697265625e-06,
+        "inputs_exact": true,
+        "maximum_action_error": 0.0,
+        "maximum_hidden_error": 0.0,
+        "maximum_normalized_rate_excess": 2.9802322387695312e-08,
+        "maximum_previous_action_error": 0.0,
+        "output_bounds_exact": true,
+        "outputs_exact": true,
+        "previous_action_out_equals_action_bit_exact": true,
+        "provider": "CPUExecutionProvider",
+        "seed": 20260726,
+        "x0_output_equals_support_action_bit_exact": true
+      },
+      "wrapped": {
+        "bytes": 970391,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t99_deployment_coordinate_audit_v1\\1024\\action_margin.onnx",
+        "sha256": "5ee7af9389d4569cc87baf4cc158b8a956f4f07e422ac0fad7a5329a3ae95481"
+      },
+      "wrapped_io": {
+        "inputs": {
+          "calibration_context": [
+            1,
+            64
+          ],
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        },
+        "providers": [
+          "CPUExecutionProvider"
+        ]
+      }
+    }
+  },
+  "diagnosis": {
+    "deployed_bit_exact_rows": 36,
+    "deployed_maximum_stored_hidden_error": 0.0,
+    "raw_maximum_stored_hidden_error": 0.9038963317871094,
+    "raw_minimum_stored_hidden_error": 0.2475212812423706,
+    "rows": 36
+  },
+  "execution": {
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_steps": 0
+  },
+  "failed_checks": [],
+  "preregistered_contract_sha256": "b4c762bfca7421aa48a8733a22a837286830e316815c6664dd5d58b0357276a8",
+  "repository_commit": "5d1e263fdee027365fc1d6555b703e3f911ccdc7",
+  "result_sha256": "85a097f27e841a1a13fb58b7465ff2e581e2a0734d757479b2ad0a1ddf005058",
+  "schema_version": "open_duck.t99_deployment_coordinate_audit_result.v1",
+  "status": "PASS_T99_DEPLOYMENT_COORDINATE_AUDIT"
+}
