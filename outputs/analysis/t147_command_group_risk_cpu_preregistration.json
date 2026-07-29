@@ -1,0 +1,89 @@
+{
+  "authority": {
+    "colab": false,
+    "gate5": false,
+    "integrated_one_update_preregistration": false,
+    "one_synthetic_cpu_contract": true,
+    "rdkx5_or_robot": false,
+    "training": false
+  },
+  "checks": {
+    "frozen_inputs_present": true,
+    "no_behavior_optimizer_colab_or_robot": true,
+    "t146c_earns_group_risk_only": true
+  },
+  "contract": {
+    "all_groups_required_in_each_minibatch": true,
+    "anchor_group_ids": [
+      0,
+      1,
+      2
+    ],
+    "cpu_jit_and_grad_finite": true,
+    "permutation_invariant": true,
+    "standard_loss_differs_on_known_averaging_failure": true,
+    "worst_group_only_has_nonzero_actor_gradient_when_unique": true
+  },
+  "decision_rule": {
+    "fail_decision": "CLOSE_COMMAND_GROUP_RISK_OBJECTIVE",
+    "pass_decision": "EARN_T148_COMMAND_GROUP_RISK_ONE_UPDATE_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "behavior_cells": 0,
+    "environment_steps": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "synthetic_rows": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 5170,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t147_command_group_risk_cpu_preregistration.py",
+      "sha256": "161b4654671de48fe5b6f195557456d941f0111c212249e6e1adfc3e9a41797a"
+    },
+    "core": {
+      "bytes": 2192,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\t147_command_group_risk.py",
+      "sha256": "5209c18016868fdb741feb1eff37330c2f1528455f37d2364566f04e174b8c35"
+    },
+    "runner": {
+      "bytes": 7804,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t147_command_group_risk_cpu_contract.py",
+      "sha256": "5cca575e1ceb07e53f0c461f2bc77cc045f2b2ac5205bfa3e565bcdfffbc6283"
+    },
+    "t146c_result": {
+      "bytes": 10431,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t146c_test_receipt_recovery_result.json",
+      "sha256": "f16e0ab0df39c46e19a7f0ba8584580a317059b1cebb420f6964c84b5ba28f26"
+    },
+    "test": {
+      "bytes": 1727,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t147_command_group_risk.py",
+      "sha256": "99466999c630d08a44b960c4109d93e59131fecdd4c4b0ed7e0205607cab7893"
+    }
+  },
+  "mechanism": {
+    "actor_policy_loss": "max(group_surrogate[0:3])",
+    "advantage_normalization": "unchanged frozen global rule",
+    "anchors_x_m_s": [
+      0.074,
+      0.077,
+      0.08
+    ],
+    "boundaries_x_m_s": [
+      0.0755,
+      0.0785
+    ],
+    "critic_entropy_optimizer": "unchanged",
+    "deployment_graph_change": false,
+    "group_surrogate": "-mean(min(rho*A, clip(rho)*A) | command group)",
+    "new_scalar_hyperparameters": 0,
+    "policy_abi_change": false
+  },
+  "preregistered_contract_sha256": "92abdbc6536c478b130f47be80732e56eae53a88ac4c909ec99ef0289f2026af",
+  "question": "Can a parameter-free worst-group PPO actor loss make one of x=.074/.077/.080 authoritative instead of averaging its failure into the full batch?",
+  "schema_version": "open_duck.t147_command_group_risk_cpu_preregistration.v1",
+  "status": "PREREGISTERED_T147_COMMAND_GROUP_RISK_CPU_CONTRACT"
+}
