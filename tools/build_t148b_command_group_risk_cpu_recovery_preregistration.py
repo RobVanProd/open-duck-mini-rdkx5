@@ -74,6 +74,17 @@ def main() -> int:
         "training/command_groups_all_present", []
     )
     total_loss = scalars.get("training/total_loss", [])
+    low_loss_receipt = [
+        {
+            "step": item["step"],
+            "value": (
+                "-Infinity"
+                if np.isneginf(item["value"])
+                else item["value"]
+            ),
+        }
+        for item in low_loss
+    ]
     log_text = ORIGINAL_LOG.read_text(encoding="utf-8")
     inventory = {
         path.relative_to(PLAYGROUND).as_posix(): t128.sha256(path)
@@ -146,7 +157,7 @@ def main() -> int:
                 "checkpoint_steps": checkpoints,
                 "graph_steps": graphs,
                 "group_074_count": low_count,
-                "group_074_loss": low_loss,
+                "group_074_loss": low_loss_receipt,
                 "all_groups_present": all_present,
                 "total_loss": total_loss,
             },
