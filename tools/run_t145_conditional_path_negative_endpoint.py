@@ -21,6 +21,7 @@ CACHE = Path(
     "D:/CodexArtifacts/open-duck-policy/"
     "t145_conditional_path_negative_endpoint_v1"
 )
+ALLOW_EXISTING_CACHE = False
 sys.path.insert(0, str(ROOT / "tools"))
 from run_t27_t23_robustness_matrix import (  # noqa: E402
     condition_summary,
@@ -48,7 +49,11 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--execute", action="store_true", required=True)
     parser.parse_args()
-    if RESULT.exists() or MARKDOWN.exists() or CACHE.exists():
+    if (
+        RESULT.exists()
+        or MARKDOWN.exists()
+        or (CACHE.exists() and not ALLOW_EXISTING_CACHE)
+    ):
         raise FileExistsError("refusing to overwrite T145 output")
     if subprocess.check_output(
         ["git", "status", "--porcelain"], cwd=ROOT, text=True
@@ -78,7 +83,7 @@ def main() -> int:
         prereg["playground"]["manifest"],
     ]:
         verify(item)
-    CACHE.mkdir(parents=True)
+    CACHE.mkdir(parents=True, exist_ok=ALLOW_EXISTING_CACHE)
     condition = prereg["condition"]
     blocks = []
     started = time.time()
