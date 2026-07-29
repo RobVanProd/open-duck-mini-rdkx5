@@ -6,13 +6,16 @@ from __future__ import annotations
 import json
 from pathlib import Path
 import subprocess
+import sys
 from typing import Any
-
-from tools import build_t119_joint_soft_router_cpu_preregistration as common
-
 
 ROOT = Path(__file__).resolve().parents[1]
 ANALYSIS = ROOT / "outputs" / "analysis"
+sys.path.insert(0, str(ROOT))
+
+from tools import (  # noqa: E402
+    build_t119_joint_soft_router_cpu_preregistration as common,
+)
 OUTPUT = ANALYSIS / "t119b_random_binding_recovery_preregistration.json"
 MARKDOWN = (
     ANALYSIS / "T119B_RANDOM_BINDING_RECOVERY_PREREGISTRATION_20260729.md"
