@@ -1,0 +1,64 @@
+{
+  "schema_version": "open_duck.t119_asset_attempt1_preexecution_invalidation.v1",
+  "status": "INVALID_T119_ASSET_ATTEMPT1_RATE_VECTOR",
+  "classification": "ZERO_UPDATE_EXPORT_CONFIGURATION_MISMATCH",
+  "cause": "The asset builder supplied the obsolete inherited 5.24 rad/s source vector to the T119 exporter, while the exact T100C-half source graph already embeds the measured per-joint rate vector.",
+  "evidence": {
+    "hidden_state_maximum_abs_error": 0.0,
+    "router_coefficient_and_intercept_exact": true,
+    "expected_max_action_delta": [
+      0.08,
+      0.06,
+      0.11788967,
+      0.11440632,
+      0.11181176,
+      0.04,
+      0.04,
+      0.04,
+      0.04,
+      0.04,
+      0.06,
+      0.09999999,
+      0.08,
+      0.0977223
+    ],
+    "attempted_max_action_delta": [
+      0.41919997,
+      0.41919997,
+      0.12,
+      0.12,
+      0.14,
+      0.41919997,
+      0.41919997,
+      0.41919997,
+      0.41919997,
+      0.41919997,
+      0.41919997,
+      0.09999999,
+      0.08,
+      0.09999999
+    ]
+  },
+  "invalid_outputs": {
+    "result": {
+      "bytes": 3910,
+      "sha256": "09819908fa0332c12c96407b98af956ba8d3abdcd1b8977705608503335b65a0"
+    },
+    "step_zero_graph": {
+      "bytes": 960260,
+      "sha256": "656b453be2aaf1a608f4db775b4887ebc3c89c8e579e75cafb0ccdf3ee2b6794"
+    },
+    "expected_soft_graph": {
+      "bytes": 960260,
+      "sha256": "1a2443367996b13fdc72c39430f92b42b3df08db96df76dce0bb18e16bb65c62"
+    }
+  },
+  "execution": {
+    "optimizer_steps": 0,
+    "simulator_steps": 0,
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "robot_or_rdk_access": 0
+  },
+  "decision": "REBUILD_ZERO_UPDATE_ASSETS_WITH_EXACT_SOURCE_VECTOR"
+}

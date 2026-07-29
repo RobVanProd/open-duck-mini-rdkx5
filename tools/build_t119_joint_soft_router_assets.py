@@ -48,7 +48,7 @@ GATE = ANALYSIS / "t98_hidden_gate_asset.json"
 T97 = ANALYSIS / "t97_hidden_gate_preregistration.json"
 MANIFEST = PLAYGROUND / "T119_COMPOSED_SOURCE_MANIFEST.json"
 DEFAULT_OUTPUT = Path(
-    "D:/CodexArtifacts/open-duck-policy/t119_joint_soft_router_assets_v1"
+    "D:/CodexArtifacts/open-duck-policy/t119_joint_soft_router_assets_v2"
 )
 RESULT = ANALYSIS / "t119_joint_soft_router_assets.json"
 MARKDOWN = ANALYSIS / "T119_JOINT_SOFT_ROUTER_ASSETS_20260729.md"
@@ -398,20 +398,20 @@ def main() -> int:
         (512, 256, 128),
         hidden_gate_asset_path=GATE,
         action_velocity_limits_rad_s=(
-            5.24,
-            5.24,
-            1.5,
-            1.5,
-            1.75,
-            5.24,
-            5.24,
-            5.24,
-            5.24,
-            5.24,
-            5.24,
+            1.0,
+            0.75,
+            1.4736209064722061,
+            1.4300791546702385,
+            1.3976470567286015,
+            0.5,
+            0.5,
+            0.5,
+            0.5,
+            0.5,
+            0.75,
             1.25,
             1.0,
-            1.25,
+            1.2215287424623966,
         ),
         control_dt=0.02,
         action_scale=0.25,
