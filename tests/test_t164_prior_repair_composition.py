@@ -74,3 +74,31 @@ def test_t164_composition_preserves_each_disjoint_repair(
     assert contract["negative_matches_t149b"]
     assert contract["nominal_and_positive_match_t162"]
     assert contract["x0_exact"]
+
+
+def test_t164_preregistration_and_result_scope() -> None:
+    prereg = json.loads(
+        (
+            ANALYSIS / "t164_prior_repair_composition_preregistration.json"
+        ).read_text(encoding="utf-8")
+    )
+    assert (
+        prereg["status"]
+        == "PREREGISTERED_T164_PRIOR_REPAIR_COMPOSITION"
+    )
+    assert not prereg["failed_checks"]
+    assert prereg["composition"]["scalar_search"] is False
+    assert prereg["execution_now"]["behavior_cells"] == 0
+    assert not prereg["authority"]["full_r2"]
+
+    result_path = ANALYSIS / "t164_prior_repair_composition_result.json"
+    if not result_path.exists():
+        return
+    result = json.loads(result_path.read_text(encoding="utf-8"))
+    assert result["status"] == "PASS_T164_PRIOR_REPAIR_COMPOSITION"
+    assert not result["failed_checks"]
+    assert all(result["checks"].values())
+    assert result["execution"]["behavior_cells"] == 0
+    assert result["execution"]["hosted_compute_units"] == 0
+    assert not result["authority"]["behavior_matrix"]
+    assert not result["authority"]["gate5"]
