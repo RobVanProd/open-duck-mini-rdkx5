@@ -58,10 +58,17 @@ def exact_vector(value: Any) -> bytes:
 
 def handoff_signature(row: Mapping[str, Any]) -> dict[str, Any]:
     state = row["policy_state_input"]
+    observation = np.asarray(row["obs_state"], dtype=np.float64)
+    physical_observation = np.concatenate(
+        [observation[:6], observation[13:101]]
+    )
     return {
-        "qpos": exact_vector(row["qpos"]),
-        "qvel": exact_vector(row["qvel"]),
-        "applied_target_rad": exact_vector(row["applied_target_rad"]),
+        "actual_position_pre_rad": exact_vector(
+            row["actual_position_pre_rad"]
+        ),
+        "physical_observation_excluding_command_and_reference": (
+            physical_observation.tobytes()
+        ),
         "previous_action": exact_vector(state["previous_action"]),
         "h_in": exact_vector(state["h_in"]),
         "calibration_context_sha256": row[
@@ -170,9 +177,8 @@ def main() -> int:
                 }
             )
     handoff_fields = [
-        "qpos",
-        "qvel",
-        "applied_target_rad",
+        "actual_position_pre_rad",
+        "physical_observation_excluding_command_and_reference",
         "previous_action",
         "h_in",
         "calibration_context_sha256",
