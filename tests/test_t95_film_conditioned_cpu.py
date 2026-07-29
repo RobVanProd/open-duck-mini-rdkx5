@@ -11,7 +11,7 @@ PREREG = (
     ROOT
     / "outputs"
     / "analysis"
-    / "t95_film_conditioned_cpu_preregistration.json"
+    / "t95_film_conditioned_cpu_preregistration_v2.json"
 )
 RESULT = (
     ROOT / "outputs" / "analysis" / "t95_film_conditioned_cpu_result.json"
@@ -23,7 +23,7 @@ def test_t95_preregistration_is_cpu_only_and_distinct() -> None:
         pytest.skip("T95 preregistration has not run")
     value = json.loads(PREREG.read_text(encoding="utf-8"))
     assert value["status"] == (
-        "PREREGISTERED_T95_FILM_CONDITIONED_CPU_CONTRACT"
+        "PREREGISTERED_T95_FILM_CONDITIONED_CPU_CONTRACT_V2"
     )
     assert value["failed_checks"] == []
     assert value["architecture_contract"]["new_actor_parameters"] == [
@@ -46,4 +46,3 @@ def test_t95_result_never_authorizes_hardware() -> None:
     assert not value["authority"]["gate5_authorized"]
     assert not value["authority"]["rdkx5_or_robot_access"]
     assert not value["authority"]["hosted_training_authorized"]
-

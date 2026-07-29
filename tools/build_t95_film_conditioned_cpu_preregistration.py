@@ -23,9 +23,9 @@ ASSET_ROOT = Path(
     r"\t95_film_conditioned_assets_v2"
 )
 ASSET_MANIFEST = ASSET_ROOT / "manifest.json"
-OUTPUT = ANALYSIS / "t95_film_conditioned_cpu_preregistration.json"
+OUTPUT = ANALYSIS / "t95_film_conditioned_cpu_preregistration_v2.json"
 MARKDOWN = (
-    ANALYSIS / "T95_FILM_CONDITIONED_CPU_PREREGISTRATION_20260728.md"
+    ANALYSIS / "T95_FILM_CONDITIONED_CPU_PREREGISTRATION_V2_20260728.md"
 )
 
 
@@ -211,9 +211,9 @@ def main() -> int:
     }
     failed = sorted(name for name, passed in checks.items() if not passed)
     basis = {
-        "schema_version": "open_duck.t95_film_cpu_preregistration.v1",
+        "schema_version": "open_duck.t95_film_cpu_preregistration.v2",
         "status": (
-            "PREREGISTERED_T95_FILM_CONDITIONED_CPU_CONTRACT"
+            "PREREGISTERED_T95_FILM_CONDITIONED_CPU_CONTRACT_V2"
             if not failed
             else "HOLD_T95_FILM_CONDITIONED_CPU_PREREGISTRATION"
         ),
@@ -323,6 +323,19 @@ def main() -> int:
             "formal_behavior_cells": 0,
             "hosted_compute_units": 0,
             "robot_or_rdk_access": 0,
+        },
+        "preexecution_correction": {
+            "attempt1": (
+                "Stopped before environment construction because the runner "
+                "identity recomputation omitted architecture_contract."
+            ),
+            "change": (
+                "Include the already-frozen architecture_contract in the "
+                "canonical identity and refresh only the runner receipt."
+            ),
+            "mechanism_or_threshold_change": False,
+            "optimizer_steps": 0,
+            "simulator_behavior_cells": 0,
         },
         "context_observability": observability,
     }

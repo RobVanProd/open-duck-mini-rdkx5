@@ -1,0 +1,181 @@
+{
+  "architecture_contract": {
+    "deployment_order": "raw actor -> trained rate -> actual-centered guard -> x=0 deadband -> final rate -> restored x=0 deadband",
+    "equation": "h= tanh(Wo*obs + Wh*h_prev + b); h_film=h + h*(context*Wfilm); adapter=Waction*h_film+baction",
+    "new_actor_parameters": [
+      "context_film_scale/kernel"
+    ],
+    "new_parameter_initialization": "exact zero",
+    "recurrent_state_semantics": "h_out remains pre-FiLM and exact",
+    "source_action_head_frobenius_norm": 0.7891807021118005,
+    "source_action_head_rank": 14,
+    "source_action_head_shape": [
+      64,
+      14
+    ]
+  },
+  "assets": {
+    "calibrator": {
+      "bytes": 55573,
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v96-response-conditioned-mechanics\\winner_v96_universal_calibrator.onnx",
+      "sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576"
+    },
+    "expanded_checkpoint": {
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t95_film_conditioned_assets_v2\\expanded_checkpoint",
+      "sha256": "f2a0dd8d2384e993be8673fce9793f75cd4bde32c1d3c3c6e19b218deee1fe2e"
+    },
+    "step_zero_onnx": {
+      "bytes": 973802,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t95_film_conditioned_assets_v2\\t95_t78_half_step_zero.onnx",
+      "sha256": "499272666dfab0c256afea1ab4f7b399dbc9c6d35b1c5ff96382af993474f66b"
+    }
+  },
+  "authority": {
+    "behavior_matrix": false,
+    "cpu_smoke": true,
+    "gate5": false,
+    "hosted_preregistration_after_pass": true,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false
+  },
+  "causal_basis": {
+    "selected_distinction": "T10/T11 added context-dependent hidden and action biases. T95 instead makes the action feedback gain bilinear in the live recurrent feature and immutable calibration context; it neither selects an expert nor adds a static pose offset.",
+    "t11_baseline_action_effect_fraction": 0.00439453125,
+    "t91_negative_com": "All 12 moving cells fell under exact TORSO_COM_X_NEG; x=0 remained 4/4 green.",
+    "t93": "NO_HARD_ADAPTER_AUTHORITY_LIMIT_FOUND",
+    "t94": "R2_CALIBRATION_MANIFOLD_NOT_ROUTABLE"
+  },
+  "context_observability": {
+    "contexts": 40,
+    "exact_collision_groups": [
+      [
+        "FLOOR_FRICTION_LO:p30",
+        "FLOOR_FRICTION_HI:p30",
+        "ARMATURE_LO:p30"
+      ],
+      [
+        "FLOOR_FRICTION_LO:p31_34",
+        "FLOOR_FRICTION_HI:p31_34",
+        "ARMATURE_LO:p31_34"
+      ]
+    ],
+    "interpretation": "The prefix cannot identify every R2 axis: floor-friction low, floor-friction high, and armature low collide exactly within each actuator fit. It does uniquely expose the current negative-X COM blocker, so T95 may schedule continuous feedback gains but may not route discrete experts or claim universal configuration identification.",
+    "negative_com_contexts_are_unique": true,
+    "negative_com_same_fit_nearest": {
+      "p30": {
+        "minimum_distance": 0.05794571580691269,
+        "nearest_condition": "HOME_JOINT_OFFSET_POS"
+      },
+      "p31_34": {
+        "minimum_distance": 0.057962788975609365,
+        "nearest_condition": "HOME_JOINT_OFFSET_POS"
+      }
+    },
+    "unique_contexts": 36
+  },
+  "cpu_smoke": {
+    "contexts": "all 40 frozen T94 R2 calibration vectors",
+    "derivation": "The 5% tick threshold is more than ten times T11's 0.439453125% coherent additive-context effect; both exact negative-COM contexts must independently affect action.",
+    "effect_threshold_abs": 1e-08,
+    "formal_behavior_cells": 0,
+    "material_maximum_action_delta": 1e-05,
+    "maximum_wall_seconds": 3600,
+    "minimum_action_effect_tick_fraction": 0.05,
+    "minimum_context_pair_effect_fraction": 0.5,
+    "ticks_per_context": 64
+  },
+  "decision_rule": {
+    "fail": "Close the FiLM-conditioned continuation without hosted training and file the observed gradient/action-binding failure.",
+    "pass": "Every contract check passes, only the FiLM actor leaf and critic update, both negative-COM contexts affect action, at least 5% of ticks and half of contexts affect action, and x=0/rate/state/export contracts remain exact.",
+    "pass_next_action": "Earn only a separate preregistration for one hosted FiLM-only continuation; do not launch it from this result."
+  },
+  "execution_now": {
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "preexecution_correction": {
+    "attempt1": "Stopped before environment construction because the runner identity recomputation omitted architecture_contract.",
+    "change": "Include the already-frozen architecture_contract in the canonical identity and refresh only the runner receipt.",
+    "mechanism_or_threshold_change": false,
+    "optimizer_steps": 0,
+    "simulator_behavior_cells": 0
+  },
+  "preregistered_contract_sha256": "b1a3acb95f7b50a725b4e14b348a77a7ffcdf75e6f692b9d03b99112f5111040",
+  "question": "Can a zero-initialized bilinear calibration/state FiLM path bind the automatically measured negative-COM response to a material action change while preserving the protected source, recurrent state, deployment hierarchy, and x=0 exactly?",
+  "schema_version": "open_duck.t95_film_cpu_preregistration.v2",
+  "software_contract": {
+    "actor_updates": "context_film_scale/kernel only",
+    "backend": "CPU only",
+    "critic_updates": "allowed",
+    "deployment_abi": "115 observations, 14 actions, 64 hidden, 64 calibration context",
+    "exports": [
+      0,
+      1024
+    ],
+    "source": "T78 joint-adapter half checkpoint",
+    "timesteps": 1024,
+    "x0": "exact deadband zero"
+  },
+  "sources": {
+    "asset_manifest": {
+      "bytes": 6454,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t95_film_conditioned_assets_v2\\manifest.json",
+      "sha256": "39b4b439de59812ad4d1b504f0290cb104dad6e3901837618f8106d90ff41176"
+    },
+    "network": {
+      "bytes": 27605,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\patches\\t95_film_conditioned_v121_networks.py",
+      "sha256": "e3a71e0c8c9addbdb77203761fbb956d80c1d3df0d155e1c7ed09f42a261030c"
+    },
+    "playground_manifest": {
+      "bytes": 3026,
+      "path": "D:\\CodexProjects\\Open_Duck_Playground-t95-film-v1\\T95_COMPOSED_SOURCE_MANIFEST.json",
+      "sha256": "53e5ac4d7b06590e0cc6bedc50f552f912c3c0841475423c874c45e4abd0e2ba"
+    },
+    "runner": {
+      "bytes": 39858,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t95_film_conditioned_cpu_contract.py",
+      "sha256": "369f1d73891eb0660850876b142b832f77ead07529daae2509ed19181bdca920"
+    },
+    "t11_additive_context_closure": {
+      "bytes": 2924,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t11_context_action_observability_result.json",
+      "sha256": "183081034f1ba6eeb365aefa3081123ac07520bc52e30e3698331abebeba7d13"
+    },
+    "t78_validation": {
+      "bytes": 9095,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t78_recovered_training_validation.json",
+      "sha256": "8f638d7c640eca9b3df7cb1667c166b36ae5c01b975dc3d6491bcb2939279445"
+    },
+    "t93_adapter_authority": {
+      "bytes": 33683,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t93_adapter_authority_result.json",
+      "sha256": "6587c57c904d3dfbb7a9b5c60b90ab094ed37cd9e682a14d0ba0a2248e8435c1"
+    },
+    "t94_calibration_manifold": {
+      "bytes": 155619,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t94_r2_calibration_manifold_result.json",
+      "sha256": "fc4a652de5234744c3f08d158c5dd8d4086c87396aec19e8145300161d84db8c"
+    },
+    "t94_reporting_correction": {
+      "bytes": 5641,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t94_home_offset_reporting_correction.json",
+      "sha256": "7b6a9b65efd0954107838b526198f21439610e8c9f19b970fd325796b547c90d"
+    },
+    "test": {
+      "bytes": 1559,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t95_film_conditioned_cpu.py",
+      "sha256": "4ddaa9fdd4c3d2e3cbdce0d46c2df3d24a3fd578b67508a8e4cf88b4cd9abf80"
+    },
+    "update_mask": {
+      "bytes": 1636,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\patches\\t95_film_only_updates.py",
+      "sha256": "771db6b70ae04cfb6b2800453e46c01fdd11af42ff21015e4da49bca69c9dba1"
+    }
+  },
+  "status": "PREREGISTERED_T95_FILM_CONDITIONED_CPU_CONTRACT_V2"
+}

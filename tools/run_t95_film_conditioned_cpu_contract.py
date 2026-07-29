@@ -31,7 +31,7 @@ ROOT = Path(__file__).resolve().parents[1]
 ANALYSIS = ROOT / "outputs" / "analysis"
 PREREG = (
     ANALYSIS
-    / "t95_film_conditioned_cpu_preregistration.json"
+    / "t95_film_conditioned_cpu_preregistration_v2.json"
 )
 RESULT = (
     ANALYSIS / "t95_film_conditioned_cpu_result.json"
@@ -166,18 +166,20 @@ def validate_preregistration(value: dict[str, Any]) -> None:
             "sources",
             "assets",
             "software_contract",
+            "architecture_contract",
             "cpu_smoke",
             "decision_rule",
             "authority",
             "execution_now",
+            "preexecution_correction",
             "context_observability",
         )
     }
     if (
         value.get("schema_version")
-        != "open_duck.t95_film_cpu_preregistration.v1"
+        != "open_duck.t95_film_cpu_preregistration.v2"
         or value.get("status")
-        != "PREREGISTERED_T95_FILM_CONDITIONED_CPU_CONTRACT"
+        != "PREREGISTERED_T95_FILM_CONDITIONED_CPU_CONTRACT_V2"
         or canonical_sha256(basis)
         != value.get("preregistered_contract_sha256")
     ):
