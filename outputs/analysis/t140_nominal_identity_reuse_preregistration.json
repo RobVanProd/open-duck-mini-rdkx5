@@ -1,0 +1,64 @@
+{
+  "authority": {
+    "colab": false,
+    "gate5": false,
+    "negative_endpoint_preregistration": false,
+    "one_cpu_identity_reuse_audit": true,
+    "rdkx5_or_robot": false,
+    "training": false
+  },
+  "checks": {
+    "frozen_inputs_present": true,
+    "no_new_behavior_training_colab_or_robot": true,
+    "t102_nominal_green": true,
+    "t139_selects_nominal_identity_reuse": true
+  },
+  "decision_rule": {
+    "fail_decision": "REQUIRE_FRESH_NOMINAL_MATRIX",
+    "pass_decision": "EARN_T141_EXPERT_BANK_NEGATIVE_ENDPOINT_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "hosted_compute_units": 0,
+    "inherited_behavior_cells": 0,
+    "new_behavior_cells": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 4502,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t140_nominal_identity_reuse_preregistration.py",
+      "sha256": "d917a9665491bb068f09ea8bddfe7efccf0fcec6cf1460412bc14ac0e1ab781d"
+    },
+    "runner": {
+      "bytes": 6612,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t140_nominal_identity_reuse.py",
+      "sha256": "b465e72d4d63d4a7dfb4dbb321b10e9d8a4f04ef1181f75f82438e9685563776"
+    },
+    "t102_prereg": {
+      "bytes": 10984,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t102_t100c_nominal_matrix_preregistration.json",
+      "sha256": "ea18266753d5ea08bc0b8607635fba2b72c17722e013105a9bacd22b0547888f"
+    },
+    "t102_result": {
+      "bytes": 120287,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t102_t100c_nominal_matrix_result.json",
+      "sha256": "c454808a28f697df9bad07bb2d2f2c8417c1b2d631855f9c91e4dbac66c584a8"
+    },
+    "t139_result": {
+      "bytes": 6379,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t139_context_selected_expert_bank_result.json",
+      "sha256": "2aedade500e8c69e43ade2e9d99fe8ed76e3a805e2accbbdc4747a6982d1c903"
+    },
+    "test": {
+      "bytes": 950,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t140_nominal_identity_reuse.py",
+      "sha256": "e5c77549a680295cf15a7e7be66bffcdf1d43b5cd65a04687b152a25846eb24d"
+    }
+  },
+  "preregistered_contract_sha256": "d1fee19332bd76a17f62503f4b8e3b9c92f80564f3539aeb81ab76a4cd743856",
+  "question": "Can T102's 16/16 nominal evidence be inherited without rerunning behavior because T139 is structurally and bit-exactly T100C for both nominal calibration contexts?",
+  "schema_version": "open_duck.t140_nominal_identity_reuse_preregistration.v1",
+  "status": "PREREGISTERED_T140_NOMINAL_IDENTITY_REUSE"
+}
