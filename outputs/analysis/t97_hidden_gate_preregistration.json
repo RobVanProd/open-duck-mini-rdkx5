@@ -1,0 +1,388 @@
+{
+  "authority": {
+    "gate5": false,
+    "hosted_compute": false,
+    "rdkx5_or_robot": false,
+    "t97_read_only_audit": true,
+    "t98_cpu_contract_preregistration": false,
+    "training": false
+  },
+  "causal_basis": {
+    "selected_falsifier": "test the cheapest deployable gate first: a regularized linear readout of the current h_out, with no new input",
+    "t71": "the live recurrent state contains plant-sensitive COM information and causally changes the action",
+    "t76": "the hidden displacement is not stable rank one, so a fixed axis reflection is closed",
+    "t78_t93": "the jointly trained adapter has material full-rank action authority, but one shared head did not retain COM-X-negative"
+  },
+  "checks": {
+    "no_training_simulator_or_hardware": true,
+    "paired_population_exact": true,
+    "t71_hidden_signal_present_and_causal": true,
+    "t76_rank_one_response_closed": true,
+    "t93_no_hard_adapter_authority_limit": true,
+    "two_checkpoints_two_fits_three_commands": true
+  },
+  "classifier": {
+    "cross_validation": [
+      "leave-one-checkpoint-out",
+      "leave-one-fit-out",
+      "leave-one-command-out",
+      "leave-one-checkpoint-fit-command-group-out"
+    ],
+    "ridge": "identity penalty after train-fold standardization; intercept unpenalized; no fitted scalar or sweep",
+    "threshold": 0.0,
+    "type": "train-fold standardized linear ridge classifier"
+  },
+  "decision_rule": {
+    "fail_decision": "CLOSE_LINEAR_LIVE_HIDDEN_EXPERT_GATE_WITHOUT_TRAINING",
+    "pass_decision": "EARN_T98_HIDDEN_GATED_EXPERT_CPU_CONTRACT_PREREGISTRATION_ONLY",
+    "pass_requires": "every threshold and receipt check passes; a pass authorizes only a step-zero-exact CPU software contract"
+  },
+  "execution_now": {
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_steps": 0
+  },
+  "failed_checks": [],
+  "inputs": {
+    "auditor": {
+      "bytes": 12175,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\audit_t97_hidden_gate.py",
+      "sha256": "c551261e1dac578f79a82173873ac91c77373240498458d528e322ac12597d03"
+    },
+    "builder": {
+      "bytes": 9214,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t97_hidden_gate_preregistration.py",
+      "sha256": "2e1260790064e8e3ae2e958c88ba6207588b8117d3b0c1af4deb546098e7968e"
+    },
+    "t71_result": {
+      "bytes": 53268,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t71_t67_com_hidden_causal_result.json",
+      "sha256": "06b9f4678a63c96b40dcccd9f9e59ec30c35a78b337446e1ba74c7dc83a43d50"
+    },
+    "t76_result": {
+      "bytes": 18712,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t76_com_hidden_geometry_result.json",
+      "sha256": "5cd7037d61583ff8bb505e82ea1c7443fe58a3b47d4a628291851239a965f657"
+    },
+    "t93_preregistration": {
+      "bytes": 20225,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t93_adapter_authority_preregistration.json",
+      "sha256": "b9f90b7916f83cafbad3185524810d2753d9f105133e497f2d687252400761f7"
+    },
+    "t93_result": {
+      "bytes": 33683,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t93_adapter_authority_result.json",
+      "sha256": "6587c57c904d3dfbb7a9b5c60b90ab094ed37cd9e682a14d0ba0a2248e8435c1"
+    },
+    "test": {
+      "bytes": 1498,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t97_hidden_gate.py",
+      "sha256": "4d7a32bf92d8bf3cdd2fcb36daa5db897cd8697ce7a2083da0b25a21014175a7"
+    }
+  },
+  "population": {
+    "checkpoints": [
+      "T78_JOINT_ADAPTER_HALF",
+      "T78_JOINT_ADAPTER_FINAL"
+    ],
+    "commands_x_m_s": [
+      0.074,
+      0.077,
+      0.08
+    ],
+    "feature": "policy_state_output.h_out[0] float32[64]",
+    "fits": [
+      "p30",
+      "p31_34"
+    ],
+    "labels": {
+      "com_x_negative": 1,
+      "nominal": -1
+    },
+    "sample_count": 72,
+    "ticks": [
+      8,
+      16,
+      32
+    ],
+    "trace_count": 24
+  },
+  "preregistered_contract_sha256": "0a995236350476f7dea3a9b806d3083f298071718749a22358c0cfe8bed55c61",
+  "question": "Can the mature T78 recurrent hidden state identify the exact negative torso-COM-X plant early and out of group, strongly enough to justify a shared-ABI hidden-gated adapter expert?",
+  "repository_commit": "4b0c763a275101a4e36c2b65c1dc893e8e094f4f",
+  "schema_version": "open_duck.t97_hidden_gate_preregistration.v1",
+  "status": "PREREGISTERED_T97_HIDDEN_GATE_FALSIFIER",
+  "thresholds": {
+    "minimum_each_family_balanced_accuracy": 0.9,
+    "minimum_each_fold_balanced_accuracy": 0.75,
+    "minimum_group_holdout_tick8_negative_recall": 0.75,
+    "minimum_group_holdout_tick8_nominal_specificity": 0.75
+  },
+  "traces": [
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_HALF",
+      "command_x_m_s": 0.074,
+      "fit_id": "p30",
+      "population": "nominal",
+      "trace": {
+        "bytes": 10776830,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t80_t78_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T78_JOINT_ADAPTER_HALF\\p30\\traces\\x0.074_seed167931544_action_margin.jsonl",
+        "sha256": "9bef3884d46771260a0dbc3a8004d47651442ee38ba7458d087f2c9e534e0b5f"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_HALF",
+      "command_x_m_s": 0.077,
+      "fit_id": "p30",
+      "population": "nominal",
+      "trace": {
+        "bytes": 10776526,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t80_t78_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T78_JOINT_ADAPTER_HALF\\p30\\traces\\x0.077_seed167931544_action_margin.jsonl",
+        "sha256": "d1e76448a6cc1c6956df07fd88ee3b3868b8b80b0df509d87ad6d675d150cdb0"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_HALF",
+      "command_x_m_s": 0.08,
+      "fit_id": "p30",
+      "population": "nominal",
+      "trace": {
+        "bytes": 10777792,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t80_t78_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T78_JOINT_ADAPTER_HALF\\p30\\traces\\x0.080_seed167931544_action_margin.jsonl",
+        "sha256": "d6af0ebd7f87e11931be5378b5f46e3f9c2ce5b6b669501c4edf49214eeed84e"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_HALF",
+      "command_x_m_s": 0.074,
+      "fit_id": "p31_34",
+      "population": "nominal",
+      "trace": {
+        "bytes": 10775055,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t80_t78_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T78_JOINT_ADAPTER_HALF\\p31_34\\traces\\x0.074_seed167931544_action_margin.jsonl",
+        "sha256": "bc3adac297ff1d3d641a5ae1d3502af7af96f7791ee97ee64790abf46a55afc5"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_HALF",
+      "command_x_m_s": 0.077,
+      "fit_id": "p31_34",
+      "population": "nominal",
+      "trace": {
+        "bytes": 10776330,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t80_t78_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T78_JOINT_ADAPTER_HALF\\p31_34\\traces\\x0.077_seed167931544_action_margin.jsonl",
+        "sha256": "de1772e8163c810097feb82749542d0558b7918649853864accbe5243952be27"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_HALF",
+      "command_x_m_s": 0.08,
+      "fit_id": "p31_34",
+      "population": "nominal",
+      "trace": {
+        "bytes": 4091306,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t80_t78_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T78_JOINT_ADAPTER_HALF\\p31_34\\traces\\x0.080_seed167931544_action_margin.jsonl",
+        "sha256": "668dedae1c56176e91a7d7798affa1eae8384200fa91ffbc98a37322e2dd0366"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_FINAL",
+      "command_x_m_s": 0.074,
+      "fit_id": "p30",
+      "population": "nominal",
+      "trace": {
+        "bytes": 10773492,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t80_t78_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T78_JOINT_ADAPTER_FINAL\\p30\\traces\\x0.074_seed167931544_action_margin.jsonl",
+        "sha256": "b08d5412a34162043e6d678ecea465b200515742b1a25a1f7f9e88ea0b9f2e04"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_FINAL",
+      "command_x_m_s": 0.077,
+      "fit_id": "p30",
+      "population": "nominal",
+      "trace": {
+        "bytes": 10771625,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t80_t78_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T78_JOINT_ADAPTER_FINAL\\p30\\traces\\x0.077_seed167931544_action_margin.jsonl",
+        "sha256": "3ed007363eb4a1f9f45bcd221e6d58b3ad222409eeaaa45b19dc0bdc2106c3ee"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_FINAL",
+      "command_x_m_s": 0.08,
+      "fit_id": "p30",
+      "population": "nominal",
+      "trace": {
+        "bytes": 9011977,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t80_t78_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T78_JOINT_ADAPTER_FINAL\\p30\\traces\\x0.080_seed167931544_action_margin.jsonl",
+        "sha256": "ccd45d25753236d8d0cde484f4c3840135b8ef675b05633e7868e7bd1ec48ec4"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_FINAL",
+      "command_x_m_s": 0.074,
+      "fit_id": "p31_34",
+      "population": "nominal",
+      "trace": {
+        "bytes": 10774577,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t80_t78_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T78_JOINT_ADAPTER_FINAL\\p31_34\\traces\\x0.074_seed167931544_action_margin.jsonl",
+        "sha256": "2d5e00e075701c2935c04cd2f47d51b1137bebfe619f1ee08e4d4ea6a3a76526"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_FINAL",
+      "command_x_m_s": 0.077,
+      "fit_id": "p31_34",
+      "population": "nominal",
+      "trace": {
+        "bytes": 10773751,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t80_t78_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T78_JOINT_ADAPTER_FINAL\\p31_34\\traces\\x0.077_seed167931544_action_margin.jsonl",
+        "sha256": "eaa9ad855b8e768d945f9217ba38851479aa76e14bdf5d6cfe728523870377fd"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_FINAL",
+      "command_x_m_s": 0.08,
+      "fit_id": "p31_34",
+      "population": "nominal",
+      "trace": {
+        "bytes": 10772581,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t80_t78_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T78_JOINT_ADAPTER_FINAL\\p31_34\\traces\\x0.080_seed167931544_action_margin.jsonl",
+        "sha256": "1b436c2dce55fb0801d7530725acf600f25dd019f3de086cbb864bd527fa7bf5"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_HALF",
+      "command_x_m_s": 0.074,
+      "fit_id": "p30",
+      "population": "com_x_negative",
+      "trace": {
+        "bytes": 5297612,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t92_raw_t78_com_attribution_v1\\07_TORSO_COM_X_NEG\\T78_JOINT_ADAPTER_HALF\\p30\\traces\\x0.074_seed167931544_action_margin.jsonl",
+        "sha256": "2de0667f49f6f5f8b71d0435769d7d281ebbb55e4a602b0136166f9ffe830c57"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_HALF",
+      "command_x_m_s": 0.077,
+      "fit_id": "p30",
+      "population": "com_x_negative",
+      "trace": {
+        "bytes": 3535755,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t92_raw_t78_com_attribution_v1\\07_TORSO_COM_X_NEG\\T78_JOINT_ADAPTER_HALF\\p30\\traces\\x0.077_seed167931544_action_margin.jsonl",
+        "sha256": "e62bf034d455e988ce2efccc68f88f5e73d4b17e59a080508af748c59a108c8c"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_HALF",
+      "command_x_m_s": 0.08,
+      "fit_id": "p30",
+      "population": "com_x_negative",
+      "trace": {
+        "bytes": 4812877,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t92_raw_t78_com_attribution_v1\\07_TORSO_COM_X_NEG\\T78_JOINT_ADAPTER_HALF\\p30\\traces\\x0.080_seed167931544_action_margin.jsonl",
+        "sha256": "e67bb7240c1e6080982ebb6a4bb7ec638fe07536c2412565549030e6eb788c7a"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_HALF",
+      "command_x_m_s": 0.074,
+      "fit_id": "p31_34",
+      "population": "com_x_negative",
+      "trace": {
+        "bytes": 6051008,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t92_raw_t78_com_attribution_v1\\07_TORSO_COM_X_NEG\\T78_JOINT_ADAPTER_HALF\\p31_34\\traces\\x0.074_seed167931544_action_margin.jsonl",
+        "sha256": "6ddf29fe2676d098cddde9685c351fc9048abb3d22269e251c752df01061ef0c"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_HALF",
+      "command_x_m_s": 0.077,
+      "fit_id": "p31_34",
+      "population": "com_x_negative",
+      "trace": {
+        "bytes": 3427595,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t92_raw_t78_com_attribution_v1\\07_TORSO_COM_X_NEG\\T78_JOINT_ADAPTER_HALF\\p31_34\\traces\\x0.077_seed167931544_action_margin.jsonl",
+        "sha256": "f88e15bb15ec35636568373cabe9856ef18823c3e553fbab2d371f5d4bf6e23f"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_HALF",
+      "command_x_m_s": 0.08,
+      "fit_id": "p31_34",
+      "population": "com_x_negative",
+      "trace": {
+        "bytes": 3912492,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t92_raw_t78_com_attribution_v1\\07_TORSO_COM_X_NEG\\T78_JOINT_ADAPTER_HALF\\p31_34\\traces\\x0.080_seed167931544_action_margin.jsonl",
+        "sha256": "df2a063e4376d5ffa791b3d521f9ec4c65f79245bf93a8320bbb575e731a0254"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_FINAL",
+      "command_x_m_s": 0.074,
+      "fit_id": "p30",
+      "population": "com_x_negative",
+      "trace": {
+        "bytes": 1702004,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t92_raw_t78_com_attribution_v1\\07_TORSO_COM_X_NEG\\T78_JOINT_ADAPTER_FINAL\\p30\\traces\\x0.074_seed167931544_action_margin.jsonl",
+        "sha256": "0227238cefb4be524d46314350bf9f606e92e7a90bd253ea1ef6ac59436a8edd"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_FINAL",
+      "command_x_m_s": 0.077,
+      "fit_id": "p30",
+      "population": "com_x_negative",
+      "trace": {
+        "bytes": 3139810,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t92_raw_t78_com_attribution_v1\\07_TORSO_COM_X_NEG\\T78_JOINT_ADAPTER_FINAL\\p30\\traces\\x0.077_seed167931544_action_margin.jsonl",
+        "sha256": "b02c928a507bfe208f97bb8c1ecc53db574120feffb235a9bea7b1889266f1be"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_FINAL",
+      "command_x_m_s": 0.08,
+      "fit_id": "p30",
+      "population": "com_x_negative",
+      "trace": {
+        "bytes": 4038855,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t92_raw_t78_com_attribution_v1\\07_TORSO_COM_X_NEG\\T78_JOINT_ADAPTER_FINAL\\p30\\traces\\x0.080_seed167931544_action_margin.jsonl",
+        "sha256": "c7a5416d64e4102be6dab67c19e16061117bd7a86eff1ce10b1b33f73aa35d77"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_FINAL",
+      "command_x_m_s": 0.074,
+      "fit_id": "p31_34",
+      "population": "com_x_negative",
+      "trace": {
+        "bytes": 1558407,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t92_raw_t78_com_attribution_v1\\07_TORSO_COM_X_NEG\\T78_JOINT_ADAPTER_FINAL\\p31_34\\traces\\x0.074_seed167931544_action_margin.jsonl",
+        "sha256": "30c4faddf9dca0fe2e1fcf55b307752b7a6897716c19e049352aa3633090f34f"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_FINAL",
+      "command_x_m_s": 0.077,
+      "fit_id": "p31_34",
+      "population": "com_x_negative",
+      "trace": {
+        "bytes": 5564792,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t92_raw_t78_com_attribution_v1\\07_TORSO_COM_X_NEG\\T78_JOINT_ADAPTER_FINAL\\p31_34\\traces\\x0.077_seed167931544_action_margin.jsonl",
+        "sha256": "63d35574acf107767d1fb0f8047fd900658a9e50672918b2b08345755286bc47"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_FINAL",
+      "command_x_m_s": 0.08,
+      "fit_id": "p31_34",
+      "population": "com_x_negative",
+      "trace": {
+        "bytes": 2655943,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t92_raw_t78_com_attribution_v1\\07_TORSO_COM_X_NEG\\T78_JOINT_ADAPTER_FINAL\\p31_34\\traces\\x0.080_seed167931544_action_margin.jsonl",
+        "sha256": "ff484e17b76d257990e8edc52ae4ceaf7a742caf705b27aa0caa4556fb2fa309"
+      }
+    }
+  ]
+}
