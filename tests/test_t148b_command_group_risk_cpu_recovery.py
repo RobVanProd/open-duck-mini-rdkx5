@@ -32,7 +32,8 @@ def test_t148b_result_when_present() -> None:
         return
     value = json.loads(path.read_text(encoding="utf-8"))
     assert value["status"] == (
-        "PASS_T148B_COMMAND_GROUP_RISK_CPU_RECOVERY"
+        "HOLD_T148B_COMMAND_GROUP_RISK_CPU_RECOVERY"
     )
-    assert value["failed_checks"] == []
+    assert value["decision"] == "CLOSE_COMMAND_GROUP_RISK_INTEGRATION"
+    assert value["failed_checks"] == ["postupdate_random_action_binding"]
     assert value["execution"]["hosted_compute_units"] == 0
