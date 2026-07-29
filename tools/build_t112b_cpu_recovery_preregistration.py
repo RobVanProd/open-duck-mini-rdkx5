@@ -8,7 +8,12 @@ from pathlib import Path
 import subprocess
 from typing import Any
 
-from tools import build_t112_always_on_trainthrough_preregistration as t112
+try:
+    from tools import (
+        build_t112_always_on_trainthrough_preregistration as t112,
+    )
+except ModuleNotFoundError:
+    import build_t112_always_on_trainthrough_preregistration as t112
 
 
 ROOT = Path(__file__).resolve().parents[1]
