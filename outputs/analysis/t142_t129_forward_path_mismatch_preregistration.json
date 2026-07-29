@@ -1,0 +1,93 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "conditional_forward_path_transform_preregistration": false,
+    "gate5": false,
+    "one_read_only_cpu_audit": true,
+    "rdkx5_or_robot": false,
+    "training": false
+  },
+  "checks": {
+    "frozen_inputs_present": true,
+    "raw_and_hard_graphs_present": true,
+    "read_only_no_behavior_training_colab_or_robot": true,
+    "t141_closed_hard_gated_expert_bank": true
+  },
+  "decision_rule": {
+    "fail_decision": "CLOSE_T129_FORWARD_PATH_MISMATCH",
+    "pass_decision": "EARN_T143_CALIBRATION_CONDITIONAL_FORWARD_PATH_TRANSFORM_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "onnx_graphs_read": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 5220,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t142_t129_forward_path_mismatch_preregistration.py",
+      "sha256": "1fa143647c154cf70547b03c034c155114ae77228cd8869ff765a072e8ba2694"
+    },
+    "runner": {
+      "bytes": 8046,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t142_t129_forward_path_mismatch_audit.py",
+      "sha256": "a0ea2afca5dcc6758ae18b51177d2beb1de6d3d4cbba448f2d78ef2270588d0a"
+    },
+    "t128_result": {
+      "bytes": 12548,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t128_negative_only_expert_cpu_result.json",
+      "sha256": "5e14111da4a8edf18f095933d0768fb2c88576357382b259604fae629c59676f"
+    },
+    "t129_prereg": {
+      "bytes": 26814,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t129_negative_only_expert_hosted_preregistration.json",
+      "sha256": "42a528a3324c09521c45c1700d2e01f6394b1a025b83498821fad31091e0bd10"
+    },
+    "t131_prereg": {
+      "bytes": 4242,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t131_t129_postexport_preregistration.json",
+      "sha256": "cdb0dfd254e82953f2170fbd4e67bd0bd6893bb537297c3351deb66e98b3eae6"
+    },
+    "t141b_result": {
+      "bytes": 120988,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t141b_worker_wiring_recovery_result.json",
+      "sha256": "d947ed8f4f0da4ddd9a556c9dddc488b6d70a624266317119c648ca930e16fcd"
+    },
+    "test": {
+      "bytes": 1066,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t142_t129_forward_path_mismatch.py",
+      "sha256": "7b9da9e514007826fc71d935298b36ae740efe0368ac4f33a9d4f9662a7cc775"
+    }
+  },
+  "hard_gate_deployments": {
+    "1003520": {
+      "bytes": 970391,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t131_t129_deployments_v1\\1003520\\deployment\\action_margin.onnx",
+      "sha256": "de0e24e1d719b76b274beb5202355c3915670a6feb64ed2f618e29b1d12b4171"
+    },
+    "2007040": {
+      "bytes": 970391,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t131_t129_deployments_v1\\2007040\\deployment\\action_margin.onnx",
+      "sha256": "0676a0fd52c13f11cefe051f416c25baf74ffc05e942436570a3c512890a2c20"
+    }
+  },
+  "preregistered_contract_sha256": "5d6bc39fc0ad069b11cbbd58e94a32676dcc4fd1e1c0ec2b7354f71104729ffa",
+  "question": "Was T129 trained with its negative expert always on but evaluated only after T131 restored a hard hidden-state gate?",
+  "raw_training_graphs": {
+    "1003520": {
+      "bytes": 960257,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t129_colab_extracted_20260729\\t129_negative_only_expert_continuation\\training\\2026_07_29_101025_1003520.onnx",
+      "sha256": "06bec5bbcc6160e59402a58091a791a1cbd8d51ef9b8629163906453b1fe169d"
+    },
+    "2007040": {
+      "bytes": 960257,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t129_colab_extracted_20260729\\t129_negative_only_expert_continuation\\training\\2026_07_29_101552_2007040.onnx",
+      "sha256": "26d243e5ac954607341413828a0d672a7296a72207bd7739a13faa036ad50655"
+    }
+  },
+  "schema_version": "open_duck.t142_t129_forward_path_mismatch_preregistration.v1",
+  "status": "PREREGISTERED_T142_T129_FORWARD_PATH_MISMATCH_AUDIT"
+}
