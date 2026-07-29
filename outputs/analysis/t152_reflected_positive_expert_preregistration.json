@@ -1,0 +1,117 @@
+{
+  "authority": {
+    "execute_transform_contract": true,
+    "gate5": false,
+    "hosted_training": false,
+    "policy_promotion": false,
+    "positive_endpoint_preregistration": false,
+    "positive_only_training_contract": false,
+    "rdkx5_or_robot": false
+  },
+  "causal_basis": {
+    "capacity": "T138/T143 prove the existing expert family differs only in one 64x14 weight and one 14-vector bias.",
+    "failure": "T151 produced twelve moving-command falls at +0.05 m COM X across both checkpoints and both measured actuator fits, while every x=0 cell passed.",
+    "observability": "T7 proved nominal, negative-X, and positive-X calibration contexts are repeatable and separated across both fits."
+  },
+  "checks": {
+    "all_inputs_present": true,
+    "conditional_forward_path_green": true,
+    "expert_sources_differ_only_in_two_adapter_tensors": true,
+    "no_training_hosted_runtime_or_hardware_change": true,
+    "positive_context_observable_and_repeatable": true,
+    "symmetric_endpoint_derivation_exact": true,
+    "t151_stopped_exactly_at_positive_com": true
+  },
+  "decision_rule": {
+    "fail_decision": "CLOSE_REFLECTED_POSITIVE_EXPERT",
+    "pass": "Both graphs contain the exact reflected tensors and only the endpoint-screen branch rewire; ABI, existing graph topology, recurrent hidden output, x=0 final action, and forced-branch context invariance all pass on CPU.",
+    "pass_decision": "EARN_T153_REFLECTED_POSITIVE_ENDPOINT_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "behavior_cells": 0,
+    "environment_steps": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 9007,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t152_reflected_positive_expert_preregistration.py",
+      "sha256": "ac70bc80abc61284cb2406d18af10435cf41c6b9296aeabe3f00f22a75867e91"
+    },
+    "runner": {
+      "bytes": 16327,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t152_reflected_positive_expert_transform.py",
+      "sha256": "3f8d1211340b0b323fb1b1a55f452478730febbf29e93257dc8def3eb3aed476"
+    },
+    "source_graph_1003520": {
+      "bytes": 975291,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t143c_conditional_forward_path_v1\\1003520\\conditional_forward_path.onnx",
+      "sha256": "82ab93eb97db602561b3525bb3551f4e94b87808320b8c944f6e0a9c8a4b6869"
+    },
+    "source_graph_2007040": {
+      "bytes": 975291,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t143c_conditional_forward_path_v1\\2007040\\conditional_forward_path.onnx",
+      "sha256": "a43dbac7b4995a71f53cc3ee0145ad6e2698f624c4c02749c664a7a09c2be528"
+    },
+    "t138_expert_causality": {
+      "bytes": 3205,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t138_expert_bank_causality_result.json",
+      "sha256": "ab497a364c3215d79801686415aa790d6dac76a17b816f9cb58d8c31f8d4e8ca"
+    },
+    "t143c_conditional_forward_path": {
+      "bytes": 8412,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t143c_runner_receipt_recovery_result.json",
+      "sha256": "7a40d747ae4b700b21eb2545bc9f9992a7967539afc7b4fd83b8f45efb8b3504"
+    },
+    "t151_full_r2_stop": {
+      "bytes": 960097,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t151_command_plateau_full_r2_result.json",
+      "sha256": "a6ce9ab4ff0d366fde794dba306371ea2c13bc96c4ad66ef1246f0d3a5cd2496"
+    },
+    "t7_context_support": {
+      "bytes": 120017,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t7_universal_response_support_result.json",
+      "sha256": "411cd8ca398a1da45bf5e4ed2da4601e8d2e18eff4b75c67c41a308c1a60e7ac"
+    },
+    "test": {
+      "bytes": 1373,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t152_reflected_positive_expert.py",
+      "sha256": "bdca2711847f835d3236c378815b5fa806735509a7f142f330e132f6b6ce6d47"
+    }
+  },
+  "mechanism": {
+    "action_pipeline": "unchanged",
+    "derived_scalar_search": false,
+    "endpoint_screen_branch": "force_reflected_expert_for_positive_endpoint_only",
+    "external_input_abi": "unchanged_115_14_64_plus_context",
+    "negative_endpoint_m": -0.05,
+    "nominal_endpoint_m": 0.0,
+    "positive_endpoint_m": 0.05,
+    "recurrent_state": "unchanged",
+    "reflection_formula": "positive=2*nominal-negative",
+    "reflection_scale": -1.0,
+    "runtime_change": false,
+    "safety_pipeline": "unchanged",
+    "training": false,
+    "transformed_tensors": [
+      "negative_adapter_weight",
+      "negative_adapter_bias"
+    ]
+  },
+  "preregistered_contract_sha256": "afe73129dae00b3436a02a9558316ba26da449934aaba231fedcc8a53026bc14",
+  "question": "Does the unique first-order reflection of the learned negative-COM adapter provide a finite, ABI-exact positive-COM expert worth testing before any positive-only hosted continuation?",
+  "repository_commit": "9c8b6d49b5076024269b7246c2f86ce9f8a27338",
+  "schema_version": "open_duck.t152_reflected_positive_expert_preregistration.v1",
+  "status": "PREREGISTERED_T152_REFLECTED_POSITIVE_EXPERT",
+  "thresholds": {
+    "maximum_context_dependence_error": 0.0,
+    "maximum_hidden_state_error": 0.0,
+    "maximum_x0_action_abs": 0.0,
+    "minimum_moving_action_changed_fraction": 0.5,
+    "random_chain_steps": 256,
+    "x0_samples": 64
+  }
+}
