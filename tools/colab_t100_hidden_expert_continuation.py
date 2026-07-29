@@ -31,6 +31,7 @@ REFERENCE_NAME = base.REFERENCE_NAME
 STEP_ZERO_NAME = base.STEP_ZERO_NAME
 SOURCE_CHECKPOINT_NAME = base.SOURCE_CHECKPOINT_NAME
 EXPECTED_STEPS = [0, 1_003_520, 2_007_040]
+_BASE_RUNNER_COMMAND = base.runner_command
 
 
 def runner_command(
@@ -40,7 +41,7 @@ def runner_command(
     reference: Path,
 ) -> list[str]:
     """Change only T78's actor-update mechanism and source/gate assets."""
-    command = base.runner_command(playground, output, source, reference)
+    command = _BASE_RUNNER_COMMAND(playground, output, source, reference)
     old = "--winner_t77_endpoint_joint_adapter_continuation"
     command[command.index(old)] = "--winner_t98_hidden_expert_continuation"
     index = command.index("--winner_t98_hidden_expert_continuation") + 1
