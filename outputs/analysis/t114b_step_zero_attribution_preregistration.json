@@ -1,0 +1,101 @@
+{
+  "assets": {
+    "cpu_step_zero_export": {
+      "bytes": 960257,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t112_always_on_trainthrough_cpu_v1\\smoke\\2026_07_29_011632_0.onnx",
+      "sha256": "b34d8b2505185f6dad3934145fe61a4c88cc7814f81fa047ef942922a5bc4a91"
+    },
+    "expected_transform": {
+      "bytes": 960290,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t112_always_on_trainthrough_cpu_v1\\t100c_half_expected_always_on.onnx",
+      "sha256": "bbe1e2af5131d112a79d4a332a7837ee98476aec5ef40dc16676c88b17e7e39c"
+    },
+    "hosted_step_zero_export": {
+      "bytes": 960257,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t113_colab_extracted_20260729\\t78_endpoint_joint_adapter_continuation\\training\\2026_07_29_054603_0.onnx",
+      "sha256": "b34d8b2505185f6dad3934145fe61a4c88cc7814f81fa047ef942922a5bc4a91"
+    }
+  },
+  "authority": {
+    "behavior_evaluation": false,
+    "checkpoint_selection": false,
+    "gate5": false,
+    "hosted_training": false,
+    "optimizer_steps": false,
+    "rdkx5_or_robot": false,
+    "read_only_attribution": true
+  },
+  "checks": {
+    "cpu_and_hosted_export_byte_exact": true,
+    "expected_differs_from_export_bytes": true,
+    "read_only_no_optimizer_behavior_hosted_or_robot": true,
+    "t112b_step_zero_functional_contract_green": true,
+    "t114_is_single_check_hold": true
+  },
+  "contract": {
+    "abi_equal": true,
+    "cpu_hosted_byte_identity_required": true,
+    "expected_model_and_hosted_model_node_count_equal": true,
+    "initializers_equal": true,
+    "maximum_numerical_error": 0.0,
+    "only_serialized_node_difference": {
+      "expected_name": "t109_always_on_negative_adapter",
+      "hosted_name": "",
+      "index": 27,
+      "inputs": [
+        "negative_adapter_location"
+      ],
+      "op_type": "Identity",
+      "outputs": [
+        "conditional_adapter_location"
+      ]
+    },
+    "random_recurrent_chain_steps": 256
+  },
+  "decision_rule": {
+    "fail_decision": "NO_BEHAVIOR_EVALUATION",
+    "pass": "CPU and hosted exports are byte-identical; expected and hosted models have identical ABI, initializers, and nodes except the preregistered Identity node name; clearing that name makes the protobuf exact; and 256 recurrent steps are numerically bit-exact.",
+    "pass_decision": "EARN_T115_ALWAYS_ON_TRAINTHROUGH_NOMINAL_PREREGISTRATION_ONLY"
+  },
+  "failed_checks": [],
+  "preregistered_contract_sha256": "0acb3a1b22d066f62b45e6f31e13cf7edbd6376eb536a3062bd79906581f0017",
+  "question": "Is T114's sole byte-identity failure caused only by protobuf node metadata, while the CPU and hosted exporters and all numerical outputs remain exact?",
+  "repository_commit": "00eb1a129c03fa45ca673e18003a7528cd1f3320",
+  "schema_version": "open_duck.t114b_step_zero_attribution_preregistration.v1",
+  "sources": {
+    "builder": {
+      "bytes": 6872,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t114b_step_zero_attribution_preregistration.py",
+      "sha256": "f877f8e2f57c7d8ac7ba5e45ca480e2450d3e500ec92de3174cdb51cef86535a"
+    },
+    "runner": {
+      "bytes": 7398,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t114b_step_zero_attribution.py",
+      "sha256": "2143670a047db83bb1f8a81474def911f6c20c8ee0ca13356f79a8c9091c0a6e"
+    },
+    "t112b_cpu_result": {
+      "bytes": 8013,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t112b_cpu_recovery_result.json",
+      "sha256": "c549d07a91a6976a1c5a10cc0fd9d293b4dbfde8d98ffb544bbea58893496267"
+    },
+    "t114_hold": {
+      "bytes": 8969,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t114_t113_recovered_training_validation.json",
+      "sha256": "40b4fb28d6227a7d46d5e076ca4b35c9ee7efb5e3a1c7d3e00d9e69a21c6d0e6"
+    },
+    "test": {
+      "bytes": 1559,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t114b_step_zero_attribution.py",
+      "sha256": "b6898abae2fa7825ee529a2428aaae71fa119e70e682e11164c8f586b9982266"
+    }
+  },
+  "status": "PREREGISTERED_T114B_STEP_ZERO_READ_ONLY_ATTRIBUTION"
+}
