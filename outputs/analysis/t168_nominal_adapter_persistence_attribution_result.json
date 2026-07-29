@@ -1,0 +1,477 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "cpu_attribution": true,
+    "cpu_continuation_contract": false,
+    "gate5": false,
+    "hosted_training": false,
+    "policy_promotion": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "all_inference_outputs_finite": true,
+    "both_y_negative_contexts_take_nominal_route": true,
+    "composed_nodes_exact_and_only_seven_expected_constants_differ": true,
+    "composed_nominal_pair_is_exact_raw_t100c_pair": true,
+    "half_final_action_difference_is_observable": true,
+    "inactive_group_swaps_preserve_half_on_every_protected_row": true,
+    "nominal_pair_swap_recreates_final_on_every_protected_row": true,
+    "raw_t100c_nodes_exact_and_only_nominal_adapter_pair_differs": true,
+    "stored_inference_only_no_simulator_behavior_optimizer_colab_robot": true,
+    "t167_closed_static_y_router_with_all_prior_hashes_exact": true
+  },
+  "composed_graph_difference": {
+    "all_arrays_finite": true,
+    "changed_initializers": [
+      "negative_adapter_bias",
+      "negative_adapter_weight",
+      "nominal_condition_negative_adapter_bias",
+      "nominal_condition_negative_adapter_weight",
+      "positive_adapter_bias",
+      "positive_adapter_weight",
+      "t162_endpoint_command"
+    ],
+    "initializer_names_exact": true,
+    "left_nodes": 121,
+    "node_differences": [],
+    "nodes_byte_exact": true,
+    "right_nodes": 121
+  },
+  "decision": "EARN_T169_EIGHT_STRATUM_HEAD_CONTINUATION_CPU_CONTRACT_PREREGISTRATION_ONLY",
+  "execution": {
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "onnx_variants": 6,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_steps": 0,
+    "stored_inference_rows": 8152
+  },
+  "failed_checks": [],
+  "nominal_source_binding": {
+    "final_bias_exact": true,
+    "final_weight_exact": true,
+    "half_bias_exact": true,
+    "half_weight_exact": true
+  },
+  "preregistered_contract_sha256": "494b5081bae54f15a01796f85355604501ce45d564bdd37dd91e1bbcf715a5f6",
+  "raw_t100c_graph_difference": {
+    "all_arrays_finite": true,
+    "changed_initializers": [
+      "negative_adapter_bias",
+      "negative_adapter_weight"
+    ],
+    "initializer_names_exact": true,
+    "left_nodes": 37,
+    "node_differences": [],
+    "nodes_byte_exact": true,
+    "right_nodes": 37
+  },
+  "result_sha256": "838fed6bc2d2019ac589e8e4d4d8824011a147c4dc063372a7e8edd97abd9e47",
+  "routes": [
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "FLOOR_FRICTION_LO",
+      "context_sha256": "768d607d1a0bb41a4442fad51f0e93981438ce330a2235d3bdd1524e95435ba4",
+      "fit_id": "p30",
+      "negative_router_score": -0.18254637718200684,
+      "positive_router_score": -0.09058880805969238
+    },
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "FLOOR_FRICTION_LO",
+      "context_sha256": "c670f613f7c71565b7471892539aa8ae4222b3cd5f82d82f95db4a69cc249412",
+      "fit_id": "p31_34",
+      "negative_router_score": -0.1825728416442871,
+      "positive_router_score": -0.0905616283416748
+    },
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "FLOOR_FRICTION_HI",
+      "context_sha256": "768d607d1a0bb41a4442fad51f0e93981438ce330a2235d3bdd1524e95435ba4",
+      "fit_id": "p30",
+      "negative_router_score": -0.18254637718200684,
+      "positive_router_score": -0.09058880805969238
+    },
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "FLOOR_FRICTION_HI",
+      "context_sha256": "c670f613f7c71565b7471892539aa8ae4222b3cd5f82d82f95db4a69cc249412",
+      "fit_id": "p31_34",
+      "negative_router_score": -0.1825728416442871,
+      "positive_router_score": -0.0905616283416748
+    },
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "JOINT_FRICTIONLOSS_LO",
+      "context_sha256": "8a0e1bf8d681fd35d7414876a00a62db1b4baeac63d371475cb5b5f88b2fa679",
+      "fit_id": "p30",
+      "negative_router_score": -0.18270671367645264,
+      "positive_router_score": -0.09042882919311523
+    },
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "JOINT_FRICTIONLOSS_LO",
+      "context_sha256": "6d4e29b27a416fc3800522a9137e55a2ebd7c3c850bb23fcca8d4a37149e8e50",
+      "fit_id": "p31_34",
+      "negative_router_score": -0.18284785747528076,
+      "positive_router_score": -0.09028804302215576
+    },
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "JOINT_FRICTIONLOSS_HI",
+      "context_sha256": "6a9ca2f87b95d6dc32a2a4cd80416af4d59a49daa8196c012666b7901bb3dfbe",
+      "fit_id": "p30",
+      "negative_router_score": -0.18781638145446777,
+      "positive_router_score": -0.08531463146209717
+    },
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "JOINT_FRICTIONLOSS_HI",
+      "context_sha256": "62b7ff3e6ac6d23dd1bcc7d5bd8008ab7dcf733a78c8ab27d6937999adcf62fc",
+      "fit_id": "p31_34",
+      "negative_router_score": -0.18258190155029297,
+      "positive_router_score": -0.0905524492263794
+    },
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "ARMATURE_LO",
+      "context_sha256": "768d607d1a0bb41a4442fad51f0e93981438ce330a2235d3bdd1524e95435ba4",
+      "fit_id": "p30",
+      "negative_router_score": -0.18254637718200684,
+      "positive_router_score": -0.09058880805969238
+    },
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "ARMATURE_LO",
+      "context_sha256": "c670f613f7c71565b7471892539aa8ae4222b3cd5f82d82f95db4a69cc249412",
+      "fit_id": "p31_34",
+      "negative_router_score": -0.1825728416442871,
+      "positive_router_score": -0.0905616283416748
+    },
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "ARMATURE_HI",
+      "context_sha256": "cf42057f64a533860fc2dc61156449a2f62c62bf270095649e60359dc6e8ec4e",
+      "fit_id": "p30",
+      "negative_router_score": -0.1825413703918457,
+      "positive_router_score": -0.09059369564056396
+    },
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "ARMATURE_HI",
+      "context_sha256": "852cc4c7d30c2e373fb6404d9906a8b5b5dc12c08cfc26ae141b5c6b2a1b4b4d",
+      "fit_id": "p31_34",
+      "negative_router_score": -0.18249249458312988,
+      "positive_router_score": -0.09064197540283203
+    },
+    {
+      "active_route": "negative_expert",
+      "condition_id": "TORSO_COM_X_NEG",
+      "context_sha256": "9e17ef5e035718f67bd75bca0cbf6c2e9f10303b81b01d66a774f56a650501fd",
+      "fit_id": "p30",
+      "negative_router_score": 0.18251872062683105,
+      "positive_router_score": -0.4552648067474365
+    },
+    {
+      "active_route": "negative_expert",
+      "condition_id": "TORSO_COM_X_NEG",
+      "context_sha256": "291b70f7ac5275d4cf607acd772c1a14607c2d409b4ce7658100badf49d0ac88",
+      "fit_id": "p31_34",
+      "negative_router_score": 0.1826009750366211,
+      "positive_router_score": -0.4553464651107788
+    },
+    {
+      "active_route": "positive_expert",
+      "condition_id": "TORSO_COM_X_POS",
+      "context_sha256": "f909238864e73751895bb41f23aeab78aeba8a36465c249467671bfbf53de408",
+      "fit_id": "p30",
+      "negative_router_score": -0.363114595413208,
+      "positive_router_score": 0.0905616283416748
+    },
+    {
+      "active_route": "positive_expert",
+      "condition_id": "TORSO_COM_X_POS",
+      "context_sha256": "91cf671a23a3bffb006c30aadd5bf600acc559e60b2029aac23a3be4938e207a",
+      "fit_id": "p31_34",
+      "negative_router_score": -0.36316370964050293,
+      "positive_router_score": 0.09061050415039062
+    },
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "TORSO_COM_Y_NEG",
+      "context_sha256": "098cc8a292ef2f209f09f079434fa2cd0e89f02d471740212508e4ee9dffb817",
+      "fit_id": "p30",
+      "negative_router_score": -0.19270622730255127,
+      "positive_router_score": -0.08043146133422852
+    },
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "TORSO_COM_Y_NEG",
+      "context_sha256": "1877bd45d746f7c79312c5c919c68918c5139dbc382dd90314c8c5d8de9145ec",
+      "fit_id": "p31_34",
+      "negative_router_score": -0.17590677738189697,
+      "positive_router_score": -0.0972665548324585
+    },
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "TORSO_COM_Y_POS",
+      "context_sha256": "0b1fb0ae176de84913728fc743e033a26de0abe33792f380f35316c6ee5e0716",
+      "fit_id": "p30",
+      "negative_router_score": -0.18252801895141602,
+      "positive_router_score": -0.0905904769897461
+    },
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "TORSO_COM_Y_POS",
+      "context_sha256": "6b5b1d7e1c317a24c697966ae5d74b710a8ad4faba5e20c00ef8db0a2315aed4",
+      "fit_id": "p31_34",
+      "negative_router_score": -0.18267345428466797,
+      "positive_router_score": -0.09044432640075684
+    },
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "TORSO_COM_Z_NEG",
+      "context_sha256": "a512ed3019b6c6036c7df1b17f9810360dd89f62a1698055abb0b359827f26b2",
+      "fit_id": "p30",
+      "negative_router_score": -0.18138206005096436,
+      "positive_router_score": -0.09176075458526611
+    },
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "TORSO_COM_Z_NEG",
+      "context_sha256": "ad2e57c559dc5e022a2b77bfa6c376a0dcb31dbf1df676cb03acfe4bc0477a38",
+      "fit_id": "p31_34",
+      "negative_router_score": -0.17718791961669922,
+      "positive_router_score": -0.09595561027526855
+    },
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "TORSO_COM_Z_POS",
+      "context_sha256": "6600b682ef79d7d55d97b249a40ef0e40a11b416f876754cf8442a67177ebf54",
+      "fit_id": "p30",
+      "negative_router_score": -0.18904554843902588,
+      "positive_router_score": -0.08407735824584961
+    },
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "TORSO_COM_Z_POS",
+      "context_sha256": "2750ddf5c5cac23b797b05bfb3b45d88e89fc4f5cdde47d3fea65d9d728efcf2",
+      "fit_id": "p31_34",
+      "negative_router_score": -0.189039945602417,
+      "positive_router_score": -0.08408308029174805
+    },
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "ALL_LINK_MASS_LO",
+      "context_sha256": "3526f4db3aef3fe3d746c2e78a344cc7d39397a1ec5788750fa0e739a82a0dbf",
+      "fit_id": "p30",
+      "negative_router_score": -0.14207744598388672,
+      "positive_router_score": -0.13112008571624756
+    },
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "ALL_LINK_MASS_LO",
+      "context_sha256": "4c51aa87e753e81516e9dba7afcb3d4dade3a428f5f8653e51caed1b30c02efb",
+      "fit_id": "p31_34",
+      "negative_router_score": -0.14215445518493652,
+      "positive_router_score": -0.1310434341430664
+    },
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "ALL_LINK_MASS_HI",
+      "context_sha256": "1ac8258256953dd8c622c56c9747083ed8c51305841df23b785bb8d2998bb4f2",
+      "fit_id": "p30",
+      "negative_router_score": -0.21364188194274902,
+      "positive_router_score": -0.05944371223449707
+    },
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "ALL_LINK_MASS_HI",
+      "context_sha256": "a8410d072db01732954d17c95dc96f352068ced286347e6b847d3436830b4136",
+      "fit_id": "p31_34",
+      "negative_router_score": -0.2134343981742859,
+      "positive_router_score": -0.059651732444763184
+    },
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "TORSO_MASS_NEG",
+      "context_sha256": "4879c1b9c798e9354ab55cfa5283fe36cb54e1b932df7d082500a0f7a3917ebf",
+      "fit_id": "p30",
+      "negative_router_score": -0.1850574016571045,
+      "positive_router_score": -0.08807039260864258
+    },
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "TORSO_MASS_NEG",
+      "context_sha256": "0f35d25e6f9727b75c00a18c5167382269cf507aec2a1156b3ec392b049af223",
+      "fit_id": "p31_34",
+      "negative_router_score": -0.17830705642700195,
+      "positive_router_score": -0.09482645988464355
+    },
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "TORSO_MASS_POS",
+      "context_sha256": "cce3a8ad1678ac08de84d6fd908b41512cf81d8ccbf0d1ed3b595b0a2d9bbc72",
+      "fit_id": "p30",
+      "negative_router_score": -0.19099950790405273,
+      "positive_router_score": -0.08213400840759277
+    },
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "TORSO_MASS_POS",
+      "context_sha256": "ca4c2430023371be6513ec3d48dcaa253f455d48219693c0c16425b57eb0f510",
+      "fit_id": "p31_34",
+      "negative_router_score": -0.18690383434295654,
+      "positive_router_score": -0.08623194694519043
+    },
+    {
+      "active_route": "positive_expert",
+      "condition_id": "HOME_JOINT_OFFSET_NEG",
+      "context_sha256": "8a3eb3e7d2023931918cd65027ad4b7c1d2f22e26ef5f659536a7867629616ad",
+      "fit_id": "p30",
+      "negative_router_score": -0.5274960398674011,
+      "positive_router_score": 0.25563478469848633
+    },
+    {
+      "active_route": "positive_expert",
+      "condition_id": "HOME_JOINT_OFFSET_NEG",
+      "context_sha256": "2f5a695214247f38ddf512e17b4a9fb28d6f20cf2414f0ad0efdf17538dda374",
+      "fit_id": "p31_34",
+      "negative_router_score": -0.5272561311721802,
+      "positive_router_score": 0.25539231300354004
+    },
+    {
+      "active_route": "negative_expert",
+      "condition_id": "HOME_JOINT_OFFSET_POS",
+      "context_sha256": "a28664ab4f8ed7ccbf644047dd34494fdff1d45d6fcb1e0eb4d19fdd16de55b1",
+      "fit_id": "p30",
+      "negative_router_score": 0.19440102577209473,
+      "positive_router_score": -0.4668722152709961
+    },
+    {
+      "active_route": "negative_expert",
+      "condition_id": "HOME_JOINT_OFFSET_POS",
+      "context_sha256": "cffefe5f254bfccf1d6617a2fc33d4d85e2ffd3126a0add6fb42133e3a4c9c9e",
+      "fit_id": "p31_34",
+      "negative_router_score": 0.19442105293273926,
+      "positive_router_score": -0.466891884803772
+    },
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "KP_LO",
+      "context_sha256": "de9b5d4b8de758a2afcb7ddfeec8c15d9880243d977f15399208000c46cd4638",
+      "fit_id": "p30",
+      "negative_router_score": -0.22020304203033447,
+      "positive_router_score": -0.05287003517150879
+    },
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "KP_LO",
+      "context_sha256": "ebb7fcc0e2b19bd051bf9ecc7343dd90630367545097c99de86505b8bc3dfeae",
+      "fit_id": "p31_34",
+      "negative_router_score": -0.21670019626617432,
+      "positive_router_score": -0.05637669563293457
+    },
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "KP_HI",
+      "context_sha256": "22003badb9dd1c98f103e2e6e1185e4234fc8234500f6d14a18ad0b0e1a8295b",
+      "fit_id": "p30",
+      "negative_router_score": -0.14464688301086426,
+      "positive_router_score": -0.12855052947998047
+    },
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "KP_HI",
+      "context_sha256": "c5a7efd685e1410ee87e30ce564bdc4fba0bd047b0d0dec7a67e462c110e2faf",
+      "fit_id": "p31_34",
+      "negative_router_score": -0.14466917514801025,
+      "positive_router_score": -0.12852787971496582
+    }
+  ],
+  "schema_version": "open_duck.t168_nominal_adapter_persistence_attribution_result.v1",
+  "status": "PASS_T168_NOMINAL_ADAPTER_PERSISTENCE_ATTRIBUTION",
+  "stored_trace_replay": {
+    "all_outputs_finite": true,
+    "by_fit": {
+      "p30": {
+        "half_final_action_different": 395,
+        "inactive_match_half": {
+          "negative_expert": 3954,
+          "positive_endpoint": 3954,
+          "positive_expert": 3954
+        },
+        "nominal_matches_final": 3954,
+        "rows": 3954
+      },
+      "p31_34": {
+        "half_final_action_different": 444,
+        "inactive_match_half": {
+          "negative_expert": 4198,
+          "positive_endpoint": 4198,
+          "positive_expert": 4198
+        },
+        "nominal_matches_final": 4198,
+        "rows": 4198
+      }
+    },
+    "half_final_action_different_rows": 839,
+    "inactive_hybrid_matches_half_rows": {
+      "negative_expert": 8152,
+      "positive_endpoint": 8152,
+      "positive_expert": 8152
+    },
+    "maximum_half_final_action_delta": 0.19999998807907104,
+    "nominal_hybrid_matches_final_rows": 8152,
+    "rows": 8152
+  },
+  "variant_paths": {
+    "final": "D:\\CodexArtifacts\\open-duck-policy\\t164_prior_repair_composition_v1\\2007040\\composed_three_way_router.onnx",
+    "half": "D:\\CodexArtifacts\\open-duck-policy\\t164_prior_repair_composition_v1\\1003520\\composed_three_way_router.onnx",
+    "negative_expert": "D:\\CodexArtifacts\\open-duck-policy\\t168_nominal_adapter_persistence_attribution_v1\\half_with_final_negative_expert.onnx",
+    "nominal_expert": "D:\\CodexArtifacts\\open-duck-policy\\t168_nominal_adapter_persistence_attribution_v1\\half_with_final_nominal_expert.onnx",
+    "positive_endpoint": "D:\\CodexArtifacts\\open-duck-policy\\t168_nominal_adapter_persistence_attribution_v1\\half_with_final_positive_endpoint.onnx",
+    "positive_expert": "D:\\CodexArtifacts\\open-duck-policy\\t168_nominal_adapter_persistence_attribution_v1\\half_with_final_positive_expert.onnx"
+  },
+  "variant_scope": {
+    "changed_initializers": [
+      "negative_adapter_bias",
+      "negative_adapter_weight",
+      "nominal_condition_negative_adapter_bias",
+      "nominal_condition_negative_adapter_weight",
+      "positive_adapter_bias",
+      "positive_adapter_weight",
+      "t162_endpoint_command"
+    ],
+    "expected_changed_initializers": [
+      "negative_adapter_bias",
+      "negative_adapter_weight",
+      "nominal_condition_negative_adapter_bias",
+      "nominal_condition_negative_adapter_weight",
+      "positive_adapter_bias",
+      "positive_adapter_weight",
+      "t162_endpoint_command"
+    ],
+    "only_expected_groups_differ": true
+  },
+  "y_negative_routes": [
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "TORSO_COM_Y_NEG",
+      "context_sha256": "098cc8a292ef2f209f09f079434fa2cd0e89f02d471740212508e4ee9dffb817",
+      "fit_id": "p30",
+      "negative_router_score": -0.19270622730255127,
+      "positive_router_score": -0.08043146133422852
+    },
+    {
+      "active_route": "nominal_expert",
+      "condition_id": "TORSO_COM_Y_NEG",
+      "context_sha256": "1877bd45d746f7c79312c5c919c68918c5139dbc382dd90314c8c5d8de9145ec",
+      "fit_id": "p31_34",
+      "negative_router_score": -0.17590677738189697,
+      "positive_router_score": -0.0972665548324585
+    }
+  ]
+}
