@@ -1,0 +1,54 @@
+{
+  "authority": {
+    "additional_training_run": false,
+    "behavior_evaluation": false,
+    "gate5": false,
+    "one_recovery_preregistration": true,
+    "rdkx5_or_robot": false,
+    "recovery_launch": false
+  },
+  "checks": {
+    "failure_precedes_base_run_state_write": true,
+    "fix_is_single_dispatch_capture": true,
+    "frozen_failed_driver_reproduces_recursion": true,
+    "history_proves_single_failed_execution_and_stop": true,
+    "optimizer_simulator_behavior_steps_zero_by_control_flow": true,
+    "receipt_proves_no_result_or_archive": true,
+    "robot_or_rdk_access_zero": true,
+    "training_recipe_gate_head_thresholds_unchanged": true
+  },
+  "classification": "PRE_OPTIMIZER_DRIVER_DISPATCH_RECURSION",
+  "decision": "EARN_ONE_T100B_PREEXECUTION_RECOVERY_PREREGISTRATION_ONLY",
+  "failed_checks": [],
+  "failure": {
+    "fixed_driver": {
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\colab_t100_hidden_expert_continuation.py",
+      "sha256": "3cc058b3b25cf292ac553cbddf674a1acc59009adf9b0b00ee11bee9613a6e9e"
+    },
+    "frozen_failed_driver": {
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t100_hidden_expert_package_v1\\t100_hidden_expert_bundle\\colab_t100_hidden_expert_continuation.py",
+      "sha256": "83ea5ff09b7198c3eafb826c7f1f59da303cc521c4bc441539fe3328070d3397"
+    },
+    "history": {
+      "path": "C:\\Users\\usa50\\.config\\colab-cli\\history\\t100-hidden-expert-20260728.jsonl",
+      "sha256": "850594532318d505b114de08f24054d890cecb9d5b6b0151dc9e0aeb798b6acf"
+    },
+    "receipt": {
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t100_colab_failure_20260728\\t100_launch_receipt.json",
+      "sha256": "7013c9a68b21f8b8af0ada18a8316f6c3b1301030a32df78ba3001e1cdfcf3f2"
+    },
+    "reproduction": "RecursionError: maximum recursion depth exceeded"
+  },
+  "interpretation": {
+    "hosted_training_attempt_consumed": false,
+    "mechanism_changed": false,
+    "optimizer_started": false,
+    "recipe_changed": false,
+    "replacement_is_training_retry": false,
+    "simulator_training_started": false,
+    "threshold_changed": false
+  },
+  "result_sha256": "8432308f2bc726afb0d5f65d9fe8652cce9c880ce405a924852d8a83c06bff4f",
+  "schema_version": "open_duck.t100_preexecution_hold_attribution.v1",
+  "status": "PASS_T100_PREEXECUTION_HOLD_ATTRIBUTION"
+}
