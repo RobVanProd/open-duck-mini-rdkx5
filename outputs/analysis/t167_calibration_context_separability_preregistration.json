@@ -1,0 +1,319 @@
+{
+  "adapter_contract": {
+    "base_patched_source_sha256": "dcb1313349d3488883040be07882cc28537b1e848ec29576e98ea8e1cedd516c",
+    "patched_source_sha256": "b77ef232481091dbd3b9b3059a0e01cf65fb201e6e143e2879ec218c4a497717",
+    "response_context_field_count": 1,
+    "semantic_change": "one diagnostic output field after the frozen 250-tick calibration prefix; transition, observation, action, and handoff semantics are unchanged"
+  },
+  "authority": {
+    "expert_cpu_contract_preregistration": false,
+    "formal_behavior_evaluation": false,
+    "forty_cpu_calibration_prefixes": true,
+    "forty_diagnostic_locomotion_ticks": true,
+    "gate5": false,
+    "rdkx5_or_robot": false,
+    "training": false
+  },
+  "checks": {
+    "adapter_is_diagnostic_only": true,
+    "frozen_inputs_present": true,
+    "no_behavior_training_colab_or_robot_now": true,
+    "t165_stopped_at_y_negative": true,
+    "t166_closed_simple_lateral_overlay": true,
+    "twenty_conditions_two_fits": true
+  },
+  "classifier": {
+    "combined_direction": "unit(mean of the two per-fit Y-negative-minus-control difference vectors)",
+    "combined_threshold": "midpoint of minimum Y-negative score and maximum non-Y-negative score across all 40 cells",
+    "control_condition": "ARMATURE_LO",
+    "cross_fit_test": "train on p30, classify all 20 p31_34 contexts; train on p31_34, classify all 20 p30 contexts",
+    "feature": "calibration_context[1,64]",
+    "no_scalar_search": true,
+    "per_fit_direction": "unit(TORSO_COM_Y_NEG - ARMATURE_LO) on the training fit",
+    "per_fit_threshold": "midpoint of training-fit positive score and maximum training-fit non-Y-negative score",
+    "positive_condition": "TORSO_COM_Y_NEG"
+  },
+  "decision_rule": {
+    "dedicated_expert_contract_if": [
+      "all 40 contexts are finite float32 [1,64]",
+      "all 18 already-observed condition-1-through-9 context hashes match T165",
+      "both cross-fit classifiers identify exactly one Y-negative context and zero false positives",
+      "the combined classifier identifies both Y-negative contexts and zero false positives with positive margin"
+    ],
+    "fail_decision": "CLOSE_STATIC_CALIBRATION_ROUTING_FOR_Y_NEGATIVE",
+    "pass_decision": "EARN_T168_DEDICATED_Y_NEGATIVE_EXPERT_CPU_CONTRACT_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "calibration_prefixes": 0,
+    "diagnostic_locomotion_ticks": 0,
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "adapter": {
+      "bytes": 2265,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\t167_response_context_eval_adapter.py",
+      "sha256": "d00bca1aadef448cd4c8685c155713d1d7753fea28f948b62cc563664501e53e"
+    },
+    "builder": {
+      "bytes": 7796,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t167_calibration_context_separability_preregistration.py",
+      "sha256": "a650ee50896d4292ea8655d134319cc26ec2fb794df491051869f2f1e0eda9af"
+    },
+    "router_asset": {
+      "bytes": 2431,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t135_calibration_context_router_v1\\calibration_context_router_asset.json",
+      "sha256": "8bf59871ef2a98771416b075f38b66480007edace26b121b549f456c92424a26"
+    },
+    "runner": {
+      "bytes": 18237,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t167_calibration_context_separability.py",
+      "sha256": "d70784e78666a48f7b64780a4511b3a1fa7576004d68c4d9c74a96608bcaddbd"
+    },
+    "t143_preregistration": {
+      "bytes": 4170,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t143_conditional_forward_path_preregistration.json",
+      "sha256": "d240ec83cd24372b6a32e9d3574136cf96750eaf7793924f2ddead06733783a2"
+    },
+    "t165_preregistration": {
+      "bytes": 13824,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t165_composed_full_r2_preregistration.json",
+      "sha256": "4d59315aa94022c993cddcd54072978c8bd5bc3bb9711ea63983eafd27a06424"
+    },
+    "t165_result": {
+      "bytes": 1076833,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t165_composed_full_r2_result.json",
+      "sha256": "52bab73fba708d44b1c10f527e10bb3d2d0c6761a0fc34a94f488027f28daba2"
+    },
+    "t166_result": {
+      "bytes": 652785,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t166_lateral_persistence_autopsy_result.json",
+      "sha256": "b542f7a4de962034b710cd432f1b9bfed2f348547c737a33b76aa5e50da2e71e"
+    },
+    "test": {
+      "bytes": 1875,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t167_calibration_context_separability.py",
+      "sha256": "b7add9da5f10131579edf2de2937ade8e537afb0d8d905fd55d2fe0ec3e46753"
+    }
+  },
+  "population": {
+    "calibration_ticks": 250,
+    "calibrator": {
+      "bytes": 55573,
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v96-response-conditioned-mechanics\\winner_v96_universal_calibrator.onnx",
+      "sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576"
+    },
+    "cells": 40,
+    "command_x_m_s": 0.0,
+    "conditions": [
+      {
+        "condition_index": 1,
+        "id": "FLOOR_FRICTION_LO",
+        "override": {
+          "floor_friction": 0.5
+        }
+      },
+      {
+        "condition_index": 2,
+        "id": "FLOOR_FRICTION_HI",
+        "override": {
+          "floor_friction": 1.0
+        }
+      },
+      {
+        "condition_index": 3,
+        "id": "JOINT_FRICTIONLOSS_LO",
+        "override": {
+          "joint_frictionloss_scale": 0.9
+        }
+      },
+      {
+        "condition_index": 4,
+        "id": "JOINT_FRICTIONLOSS_HI",
+        "override": {
+          "joint_frictionloss_scale": 1.1
+        }
+      },
+      {
+        "condition_index": 5,
+        "id": "ARMATURE_LO",
+        "override": {
+          "armature_scale": 1.0
+        }
+      },
+      {
+        "condition_index": 6,
+        "id": "ARMATURE_HI",
+        "override": {
+          "armature_scale": 1.05
+        }
+      },
+      {
+        "condition_index": 7,
+        "id": "TORSO_COM_X_NEG",
+        "override": {
+          "torso_com_offset_m": [
+            -0.05,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "condition_index": 8,
+        "id": "TORSO_COM_X_POS",
+        "override": {
+          "torso_com_offset_m": [
+            0.05,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "condition_index": 9,
+        "id": "TORSO_COM_Y_NEG",
+        "override": {
+          "torso_com_offset_m": [
+            0.0,
+            -0.05,
+            0.0
+          ]
+        }
+      },
+      {
+        "condition_index": 10,
+        "id": "TORSO_COM_Y_POS",
+        "override": {
+          "torso_com_offset_m": [
+            0.0,
+            0.05,
+            0.0
+          ]
+        }
+      },
+      {
+        "condition_index": 11,
+        "id": "TORSO_COM_Z_NEG",
+        "override": {
+          "torso_com_offset_m": [
+            0.0,
+            0.0,
+            -0.05
+          ]
+        }
+      },
+      {
+        "condition_index": 12,
+        "id": "TORSO_COM_Z_POS",
+        "override": {
+          "torso_com_offset_m": [
+            0.0,
+            0.0,
+            0.05
+          ]
+        }
+      },
+      {
+        "condition_index": 13,
+        "id": "ALL_LINK_MASS_LO",
+        "override": {
+          "all_link_mass_scale": 0.9
+        }
+      },
+      {
+        "condition_index": 14,
+        "id": "ALL_LINK_MASS_HI",
+        "override": {
+          "all_link_mass_scale": 1.1
+        }
+      },
+      {
+        "condition_index": 15,
+        "id": "TORSO_MASS_NEG",
+        "override": {
+          "torso_mass_add_kg": -0.1
+        }
+      },
+      {
+        "condition_index": 16,
+        "id": "TORSO_MASS_POS",
+        "override": {
+          "torso_mass_add_kg": 0.1
+        }
+      },
+      {
+        "condition_index": 17,
+        "id": "HOME_JOINT_OFFSET_NEG",
+        "override": {
+          "joint_qpos0_offset_rad": -0.03
+        }
+      },
+      {
+        "condition_index": 18,
+        "id": "HOME_JOINT_OFFSET_POS",
+        "override": {
+          "joint_qpos0_offset_rad": 0.03
+        }
+      },
+      {
+        "condition_index": 19,
+        "id": "KP_LO",
+        "override": {
+          "kp_scale": 0.9
+        }
+      },
+      {
+        "condition_index": 20,
+        "id": "KP_HI",
+        "override": {
+          "kp_scale": 1.1
+        }
+      }
+    ],
+    "diagnostic_locomotion_ticks": 1,
+    "fits": [
+      {
+        "bytes": 18664,
+        "fit_id": "p30",
+        "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p30_actuator_fit_20260712.json",
+        "sha256": "a58db8ffc505d2bb64cba7f5618d0e2c65904fc9f9ac37b560a1231e090f5f4f"
+      },
+      {
+        "bytes": 18788,
+        "fit_id": "p31_34",
+        "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p31_34_actuator_fit_20260712.json",
+        "sha256": "2740513f6bdeb4ad3cc5dd6dc1709319389a593fd153c1ce5abae03b66131a57"
+      }
+    ],
+    "home_return_ticks": 0,
+    "playground": {
+      "manifest": {
+        "bytes": 5190,
+        "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v6\\T19_COMPOSED_SOURCE_MANIFEST.json",
+        "sha256": "d7c9b615c32f0e2c8434e958a900cc38485c0db6fea107b6115a69bbd2122a77"
+      },
+      "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v6"
+    },
+    "policy": {
+      "bytes": 983104,
+      "checkpoint_id": "T164_COMPOSED_HALF",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t164_prior_repair_composition_v1\\1003520\\composed_three_way_router.onnx",
+      "sha256": "6c9d91b46fa2b0e4b31142d49b84f53d5b5b88a987ee2c2979db77331fe58dda",
+      "step": 1003520
+    },
+    "reference_feature_table": {
+      "bytes": 259604,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+      "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+    },
+    "seed": 167931544
+  },
+  "preregistered_contract_sha256": "d077168b90c585b1dad9b3773f831963e41ce26480753ba3baeeaacf2abf62e5",
+  "question": "Does the exact state-coherent 250-tick calibration context contain a fit-stable signature for TORSO_COM_Y_NEG even though the current router was trained only for TORSO_COM_X_NEG?",
+  "schema_version": "open_duck.t167_calibration_context_separability_preregistration.v1",
+  "status": "PREREGISTERED_T167_CALIBRATION_CONTEXT_SEPARABILITY"
+}
