@@ -29,3 +29,14 @@ def test_t100b_driver_captures_base_dispatch_before_replacement() -> None:
     use = text.index("command = _BASE_RUNNER_COMMAND(")
     replacement = text.index("base.runner_command = runner_command")
     assert capture < use < replacement
+
+
+def test_t100c_wrapper_changes_only_frozen_command_dispatch() -> None:
+    text = (
+        ROOT / "tools" / "colab_t100c_original_driver_wrapper.py"
+    ).read_text(encoding="utf-8")
+    assert "_BASE_RUNNER_COMMAND = frozen_t100.base.runner_command" in text
+    assert "frozen_t100.runner_command = corrected_runner_command" in text
+    assert "return frozen_t100.main()" in text
+    assert "train" not in text.lower()
+    assert "reward" not in text.lower()
