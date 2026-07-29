@@ -62,6 +62,13 @@ def main() -> int:
     for name, expected in prereg["source_hashes"].items():
         if t20.sha256(ROOT / name) != expected:
             raise ValueError(f"T131 source changed: {name}")
+    hard_reference = Path(prereg["hard_gate_step_zero_reference"])
+    if (
+        not hard_reference.is_file()
+        or t20.sha256(hard_reference)
+        != prereg["hard_gate_step_zero_reference_sha256"]
+    ):
+        raise ValueError("T131 hard-gate step-zero reference changed")
 
     raw_root = args.raw_root.resolve()
     work = args.work_root.resolve()
@@ -84,7 +91,7 @@ def main() -> int:
             path,
             hard_path,
             reference=(
-                Path(prereg["hard_gate_step_zero_reference"])
+                hard_reference
                 if step_value == 0
                 else None
             ),
