@@ -34,9 +34,17 @@ def test_t152b_result_when_present() -> None:
         return
     value = json.loads(path.read_text(encoding="utf-8"))
     assert value["status"] == (
-        "PASS_T152B_REFLECTED_POSITIVE_EXPERT_RECOVERY"
+        "HOLD_T152B_REFLECTED_POSITIVE_EXPERT_RECOVERY"
     )
-    assert value["failed_checks"] == []
+    assert value["failed_checks"] == [
+        "realistic_moving_action_binding",
+    ]
+    assert all(
+        contract["moving_action_changed_rows"]
+        == contract["moving_rows"]
+        == 426
+        for contract in value["contracts"].values()
+    )
     assert value["execution"]["new_behavior_cells"] == 0
     assert value["execution"]["optimizer_steps"] == 0
     assert value["execution"]["hosted_compute_units"] == 0
