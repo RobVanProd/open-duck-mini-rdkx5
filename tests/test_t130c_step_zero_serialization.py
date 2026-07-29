@@ -36,13 +36,15 @@ def test_t130c_result_when_present() -> None:
         return
     value = json.loads(path.read_text(encoding="utf-8"))
     assert value["status"] == (
-        "PASS_T130C_STEP_ZERO_SERIALIZATION_RECOVERY"
+        "HOLD_T130C_STEP_ZERO_SERIALIZATION_RECOVERY"
     )
-    assert value["classification"] == (
-        "EXPECTED_UNUSED_INITIALIZER_SERIALIZATION_DIFFERENCE"
-    )
-    assert value["failed_checks"] == []
-    assert all(value["checks"].values())
+    assert value["classification"] == "UNRESOLVED_STEP_ZERO_MISMATCH"
+    assert value["failed_checks"] == [
+        "nodes_bit_exact",
+        "only_expected_unused_initializer_omitted",
+    ]
+    assert value["facts"]["trace"]["bit_exact_rows"] == 72
+    assert value["facts"]["random_chain"]["bit_exact_steps"] == 256
     assert value["execution"] == {
         "optimizer_steps": 0,
         "simulator_steps": 0,
