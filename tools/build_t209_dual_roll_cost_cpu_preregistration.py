@@ -82,7 +82,6 @@ def directory_sha256(path: Path) -> str:
                     lambda: stream.read(1024 * 1024), b""
                 ):
                     digest.update(block)
-            digest.update(b"\0")
     return digest.hexdigest()
 
 
