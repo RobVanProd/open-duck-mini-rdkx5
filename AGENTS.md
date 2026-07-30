@@ -5145,3 +5145,10 @@ Do not proceed to grounded walking until low-risk gates pass.
   and positive. This earns only T196's post-export composition
   preregistration. It does not authorize behavior evaluation, checkpoint
   selection, deployment audit, Gate 5, or hardware.
+- 2026-07-30: T196 preregisters a CPU-only post-export composition under
+  contract SHA-256 `5455765b...201c7caa`. It uniformly composes each T194
+  learned head into the frozen T164-final deployment repair, requires exact
+  x=0 and inactive-route preservation plus unchanged policy ABI/state
+  semantics, and performs no optimizer step or behavior cell. Pass earns
+  only T197's nominal-behavior preregistration; deployment audit, Gate 5,
+  and hardware remain closed.
