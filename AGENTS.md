@@ -5176,3 +5176,10 @@ Do not proceed to grounded walking until low-risk gates pass.
   is rerun. This earns only T197's nominal behavior-matrix
   preregistration; broader behavior, deployment audit, Gate 5, and hardware
   remain unauthorized.
+- 2026-07-30: T197 preregisters the cheapest nominal/default falsifier under
+  contract SHA-256 `87d76933...534eba5e`: the frozen
+  `FLOOR_FRICTION_HI` (`1.0`) condition across both T194 checkpoints, both
+  measured actuator fits, and x=`0/.074/.077/.080`, for `16` fresh CPU
+  cells. Both checkpoints are mandatory with no retry or selection. Pass
+  earns only T198's targeted Y-negative preregistration; training, hosted
+  compute, deployment audit, Gate 5, and hardware remain unauthorized.
