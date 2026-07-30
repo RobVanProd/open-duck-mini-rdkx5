@@ -4855,3 +4855,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   This earns only T186 hosted-continuation preregistration. No hosted
   training, behavior evaluation, policy promotion, deployment audit, Gate 5,
   or hardware is yet authorized.
+- 2026-07-30: T186 preregisters exactly one hosted continuation under
+  contract SHA-256 `b9c7363d...cecc5392`. It restores the exact T170 half
+  checkpoint, samples reference-correct left/right support at every reset,
+  holds phase `2/15` with support-only reward for `27` ticks, then resumes
+  unchanged T170 locomotion in the same episode. The unchanged eight-stratum
+  population uses `256` environments; only the existing
+  `negative_adapter_location` pair and critic may train, while the mature
+  actor and normalizer remain frozen. One L4 run requests `2,007,040` steps
+  and exports `0/1,003,520/2,007,040`; both nonzero checkpoints must pass,
+  with no retry, resume, or cherry-pick. Packaging and a launch contract are
+  authorized next. No Colab session, behavior evaluation, deployment audit,
+  Gate 5, or hardware has yet been authorized by a package/launch result.
