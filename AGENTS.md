@@ -5217,3 +5217,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   failure has at least one `27`-tick zero-credit run and strictly exceeds
   every comparator over that aligned window. It runs no simulator,
   optimizer, hosted compute, Gate 5, or hardware.
+- 2026-07-30: T199 passes every trace-integrity, exact ONNX replay, phase,
+  contact, and CPU check but falsifies support-credit blindness as the
+  unique cause. The failure has `38/54` aligned zero-credit rows versus
+  `33-37/54` in four matched passes, and its maximum zero-credit run is
+  `19` ticks, identical to the aligned comparator maximum and below the
+  frozen `27`-tick requirement. The fall is instead a sharp roll collapse
+  (`1.686156237` rad) at the sole interior command x=`.077`, while the same
+  half checkpoint/fit passes x=`.074/.080`. Result SHA-256:
+  `e8c63c92...4bba0c93`; decision
+  `RETURN_TO_MECHANISM_SELECTION_WITHOUT_SUPPORT_OBJECTIVE_CONTINUATION`.
+  No support-objective continuation, behavior, training, full R2,
+  deployment audit, Gate 5, or hardware is earned.
