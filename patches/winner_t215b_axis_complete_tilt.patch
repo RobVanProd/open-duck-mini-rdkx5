@@ -1,0 +1,142 @@
+diff --git a/playground/open_duck_mini_v2/joystick.py b/playground/open_duck_mini_v2/joystick.py
+--- a/playground/open_duck_mini_v2/joystick.py
++++ b/playground/open_duck_mini_v2/joystick.py
+@@ -28,6 +28,7 @@ from . import base as open_duck_mini_v2_base
+ from playground.common import winner_v3_variable_configuration as winner_v3
+ from playground.common import t19_support_trainthrough as t19
+ from playground.common import t202_predicted_roll_risk as t202
++from playground.common import t215b_axis_complete_tilt as t215b
+ 
+ # from playground.common.utils import LowPassActionFilter
+ from playground.common.poly_reference_motion import PolyReferenceMotion
+@@ -225,6 +226,7 @@ def default_config() -> config_dict.ConfigDict:
+         winner_t31_action_margin_trainthrough=False,
+         winner_t202_predicted_roll_risk=False,
+         winner_t209_dual_roll_cost=False,
++        winner_t215b_axis_complete_tilt_cost=False,
+     )
+ 
+ 
+@@ -515,6 +517,15 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+             metrics["t209/predicted_roll_risk_rad"] = jp.zeros(())
+             metrics["t209/roll_risk_excess_rad"] = jp.zeros(())
+             metrics["t209/original_clipped_reward"] = jp.zeros(())
++        if self._config.winner_t215b_axis_complete_tilt_cost:
++            metrics["cost/t215b_predicted_tilt_box"] = jp.zeros(())
++            metrics["t215b/predicted_roll_risk_rad"] = jp.zeros(())
++            metrics["t215b/predicted_pitch_risk_rad"] = jp.zeros(())
++            metrics["t215b/normalized_roll_risk"] = jp.zeros(())
++            metrics["t215b/normalized_pitch_risk"] = jp.zeros(())
++            metrics["t215b/tilt_box_score"] = jp.zeros(())
++            metrics["t215b/tilt_box_excess"] = jp.zeros(())
++            metrics["t215b/original_clipped_reward"] = jp.zeros(())
+ 
+         contact = jp.array(
+             [
+@@ -773,7 +784,40 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+ 
+         done = self._get_termination(data)
+         if self._config.winner_v127_constrained_cost:
+-            if self._config.winner_t209_dual_roll_cost:
++            if self._config.winner_t215b_axis_complete_tilt_cost:
++                base_qpos = self._floating_base_qpos_addr
++                base_qvel = self._floating_base_qvel_addr
++                roll_risk, pitch_risk = t215b.predicted_axis_risks_rad(
++                    data.qpos[base_qpos + 3 : base_qpos + 7],
++                    data.qvel[base_qvel + 3],
++                    data.qvel[base_qvel + 4],
++                )
++                roll_normalized, pitch_normalized = (
++                    t215b.normalized_axis_risks(roll_risk, pitch_risk)
++                )
++                box_score = jp.maximum(
++                    roll_normalized, pitch_normalized
++                )
++                box_excess = t215b.tilt_box_excess(box_score)
++                constrained_cost = jp.square(box_excess)
++                state.metrics["cost/t215b_predicted_tilt_box"] = (
++                    constrained_cost
++                )
++                state.metrics["t215b/predicted_roll_risk_rad"] = (
++                    roll_risk
++                )
++                state.metrics["t215b/predicted_pitch_risk_rad"] = (
++                    pitch_risk
++                )
++                state.metrics["t215b/normalized_roll_risk"] = (
++                    roll_normalized
++                )
++                state.metrics["t215b/normalized_pitch_risk"] = (
++                    pitch_normalized
++                )
++                state.metrics["t215b/tilt_box_score"] = box_score
++                state.metrics["t215b/tilt_box_excess"] = box_excess
++            elif self._config.winner_t209_dual_roll_cost:
+                 base_qpos = self._floating_base_qpos_addr
+                 base_qvel = self._floating_base_qvel_addr
+                 predicted_roll_risk = t202.predicted_roll_risk_rad(
+@@ -815,6 +859,11 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+         if self._config.winner_t209_dual_roll_cost:
+             state.metrics["t209/original_clipped_reward"] = reward
+             # The constrained cost stays outside reward and reaches PPO only
+             # through the separate cost critic and dual advantage channel.
++        if self._config.winner_t215b_axis_complete_tilt_cost:
++            state.metrics["t215b/original_clipped_reward"] = reward
++            # The componentwise box cost stays outside reward and reaches
++            # PPO only through the separate cost critic and dual channel.
+         if self._config.winner_t202_predicted_roll_risk:
+             base_qpos = self._floating_base_qpos_addr
+             base_qvel = self._floating_base_qvel_addr
+diff --git a/playground/open_duck_mini_v2/runner.py b/playground/open_duck_mini_v2/runner.py
+--- a/playground/open_duck_mini_v2/runner.py
++++ b/playground/open_duck_mini_v2/runner.py
+@@ -153,6 +153,39 @@ class OpenDuckMiniV2Runner(BaseRunner):
+                 "dual_eta=1/(ceil(K/4)*J_C0),deployment_graph=unchanged"
+             )
++        self.env_config.winner_t215b_axis_complete_tilt_cost = (
++            args.winner_t215b_axis_complete_tilt_cost
++        )
++        if args.winner_t215b_axis_complete_tilt_cost and not (
++            args.winner_v127_constrained_cost
++            and args.winner_t19_support_trainthrough
++            and args.winner_t31_action_margin_trainthrough
++            and args.winner_v3_variable_configuration
++            and args.winner_t98_hidden_expert_continuation
++            and not args.winner_t202_predicted_roll_risk
++            and not args.winner_t209_dual_roll_cost
++            and args.ground_up_peak_torque_exceedance_scale == 0.0
++            and args.ground_up_linear_peak_torque_exceedance_scale == 0.0
++        ):
++            raise ValueError(
++                "T215B requires the exact T170 V3/T19/T31/T98 "
++                "continuation, the V127 separate-cost engine, no T202/T209 "
++                "cost, and no legacy torque reward penalty"
++            )
++        if args.winner_t215b_axis_complete_tilt_cost:
++            print(
++                "T215B_AXIS_COMPLETE_TILT_COST="
++                "horizon_s=0.08,"
++                "roll_envelope_rad=0.3541802655745987,"
++                "pitch_envelope_rad=0.2379576557426921,"
++                "score=max(roll_norm,pitch_norm),"
++                "cost=unscaled_squared_box_excess,"
++                "reward_channel=unchanged,cost_critic=separate,"
++                "cost_discount=1.0,"
++                "actor_advantage=(A_R-lambda*A_C)/(1+lambda),"
++                "dual_eta=1/(ceil(K/4)*J_C0),"
++                "deployment_graph=unchanged"
++            )
+         if (
+             args.winner_t31_action_margin_trainthrough
+             and not args.winner_t19_support_trainthrough
+@@ -521,6 +554,10 @@ def main() -> None:
+         "--winner_t209_dual_roll_cost",
+         action="store_true",
+     )
++    parser.add_argument(
++        "--winner_t215b_axis_complete_tilt_cost",
++        action="store_true",
++    )
+     parser.add_argument(
+         "--winner_t37_freeze_observation_normalizer",
+         action="store_true",

@@ -1,0 +1,56 @@
+from __future__ import annotations
+
+from pathlib import Path
+
+import jax.numpy as jnp
+import numpy as np
+
+from training import t215b_axis_complete_tilt as tilt
+
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_t215b_identity_quaternion_and_zero_rates_are_zero() -> None:
+    roll, pitch = tilt.predicted_axis_risks_rad(
+        jnp.asarray([1.0, 0.0, 0.0, 0.0]),
+        jnp.asarray(0.0),
+        jnp.asarray(0.0),
+    )
+    assert float(roll) == 0.0
+    assert float(pitch) == 0.0
+    assert float(tilt.tilt_box_score(roll, pitch)) == 0.0
+    assert float(tilt.tilt_box_cost(jnp.asarray(0.0))) == 0.0
+
+
+def test_t215b_axis_envelopes_define_componentwise_unit_box() -> None:
+    roll_score = tilt.tilt_box_score(
+        jnp.asarray(tilt.ROLL_PASSING_ENVELOPE_RAD),
+        jnp.asarray(0.0),
+    )
+    pitch_score = tilt.tilt_box_score(
+        jnp.asarray(0.0),
+        jnp.asarray(tilt.PITCH_PASSING_ENVELOPE_RAD),
+    )
+    assert np.isclose(float(roll_score), 1.0, atol=1.0e-7)
+    assert np.isclose(float(pitch_score), 1.0, atol=1.0e-7)
+    assert float(tilt.tilt_box_excess(jnp.asarray(1.0))) == 0.0
+    assert np.isclose(
+        float(tilt.tilt_box_cost(jnp.asarray(1.5))),
+        0.25,
+        atol=1.0e-7,
+    )
+
+
+def test_t215b_patch_is_training_only_axis_complete_cost() -> None:
+    text = (
+        ROOT / "patches/winner_t215b_axis_complete_tilt.patch"
+    ).read_text(encoding="utf-8")
+    assert "winner_t215b_axis_complete_tilt_cost=False" in text
+    assert "data.qvel[base_qvel + 3]" in text
+    assert "data.qvel[base_qvel + 4]" in text
+    assert "box_score = jp.maximum(" in text
+    assert "constrained_cost = jp.square(box_excess)" in text
+    assert "reward_channel=unchanged" in text
+    assert "deployment_graph=unchanged" in text
+    assert "not args.winner_t209_dual_roll_cost" in text
