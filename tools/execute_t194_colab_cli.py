@@ -194,11 +194,7 @@ def main() -> int:
             f"T194 hosted preflight failed:\n{preflight.stdout}\n"
             f"{preflight.stderr}"
         )
-    driver = (
-        bundle
-        / "colab_t194_corrected_dynamic_reference_support_"
-        "continuation.py"
-    )
+    driver = bundle / "colab_t194_corrected_dynamic_reference_support_continuation.py"
     command = [
         sys.executable,
         str(driver),
