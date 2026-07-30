@@ -65,3 +65,25 @@ def test_t215b_environment_contract_checks_both_axes() -> None:
     assert "synthetic_dominant_axis_exact" in text
     assert "cost_is_unscaled_squared_box_excess" in text
     assert "cost_is_outside_and_does_not_change_reward" in text
+
+
+def test_t215b_cpu_contract_freezes_scope_and_authority() -> None:
+    builder = (
+        ROOT
+        / "tools/build_t215b_axis_complete_tilt_cpu_preregistration.py"
+    ).read_text(encoding="utf-8")
+    runner = (
+        ROOT / "tools/run_t215b_axis_complete_tilt_cpu_contract.py"
+    ).read_text(encoding="utf-8")
+    assert '"source": "T203_HALF"' in builder
+    assert '"t210_eta_retry": False' in builder
+    assert '"cost_scale": 1.0' in builder
+    assert '"deployment_graph_change": False' in builder
+    assert '"hosted_training": False' in builder
+    assert '"--winner_v127_constrained_cost"' in runner
+    assert '"--winner_t215b_axis_complete_tilt_cost"' in runner
+    assert '"--winner_t209_dual_roll_cost"' in runner
+    assert "not in value[\"training\"][\"command\"]" in runner
+    assert "both_axis_environment_contract_green" in runner
+    assert 'value["authority"]["hosted_training"] = False' in runner
+    assert 'value["authority"]["gate5"] = False' in runner
