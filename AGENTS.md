@@ -5129,3 +5129,19 @@ Do not proceed to grounded walking until low-risk gates pass.
   evaluation, checkpoint selection, deployment audit, Gate 5, and robot
   access remain unauthorized until the recovered training artifact is
   validated locally.
+- 2026-07-30: The sole T194 L4 continuation completes without retry or
+  resume in `1,458.6500945` seconds and emits the exact frozen exports at
+  `0/1,003,520/2,007,040`. The result JSON and `8,524,808`-byte artifact
+  archive reproduce the launch receipt's SHA-256 values
+  `b4f342dd...c905037c9` and `73d75add...66066cf7`; all three files were
+  recovered before the Colab session was stopped, and no active session
+  remains. Hosted behavior cells remain zero.
+- 2026-07-30: T195 validates the recovered T194 artifact locally on CPU
+  with no failed checks under result SHA-256
+  `78fccbbe...e6217182`. All three checkpoints and ONNX graphs are present
+  and finite; step zero, protected mature actor, and normalizer identities
+  hold; only the existing negative-location adapter pair and critic update;
+  and corrected reference-support/request metrics are bilateral, finite,
+  and positive. This earns only T196's post-export composition
+  preregistration. It does not authorize behavior evaluation, checkpoint
+  selection, deployment audit, Gate 5, or hardware.

@@ -1,0 +1,260 @@
+{
+  "authority": {
+    "behavior_evaluation_authorized": false,
+    "checkpoint_selection_authorized": false,
+    "gate5_authorized": false,
+    "postexport_composition_preregistration_authorized": true,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "all_checkpoint_trees_finite": true,
+    "all_onnx_contracts_pass": true,
+    "archive_hash_matches_result_and_receipt": true,
+    "both_exports_only_update_head_and_critic": true,
+    "checkpoint_hashes_match_hosted_result": true,
+    "cpu_only_validation": true,
+    "cpu_topology_and_source_frozen": true,
+    "exact_local_exports": true,
+    "exact_t193_and_t98_readbacks": true,
+    "formal_behavior_cells_zero": true,
+    "hosted_artifact_passed_pending_cpu_validation": true,
+    "hosted_original_reward_preserved": true,
+    "hosted_reference_metrics_exercised_bilaterally": true,
+    "hosted_support_metrics_exercised_bilaterally": true,
+    "launch_receipt_complete": true,
+    "onnx_hashes_match_hosted_result": true,
+    "package_and_launch_contracts_green": true,
+    "preregistration_hash_matches_hosted": true,
+    "result_hash_matches_receipt": true,
+    "step_zero_raw_onnx_byte_exact": true,
+    "step_zero_tree_source_bit_exact": true,
+    "t193_cpu_authority_exact": true,
+    "t194_preregistration_green": true
+  },
+  "classification": {
+    "actor_update_scope": "negative_adapter_location_only",
+    "behavior_cells": 0,
+    "body_configuration_strata": 8,
+    "hosted_wall_seconds": 1458.6500945,
+    "reference_support_active": "all_locomotion",
+    "same_run_resume": false,
+    "training_completed": true,
+    "training_retry": false
+  },
+  "decision": "EARN_T196_T194_POSTEXPORT_COMPOSITION_PREREGISTRATION_ONLY",
+  "exports": {
+    "checkpoints": [
+      {
+        "directory_sha256": "29b0a8ba93028430312204c653f846aa0606f311326393def60cc55b50b6babc",
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t194_colab_recovery_20260730\\extracted\\t194_corrected_dynamic_reference_support_continuation\\training\\2026_07_30_103939_0",
+        "step": 0
+      },
+      {
+        "directory_sha256": "9d6d242912a59775456ab38906867c2a36b87d3a9120cc5fe2c4bb8518beb888",
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t194_colab_recovery_20260730\\extracted\\t194_corrected_dynamic_reference_support_continuation\\training\\2026_07_30_104523_1003520",
+        "step": 1003520
+      },
+      {
+        "directory_sha256": "f6408da8fdf29ecaa145388b2c92f2e58b496a19326135d279677b811f93cc8f",
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t194_colab_recovery_20260730\\extracted\\t194_corrected_dynamic_reference_support_continuation\\training\\2026_07_30_105032_2007040",
+        "step": 2007040
+      }
+    ],
+    "onnx": [
+      {
+        "abi_exact": true,
+        "chain_256_finite": true,
+        "cpu_provider_exact": true,
+        "initializers_finite": true,
+        "sha256": "c37af0b0539da7d02b93d708091cdfe07f8e77f37e8d655d8fc9a22d3832338f",
+        "step": 0
+      },
+      {
+        "abi_exact": true,
+        "chain_256_finite": true,
+        "cpu_provider_exact": true,
+        "initializers_finite": true,
+        "sha256": "cf1a45ffb22293a0db627a0da2ce871fcf23c47b4f2aa83c032e5f37452b061f",
+        "step": 1003520
+      },
+      {
+        "abi_exact": true,
+        "chain_256_finite": true,
+        "cpu_provider_exact": true,
+        "initializers_finite": true,
+        "sha256": "783b1b66a48c3b44f0e9b834945338fae083b6dd88196787f303942a03806923",
+        "step": 2007040
+      }
+    ],
+    "updates": [
+      {
+        "critic_leaf_deltas": {
+          "2/params/hidden_0/bias": 0.012436255812644958,
+          "2/params/hidden_0/kernel": 0.06597573310136795,
+          "2/params/hidden_1/bias": 0.02049914374947548,
+          "2/params/hidden_1/kernel": 0.07137463986873627,
+          "2/params/hidden_2/bias": 0.017642393708229065,
+          "2/params/hidden_2/kernel": 0.039705049246549606,
+          "2/params/hidden_3/bias": 0.008281819522380829,
+          "2/params/hidden_3/kernel": 0.01930667832493782
+        },
+        "every_critic_leaf_updated": true,
+        "every_mature_actor_leaf_exact": true,
+        "every_trainable_actor_leaf_updated": true,
+        "frozen_mature_actor_leaf_deltas": {
+          "1/params/adapter_hidden_bias": 0.0,
+          "1/params/adapter_hidden_projection/kernel": 0.0,
+          "1/params/adapter_location/bias": 0.0,
+          "1/params/adapter_location/kernel": 0.0,
+          "1/params/adapter_obs_projection/kernel": 0.0,
+          "1/params/residual_location/bias": 0.0,
+          "1/params/residual_location/kernel": 0.0,
+          "1/params/residual_trunk/hidden_0/bias": 0.0,
+          "1/params/residual_trunk/hidden_0/kernel": 0.0,
+          "1/params/residual_trunk/hidden_1/bias": 0.0,
+          "1/params/residual_trunk/hidden_1/kernel": 0.0,
+          "1/params/residual_trunk/hidden_2/bias": 0.0,
+          "1/params/residual_trunk/hidden_2/kernel": 0.0,
+          "1/params/scale_logits/bias": 0.0,
+          "1/params/scale_logits/kernel": 0.0
+        },
+        "normalizer_exact": true,
+        "normalizer_leaf_deltas": {
+          "0/count/hi": 0.0,
+          "0/count/lo": 0.0,
+          "0/mean/policy_hidden": 0.0,
+          "0/mean/privileged_state": 0.0,
+          "0/mean/state": 0.0,
+          "0/std/policy_hidden": 0.0,
+          "0/std/privileged_state": 0.0,
+          "0/std/state": 0.0,
+          "0/std_eps": 0.0,
+          "0/summed_variance/policy_hidden": 0.0,
+          "0/summed_variance/privileged_state": 0.0,
+          "0/summed_variance/state": 0.0
+        },
+        "step": 1003520,
+        "structure_exact": true,
+        "trainable_actor_leaf_deltas": {
+          "1/params/negative_adapter_location/bias": 0.011753533035516739,
+          "1/params/negative_adapter_location/kernel": 0.04369617998600006
+        },
+        "tree_finite": true
+      },
+      {
+        "critic_leaf_deltas": {
+          "2/params/hidden_0/bias": 0.016122162342071533,
+          "2/params/hidden_0/kernel": 0.08191198110580444,
+          "2/params/hidden_1/bias": 0.019420424476265907,
+          "2/params/hidden_1/kernel": 0.09409190714359283,
+          "2/params/hidden_2/bias": 0.01820964366197586,
+          "2/params/hidden_2/kernel": 0.05765774846076965,
+          "2/params/hidden_3/bias": 0.0110405832529068,
+          "2/params/hidden_3/kernel": 0.022283602505922318
+        },
+        "every_critic_leaf_updated": true,
+        "every_mature_actor_leaf_exact": true,
+        "every_trainable_actor_leaf_updated": true,
+        "frozen_mature_actor_leaf_deltas": {
+          "1/params/adapter_hidden_bias": 0.0,
+          "1/params/adapter_hidden_projection/kernel": 0.0,
+          "1/params/adapter_location/bias": 0.0,
+          "1/params/adapter_location/kernel": 0.0,
+          "1/params/adapter_obs_projection/kernel": 0.0,
+          "1/params/residual_location/bias": 0.0,
+          "1/params/residual_location/kernel": 0.0,
+          "1/params/residual_trunk/hidden_0/bias": 0.0,
+          "1/params/residual_trunk/hidden_0/kernel": 0.0,
+          "1/params/residual_trunk/hidden_1/bias": 0.0,
+          "1/params/residual_trunk/hidden_1/kernel": 0.0,
+          "1/params/residual_trunk/hidden_2/bias": 0.0,
+          "1/params/residual_trunk/hidden_2/kernel": 0.0,
+          "1/params/scale_logits/bias": 0.0,
+          "1/params/scale_logits/kernel": 0.0
+        },
+        "normalizer_exact": true,
+        "normalizer_leaf_deltas": {
+          "0/count/hi": 0.0,
+          "0/count/lo": 0.0,
+          "0/mean/policy_hidden": 0.0,
+          "0/mean/privileged_state": 0.0,
+          "0/mean/state": 0.0,
+          "0/std/policy_hidden": 0.0,
+          "0/std/privileged_state": 0.0,
+          "0/std/state": 0.0,
+          "0/std_eps": 0.0,
+          "0/summed_variance/policy_hidden": 0.0,
+          "0/summed_variance/privileged_state": 0.0,
+          "0/summed_variance/state": 0.0
+        },
+        "step": 2007040,
+        "structure_exact": true,
+        "trainable_actor_leaf_deltas": {
+          "1/params/negative_adapter_location/bias": 0.026817094534635544,
+          "1/params/negative_adapter_location/kernel": 0.06727249175310135
+        },
+        "tree_finite": true
+      }
+    ]
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "cpu_topology": "6639f037e3fee50a6d6b3d7faeef936c1b1e6630b2099ce16e6dd82a38132623",
+    "event_file": "62cbd2d004e438780e312908b15bb204c13dde20ec0304deb1951f18e2d5dba4",
+    "hosted_result": "b4f342dd9b5c9875bc37b2b959bbdb7bd8a5adef785b1fdd87823f1c905037c9",
+    "launch_contract": "3e80c667acc9da8f82f3bba1c1da226bda81007249b5db9751858b31cef9f828",
+    "launch_receipt": "19f77342f644f9f64f1cdb554a8f677fcb1dc136e02d1ad82dd1cc8b7e72434e",
+    "package_contract": "1172a468f3dd955d83898ae31ce2f97ffd463db0a7a6f272faf793a18bd205af",
+    "recovery_archive": "73d75addb1617b33a2f53e5bbe483a1b12d4e208495e6fd0cfa3bcea66066cf7",
+    "source_checkpoint": "a71eb0dfd57af17ec79e5a2c297fa0a98c7f262b8eb6f36ce66c808a8f2cd0ec",
+    "t193_cpu_authority": "63fcb7781f0108eb6fb6db1ff7f3d4469b285a7b4cc1d0827d3f794b5f7a4a19",
+    "t193_cpu_source": "ed3096d1f4750287c0c2c804ce1c31898b621e4765c5c08803267eae676451e8",
+    "t194_preregistration": "b28c6d7bbfae64a1b7618348e56d5fc57421c67c3a21c341d90590d0858ebadb"
+  },
+  "result_sha256": "78fccbbe06cdc231448d8577c99912f749e914660e86faea1b8cd9e3e6217182",
+  "schema_version": "open_duck.t195_t194_recovered_training_validation.v1",
+  "status": "PASS_T195_T194_RECOVERED_TRAINING_VALIDATION",
+  "support_metrics": {
+    "original_reward": [
+      245.40667724609375,
+      243.8157196044922,
+      244.5596923828125
+    ],
+    "reference_requests": {
+      "eval/episode_t193/reference_left_requested": [
+        167.8125,
+        166.5859375,
+        166.9609375
+      ],
+      "eval/episode_t193/reference_right_requested": [
+        144.71875,
+        143.6484375,
+        144.1484375
+      ],
+      "eval/episode_t193/reference_single_support_requested": [
+        312.53125,
+        310.234375,
+        311.109375
+      ]
+    },
+    "support": {
+      "eval/episode_reward/t193_left_support_match": [
+        122.953125,
+        125.1640625,
+        126.171875
+      ],
+      "eval/episode_reward/t193_reference_support_balance": [
+        82.2081527709961,
+        82.77622985839844,
+        84.14656066894531
+      ],
+      "eval/episode_reward/t193_right_support_match": [
+        108.28125,
+        108.8046875,
+        110.9921875
+      ]
+    }
+  }
+}
