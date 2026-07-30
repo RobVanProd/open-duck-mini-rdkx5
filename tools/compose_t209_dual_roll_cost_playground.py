@@ -18,6 +18,14 @@ ENGINE_FILES = (
     "playground/common/winner_v127_constrained_ppo_train.py",
     "playground/common/winner_v127_constrained_ppo_losses.py",
 )
+ENGINE_SOURCES = {
+    "playground/common/winner_v127_constrained_ppo_train.py": (
+        "training/winner_v127_constrained_ppo_train.py"
+    ),
+    "playground/common/winner_v127_constrained_ppo_losses.py": (
+        "training/winner_v127_constrained_ppo_losses.py"
+    ),
+}
 
 
 def sha256(path: Path) -> str:
@@ -38,6 +46,27 @@ def run(command: list[str], cwd: Path) -> None:
             f"command failed ({completed.returncode}): {command}\n"
             f"{completed.stdout}"
         )
+
+
+def git_blob(path: str) -> tuple[bytes, str]:
+    blob = subprocess.run(
+        ["git", "show", f"HEAD:{path}"],
+        cwd=ROOT,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    if blob.returncode != 0:
+        raise RuntimeError(
+            f"cannot read frozen repository engine {path}: "
+            f"{blob.stderr.decode(errors='replace')}"
+        )
+    oid = subprocess.check_output(
+        ["git", "rev-parse", f"HEAD:{path}"],
+        cwd=ROOT,
+        text=True,
+    ).strip()
+    return blob.stdout, oid
 
 
 def main() -> int:
@@ -62,6 +91,17 @@ def main() -> int:
         raise FileNotFoundError("T209 frozen base is incomplete")
 
     shutil.copytree(base, output)
+    frozen_engine_blobs = {}
+    for name in ENGINE_FILES:
+        source_name = ENGINE_SOURCES[name]
+        content, oid = git_blob(source_name)
+        target = output / name
+        target.write_bytes(content)
+        frozen_engine_blobs[name] = {
+            "repository_path": source_name,
+            "git_blob_oid": oid,
+            "sha256": sha256(target),
+        }
     run(["git", "apply", "--recount", "--check", str(PATCH)], output)
     run(["git", "apply", "--recount", str(PATCH)], output)
     run(
@@ -98,7 +138,16 @@ def main() -> int:
             }
         },
         "constrained_engine": {
-            name: sha256(output / name) for name in ENGINE_FILES
+            "source": "frozen pure V127 repository blobs",
+            "files": frozen_engine_blobs,
+            "v173_tangent_selector_absent": (
+                "v173_tangent"
+                not in (output / ENGINE_FILES[0]).read_text(encoding="utf-8")
+            ),
+            "mixed_lagrangian_advantage_present": (
+                "mixed_advantages"
+                in (output / ENGINE_FILES[1]).read_text(encoding="utf-8")
+            ),
         },
         "final_python_hashes": final_python_hashes,
     }
