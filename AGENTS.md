@@ -5462,3 +5462,12 @@ Do not proceed to grounded walking until low-risk gates pass.
   ONNX inference, behavior, hosted compute, or robot access ran. This
   recovers T211 and earns only T212's post-export composition
   preregistration.
+- 2026-07-30: T212 passes the T210 post-export composition with no failed
+  checks under result SHA-256
+  `46576416...ca73c62`. All three raw graphs replace exactly the allowed
+  nominal adapter pair in the frozen T164-final deployment base; every
+  node, other initializer, inactive route, x=0 output, and CPU inference
+  contract remains exact. Sampled output sensitivity remains a
+  zero-selection-weight diagnostic under the already-reviewed T205B
+  precedent. No optimizer or behavior ran. This earns only T213's fresh
+  `16`-cell nominal/default persistence matrix.
