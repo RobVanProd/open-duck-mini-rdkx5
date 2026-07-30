@@ -4989,3 +4989,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   `CLOSE_T186_SINGLE_SUPPORT_CONTINUATION`. No full-R2 matrix, retry,
   checkpoint selection, training, Colab, deployment audit, Gate 5, or
   hardware is authorized.
+- 2026-07-30: T191 preregisters a saved-trace-only causal autopsy under
+  contract SHA-256 `c6e472b8...7f2306eb`. It freezes the sole T186 failure,
+  its three matched T186 passes, both composed T186 graphs, both exact
+  Y-negative calibration contexts, and T174's prior T170 failure autopsy.
+  It will verify exact ONNX replay, measure terminal single-support
+  proximity, and test whether the half/final head difference changes the
+  failing trajectory's actions without changing recurrent hidden state. A
+  support-proximal, state-compatible result earns only a separately
+  preregistered one-cell, one-gait-period head-switch feasibility screen.
+  It runs no new behavior, optimizer, hosted compute, deployment audit,
+  Gate 5, or hardware.
