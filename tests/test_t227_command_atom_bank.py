@@ -109,3 +109,21 @@ def test_t227a_retry_is_instrumentation_only() -> None:
     assert '"prior_optimizer_steps": 0' in runner
     assert "nominal_torso_body_ipos = np.asarray(" in worker
     assert "- nominal_torso_body_ipos" in worker
+
+
+def test_t227b_retry_defers_activation_past_abi_probe() -> None:
+    builder = (
+        ROOT
+        / "tools/build_t227b_command_atom_cpu_retry_preregistration.py"
+    ).read_text(encoding="utf-8")
+    runner = (
+        ROOT / "tools/run_t227b_command_atom_cpu_contract.py"
+    ).read_text(encoding="utf-8")
+    assert "COMMAND_ATOMS_ENABLED_DURING_UNVECTORIZED_ABI_PROBE" in builder
+    assert "t227a_environment_contract_passed_completely" in builder
+    assert '"optimizer_steps_before_abort": 0' in builder
+    assert '"scientific_mechanism_changed": False' in builder
+    assert "self._winner_t227_command_atom_bank_enabled" in builder
+    assert "t227b_command_atom_cpu_contract_v3" in runner
+    assert '"prior_environment_contract_green": True' in runner
+    assert '"prior_optimizer_steps": 0' in runner
