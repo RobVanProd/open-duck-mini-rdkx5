@@ -5471,3 +5471,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   zero-selection-weight diagnostic under the already-reviewed T205B
   precedent. No optimizer or behavior ran. This earns only T213's fresh
   `16`-cell nominal/default persistence matrix.
+- 2026-07-30: T213 completes the fresh nominal/default matrix at `15/16`
+  and permanently closes the exact T210 dual roll-cost continuation under
+  the both-checkpoint rule. Both half-checkpoint fits pass `8/8`, and
+  final/P31-34 passes `4/4`; final/P30/x=`.080` retains bilateral
+  transitions, tracking p95 `0.168803519` rad, zero saturation, and zero
+  measured rate excess but falls after `318/600` ticks. The full matrix's
+  worst tracking p95 remains `0.175021327` rad. Do not retry, change eta,
+  select the half checkpoint or fit, run the targeted Y-negative matrix,
+  run full R2, or proceed to deployment/Gate 5. A saved-trace mechanism
+  audit is required before any new policy work.
