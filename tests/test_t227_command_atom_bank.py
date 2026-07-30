@@ -60,3 +60,28 @@ def test_t227_composer_freezes_training_only_scope() -> None:
     assert '"policy_abi_change": False' in text
     assert '"deployment_graph_change": False' in text
     assert '"x_zero_training_change": False' in text
+
+
+def test_t227_cpu_contract_freezes_scope_and_authority() -> None:
+    builder = (
+        ROOT / "tools/build_t227_command_atom_cpu_preregistration.py"
+    ).read_text(encoding="utf-8")
+    runner = (
+        ROOT / "tools/run_t227_command_atom_cpu_contract.py"
+    ).read_text(encoding="utf-8")
+    worker = (
+        ROOT / "tools/run_t227_command_atom_environment_worker.py"
+    ).read_text(encoding="utf-8")
+    assert '"source": "T216_FINAL"' in builder
+    assert '"cartesian_strata": 32' in builder
+    assert '"reward_change": False' in builder
+    assert '"cost_change": False' in builder
+    assert '"hosted_training": False' in builder
+    assert '"--winner_t227_command_atom_bank"' in runner
+    assert '"--ppo_num_envs", "32"' in runner
+    assert '"--ppo_batch_size", "32"' in runner
+    assert "only_t216_negative_adapter_head_changes" in runner
+    assert "exact_32_cell_cartesian_reset_green" in runner
+    assert "exact_command_atoms_survive_t19_reset_and_resample" in worker
+    assert '"optimizer_steps": 0' in worker
+    assert '"formal_behavior_cells": 0' in worker
