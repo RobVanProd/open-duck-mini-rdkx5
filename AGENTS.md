@@ -4634,3 +4634,11 @@ Do not proceed to grounded walking until low-risk gates pass.
   interpolation survives longer. T183 runs saved-trace CPU inference only.
   No graph change, behavior, optimizer, hosted compute, deployment audit,
   Gate 5, or hardware is authorized.
+- 2026-07-30: The first T183 launch writes no result. After replaying the
+  labeled saved banks, the generic receipt verifier rejects the unlabeled
+  T182B alpha trace because its protection record has path/rows/SHA but no
+  `bytes` field. No new behavior, optimizer, hosted compute, or robot access
+  occurs. Recovery SHA-256: `227e2b57...7b7851b`. Only a T183B
+  preregistration is authorized, adding the independently verified
+  `8,544,098`-byte count while preserving the trace path/SHA and every
+  feature, label, threshold, decision, and authority rule.
