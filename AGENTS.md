@@ -4707,3 +4707,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   preregistered, default-off T185 bilateral single-support curriculum CPU
   software contract. No curriculum implementation, new behavior, optimizer,
   hosted compute, deployment audit, Gate 5, or hardware is yet authorized.
+- 2026-07-30: T185 prior-art inspection finds that the closed T55 balance
+  reward did not implement the frozen reference support schedule. Foot order
+  is definitively `[left,right]`, but T55 maps the positive-sine half-cycle
+  to right support and the negative half-cycle to left; the frozen
+  `0.074_-0.037_-0.074` reference has left-only contact at phase `2` and
+  right-only contact at phase `15`, so T55 selects the opposite side at both
+  reference-derived anchors. T55/T62 also used separate optimizer stages
+  with an inter-stage objective transfer. This does not reopen their closed
+  reward-homotopy family. It establishes that a reference-contact-correct,
+  same-episode support-prefix mechanism is mechanically distinct. T185
+  software is staged default-off for preregistration only; no unit test,
+  simulator contract, optimizer, formal behavior, hosted compute, Gate 5, or
+  hardware execution is authorized before its clean frozen contract exists.
