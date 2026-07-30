@@ -5347,3 +5347,12 @@ Do not proceed to grounded walking until low-risk gates pass.
   mandatory with no retry, resume, selection, or cherry-pick. Packaging and
   a local identity preflight are authorized; no hosted session, behavior,
   Gate 5, or hardware has yet run.
+- 2026-07-30: T203's hosted package passes all `15` frozen identity checks
+  through the local GPU boundary. The `4,340,024`-byte archive has SHA-256
+  `3a1eb154...e00b74e9`; its `154` non-manifest members reproduce canonical
+  SHA-256 `98e89d39...347b1d0a`, and the manifest SHA-256 is
+  `2105f10e...e2a30ff3`. The bundle contains no credentials or robot-access
+  material, and its constructed command contains T202 exactly once, T193
+  zero times, eight strata, `256` environments, and `2,007,040` steps.
+  No optimizer, behavior, hosted session, Gate 5, or hardware ran while
+  packaging. A separate hash-frozen Colab CLI launch contract is required.
