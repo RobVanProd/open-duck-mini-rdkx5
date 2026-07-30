@@ -4670,3 +4670,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   periods; no feature or threshold search is allowed. No new behavior,
   curriculum implementation, optimizer, hosted compute, deployment audit,
   Gate 5, or hardware is authorized.
+- 2026-07-30: T184 passes its saved-trace falsifier. All `8/8` failures end
+  within `0-3` ticks of a left-only or right-only support sample, both support
+  sides occur across failures, all `5/5` matched passes complete `600` ticks,
+  and every trace contains both single-support sides. The final two-period
+  windows are `42.5-70.0%` single support (mean `54.69%`). Result SHA-256:
+  `50589c06...733631db`. This association is not evidence that a curriculum
+  will succeed; it earns only a separately preregistered, default-off
+  bilateral single-support curriculum CPU software contract. No curriculum
+  implementation, behavior, optimizer, hosted compute, deployment audit,
+  Gate 5, or hardware is yet authorized.
