@@ -1,0 +1,125 @@
+diff --git a/playground/open_duck_mini_v2/joystick.py b/playground/open_duck_mini_v2/joystick.py
+--- a/playground/open_duck_mini_v2/joystick.py
++++ b/playground/open_duck_mini_v2/joystick.py
+@@ -224,6 +224,7 @@ def default_config() -> config_dict.ConfigDict:
+         winner_t19_support_trainthrough=False,
+         winner_t31_action_margin_trainthrough=False,
+         winner_t202_predicted_roll_risk=False,
++        winner_t209_dual_roll_cost=False,
+     )
+ 
+ 
+@@ -509,6 +510,11 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+             metrics["t202/predicted_roll_risk_rad"] = jp.zeros(())
+             metrics["t202/roll_risk_excess_rad"] = jp.zeros(())
+             metrics["t202/original_clipped_reward"] = jp.zeros(())
++        if self._config.winner_t209_dual_roll_cost:
++            metrics["cost/t209_predicted_roll_risk"] = jp.zeros(())
++            metrics["t209/predicted_roll_risk_rad"] = jp.zeros(())
++            metrics["t209/roll_risk_excess_rad"] = jp.zeros(())
++            metrics["t209/original_clipped_reward"] = jp.zeros(())
+ 
+         contact = jp.array(
+             [
+@@ -766,16 +772,36 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+ 
+         done = self._get_termination(data)
+         if self._config.winner_v127_constrained_cost:
+-            dense_torque_cost = winner_v127_dense_torque_exceedance_cost(
+-                data.actuator_force,
+-                self._config.ground_up_peak_torque_threshold_nm,
+-            )
++            if self._config.winner_t209_dual_roll_cost:
++                base_qpos = self._floating_base_qpos_addr
++                base_qvel = self._floating_base_qvel_addr
++                predicted_roll_risk = t202.predicted_roll_risk_rad(
++                    data.qpos[base_qpos + 3 : base_qpos + 7],
++                    data.qvel[base_qvel + 3],
++                )
++                roll_risk_excess = t202.roll_risk_excess_rad(
++                    predicted_roll_risk
++                )
++                constrained_cost = jp.square(roll_risk_excess)
++                state.metrics["cost/t209_predicted_roll_risk"] = (
++                    constrained_cost
++                )
++                state.metrics["t209/predicted_roll_risk_rad"] = (
++                    predicted_roll_risk
++                )
++                state.metrics["t209/roll_risk_excess_rad"] = (
++                    roll_risk_excess
++                )
++            else:
++                constrained_cost = winner_v127_dense_torque_exceedance_cost(
++                    data.actuator_force,
++                    self._config.ground_up_peak_torque_threshold_nm,
++                )
+             state.info[
+                 "winner_v127_dense_torque_exceedance_cost"
+-            ] = dense_torque_cost
++            ] = constrained_cost
+             state.metrics[
+                 "cost/winner_v127_dense_torque_exceedance"
+-            ] = dense_torque_cost
++            ] = constrained_cost
+ 
+         rewards = self._get_reward(
+             data, applied_action, state.info, state.metrics, done, first_contact, contact
+@@ -785,6 +811,10 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+             k: v * self._config.reward_config.scales[k] for k, v in rewards.items()
+         }
+         reward = jp.clip(sum(rewards.values()) * self.dt, 0.0, 10000.0)
++        if self._config.winner_t209_dual_roll_cost:
++            state.metrics["t209/original_clipped_reward"] = reward
++            # The constrained cost stays outside reward and reaches PPO only
++            # through the separate cost critic and dual advantage channel.
+         if self._config.winner_t202_predicted_roll_risk:
+             base_qpos = self._floating_base_qpos_addr
+             base_qvel = self._floating_base_qvel_addr
+diff --git a/playground/open_duck_mini_v2/runner.py b/playground/open_duck_mini_v2/runner.py
+--- a/playground/open_duck_mini_v2/runner.py
++++ b/playground/open_duck_mini_v2/runner.py
+@@ -124,6 +124,35 @@ class OpenDuckMiniV2Runner(BaseRunner):
+                 "deployment_graph=unchanged"
+             )
++        self.env_config.winner_t209_dual_roll_cost = (
++            args.winner_t209_dual_roll_cost
++        )
++        if args.winner_t209_dual_roll_cost and not (
++            args.winner_v127_constrained_cost
++            and args.winner_t19_support_trainthrough
++            and args.winner_t31_action_margin_trainthrough
++            and args.winner_v3_variable_configuration
++            and args.winner_t98_hidden_expert_continuation
++            and not args.winner_t202_predicted_roll_risk
++            and args.ground_up_peak_torque_exceedance_scale == 0.0
++            and args.ground_up_linear_peak_torque_exceedance_scale == 0.0
++        ):
++            raise ValueError(
++                "T209 requires the exact T170 V3/T19/T31/T98 continuation, "
++                "the V127 separate-cost engine, no fixed T202 reward cost, "
++                "and no legacy torque reward penalty"
++            )
++        if args.winner_t209_dual_roll_cost:
++            print(
++                "T209_DUAL_ROLL_COST="
++                "horizon_s=0.08,envelope_rad=0.3541802655745987,"
++                "cost=unscaled_squared_excess,reward_channel=unchanged,"
++                "cost_critic=separate,cost_discount=1.0,"
++                "actor_advantage=(A_R-lambda*A_C)/(1+lambda),"
++                "dual_eta=1/(ceil(K/4)*J_C0),deployment_graph=unchanged"
++            )
+         if (
+             args.winner_t31_action_margin_trainthrough
+             and not args.winner_t19_support_trainthrough
+@@ -488,6 +517,10 @@ def main() -> None:
+         "--winner_t202_predicted_roll_risk",
+         action="store_true",
+     )
++    parser.add_argument(
++        "--winner_t209_dual_roll_cost",
++        action="store_true",
++    )
+     parser.add_argument(
+         "--winner_t37_freeze_observation_normalizer",
+         action="store_true",
