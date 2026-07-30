@@ -5085,3 +5085,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   unchanged. It executes no simulator transition, optimizer step, model
   inference, behavior cell, hosted compute, deployment audit, Gate 5, or
   hardware.
+- 2026-07-30: T193B passes with classification
+  `T193_CPU_HOLD_WAS_REPORTING_NAMESPACE_ONLY`; result SHA-256
+  `e09b93ac...1e3a857`. All three support-reward metrics, both
+  reference-side request metrics, the combined request metric, and the
+  preserved original reward are finite and positive at both frozen
+  evaluations. All fourteen substantive T193 checks remain green. No
+  simulator, optimizer, inference, behavior, hosted, or robot work was
+  repeated. This earns only one T194 hosted-continuation preregistration;
+  it does not yet authorize launch, behavior evaluation, promotion,
+  deployment audit, Gate 5, or hardware.
