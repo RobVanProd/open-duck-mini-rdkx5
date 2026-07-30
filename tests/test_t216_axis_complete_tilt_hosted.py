@@ -69,6 +69,19 @@ def test_t216_package_contract_when_present() -> None:
     assert value["execution"]["robot_or_rdk_access"] == 0
 
 
+def test_t216_executor_freezes_axis_complete_mechanism() -> None:
+    path = ROOT / "tools" / "execute_t216_colab_cli.py"
+    if not path.exists():
+        return
+    text = path.read_text(encoding="utf-8")
+    assert "a971dfc21fc76b8f6ef3e47f9f5d9579689491d9f1c6aa5cc5a505cd5bb00442" in text
+    assert "cbcf08011a1543d679ca4761acf7b2bbf0541462b42628c0938cb3620317b22f" in text
+    assert "assert cmd.count('--winner_t215b_axis_complete_tilt_cost') == 1" in text
+    assert "assert cmd.count('--winner_t209_dual_roll_cost') == 0" in text
+    assert "hosted_axis_complete_cost_exercised" in text
+    assert "final_dual_price_not_below_half" in text
+
+
 def test_t216_launch_contract_when_present() -> None:
     path = ANALYSIS / "t216_colab_cli_launch_contract.json"
     if not path.exists():
