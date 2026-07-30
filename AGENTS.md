@@ -5278,3 +5278,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   for at least four rows with at least four ticks of lead, while every pass
   remains at zero exceedance. No simulator, optimizer, hosted compute,
   deployment graph change, Gate 5, or hardware is authorized.
+- 2026-07-30: T201B passes every source, row-count, contiguity, finite-risk,
+  and combined-threshold check. The exact `18`-pass envelope remains
+  `0.354180266` rad. The T170 final/P30/x=`.080` failure crosses it for
+  `5` rows beginning at tick `276`, four ticks before termination, with
+  squared-excess integral `3.857025621`; the T194 half/P31-34/x=`.077`
+  failure crosses it for `40` rows beginning at tick `260`, `47` ticks
+  before termination, with integral `18.593126156`. All `18` passing
+  traces have zero exceedance. Result SHA-256:
+  `a21f506e...1bbf0ec`; decision
+  `EARN_T202_PREDICTED_ROLL_RISK_CPU_CONTRACT_PREREGISTRATION_ONLY`.
+  This establishes source transfer and earns only a T202 training-only
+  CPU-contract preregistration from protected T170 half. No behavior,
+  training, hosted compute, full R2, deployment audit, Gate 5, or hardware
+  is authorized.
