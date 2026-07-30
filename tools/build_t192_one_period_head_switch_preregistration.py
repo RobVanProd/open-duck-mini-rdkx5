@@ -18,6 +18,9 @@ WORKER = ROOT / "tools" / "evaluate_t192_head_switch_single_cell.py"
 RUNNER = ROOT / "tools" / "run_t192_one_period_head_switch.py"
 TEST = ROOT / "tests" / "test_t192_one_period_head_switch.py"
 T191 = ANALYSIS / "t191_t186_failure_exchange_autopsy_result.json"
+T191_PREREG = (
+    ANALYSIS / "t191_t186_failure_exchange_autopsy_preregistration.json"
+)
 T188 = ANALYSIS / "t188_t186_postexport_composition_result.json"
 BASIS = ANALYSIS / "t165_composed_full_r2_preregistration.json"
 OUTPUT = ANALYSIS / "t192_one_period_head_switch_preregistration.json"
@@ -41,6 +44,7 @@ def main() -> int:
         raise RuntimeError("T192 preregistration requires clean worktree")
 
     t191 = json.loads(T191.read_text(encoding="utf-8"))
+    t191_prereg = json.loads(T191_PREREG.read_text(encoding="utf-8"))
     t188 = json.loads(T188.read_text(encoding="utf-8"))
     basis = json.loads(BASIS.read_text(encoding="utf-8"))
     graph_by_step = {
@@ -63,7 +67,7 @@ def main() -> int:
     fit = next(row for row in basis["fits"] if row["fit_id"] == "p31_34")
     original_failure = next(
         row
-        for row in t191["traces"]
+        for row in t191_prereg["traces"]
         if row["checkpoint_id"] == "T186_COMPOSED_HALF"
         and row["fit_id"] == "p31_34"
         and float(row["command_x_m_s"]) == 0.080
@@ -171,6 +175,7 @@ def main() -> int:
                 "runner": RUNNER,
                 "test": TEST,
                 "t191_result": T191,
+                "t191_preregistration": T191_PREREG,
                 "t188_composition": T188,
                 "t165_basis": BASIS,
                 "original_failure_trace": Path(
