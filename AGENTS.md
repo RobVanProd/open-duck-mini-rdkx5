@@ -4649,3 +4649,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   and authority are exact to T183. Execution remains saved-trace CPU
   inference only. No graph change, behavior, optimizer, hosted compute,
   deployment audit, Gate 5, or hardware is authorized.
+- 2026-07-30: T183B closes the existing hidden-score confidence gate. The
+  frozen derivation margin is strongly negative (`-1.62167`): rescue scores
+  reach down to `0.01192` while regression scores reach up to `1.63359`.
+  The held-out threshold classifies only `2/24` rescue rows and `105/129`
+  regression rows. Exact ONNX replay and all receipt checks pass across
+  `2,420` saved rows; no new behavior, optimizer, hosted compute, or robot
+  access occurs. Result SHA-256: `221bafa2...86fafb4e`. Decision:
+  `CLOSE_EXISTING_HIDDEN_SCORE_CONTEXT_GATE_AND_RETURN_TO_MECHANISM_SELECTION`.
+  No threshold retry, feature scan, graph transform, training, deployment
+  audit, Gate 5, or hardware is authorized.
