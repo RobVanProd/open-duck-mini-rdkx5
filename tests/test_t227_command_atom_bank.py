@@ -147,3 +147,22 @@ def test_t227c_recovers_without_training_rerun() -> None:
     assert "only_t216_negative_adapter_head_changes" in runner
     assert "graph_abi_and_cpu_chain_exact" in runner
     assert '"optimizer_steps": 0' in runner
+
+
+def test_t227d_carries_forward_only_missing_readback() -> None:
+    builder = (
+        ROOT
+        / "tools/build_t227d_recovered_cpu_validation_preregistration.py"
+    ).read_text(encoding="utf-8")
+    runner = (
+        ROOT / "tools/run_t227d_recovered_cpu_validation.py"
+    ).read_text(encoding="utf-8")
+    assert "MISSING_CARRIED_FORWARD_RUNNER_READBACK" in builder
+    assert '"scientific_mechanism_changed": False' in builder
+    assert '"evidence_artifacts_changed": False' in builder
+    assert '"optimizer_steps_before_abort": 0' in builder
+    assert '"onnx_inferences_before_abort": 0' in builder
+    assert "expected_runner_readback" in builder
+    assert "PASS_T227D_RECOVERED_CPU_VALIDATION" in runner
+    assert '"prior_optimizer_steps": 0' in runner
+    assert '"prior_onnx_inferences": 0' in runner
