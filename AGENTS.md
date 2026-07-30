@@ -5169,3 +5169,10 @@ Do not proceed to grounded walking until low-risk gates pass.
   T196 structural and inference check. Execution may read only the saved
   T196 result; new transform, inference, behavior, optimizer, hosted,
   Gate 5, and hardware work remain unauthorized.
+- 2026-07-30: T196B passes the saved-result recovery with no failed checks
+  under result SHA-256 `aa9b53bf...073a3bfa`. All three T194 graphs bind
+  exactly the allowed nominal adapter pair; every node, other initializer,
+  inactive route, and x=0 output remains exact. No transform or inference
+  is rerun. This earns only T197's nominal behavior-matrix
+  preregistration; broader behavior, deployment audit, Gate 5, and hardware
+  remain unauthorized.
