@@ -4470,3 +4470,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   T178 deployment audit or any hosted training, robot/RDK-X5 access, Gate 5,
   torque, motion, deployment, or clearance. Only a separately preregistered
   saved-trace causal autopsy may follow.
+- 2026-07-30: T178 is preregistered as a saved-trace-only causal autopsy of
+  T177 positive torso-COM Z. Its frozen population is the `16` sealed
+  condition-12 traces, including the exact `5` failures. Before reading raw
+  rows it fixes a `162`-tick (`6 x 27`) common prefix, a `54`-tick pre-fall
+  window, `3`-tick phase buckets, a `4/5` replication rule, exact handoff
+  checks, and the x=`.077` versus `0.5 * (.074 + .080)` midpoint test.
+  Contract SHA-256: `701a9974...e75879fd`. A valid exact-handoff result can
+  earn only a separately preregistered CPU-only source-versus-T175 positive-Z
+  A/B. T178 runs no new simulation and authorizes no training, Colab,
+  deployment audit, Gate 5, robot/RDK-X5 access, torque, motion, or clearance.
