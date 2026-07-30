@@ -16,6 +16,7 @@ from run_t136_static_calibration_router_transform import (
     canonical_sha256,
     receipt,
 )
+from validate_winner_v112_recovered_training import directory_sha256
 
 
 RECOVERY = Path(
@@ -40,6 +41,17 @@ MARKDOWN = (
 )
 RUNNER = ROOT / "tools/validate_t228_recovered_training.py"
 BASE_VALIDATOR = ROOT / "tools/validate_t216_recovered_training.py"
+
+
+def directory_receipt(path: Path) -> dict[str, Any]:
+    files = [item for item in path.rglob("*") if item.is_file()]
+    return {
+        "kind": "directory",
+        "path": str(path.resolve()),
+        "file_count": len(files),
+        "bytes": sum(item.stat().st_size for item in files),
+        "sha256": directory_sha256(path),
+    }
 
 
 def main() -> int:
@@ -145,7 +157,7 @@ def main() -> int:
         "hosted_result": receipt(hosted_path),
         "launch_receipt": receipt(receipt_path),
         "recovery_archive": receipt(archive_path),
-        "extracted_work": receipt(EXTRACTED),
+        "extracted_work": directory_receipt(EXTRACTED),
         "source_checkpoint": receipt(source),
         "source_raw_onnx": receipt(source_raw),
         "policy_cpu_template": receipt(policy_template),
