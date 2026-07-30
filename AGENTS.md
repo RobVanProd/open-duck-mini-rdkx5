@@ -4938,3 +4938,11 @@ Do not proceed to grounded walking until low-risk gates pass.
   `e2f8df48...15b05213`. This earns only T189's 16-cell nominal/default
   behavior-matrix preregistration. No broader behavior matrix, training,
   hosted compute, deployment audit, Gate 5, or hardware is authorized.
+- 2026-07-30: T189 preregisters the cheapest behavior falsifier under
+  contract SHA-256 `a8e116d9...ec35b225`: the frozen nominal/default
+  boundary `FLOOR_FRICTION_HI` (`1.0`) across both T186 checkpoints, both
+  measured actuator fits, and x=`0/.074/.077/.080`, for `16` CPU cells.
+  Both checkpoints are mandatory, the cache is fresh, and there is no retry
+  or checkpoint selection. Pass earns only T190's targeted Y-negative
+  preregistration. Training, Colab, deployment audit, Gate 5, and hardware
+  remain unauthorized.
