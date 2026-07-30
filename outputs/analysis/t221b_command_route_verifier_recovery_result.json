@@ -1,0 +1,124 @@
+{
+  "authority": {
+    "behavior": false,
+    "colab": false,
+    "gate5": false,
+    "robot_or_rdk": false,
+    "training": false,
+    "transform_contract_preregistration": true
+  },
+  "checks": {
+    "all_four_trace_prefixes_exact_and_contiguous": true,
+    "all_recovery_inference_finite_cpu_only": true,
+    "all_selected_endpoint_cells_pass": true,
+    "all_t221_route_and_existing_cap_checks_retained": true,
+    "exactly_four_nominal_and_targeted_endpoints_selected": true,
+    "nominal_endpoint_retains_external_x008_ratio": true,
+    "same_state_command_sensitivity_exercised_every_pair": true,
+    "source_t221_identity_exact": true,
+    "targeted_endpoint_retains_external_x008_ratio": true,
+    "zero_simulator_optimizer_behavior_hosted_or_robot": true
+  },
+  "classification": "T221_VERIFIER_ONLY_HOLD_RECOVERED_ON_FROZEN_TRACE_STATES",
+  "decision": "RECOVER_T221_AND_EARN_T222_GLOBAL_X008_TO_X0077_PLATEAU_CPU_CONTRACT_PREREGISTRATION_ONLY",
+  "execution": {
+    "behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "onnx_inferences": 512,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "saved_trace_rows": 256,
+    "simulator_transitions": 0
+  },
+  "failed_checks": [],
+  "nominal_x0077_external_x008_ratios": [
+    0.8103262195266627,
+    0.8146236911185649,
+    0.9579511969550367,
+    0.915602143878156
+  ],
+  "pair_results": [
+    {
+      "all_outputs_finite": true,
+      "all_trace_commands_match_endpoint": true,
+      "checkpoint_id": "T216_COMPOSED_HALF",
+      "context_sha256": "098cc8a292ef2f209f09f079434fa2cd0e89f02d471740212508e4ee9dffb817",
+      "differing_action_rows_077_vs_080": 63,
+      "differing_hidden_rows_077_vs_080": 64,
+      "fit_id": "p30",
+      "maximum_action_delta_077_vs_080": 0.15316879749298096,
+      "provider": "CPUExecutionProvider",
+      "role": "half",
+      "rows": 64,
+      "step": 1003520,
+      "ticks_contiguous_from_zero": true,
+      "trace_sha256": "4307707e6d93e0517268f9160aa31a2553d873b7b69b4f39f5587daf65d99ef8"
+    },
+    {
+      "all_outputs_finite": true,
+      "all_trace_commands_match_endpoint": true,
+      "checkpoint_id": "T216_COMPOSED_HALF",
+      "context_sha256": "1877bd45d746f7c79312c5c919c68918c5139dbc382dd90314c8c5d8de9145ec",
+      "differing_action_rows_077_vs_080": 64,
+      "differing_hidden_rows_077_vs_080": 64,
+      "fit_id": "p31_34",
+      "maximum_action_delta_077_vs_080": 0.1358804702758789,
+      "provider": "CPUExecutionProvider",
+      "role": "half",
+      "rows": 64,
+      "step": 1003520,
+      "ticks_contiguous_from_zero": true,
+      "trace_sha256": "04b0f537b7808440964abac3c58bbf048b4ce0d18f8d096ef60104997cbb6a33"
+    },
+    {
+      "all_outputs_finite": true,
+      "all_trace_commands_match_endpoint": true,
+      "checkpoint_id": "T216_COMPOSED_FINAL",
+      "context_sha256": "098cc8a292ef2f209f09f079434fa2cd0e89f02d471740212508e4ee9dffb817",
+      "differing_action_rows_077_vs_080": 63,
+      "differing_hidden_rows_077_vs_080": 64,
+      "fit_id": "p30",
+      "maximum_action_delta_077_vs_080": 0.15316879749298096,
+      "provider": "CPUExecutionProvider",
+      "role": "final",
+      "rows": 64,
+      "step": 2007040,
+      "ticks_contiguous_from_zero": true,
+      "trace_sha256": "356b92a3d49ef9b691255c79d551aa32e93a1fe7dadd9be61d0971de777f12e1"
+    },
+    {
+      "all_outputs_finite": true,
+      "all_trace_commands_match_endpoint": true,
+      "checkpoint_id": "T216_COMPOSED_FINAL",
+      "context_sha256": "1877bd45d746f7c79312c5c919c68918c5139dbc382dd90314c8c5d8de9145ec",
+      "differing_action_rows_077_vs_080": 64,
+      "differing_hidden_rows_077_vs_080": 64,
+      "fit_id": "p31_34",
+      "maximum_action_delta_077_vs_080": 0.1358804702758789,
+      "provider": "CPUExecutionProvider",
+      "role": "final",
+      "rows": 64,
+      "step": 2007040,
+      "ticks_contiguous_from_zero": true,
+      "trace_sha256": "a90f8a8a046095151d6bb0e81ced9a55da63e6e105ee6f13a5933efff1e0b7d7"
+    }
+  ],
+  "preregistered_contract_sha256": "b84135ff90e567151464750fef2d5989a97ca01185c368ed106a59781d8c2f75",
+  "result_sha256": "9c9e834c03c39799d4f241696aa508fa5aff1bae1cf2b552be22c7f1636624c9",
+  "retained_route_checks": {
+    "all_inference_finite_cpu_only": true,
+    "both_y_negative_contexts_route_nominal_at_both_checkpoints": true,
+    "preserved_t149_cap_present_and_exact": true,
+    "preserved_t149_gate_false_for_y_negative": true
+  },
+  "schema_version": "open_duck.t221b_command_route_verifier_recovery_result.v1",
+  "source_t221_contract_sha256": "82e519d4a609b4ce6ef197d617696b9807f9ea5f64b6d3723b75931e1f350786",
+  "source_t221_result_sha256": "ec3992c8d7f5d0dcfe6082a72556386eee5d478e66968df9f79f18924a494980",
+  "status": "PASS_T221B_COMMAND_ROUTE_VERIFIER_RECOVERY",
+  "targeted_x0077_external_x008_ratios": [
+    0.4395109265326482,
+    0.4477666900717546,
+    0.41154259894403816,
+    0.4622239113232353
+  ]
+}
