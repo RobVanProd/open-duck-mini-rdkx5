@@ -5494,3 +5494,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   preregistration. It does not reopen the closed T55/T186/T194
   single-support objective families and authorizes no training, Colab,
   behavior, Gate 5, or hardware.
+- 2026-07-30: T214B passes the preregistered cross-family predicted-
+  tilt source-transfer audit with no failed checks. It freezes `36` T170/
+  T194/T210 traces (`33` passes, `3` falls) and derives independent `80 ms`
+  predicted-roll/pitch envelopes of `0.354180266/0.237957656` rad from every
+  passing row. The componentwise box has zero pass exceedance and detects all
+  three falls early: T170 at tick `250` (`30`-tick lead, pitch-dominant), T194
+  at `227` (`80`-tick lead, roll-dominant), and T210 at `279` (`38`-tick lead,
+  pitch-dominant). Result SHA-256: `77198ee2...677612b5`; classification
+  `AXIS_COMPLETE_TILT_BOX_UNIFIES_ROLL_AND_PITCH_FALLS`. T56/T186/T194 prove
+  that repeating a single-support curriculum is not admissible. This earns
+  only T215B's CPU software-contract preregistration for the axis-complete
+  tilt cost; no training, Colab, behavior, Gate 5, or hardware is authorized.
