@@ -5051,3 +5051,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   earns only T193's corrected reference-contact dynamic-support CPU contract
   preregistration. It does not authorize behavior, training, hosted compute,
   deployment audit, Gate 5, or hardware.
+- 2026-07-30: T193 preregisters the corrected dynamic reference-support CPU
+  contract under SHA-256 `e53d0b97...ef5ff5fa`. Starting from exact T170
+  half, it reads the frozen reference's actual left/right contact channels
+  `[32:34]` on every locomotion tick, rewards only an exact observed
+  single-support match with the existing alive-derived maximum `0.4` per
+  tick, and adds that term to the unchanged locomotion reward. It has no
+  phase-sign heuristic, reset-only prefix, separate optimizer stage,
+  tunable support scale, or deployment-graph change. The contract freezes
+  default-off equivalence, a 108-tick enabled source-policy trajectory, and
+  a 1,024-step eight-stratum restore/update/export smoke. It authorizes only
+  that CPU contract, not hosted training, formal behavior, deployment audit,
+  Gate 5, or hardware.
