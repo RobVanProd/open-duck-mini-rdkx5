@@ -4602,3 +4602,11 @@ Do not proceed to grounded walking until low-risk gates pass.
   `(.077,)` while preserving every policy, fit, condition, seed, duration,
   calibration, handoff, behavior, and protection rule. No alternate alpha,
   training, Colab, deployment audit, Gate 5, or hardware is authorized.
+- 2026-07-30: T182B preregisters the same single cell under corrected contract
+  SHA-256 `9370c0f4...c10d5646`. Its thin formal worker changes only the
+  accepted command tuple to `(.077,)` and delegates every other operation to
+  the hash-frozen T27 worker. The policy, fit, positive-Z override, seed,
+  duration, calibration, handoff, behavior, and protection contracts are
+  unchanged. A fresh cache is mandatory. Pass/fail authority remains exactly
+  T182's; no retry, alternate alpha, training, Colab, deployment audit,
+  Gate 5, or hardware is authorized.
