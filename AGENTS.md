@@ -5033,3 +5033,12 @@ Do not proceed to grounded walking until low-risk gates pass.
   The next admissible work is saved-trace attribution and a distinct
   locomotion-state curriculum, not another switch tick, retry, transform,
   checkpoint selection, training, deployment audit, Gate 5, or hardware.
+- 2026-07-30: T192B preregisters a saved-trace-only comparison under
+  contract SHA-256 `3e8417fe...ad72da6e`. It compares every original trace
+  field over the `27` switched rows (`520-546`) against the sealed T186-half
+  failure, excluding only the two new switch-metadata fields. If policy
+  outputs, targets, state, and dynamics are all identical, the late switch
+  is proven to occur after the useful head differences and a corrected
+  reference-contact dynamic-support CPU contract is earned. It runs no
+  inference, behavior, optimizer, hosted compute, deployment audit, Gate 5,
+  or hardware.
