@@ -5304,3 +5304,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   `1,024`-step CPU restore/update/export smoke are authorized. Hosted
   training, behavior, full R2, deployment audit, Gate 5, and hardware remain
   unauthorized.
+- 2026-07-30: T202 completes its single `1,024`-step CPU smoke and holds on
+  exactly one reporting check:
+  `training_roll_risk_metrics_finite`. Every mechanism check is green:
+  default-off transition digests and step-zero ONNX are exact, the enabled
+  environment reconstructs risk/cost/reward, only the T170 negative adapter
+  and critic update, the normalizer and protected actor remain bit-exact,
+  and both stateful ONNX graphs pass. The event file contains finite positive
+  roll-risk cost, but the runner emitted non-cost diagnostics under
+  `eval/episode_t202/...` rather than the preregistered
+  `eval/episode_reward/t202/...` namespace. Result SHA-256:
+  `b5ce1507...f018027`. This is not yet reclassified; a frozen read-only T202B
+  namespace-recovery audit is required. No rerun, hosted training, behavior,
+  Gate 5, or hardware is authorized.
