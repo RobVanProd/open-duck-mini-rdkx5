@@ -4910,3 +4910,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   calibration contexts and four commands. Execution is CPU inference only
   with zero behavior, optimizer, hosted compute, or robot access. Pass earns
   only T189 nominal behavior-matrix preregistration; Gate 5 remains closed.
+- 2026-07-30: T188 composition is held by exactly one contradictory
+  preregistered assertion: `step_zero_model_byte_exact_to_t164_final`.
+  T186 step zero is T170 half, not the older nominal pair already embedded in
+  T164 final, so the required source binding correctly changes the same
+  nominal weight/bias pair at step zero. All three graphs change exactly that
+  pair, all source bindings are exact, every node and other initializer is
+  exact, inactive routes and x=0 remain bit-exact, all outputs are finite,
+  and all other checks pass. Result SHA-256:
+  `c32be2ca...fcd82a79`. No behavior, optimizer, hosted, Gate 5, or hardware
+  operation occurs. Only a separately preregistered immutable-result
+  recovery may correct the step-zero expectation; no transform or inference
+  rerun is authorized.
