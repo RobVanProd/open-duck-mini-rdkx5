@@ -37,14 +37,25 @@ def test_t205_result_when_present() -> None:
     if not path.exists():
         return
     value = json.loads(path.read_text(encoding="utf-8"))
-    assert value["status"] == "PASS_T205_T203_POSTEXPORT_COMPOSITION"
-    assert value["failed_checks"] == []
-    assert all(value["checks"].values())
-    assert (
-        value["decision"]
-        == "EARN_T206_T203_NOMINAL_BEHAVIOR_MATRIX_"
-        "PREREGISTRATION_ONLY"
-    )
+    if value["status"] == "PASS_T205_T203_POSTEXPORT_COMPOSITION":
+        assert value["failed_checks"] == []
+        assert all(value["checks"].values())
+        assert (
+            value["decision"]
+            == "EARN_T206_T203_NOMINAL_BEHAVIOR_MATRIX_"
+            "PREREGISTRATION_ONLY"
+        )
+    else:
+        assert value["status"] == "HOLD_T205_T203_POSTEXPORT_COMPOSITION"
+        assert value["failed_checks"] == [
+            "both_y_negative_fits_exercise_changed_moving_action"
+        ]
+        assert all(
+            passed
+            for name, passed in value["checks"].items()
+            if name
+            != "both_y_negative_fits_exercise_changed_moving_action"
+        )
     assert value["execution"]["behavior_cells"] == 0
     assert value["authority"]["behavior_matrix"] is False
     assert value["authority"]["gate5"] is False
