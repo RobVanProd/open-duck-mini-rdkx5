@@ -4922,3 +4922,12 @@ Do not proceed to grounded walking until low-risk gates pass.
   operation occurs. Only a separately preregistered immutable-result
   recovery may correct the step-zero expectation; no transform or inference
   rerun is authorized.
+- 2026-07-30: T188B preregisters an immutable-result correction under
+  contract SHA-256 `27a48902...b56866e3`. The frozen raw T186 step-zero
+  graph is exact T170 half and its adapter pair differs from T164-final's
+  nominal destination pair, so correct source binding necessarily changes
+  that pair. The corrected rule requires all three graphs—not only trained
+  graphs—to change exactly the allowed nominal weight/bias pair while all
+  prior structural and inference checks remain green. Execution reads the
+  saved T188 result only: no transform, inference, behavior, optimizer,
+  hosted compute, Gate 5, or hardware operation is authorized.
