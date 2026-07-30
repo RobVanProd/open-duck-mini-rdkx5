@@ -1,0 +1,141 @@
+{
+  "authority": {
+    "colab": false,
+    "execute_source_correction_audit": true,
+    "gate5": false,
+    "robot_or_rdk": false,
+    "t227_cpu_contract_preregistration": false,
+    "training": false
+  },
+  "checks": {
+    "all_exact_sources_present": true,
+    "t216_preregistration_exact": true,
+    "t217_confirms_t98_and_eight_strata": true,
+    "t226_passed_but_contains_support_claim_to_supersede": true,
+    "t66_exact_endpoint_bank_contract_passed": true,
+    "t67_endpoint_only_family_was_closed": true,
+    "zero_simulator_optimizer_onnx_behavior_hosted_or_robot_now": true
+  },
+  "decision_rule": {
+    "fail": "RETURN_TO_SUPPORT_AUDIT_WITHOUT_TRAINING",
+    "forbidden_successors": [
+      "repeat exact-COM-only T66/T67 training",
+      "retry a global command clamp or plateau",
+      "change reward, cost, actor ABI, or gate thresholds",
+      "launch hosted training"
+    ],
+    "pass": "EARN_T227_COMMAND_ATOM_X_EXISTING_COM_BANK_CPU_CONTRACT_PREREGISTRATION_ONLY",
+    "pass_if": [
+      "T216's driver chain enables winner_t98_hidden_expert_continuation",
+      "the composed runner wraps the base randomizer with T66's endpoint bank",
+      "the bank contains the exact torso-COM z=+.05 endpoint",
+      "T217 records the exact T98 readback and eight configuration strata",
+      "the command sampler remains a continuous uniform over .074-.080 without deterministic command atoms",
+      "the older exact-COM-only T67 family remains closed"
+    ],
+    "selection_weight": 0
+  },
+  "execution_now": {
+    "behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "onnx_inferences": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_transitions": 0,
+    "source_files_read": 0
+  },
+  "facts_to_verify": {
+    "command_sampler": "continuous_uniform_without_guaranteed_atoms",
+    "command_support_m_s": [
+      0.074,
+      0.08
+    ],
+    "configuration_strata": 8,
+    "configuration_strata_semantics": "one broad randomized stratum plus isolated nominal and six exact torso-COM endpoints",
+    "corrected_novelty": "one broad command stratum plus exact .074/.077/.080 command atoms crossed with the existing eight configuration strata",
+    "environments_per_configuration_stratum": 32,
+    "exact_torso_com_z_pos_offset_m": [
+      0.0,
+      0.0,
+      0.05
+    ],
+    "training_population": 256
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 9150,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t226b_t216_support_correction_preregistration.py",
+      "sha256": "00990656a20e0f65c6825af359bc5bda404d00e9ebef33bcd776a7c65378f11f"
+    },
+    "command_sampler": {
+      "bytes": 52817,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t215b_axis_complete_tilt_cpu_source_v1\\playground\\open_duck_mini_v2\\joystick.py",
+      "sha256": "f2a7b7dbc9e372472f450c4ca6d1af8186910075cbfbdc446704c9be95b16d6c"
+    },
+    "composed_runner": {
+      "bytes": 28331,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t215b_axis_complete_tilt_cpu_source_v1\\playground\\open_duck_mini_v2\\runner.py",
+      "sha256": "c1b0794050b96e05160ad848a3900b643cf0752260cbf2884c76ad6c3a06885b"
+    },
+    "endpoint_bank_helper": {
+      "bytes": 5906,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t215b_axis_complete_tilt_cpu_source_v1\\playground\\common\\t66_endpoint_core_continuation.py",
+      "sha256": "a5627f0109b842f37be5d87c327cbb3efeface040a5632e84893cba73c8a321f"
+    },
+    "runner": {
+      "bytes": 11171,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t226b_t216_support_correction.py",
+      "sha256": "b67f1bdcd2ff7190ac68c7c2ae5d3eb3422bf85d62bd9aa334b8301d1e063fdf"
+    },
+    "t170_driver": {
+      "bytes": 7343,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\colab_t170_eight_stratum_head_continuation.py",
+      "sha256": "3b81a0db4ba3374a2341256860b78c42f4207a6d8ced8d606c4bd9395f1fa744"
+    },
+    "t216_driver": {
+      "bytes": 16611,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\colab_t216_axis_complete_tilt_continuation.py",
+      "sha256": "092f63e29cc4e7181f33b59a0378c5d1cfc4cdfbff87565d5d75ef974a7588ea"
+    },
+    "t216_preregistration": {
+      "bytes": 29235,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t216_axis_complete_tilt_hosted_preregistration.json",
+      "sha256": "c264815619ac8ff7f8357aee6a64c4a81f4a423411eec724f95eda3cca9ee3c2"
+    },
+    "t217_validation": {
+      "bytes": 19404,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t217_t216_recovered_training_validation.json",
+      "sha256": "811197be756d2483fa891e7a80d1cd01be5374a58974d4856b4707e45053e64f"
+    },
+    "t226_result": {
+      "bytes": 9259,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t226_r2_boundary_corner_autopsy_result.json",
+      "sha256": "30713188ae0ee9fe0e81803386de318405b1bc239793de42daf5babb4d6924e3"
+    },
+    "t66_result": {
+      "bytes": 9475,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t66_endpoint_core_cpu_result.json",
+      "sha256": "d280a59f38b4fce79881276623104fa3ab757013efaf0d1f3a92c1285ecd4b4c"
+    },
+    "t70_result": {
+      "bytes": 123348,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t70_t67_condition7_result.json",
+      "sha256": "ed137273a1920a3707d0e93d73b38a765ed7f5d865c614baf45af0060c94545d"
+    },
+    "t71_result": {
+      "bytes": 53268,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t71_t67_com_hidden_causal_result.json",
+      "sha256": "06b9f4678a63c96b40dcccd9f9e59ec30c35a78b337446e1ba74c7dc83a43d50"
+    },
+    "test": {
+      "bytes": 2488,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t226b_t216_support_correction.py",
+      "sha256": "9e84ef87cc41256c8bed51fd88d99cd572665ea51388d052ef1b9a58d29ae99d"
+    }
+  },
+  "preregistered_contract_sha256": "b3a4081e8a4cd3243734d0e7310271bc7c6482111f6003995ed7bf1e44f99f17",
+  "question": "Did T216 already cross its continuous command sampler with T66's exact eight-stratum configuration bank, making the remaining unsupported boundary mechanism deterministic command coverage rather than missing COM endpoint coverage?",
+  "schema_version": "open_duck.t226b_t216_support_correction_preregistration.v1",
+  "status": "PREREGISTERED_T226B_T216_SUPPORT_CORRECTION"
+}
