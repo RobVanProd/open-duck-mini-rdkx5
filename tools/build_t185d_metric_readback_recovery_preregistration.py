@@ -82,7 +82,10 @@ def main() -> int:
             "runner": receipt(RUNNER),
             "t185c_result": receipt(SOURCE),
             "t185c_attribution": receipt(ATTRIBUTION),
-            "event_file": source["training"]["event_file"],
+            "event_file": {
+                "kind": "file",
+                **source["training"]["event_file"],
+            },
         },
         "saved_artifact_contract": {
             "support_tags": [

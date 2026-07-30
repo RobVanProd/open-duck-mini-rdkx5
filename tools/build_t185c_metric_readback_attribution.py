@@ -70,7 +70,10 @@ def main() -> int:
         canonical_without(source, "result_sha256")
         == source["result_sha256"]
     )
-    event_receipt = source["training"]["event_file"]
+    event_receipt = {
+        "kind": "file",
+        **source["training"]["event_file"],
+    }
     t20.verify_receipt(event_receipt, "T185C event file")
     event_path = Path(event_receipt["path"])
     events = t55.all_scalar_events(event_path)
