@@ -5104,3 +5104,12 @@ Do not proceed to grounded walking until low-risk gates pass.
   checkpoints must pass, with no selection, retry, or same-run resume.
   Packaging and one exact launch are conditional on their own green
   contracts. Gate 5 and all robot access remain closed.
+- 2026-07-30: T194's hosted package passes every identity preflight. The
+  `4,340,170`-byte archive has SHA-256
+  `5e1ea887...f4a8c7c3`; its manifest has SHA-256
+  `e839c443...d0ff2469`. The copied playground, exact T170-half
+  checkpoint, step-zero graph, reference features, hidden gate, CPU
+  evidence, and driver dependency chain all reproduce their frozen hashes.
+  No credentials or robot material are present. No hosted session or
+  optimizer execution has occurred; one launch still requires a green
+  launch contract.
