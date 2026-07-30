@@ -38,3 +38,12 @@ def test_t170_package_contract() -> None:
     assert value["checks"]["robot_access_material_absent"]
     assert value["execution"]["optimizer_steps"] == 0
     assert value["execution"]["hosted_sessions_opened"] == 0
+
+
+def test_t170_package_preflight_handles_split_readback_literal() -> None:
+    text = (
+        ROOT / "tools/build_t170_eight_stratum_head_hosted_package.py"
+    ).read_text(encoding="utf-8")
+    assert "'T98_HIDDEN_EXPERT_CONTINUATION=' in runner" in text
+    assert "'strata=8,broad=1,isolated=7,' in runner" in text
+    assert "'gate=fixed_live_hidden,' in runner" in text
