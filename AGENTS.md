@@ -5229,3 +5229,12 @@ Do not proceed to grounded walking until low-risk gates pass.
   `RETURN_TO_MECHANISM_SELECTION_WITHOUT_SUPPORT_OBJECTIVE_CONTINUATION`.
   No support-objective continuation, behavior, training, full R2,
   deployment audit, Gate 5, or hardware is earned.
+- 2026-07-30: T200 preregisters a saved-state command-chord diagnostic under
+  contract SHA-256 `5285ebdd...d846a5845`. On the three frozen x=`.077`
+  trajectories, each exact graph is evaluated on the same stored state at
+  x=`.074/.077/.080`; center-output curvature is measured against the exact
+  endpoint midpoint over ticks `254-307`. A single behavior cell is earned
+  only if the failure's aligned action RMS and maximum both exceed the two
+  matched passes and its terminal RMS exceeds its prefix RMS. No simulator,
+  optimizer, hosted compute, checkpoint selection, Gate 5, or hardware is
+  authorized by this diagnostic.
