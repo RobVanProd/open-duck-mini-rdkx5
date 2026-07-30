@@ -4844,3 +4844,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   optimizer, model inference, behavior, hosted compute, or robot access.
   Pass earns only T186 hosted preregistration; hosted training, policy
   selection, deployment audit, Gate 5, and hardware remain unauthorized.
+- 2026-07-30: T185F passes the immutable-event recovery with no failed
+  checks. Both evaluations contain finite positive balance, left-support,
+  right-support, and resumed-original-reward metrics; terminal prefix-active
+  is exactly `[0.0, 0.0]`; the mistaken tag is absent; and every other T185C
+  check remains green. Result SHA-256:
+  `01cc6471...cc597d7e5`. The complete T185 CPU software contract is now
+  green without any optimizer rerun: the original T185C execution remains
+  the sole `1,024`-step smoke, while T185F reads one immutable event file.
+  This earns only T186 hosted-continuation preregistration. No hosted
+  training, behavior evaluation, policy promotion, deployment audit, Gate 5,
+  or hardware is yet authorized.
