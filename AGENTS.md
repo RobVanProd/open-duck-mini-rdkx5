@@ -5162,3 +5162,10 @@ Do not proceed to grounded walking until low-risk gates pass.
   immutable-result correction may recover the known expectation; no
   transform, inference, behavior, optimizer, hosted compute, Gate 5, or
   hardware rerun is authorized.
+- 2026-07-30: T196B preregisters the immutable-result correction under
+  contract SHA-256 `a03526f2...cef20f21`. The corrected rule requires all
+  three T194 graphs, including step zero, to replace exactly the allowed
+  nominal adapter weight/bias pair while preserving every already-green
+  T196 structural and inference check. Execution may read only the saved
+  T196 result; new transform, inference, behavior, optimizer, hosted,
+  Gate 5, and hardware work remain unauthorized.
