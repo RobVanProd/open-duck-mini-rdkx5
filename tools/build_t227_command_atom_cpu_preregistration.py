@@ -168,8 +168,18 @@ def main() -> int:
         "source_choice_is_mechanistic_not_checkpoint_selection": (
             t225["summary"]["first_failed_condition"]
             == "TORSO_COM_Z_POS"
+            and len(
+                [
+                    block
+                    for block in t225["blocks"]
+                    if block["condition_id"] == "TORSO_COM_Z_POS"
+                    and block["checkpoint_id"]
+                    == "T222_GLOBAL_PLATEAU_FINAL"
+                ]
+            )
+            == 2
             and all(
-                block["result"]["green_cells"] == 8
+                block["block_green"]
                 for block in t225["blocks"]
                 if block["condition_id"] == "TORSO_COM_Z_POS"
                 and block["checkpoint_id"]
