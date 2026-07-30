@@ -5238,3 +5238,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   matched passes and its terminal RMS exceeds its prefix RMS. No simulator,
   optimizer, hosted compute, checkpoint selection, Gate 5, or hardware is
   authorized by this diagnostic.
+- 2026-07-30: T200 passes every exact center-output, finite endpoint,
+  aligned-window, and CPU check but falsifies command-chord curvature as the
+  failure mechanism. Failure aligned action RMS/max are
+  `0.003692525/0.040793642`, both below the matched final/P31-34 values
+  `0.006171600/0.068306297` and half/P30 values
+  `0.008342963/0.099999994`; terminal RMS also falls below prefix RMS.
+  Result SHA-256: `4dc98baa...ffb84f70`; decision
+  `RETURN_TO_MECHANISM_SELECTION_WITHOUT_COMMAND_CHORD`. No chord wrapper,
+  behavior, training, full R2, deployment audit, Gate 5, or hardware is
+  earned.
