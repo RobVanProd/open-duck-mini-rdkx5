@@ -4768,3 +4768,11 @@ Do not proceed to grounded walking until low-risk gates pass.
   bookkeeping-only and earns only a T185C receipt-schema recovery
   preregistration. It does not authorize a rerun, training, deployment
   audit, Gate 5, or hardware.
+- 2026-07-30: T185C preregisters the receipt-schema-only recovery under
+  contract SHA-256 `08b293d3...e64907e5`. Every source receipt now includes
+  its required `kind`, with the prior path, byte count, and SHA-256 retained.
+  The JIT diagnostic correction, mechanism, playground, CPU contract,
+  decision rule, and authority remain unchanged. One fresh T185C CPU
+  contract is authorized in an isolated work directory. Pass still earns
+  only T186 hosted preregistration; hosted training, policy selection,
+  deployment audit, Gate 5, and hardware remain unauthorized.
