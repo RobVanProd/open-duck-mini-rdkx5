@@ -152,3 +152,39 @@ def test_t193_result_contract_when_present() -> None:
     assert value["execution"]["formal_behavior_cells"] == 0
     assert value["execution"]["hosted_compute_units"] == 0
     assert value["execution"]["robot_or_rdk_access"] == 0
+
+
+def test_t193b_recovery_contract_when_present() -> None:
+    prereg_path = (
+        ANALYSIS / "t193b_metric_namespace_recovery_preregistration.json"
+    )
+    if prereg_path.exists():
+        value = json.loads(prereg_path.read_text(encoding="utf-8"))
+        assert (
+            value["status"]
+            == "PREREGISTERED_T193B_METRIC_NAMESPACE_RECOVERY"
+        )
+        assert value["failed_checks"] == []
+        assert value["authority"]["optimizer"] is False
+        assert value["execution_now"]["simulator_transitions"] == 0
+        assert value["execution_now"]["optimizer_steps"] == 0
+
+    result_path = (
+        ANALYSIS / "t193b_metric_namespace_recovery_result.json"
+    )
+    if not result_path.exists():
+        return
+    result = json.loads(result_path.read_text(encoding="utf-8"))
+    assert result["status"] == "PASS_T193B_METRIC_NAMESPACE_RECOVERY"
+    assert (
+        result["classification"]
+        == "T193_CPU_HOLD_WAS_REPORTING_NAMESPACE_ONLY"
+    )
+    assert (
+        result["decision"]
+        == "EARN_T194_CORRECTED_DYNAMIC_REFERENCE_SUPPORT_HOSTED_"
+        "PREREGISTRATION_ONLY"
+    )
+    assert result["failed_checks"] == []
+    assert result["execution_now"]["optimizer_steps"] == 0
+    assert result["execution_now"]["hosted_compute_units"] == 0
