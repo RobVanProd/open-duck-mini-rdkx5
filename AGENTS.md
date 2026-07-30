@@ -5183,3 +5183,10 @@ Do not proceed to grounded walking until low-risk gates pass.
   cells. Both checkpoints are mandatory with no retry or selection. Pass
   earns only T198's targeted Y-negative preregistration; training, hosted
   compute, deployment audit, Gate 5, and hardware remain unauthorized.
+- 2026-07-30: T197 passes all `16/16` nominal/default cells across both T194
+  checkpoints, both measured actuator fits, and all four commands. Worst
+  tracking p95 is `0.171055967` rad and minimum moving vx is
+  `0.057714888` m/s. Result SHA-256:
+  `222bda0e...ae110b2a`. This earns only T198's targeted Y-negative matrix
+  preregistration; broader robustness, deployment audit, Gate 5, and
+  hardware remain closed.
