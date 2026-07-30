@@ -4820,3 +4820,11 @@ Do not proceed to grounded walking until low-risk gates pass.
   `INVALIDATE_T185D_SOURCE_RECEIPT_SCHEMA_BEFORE_EXECUTION`. This earns only
   a T185E receipt-only preregistration. It does not authorize event
   reanalysis, training, deployment audit, Gate 5, or hardware.
+- 2026-07-30: T185E preregisters the receipt-complete immutable-event
+  recovery under contract SHA-256 `a27691a4...d4cddd87`. Every source
+  receipt has a recognized kind; the T185D metric rules, event artifact,
+  decision, and authority are unchanged. It may execute exactly one
+  saved-event read with no simulator, optimizer, model inference, behavior,
+  hosted compute, or robot access. Pass earns only T186 hosted
+  preregistration; hosted training, policy selection, deployment audit,
+  Gate 5, and hardware remain unauthorized.
