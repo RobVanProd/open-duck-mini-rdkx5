@@ -1,0 +1,80 @@
+{
+  "authority": {
+    "colab": false,
+    "gate5": false,
+    "robot_or_rdk": false,
+    "t227_cpu_contract_preregistration": true,
+    "training": false
+  },
+  "checks": {
+    "command_support_remains_continuous_without_atoms": true,
+    "composed_runner_wraps_t98_with_endpoint_bank": true,
+    "endpoint_bank_has_exact_upper_z_and_eight_categories": true,
+    "older_exact_com_only_family_closed": true,
+    "t170_replaces_predecessor_with_t98": true,
+    "t216_driver_inherits_t170_chain": true,
+    "t216_population_assigns_32_envs_per_stratum": true,
+    "t217_confirms_hosted_t98_readback": true,
+    "t226_claim_is_explicitly_superseded_not_rewritten": true,
+    "zero_simulator_optimizer_onnx_behavior_hosted_or_robot": true
+  },
+  "classification": "LOW_COMMAND_BOUNDARY_NOT_DETERMINISTICALLY_COVERED_WITH_EXACT_UPPER_Z_STRATUM_AND_LATE_ABI_FEASIBILITY",
+  "decision": "EARN_T227_COMMAND_ATOM_X_EXISTING_COM_BANK_CPU_CONTRACT_PREREGISTRATION_ONLY",
+  "execution": {
+    "behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "onnx_inferences": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_transitions": 0,
+    "source_files_read": 5
+  },
+  "failed_checks": [],
+  "novelty_boundary": {
+    "closed": [
+      "exact-COM-only endpoint continuation",
+      "global command clamp or plateau"
+    ],
+    "open": "deterministic command coverage crossed with the already active exact configuration bank"
+  },
+  "preregistered_contract_sha256": "b3a4081e8a4cd3243734d0e7310271bc7c6482111f6003995ed7bf1e44f99f17",
+  "result_sha256": "ffd0450a86ed9abdc797b67ee3f23500950cda3d77ba4d2e0446539d28643c60",
+  "schema_version": "open_duck.t226b_t216_support_correction_result.v1",
+  "status": "PASS_T226B_T216_SUPPORT_CORRECTION",
+  "supersedes": {
+    "artifact": "t226_r2_boundary_corner_autopsy_result.json",
+    "corrected_claims": {
+      "configuration_distribution": {
+        "correct": "eight-stratum endpoint bank: one broad randomized plus seven deterministic isolated configurations",
+        "t226": "continuous_uniform"
+      },
+      "deterministic_configuration_atoms": {
+        "correct": 7,
+        "t226": 0
+      },
+      "upper_z_exact_training_environments": {
+        "correct": 32,
+        "t226": 0
+      }
+    },
+    "preserved_findings": [
+      "the only tick-zero x=.074/x=.077 observation difference is obs[6]",
+      "both half-checkpoint x=.074 upper-Z failures are dynamic",
+      "the final checkpoint proves late actor-ABI feasibility",
+      "the global command plateau remains closed"
+    ]
+  },
+  "training_support": {
+    "command_distribution": "continuous_uniform",
+    "configuration_distribution": "one broad randomized stratum plus seven deterministic isolated strata",
+    "configuration_strata": 8,
+    "deterministic_command_atoms": 0,
+    "environments_per_configuration_stratum": 32,
+    "exact_upper_z_stratum": true,
+    "global_command_transform_retry": false,
+    "lower_command_endpoint_guaranteed_per_batch": false,
+    "policy_abi_change": false,
+    "reward_or_cost_change": false,
+    "selected_successor": "cross one broad continuous command stratum and exact .074/.077/.080 command atoms with T216's existing eight configuration strata"
+  }
+}
