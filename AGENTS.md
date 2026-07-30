@@ -4480,3 +4480,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   earn only a separately preregistered CPU-only source-versus-T175 positive-Z
   A/B. T178 runs no new simulation and authorizes no training, Colab,
   deployment audit, Gate 5, robot/RDK-X5 access, torque, motion, or clearance.
+- 2026-07-30: The first T178 execution's `HANDOFF_STATE_MISMATCH`
+  classification is invalidated by a reporting-field provenance error. The
+  analyzer correctly compared pre-action `actual_position_pre_rad`, context,
+  and recurrent inputs, but also compared current-action
+  `applied_target_rad` and post-step `qpos/qvel`; those outputs are expected to
+  differ by command. Trace receipts, fixed-prefix midpoint analysis, and the
+  five failure signatures remain valid. Recovery SHA-256:
+  `49b48179...5bf325e`. The only authorized successor is a separately
+  preregistered saved-trace T178B correction comparing the true pre-action
+  context, recurrent inputs, actual positions, and `obs_state[83:97]`.
+  No behavior run, training, Colab, deployment audit, Gate 5, or hardware is
+  authorized.
