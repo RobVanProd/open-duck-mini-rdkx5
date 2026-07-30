@@ -1,0 +1,580 @@
+{
+  "authority": {
+    "behavior_evaluation_authorized": false,
+    "checkpoint_selection_authorized": false,
+    "gate5_authorized": false,
+    "postexport_composition_preregistration_authorized": true,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "all_exact_export_sets_present": true,
+    "all_onnx_contracts_pass": true,
+    "all_policy_and_cost_trees_finite": true,
+    "all_required_readbacks_exact": true,
+    "axis_complete_tilt_cost_channel_exercised": true,
+    "both_exports_only_update_head_and_reward_critic": true,
+    "both_exports_update_cost_critic": true,
+    "cpu_only_validation": true,
+    "dual_initial_state_exact": true,
+    "dual_initialized_from_derived_cost_and_monotone": true,
+    "eval_metrics_finite_at_all_exports": true,
+    "formal_behavior_cells_zero": true,
+    "hosted_artifact_passed_pending_cpu_validation": true,
+    "launch_receipt_complete": true,
+    "package_and_launch_contracts_green": true,
+    "policy_cost_onnx_and_aux_match_hosted_result": true,
+    "preregistration_hash_matches_hosted": true,
+    "result_and_archive_hashes_exact": true,
+    "source_and_cpu_templates_frozen": true,
+    "step_zero_cost_tree_within_one_float32_epsilon": true,
+    "step_zero_policy_tree_source_bit_exact": true,
+    "step_zero_raw_onnx_byte_exact": true,
+    "t227d_cpu_authority_exact": true,
+    "t228_preregistration_green": true,
+    "training_metrics_finite_at_both_exports": true
+  },
+  "classification": {
+    "actor_update_scope": "negative_adapter_location_only",
+    "behavior_cells": 0,
+    "cartesian_strata": 32,
+    "command_strata": 4,
+    "configuration_strata": 8,
+    "cost_critic": "separate_updated",
+    "dual_update": "derived_dense_axis_complete_tilt_cost",
+    "hosted_wall_seconds": 1475.083608202,
+    "reward_critic": "updated",
+    "same_run_resume": false,
+    "training_completed": true,
+    "training_retry": false
+  },
+  "cost_init_backend_comparison": {
+    "absolute_tolerance": 1.1920928955078125e-07,
+    "maximum_absolute_leaf_delta": 1.4901161193847656e-08,
+    "within_tolerance": true
+  },
+  "decision": "EARN_T230_T228_POSTEXPORT_COMPOSITION_PREREGISTRATION_ONLY",
+  "exports": {
+    "aux": {
+      "0": {
+        "eta": 0.0,
+        "initial_cost": 0.0,
+        "initialized": false,
+        "lambda": 0.0,
+        "quarter_iterations": 25,
+        "step": 0,
+        "total_training_iterations": 98
+      },
+      "1003520": {
+        "eta": 0.0003257651987951249,
+        "initial_cost": 122.78782653808594,
+        "initialized": true,
+        "lambda": 1.963621735572815,
+        "quarter_iterations": 25,
+        "step": 1003520,
+        "total_training_iterations": 98
+      },
+      "2007040": {
+        "eta": 0.0003257651987951249,
+        "initial_cost": 122.78782653808594,
+        "initialized": true,
+        "lambda": 3.699451208114624,
+        "quarter_iterations": 25,
+        "step": 2007040,
+        "total_training_iterations": 98
+      }
+    },
+    "cost_checkpoints": [
+      {
+        "directory_sha256": "c803c165cf232d55bf997b8247d8b1123da41fff550e3f350d1b956bebaa3a05",
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t228_colab_recovery_20260730\\extracted\\t228_command_atom_continuation\\training\\2026_07_30_232009_0_v127_cost_value",
+        "step": 0
+      },
+      {
+        "directory_sha256": "8be114b4b1e3f31351a790e2e185860ac804854900590d3c8a754aba2eb7835f",
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t228_colab_recovery_20260730\\extracted\\t228_command_atom_continuation\\training\\2026_07_30_232553_1003520_v127_cost_value",
+        "step": 1003520
+      },
+      {
+        "directory_sha256": "4ea0f67568fbb770d4bc36393eca482790d03c86ef07870e1d7a66c9f8e3dbbe",
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t228_colab_recovery_20260730\\extracted\\t228_command_atom_continuation\\training\\2026_07_30_233104_2007040_v127_cost_value",
+        "step": 2007040
+      }
+    ],
+    "cost_updates": [
+      {
+        "every_leaf_updated": true,
+        "leaf_deltas": {
+          "params/hidden_0/bias": 0.14511148631572723,
+          "params/hidden_0/kernel": 0.13933810591697693,
+          "params/hidden_1/bias": 0.13048729300498962,
+          "params/hidden_1/kernel": 0.16395781934261322,
+          "params/hidden_2/bias": 0.11100427061319351,
+          "params/hidden_2/kernel": 0.1426662653684616,
+          "params/hidden_3/bias": 0.049597401171922684,
+          "params/hidden_3/kernel": 0.07887963950634003
+        },
+        "step": 1003520,
+        "structure_exact": true,
+        "tree_finite": true
+      },
+      {
+        "every_leaf_updated": true,
+        "leaf_deltas": {
+          "params/hidden_0/bias": 0.2277127355337143,
+          "params/hidden_0/kernel": 0.21019937098026276,
+          "params/hidden_1/bias": 0.18827871978282928,
+          "params/hidden_1/kernel": 0.2168925553560257,
+          "params/hidden_2/bias": 0.17011457681655884,
+          "params/hidden_2/kernel": 0.22866277396678925,
+          "params/hidden_3/bias": 0.0698506161570549,
+          "params/hidden_3/kernel": 0.12401212751865387
+        },
+        "step": 2007040,
+        "structure_exact": true,
+        "tree_finite": true
+      }
+    ],
+    "onnx": [
+      {
+        "abi_exact": true,
+        "chain_256_finite": true,
+        "cpu_provider_exact": true,
+        "initializers_finite": true,
+        "sha256": "2dd89adfc487da6ad41008bb2094b3e8d24c2fdff4ba233459df36879e2aa770",
+        "step": 0
+      },
+      {
+        "abi_exact": true,
+        "chain_256_finite": true,
+        "cpu_provider_exact": true,
+        "initializers_finite": true,
+        "sha256": "1f0b2706101e4c7c830d8308f60a30e3016bbd9c42d8de18201ea30ab1b181ea",
+        "step": 1003520
+      },
+      {
+        "abi_exact": true,
+        "chain_256_finite": true,
+        "cpu_provider_exact": true,
+        "initializers_finite": true,
+        "sha256": "6cfc9090f08a6ae7d4d04a04e6fbdb6fdcd1aaaff3c441e25ec35f4dfbf0e771",
+        "step": 2007040
+      }
+    ],
+    "policy_checkpoints": [
+      {
+        "directory_sha256": "3a9a43cc7bed4effaa7c68aebfe0e82434718a7a0dcdd0b32af2822a3beec5aa",
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t228_colab_recovery_20260730\\extracted\\t228_command_atom_continuation\\training\\2026_07_30_232006_0",
+        "step": 0
+      },
+      {
+        "directory_sha256": "e4d14656b3a3cf11cea1abbb8a2ba0208cbd101326dd423216113f442ed55264",
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t228_colab_recovery_20260730\\extracted\\t228_command_atom_continuation\\training\\2026_07_30_232553_1003520",
+        "step": 1003520
+      },
+      {
+        "directory_sha256": "1db83873f84643f0d5ca6af69e39889a9ec65f780f70f80d515c6fde805a4d5f",
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t228_colab_recovery_20260730\\extracted\\t228_command_atom_continuation\\training\\2026_07_30_233104_2007040",
+        "step": 2007040
+      }
+    ],
+    "policy_updates": [
+      {
+        "every_mature_actor_leaf_exact": true,
+        "every_reward_critic_leaf_updated": true,
+        "every_trainable_actor_leaf_updated": true,
+        "frozen_mature_actor_leaf_deltas": {
+          "1/params/adapter_hidden_bias": 0.0,
+          "1/params/adapter_hidden_projection/kernel": 0.0,
+          "1/params/adapter_location/bias": 0.0,
+          "1/params/adapter_location/kernel": 0.0,
+          "1/params/adapter_obs_projection/kernel": 0.0,
+          "1/params/residual_location/bias": 0.0,
+          "1/params/residual_location/kernel": 0.0,
+          "1/params/residual_trunk/hidden_0/bias": 0.0,
+          "1/params/residual_trunk/hidden_0/kernel": 0.0,
+          "1/params/residual_trunk/hidden_1/bias": 0.0,
+          "1/params/residual_trunk/hidden_1/kernel": 0.0,
+          "1/params/residual_trunk/hidden_2/bias": 0.0,
+          "1/params/residual_trunk/hidden_2/kernel": 0.0,
+          "1/params/scale_logits/bias": 0.0,
+          "1/params/scale_logits/kernel": 0.0
+        },
+        "normalizer_exact": true,
+        "normalizer_leaf_deltas": {
+          "0/count/hi": 0.0,
+          "0/count/lo": 0.0,
+          "0/mean/policy_hidden": 0.0,
+          "0/mean/privileged_state": 0.0,
+          "0/mean/state": 0.0,
+          "0/std/policy_hidden": 0.0,
+          "0/std/privileged_state": 0.0,
+          "0/std/state": 0.0,
+          "0/std_eps": 0.0,
+          "0/summed_variance/policy_hidden": 0.0,
+          "0/summed_variance/privileged_state": 0.0,
+          "0/summed_variance/state": 0.0
+        },
+        "reward_critic_leaf_deltas": {
+          "2/params/hidden_0/bias": 0.006133578717708588,
+          "2/params/hidden_0/kernel": 0.026245206594467163,
+          "2/params/hidden_1/bias": 0.014990203082561493,
+          "2/params/hidden_1/kernel": 0.02509400062263012,
+          "2/params/hidden_2/bias": 0.0031918082386255264,
+          "2/params/hidden_2/kernel": 0.01676180213689804,
+          "2/params/hidden_3/bias": 0.0011360198259353638,
+          "2/params/hidden_3/kernel": 0.0047463104128837585
+        },
+        "step": 1003520,
+        "structure_exact": true,
+        "trainable_actor_leaf_deltas": {
+          "1/params/negative_adapter_location/bias": 0.01770120859146118,
+          "1/params/negative_adapter_location/kernel": 0.02029290236532688
+        },
+        "tree_finite": true
+      },
+      {
+        "every_mature_actor_leaf_exact": true,
+        "every_reward_critic_leaf_updated": true,
+        "every_trainable_actor_leaf_updated": true,
+        "frozen_mature_actor_leaf_deltas": {
+          "1/params/adapter_hidden_bias": 0.0,
+          "1/params/adapter_hidden_projection/kernel": 0.0,
+          "1/params/adapter_location/bias": 0.0,
+          "1/params/adapter_location/kernel": 0.0,
+          "1/params/adapter_obs_projection/kernel": 0.0,
+          "1/params/residual_location/bias": 0.0,
+          "1/params/residual_location/kernel": 0.0,
+          "1/params/residual_trunk/hidden_0/bias": 0.0,
+          "1/params/residual_trunk/hidden_0/kernel": 0.0,
+          "1/params/residual_trunk/hidden_1/bias": 0.0,
+          "1/params/residual_trunk/hidden_1/kernel": 0.0,
+          "1/params/residual_trunk/hidden_2/bias": 0.0,
+          "1/params/residual_trunk/hidden_2/kernel": 0.0,
+          "1/params/scale_logits/bias": 0.0,
+          "1/params/scale_logits/kernel": 0.0
+        },
+        "normalizer_exact": true,
+        "normalizer_leaf_deltas": {
+          "0/count/hi": 0.0,
+          "0/count/lo": 0.0,
+          "0/mean/policy_hidden": 0.0,
+          "0/mean/privileged_state": 0.0,
+          "0/mean/state": 0.0,
+          "0/std/policy_hidden": 0.0,
+          "0/std/privileged_state": 0.0,
+          "0/std/state": 0.0,
+          "0/std_eps": 0.0,
+          "0/summed_variance/policy_hidden": 0.0,
+          "0/summed_variance/privileged_state": 0.0,
+          "0/summed_variance/state": 0.0
+        },
+        "reward_critic_leaf_deltas": {
+          "2/params/hidden_0/bias": 0.010854542255401611,
+          "2/params/hidden_0/kernel": 0.06792682409286499,
+          "2/params/hidden_1/bias": 0.030400920659303665,
+          "2/params/hidden_1/kernel": 0.04664314538240433,
+          "2/params/hidden_2/bias": 0.0069929249584674835,
+          "2/params/hidden_2/kernel": 0.04281441867351532,
+          "2/params/hidden_3/bias": 0.005277320742607117,
+          "2/params/hidden_3/kernel": 0.021105166524648666
+        },
+        "step": 2007040,
+        "structure_exact": true,
+        "trainable_actor_leaf_deltas": {
+          "1/params/negative_adapter_location/bias": 0.026315465569496155,
+          "1/params/negative_adapter_location/kernel": 0.04142048954963684
+        },
+        "tree_finite": true
+      }
+    ]
+  },
+  "failed_checks": [],
+  "metrics": {
+    "eval": {
+      "eval/avg_episode_length": [
+        {
+          "step": 0,
+          "value": 494.2265625
+        },
+        {
+          "step": 1003520,
+          "value": 493.8828125
+        },
+        {
+          "step": 2007040,
+          "value": 483.6328125
+        }
+      ],
+      "eval/episode_cost/t215b_predicted_tilt_box": [
+        {
+          "step": 0,
+          "value": 68.81663513183594
+        },
+        {
+          "step": 1003520,
+          "value": 63.01276397705078
+        },
+        {
+          "step": 2007040,
+          "value": 64.40552520751953
+        }
+      ],
+      "eval/episode_cost/winner_v127_dense_torque_exceedance": [
+        {
+          "step": 0,
+          "value": 68.81663513183594
+        },
+        {
+          "step": 1003520,
+          "value": 63.01276397705078
+        },
+        {
+          "step": 2007040,
+          "value": 64.40552520751953
+        }
+      ],
+      "eval/episode_reward": [
+        {
+          "step": 0,
+          "value": 246.6149139404297
+        },
+        {
+          "step": 1003520,
+          "value": 246.774658203125
+        },
+        {
+          "step": 2007040,
+          "value": 241.80430603027344
+        }
+      ],
+      "eval/episode_t215b/original_clipped_reward": [
+        {
+          "step": 0,
+          "value": 246.6149139404297
+        },
+        {
+          "step": 1003520,
+          "value": 246.774658203125
+        },
+        {
+          "step": 2007040,
+          "value": 241.80430603027344
+        }
+      ],
+      "eval/episode_t215b/predicted_pitch_risk_rad": [
+        {
+          "step": 0,
+          "value": 26.539470672607422
+        },
+        {
+          "step": 1003520,
+          "value": 25.855899810791016
+        },
+        {
+          "step": 2007040,
+          "value": 24.556411743164062
+        }
+      ],
+      "eval/episode_t215b/predicted_roll_risk_rad": [
+        {
+          "step": 0,
+          "value": 32.299049377441406
+        },
+        {
+          "step": 1003520,
+          "value": 32.52919387817383
+        },
+        {
+          "step": 2007040,
+          "value": 32.293067932128906
+        }
+      ],
+      "eval/episode_t215b/tilt_box_excess": [
+        {
+          "step": 0,
+          "value": 14.458786964416504
+        },
+        {
+          "step": 1003520,
+          "value": 13.207719802856445
+        },
+        {
+          "step": 2007040,
+          "value": 13.104865074157715
+        }
+      ],
+      "eval/episode_t215b/tilt_box_score": [
+        {
+          "step": 0,
+          "value": 145.4142608642578
+        },
+        {
+          "step": 1003520,
+          "value": 142.92572021484375
+        },
+        {
+          "step": 2007040,
+          "value": 138.53286743164062
+        }
+      ]
+    },
+    "training": {
+      "training/cost_advantage_mean": [
+        {
+          "step": 1003520,
+          "value": -7.127468754086763e-11
+        },
+        {
+          "step": 2007040,
+          "value": 1.688022083223828e-10
+        }
+      ],
+      "training/cost_advantage_std": [
+        {
+          "step": 1003520,
+          "value": 1.0
+        },
+        {
+          "step": 2007040,
+          "value": 1.0
+        }
+      ],
+      "training/cost_v_loss": [
+        {
+          "step": 1003520,
+          "value": 26.700944900512695
+        },
+        {
+          "step": 2007040,
+          "value": 7.28417444229126
+        }
+      ],
+      "training/dense_cost_max": [
+        {
+          "step": 1003520,
+          "value": 62.009368896484375
+        },
+        {
+          "step": 2007040,
+          "value": 62.171226501464844
+        }
+      ],
+      "training/dense_cost_mean": [
+        {
+          "step": 1003520,
+          "value": 6.150736331939697
+        },
+        {
+          "step": 2007040,
+          "value": 5.437211990356445
+        }
+      ],
+      "training/dual_lambda": [
+        {
+          "step": 1003520,
+          "value": 1.002075433731079
+        },
+        {
+          "step": 2007040,
+          "value": 2.8498899936676025
+        }
+      ],
+      "training/policy_loss": [
+        {
+          "step": 1003520,
+          "value": -0.0002660586324054748
+        },
+        {
+          "step": 2007040,
+          "value": -0.00026681451709009707
+        }
+      ],
+      "training/reward_advantage_mean": [
+        {
+          "step": 1003520,
+          "value": 1.7082166237081253e-10
+        },
+        {
+          "step": 2007040,
+          "value": -1.812753142038659e-10
+        }
+      ],
+      "training/reward_advantage_std": [
+        {
+          "step": 1003520,
+          "value": 1.0
+        },
+        {
+          "step": 2007040,
+          "value": 1.0
+        }
+      ],
+      "training/total_loss": [
+        {
+          "step": 1003520,
+          "value": 26.713834762573242
+        },
+        {
+          "step": 2007040,
+          "value": 7.299863815307617
+        }
+      ],
+      "training/v_loss": [
+        {
+          "step": 1003520,
+          "value": 0.018757041543722153
+        },
+        {
+          "step": 2007040,
+          "value": 0.02106565050780773
+        }
+      ],
+      "training/winner_v127_batch_episode_cost": [
+        {
+          "step": 1003520,
+          "value": 123.01472473144531
+        },
+        {
+          "step": 2007040,
+          "value": 108.74424743652344
+        }
+      ],
+      "training/winner_v127_dual_eta": [
+        {
+          "step": 1003520,
+          "value": 0.000325765140587464
+        },
+        {
+          "step": 2007040,
+          "value": 0.000325765140587464
+        }
+      ],
+      "training/winner_v127_dual_initial_cost": [
+        {
+          "step": 1003520,
+          "value": 122.78782653808594
+        },
+        {
+          "step": 2007040,
+          "value": 122.78782653808594
+        }
+      ],
+      "training/winner_v127_dual_lambda_after_update": [
+        {
+          "step": 1003520,
+          "value": 1.002075433731079
+        },
+        {
+          "step": 2007040,
+          "value": 2.8498895168304443
+        }
+      ]
+    }
+  },
+  "preregistered_contract_sha256": "4afa9997cb809a0fde29152614ea464a594fa97be6bec8c3d52ea94bfa8817ea",
+  "result_sha256": "5e4e01d892e73bf0d3cf6acedbba3b2a86ec970a6ee2dea0a9c9dfb1948e18b8",
+  "schema_version": "open_duck.t229_t228_recovered_training_validation.v1",
+  "status": "PASS_T229_T228_RECOVERED_TRAINING_VALIDATION"
+}
