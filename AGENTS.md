@@ -5270,3 +5270,11 @@ Do not proceed to grounded walking until low-risk gates pass.
   than a failed T194 checkpoint, a saved-trace source-transfer audit is
   required before that CPU contract. No behavior, training, hosted compute,
   full R2, deployment audit, Gate 5, or hardware is yet authorized.
+- 2026-07-30: T201B preregisters a saved-trace roll-risk source-transfer
+  audit under contract SHA-256 `d6163d28...ffa8fa08c`. It freezes `20`
+  T170/T194 traces: `18` passes and the two known roll-collapse failures.
+  One combined threshold is derived as `nextafter(maximum predicted-roll
+  risk across every passing row, +infinity)`. Both failures must exceed it
+  for at least four rows with at least four ticks of lead, while every pass
+  remains at zero exceedance. No simulator, optimizer, hosted compute,
+  deployment graph change, Gate 5, or hardware is authorized.
