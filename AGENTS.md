@@ -4867,3 +4867,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   with no retry, resume, or cherry-pick. Packaging and a launch contract are
   authorized next. No Colab session, behavior evaluation, deployment audit,
   Gate 5, or hardware has yet been authorized by a package/launch result.
+- 2026-07-30: The T186 hosted bundle passes its complete local identity
+  preflight to the GPU boundary. Archive
+  `D:\CodexArtifacts\open-duck-policy\t186_in_episode_single_support_bundle_20260730.tar.gz`
+  is `4,342,052` bytes with SHA-256
+  `adcd3741...2a553eb8`. The copied T170-half checkpoint, raw step-zero ONNX,
+  hidden-gate asset, T185 playground inventory, prerequisite evidence, and
+  all driver sources reproduce exactly. The constructed command contains one
+  T185 prefix flag, one T98 continuation flag, `256` environments, and
+  `2,007,040` steps. Credentials and robot material are absent. This earns
+  only a separately frozen one-session Colab CLI launch contract; no hosted
+  session, optimizer, behavior, Gate 5, or hardware execution has occurred.
