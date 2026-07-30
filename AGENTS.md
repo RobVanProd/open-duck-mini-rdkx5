@@ -4828,3 +4828,11 @@ Do not proceed to grounded walking until low-risk gates pass.
   hosted compute, or robot access. Pass earns only T186 hosted
   preregistration; hosted training, policy selection, deployment audit,
   Gate 5, and hardware remain unauthorized.
+- 2026-07-30: Pre-execution inspection invalidates T185E before any event
+  read: its frozen generic runner still defaults to T185D input/output paths.
+  Recovery status:
+  `INVALIDATE_T185E_RUNNER_PATH_CONTRACT_BEFORE_EXECUTION`. Artifact reads /
+  simulator / optimizer / inference / behavior / hosted / robot execution
+  remains `0/0/0/0/0/0/0`. Only a T185F path-isolated preregistration is
+  earned; no reanalysis, training, deployment audit, Gate 5, or hardware is
+  authorized.

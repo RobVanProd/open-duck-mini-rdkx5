@@ -1,0 +1,38 @@
+{
+  "authority": {
+    "artifact_reanalysis": false,
+    "behavior_evaluation": false,
+    "deployment_audit": false,
+    "gate5": false,
+    "hosted_compute": false,
+    "optimizer": false,
+    "rdkx5_or_robot": false,
+    "t185f_preregistration_only": true
+  },
+  "classification": "PREEXECUTION_RUNNER_DEFAULT_PATH_CONTRACT_MISMATCH",
+  "correction": {
+    "mechanism_change": false,
+    "new_runner_interface": "explicit --preregistration, --result, and --markdown paths",
+    "scientific_contract_change": false
+  },
+  "evidence": {
+    "result_artifact_exists": false,
+    "runner_default_preregistration": "outputs/analysis/t185d_metric_readback_recovery_preregistration.json",
+    "source_preregistered_contract_sha256": "a27691a4d574bed855d6de6bcf67937ce8f2c342c73ac484a252e51ed4cddd87",
+    "t185e_preregistration": "outputs/analysis/t185e_metric_receipt_recovery_preregistration.json"
+  },
+  "execution": {
+    "artifact_files_read": 0,
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "model_inferences": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_transitions": 0
+  },
+  "invalidated_decision": "EXECUTE_ONE_T185E_SAVED_ARTIFACT_RECOVERY",
+  "reason": "Preflight inspection found that the receipt-complete T185E preregistration froze a generic runner whose input and output constants still pointed to T185D filenames. T185E was not executed. Explicit path arguments are required to isolate the new evidence.",
+  "result_sha256": "b47033bd04d6ff3804066e0a5feaf9b2c251da06ba69e51698683b786e7b51bf",
+  "schema_version": "open_duck.t185e_runner_path_contract_recovery.v1",
+  "status": "INVALIDATE_T185E_RUNNER_PATH_CONTRACT_BEFORE_EXECUTION"
+}

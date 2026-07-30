@@ -52,10 +52,16 @@ def finite_values(
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--saved-artifact-authorized", action="store_true")
+    parser.add_argument("--preregistration", type=Path, default=PREREG)
+    parser.add_argument("--result", type=Path, default=RESULT)
+    parser.add_argument("--markdown", type=Path, default=MARKDOWN)
     args = parser.parse_args()
     if not args.saved_artifact_authorized:
         raise PermissionError("T185D requires --saved-artifact-authorized")
-    for path in (RESULT, MARKDOWN):
+    preregistration_path = args.preregistration.resolve()
+    result_path = args.result.resolve()
+    markdown_path = args.markdown.resolve()
+    for path in (result_path, markdown_path):
         if path.exists():
             raise FileExistsError(f"refusing to overwrite T185D: {path}")
     if subprocess.check_output(
@@ -63,23 +69,23 @@ def main() -> int:
     ).strip():
         raise RuntimeError("formal T185D execution requires clean worktree")
 
-    prereg = load(PREREG)
+    prereg = load(preregistration_path)
     if (
         prereg["status"]
         not in (
             "PREREGISTERED_T185D_METRIC_READBACK_RECOVERY",
             "PREREGISTERED_T185E_METRIC_RECEIPT_RECOVERY",
+            "PREREGISTERED_T185F_METRIC_RUNNER_PATH_RECOVERY",
         )
         or canonical_without(prereg, "preregistered_contract_sha256")
         != prereg["preregistered_contract_sha256"]
     ):
         raise RuntimeError("T185D preregistration identity changed")
-    result_label = (
-        "T185E"
-        if prereg["status"]
-        == "PREREGISTERED_T185E_METRIC_RECEIPT_RECOVERY"
-        else "T185D"
-    )
+    result_label = {
+        "PREREGISTERED_T185D_METRIC_READBACK_RECOVERY": "T185D",
+        "PREREGISTERED_T185E_METRIC_RECEIPT_RECOVERY": "T185E",
+        "PREREGISTERED_T185F_METRIC_RUNNER_PATH_RECOVERY": "T185F",
+    }[prereg["status"]]
     for name, item in prereg["sources"].items():
         t20.verify_receipt(item, name)
     source = load(Path(prereg["sources"]["t185c_result"]["path"]))
@@ -133,9 +139,13 @@ def main() -> int:
     basis: dict[str, Any] = {
         "schema_version": (
             (
-                "open_duck.t185e_metric_receipt_recovery_result.v1"
-                if result_label == "T185E"
-                else "open_duck.t185d_metric_readback_recovery_result.v1"
+                "open_duck.t185f_metric_runner_path_recovery_result.v1"
+                if result_label == "T185F"
+                else (
+                    "open_duck.t185e_metric_receipt_recovery_result.v1"
+                    if result_label == "T185E"
+                    else "open_duck.t185d_metric_readback_recovery_result.v1"
+                )
             )
         ),
         "status": (
@@ -183,12 +193,12 @@ def main() -> int:
         },
     }
     value = {**basis, "result_sha256": canonical_sha256(basis)}
-    RESULT.write_text(
+    result_path.write_text(
         json.dumps(value, allow_nan=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
         newline="\n",
     )
-    MARKDOWN.write_text(
+    markdown_path.write_text(
         f"# {result_label} metric-readback recovery result\n\n"
         f"- Status: `{value['status']}`\n"
         f"- Decision: `{value['decision']}`\n"
