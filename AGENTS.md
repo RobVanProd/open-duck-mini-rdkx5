@@ -4964,3 +4964,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   earns only T191 full-R2 preregistration; fail closes the T186
   single-support continuation. Training, Colab, deployment audit, Gate 5,
   and hardware remain unauthorized.
+- 2026-07-30: T190's external command launcher timed out after starting the
+  frozen process. The original child completed exactly the two T186-half
+  blocks (`8` cells), then exited without starting either final-checkpoint
+  block or writing a canonical result. T190B freezes the two completed
+  manifests read-only and authorizes only the two missing final blocks under
+  recovery contract SHA-256 `a523c854...fc68acc2`; no completed cell may be
+  retried. The half checkpoint is `4/4` under P30 and `3/4` under P31/34,
+  with x=`0.08` failing, so T186 cannot pass overall, but the missing final
+  cells remain required for the preregistered persistence diagnosis.
+  Training, Colab, deployment audit, Gate 5, and hardware remain
+  unauthorized.
