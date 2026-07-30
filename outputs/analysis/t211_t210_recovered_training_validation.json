@@ -1,0 +1,568 @@
+{
+  "authority": {
+    "behavior_evaluation_authorized": false,
+    "checkpoint_selection_authorized": false,
+    "gate5_authorized": false,
+    "postexport_composition_preregistration_authorized": false,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "all_exact_export_sets_present": true,
+    "all_onnx_contracts_pass": true,
+    "all_policy_and_cost_trees_finite": true,
+    "archive_hash_matches_result_and_receipt": true,
+    "aux_states_match_hosted_result": true,
+    "both_exports_only_update_head_and_reward_critic": true,
+    "both_exports_update_cost_critic": true,
+    "cost_hashes_match_hosted_result": true,
+    "cpu_only_validation": true,
+    "dual_initial_state_exact": true,
+    "dual_initialized_from_derived_cost_and_monotone": true,
+    "eval_metrics_finite_at_all_exports": true,
+    "formal_behavior_cells_zero": true,
+    "hosted_artifact_passed_pending_cpu_validation": true,
+    "launch_receipt_complete": true,
+    "onnx_hashes_match_hosted_result": true,
+    "package_and_launch_contracts_green": true,
+    "policy_hashes_match_hosted_result": true,
+    "preregistration_hash_matches_hosted": true,
+    "result_hash_matches_receipt": true,
+    "roll_cost_channel_exercised": true,
+    "source_and_cpu_templates_frozen": true,
+    "step_zero_cost_tree_reproducible_bit_exact": false,
+    "step_zero_policy_tree_source_bit_exact": true,
+    "step_zero_raw_onnx_byte_exact": true,
+    "t204_and_t208_authorities_exact": true,
+    "t209_and_t98_readbacks_exact": true,
+    "t209_cpu_authority_exact": true,
+    "t210_preregistration_green": true,
+    "training_metrics_finite_at_both_exports": true
+  },
+  "classification": {
+    "actor_update_scope": "negative_adapter_location_only",
+    "behavior_cells": 0,
+    "body_configuration_strata": 8,
+    "cost_critic": "separate_updated",
+    "deployment_graph_change": false,
+    "dual_update": "derived_dense_roll_cost",
+    "hosted_wall_seconds": 1500.8211308379998,
+    "reward_channel": "unchanged_original_clipped_reward",
+    "reward_critic": "updated",
+    "same_run_resume": false,
+    "training_completed": true,
+    "training_retry": false
+  },
+  "decision": "NO_BEHAVIOR_EVALUATION",
+  "exports": {
+    "aux": {
+      "0": {
+        "eta": 0.0,
+        "initial_cost": 0.0,
+        "initialized": false,
+        "lambda": 0.0,
+        "quarter_iterations": 25,
+        "step": 0,
+        "total_training_iterations": 98
+      },
+      "1003520": {
+        "eta": 0.0028664271812886,
+        "initial_cost": 13.954654693603516,
+        "initialized": true,
+        "lambda": 1.960157036781311,
+        "quarter_iterations": 25,
+        "step": 1003520,
+        "total_training_iterations": 98
+      },
+      "2007040": {
+        "eta": 0.0028664271812886,
+        "initial_cost": 13.954654693603516,
+        "initialized": true,
+        "lambda": 4.090479373931885,
+        "quarter_iterations": 25,
+        "step": 2007040,
+        "total_training_iterations": 98
+      }
+    },
+    "cost_checkpoints": [
+      {
+        "directory_sha256": "e789038f90c08865eba0b01c66ae3a5790acf1d4d7cf9a1e2285cb9aa198508c",
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t210_colab_recovery_20260730\\t210_dual_roll_cost_continuation\\training\\2026_07_30_150331_0_v127_cost_value",
+        "step": 0
+      },
+      {
+        "directory_sha256": "b67559e6a79250c3aa2b030f444f5fc675710a8f72dcf1007dd190967cf33cf2",
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t210_colab_recovery_20260730\\t210_dual_roll_cost_continuation\\training\\2026_07_30_150923_1003520_v127_cost_value",
+        "step": 1003520
+      },
+      {
+        "directory_sha256": "43149f064ddc69527b9434fa04aad4d1820ad55d73a5d40465ed73a849e08d37",
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t210_colab_recovery_20260730\\t210_dual_roll_cost_continuation\\training\\2026_07_30_151442_2007040_v127_cost_value",
+        "step": 2007040
+      }
+    ],
+    "cost_updates": [
+      {
+        "every_leaf_updated": true,
+        "leaf_deltas": {
+          "params/hidden_0/bias": 0.04773212969303131,
+          "params/hidden_0/kernel": 0.10026493668556213,
+          "params/hidden_1/bias": 0.048472996801137924,
+          "params/hidden_1/kernel": 0.05936996638774872,
+          "params/hidden_2/bias": 0.044951148331165314,
+          "params/hidden_2/kernel": 0.04643549770116806,
+          "params/hidden_3/bias": 0.017556069418787956,
+          "params/hidden_3/kernel": 0.01365092396736145
+        },
+        "step": 1003520,
+        "structure_exact": true,
+        "tree_finite": true
+      },
+      {
+        "every_leaf_updated": true,
+        "leaf_deltas": {
+          "params/hidden_0/bias": 0.07046545296907425,
+          "params/hidden_0/kernel": 0.14234353601932526,
+          "params/hidden_1/bias": 0.06872868537902832,
+          "params/hidden_1/kernel": 0.07358117401599884,
+          "params/hidden_2/bias": 0.052294615656137466,
+          "params/hidden_2/kernel": 0.05738994479179382,
+          "params/hidden_3/bias": 0.018137799575924873,
+          "params/hidden_3/kernel": 0.019691720604896545
+        },
+        "step": 2007040,
+        "structure_exact": true,
+        "tree_finite": true
+      }
+    ],
+    "onnx": [
+      {
+        "abi_exact": true,
+        "chain_256_finite": true,
+        "cpu_provider_exact": true,
+        "initializers_finite": true,
+        "sha256": "d1117fdd74a57b537fd97a1dd27c414eff237be06fe8146d91859cc5c0dd1d51",
+        "step": 0
+      },
+      {
+        "abi_exact": true,
+        "chain_256_finite": true,
+        "cpu_provider_exact": true,
+        "initializers_finite": true,
+        "sha256": "7b89a335eb53972f7120ed7a0d13f80ef6336ae8ebc76c1993b38291278efc7b",
+        "step": 1003520
+      },
+      {
+        "abi_exact": true,
+        "chain_256_finite": true,
+        "cpu_provider_exact": true,
+        "initializers_finite": true,
+        "sha256": "fb0bf7fd63802014cdcfc061f251b06e9d4d9b1d1a960badd2b81ff440069b52",
+        "step": 2007040
+      }
+    ],
+    "policy_checkpoints": [
+      {
+        "directory_sha256": "4ebc3ff697fa77a603c17cd22af7974ecd187478d22c573a9225a0e8b67c6f2a",
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t210_colab_recovery_20260730\\t210_dual_roll_cost_continuation\\training\\2026_07_30_150328_0",
+        "step": 0
+      },
+      {
+        "directory_sha256": "b3d80d0b6e93844ff3f569af1165954b9ce1d7662fcf533ea9843a029f581023",
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t210_colab_recovery_20260730\\t210_dual_roll_cost_continuation\\training\\2026_07_30_150922_1003520",
+        "step": 1003520
+      },
+      {
+        "directory_sha256": "9f634559029b2746d3f69f4a047f33feb269442a2ad7f95352905073ab1ff061",
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t210_colab_recovery_20260730\\t210_dual_roll_cost_continuation\\training\\2026_07_30_151442_2007040",
+        "step": 2007040
+      }
+    ],
+    "policy_updates": [
+      {
+        "every_mature_actor_leaf_exact": true,
+        "every_reward_critic_leaf_updated": true,
+        "every_trainable_actor_leaf_updated": true,
+        "frozen_mature_actor_leaf_deltas": {
+          "1/params/adapter_hidden_bias": 0.0,
+          "1/params/adapter_hidden_projection/kernel": 0.0,
+          "1/params/adapter_location/bias": 0.0,
+          "1/params/adapter_location/kernel": 0.0,
+          "1/params/adapter_obs_projection/kernel": 0.0,
+          "1/params/residual_location/bias": 0.0,
+          "1/params/residual_location/kernel": 0.0,
+          "1/params/residual_trunk/hidden_0/bias": 0.0,
+          "1/params/residual_trunk/hidden_0/kernel": 0.0,
+          "1/params/residual_trunk/hidden_1/bias": 0.0,
+          "1/params/residual_trunk/hidden_1/kernel": 0.0,
+          "1/params/residual_trunk/hidden_2/bias": 0.0,
+          "1/params/residual_trunk/hidden_2/kernel": 0.0,
+          "1/params/scale_logits/bias": 0.0,
+          "1/params/scale_logits/kernel": 0.0
+        },
+        "normalizer_exact": true,
+        "normalizer_leaf_deltas": {
+          "0/count/hi": 0.0,
+          "0/count/lo": 0.0,
+          "0/mean/policy_hidden": 0.0,
+          "0/mean/privileged_state": 0.0,
+          "0/mean/state": 0.0,
+          "0/std/policy_hidden": 0.0,
+          "0/std/privileged_state": 0.0,
+          "0/std/state": 0.0,
+          "0/std_eps": 0.0,
+          "0/summed_variance/policy_hidden": 0.0,
+          "0/summed_variance/privileged_state": 0.0,
+          "0/summed_variance/state": 0.0
+        },
+        "reward_critic_leaf_deltas": {
+          "2/params/hidden_0/bias": 0.011312110349535942,
+          "2/params/hidden_0/kernel": 0.05786493420600891,
+          "2/params/hidden_1/bias": 0.028867166489362717,
+          "2/params/hidden_1/kernel": 0.04401186853647232,
+          "2/params/hidden_2/bias": 0.007955042645335197,
+          "2/params/hidden_2/kernel": 0.039141297340393066,
+          "2/params/hidden_3/bias": 0.0075567662715911865,
+          "2/params/hidden_3/kernel": 0.023525148630142212
+        },
+        "step": 1003520,
+        "structure_exact": true,
+        "trainable_actor_leaf_deltas": {
+          "1/params/negative_adapter_location/bias": 0.024515612050890923,
+          "1/params/negative_adapter_location/kernel": 0.04058732092380524
+        },
+        "tree_finite": true
+      },
+      {
+        "every_mature_actor_leaf_exact": true,
+        "every_reward_critic_leaf_updated": true,
+        "every_trainable_actor_leaf_updated": true,
+        "frozen_mature_actor_leaf_deltas": {
+          "1/params/adapter_hidden_bias": 0.0,
+          "1/params/adapter_hidden_projection/kernel": 0.0,
+          "1/params/adapter_location/bias": 0.0,
+          "1/params/adapter_location/kernel": 0.0,
+          "1/params/adapter_obs_projection/kernel": 0.0,
+          "1/params/residual_location/bias": 0.0,
+          "1/params/residual_location/kernel": 0.0,
+          "1/params/residual_trunk/hidden_0/bias": 0.0,
+          "1/params/residual_trunk/hidden_0/kernel": 0.0,
+          "1/params/residual_trunk/hidden_1/bias": 0.0,
+          "1/params/residual_trunk/hidden_1/kernel": 0.0,
+          "1/params/residual_trunk/hidden_2/bias": 0.0,
+          "1/params/residual_trunk/hidden_2/kernel": 0.0,
+          "1/params/scale_logits/bias": 0.0,
+          "1/params/scale_logits/kernel": 0.0
+        },
+        "normalizer_exact": true,
+        "normalizer_leaf_deltas": {
+          "0/count/hi": 0.0,
+          "0/count/lo": 0.0,
+          "0/mean/policy_hidden": 0.0,
+          "0/mean/privileged_state": 0.0,
+          "0/mean/state": 0.0,
+          "0/std/policy_hidden": 0.0,
+          "0/std/privileged_state": 0.0,
+          "0/std/state": 0.0,
+          "0/std_eps": 0.0,
+          "0/summed_variance/policy_hidden": 0.0,
+          "0/summed_variance/privileged_state": 0.0,
+          "0/summed_variance/state": 0.0
+        },
+        "reward_critic_leaf_deltas": {
+          "2/params/hidden_0/bias": 0.016137495636940002,
+          "2/params/hidden_0/kernel": 0.08940774202346802,
+          "2/params/hidden_1/bias": 0.03885794058442116,
+          "2/params/hidden_1/kernel": 0.06992588937282562,
+          "2/params/hidden_2/bias": 0.010967478156089783,
+          "2/params/hidden_2/kernel": 0.06877562403678894,
+          "2/params/hidden_3/bias": 0.011200971901416779,
+          "2/params/hidden_3/kernel": 0.03720221295952797
+        },
+        "step": 2007040,
+        "structure_exact": true,
+        "trainable_actor_leaf_deltas": {
+          "1/params/negative_adapter_location/bias": 0.06917421519756317,
+          "1/params/negative_adapter_location/kernel": 0.07204783707857132
+        },
+        "tree_finite": true
+      }
+    ]
+  },
+  "failed_checks": [
+    "step_zero_cost_tree_reproducible_bit_exact"
+  ],
+  "input_hashes": {
+    "cost_cpu_template": "58723f6ce4ea362eafe92bc68f61c9d93d4553b10079ab08a6fd736e95160312",
+    "event_file": "3a0c08fe22eac2e7ecb9f287e2dd32cb40517aa6c2c81e80da45de929b1fd96c",
+    "hosted_result": "142a6cb074b6eec066e4ead1e7dd8e3ea67413ee1425bdf77d71bfeeee9100ed",
+    "launch_contract": "98bf06fa7db720c0e07342d482d23056cb3950ea47dd8c87f9b718841da0e36a",
+    "launch_receipt": "8d3b1f261cb4e1cc1abe84a8b14ad9d3a046ba69d04f48ded43faab8329af3b6",
+    "package_contract": "a1929b2f415b559cdc706f2e69710b53cbcea59d58f49e5b0a83ed760435a147",
+    "policy_cpu_template": "20d9b1367f0300a8f400e2b45ce649a8b6af82eec86efcb7d07fa06a471cdff3",
+    "recovery_archive": "8c0b92ad2dbf90cbb452a26f1ebb580667ae4dfd779eb66adfcb20a719c2b5b5",
+    "source_checkpoint": "9833415ac7bbb5f545832087c7f6d46af0b7f0955dcc283fbeec82903eb23c6c",
+    "t204_validation": "64da6ed7c0db18708e940f1ea59439ed2eda8e1d07ec3bec2fffaeb9c23af7e9",
+    "t208_selection": "a4e11ecda5f2e6bd0b6c21b5887e5d39bbbf4690b3c2cfde23c0778eb4881aa6",
+    "t209_cpu_result": "9b419f33f79cac9cf997b51a0bbb46db0efc764a2b4236d506baaa80f91b0216",
+    "t210_preregistration": "325b69f56650ec7d2f6a9f842eedea823ecbd172c69d6280a05137e5ce9cd7ee"
+  },
+  "metrics": {
+    "eval": {
+      "eval/avg_episode_length": [
+        {
+          "step": 0,
+          "value": 502.703125
+        },
+        {
+          "step": 1003520,
+          "value": 499.28125
+        },
+        {
+          "step": 2007040,
+          "value": 497.328125
+        }
+      ],
+      "eval/episode_cost/t209_predicted_roll_risk": [
+        {
+          "step": 0,
+          "value": 1.2835149765014648
+        },
+        {
+          "step": 1003520,
+          "value": 1.3429063558578491
+        },
+        {
+          "step": 2007040,
+          "value": 1.5939722061157227
+        }
+      ],
+      "eval/episode_cost/winner_v127_dense_torque_exceedance": [
+        {
+          "step": 0,
+          "value": 1.2835149765014648
+        },
+        {
+          "step": 1003520,
+          "value": 1.3429063558578491
+        },
+        {
+          "step": 2007040,
+          "value": 1.5939722061157227
+        }
+      ],
+      "eval/episode_reward": [
+        {
+          "step": 0,
+          "value": 251.44442749023438
+        },
+        {
+          "step": 1003520,
+          "value": 249.81399536132812
+        },
+        {
+          "step": 2007040,
+          "value": 248.0660400390625
+        }
+      ],
+      "eval/episode_t209/original_clipped_reward": [
+        {
+          "step": 0,
+          "value": 251.44442749023438
+        },
+        {
+          "step": 1003520,
+          "value": 249.81399536132812
+        },
+        {
+          "step": 2007040,
+          "value": 248.0660400390625
+        }
+      ],
+      "eval/episode_t209/predicted_roll_risk_rad": [
+        {
+          "step": 0,
+          "value": 32.90355682373047
+        },
+        {
+          "step": 1003520,
+          "value": 33.015472412109375
+        },
+        {
+          "step": 2007040,
+          "value": 33.063758850097656
+        }
+      ],
+      "eval/episode_t209/roll_risk_excess_rad": [
+        {
+          "step": 0,
+          "value": 0.6312366127967834
+        },
+        {
+          "step": 1003520,
+          "value": 0.6603162288665771
+        },
+        {
+          "step": 2007040,
+          "value": 0.7243151068687439
+        }
+      ]
+    },
+    "training": {
+      "training/cost_advantage_mean": [
+        {
+          "step": 1003520,
+          "value": -2.7488269993547476e-10
+        },
+        {
+          "step": 2007040,
+          "value": -1.1249520759371023e-10
+        }
+      ],
+      "training/cost_advantage_std": [
+        {
+          "step": 1003520,
+          "value": 0.9999998211860657
+        },
+        {
+          "step": 2007040,
+          "value": 0.9999998211860657
+        }
+      ],
+      "training/cost_v_loss": [
+        {
+          "step": 1003520,
+          "value": 0.005651596933603287
+        },
+        {
+          "step": 2007040,
+          "value": 0.0006674062460660934
+        }
+      ],
+      "training/dense_cost_max": [
+        {
+          "step": 1003520,
+          "value": 7.764754295349121
+        },
+        {
+          "step": 2007040,
+          "value": 7.76438045501709
+        }
+      ],
+      "training/dense_cost_mean": [
+        {
+          "step": 1003520,
+          "value": 0.6977887153625488
+        },
+        {
+          "step": 2007040,
+          "value": 0.7583651542663574
+        }
+      ],
+      "training/dual_lambda": [
+        {
+          "step": 1003520,
+          "value": 1.0001347064971924
+        },
+        {
+          "step": 2007040,
+          "value": 3.04707670211792
+        }
+      ],
+      "training/policy_loss": [
+        {
+          "step": 1003520,
+          "value": -0.0006638154154643416
+        },
+        {
+          "step": 2007040,
+          "value": -0.000760150549467653
+        }
+      ],
+      "training/reward_advantage_mean": [
+        {
+          "step": 1003520,
+          "value": -4.620974783375864e-11
+        },
+        {
+          "step": 2007040,
+          "value": -2.9478020024953366e-10
+        }
+      ],
+      "training/reward_advantage_std": [
+        {
+          "step": 1003520,
+          "value": 1.0
+        },
+        {
+          "step": 2007040,
+          "value": 1.0
+        }
+      ],
+      "training/total_loss": [
+        {
+          "step": 1003520,
+          "value": 0.024423005059361458
+        },
+        {
+          "step": 2007040,
+          "value": 0.013179203495383263
+        }
+      ],
+      "training/v_loss": [
+        {
+          "step": 1003520,
+          "value": 0.02451348304748535
+        },
+        {
+          "step": 2007040,
+          "value": 0.01891653798520565
+        }
+      ],
+      "training/winner_v127_batch_episode_cost": [
+        {
+          "step": 1003520,
+          "value": 13.955774307250977
+        },
+        {
+          "step": 2007040,
+          "value": 15.167303085327148
+        }
+      ],
+      "training/winner_v127_dual_eta": [
+        {
+          "step": 1003520,
+          "value": 0.0028664271812886
+        },
+        {
+          "step": 2007040,
+          "value": 0.0028664271812886
+        }
+      ],
+      "training/winner_v127_dual_initial_cost": [
+        {
+          "step": 1003520,
+          "value": 13.954654693603516
+        },
+        {
+          "step": 2007040,
+          "value": 13.954654693603516
+        }
+      ],
+      "training/winner_v127_dual_lambda_after_update": [
+        {
+          "step": 1003520,
+          "value": 1.0001344680786133
+        },
+        {
+          "step": 2007040,
+          "value": 3.04707670211792
+        }
+      ]
+    }
+  },
+  "result_sha256": "cad5ec3cfc02705f69f6c43dda83c1b09f58f64a3142e3f86ca988addcdf2776",
+  "schema_version": "open_duck.t211_t210_recovered_training_validation.v1",
+  "status": "HOLD_T211_T210_RECOVERED_TRAINING_VALIDATION"
+}

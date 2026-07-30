@@ -5434,3 +5434,22 @@ Do not proceed to grounded walking until low-risk gates pass.
   Result, receipt, archive, CPU restore validation, both-checkpoint
   behavior, full R2, deployment audit, Gate 5, and hardware remain
   unproven until their sequential gates complete.
+- 2026-07-30: The single T210 L4 continuation completes without retry or
+  resume in `1,500.821` seconds. The result JSON, launch receipt, and
+  `11,623,438`-byte archive are recovered before the session is stopped;
+  their cross-checked SHA-256 values are
+  `142a6cb0...e9100ed`, `8d3b1f26...329af3b6`, and
+  `8c0b92ad...19c2b5b5`. All policy, cost-critic, aux, and ONNX exports are
+  present at `0/1,003,520/2,007,040`. The derived dual is genuinely
+  exercised: initial cost is `13.954654694`, eta is
+  `0.002866427`, and lambda rises from `1.960157037` at half to
+  `4.090479374` at final. Hosted behavior cells remain zero.
+- 2026-07-30: T211's CPU recovery audit holds on exactly one added
+  expectation: byte equality between the freshly GPU-initialized T210
+  cost critic and T209's CPU smoke initialization. Every authoritative
+  hash, policy restore, trainable-leaf scope, reward/cost critic update,
+  dual law, metric, and stateful ONNX check is green. A read-only
+  comparison measures the sole backend-initialization discrepancy at
+  `1.490116119e-8`, while six of eight leaves are bit-exact. Do not
+  reclassify the hold by assertion; a preregistered float32-resolution
+  recovery must pass before composition or behavior.

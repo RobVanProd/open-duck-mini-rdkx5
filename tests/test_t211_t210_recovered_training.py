@@ -26,6 +26,22 @@ def test_t211_result_when_present() -> None:
     if not path.exists():
         return
     value = json.loads(path.read_text(encoding="utf-8"))
+    if (
+        value["status"]
+        == "HOLD_T211_T210_RECOVERED_TRAINING_VALIDATION"
+    ):
+        assert value["failed_checks"] == [
+            "step_zero_cost_tree_reproducible_bit_exact"
+        ]
+        assert all(
+            passed
+            for name, passed in value["checks"].items()
+            if name != "step_zero_cost_tree_reproducible_bit_exact"
+        )
+        assert value["decision"] == "NO_BEHAVIOR_EVALUATION"
+        assert value["authority"]["behavior_evaluation_authorized"] is False
+        assert value["authority"]["gate5_authorized"] is False
+        return
     assert (
         value["status"]
         == "PASS_T211_T210_RECOVERED_TRAINING_VALIDATION"
