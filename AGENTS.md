@@ -5023,3 +5023,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   closes late head switching and points to a gait-state-distribution
   curriculum. One fresh cell, no retry, no optimizer, hosted compute,
   deployment audit, Gate 5, or hardware is authorized.
+- 2026-07-30: T192 executes its sole cell with every integrity check green:
+  ticks `0-519` match the sealed failure exactly, the final graph is selected
+  for ticks `520-546`, and hidden/previous-action state is exactly continuous.
+  The hybrid nevertheless reproduces the same `547`-row fall, tracking p95
+  `0.165294` rad, mean vx `0.030014` m/s, and minimum height `0.056614` m.
+  Result SHA-256: `4ebfb534...faa6e3e30`; decision
+  `CLOSE_LATE_HEAD_SWITCH_AND_SELECT_GAIT_STATE_DISTRIBUTION_CURRICULUM`.
+  The next admissible work is saved-trace attribution and a distinct
+  locomotion-state curriculum, not another switch tick, retry, transform,
+  checkpoint selection, training, deployment audit, Gate 5, or hardware.
