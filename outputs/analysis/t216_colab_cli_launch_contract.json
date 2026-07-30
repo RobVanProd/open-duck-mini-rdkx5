@@ -1,0 +1,110 @@
+{
+  "authority": {
+    "additional_attempt_retry_or_same_run_resume": false,
+    "behavior_evaluation": false,
+    "checkpoint_selection": false,
+    "gate5": false,
+    "one_exact_cli_launch": true,
+    "rdkx5_or_robot": false
+  },
+  "checks": {
+    "executor_freezes_pure_lagrangian_engine": true,
+    "executor_l4_and_pinned_software": true,
+    "executor_no_retry_or_same_run_resume": true,
+    "executor_uses_exact_driver_and_constraint": true,
+    "executor_verifies_every_manifest_member": true,
+    "hardware_or_robot_absent": true,
+    "package_contract_green": true,
+    "package_file_exact": true,
+    "preregistration_green": true,
+    "training_or_behavior_not_run": true
+  },
+  "commands": [
+    [
+      "colab",
+      "new",
+      "--session",
+      "t216-axis-complete-tilt-20260730",
+      "--gpu",
+      "L4"
+    ],
+    [
+      "colab",
+      "upload",
+      "--session",
+      "t216-axis-complete-tilt-20260730",
+      "D:\\CodexArtifacts\\open-duck-policy\\t216_axis_complete_tilt_20260730.tar.gz",
+      "/content/t216-axis-complete-tilt-20260730.tar.gz"
+    ],
+    [
+      "colab",
+      "exec",
+      "--session",
+      "t216-axis-complete-tilt-20260730",
+      "--file",
+      "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\execute_t216_colab_cli.py",
+      "--timeout",
+      "43200"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "t216-axis-complete-tilt-20260730",
+      "/content/t216_result.json",
+      "<LOCAL_RESULT>"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "t216-axis-complete-tilt-20260730",
+      "/content/t216_artifacts.tar.gz",
+      "<LOCAL_ARCHIVE>"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "t216-axis-complete-tilt-20260730",
+      "/content/t216_launch_receipt.json",
+      "<LOCAL_RECEIPT>"
+    ],
+    [
+      "colab",
+      "stop",
+      "--session",
+      "t216-axis-complete-tilt-20260730"
+    ]
+  ],
+  "execution_now": {
+    "colab_sessions_opened": 0,
+    "formal_behavior_cells": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "hashes": {
+    "executor": "3a202d411b22ff1dba182aeff9c8ae2e8e59e7c8d7715c81de6319053edaed42",
+    "manifest": "cbcf08011a1543d679ca4761acf7b2bbf0541462b42628c0938cb3620317b22f",
+    "package": "a971dfc21fc76b8f6ef3e47f9f5d9579689491d9f1c6aa5cc5a505cd5bb00442",
+    "package_contract": "27a4bd778a38a973621620d266491a65d7426aed2251afa8a07f033779d0f391",
+    "preregistration": "c264815619ac8ff7f8357aee6a64c4a81f4a423411eec724f95eda3cca9ee3c2"
+  },
+  "package_bytes": 4354002,
+  "recovery": {
+    "download_result_archive_receipt_before_stop": true,
+    "retry": false,
+    "same_run_resume": false,
+    "stop_session_after_pass_or_hold": true
+  },
+  "schema_version": "open_duck.t216_colab_cli_launch_contract.v1",
+  "session": {
+    "accelerator": "L4",
+    "count": 1,
+    "max_wall_seconds": 43200,
+    "maximum_compute_units_at_prior_rate": 6.42,
+    "name": "t216-axis-complete-tilt-20260730"
+  },
+  "status": "PASS_T216_COLAB_CLI_LAUNCH_CONTRACT"
+}
