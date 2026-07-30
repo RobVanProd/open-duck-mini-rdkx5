@@ -4454,3 +4454,19 @@ Do not proceed to grounded walking until low-risk gates pass.
   preregistered response-conditioned V121 continuation CPU software contract.
   No hosted optimizer run, robot/RDK-X5 access, Gate 5, torque, motion,
   deployment, grounded replay, or robot clearance is authorized yet.
+- 2026-07-30: T177 terminates at the first failed full-R2 condition after
+  `12/20` conditions and `192` cells. Conditions 1-11 pass `176/176`; positive
+  torso-COM Z (`+0.05 m`) passes only `11/16`. The exact failures are half/P30
+  at x=`.077`, half/P31-34 at x=`.074/.077`, and final/P30 at
+  x=`.074/.077`; final/P31-34 and every x=`0/.080` cell pass. The failing
+  cells terminate from balance collapse while tracking and rate gates remain
+  green, so the exact head-prefix-mean formulation closes rather than being
+  deployed or tuned. One unsealed Windows worker interruption produced no
+  evaluation, manifest, or trace; it was quarantined, all sealed manifests
+  were reverified, and the resume executed only the three previously unsealed
+  blocks. Terminal result SHA-256:
+  `59d0d3c7...8ae9219b2`; `tools/verify_t177_terminal.py` independently
+  verifies all `48` manifests and `192` nested traces. T177 does not earn the
+  T178 deployment audit or any hosted training, robot/RDK-X5 access, Gate 5,
+  torque, motion, deployment, or clearance. Only a separately preregistered
+  saved-trace causal autopsy may follow.
