@@ -1,0 +1,83 @@
+{
+  "authority": {
+    "behavior": false,
+    "colab": false,
+    "composition_preregistration": false,
+    "execute_read_only_cost_init_comparison": true,
+    "gate5": false,
+    "robot_or_rdk": false,
+    "training": false
+  },
+  "checks": {
+    "both_cost_zero_checkpoints_present": true,
+    "t209_cpu_contract_green": true,
+    "t211_exact_single_hold": true,
+    "tolerance_derived_from_float32_dtype": true,
+    "zero_optimizer_simulator_onnx_behavior_or_robot_now": true
+  },
+  "decision_rule": {
+    "fail": "HOLD_T210_WITHOUT_BEHAVIOR",
+    "pass": "RECOVER_T211_AND_EARN_T212_T210_POSTEXPORT_COMPOSITION_PREREGISTRATION_ONLY",
+    "rerun_training_or_validation": false
+  },
+  "execution_now": {
+    "behavior_cells": 0,
+    "checkpoint_restores": 0,
+    "hosted_compute_units": 0,
+    "onnx_inferences": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_transitions": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 6143,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t211b_cost_init_backend_recovery_preregistration.py",
+      "sha256": "29cf6fde9e9d1d70198951378c388178786a21b30bc251ee86dac69913333bfa"
+    },
+    "cpu_cost_zero": {
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t209_dual_roll_cost_cpu_contract_v1\\smoke\\2026_07_30_103408_0_v127_cost_value",
+      "sha256": "58723f6ce4ea362eafe92bc68f61c9d93d4553b10079ab08a6fd736e95160312"
+    },
+    "hosted_cost_zero": {
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t210_colab_recovery_20260730\\t210_dual_roll_cost_continuation\\training\\2026_07_30_150331_0_v127_cost_value",
+      "sha256": "e789038f90c08865eba0b01c66ae3a5790acf1d4d7cf9a1e2285cb9aa198508c"
+    },
+    "runner": {
+      "bytes": 8153,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t211b_cost_init_backend_recovery.py",
+      "sha256": "cde69f694377c1915c4a4fb07c73bff55618bc05dac929f95f6beaa784471eac"
+    },
+    "t209_cpu_result": {
+      "bytes": 16476,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t209_dual_roll_cost_cpu_result.json",
+      "sha256": "9b419f33f79cac9cf997b51a0bbb46db0efc764a2b4236d506baaa80f91b0216"
+    },
+    "t211_hold": {
+      "bytes": 18701,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t211_t210_recovered_training_validation.json",
+      "sha256": "e50597f97f8827c8b33064ccef7506b33c42ed5250150200504bc942dec806c9"
+    },
+    "test": {
+      "bytes": 1870,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t211b_cost_init_backend_recovery.py",
+      "sha256": "74f748b51a7f745f353aef61ee64f2d6d9b568a000bc5f53db132311a611f520"
+    }
+  },
+  "preregistered_contract_sha256": "cb273b385ae1c8391d2843f3086874b79d9ba0953aceeba1f0c72562c459d554",
+  "question": "Is T211's sole cost-init bit-equality miss confined to structure-exact, finite CPU/GPU float32 initialization differences no larger than one dtype machine epsilon?",
+  "recovery_rule": {
+    "absolute_tolerance": 1.1920928955078125e-07,
+    "all_leaves_finite_required": true,
+    "all_other_t211_checks_must_remain_green": true,
+    "comparison": "maximum_absolute_leaf_delta",
+    "dtype": "float32",
+    "failed_check": "step_zero_cost_tree_reproducible_bit_exact",
+    "post_hoc_tolerance_tuning": false,
+    "structure_exact_required": true,
+    "tolerance_derivation": "numpy.finfo(float32).eps"
+  },
+  "schema_version": "open_duck.t211b_cost_init_backend_recovery_preregistration.v1",
+  "status": "PREREGISTERED_T211B_COST_INIT_BACKEND_RECOVERY"
+}
