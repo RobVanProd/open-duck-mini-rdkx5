@@ -4520,3 +4520,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   secondary evidence is full JSONL SHA/byte identity. No checkpoint
   selection, threshold change, optimizer, hosted compute, deployment audit,
   Gate 5, or hardware is authorized by preregistration.
+- 2026-07-30: T179 completes at source `15/16` versus T175 `11/16`, proving
+  a net positive-Z regression from head-prefix averaging. The source half/P30
+  and both source final-fit blocks are green; the only source failure is
+  half/P31-34 x=`.077` at 283 samples. T175 has five failures, adding
+  half/P30 x=`.077`, half/P31-34 x=`.074`, and final/P30 x=`.074/.077`.
+  Four x=0 traces remain byte-identical; moving trajectories differ. Result
+  SHA-256: `97256b78...0ef07a30`. This does not restore T170 as a candidate:
+  its prior Y-negative failure remains. It earns only a separately
+  preregistered T180 CPU transform-route attribution. No training, Colab,
+  deployment audit, Gate 5, or hardware is authorized.
