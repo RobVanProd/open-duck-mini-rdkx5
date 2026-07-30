@@ -4946,3 +4946,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   or checkpoint selection. Pass earns only T190's targeted Y-negative
   preregistration. Training, Colab, deployment audit, Gate 5, and hardware
   remain unauthorized.
+- 2026-07-30: T189 passes all `16/16` nominal/default CPU cells across both
+  T186 checkpoints, both measured actuator fits, and
+  x=`0/.074/.077/.080`. Worst tracking p95 is `0.172134` rad and minimum
+  moving forward velocity is `0.064390` m/s. The diagnostic peak torque and
+  current (`2.519112` N·m / `3.210974` A) are intentionally not treated as
+  the nominal condition's selection gate; the preregistered targeted
+  Y-negative robustness matrix is the next constraint-bearing falsifier.
+  Result SHA-256: `75a12111...5b612c8`. This earns only T190
+  preregistration. No additional behavior matrix, training, Colab,
+  deployment audit, Gate 5, or hardware is authorized.
