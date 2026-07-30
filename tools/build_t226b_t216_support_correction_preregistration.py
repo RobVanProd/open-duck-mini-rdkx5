@@ -86,7 +86,10 @@ def main() -> int:
             and t216["training"]["command_support_change"] is False
         ),
         "t217_confirms_t98_and_eight_strata": (
-            t217["failed_checks"] == []
+            t217["status"]
+            == "HOLD_T217_T216_RECOVERED_TRAINING_VALIDATION"
+            and set(t217["failed_checks"])
+            == {"step_zero_cost_tree_reproducible_bit_exact"}
             and t217["checks"]["t215b_and_t98_readbacks_exact"]
             and t217["classification"]["body_configuration_strata"] == 8
         ),

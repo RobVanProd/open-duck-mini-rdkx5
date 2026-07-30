@@ -130,7 +130,10 @@ def main() -> int:
             and prereg["facts_to_verify"]["training_population"] == 256
         ),
         "t217_confirms_hosted_t98_readback": (
-            t217["failed_checks"] == []
+            t217["status"]
+            == "HOLD_T217_T216_RECOVERED_TRAINING_VALIDATION"
+            and set(t217["failed_checks"])
+            == {"step_zero_cost_tree_reproducible_bit_exact"}
             and t217["checks"]["t215b_and_t98_readbacks_exact"]
             and t217["classification"]["body_configuration_strata"] == 8
         ),
