@@ -4696,3 +4696,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   T184B execution is saved-trace CPU analysis only. No new behavior,
   curriculum implementation, optimizer, hosted compute, deployment audit,
   Gate 5, or hardware is authorized.
+- 2026-07-30: T184B passes with the corrected `27`-tick gait period. All
+  `8/8` failures still end only `0-3` ticks after a left-only or right-only
+  support sample, both terminal sides occur across the population, all `5/5`
+  passes remain full-duration, and every frozen check passes over `5,847`
+  saved rows. The corrected `54`-tick terminal windows are `50.0-62.96%`
+  single support (mean `57.18%`). Result SHA-256:
+  `29afbcd0...654e55d8`. This association is necessary evidence, not proof
+  that the curriculum will improve behavior. It earns only a separately
+  preregistered, default-off T185 bilateral single-support curriculum CPU
+  software contract. No curriculum implementation, new behavior, optimizer,
+  hosted compute, deployment audit, Gate 5, or hardware is yet authorized.
