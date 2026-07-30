@@ -4776,3 +4776,19 @@ Do not proceed to grounded walking until low-risk gates pass.
   contract is authorized in an isolated work directory. Pass still earns
   only T186 hosted preregistration; hosted training, policy selection,
   deployment audit, Gate 5, and hardware remain unauthorized.
+- 2026-07-30: T185C completes its full CPU execution but is held by exactly
+  one post-run metric-readback check. Every substantive contract is green:
+  default-off trajectories and ABI, the enabled `256 x 28` environment
+  contract with exact zero phase-vector error, source remap and step-0 tree,
+  actor update limited to both `negative_adapter_location` leaves, frozen
+  normalizer, all critic leaves changing, byte-exact step-0 raw ONNX, and
+  both stateful CPU graph chains. The event file contains finite positive
+  `t185_single_support_balance`, left-support, and right-support metrics at
+  both evaluations. The checker instead requests nonexistent
+  `eval/episode_reward/t185/prefix_active`; the emitted terminal-state tag is
+  `eval/episode_t185/prefix_active` and is exactly zero after the same-episode
+  transition. Formal result SHA-256: `946ed903...5134ffb6`. Status:
+  `HOLD_T185C_IN_EPISODE_SINGLE_SUPPORT_CPU_CONTRACT`. No formal behavior,
+  hosted compute, Gate 5, or hardware occurs. Only a separately
+  preregistered, saved-artifact metric-readback recovery may reconsider the
+  check; no optimizer rerun or hosted training is authorized.

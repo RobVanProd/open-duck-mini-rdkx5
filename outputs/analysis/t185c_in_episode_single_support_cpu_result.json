@@ -1,0 +1,385 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "deployment_audit": false,
+    "gate5": false,
+    "hosted_preregistration": false,
+    "hosted_training": false,
+    "policy_promotion": false,
+    "rdkx5_or_robot": false
+  },
+  "checks": {
+    "both_checkpoint_trees_finite": true,
+    "cpu_only": true,
+    "default_off_observation_abi_and_finiteness_exact": true,
+    "default_off_trajectory_bit_exact": true,
+    "enabled_environment_contract_green": true,
+    "every_critic_leaf_changes": true,
+    "graph_abi_and_cpu_chain_exact": true,
+    "no_formal_behavior_hosted_or_hardware": true,
+    "normalizer_bit_exact": true,
+    "only_t170_negative_adapter_head_changes": true,
+    "runner_readback_exact": true,
+    "source_cpu_remap_exact": true,
+    "step_zero_raw_onnx_byte_exact": true,
+    "step_zero_tree_exact": true,
+    "training_metrics_finite_and_prefix_exercised": false,
+    "update_structure_exact": true
+  },
+  "decision": "CLOSE_T185_IN_EPISODE_SINGLE_SUPPORT_PREFIX_AND_RETURN_TO_MECHANISM_SELECTION",
+  "default_off": {
+    "base": {
+      "finite": true,
+      "mode": "default_off",
+      "observation_shape": [
+        115
+      ],
+      "platforms": [
+        "cpu"
+      ],
+      "playground": "D:\\CodexArtifacts\\open-duck-policy\\t100c_original_driver_wrapper_package_v1\\t100c_original_driver_wrapper_bundle\\playground",
+      "trajectory_digests": [
+        "805b5dfc05d6591eb06b0a45717526a4bbf9ad013ce09efaa6c73e9aaadca77a",
+        "626b70e8ad71bdcbbc7c8459604fb06a5f0a521afcde819b761186c3a46797c4",
+        "0a38aa079ed72d873c4f4763b0bff3b2bdfe98013fb80899fe63ed2fedea296c",
+        "842af455eca0d221975d13780a920bc4839d3aaadab5b03d2967740c67c895bb",
+        "b3e7e8451d2f62f20515bdbc0442c60f7e481d0b25269a2f74e135643b456523",
+        "aee0de001e49cfe76b129204f5d3d6439617a7c2a4b304532e8b9406ba1b2d2c",
+        "b2a852f5eda4bbb033cf5dc5a748826fe1894d235d195a1726da721f76a2e320",
+        "bd34dc8aa154cfa6afee7c6f9f52ffb3601d2d026e2bdf6e93938e924aea4666",
+        "f5337e772064417a6ada64db4f289476a4068a4ab9c41907d1c2c879784ffe5f"
+      ]
+    },
+    "composed": {
+      "finite": true,
+      "mode": "default_off",
+      "observation_shape": [
+        115
+      ],
+      "platforms": [
+        "cpu"
+      ],
+      "playground": "D:\\CodexArtifacts\\open-duck-policy\\t185_in_episode_single_support_cpu_source_v1",
+      "trajectory_digests": [
+        "805b5dfc05d6591eb06b0a45717526a4bbf9ad013ce09efaa6c73e9aaadca77a",
+        "626b70e8ad71bdcbbc7c8459604fb06a5f0a521afcde819b761186c3a46797c4",
+        "0a38aa079ed72d873c4f4763b0bff3b2bdfe98013fb80899fe63ed2fedea296c",
+        "842af455eca0d221975d13780a920bc4839d3aaadab5b03d2967740c67c895bb",
+        "b3e7e8451d2f62f20515bdbc0442c60f7e481d0b25269a2f74e135643b456523",
+        "aee0de001e49cfe76b129204f5d3d6439617a7c2a4b304532e8b9406ba1b2d2c",
+        "b2a852f5eda4bbb033cf5dc5a748826fe1894d235d195a1726da721f76a2e320",
+        "bd34dc8aa154cfa6afee7c6f9f52ffb3601d2d026e2bdf6e93938e924aea4666",
+        "f5337e772064417a6ada64db4f289476a4068a4ab9c41907d1c2c879784ffe5f"
+      ]
+    }
+  },
+  "environment_contract": {
+    "anchors": {
+      "left": 2,
+      "right": 15
+    },
+    "checks": {
+      "both_support_sides_sampled": true,
+      "cpu_only": true,
+      "observation_abi_115_and_finite": true,
+      "prefix_counter_exact": true,
+      "prefix_reward_is_support_only": true,
+      "prefix_stays_at_anchor_for_27_ticks": true,
+      "reference_anchors_exact": true,
+      "reference_contact_targets_exact": true,
+      "reference_phase_vectors_exact": true,
+      "same_episode_locomotion_resume_exact": true
+    },
+    "env_count": 256,
+    "failed_checks": [],
+    "mode": "enabled",
+    "phase_vector_maximum_abs_error": 0.0,
+    "platforms": [
+      "cpu"
+    ],
+    "playground": "D:\\CodexArtifacts\\open-duck-policy\\t185_in_episode_single_support_cpu_source_v1",
+    "prefix_ticks": 27,
+    "seed": 185,
+    "side_counts": {
+      "left": 124,
+      "right": 132
+    },
+    "simulator_transitions": 7168
+  },
+  "execution": {
+    "environment_contract_transitions": 7168,
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 1024,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [
+    "training_metrics_finite_and_prefix_exercised"
+  ],
+  "preregistered_contract_sha256": "08b293d3d60fbb2c8fffc9804cce8a7965b730f846a73152d7e17e3be64907e5",
+  "repository_commit": "3900bab5b1cc43dfd160722a66802b7fa8bbbb1b",
+  "result_sha256": "946ed90393b9a8d0b010a8f1342fa6ff05e479b2f02e1577fb58fbfe5134ffb6",
+  "schema_version": "open_duck.t185c_in_episode_single_support_cpu_result.v1",
+  "source_remap": {
+    "cpu_remap": {
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t185c_in_episode_single_support_cpu_v3\\t170_half_cpu_remap",
+      "sha256": "3d959d9604b29bb21dc2527cafdb7ff99822e02ca41c46a0452117048ee4d9c4"
+    },
+    "maximum_abs_error": 0.0,
+    "source": {
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t170_colab_recovery_20260729\\extracted\\t170_eight_stratum_head_continuation\\training\\2026_07_30_003907_1003520",
+      "sha256": "a71eb0dfd57af17ec79e5a2c297fa0a98c7f262b8eb6f36ce66c808a8f2cd0ec"
+    },
+    "structure_exact": true,
+    "topology": {
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t128_negative_only_expert_cpu_v1\\t100c_half_cpu_remap",
+      "sha256": "224bda78ae19081a1ea409e31b49e37c2641e2354d6263e81bc8ec56039ee9d2"
+    },
+    "tree_finite": true
+  },
+  "status": "HOLD_T185C_IN_EPISODE_SINGLE_SUPPORT_CPU_CONTRACT",
+  "training": {
+    "command": [
+      "D:\\CodexArtifacts\\venvs\\open-duck-policy-py31213\\Scripts\\python.exe",
+      "playground/open_duck_mini_v2/runner.py",
+      "--task",
+      "flat_terrain_backlash",
+      "--env",
+      "joystick",
+      "--output_dir",
+      "D:\\CodexArtifacts\\open-duck-policy\\t185c_in_episode_single_support_cpu_v3\\smoke",
+      "--num_timesteps",
+      "1024",
+      "--ppo_seed",
+      "100",
+      "--ppo_num_envs",
+      "8",
+      "--ppo_num_evals",
+      "2",
+      "--ppo_episode_length",
+      "64",
+      "--ppo_unroll_length",
+      "8",
+      "--ppo_batch_size",
+      "8",
+      "--ppo_num_minibatches",
+      "1",
+      "--ppo_num_updates_per_batch",
+      "2",
+      "--ppo_learning_rate",
+      "0.0003",
+      "--ppo_discounting",
+      "0.97",
+      "--ppo_entropy_cost",
+      "0.005",
+      "--policy_architecture",
+      "reference_residual_recurrent_adapter",
+      "--recurrent_hidden_size",
+      "64",
+      "--imitation_scale",
+      "1.0",
+      "--reference_feature_table_path",
+      "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+      "--nominal_reference_bootstrap",
+      "--ground_up_hard_vector_command_support",
+      "--ground_up_command_support_min_x",
+      "0.074",
+      "--ground_up_command_support_max_x",
+      "0.080",
+      "--ground_up_action_velocity_limits_rad_s",
+      "1.0,.75,1.4736209064722061,1.4300791546702385,1.3976470567286015,.5,.5,.5,.5,.5,.75,1.25,1.0,1.2215287424623966",
+      "--ground_up_measured_actuator_bridge",
+      "--ground_up_actuator_bridge_delay_ticks",
+      "3,3,3,3,3,3,2,3,3,3,2,3,2,3",
+      "--ground_up_actuator_bridge_tau_s",
+      ".015,.015,.005,.010,.010,.120,.120,.120,.120,.020,.035,.010,.030,.005",
+      "--ground_up_applied_target_observation",
+      "--ground_up_tracking_tail_exceedance_scale",
+      "-6572.254964031055",
+      "--ground_up_tracking_tail_threshold_rad",
+      "0.20",
+      "--ground_up_peak_torque_exceedance_scale",
+      "0",
+      "--ground_up_linear_peak_torque_exceedance_scale",
+      "-307.48131091308585",
+      "--reference_start_phase",
+      "0",
+      "--ground_up_signed_progress_objective",
+      "--winner_v3_variable_configuration",
+      "--winner_v3_deviation_scale",
+      "1.0",
+      "--winner_v119_train_transition_match",
+      "--winner_t19_support_trainthrough",
+      "--winner_t31_action_margin_trainthrough",
+      "--winner_t37_freeze_observation_normalizer",
+      "--winner_t98_hidden_expert_continuation",
+      "--winner_t185_in_episode_single_support_prefix",
+      "--winner_t98_hidden_gate_asset_path",
+      "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t98_hidden_gate_asset.json",
+      "--critic_observation",
+      "privileged_state",
+      "--restore_checkpoint_path",
+      "D:\\CodexArtifacts\\open-duck-policy\\t185c_in_episode_single_support_cpu_v3\\t170_half_cpu_remap"
+    ],
+    "elapsed_seconds": 666.5,
+    "event_file": {
+      "bytes": 6127,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t185c_in_episode_single_support_cpu_v3\\smoke\\events.out.tfevents.1785397007.WinLSD",
+      "sha256": "020d610a2162ffe56eb3e4c37e42a9e72aff15a3b0a1abcf8a25a2a85a752847"
+    },
+    "final_checkpoint": {
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t185c_in_episode_single_support_cpu_v3\\smoke\\2026_07_30_034444_1024",
+      "sha256": "24d012ad773406913d675bf2941c86e7303aeb7f9d143349ed5ebba13b45d551"
+    },
+    "graphs": {
+      "0": {
+        "chain": {
+          "finite": true,
+          "maximum_abs_action": 1.0,
+          "maximum_abs_hidden": 1.0,
+          "steps": 256
+        },
+        "io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          },
+          "providers": [
+            "CPUExecutionProvider"
+          ]
+        },
+        "receipt": {
+          "bytes": 960296,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t185c_in_episode_single_support_cpu_v3\\smoke\\2026_07_30_034329_0.onnx",
+          "sha256": "c37af0b0539da7d02b93d708091cdfe07f8e77f37e8d655d8fc9a22d3832338f"
+        }
+      },
+      "1024": {
+        "chain": {
+          "finite": true,
+          "maximum_abs_action": 1.0,
+          "maximum_abs_hidden": 1.0,
+          "steps": 256
+        },
+        "io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          },
+          "providers": [
+            "CPUExecutionProvider"
+          ]
+        },
+        "receipt": {
+          "bytes": 960296,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t185c_in_episode_single_support_cpu_v3\\smoke\\2026_07_30_034444_1024.onnx",
+          "sha256": "93f46d022bd72c2b740a4187eb19a6be14e8d7a8ba884d530d9bf7521591b20f"
+        }
+      }
+    },
+    "initial_checkpoint": {
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t185c_in_episode_single_support_cpu_v3\\smoke\\2026_07_30_034329_0",
+      "sha256": "8d599efda8f51c8f9bd42bf8c8e9d1b002d8c0666ad5439eb909ebb365d286ff"
+    },
+    "log": {
+      "bytes": 5199,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t185c_in_episode_single_support_cpu_v3\\training.log",
+      "sha256": "495c877a76839499f4b9091d95ea72da9c72da7939c1ee5e489634f5d724e511"
+    }
+  },
+  "tree_contract": {
+    "critic_leaf_deltas": {
+      "2/params/hidden_0/bias": 0.0067321136593818665,
+      "2/params/hidden_0/kernel": 0.008011266589164734,
+      "2/params/hidden_1/bias": 0.005912684835493565,
+      "2/params/hidden_1/kernel": 0.008799716830253601,
+      "2/params/hidden_2/bias": 0.0022028982639312744,
+      "2/params/hidden_2/kernel": 0.005484580993652344,
+      "2/params/hidden_3/bias": 0.0004323795437812805,
+      "2/params/hidden_3/kernel": 0.003923773765563965
+    },
+    "normalizer_leaf_deltas": {
+      "0/count/hi": 0.0,
+      "0/count/lo": 0.0,
+      "0/mean/policy_hidden": 0.0,
+      "0/mean/privileged_state": 0.0,
+      "0/mean/state": 0.0,
+      "0/std/policy_hidden": 0.0,
+      "0/std/privileged_state": 0.0,
+      "0/std/state": 0.0,
+      "0/std_eps": 0.0,
+      "0/summed_variance/policy_hidden": 0.0,
+      "0/summed_variance/privileged_state": 0.0,
+      "0/summed_variance/state": 0.0
+    },
+    "protected_actor_leaf_deltas": {
+      "1/params/adapter_hidden_bias": 0.0,
+      "1/params/adapter_hidden_projection/kernel": 0.0,
+      "1/params/adapter_location/bias": 0.0,
+      "1/params/adapter_location/kernel": 0.0,
+      "1/params/adapter_obs_projection/kernel": 0.0,
+      "1/params/residual_location/bias": 0.0,
+      "1/params/residual_location/kernel": 0.0,
+      "1/params/residual_trunk/hidden_0/bias": 0.0,
+      "1/params/residual_trunk/hidden_0/kernel": 0.0,
+      "1/params/residual_trunk/hidden_1/bias": 0.0,
+      "1/params/residual_trunk/hidden_1/kernel": 0.0,
+      "1/params/residual_trunk/hidden_2/bias": 0.0,
+      "1/params/residual_trunk/hidden_2/kernel": 0.0,
+      "1/params/scale_logits/bias": 0.0,
+      "1/params/scale_logits/kernel": 0.0
+    },
+    "trainable_head_leaf_deltas": {
+      "1/params/negative_adapter_location/bias": 0.0029202336445450783,
+      "1/params/negative_adapter_location/kernel": 0.005868237465620041
+    }
+  }
+}
