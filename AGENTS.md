@@ -5121,3 +5121,11 @@ Do not proceed to grounded walking until low-risk gates pass.
   No Colab session, optimizer step, or behavior cell was opened. Only a
   launch-verifier/executor spelling recovery is admissible; the frozen
   package and scientific contract may not change.
+- 2026-07-30: T194B recovers that pre-execution check with the driver
+  filename spelled as one contiguous literal. Every launch check passes;
+  the package, manifest, scientific contract, L4 requirement, pinned
+  software, one-session limit, no-retry rule, and artifact-before-stop rule
+  are unchanged. Exactly one T194 L4 launch is now authorized. Behavior
+  evaluation, checkpoint selection, deployment audit, Gate 5, and robot
+  access remain unauthorized until the recovered training artifact is
+  validated locally.
