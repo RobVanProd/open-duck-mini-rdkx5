@@ -5385,3 +5385,52 @@ Do not proceed to grounded walking until low-risk gates pass.
   `EARN_T205_T203_POSTEXPORT_COMPOSITION_PREREGISTRATION_ONLY`. Behavior,
   checkpoint selection, Gate 5, and hardware remain closed until exact
   post-export composition is preregistered and verified.
+- 2026-07-30: T205's composition changed only the allowed nominal adapter
+  pair and preserved every node, other initializer, inactive route, x=0
+  output, and CPU inference contract, but held on a non-causal output-
+  sensitivity diagnostic. T205B's immutable-result review proved that the
+  changed learned pair was structurally bound and that coincident equal
+  outputs in sampled contexts cannot falsify that binding. T205B passes
+  without rerunning the transform or inference and earns only T206's
+  nominal-matrix preregistration.
+- 2026-07-30: T206 passes all `16/16` nominal/default cells across both
+  T203 checkpoints, both measured actuator fits, and x=`0/.074/.077/.080`.
+  Worst tracking p95 is `0.174658674` rad and minimum moving vx is
+  `0.058826842` m/s. This earns only the targeted Y-negative falsifier;
+  full R2, deployment audit, Gate 5, and hardware remain closed.
+- 2026-07-30: T207's targeted torso-COM y=`-0.05 m` matrix completes at
+  `15/16` and permanently closes the fixed-price T203 continuation under
+  the both-checkpoint rule. The sole failure is final/P31-34/x=`.077`,
+  which retains bilateral transitions, zero action saturation, zero rate
+  excess, and tracking p95 `0.167898965` rad but falls after `363/600`
+  samples. No retry, checkpoint selection, full R2, deployment audit,
+  Gate 5, or hardware is authorized.
+- 2026-07-30: T208's saved-trace persistence autopsy classifies the T203
+  failure as `ROLL_SIGNAL_RETAINED_FIXED_PRICE_LOST_PERSISTENCE`. The
+  predicted-roll signal first exceeds its passing envelope at tick `315`,
+  `47` ticks before termination, while all `15` passing targeted traces
+  have zero exceedance. Hosted fixed-price cost regresses from
+  `1.108309150` at half to `1.285591602` at final despite the later
+  failure. The fixed scalar delayed the older collapse by `55` ticks but
+  did not preserve safety; this earns only a dense separate-cost/dual CPU
+  contract.
+- 2026-07-30: T209 passes the dual roll-cost CPU contract with no failed
+  checks under result SHA-256
+  `7ff94dde...8606d56`. It restores exact T203 half, leaves the mature
+  actor and normalizer bit-exact, updates only the negative adapter pair
+  plus separate reward/cost critics, preserves the stateful `115/14/64`
+  ONNX ABI, and proves the derived dual law on positive and zero synthetic
+  cost paths. The short live smoke legitimately observes zero training
+  cost, so hosted continuation must prove the mechanism is exercised
+  before behavior. This earns only T210's hosted preregistration.
+- 2026-07-30: T210 preregisters exactly one no-retry L4 continuation from
+  exact T203 half for `2,007,040` steps, exporting at
+  `0/1,003,520/2,007,040`. It keeps the reward channel unchanged, routes
+  dense unscaled predicted-roll squared excess through a separate cost
+  critic and derived dual update, freezes the normalizer and mature actor,
+  and permits only the negative adapter pair to update. The
+  `4,349,714`-byte package has SHA-256
+  `ac17c746...0f1737`; its package and Colab CLI launch contracts pass.
+  Result, receipt, archive, CPU restore validation, both-checkpoint
+  behavior, full R2, deployment audit, Gate 5, and hardware remain
+  unproven until their sequential gates complete.
