@@ -4956,3 +4956,11 @@ Do not proceed to grounded walking until low-risk gates pass.
   Result SHA-256: `75a12111...5b612c8`. This earns only T190
   preregistration. No additional behavior matrix, training, Colab,
   deployment audit, Gate 5, or hardware is authorized.
+- 2026-07-30: T190 preregisters the exact `TORSO_COM_Y_NEG` endpoint under
+  contract SHA-256 `b3046a7b...b5e0dee9`: torso COM y is fixed at
+  `-0.05 m` across both T186 checkpoints, both measured actuator fits, and
+  x=`0/.074/.077/.080`, for `16` CPU cells. Both checkpoints are mandatory,
+  the cache is fresh, and there is no retry or checkpoint selection. Pass
+  earns only T191 full-R2 preregistration; fail closes the T186
+  single-support continuation. Training, Colab, deployment audit, Gate 5,
+  and hardware remain unauthorized.
