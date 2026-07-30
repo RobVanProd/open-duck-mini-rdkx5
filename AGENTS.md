@@ -4642,3 +4642,10 @@ Do not proceed to grounded walking until low-risk gates pass.
   preregistration is authorized, adding the independently verified
   `8,544,098`-byte count while preserving the trace path/SHA and every
   feature, label, threshold, decision, and authority rule.
+- 2026-07-30: T183B preregisters the receipt-only recovery under contract
+  SHA-256 `4c78cc2f...726144a8`. The unlabeled alpha trace now has the
+  verified path/bytes/SHA triplet; labeled cases, held-out banks, prefixes,
+  existing hidden-score equation, no-search midpoint rule, decision logic,
+  and authority are exact to T183. Execution remains saved-trace CPU
+  inference only. No graph change, behavior, optimizer, hosted compute,
+  deployment audit, Gate 5, or hardware is authorized.
