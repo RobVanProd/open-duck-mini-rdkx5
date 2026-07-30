@@ -1,0 +1,233 @@
+{
+  "assets": {
+    "composed_source_manifest": {
+      "bytes": 6786,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t215b_axis_complete_tilt_cpu_source_v1\\T215B_COMPOSED_SOURCE_MANIFEST.json",
+      "sha256": "68b454fc381b30953b1940794deb1893176a687a49d79ba11e67b562c30667b2"
+    },
+    "cpu_topology_template": {
+      "kind": "directory",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t128_negative_only_expert_cpu_v1\\t100c_half_cpu_remap",
+      "sha256": "224bda78ae19081a1ea409e31b49e37c2641e2354d6263e81bc8ec56039ee9d2"
+    },
+    "hidden_gate_static_asset": {
+      "bytes": 8085,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t98_hidden_gate_asset.json",
+      "sha256": "11381bb2208d1eb40f826b069c68983fdab348277e46c63ffc1ddd46b579b6e3"
+    },
+    "reference_features": {
+      "bytes": 259604,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+      "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+    },
+    "source_checkpoint": {
+      "kind": "directory",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t203_colab_recovery_20260730\\extracted\\t203_predicted_roll_risk_continuation\\training\\2026_07_30_125443_1003520",
+      "sha256": "9833415ac7bbb5f545832087c7f6d46af0b7f0955dcc283fbeec82903eb23c6c"
+    },
+    "source_raw_onnx": {
+      "bytes": 960296,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t203_colab_recovery_20260730\\extracted\\t203_predicted_roll_risk_continuation\\training\\2026_07_30_125443_1003520.onnx",
+      "sha256": "d1117fdd74a57b537fd97a1dd27c414eff237be06fe8146d91859cc5c0dd1d51"
+    },
+    "t204_source_validation": {
+      "bytes": 9905,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t204_t203_recovered_training_validation.json",
+      "sha256": "64da6ed7c0db18708e940f1ea59439ed2eda8e1d07ec3bec2fffaeb9c23af7e9"
+    },
+    "t209_engine_cpu_result": {
+      "bytes": 16476,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t209_dual_roll_cost_cpu_result.json",
+      "sha256": "9b419f33f79cac9cf997b51a0bbb46db0efc764a2b4236d506baaa80f91b0216"
+    },
+    "t214b_selection_result": {
+      "bytes": 24245,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t214b_axis_complete_tilt_source_transfer_result.json",
+      "sha256": "a5a9b8269259b0f189e361ee28e2df3a6ad1a1aaf125f79d881504e831277c0c"
+    }
+  },
+  "authority": {
+    "behavior_evaluation": false,
+    "deployment_audit": false,
+    "execute_one_cpu_contract": true,
+    "gate5": false,
+    "hosted_preregistration": false,
+    "hosted_training": false,
+    "policy_promotion": false,
+    "rdkx5_or_robot": false
+  },
+  "checks": {
+    "axis_complete_cost_is_exact_and_unscaled": true,
+    "composed_manifest_and_inventory_present": true,
+    "deployment_graph_and_policy_abi_unchanged": true,
+    "old_roll_and_reward_costs_are_disabled": true,
+    "t203_half_is_exact_protected_source": true,
+    "t214b_earns_only_t215b_cpu_preregistration": true,
+    "validated_t209_dual_engine_is_reused": true
+  },
+  "decision_rule": {
+    "fail": "CLOSE_T215B_AXIS_COMPLETE_TILT_WITHOUT_HOSTED_TRAINING",
+    "no_hosted_run_from_preregistration_alone": true,
+    "pass": "EARN_T216_AXIS_COMPLETE_TILT_HOSTED_PREREGISTRATION_ONLY"
+  },
+  "environment_contract": {
+    "default_off_steps": 8,
+    "enabled_seed": 215,
+    "enabled_source_policy_ticks": 108,
+    "metric_error_tolerance": 1e-07,
+    "reward_must_remain_bit_equal_to_original_clip": true,
+    "synthetic_pitch_rate_rad_s": 10.0,
+    "synthetic_roll_rate_rad_s": 10.0
+  },
+  "execution_now": {
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "expected_runner_readback": "T215B_AXIS_COMPLETE_TILT_COST=horizon_s=0.08,roll_envelope_rad=0.3541802655745987,pitch_envelope_rad=0.2379576557426921,score=max(roll_norm,pitch_norm),cost=unscaled_squared_box_excess,reward_channel=unchanged,cost_critic=separate,cost_discount=1.0,actor_advantage=(A_R-lambda*A_C)/(1+lambda),dual_eta=1/(ceil(K/4)*J_C0),deployment_graph=unchanged",
+  "failed_checks": [],
+  "mechanism": {
+    "actor_advantage": "(A_R-lambda*A_C)/(1+lambda)",
+    "cost": "square(max(0,score-1))",
+    "cost_channel": "separate_unclipped_training_only",
+    "cost_critic": "separate",
+    "cost_critic_trainable": true,
+    "cost_discount": 1.0,
+    "cost_gae_lambda": "frozen_T203_reward_GAE_lambda",
+    "cost_scale": 1.0,
+    "deployment_graph_change": false,
+    "dual_eta": "1/(ceil(K/4)*J_C0)",
+    "dual_initial_lambda": 0.0,
+    "dual_update": "lambda=max(0,lambda+eta*J_C)",
+    "pitch_passing_envelope_rad": 0.2379576557426921,
+    "policy_abi_change": false,
+    "prediction_horizon_s": 0.08,
+    "reward_channel": "unchanged_original_clipped_reward",
+    "reward_critic_trainable": true,
+    "roll_passing_envelope_rad": 0.3541802655745987,
+    "scalar_or_axis_sweep": false,
+    "score": "max(roll_risk/roll_envelope,pitch_risk/pitch_envelope)",
+    "source": "T203_HALF",
+    "t210_eta_retry": false,
+    "trainable_actor_groups": [
+      "negative_adapter_location"
+    ]
+  },
+  "playground": {
+    "base_path": "D:\\CodexArtifacts\\open-duck-policy\\t209_dual_roll_cost_cpu_source_v3",
+    "path": "D:\\CodexArtifacts\\open-duck-policy\\t215b_axis_complete_tilt_cpu_source_v1",
+    "python_inventory": {
+      "playground/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "playground/common/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "playground/common/export_onnx.py": "30bc705bf59babb59c5ba3045b601c838db00ebb569bb9fc6aa520f1e61139cc",
+      "playground/common/onnx_infer.py": "e610c2b94d15cd0ea4be1c0cee8853dc33b10c3b440e6d9bb1b1bb73168f34f2",
+      "playground/common/phase_moe_networks.py": "6480f59f4039884be6743828ffed1c31f76896830b2b38689cad038200283cb7",
+      "playground/common/plot_saved_obs.py": "911fe1de5668c31fdc2a10a4285b8343c04fd4f662a38207d6f06a91fd4e0a8e",
+      "playground/common/poly_reference_motion.py": "cc2430d82a9e41bf2081a4a9bed45731a43aad8b860e5b168f5850eb3748cf21",
+      "playground/common/poly_reference_motion_numpy.py": "585e783722ffb403a14288aafc1fcdf86c8a5d1b39949171a3b2d918028c4406",
+      "playground/common/randomize.py": "c6e7a48f714a2267b3b19d75ffc9ce3938350aabceb3eda61727a3c48f2d6dd8",
+      "playground/common/recurrent_ppo_networks.py": "a501000c6f959276514ba56f935d027b05b171a9ea62bb6a2bc1ecdd2fe8cb4e",
+      "playground/common/reference_residual_ppo_networks.py": "eeb1b758f32bb8a7e53cf59b269bed7f97126cf37ccc4d11090a5f8312b380e6",
+      "playground/common/reference_residual_recurrent_adapter_ppo_networks.py": "ffd07d0a6e96d846aa1f62a8d131bf892f10db6b2a22710affe3946b7b145ebd",
+      "playground/common/rewards.py": "9c327866f2632265f14ef81318046f887aafa64384a06efa6cb264e144bbb1d3",
+      "playground/common/rewards_numpy.py": "f1dba8838b29fdc4701bc3759e2533fa9d51ec550c8f70b83a23d3de64b97f48",
+      "playground/common/runner.py": "337b65d156e59dc8cd70abfe23f07c636ef1464df6635e94857388c6e5700664",
+      "playground/common/t19_support_trainthrough.py": "dc6c4270a4a5569f4c82dc3f9d1f07c395512bea86c15cd62a634fe10c895057",
+      "playground/common/t202_predicted_roll_risk.py": "c04f9f10b3d16d19cdc4a2aa685e0c7f7bd67edcf44746b474d375e700891bab",
+      "playground/common/t215b_axis_complete_tilt.py": "62d536156da7a281aff812f3169bd67400cfdbcc5fc2c3311e419675590e42f9",
+      "playground/common/t37_frozen_observation_normalizer.py": "324cb669821cd2964b62bdd1c2241a3bd6108c0ce37d34792f4e0adf8a75eab6",
+      "playground/common/t66_endpoint_core_continuation.py": "a5627f0109b842f37be5d87c327cbb3efeface040a5632e84893cba73c8a321f",
+      "playground/common/t77_endpoint_joint_adapter_continuation.py": "c8379e949967d877b919f96d5e6beab2c75f74056eba2941ba44a84fc73632bf",
+      "playground/common/t98_hidden_expert_continuation.py": "d11c96efd74d355de76684ce5d69ba18f3fa2ca54cacc7060536be7bd64f7492",
+      "playground/common/t98_hidden_expert_ppo_networks.py": "3d3228b3ab0ea8d8c3719cc578998d6264534d354759e53141e386b1a873ea06",
+      "playground/common/utils.py": "dbeb9fd88bb41aaca5ab242a954cbae7ae9755b7f13ff2d7d2b27cc9094a284c",
+      "playground/common/winner_v127_constrained_ppo_losses.py": "996e292f76a4071f2c3117b0f1dacd9b1a3bf9e31d6d97128ce2f054f9bc6ff1",
+      "playground/common/winner_v127_constrained_ppo_train.py": "b749d956c4651e5a9037b542e946fcc81425915c17495e1b68ee27f4a7435615",
+      "playground/common/winner_v171_gradient_geometry.py": "dfbadab3ef4021c71c27c358135bed87307c04f53310fdf9093f6436e00008c3",
+      "playground/common/winner_v173_lexicographic_tangent.py": "b7ff83f8d68f1034ab1ddb5562d4a32a384756a330bb150b8ca69d92a63f3841",
+      "playground/common/winner_v3_variable_configuration.py": "daab44325e6dd98b8b4054fc5c5fe7391ca9e358e7aca97999ef1a2441285ab7",
+      "playground/common/winner_v98_response_calibration_wrapper.py": "04339bf7bbe16f2721ce92bbe62c458e70c1c8a5e9bdfe02424478ebc066a7ba",
+      "playground/common/winner_v98_response_conditioned_export.py": "83c8667828a51bdb379091fbf657725410bae5e0d655273f63cf47bdc913f28c",
+      "playground/common/winner_v98_response_conditioned_ppo_networks.py": "767b0d4dc7d72d6c126eca9ed1f0497ca38214a9e2caa57c8a1e6b5cea3ad17a",
+      "playground/open_duck_mini_v2/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "playground/open_duck_mini_v2/base.py": "0e90b98b113c2e5ff4abd34b64482e3f1b3d365ef95481d1838f8b855de99988",
+      "playground/open_duck_mini_v2/constants.py": "8fafc240bfb8e70c93b722d89148cffb03688882fd4e6250735eccdf53363374",
+      "playground/open_duck_mini_v2/custom_rewards.py": "16fdf5ed409f9abcfa6f68465c4351081c0c255a6683c09aee110c557890cd0c",
+      "playground/open_duck_mini_v2/custom_rewards_numpy.py": "51422e858c4058f5c114004ab6ebd7900cbae544f09aaf430f9398adf9032333",
+      "playground/open_duck_mini_v2/joystick.py": "f2a7b7dbc9e372472f450c4ca6d1af8186910075cbfbdc446704c9be95b16d6c",
+      "playground/open_duck_mini_v2/mujoco_infer.py": "67a933e043fe54a3bf252524e71fbb8a7eff973e8bb693d9fe1f1d6f323b11ed",
+      "playground/open_duck_mini_v2/mujoco_infer_base.py": "4c8fd11e4659126d49985a9c048e1cb5a5cfde5f4d54cdfe433e4b165d3b0ab1",
+      "playground/open_duck_mini_v2/ref_motion_viewer.py": "78c267d86d7de9a942c9bd4007990369eb39a7dae7a410acaa316dd9da0a5322",
+      "playground/open_duck_mini_v2/runner.py": "c1b0794050b96e05160ad848a3900b643cf0752260cbf2884c76ad6c3a06885b",
+      "playground/open_duck_mini_v2/standing.py": "123419cb68f3dcf0908b3c77e4c98206de48d719058d38998ddcd69ef32dcdd6"
+    },
+    "python_inventory_sha256": "60d08bb204c07c94814d703299ce70e438788d782220a6cfeea197db000c3d21"
+  },
+  "preregistered_contract_sha256": "5b7d3b0f522d12b20e73630c5e96b8d78ecb318e61d5d176f1963620809430c5",
+  "schema_version": "open_duck.t215b_axis_complete_tilt_cpu_preregistration.v1",
+  "sources": {
+    "builder": {
+      "bytes": 13371,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t215b_axis_complete_tilt_cpu_preregistration.py",
+      "sha256": "785782a11136acac1d132bc3dab2058832e34ed30b6c9726bf80437650268767"
+    },
+    "composer": {
+      "bytes": 4201,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\compose_t215b_axis_complete_tilt_playground.py",
+      "sha256": "fe97c0523203cd84d94e67ece7ffc07a25f931e2268a605577eeeec3b65420fe"
+    },
+    "environment_worker": {
+      "bytes": 12660,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t215b_environment_contract_worker.py",
+      "sha256": "c3d945668657fb1ac2c5aaa1338b09b3f150e2febf198b445c40044e91f671d1"
+    },
+    "runner": {
+      "bytes": 7435,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t215b_axis_complete_tilt_cpu_contract.py",
+      "sha256": "8e6df161ffe63f42f30c3640e2f6a57d07ad43295c6999d8885fb6ec16e73b0e"
+    },
+    "source_patch": {
+      "bytes": 7150,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\patches\\winner_t215b_axis_complete_tilt.patch",
+      "sha256": "3af4aae3206ec6786073cc599bfd5a5f6ece40c5381aac58c982496026a81926"
+    },
+    "tilt_module": {
+      "bytes": 3027,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\training\\t215b_axis_complete_tilt.py",
+      "sha256": "62d536156da7a281aff812f3169bd67400cfdbcc5fc2c3311e419675590e42f9"
+    },
+    "unit_test": {
+      "bytes": 3281,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t215b_axis_complete_tilt.py",
+      "sha256": "a3c8a9df2b41ed224ba61256acdd6a720f47407b5032760f4f924a50fa319343"
+    }
+  },
+  "status": "PREREGISTERED_T215B_AXIS_COMPLETE_TILT_CPU_CONTRACT",
+  "training_smoke": {
+    "all_nonconstraint_PPO_values": "bit_exact_T203",
+    "environments_per_stratum": 1,
+    "export_steps": [
+      0,
+      1024
+    ],
+    "formal_behavior_cells": 0,
+    "num_envs": 8,
+    "source_checkpoint": "D:\\CodexArtifacts\\open-duck-policy\\t203_colab_recovery_20260730\\extracted\\t203_predicted_roll_risk_continuation\\training\\2026_07_30_125443_1003520",
+    "timesteps": 1024
+  }
+}
