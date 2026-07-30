@@ -5000,3 +5000,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   preregistered one-cell, one-gait-period head-switch feasibility screen.
   It runs no new behavior, optimizer, hosted compute, deployment audit,
   Gate 5, or hardware.
+- 2026-07-30: T191 passes every trace-integrity and exact-replay check. The
+  T186 half/P31-34/x=`.080` failure ends on right-only support at tick `546`;
+  `96.2963%` of its final `54` ticks are single support. Thus the reset-only
+  curriculum shifted T170's failure surface but did not eliminate
+  locomotion-phase support collapse. Replaying the T186 final head on the
+  failing half states changes `56` rows (maximum action delta `0.170701`)
+  while recurrent hidden output remains exactly unchanged; the largest RMS
+  changes are left knee, right hip roll, and left hip yaw. The frozen
+  one-period switch tick is `520` (`546 - 26`). Result SHA-256:
+  `af2c9641...6c75d0370`. This earns only T192's one-cell CPU feasibility
+  preregistration, not a transform, training, deployment audit, Gate 5, or
+  hardware.
