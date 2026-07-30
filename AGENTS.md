@@ -4720,3 +4720,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   software is staged default-off for preregistration only; no unit test,
   simulator contract, optimizer, formal behavior, hosted compute, Gate 5, or
   hardware execution is authorized before its clean frozen contract exists.
+- 2026-07-30: T185 preregisters the distinct CPU contract under SHA-256
+  `8bdb8e99...ce9176f3`. The actual nearest reference cell
+  `[.074,-.037,-.074]` has a `27`-tick period; its unique longest circular
+  left/right single-support runs yield lower-midpoint phases `2/15`.
+  Each enabled episode samples the side with frozen Bernoulli `0.5`, holds
+  that phase and the support-only objective for exactly `27` ticks, then
+  advances from the anchor and restores the unchanged locomotion objective
+  in the same episode. Source is T170 half, which is `31/32` across the two
+  decisive Y-negative/Z-positive matrices. The authorized execution is one
+  CPU contract: exact default-off trajectory comparison, `256 x 28`
+  environment transitions, and one `1,024`-step optimizer/export smoke with
+  zero formal behavior cells. Pass earns only T186 hosted preregistration.
+  No hosted training, policy selection, deployment audit, Gate 5, or hardware
+  is authorized.
