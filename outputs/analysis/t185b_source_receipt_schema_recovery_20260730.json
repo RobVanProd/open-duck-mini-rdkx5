@@ -1,0 +1,54 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "deployment_audit": false,
+    "gate5": false,
+    "hosted_compute": false,
+    "optimizer": false,
+    "policy_promotion": false,
+    "rdkx5_or_robot": false,
+    "t185c_preregistration_only": true
+  },
+  "classification": "PREEXECUTION_SOURCE_RECEIPT_SCHEMA_MISMATCH",
+  "correction": {
+    "changed_fields": "add kind=file to file receipts that already contain exact path, byte count, and SHA-256",
+    "mechanism_change": false,
+    "scientific_contract_change": false
+  },
+  "evidence": {
+    "missing_kind_source_receipts": [
+      "builder",
+      "environment_worker",
+      "runner",
+      "t185_jit_phase_diagnostic_recovery",
+      "t185_preregistration"
+    ],
+    "process_stderr": {
+      "bytes": 770,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t185b_cpu_contract_process.stderr.log",
+      "sha256": "e445b622b2d1f156e6376ad8657ff1db53b373ad026b30564b4b9f2e15978591"
+    },
+    "source_preregistered_contract_sha256": "9e9346ef571d7c0a7e110ddcef1725beab1eadcf74dea7e1fad5b32056b10054",
+    "t185b_preregistration": {
+      "bytes": 20487,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t185b_jit_phase_diagnostic_recovery_preregistration.json",
+      "sha256": "a5b1b80278db4d6b041b3754f6b9c7e69dd75cbc44a719f512b77bbfde401171"
+    }
+  },
+  "execution": {
+    "environment_contract_transitions": 0,
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "result_artifact_written": false,
+    "robot_or_rdk_access": 0,
+    "work_directory_created": false
+  },
+  "invalidated_decision": "EXECUTE_ONE_T185B_CPU_CONTRACT",
+  "reason": "The runner rejected the T185B preregistration before creating its work directory because five newly generated file receipts omitted the required kind=file discriminator. Their paths, byte counts, and SHA-256 values were present. No environment, optimizer, behavior, hosted, or robot operation began.",
+  "result_sha256": "89bf1918dcd27830b09d1b40bfb729d98d0acd077e70a3a394fcab329c3908a8",
+  "schema_version": "open_duck.t185b_source_receipt_schema_recovery.v1",
+  "status": "INVALIDATE_T185B_SOURCE_RECEIPT_SCHEMA_BEFORE_EXECUTION"
+}

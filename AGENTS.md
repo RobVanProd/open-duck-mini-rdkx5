@@ -4759,3 +4759,12 @@ Do not proceed to grounded walking until low-risk gates pass.
   `1,024`-step optimizer/export smoke with zero formal behavior cells. Pass
   earns only T186 hosted preregistration; hosted training, policy selection,
   deployment audit, Gate 5, and hardware remain unauthorized.
+- 2026-07-30: The T185B runner rejects its preregistration before creating a
+  work directory because five newly generated file receipts have path,
+  bytes, and SHA-256 but omit the verifier's required `kind=file` field.
+  Environment / optimizer / behavior / hosted / robot execution is
+  `0/0/0/0/0`. Recovery status:
+  `INVALIDATE_T185B_SOURCE_RECEIPT_SCHEMA_BEFORE_EXECUTION`. This is
+  bookkeeping-only and earns only a T185C receipt-schema recovery
+  preregistration. It does not authorize a rerun, training, deployment
+  audit, Gate 5, or hardware.

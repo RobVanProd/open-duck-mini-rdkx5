@@ -73,6 +73,7 @@ def validate_prereg(value: dict[str, Any]) -> None:
         not in (
             "PREREGISTERED_T185_IN_EPISODE_SINGLE_SUPPORT_CPU_CONTRACT",
             "PREREGISTERED_T185B_JIT_PHASE_DIAGNOSTIC_RECOVERY",
+            "PREREGISTERED_T185C_SOURCE_RECEIPT_SCHEMA_RECOVERY",
         )
         or value.get("failed_checks")
         or _canonical_without(
@@ -204,10 +205,18 @@ def main() -> int:
         preregistration_path.read_text(encoding="utf-8")
     )
     validate_prereg(prereg)
-    recovery_run = (
-        prereg["status"]
-        == "PREREGISTERED_T185B_JIT_PHASE_DIAGNOSTIC_RECOVERY"
+    result_label = (
+        "T185C"
+        if prereg["status"]
+        == "PREREGISTERED_T185C_SOURCE_RECEIPT_SCHEMA_RECOVERY"
+        else (
+            "T185B"
+            if prereg["status"]
+            == "PREREGISTERED_T185B_JIT_PHASE_DIAGNOSTIC_RECOVERY"
+            else "T185"
+        )
     )
+    recovery_run = result_label != "T185"
 
     work.mkdir(parents=True)
     playground = Path(prereg["playground"]["path"])
@@ -414,20 +423,24 @@ def main() -> int:
     result: dict[str, Any] = {
         "schema_version": (
             (
-                "open_duck.t185b_in_episode_single_support_cpu_result.v1"
+                (
+                    "open_duck.t185c_in_episode_single_support_cpu_result.v1"
+                    if result_label == "T185C"
+                    else "open_duck.t185b_in_episode_single_support_cpu_result.v1"
+                )
                 if recovery_run
                 else "open_duck.t185_in_episode_single_support_cpu_result.v1"
             )
         ),
         "status": (
             (
-                "PASS_T185B_IN_EPISODE_SINGLE_SUPPORT_CPU_CONTRACT"
+                f"PASS_{result_label}_IN_EPISODE_SINGLE_SUPPORT_CPU_CONTRACT"
                 if recovery_run
                 else "PASS_T185_IN_EPISODE_SINGLE_SUPPORT_CPU_CONTRACT"
             )
             if passed
             else (
-                "HOLD_T185B_IN_EPISODE_SINGLE_SUPPORT_CPU_CONTRACT"
+                f"HOLD_{result_label}_IN_EPISODE_SINGLE_SUPPORT_CPU_CONTRACT"
                 if recovery_run
                 else "HOLD_T185_IN_EPISODE_SINGLE_SUPPORT_CPU_CONTRACT"
             )
@@ -495,7 +508,7 @@ def main() -> int:
     )
     markdown_path.write_text(
         (
-            "# T185B in-episode bilateral single-support CPU result\n\n"
+            f"# {result_label} in-episode bilateral single-support CPU result\n\n"
             if recovery_run
             else "# T185 in-episode bilateral single-support CPU result\n\n"
         )
