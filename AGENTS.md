@@ -4680,3 +4680,12 @@ Do not proceed to grounded walking until low-risk gates pass.
   bilateral single-support curriculum CPU software contract. No curriculum
   implementation, behavior, optimizer, hosted compute, deployment audit,
   Gate 5, or hardware is yet authorized.
+- 2026-07-30: The T184 period contract is invalidated before any T185 work.
+  T184 confused the `20 ms` control tick with the frozen reference gait
+  period: `0.54 s` at `50 Hz` is `27` ticks, not `20`. Its saved traces and
+  raw support measurements remain intact, but its one-/two-period labels and
+  `20`/`40`-tick windows are not authoritative. Recovery SHA-256:
+  `c7972281...b19a38`. Withdraw T184's T185-authorization decision pending a
+  clean T184B saved-trace rerun with a `27`-tick support-loss allowance and a
+  `54`-tick terminal window. No new behavior, optimizer, hosted compute,
+  deployment audit, Gate 5, or hardware is authorized.

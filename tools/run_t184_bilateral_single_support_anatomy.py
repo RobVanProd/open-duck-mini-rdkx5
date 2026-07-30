@@ -189,19 +189,30 @@ def summarize_trace(
     }
 
 
-def run() -> dict[str, Any]:
-    _require(not RESULT.exists(), f"refusing to overwrite: {RESULT}")
-    _require(not MARKDOWN.exists(), f"refusing to overwrite: {MARKDOWN}")
+def run(
+    preregistration_path: Path = PREREG,
+    result_path: Path = RESULT,
+    markdown_path: Path = MARKDOWN,
+) -> dict[str, Any]:
+    _require(
+        not result_path.exists(), f"refusing to overwrite: {result_path}"
+    )
+    _require(
+        not markdown_path.exists(), f"refusing to overwrite: {markdown_path}"
+    )
     _require(
         not subprocess.check_output(
             ["git", "status", "--porcelain"], cwd=ROOT, text=True
         ).strip(),
         "T184 execution requires committed clean preregistration",
     )
-    prereg = _load(PREREG)
+    prereg = _load(preregistration_path)
     _require(
         prereg.get("status")
-        == "PREREGISTERED_T184_BILATERAL_SINGLE_SUPPORT_ANATOMY",
+        in (
+            "PREREGISTERED_T184_BILATERAL_SINGLE_SUPPORT_ANATOMY",
+            "PREREGISTERED_T184B_BILATERAL_SINGLE_SUPPORT_ANATOMY_RECOVERY",
+        ),
         "unexpected T184 status",
     )
     _require(
@@ -326,12 +337,12 @@ def run() -> dict[str, Any]:
         "authority": prereg["authority_after_result"],
     }
     basis["result_sha256"] = canonical_sha256(basis)
-    RESULT.write_text(
+    result_path.write_text(
         json.dumps(basis, allow_nan=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
         newline="\n",
     )
-    MARKDOWN.write_text(
+    markdown_path.write_text(
         "# T184 bilateral single-support anatomy result\n\n"
         f"- Status: `{basis['status']}`\n"
         f"- Decision: `{basis['decision']}`\n"
@@ -350,8 +361,15 @@ def run() -> dict[str, Any]:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--execute", action="store_true", required=True)
-    parser.parse_args()
-    result = run()
+    parser.add_argument("--preregistration", type=Path, default=PREREG)
+    parser.add_argument("--result", type=Path, default=RESULT)
+    parser.add_argument("--markdown", type=Path, default=MARKDOWN)
+    args = parser.parse_args()
+    result = run(
+        preregistration_path=args.preregistration,
+        result_path=args.result,
+        markdown_path=args.markdown,
+    )
     print(result["status"])
     print(f"decision={result['decision']}")
     print(f"result_sha256={result['result_sha256']}")
