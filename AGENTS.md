@@ -4594,3 +4594,11 @@ Do not proceed to grounded walking until low-risk gates pass.
   preregistration; failure permanently closes alpha `0.20`. No retry,
   alternate alpha, optimizer, hosted compute, deployment audit, Gate 5, or
   hardware is authorized.
+- 2026-07-30: The first T182 launch measured no policy behavior. The inherited
+  formal T27 worker accepts only the four-command tuple and rejected T182's
+  single x=`.077` tuple before simulation (`0` traces, manifests, or cells).
+  Recovery SHA-256: `01b8e7ef...f66b3557`. Only T182B preregistration is
+  authorized, using a thin formal worker that changes the allowed tuple to
+  `(.077,)` while preserving every policy, fit, condition, seed, duration,
+  calibration, handoff, behavior, and protection rule. No alternate alpha,
+  training, Colab, deployment audit, Gate 5, or hardware is authorized.
