@@ -1,0 +1,107 @@
+{
+  "authority": {
+    "additional_attempt_retry_or_same_run_resume": false,
+    "behavior_evaluation": false,
+    "checkpoint_selection": false,
+    "gate5": false,
+    "one_exact_cli_launch": true,
+    "rdkx5_or_robot": false
+  },
+  "checks": {
+    "executor_l4_and_pinned_software": true,
+    "executor_no_retry_or_same_run_resume": true,
+    "executor_uses_exact_driver_and_prefix": true,
+    "hardware_or_robot_absent": true,
+    "package_contract_green": true,
+    "package_file_exact": true,
+    "preregistration_green": true,
+    "training_or_behavior_not_run": true
+  },
+  "commands": [
+    [
+      "colab",
+      "new",
+      "--session",
+      "t186-single-support-20260730",
+      "--gpu",
+      "L4"
+    ],
+    [
+      "colab",
+      "upload",
+      "--session",
+      "t186-single-support-20260730",
+      "D:\\CodexArtifacts\\open-duck-policy\\t186_in_episode_single_support_bundle_20260730.tar.gz",
+      "/content/t186-in-episode-single-support-20260730.tar.gz"
+    ],
+    [
+      "colab",
+      "exec",
+      "--session",
+      "t186-single-support-20260730",
+      "--file",
+      "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\execute_t186_colab_cli.py",
+      "--timeout",
+      "43200"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "t186-single-support-20260730",
+      "/content/t186_result.json",
+      "<LOCAL_RESULT>"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "t186-single-support-20260730",
+      "/content/t186_artifacts.tar.gz",
+      "<LOCAL_ARCHIVE>"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "t186-single-support-20260730",
+      "/content/t186_launch_receipt.json",
+      "<LOCAL_RECEIPT>"
+    ],
+    [
+      "colab",
+      "stop",
+      "--session",
+      "t186-single-support-20260730"
+    ]
+  ],
+  "execution_now": {
+    "colab_sessions_opened": 0,
+    "formal_behavior_cells": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "hashes": {
+    "executor": "eb0460adcca4196c5c27ac7ce0b9c26084a3e876e1950b9bdc57f99db41d3de2",
+    "package": "adcd374145974a965d280d8129787f38fbc28a2e02c1b5147e36c0822a553eb8",
+    "package_contract": "fd6a115c766206db1b2cac8ba0dcc9f489bf9e3a307682bd18d494b1f1ddeabe",
+    "preregistration": "7f872383bed3e6ac50e505db42e3be182170b077b929cc91f72194855bdf571d"
+  },
+  "package_bytes": 4342052,
+  "recovery": {
+    "download_result_archive_receipt_before_stop": true,
+    "retry": false,
+    "same_run_resume": false,
+    "stop_session_after_pass_or_hold": true
+  },
+  "schema_version": "open_duck.t186_colab_cli_launch_contract.v1",
+  "session": {
+    "accelerator": "L4",
+    "count": 1,
+    "max_wall_seconds": 43200,
+    "maximum_compute_units_at_prior_rate": 6.42,
+    "name": "t186-single-support-20260730"
+  },
+  "status": "PASS_T186_COLAB_CLI_LAUNCH_CONTRACT"
+}

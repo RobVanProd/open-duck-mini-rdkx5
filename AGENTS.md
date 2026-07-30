@@ -4878,3 +4878,12 @@ Do not proceed to grounded walking until low-risk gates pass.
   `2,007,040` steps. Credentials and robot material are absent. This earns
   only a separately frozen one-session Colab CLI launch contract; no hosted
   session, optimizer, behavior, Gate 5, or hardware execution has occurred.
+- 2026-07-30: The T186 Colab CLI launch contract passes every check. It
+  authorizes exactly one fresh session named
+  `t186-single-support-20260730` on one L4, with the
+  `adcd3741...2a553eb8` package, pinned software, hash-exact extracted
+  members, full GPU preflight, download-before-stop recovery, and no retry or
+  same-run resume. The prior-rate upper bound is `6.42` compute units.
+  Behavior evaluation, checkpoint selection, deployment audit, Gate 5, and
+  robot/RDK access remain unauthorized. The one hosted training launch is
+  now earned.
