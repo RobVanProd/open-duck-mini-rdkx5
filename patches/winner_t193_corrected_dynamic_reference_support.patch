@@ -1,0 +1,113 @@
+diff --git a/playground/open_duck_mini_v2/joystick.py b/playground/open_duck_mini_v2/joystick.py
+--- a/playground/open_duck_mini_v2/joystick.py
++++ b/playground/open_duck_mini_v2/joystick.py
+@@ -29,6 +29,7 @@ from . import constants
+ from . import base as open_duck_mini_v2_base
+ from playground.common import winner_v3_variable_configuration as winner_v3
+ from playground.common import t19_support_trainthrough as t19
++from playground.common import t193_corrected_dynamic_reference_support as t193
+ 
+ # from playground.common.utils import LowPassActionFilter
+ from playground.common.poly_reference_motion import PolyReferenceMotion
+@@ -222,6 +223,7 @@ def default_config() -> config_dict.ConfigDict:
+         winner_v119_train_transition_match=False,
+         winner_t19_support_trainthrough=False,
+         winner_t31_action_margin_trainthrough=False,
++        winner_t193_corrected_dynamic_reference_support=False,
+     )
+ 
+ 
+@@ -504,6 +506,13 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+                 "cost/winner_v127_dense_torque_exceedance"
+             ] = jp.zeros(())
++        if self._config.winner_t193_corrected_dynamic_reference_support:
++            metrics["reward/t193_reference_support_balance"] = jp.zeros(())
++            metrics["reward/t193_left_support_match"] = jp.zeros(())
++            metrics["reward/t193_right_support_match"] = jp.zeros(())
++            metrics["t193/reference_left_requested"] = jp.zeros(())
++            metrics["t193/reference_right_requested"] = jp.zeros(())
++            metrics["t193/reference_single_support_requested"] = jp.zeros(())
++            metrics["t193/original_reward"] = jp.zeros(())
+ 
+         contact = jp.array(
+             [
+@@ -778,6 +787,32 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+             k: v * self._config.reward_config.scales[k] for k, v in rewards.items()
+         }
+         reward = jp.clip(sum(rewards.values()) * self.dt, 0.0, 10000.0)
++        if self._config.winner_t193_corrected_dynamic_reference_support:
++            support_reward = t193.single_support_balance_reward(
++                self.get_gravity(data),
++                self.get_gyro(data),
++                contact,
++                state.info["current_reference_motion"],
++            )
++            support_sides = t193.matched_support_sides(
++                contact,
++                state.info["current_reference_motion"],
++            )
++            reference_sides = t193.reference_support_sides(
++                state.info["current_reference_motion"]
++            )
++            state.metrics["reward/t193_reference_support_balance"] = (
++                support_reward
++            )
++            state.metrics["reward/t193_left_support_match"] = (
++                support_sides[0].astype(jp.float32)
++            )
++            state.metrics["reward/t193_right_support_match"] = (
++                support_sides[1].astype(jp.float32)
++            )
++            state.metrics["t193/reference_left_requested"] = (
++                reference_sides[0].astype(jp.float32)
++            )
++            state.metrics["t193/reference_right_requested"] = (
++                reference_sides[1].astype(jp.float32)
++            )
++            state.metrics["t193/reference_single_support_requested"] = (
++                jp.any(reference_sides).astype(jp.float32)
++            )
++            state.metrics["t193/original_reward"] = reward
++            reward = t193.curriculum_reward(reward, support_reward)
+         # jax.debug.print('STEP REWARD: {}',reward)
+         state.info["push"] = push
+         state.info["step"] += 1
+diff --git a/playground/open_duck_mini_v2/runner.py b/playground/open_duck_mini_v2/runner.py
+--- a/playground/open_duck_mini_v2/runner.py
++++ b/playground/open_duck_mini_v2/runner.py
+@@ -103,6 +103,22 @@ class OpenDuckMiniV2Runner(BaseRunner):
+         self.env_config.winner_t31_action_margin_trainthrough = (
+             args.winner_t31_action_margin_trainthrough
+         )
++        self.env_config.winner_t193_corrected_dynamic_reference_support = (
++            args.winner_t193_corrected_dynamic_reference_support
++        )
++        if args.winner_t193_corrected_dynamic_reference_support and not (
++            args.winner_t19_support_trainthrough
++            and args.winner_t31_action_margin_trainthrough
++            and args.winner_v3_variable_configuration
++            and args.winner_t98_hidden_expert_continuation
++        ):
++            raise ValueError(
++                "T193 requires the exact T170 V3/T19/T31/T98 continuation"
++            )
++        if args.winner_t193_corrected_dynamic_reference_support:
++            print(
++                "T193_CORRECTED_DYNAMIC_REFERENCE_SUPPORT="
++                "reference_channels=32:34,objective=original_plus_support,"
++                "perfect_tick=0.4,phase_heuristic=none,active=all_locomotion"
++            )
+         if (
+             args.winner_t31_action_margin_trainthrough
+             and not args.winner_t19_support_trainthrough
+@@ -463,6 +479,10 @@ def main() -> None:
+         "--winner_t31_action_margin_trainthrough",
+         action="store_true",
+     )
++    parser.add_argument(
++        "--winner_t193_corrected_dynamic_reference_support",
++        action="store_true",
++    )
+     parser.add_argument(
+         "--winner_t37_freeze_observation_normalizer",
+         action="store_true",
