@@ -30,7 +30,7 @@ def test_t197_result_when_present() -> None:
         "PASS_T197_T194_NOMINAL_MATRIX",
         "HOLD_T197_T194_NOMINAL_MATRIX",
     }
-    assert value["condition"]["total_cells"] == 16
+    assert value["condition"]["cells"] == 16
     assert value["execution"]["behavior_cells"] == 16
     assert value["execution"]["optimizer_steps"] == 0
     assert value["authority"]["gate5"] is False
