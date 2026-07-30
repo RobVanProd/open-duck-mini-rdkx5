@@ -4975,3 +4975,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   cells remain required for the preregistered persistence diagnosis.
   Training, Colab, deployment audit, Gate 5, and hardware remain
   unauthorized.
+- 2026-07-30: T190B completes only the two missing final-checkpoint blocks;
+  both are `4/4`, while the frozen half blocks remain `4/4` under P30 and
+  `3/4` under P31/34. Overall T186 is `15/16` and is closed by the
+  preregistered no-retry, both-checkpoint rule. The sole failure is
+  half/P31-34 x=`.080`: it walks with bilateral transitions, zero saturation
+  and rate excess, and tracking p95 `0.165294` rad, but falls after
+  `547/600` ticks with minimum base height `0.056614` m. This differs from
+  T170's prior Y-negative miss, which was final/P30 x=`.080` after `281`
+  ticks; T186 repairs that cell but introduces a later fit-specific
+  half-checkpoint failure. Result SHA-256:
+  `0fdcd1c4...f4beeeb2`; decision
+  `CLOSE_T186_SINGLE_SUPPORT_CONTINUATION`. No full-R2 matrix, retry,
+  checkpoint selection, training, Colab, deployment audit, Gate 5, or
+  hardware is authorized.
