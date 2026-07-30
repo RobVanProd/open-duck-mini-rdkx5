@@ -4623,3 +4623,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   This earns only a separately preregistered CPU-only context-gated head
   feasibility study. No optimizer, hosted compute, deployment audit, Gate 5,
   or hardware is authorized.
+- 2026-07-30: T183 preregisters the earned CPU-only context-gated head
+  feasibility audit under contract SHA-256 `c1e6ae5c...4b9f802e`. It tests
+  only the graph's existing live `hidden_gate_score`; no observation,
+  calibration-context, feature, direction, or threshold search is permitted.
+  Source trajectories derive one threshold from an exact rescue-versus-
+  regression score gap, while transformed trajectories are held out for
+  validation. The positive-Z shared failure and its alpha-0.20 trace are
+  explicitly unlabeled diagnostics because neither endpoint passes and the
+  interpolation survives longer. T183 runs saved-trace CPU inference only.
+  No graph change, behavior, optimizer, hosted compute, deployment audit,
+  Gate 5, or hardware is authorized.
