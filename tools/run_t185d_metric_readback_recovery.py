@@ -66,11 +66,20 @@ def main() -> int:
     prereg = load(PREREG)
     if (
         prereg["status"]
-        != "PREREGISTERED_T185D_METRIC_READBACK_RECOVERY"
+        not in (
+            "PREREGISTERED_T185D_METRIC_READBACK_RECOVERY",
+            "PREREGISTERED_T185E_METRIC_RECEIPT_RECOVERY",
+        )
         or canonical_without(prereg, "preregistered_contract_sha256")
         != prereg["preregistered_contract_sha256"]
     ):
         raise RuntimeError("T185D preregistration identity changed")
+    result_label = (
+        "T185E"
+        if prereg["status"]
+        == "PREREGISTERED_T185E_METRIC_RECEIPT_RECOVERY"
+        else "T185D"
+    )
     for name, item in prereg["sources"].items():
         t20.verify_receipt(item, name)
     source = load(Path(prereg["sources"]["t185c_result"]["path"]))
@@ -123,12 +132,16 @@ def main() -> int:
     passed = not failed
     basis: dict[str, Any] = {
         "schema_version": (
-            "open_duck.t185d_metric_readback_recovery_result.v1"
+            (
+                "open_duck.t185e_metric_receipt_recovery_result.v1"
+                if result_label == "T185E"
+                else "open_duck.t185d_metric_readback_recovery_result.v1"
+            )
         ),
         "status": (
-            "PASS_T185D_METRIC_READBACK_RECOVERY"
+            f"PASS_{result_label}_METRIC_READBACK_RECOVERY"
             if passed
-            else "HOLD_T185D_METRIC_READBACK_RECOVERY"
+            else f"HOLD_{result_label}_METRIC_READBACK_RECOVERY"
         ),
         "decision": (
             prereg["decision_rule"]["pass"]
@@ -176,7 +189,7 @@ def main() -> int:
         newline="\n",
     )
     MARKDOWN.write_text(
-        "# T185D metric-readback recovery result\n\n"
+        f"# {result_label} metric-readback recovery result\n\n"
         f"- Status: `{value['status']}`\n"
         f"- Decision: `{value['decision']}`\n"
         f"- Failed checks: `{failed}`\n"

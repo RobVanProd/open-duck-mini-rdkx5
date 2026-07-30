@@ -1,0 +1,42 @@
+{
+  "authority": {
+    "artifact_reanalysis": false,
+    "behavior_evaluation": false,
+    "deployment_audit": false,
+    "gate5": false,
+    "hosted_compute": false,
+    "optimizer": false,
+    "rdkx5_or_robot": false,
+    "t185e_preregistration_only": true
+  },
+  "classification": "PREEXECUTION_SOURCE_RECEIPT_SCHEMA_MISMATCH",
+  "correction": {
+    "changed_fields": "add kind=file to the four incomplete file receipts while preserving path, bytes, and SHA-256",
+    "mechanism_change": false,
+    "scientific_contract_change": false
+  },
+  "evidence": {
+    "missing_kind_source_receipts": [
+      "builder",
+      "runner",
+      "t185c_attribution",
+      "t185c_result"
+    ],
+    "result_artifact_exists": false,
+    "source_preregistered_contract_sha256": "66f61a55c96d8b8f51954427e47d1307e774dd40fd3cda3b3b0cda9d47d51614"
+  },
+  "execution": {
+    "artifact_files_read": 0,
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "model_inferences": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_transitions": 0
+  },
+  "invalidated_decision": "EXECUTE_ONE_T185D_SAVED_ARTIFACT_RECOVERY",
+  "reason": "The T185D runner rejected the preregistration before reading the immutable event artifact because four new file receipts omitted the required kind=file discriminator. Their paths, byte counts, and SHA-256 values were already present.",
+  "result_sha256": "8fad7622ea1f34902ef292864a78d71b1b920f120ce2657edca5eacf4b00206b",
+  "schema_version": "open_duck.t185d_source_receipt_schema_recovery.v1",
+  "status": "INVALIDATE_T185D_SOURCE_RECEIPT_SCHEMA_BEFORE_EXECUTION"
+}

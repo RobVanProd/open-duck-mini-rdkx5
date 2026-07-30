@@ -4812,3 +4812,11 @@ Do not proceed to grounded walking until low-risk gates pass.
   behavior, hosted compute, or robot operation. Pass earns only T186 hosted
   preregistration; hosted training, policy selection, deployment audit,
   Gate 5, and hardware remain unauthorized.
+- 2026-07-30: The T185D saved-artifact runner rejects its preregistration
+  before reading the event file because four new file receipts omit
+  `kind=file`. No result is written; artifact reads / simulator / optimizer /
+  inference / behavior / hosted / robot execution is `0/0/0/0/0/0/0`.
+  Recovery status:
+  `INVALIDATE_T185D_SOURCE_RECEIPT_SCHEMA_BEFORE_EXECUTION`. This earns only
+  a T185E receipt-only preregistration. It does not authorize event
+  reanalysis, training, deployment audit, Gate 5, or hardware.
