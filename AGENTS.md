@@ -5336,3 +5336,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   `EARN_T203_PREDICTED_ROLL_RISK_HOSTED_PREREGISTRATION_ONLY`. This earns
   only a no-retry hosted-package preregistration; no hosted execution,
   behavior, full R2, deployment audit, Gate 5, or hardware is yet authorized.
+- 2026-07-30: T203 preregisters exactly one hash-frozen L4 continuation
+  under contract SHA-256 `a2070533...0f986e051`. It restores exact protected
+  T170 half, trains `2,007,040` steps across the unchanged eight-stratum
+  population, and exports at `0/1,003,520/2,007,040`. The only recipe
+  addition is T202's fixed predicted-roll squared-excess objective outside
+  the positive reward clip; support credit is absent, only the negative
+  adapter pair and critic may update, and the normalizer/mature actor/ABI/
+  deployment graph remain frozen. Both half and final checkpoints are
+  mandatory with no retry, resume, selection, or cherry-pick. Packaging and
+  a local identity preflight are authorized; no hosted session, behavior,
+  Gate 5, or hardware has yet run.
