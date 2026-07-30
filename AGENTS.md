@@ -5292,3 +5292,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   CPU-contract preregistration from protected T170 half. No behavior,
   training, hosted compute, full R2, deployment audit, Gate 5, or hardware
   is authorized.
+- 2026-07-30: T202 preregisters a training-only predicted-roll-risk CPU
+  contract under SHA-256 `380c50e9...7a2815bc8`. It restores exact protected
+  T170 half and uses `abs(roll + 0.08 * roll_rate)` with the frozen
+  `0.354180266` rad pass envelope. Its sole scale,
+  `0.801776317`, is derived once from both frozen failures so their mean
+  weighted violating tick equals the existing `0.4` alive-reward tick.
+  The squared excess is subtracted after the original positive reward clip;
+  support credit is absent, and the policy ABI/deployment graph are
+  unchanged. A default-off equality check, enabled environment check, and
+  `1,024`-step CPU restore/update/export smoke are authorized. Hosted
+  training, behavior, full R2, deployment audit, Gate 5, and hardware remain
+  unauthorized.
