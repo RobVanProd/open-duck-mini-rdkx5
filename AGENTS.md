@@ -4492,3 +4492,12 @@ Do not proceed to grounded walking until low-risk gates pass.
   context, recurrent inputs, actual positions, and `obs_state[83:97]`.
   No behavior run, training, Colab, deployment audit, Gate 5, or hardware is
   authorized.
+- 2026-07-30: T178B preregisters the reporting-only handoff correction under
+  contract SHA-256 `b5491f1a...9c32c022`. It reads only tick zero from the
+  same `16` sealed traces and compares exact calibration context, recurrent
+  inputs, pre-action joint position, phase observation, and the bridge-applied
+  target in `obs_state[83:97]`. Current-action `applied_target_rad` and
+  post-step `qpos/qvel` are explicitly excluded. A `4/4` block pass earns only
+  separate T179 source-versus-T175 positive-Z CPU A/B preregistration. No new
+  behavior, optimizer, Colab, deployment audit, Gate 5, or hardware is
+  authorized.
