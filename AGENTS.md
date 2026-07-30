@@ -4836,3 +4836,11 @@ Do not proceed to grounded walking until low-risk gates pass.
   remains `0/0/0/0/0/0/0`. Only a T185F path-isolated preregistration is
   earned; no reanalysis, training, deployment audit, Gate 5, or hardware is
   authorized.
+- 2026-07-30: T185F preregisters the path-isolated immutable-event recovery
+  under contract SHA-256 `be3c884f...c25967b8`. The runner now requires
+  explicit preregistration, result, and markdown paths; all source receipts
+  are complete. The event artifact, metric rules, decision, and authority
+  remain unchanged. One saved-event read is authorized with zero simulator,
+  optimizer, model inference, behavior, hosted compute, or robot access.
+  Pass earns only T186 hosted preregistration; hosted training, policy
+  selection, deployment audit, Gate 5, and hardware remain unauthorized.
