@@ -52,6 +52,9 @@ def test_t227_composer_freezes_training_only_scope() -> None:
         ROOT / "tools/compose_t227_command_atom_playground.py"
     ).read_text(encoding="utf-8")
     assert "winner_t227_command_atom_bank=False" in text
+    assert "self._winner_t227_command_atom_bank_enabled" in text
+    assert "self.env.unwrapped._config.winner_t227_command_atom_bank = True" in text
+    assert "self.eval_env.unwrapped._config.winner_t227_command_atom_bank = True" in text
     assert "args.ppo_num_envs % 32 == 0" in text
     assert "select_named_axis_forward" in text
     assert '"configuration_randomizer_change": False' in text

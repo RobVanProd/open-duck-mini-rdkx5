@@ -129,9 +129,10 @@ def main() -> int:
             args.ground_up_command_support_min_x,
             args.ground_up_command_support_max_x,
         ]
-        self.env_config.winner_t227_command_atom_bank = (
+        self._winner_t227_command_atom_bank_enabled = (
             args.winner_t227_command_atom_bank
         )
+        self.env_config.winner_t227_command_atom_bank = False
 """,
     )
     replace_once(
@@ -173,6 +174,23 @@ def main() -> int:
         "--winner_t227_command_atom_bank",
         action="store_true",
     )
+""",
+    )
+    replace_once(
+        duck_runner,
+        """        self.obs_size = int(
+            self.env.observation_size["state"][0]
+        )  # 0: state 1: privileged_state
+        self.restore_checkpoint_path = args.restore_checkpoint_path
+""",
+        """        self.obs_size = int(
+            self.env.observation_size["state"][0]
+        )  # 0: state 1: privileged_state
+        if self._winner_t227_command_atom_bank_enabled:
+            self.env_config.winner_t227_command_atom_bank = True
+            self.env.unwrapped._config.winner_t227_command_atom_bank = True
+            self.eval_env.unwrapped._config.winner_t227_command_atom_bank = True
+        self.restore_checkpoint_path = args.restore_checkpoint_path
 """,
     )
 
