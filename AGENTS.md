@@ -5364,3 +5364,24 @@ Do not proceed to grounded walking until low-risk gates pass.
   rate. Result, archive, and launch receipt must all be recovered before the
   session stops. Retry, same-run resume, checkpoint selection, behavior,
   Gate 5, and hardware remain unauthorized.
+- 2026-07-30: The single T203 L4 continuation completes in
+  `1,558.625` seconds with no retry or resume. Result, launch receipt, and
+  the `8,529,015`-byte archive are recovered locally before session stop;
+  the archive reproduces remote SHA-256
+  `e3ad9562...fdb1bddf`, the result reproduces
+  `e2cd0a85...6df2f6c`, and Colab reports no active sessions afterward.
+  The hosted artifact contains exact exports at
+  `0/1,003,520/2,007,040` and no formal behavior cells.
+- 2026-07-30: T204 CPU recovery validation passes every hash, topology,
+  tree, metric, and ONNX check. Step zero is byte-exact to protected T170
+  half (`c37af0b0...832338f`); half/final ONNX SHA-256 values are
+  `d1117fdd...0dd1d51` and `d4aaf943...7b704ad`. At both checkpoints only
+  the negative adapter pair and critic update, while the mature actor and
+  observation normalizer remain bit-exact; all three graphs preserve the
+  `115/14/64` stateful ABI and pass `256`-step CPU chains. T202 cost values
+  are finite and positive at all exports
+  (`1.148579/1.108309/1.285592`). Result SHA-256:
+  `960d54db...8b96f65a`; decision
+  `EARN_T205_T203_POSTEXPORT_COMPOSITION_PREREGISTRATION_ONLY`. Behavior,
+  checkpoint selection, Gate 5, and hardware remain closed until exact
+  post-export composition is preregistered and verified.
