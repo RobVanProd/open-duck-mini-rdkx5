@@ -54,3 +54,14 @@ def test_t215b_patch_is_training_only_axis_complete_cost() -> None:
     assert "reward_channel=unchanged" in text
     assert "deployment_graph=unchanged" in text
     assert "not args.winner_t209_dual_roll_cost" in text
+
+
+def test_t215b_environment_contract_checks_both_axes() -> None:
+    text = (
+        ROOT / "tools/run_t215b_environment_contract_worker.py"
+    ).read_text(encoding="utf-8")
+    assert 'for index, axis in enumerate(("roll", "pitch"))' in text
+    assert "both_synthetic_axes_exceed_box" in text
+    assert "synthetic_dominant_axis_exact" in text
+    assert "cost_is_unscaled_squared_box_excess" in text
+    assert "cost_is_outside_and_does_not_change_reward" in text
