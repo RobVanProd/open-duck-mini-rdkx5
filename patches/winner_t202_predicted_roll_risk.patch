@@ -1,0 +1,100 @@
+diff --git a/playground/open_duck_mini_v2/joystick.py b/playground/open_duck_mini_v2/joystick.py
+--- a/playground/open_duck_mini_v2/joystick.py
++++ b/playground/open_duck_mini_v2/joystick.py
+@@ -29,6 +29,7 @@ from . import constants
+ from . import base as open_duck_mini_v2_base
+ from playground.common import winner_v3_variable_configuration as winner_v3
+ from playground.common import t19_support_trainthrough as t19
++from playground.common import t202_predicted_roll_risk as t202
+ 
+ # from playground.common.utils import LowPassActionFilter
+ from playground.common.poly_reference_motion import PolyReferenceMotion
+@@ -222,6 +223,7 @@ def default_config() -> config_dict.ConfigDict:
+         winner_v119_train_transition_match=False,
+         winner_t19_support_trainthrough=False,
+         winner_t31_action_margin_trainthrough=False,
++        winner_t202_predicted_roll_risk=False,
+     )
+ 
+ 
+@@ -504,6 +506,11 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+                 "cost/winner_v127_dense_torque_exceedance"
+             ] = jp.zeros(())
++        if self._config.winner_t202_predicted_roll_risk:
++            metrics["cost/t202_predicted_roll_risk"] = jp.zeros(())
++            metrics["t202/predicted_roll_risk_rad"] = jp.zeros(())
++            metrics["t202/roll_risk_excess_rad"] = jp.zeros(())
++            metrics["t202/original_clipped_reward"] = jp.zeros(())
+ 
+         contact = jp.array(
+             [
+@@ -778,6 +785,27 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+             k: v * self._config.reward_config.scales[k] for k, v in rewards.items()
+         }
+         reward = jp.clip(sum(rewards.values()) * self.dt, 0.0, 10000.0)
++        if self._config.winner_t202_predicted_roll_risk:
++            base_qpos = self._floating_base_qpos_addr
++            base_qvel = self._floating_base_qvel_addr
++            predicted_roll_risk = t202.predicted_roll_risk_rad(
++                data.qpos[base_qpos + 3 : base_qpos + 7],
++                data.qvel[base_qvel + 3],
++            )
++            roll_risk_excess = t202.roll_risk_excess_rad(
++                predicted_roll_risk
++            )
++            roll_risk_cost = t202.roll_risk_cost(
++                predicted_roll_risk
++            )
++            state.metrics["cost/t202_predicted_roll_risk"] = (
++                roll_risk_cost
++            )
++            state.metrics["t202/predicted_roll_risk_rad"] = (
++                predicted_roll_risk
++            )
++            state.metrics["t202/roll_risk_excess_rad"] = roll_risk_excess
++            state.metrics["t202/original_clipped_reward"] = reward
++            reward = t202.curriculum_reward(reward, roll_risk_cost)
+         # jax.debug.print('STEP REWARD: {}',reward)
+         state.info["push"] = push
+         state.info["step"] += 1
+diff --git a/playground/open_duck_mini_v2/runner.py b/playground/open_duck_mini_v2/runner.py
+--- a/playground/open_duck_mini_v2/runner.py
++++ b/playground/open_duck_mini_v2/runner.py
+@@ -103,6 +103,25 @@ class OpenDuckMiniV2Runner(BaseRunner):
+         self.env_config.winner_t31_action_margin_trainthrough = (
+             args.winner_t31_action_margin_trainthrough
+         )
++        self.env_config.winner_t202_predicted_roll_risk = (
++            args.winner_t202_predicted_roll_risk
++        )
++        if args.winner_t202_predicted_roll_risk and not (
++            args.winner_t19_support_trainthrough
++            and args.winner_t31_action_margin_trainthrough
++            and args.winner_v3_variable_configuration
++            and args.winner_t98_hidden_expert_continuation
++        ):
++            raise ValueError(
++                "T202 requires the exact T170 V3/T19/T31/T98 continuation"
++            )
++        if args.winner_t202_predicted_roll_risk:
++            print(
++                "T202_PREDICTED_ROLL_RISK="
++                "horizon_s=0.08,envelope_rad=0.3541802655745987,"
++                "scale=0.80177631665518045,"
++                "objective=original_clipped_reward_minus_cost,"
++                "deployment_graph=unchanged"
++            )
+         if (
+             args.winner_t31_action_margin_trainthrough
+             and not args.winner_t19_support_trainthrough
+@@ -463,6 +482,10 @@ def main() -> None:
+         "--winner_t31_action_margin_trainthrough",
+         action="store_true",
+     )
++    parser.add_argument(
++        "--winner_t202_predicted_roll_risk",
++        action="store_true",
++    )
+     parser.add_argument(
+         "--winner_t37_freeze_observation_normalizer",
+         action="store_true",
