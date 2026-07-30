@@ -4931,3 +4931,10 @@ Do not proceed to grounded walking until low-risk gates pass.
   prior structural and inference checks remain green. Execution reads the
   saved T188 result only: no transform, inference, behavior, optimizer,
   hosted compute, Gate 5, or hardware operation is authorized.
+- 2026-07-30: T188B passes the saved-result recovery with no failed checks.
+  All three T186 graphs bind exactly the allowed nominal adapter weight/bias
+  pair; all nodes, other initializers, inactive routes, and x=0 outputs
+  remain exact. No transform or inference is rerun. Result SHA-256:
+  `e2f8df48...15b05213`. This earns only T189's 16-cell nominal/default
+  behavior-matrix preregistration. No broader behavior matrix, training,
+  hosted compute, deployment audit, Gate 5, or hardware is authorized.
