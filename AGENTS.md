@@ -5042,3 +5042,12 @@ Do not proceed to grounded walking until low-risk gates pass.
   reference-contact dynamic-support CPU contract is earned. It runs no
   inference, behavior, optimizer, hosted compute, deployment audit, Gate 5,
   or hardware.
+- 2026-07-30: T192B passes. Across all `27` switched rows and all `55`
+  original trace fields, the T186-final head produces zero change in policy
+  output, recurrent state, sent/applied targets, robot state, or dynamics
+  relative to the sealed T186-half failure. Classification:
+  `FINAL_HEAD_OUTPUT_EQUIVALENT_ON_COMMITTED_FAILURE_STATE`; result SHA-256:
+  `dfe89d50...f6ddadf`. This closes late checkpoint handoff as a repair and
+  earns only T193's corrected reference-contact dynamic-support CPU contract
+  preregistration. It does not authorize behavior, training, hosted compute,
+  deployment audit, Gate 5, or hardware.
