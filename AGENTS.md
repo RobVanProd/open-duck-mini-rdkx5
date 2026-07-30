@@ -4803,3 +4803,12 @@ Do not proceed to grounded walking until low-risk gates pass.
   behavior, hosted, or robot execution occurs. This earns only a separately
   preregistered T185D immutable-event recovery, not an optimizer rerun,
   training, deployment audit, Gate 5, or hardware.
+- 2026-07-30: T185D preregisters the immutable-event metric recovery under
+  contract SHA-256 `66f61a55...47d51614`. It requires exactly two finite
+  positive values for each accumulated support metric, exactly two zero
+  terminal prefix-active values, two finite positive resumed-original-reward
+  values, absence of the mistaken tag, and preservation of every other
+  T185C check. It executes no simulator, optimizer, model inference,
+  behavior, hosted compute, or robot operation. Pass earns only T186 hosted
+  preregistration; hosted training, policy selection, deployment audit,
+  Gate 5, and hardware remain unauthorized.
