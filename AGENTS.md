@@ -5190,3 +5190,10 @@ Do not proceed to grounded walking until low-risk gates pass.
   `222bda0e...ae110b2a`. This earns only T198's targeted Y-negative matrix
   preregistration; broader robustness, deployment audit, Gate 5, and
   hardware remain closed.
+- 2026-07-30: T198 preregisters the exact targeted Y-negative falsifier
+  under contract SHA-256 `c48b1806...892297d8`: torso COM y offset
+  `-0.05 m` across both T194 checkpoints, both measured actuator fits, and
+  x=`0/.074/.077/.080`, for `16` fresh CPU cells. Both checkpoints are
+  mandatory with no retry or selection. Pass earns only T199's full-R2
+  preregistration; training, hosted compute, deployment audit, Gate 5, and
+  hardware remain unauthorized.
