@@ -69,6 +69,11 @@ def run(playground: Path, reference: Path, seed: int) -> dict[str, Any]:
         randomizer,
         torso_body_id=torso_body_id,
     )
+    nominal_torso_body_ipos = np.asarray(
+        jax.device_get(
+            env.mjx_model.body_ipos[TORSO_BODY_ID, :]
+        )
+    )
     randomization_rng = jax.random.split(
         jax.random.PRNGKey(seed),
         POPULATION,
@@ -115,9 +120,8 @@ def run(playground: Path, reference: Path, seed: int) -> dict[str, Any]:
     model_offsets = np.asarray(
         jax.device_get(
             randomized_model.body_ipos[:, TORSO_BODY_ID, :]
-            - env.mjx_model.body_ipos[TORSO_BODY_ID, :]
         )
-    )
+    ) - nominal_torso_body_ipos
 
     expected_atom_values = {
         1: np.float32(0.074),

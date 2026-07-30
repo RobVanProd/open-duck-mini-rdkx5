@@ -85,3 +85,24 @@ def test_t227_cpu_contract_freezes_scope_and_authority() -> None:
     assert "exact_command_atoms_survive_t19_reset_and_resample" in worker
     assert '"optimizer_steps": 0' in worker
     assert '"formal_behavior_cells": 0' in worker
+
+
+def test_t227a_retry_is_instrumentation_only() -> None:
+    builder = (
+        ROOT
+        / "tools/build_t227a_command_atom_cpu_retry_preregistration.py"
+    ).read_text(encoding="utf-8")
+    runner = (
+        ROOT / "tools/run_t227a_command_atom_cpu_contract.py"
+    ).read_text(encoding="utf-8")
+    worker = (
+        ROOT / "tools/run_t227_command_atom_environment_worker.py"
+    ).read_text(encoding="utf-8")
+    assert "POST_RESET_AUDIT_READ_OF_ESCAPED_JAX_TRACER" in builder
+    assert '"scientific_mechanism_changed": False' in builder
+    assert '"optimizer_steps_before_abort": 0' in builder
+    assert '"one_corrected_cpu_contract_retry": True' in builder
+    assert "t227a_command_atom_cpu_contract_v2" in runner
+    assert '"prior_optimizer_steps": 0' in runner
+    assert "nominal_torso_body_ipos = np.asarray(" in worker
+    assert "- nominal_torso_body_ipos" in worker
