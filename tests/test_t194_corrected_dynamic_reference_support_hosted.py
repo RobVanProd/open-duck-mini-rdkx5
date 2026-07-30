@@ -65,3 +65,19 @@ def test_t194_package_contract_when_present() -> None:
     assert value["execution_now"]["optimizer_steps"] == 0
     assert value["execution_now"]["hosted_sessions_opened"] == 0
     assert value["execution_now"]["robot_or_rdk_access"] == 0
+
+
+def test_t194_launch_contract_when_present() -> None:
+    path = ANALYSIS / "t194_colab_cli_launch_contract.json"
+    if not path.exists():
+        return
+    value = json.loads(path.read_text(encoding="utf-8"))
+    assert value["status"] == "PASS_T194_COLAB_CLI_LAUNCH_CONTRACT"
+    assert value["failed_checks"] == []
+    assert all(value["checks"].values())
+    assert value["session"]["accelerator"] == "L4"
+    assert value["session"]["count"] == 1
+    assert value["recovery"]["retry"] is False
+    assert value["recovery"]["same_run_resume"] is False
+    assert value["authority"]["behavior_evaluation"] is False
+    assert value["authority"]["gate5"] is False
