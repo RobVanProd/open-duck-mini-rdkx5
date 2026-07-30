@@ -4512,3 +4512,11 @@ Do not proceed to grounded walking until low-risk gates pass.
   separately preregistered T179 CPU-only source-versus-T175 positive-Z A/B.
   T179 execution, training, Colab, deployment audit, Gate 5, and hardware
   remain unauthorized.
+- 2026-07-30: T179 preregisters the earned positive-Z source-versus-T175
+  causal A/B under contract SHA-256 `e3fdbc08...aaa43e46`. It runs exactly
+  `16` fresh CPU cells from the untransformed T170 half/final graphs and
+  compares them with the `16` sealed T177 T175 cells; the transformed cells
+  are not rerun. Primary evidence is green count and exact failure identity;
+  secondary evidence is full JSONL SHA/byte identity. No checkpoint
+  selection, threshold change, optimizer, hosted compute, deployment audit,
+  Gate 5, or hardware is authorized by preregistration.

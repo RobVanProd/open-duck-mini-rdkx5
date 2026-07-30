@@ -1,0 +1,3574 @@
+{
+  "authority_after_result": {
+    "additional_training": false,
+    "colab": false,
+    "deployment_contract_audit": false,
+    "gate5": false,
+    "rdkx5_or_robot": false,
+    "t180_cpu_preregistration": true,
+    "t180_execution": false,
+    "torque_or_motion": false
+  },
+  "behavior_contract": {
+    "interpretation": {
+      "core": "minimum physical/semantic validity; thresholds passed by the T4 baseline where comparable",
+      "evaluator_candidate_gate_status": "diagnostic only because T4 invalidated its use as an unqualified feasibility classifier",
+      "replacement_quality": "explicit stretch goals for replacing the behaviorally bad baseline; T4 showed the baseline can fail some of these"
+    },
+    "moving_core": {
+      "bilateral_transitions": true,
+      "maximum_action_saturation_pct": 1.0,
+      "maximum_body_pitch_p95_rad": 0.25,
+      "minimum_base_height_m": 0.12,
+      "minimum_track_ratio": 0.25,
+      "positive_mean_local_velocity": true,
+      "samples": 600
+    },
+    "moving_replacement_quality": {
+      "maximum_action_saturation_pct": 0.0,
+      "maximum_pitch_tracking_p95_rad": 0.2,
+      "maximum_rate_excess_rad_s": 0.0
+    },
+    "x0_core": {
+      "maximum_absolute_mean_local_vx_m_s": 0.02,
+      "maximum_action_saturation_pct": 1.0,
+      "maximum_body_pitch_p95_rad": 0.25,
+      "minimum_base_height_m": 0.12,
+      "samples": 600
+    },
+    "x0_replacement_quality": {
+      "maximum_action_saturation_pct": 0.0,
+      "maximum_pitch_tracking_p95_rad": 0.2,
+      "maximum_rate_excess_rad_s": 0.0
+    }
+  },
+  "calibrator": {
+    "bytes": 55573,
+    "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v96-response-conditioned-mechanics\\winner_v96_universal_calibrator.onnx",
+    "sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576"
+  },
+  "checkpoint_pairs": [
+    {
+      "source_checkpoint_id": "T170_SOURCE_HALF",
+      "transformed_checkpoint_id": "T175_HEAD_MEAN_HALF"
+    },
+    {
+      "source_checkpoint_id": "T170_SOURCE_FINAL",
+      "transformed_checkpoint_id": "T175_HEAD_MEAN_FINAL"
+    }
+  ],
+  "commands_x_m_s": [
+    0.0,
+    0.074,
+    0.077,
+    0.08
+  ],
+  "comparison_contract": {
+    "no_checkpoint_selection": true,
+    "no_threshold_change": true,
+    "primary": "green-cell count and exact failed-cell identity",
+    "secondary": "full JSONL file SHA/byte identity for all 16 pairs"
+  },
+  "condition": {
+    "condition_index": 12,
+    "id": "TORSO_COM_Z_POS",
+    "override": {
+      "torso_com_offset_m": [
+        0.0,
+        0.0,
+        0.05
+      ]
+    }
+  },
+  "conditions": [
+    {
+      "condition_index": 12,
+      "id": "TORSO_COM_Z_POS",
+      "override": {
+        "torso_com_offset_m": [
+          0.0,
+          0.0,
+          0.05
+        ]
+      }
+    }
+  ],
+  "decision_rule": {
+    "no_training_or_deployment_authority": true,
+    "same_failures_all_traces_exact": "T175_NO_EFFECT_POSITIVE_Z_FAILURE_PREDATES_TRANSFORM",
+    "same_failures_traces_differ": "T175_NONCAUSAL_SHARED_POSITIVE_Z_FAILURE_MATRIX",
+    "source_16_of_16": "T175_HEAD_PREFIX_MEAN_INTRODUCED_POSITIVE_Z_REGRESSION",
+    "source_greener_than_t175": "T175_HEAD_PREFIX_MEAN_NET_POSITIVE_Z_REGRESSION",
+    "source_worse_than_t175": "T175_PARTIAL_POSITIVE_Z_IMPROVEMENT_INSUFFICIENT"
+  },
+  "execution_now": {
+    "hosted_compute_units": 0,
+    "new_behavior_cells": 16,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "fits": [
+    {
+      "bytes": 18664,
+      "fit_id": "p30",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "a58db8ffc505d2bb64cba7f5618d0e2c65904fc9f9ac37b560a1231e090f5f4f"
+    },
+    {
+      "bytes": 18788,
+      "fit_id": "p31_34",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p31_34_actuator_fit_20260712.json",
+      "sha256": "2740513f6bdeb4ad3cc5dd6dc1709319389a593fd153c1ce5abae03b66131a57"
+    }
+  ],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 9015,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t179_source_vs_t175_positive_z_preregistration.py",
+      "sha256": "5f002aa27b60b273845d606325680fea1459fe43178ee741d1911f26808eedcd"
+    },
+    "runner": {
+      "bytes": 14327,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t179_source_vs_t175_positive_z.py",
+      "sha256": "19e6a6e96c4cf9b4b5baced69c26fa5e12cc8d61d18410db6b4bcd91cbd3fe88"
+    },
+    "t175_transform": {
+      "bytes": 158781,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t175_head_prefix_mean_result.json",
+      "sha256": "a8cf0eb23e66fc6822600c803e16fe835d68419bad26aee3fee5649d30521ea2"
+    },
+    "t177_preregistration": {
+      "bytes": 13844,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t177_head_prefix_mean_full_r2_preregistration.json",
+      "sha256": "100f04d75c40ecb702668673e2617611b8992760e5fe267e9d32c241a1c497e7"
+    },
+    "t177_terminal_result": {
+      "bytes": 1435865,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t177_head_prefix_mean_full_r2_result.json",
+      "sha256": "73b2b6f7a4f554fa8fc52e138ba0c78bdc9f7a5f9ff73fe5cf18736afc1fc903"
+    },
+    "t178_preregistration": {
+      "bytes": 15389,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t178_positive_z_failure_autopsy_preregistration.json",
+      "sha256": "0d9c12f84a48f00cfec1d8791ff91b966040b9b3261430d0fc95cc4c788da2c7"
+    },
+    "t178b_exact_handoff": {
+      "bytes": 5297,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t178b_pre_action_handoff_correction_result.json",
+      "sha256": "a55472abb89b6932881a2ba9ed8ba7a0358d652892d1ed98d33c960b2624416a"
+    },
+    "test": {
+      "bytes": 1754,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t179_source_vs_t175_positive_z.py",
+      "sha256": "c879daba2b6ef0bd27b38e4d522ba10ef13f212b05224d97a5d888bd2fbd8e2e"
+    }
+  },
+  "matrix": {
+    "fresh_source_cache": true,
+    "new_source_cells": 16,
+    "reused_transformed_cells": 16,
+    "source_plan_sha256": "eb709a56b5c9f839f5a58b358c04043542f949d3312d3cfadd5a725af0c51def",
+    "transformed_reruns": 0
+  },
+  "playground": {
+    "manifest": {
+      "bytes": 5190,
+      "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v6\\T19_COMPOSED_SOURCE_MANIFEST.json",
+      "sha256": "d7c9b615c32f0e2c8434e958a900cc38485c0db6fea107b6115a69bbd2122a77"
+    },
+    "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v6"
+  },
+  "policies": [
+    {
+      "bytes": 983104,
+      "checkpoint_id": "T170_SOURCE_HALF",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t172_t170_postexport_composition_v1\\1003520\\t170_composed.onnx",
+      "sha256": "510ea11ea941fa445c778461a2917bcc1fb457055c4d589525406c700f00afd9",
+      "step": 1003520
+    },
+    {
+      "bytes": 983104,
+      "checkpoint_id": "T170_SOURCE_FINAL",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t172_t170_postexport_composition_v1\\2007040\\t170_composed.onnx",
+      "sha256": "cb9adce1c0c7a76859e9c262b76c6080e5d41583602ed417fb97bc4713c804ba",
+      "step": 2007040
+    }
+  ],
+  "preregistered_contract_sha256": "e3fdbc08485fb58e708cdac87476f9c46e476e74fbd75c5b2a32ccf9aaa43e46",
+  "protection_contract": {
+    "force_limit_tolerance_nm": 5e-06,
+    "instantaneous_stall_current_and_torque": "diagnostic_only",
+    "motor_constant_nm_per_a": 0.784532,
+    "overcurrent_threshold_a": 2.0,
+    "overload_threshold_nm": 1.5298374,
+    "pass_max_consecutive_ticks": 99,
+    "simulator_force_limit_abs_nm": 3.23,
+    "simulator_force_limit_hits": "diagnostic_only",
+    "source": "T5 manufacturer-derived duration rules",
+    "strict_comparison": true,
+    "trip_ticks": 100
+  },
+  "reference_feature_table": {
+    "bytes": 259604,
+    "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+    "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+  },
+  "repository_commit": "08c3079b07c2060a9d3a5a1a63d43ab85146dcdf",
+  "repository_inputs": {
+    "adapter": {
+      "bytes": 8272,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\t27_state_coherent_eval_adapter.py",
+      "sha256": "e53d6e74bad78e6ffa0423807e6dbe168730e881a47017f5343a0391ac5836cb"
+    },
+    "base_evaluator": {
+      "bytes": 155236,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\closed_loop_sim_eval.py",
+      "sha256": "a5bff87f2cce5e5f5c661a9fe73dee9de77a4c356912279e4771025c3379a4ac"
+    },
+    "r2_source": {
+      "bytes": 4221,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_robustness_r2_matrix_preregistration.json",
+      "sha256": "23ad95ed02d6302c321c8bd9f52b29512ee9c19a404a31eaf9fa0ca2807273b0"
+    },
+    "runner": {
+      "bytes": 21782,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t27_t23_robustness_matrix.py",
+      "sha256": "142668ac3dbe27f65ccb1d113c90d854b9ff76201a70120fa1bec722038b8ea3"
+    },
+    "t24_postexport_result": {
+      "bytes": 35792,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t24_t23_postexport_result.json",
+      "sha256": "accb2027b05b1d861f34d7844a81626eac5706887bef306a7f8858dc379604a1"
+    },
+    "t26_nominal_result": {
+      "bytes": 62433,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t26_t23_corrected_nominal_result.json",
+      "sha256": "015ae2652221d1926f21bb9b628b396bedde4e608bf722feb4147de93d1357cb"
+    },
+    "t27_runner_contract": {
+      "bytes": 7158,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t27_t23_robustness_runner_contract.json",
+      "sha256": "282d4e44616addba93639acbfd31c35d49134938d9847b3990930619837ab50a"
+    },
+    "t6_corrected_gate_preregistration": {
+      "bytes": 14401,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t6_corrected_robustness_screen_preregistration.json",
+      "sha256": "0b3417f03a3ead733424605c867020578cca660ab97636bb071981965b5af467"
+    },
+    "t6_helpers": {
+      "bytes": 29466,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t6_corrected_robustness_screen.py",
+      "sha256": "34d955a9443d8e0fba01a75b64243c865e5e78df23cadb43e871210cb9ba0e00"
+    },
+    "t8_helpers": {
+      "bytes": 27023,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t8_state_coherent_handoff.py",
+      "sha256": "a941d2f9cf0c9a9da8da7759bb98fd84ec41ef08c46ec0506c37d585b6a338da"
+    },
+    "t8_support_preregistration": {
+      "bytes": 19693,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t8_state_coherent_handoff_preregistration.json",
+      "sha256": "c4184d8bdba742034ec83fc30a6df4662d822150549298252e19bf19d58e19cd"
+    },
+    "worker": {
+      "bytes": 7932,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\evaluate_t27_t23_robustness_condition.py",
+      "sha256": "93ff8c405d6bf1923cd8bea69ce5efde4cd97388f6b71a1d0f9ba5aa599b096c"
+    }
+  },
+  "schema_version": "open_duck.t179_source_vs_t175_positive_z_preregistration.v1",
+  "seed": 167931544,
+  "source_policies": [
+    {
+      "bytes": 983104,
+      "checkpoint_id": "T170_SOURCE_HALF",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t172_t170_postexport_composition_v1\\1003520\\t170_composed.onnx",
+      "sha256": "510ea11ea941fa445c778461a2917bcc1fb457055c4d589525406c700f00afd9",
+      "step": 1003520
+    },
+    {
+      "bytes": 983104,
+      "checkpoint_id": "T170_SOURCE_FINAL",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t172_t170_postexport_composition_v1\\2007040\\t170_composed.onnx",
+      "sha256": "cb9adce1c0c7a76859e9c262b76c6080e5d41583602ed417fb97bc4713c804ba",
+      "step": 2007040
+    }
+  ],
+  "status": "PREREGISTERED_T179_SOURCE_VS_T175_POSITIVE_Z_CPU_AB",
+  "support_handoff": {
+    "context_input_name": "calibration_context",
+    "context_is_diagnostic_only": true,
+    "locomotion_hidden_zero": true,
+    "locomotion_phase_reset": [
+      1.0,
+      0.0
+    ],
+    "preserve_applied_target_observer_state": true,
+    "preserve_final_support_action_as_previous_action": true,
+    "source": "T22/T24 exact support-train-through deployment chain and green T27 one-tick runner contract",
+    "unscored_calibration_ticks": 250,
+    "unscored_home_return_ticks": 0
+  },
+  "transformed_blocks": [
+    {
+      "cached": true,
+      "checkpoint_id": "T175_HEAD_MEAN_HALF",
+      "condition_id": "TORSO_COM_Z_POS",
+      "condition_index": 12,
+      "fit_id": "p30",
+      "manifest": {
+        "bytes": 6835,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_HALF\\p30\\manifest.json",
+        "sha256": "05e499b353cae1f4419378d8b1d745140ffb1ebdb8f3ee39cfadeaccbea7d596"
+      },
+      "result": {
+        "block_green": false,
+        "cells": [
+          {
+            "behavior": {
+              "action_saturation_pct": 0.0,
+              "body_pitch_p95_rad": 0.0338883713458849,
+              "command_x_m_s": 0.0,
+              "core_checks": {
+                "body_pitch": true,
+                "duration": true,
+                "finite_mean_vx": true,
+                "height": true,
+                "samples": true,
+                "saturation": true,
+                "zero_velocity": true
+              },
+              "core_pass": true,
+              "emergence_pass": true,
+              "evaluator_candidate_gate_status_diagnostic": "PASS_CANDIDATE_SIM_GATE",
+              "instant_rate_excess_rad_s": 0.0,
+              "left_contact_transitions": 0,
+              "mean_local_vx_m_s": -1.5522622736045359e-06,
+              "minimum_base_height_m": 0.1551559716463089,
+              "p95_rate_excess_rad_s": 0.0,
+              "pitch_tracking_p95_rad": 0.03685784339904785,
+              "replacement_quality_checks": {
+                "instant_rate": true,
+                "p95_rate": true,
+                "tracking": true,
+                "zero_saturation": true
+              },
+              "replacement_quality_pass": true,
+              "right_contact_transitions": 0,
+              "samples": 600,
+              "termination_reason": "duration_complete",
+              "track_ratio": null
+            },
+            "cell_green": true,
+            "command_x_m_s": 0.0,
+            "handoff": {
+              "all_checks_pass": true,
+              "calibration_final_action": [
+                0.0,
+                0.0,
+                -0.5,
+                0.25,
+                0.25,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.5,
+                0.25,
+                0.25
+              ],
+              "checks": {
+                "applied_target_observer_preserved": true,
+                "applied_target_slot_continuity": true,
+                "calibration_ticks_exact": true,
+                "calibrator_sha_exact": true,
+                "context_finite": true,
+                "context_immutable": true,
+                "context_shape": true,
+                "first_hidden_zero": true,
+                "first_previous_action_matches_calibration": true,
+                "full_observation_traced": true,
+                "graph_authoritative_no_host_delta": true,
+                "handoff_state_preserved": true,
+                "phase_reset_exact": true,
+                "policy_hidden_zero": true,
+                "previous_action_preserved": true,
+                "recurrent_state_chains_exact": true,
+                "response_enabled": true,
+                "zero_home_return_ticks": true
+              },
+              "context_sha256": "6600b682ef79d7d55d97b249a40ef0e40a11b416f876754cf8442a67177ebf54",
+              "observer_bridge_applied_target_rad": [
+                0.0020000000949949026,
+                0.05299999937415123,
+                -0.7549999952316284,
+                1.4305000305175781,
+                -0.7214999794960022,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.003000000026077032,
+                -0.06499999761581421,
+                0.7599999904632568,
+                1.441499948501587,
+                -0.7335000038146973
+              ],
+              "response_audit": {
+                "applied_target_observation_matches_bridge": true,
+                "calibration_final_action": [
+                  0.0,
+                  0.0,
+                  -0.5,
+                  0.25,
+                  0.25,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.5,
+                  0.25,
+                  0.25
+                ],
+                "calibration_ticks": 250,
+                "calibrator_abi": {
+                  "input_names": [
+                    "obs",
+                    "previous_action",
+                    "h_in"
+                  ],
+                  "output_names": [
+                    "calibration_actions",
+                    "previous_action_out",
+                    "h_out"
+                  ]
+                },
+                "calibrator_sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576",
+                "context_finite": true,
+                "context_sha256": "6600b682ef79d7d55d97b249a40ef0e40a11b416f876754cf8442a67177ebf54",
+                "context_shape": [
+                  1,
+                  64
+                ],
+                "enabled": true,
+                "handoff_state_preserved": true,
+                "home_return_ticks": 0,
+                "locomotion_applied_target_observation_rad": [
+                  0.0020000000949949026,
+                  0.05299999937415123,
+                  -0.7549999952316284,
+                  1.4305000305175781,
+                  -0.7214999794960022,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -0.003000000026077032,
+                  -0.06499999761581421,
+                  0.7599999904632568,
+                  1.441499948501587,
+                  -0.7335000038146973
+                ],
+                "locomotion_hidden_exact_zero": true,
+                "locomotion_phase_reset": [
+                  1.0,
+                  0.0
+                ],
+                "locomotion_previous_action_exact_zero": false,
+                "locomotion_previous_action_matches_calibration": true,
+                "observer_bridge_applied_target_rad": [
+                  0.0020000000949949026,
+                  0.05299999937415123,
+                  -0.7549999952316284,
+                  1.4305000305175781,
+                  -0.7214999794960022,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -0.003000000026077032,
+                  -0.06499999761581421,
+                  0.7599999904632568,
+                  1.4414999485015867,
+                  -0.7335000038146973
+                ]
+              }
+            },
+            "override_readback_exact": true,
+            "protection": {
+              "duration_protection_pass": true,
+              "maximum_full_measured_vector_excess_rad_s": 0.0,
+              "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_HALF\\p30\\traces\\x0.000_seed167931544_head_prefix_mean.jsonl",
+              "rows": 600,
+              "sha256": "27050c645a0a177e7c9191c7d59381aad29a48586062755adc3e44a523e1c346",
+              "simulator_force_limit_hit_ticks_diagnostic": 0,
+              "ticks_contiguous_from_zero": true,
+              "worst_peak_current_a_diagnostic": 0.8060401271984942,
+              "worst_peak_torque_nm_diagnostic": 0.6323642730712891,
+              "worst_strict_overcurrent_run_ticks": 0,
+              "worst_strict_overload_run_ticks": 0
+            },
+            "trace_valid": true
+          },
+          {
+            "behavior": {
+              "action_saturation_pct": 0.0,
+              "body_pitch_p95_rad": 0.12872315767948334,
+              "command_x_m_s": 0.074,
+              "core_checks": {
+                "bilateral_transitions": true,
+                "body_pitch": true,
+                "duration": true,
+                "emergence": true,
+                "finite_mean_vx": true,
+                "height": true,
+                "minimum_track_ratio": true,
+                "positive_velocity": true,
+                "samples": true,
+                "saturation": true
+              },
+              "core_pass": true,
+              "emergence_pass": true,
+              "evaluator_candidate_gate_status_diagnostic": "PASS_CANDIDATE_SIM_GATE",
+              "instant_rate_excess_rad_s": 0.0,
+              "left_contact_transitions": 54,
+              "mean_local_vx_m_s": 0.053460644703688255,
+              "minimum_base_height_m": 0.155405193567276,
+              "p95_rate_excess_rad_s": 0.0,
+              "pitch_tracking_p95_rad": 0.1679349422454834,
+              "replacement_quality_checks": {
+                "instant_rate": true,
+                "p95_rate": true,
+                "tracking": true,
+                "zero_saturation": true
+              },
+              "replacement_quality_pass": true,
+              "right_contact_transitions": 46,
+              "samples": 600,
+              "termination_reason": "duration_complete",
+              "track_ratio": 0.7224411446444359
+            },
+            "cell_green": true,
+            "command_x_m_s": 0.074,
+            "handoff": {
+              "all_checks_pass": true,
+              "calibration_final_action": [
+                0.0,
+                0.0,
+                -0.5,
+                0.25,
+                0.25,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.5,
+                0.25,
+                0.25
+              ],
+              "checks": {
+                "applied_target_observer_preserved": true,
+                "applied_target_slot_continuity": true,
+                "calibration_ticks_exact": true,
+                "calibrator_sha_exact": true,
+                "context_finite": true,
+                "context_immutable": true,
+                "context_shape": true,
+                "first_hidden_zero": true,
+                "first_previous_action_matches_calibration": true,
+                "full_observation_traced": true,
+                "graph_authoritative_no_host_delta": true,
+                "handoff_state_preserved": true,
+                "phase_reset_exact": true,
+                "policy_hidden_zero": true,
+                "previous_action_preserved": true,
+                "recurrent_state_chains_exact": true,
+                "response_enabled": true,
+                "zero_home_return_ticks": true
+              },
+              "context_sha256": "6600b682ef79d7d55d97b249a40ef0e40a11b416f876754cf8442a67177ebf54",
+              "observer_bridge_applied_target_rad": [
+                0.0020000000949949026,
+                0.05299999937415123,
+                -0.7549999952316284,
+                1.4305000305175781,
+                -0.7214999794960022,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.003000000026077032,
+                -0.06499999761581421,
+                0.7599999904632568,
+                1.441499948501587,
+                -0.7335000038146973
+              ],
+              "response_audit": {
+                "applied_target_observation_matches_bridge": true,
+                "calibration_final_action": [
+                  0.0,
+                  0.0,
+                  -0.5,
+                  0.25,
+                  0.25,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.5,
+                  0.25,
+                  0.25
+                ],
+                "calibration_ticks": 250,
+                "calibrator_abi": {
+                  "input_names": [
+                    "obs",
+                    "previous_action",
+                    "h_in"
+                  ],
+                  "output_names": [
+                    "calibration_actions",
+                    "previous_action_out",
+                    "h_out"
+                  ]
+                },
+                "calibrator_sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576",
+                "context_finite": true,
+                "context_sha256": "6600b682ef79d7d55d97b249a40ef0e40a11b416f876754cf8442a67177ebf54",
+                "context_shape": [
+                  1,
+                  64
+                ],
+                "enabled": true,
+                "handoff_state_preserved": true,
+                "home_return_ticks": 0,
+                "locomotion_applied_target_observation_rad": [
+                  0.0020000000949949026,
+                  0.05299999937415123,
+                  -0.7549999952316284,
+                  1.4305000305175781,
+                  -0.7214999794960022,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -0.003000000026077032,
+                  -0.06499999761581421,
+                  0.7599999904632568,
+                  1.441499948501587,
+                  -0.7335000038146973
+                ],
+                "locomotion_hidden_exact_zero": true,
+                "locomotion_phase_reset": [
+                  1.0,
+                  0.0
+                ],
+                "locomotion_previous_action_exact_zero": false,
+                "locomotion_previous_action_matches_calibration": true,
+                "observer_bridge_applied_target_rad": [
+                  0.0020000000949949026,
+                  0.05299999937415123,
+                  -0.7549999952316284,
+                  1.4305000305175781,
+                  -0.7214999794960022,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -0.003000000026077032,
+                  -0.06499999761581421,
+                  0.7599999904632568,
+                  1.4414999485015867,
+                  -0.7335000038146973
+                ]
+              }
+            },
+            "override_readback_exact": true,
+            "protection": {
+              "duration_protection_pass": true,
+              "maximum_full_measured_vector_excess_rad_s": 0.0,
+              "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_HALF\\p30\\traces\\x0.074_seed167931544_head_prefix_mean.jsonl",
+              "rows": 600,
+              "sha256": "11bf1cb57f02696ced4c401443d8f5194fde708ff960fe3f62985b7ae7a918cf",
+              "simulator_force_limit_hit_ticks_diagnostic": 0,
+              "ticks_contiguous_from_zero": true,
+              "worst_peak_current_a_diagnostic": 3.0471161790041505,
+              "worst_peak_torque_nm_diagnostic": 2.3905601501464844,
+              "worst_strict_overcurrent_run_ticks": 9,
+              "worst_strict_overload_run_ticks": 9
+            },
+            "trace_valid": true
+          },
+          {
+            "behavior": {
+              "action_saturation_pct": 0.0,
+              "body_pitch_p95_rad": 0.3000951535781714,
+              "command_x_m_s": 0.077,
+              "core_checks": {
+                "bilateral_transitions": true,
+                "body_pitch": false,
+                "duration": false,
+                "emergence": false,
+                "finite_mean_vx": true,
+                "height": false,
+                "minimum_track_ratio": true,
+                "positive_velocity": true,
+                "samples": false,
+                "saturation": true
+              },
+              "core_pass": false,
+              "emergence_pass": false,
+              "evaluator_candidate_gate_status_diagnostic": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+              "instant_rate_excess_rad_s": 0.0,
+              "left_contact_transitions": 45,
+              "mean_local_vx_m_s": 0.09021989295768085,
+              "minimum_base_height_m": 0.002054336480796337,
+              "p95_rate_excess_rad_s": 0.0,
+              "pitch_tracking_p95_rad": 0.16704440116882324,
+              "replacement_quality_checks": {
+                "instant_rate": true,
+                "p95_rate": true,
+                "tracking": true,
+                "zero_saturation": true
+              },
+              "replacement_quality_pass": true,
+              "right_contact_transitions": 36,
+              "samples": 457,
+              "termination_reason": "fall_or_nan",
+              "track_ratio": 1.1716869215283228
+            },
+            "cell_green": false,
+            "command_x_m_s": 0.077,
+            "handoff": {
+              "all_checks_pass": true,
+              "calibration_final_action": [
+                0.0,
+                0.0,
+                -0.5,
+                0.25,
+                0.25,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.5,
+                0.25,
+                0.25
+              ],
+              "checks": {
+                "applied_target_observer_preserved": true,
+                "applied_target_slot_continuity": true,
+                "calibration_ticks_exact": true,
+                "calibrator_sha_exact": true,
+                "context_finite": true,
+                "context_immutable": true,
+                "context_shape": true,
+                "first_hidden_zero": true,
+                "first_previous_action_matches_calibration": true,
+                "full_observation_traced": true,
+                "graph_authoritative_no_host_delta": true,
+                "handoff_state_preserved": true,
+                "phase_reset_exact": true,
+                "policy_hidden_zero": true,
+                "previous_action_preserved": true,
+                "recurrent_state_chains_exact": true,
+                "response_enabled": true,
+                "zero_home_return_ticks": true
+              },
+              "context_sha256": "6600b682ef79d7d55d97b249a40ef0e40a11b416f876754cf8442a67177ebf54",
+              "observer_bridge_applied_target_rad": [
+                0.0020000000949949026,
+                0.05299999937415123,
+                -0.7549999952316284,
+                1.4305000305175781,
+                -0.7214999794960022,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.003000000026077032,
+                -0.06499999761581421,
+                0.7599999904632568,
+                1.441499948501587,
+                -0.7335000038146973
+              ],
+              "response_audit": {
+                "applied_target_observation_matches_bridge": true,
+                "calibration_final_action": [
+                  0.0,
+                  0.0,
+                  -0.5,
+                  0.25,
+                  0.25,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.5,
+                  0.25,
+                  0.25
+                ],
+                "calibration_ticks": 250,
+                "calibrator_abi": {
+                  "input_names": [
+                    "obs",
+                    "previous_action",
+                    "h_in"
+                  ],
+                  "output_names": [
+                    "calibration_actions",
+                    "previous_action_out",
+                    "h_out"
+                  ]
+                },
+                "calibrator_sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576",
+                "context_finite": true,
+                "context_sha256": "6600b682ef79d7d55d97b249a40ef0e40a11b416f876754cf8442a67177ebf54",
+                "context_shape": [
+                  1,
+                  64
+                ],
+                "enabled": true,
+                "handoff_state_preserved": true,
+                "home_return_ticks": 0,
+                "locomotion_applied_target_observation_rad": [
+                  0.0020000000949949026,
+                  0.05299999937415123,
+                  -0.7549999952316284,
+                  1.4305000305175781,
+                  -0.7214999794960022,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -0.003000000026077032,
+                  -0.06499999761581421,
+                  0.7599999904632568,
+                  1.441499948501587,
+                  -0.7335000038146973
+                ],
+                "locomotion_hidden_exact_zero": true,
+                "locomotion_phase_reset": [
+                  1.0,
+                  0.0
+                ],
+                "locomotion_previous_action_exact_zero": false,
+                "locomotion_previous_action_matches_calibration": true,
+                "observer_bridge_applied_target_rad": [
+                  0.0020000000949949026,
+                  0.05299999937415123,
+                  -0.7549999952316284,
+                  1.4305000305175781,
+                  -0.7214999794960022,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -0.003000000026077032,
+                  -0.06499999761581421,
+                  0.7599999904632568,
+                  1.4414999485015867,
+                  -0.7335000038146973
+                ]
+              }
+            },
+            "override_readback_exact": true,
+            "protection": {
+              "duration_protection_pass": true,
+              "maximum_full_measured_vector_excess_rad_s": 0.0,
+              "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_HALF\\p30\\traces\\x0.077_seed167931544_head_prefix_mean.jsonl",
+              "rows": 457,
+              "sha256": "1ae711b61045e6f99898366e4c083caf95b00eab4de7435c04ad9e119c24952b",
+              "simulator_force_limit_hit_ticks_diagnostic": 0,
+              "ticks_contiguous_from_zero": true,
+              "worst_peak_current_a_diagnostic": 3.0027347525078545,
+              "worst_peak_torque_nm_diagnostic": 2.355741500854492,
+              "worst_strict_overcurrent_run_ticks": 13,
+              "worst_strict_overload_run_ticks": 13
+            },
+            "trace_valid": false
+          },
+          {
+            "behavior": {
+              "action_saturation_pct": 0.0,
+              "body_pitch_p95_rad": 0.19110677190089884,
+              "command_x_m_s": 0.08,
+              "core_checks": {
+                "bilateral_transitions": true,
+                "body_pitch": true,
+                "duration": true,
+                "emergence": true,
+                "finite_mean_vx": true,
+                "height": true,
+                "minimum_track_ratio": true,
+                "positive_velocity": true,
+                "samples": true,
+                "saturation": true
+              },
+              "core_pass": true,
+              "emergence_pass": true,
+              "evaluator_candidate_gate_status_diagnostic": "PASS_CANDIDATE_SIM_GATE",
+              "instant_rate_excess_rad_s": 0.0,
+              "left_contact_transitions": 50,
+              "mean_local_vx_m_s": 0.06535703954843484,
+              "minimum_base_height_m": 0.1460866928100586,
+              "p95_rate_excess_rad_s": 0.0,
+              "pitch_tracking_p95_rad": 0.1668683469295502,
+              "replacement_quality_checks": {
+                "instant_rate": true,
+                "p95_rate": true,
+                "tracking": true,
+                "zero_saturation": true
+              },
+              "replacement_quality_pass": true,
+              "right_contact_transitions": 36,
+              "samples": 600,
+              "termination_reason": "duration_complete",
+              "track_ratio": 0.8169629943554355
+            },
+            "cell_green": true,
+            "command_x_m_s": 0.08,
+            "handoff": {
+              "all_checks_pass": true,
+              "calibration_final_action": [
+                0.0,
+                0.0,
+                -0.5,
+                0.25,
+                0.25,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.5,
+                0.25,
+                0.25
+              ],
+              "checks": {
+                "applied_target_observer_preserved": true,
+                "applied_target_slot_continuity": true,
+                "calibration_ticks_exact": true,
+                "calibrator_sha_exact": true,
+                "context_finite": true,
+                "context_immutable": true,
+                "context_shape": true,
+                "first_hidden_zero": true,
+                "first_previous_action_matches_calibration": true,
+                "full_observation_traced": true,
+                "graph_authoritative_no_host_delta": true,
+                "handoff_state_preserved": true,
+                "phase_reset_exact": true,
+                "policy_hidden_zero": true,
+                "previous_action_preserved": true,
+                "recurrent_state_chains_exact": true,
+                "response_enabled": true,
+                "zero_home_return_ticks": true
+              },
+              "context_sha256": "6600b682ef79d7d55d97b249a40ef0e40a11b416f876754cf8442a67177ebf54",
+              "observer_bridge_applied_target_rad": [
+                0.0020000000949949026,
+                0.05299999937415123,
+                -0.7549999952316284,
+                1.4305000305175781,
+                -0.7214999794960022,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.003000000026077032,
+                -0.06499999761581421,
+                0.7599999904632568,
+                1.441499948501587,
+                -0.7335000038146973
+              ],
+              "response_audit": {
+                "applied_target_observation_matches_bridge": true,
+                "calibration_final_action": [
+                  0.0,
+                  0.0,
+                  -0.5,
+                  0.25,
+                  0.25,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.5,
+                  0.25,
+                  0.25
+                ],
+                "calibration_ticks": 250,
+                "calibrator_abi": {
+                  "input_names": [
+                    "obs",
+                    "previous_action",
+                    "h_in"
+                  ],
+                  "output_names": [
+                    "calibration_actions",
+                    "previous_action_out",
+                    "h_out"
+                  ]
+                },
+                "calibrator_sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576",
+                "context_finite": true,
+                "context_sha256": "6600b682ef79d7d55d97b249a40ef0e40a11b416f876754cf8442a67177ebf54",
+                "context_shape": [
+                  1,
+                  64
+                ],
+                "enabled": true,
+                "handoff_state_preserved": true,
+                "home_return_ticks": 0,
+                "locomotion_applied_target_observation_rad": [
+                  0.0020000000949949026,
+                  0.05299999937415123,
+                  -0.7549999952316284,
+                  1.4305000305175781,
+                  -0.7214999794960022,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -0.003000000026077032,
+                  -0.06499999761581421,
+                  0.7599999904632568,
+                  1.441499948501587,
+                  -0.7335000038146973
+                ],
+                "locomotion_hidden_exact_zero": true,
+                "locomotion_phase_reset": [
+                  1.0,
+                  0.0
+                ],
+                "locomotion_previous_action_exact_zero": false,
+                "locomotion_previous_action_matches_calibration": true,
+                "observer_bridge_applied_target_rad": [
+                  0.0020000000949949026,
+                  0.05299999937415123,
+                  -0.7549999952316284,
+                  1.4305000305175781,
+                  -0.7214999794960022,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -0.003000000026077032,
+                  -0.06499999761581421,
+                  0.7599999904632568,
+                  1.4414999485015867,
+                  -0.7335000038146973
+                ]
+              }
+            },
+            "override_readback_exact": true,
+            "protection": {
+              "duration_protection_pass": true,
+              "maximum_full_measured_vector_excess_rad_s": 0.0,
+              "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_HALF\\p30\\traces\\x0.080_seed167931544_head_prefix_mean.jsonl",
+              "rows": 600,
+              "sha256": "2b2e4ae68af118e85770e7bfdbf1679f0aacebc36a5b03600515d40d3a18ebe2",
+              "simulator_force_limit_hit_ticks_diagnostic": 0,
+              "ticks_contiguous_from_zero": true,
+              "worst_peak_current_a_diagnostic": 3.0263756723243422,
+              "worst_peak_torque_nm_diagnostic": 2.374288558959961,
+              "worst_strict_overcurrent_run_ticks": 12,
+              "worst_strict_overload_run_ticks": 12
+            },
+            "trace_valid": true
+          }
+        ],
+        "execution_platform": "cpu",
+        "worker_inputs_exact": true
+      },
+      "step": 1003520,
+      "traces": [
+        {
+          "bytes": 8245867,
+          "command_x_m_s": 0.0,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_HALF\\p30\\traces\\x0.000_seed167931544_head_prefix_mean.jsonl",
+          "sha256": "27050c645a0a177e7c9191c7d59381aad29a48586062755adc3e44a523e1c346"
+        },
+        {
+          "bytes": 10770137,
+          "command_x_m_s": 0.074,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_HALF\\p30\\traces\\x0.074_seed167931544_head_prefix_mean.jsonl",
+          "sha256": "11bf1cb57f02696ced4c401443d8f5194fde708ff960fe3f62985b7ae7a918cf"
+        },
+        {
+          "bytes": 8204507,
+          "command_x_m_s": 0.077,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_HALF\\p30\\traces\\x0.077_seed167931544_head_prefix_mean.jsonl",
+          "sha256": "1ae711b61045e6f99898366e4c083caf95b00eab4de7435c04ad9e119c24952b"
+        },
+        {
+          "bytes": 10770376,
+          "command_x_m_s": 0.08,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_HALF\\p30\\traces\\x0.080_seed167931544_head_prefix_mean.jsonl",
+          "sha256": "2b2e4ae68af118e85770e7bfdbf1679f0aacebc36a5b03600515d40d3a18ebe2"
+        }
+      ]
+    },
+    {
+      "cached": false,
+      "checkpoint_id": "T175_HEAD_MEAN_HALF",
+      "condition_id": "TORSO_COM_Z_POS",
+      "condition_index": 12,
+      "fit_id": "p31_34",
+      "manifest": {
+        "bytes": 6864,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_HALF\\p31_34\\manifest.json",
+        "sha256": "114426d45b29dd0c64b7d6815ff5d94bbb35d4e983b207970c434b2c3817765b"
+      },
+      "result": {
+        "block_green": false,
+        "cells": [
+          {
+            "behavior": {
+              "action_saturation_pct": 0.0,
+              "body_pitch_p95_rad": 0.03389321351754832,
+              "command_x_m_s": 0.0,
+              "core_checks": {
+                "body_pitch": true,
+                "duration": true,
+                "finite_mean_vx": true,
+                "height": true,
+                "samples": true,
+                "saturation": true,
+                "zero_velocity": true
+              },
+              "core_pass": true,
+              "emergence_pass": true,
+              "evaluator_candidate_gate_status_diagnostic": "PASS_CANDIDATE_SIM_GATE",
+              "instant_rate_excess_rad_s": 0.0,
+              "left_contact_transitions": 0,
+              "mean_local_vx_m_s": -1.6579787526194156e-06,
+              "minimum_base_height_m": 0.15515601634979248,
+              "p95_rate_excess_rad_s": 0.0,
+              "pitch_tracking_p95_rad": 0.036859869956970215,
+              "replacement_quality_checks": {
+                "instant_rate": true,
+                "p95_rate": true,
+                "tracking": true,
+                "zero_saturation": true
+              },
+              "replacement_quality_pass": true,
+              "right_contact_transitions": 0,
+              "samples": 600,
+              "termination_reason": "duration_complete",
+              "track_ratio": null
+            },
+            "cell_green": true,
+            "command_x_m_s": 0.0,
+            "handoff": {
+              "all_checks_pass": true,
+              "calibration_final_action": [
+                0.0,
+                0.0,
+                -0.5,
+                0.25,
+                0.25,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.5,
+                0.25,
+                0.25
+              ],
+              "checks": {
+                "applied_target_observer_preserved": true,
+                "applied_target_slot_continuity": true,
+                "calibration_ticks_exact": true,
+                "calibrator_sha_exact": true,
+                "context_finite": true,
+                "context_immutable": true,
+                "context_shape": true,
+                "first_hidden_zero": true,
+                "first_previous_action_matches_calibration": true,
+                "full_observation_traced": true,
+                "graph_authoritative_no_host_delta": true,
+                "handoff_state_preserved": true,
+                "phase_reset_exact": true,
+                "policy_hidden_zero": true,
+                "previous_action_preserved": true,
+                "recurrent_state_chains_exact": true,
+                "response_enabled": true,
+                "zero_home_return_ticks": true
+              },
+              "context_sha256": "2750ddf5c5cac23b797b05bfb3b45d88e89fc4f5cdde47d3fea65d9d728efcf2",
+              "observer_bridge_applied_target_rad": [
+                0.0020000000949949026,
+                0.05299999937415123,
+                -0.7549999952316284,
+                1.4305000305175781,
+                -0.7214999794960022,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.003000000026077032,
+                -0.06499999761581421,
+                0.7599999904632568,
+                1.441499948501587,
+                -0.7335000038146973
+              ],
+              "response_audit": {
+                "applied_target_observation_matches_bridge": true,
+                "calibration_final_action": [
+                  0.0,
+                  0.0,
+                  -0.5,
+                  0.25,
+                  0.25,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.5,
+                  0.25,
+                  0.25
+                ],
+                "calibration_ticks": 250,
+                "calibrator_abi": {
+                  "input_names": [
+                    "obs",
+                    "previous_action",
+                    "h_in"
+                  ],
+                  "output_names": [
+                    "calibration_actions",
+                    "previous_action_out",
+                    "h_out"
+                  ]
+                },
+                "calibrator_sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576",
+                "context_finite": true,
+                "context_sha256": "2750ddf5c5cac23b797b05bfb3b45d88e89fc4f5cdde47d3fea65d9d728efcf2",
+                "context_shape": [
+                  1,
+                  64
+                ],
+                "enabled": true,
+                "handoff_state_preserved": true,
+                "home_return_ticks": 0,
+                "locomotion_applied_target_observation_rad": [
+                  0.0020000000949949026,
+                  0.05299999937415123,
+                  -0.7549999952316284,
+                  1.4305000305175781,
+                  -0.7214999794960022,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -0.003000000026077032,
+                  -0.06499999761581421,
+                  0.7599999904632568,
+                  1.441499948501587,
+                  -0.7335000038146973
+                ],
+                "locomotion_hidden_exact_zero": true,
+                "locomotion_phase_reset": [
+                  1.0,
+                  0.0
+                ],
+                "locomotion_previous_action_exact_zero": false,
+                "locomotion_previous_action_matches_calibration": true,
+                "observer_bridge_applied_target_rad": [
+                  0.0020000000949949026,
+                  0.05299999937415123,
+                  -0.7549999952316284,
+                  1.4305000305175781,
+                  -0.7214999794960022,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -0.003000000026077032,
+                  -0.06499999761581421,
+                  0.7599999904632568,
+                  1.4414999485015867,
+                  -0.7335000038146973
+                ]
+              }
+            },
+            "override_readback_exact": true,
+            "protection": {
+              "duration_protection_pass": true,
+              "maximum_full_measured_vector_excess_rad_s": 0.0,
+              "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_HALF\\p31_34\\traces\\x0.000_seed167931544_head_prefix_mean.jsonl",
+              "rows": 600,
+              "sha256": "e39035a8612bc39d83a96cda98843fc376952894ee03d0b2335470f40658efae",
+              "simulator_force_limit_hit_ticks_diagnostic": 0,
+              "ticks_contiguous_from_zero": true,
+              "worst_peak_current_a_diagnostic": 0.806125218950199,
+              "worst_peak_torque_nm_diagnostic": 0.6324310302734375,
+              "worst_strict_overcurrent_run_ticks": 0,
+              "worst_strict_overload_run_ticks": 0
+            },
+            "trace_valid": true
+          },
+          {
+            "behavior": {
+              "action_saturation_pct": 0.0,
+              "body_pitch_p95_rad": 0.7136933893997041,
+              "command_x_m_s": 0.074,
+              "core_checks": {
+                "bilateral_transitions": true,
+                "body_pitch": false,
+                "duration": false,
+                "emergence": false,
+                "finite_mean_vx": true,
+                "height": false,
+                "minimum_track_ratio": true,
+                "positive_velocity": true,
+                "samples": false,
+                "saturation": true
+              },
+              "core_pass": false,
+              "emergence_pass": false,
+              "evaluator_candidate_gate_status_diagnostic": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+              "instant_rate_excess_rad_s": 0.0,
+              "left_contact_transitions": 17,
+              "mean_local_vx_m_s": 0.13325322836499254,
+              "minimum_base_height_m": 0.0010918456828221679,
+              "p95_rate_excess_rad_s": 0.0,
+              "pitch_tracking_p95_rad": 0.1578092873096466,
+              "replacement_quality_checks": {
+                "instant_rate": true,
+                "p95_rate": true,
+                "tracking": true,
+                "zero_saturation": true
+              },
+              "replacement_quality_pass": true,
+              "right_contact_transitions": 15,
+              "samples": 192,
+              "termination_reason": "fall_or_nan",
+              "track_ratio": 1.800719302229629
+            },
+            "cell_green": false,
+            "command_x_m_s": 0.074,
+            "handoff": {
+              "all_checks_pass": true,
+              "calibration_final_action": [
+                0.0,
+                0.0,
+                -0.5,
+                0.25,
+                0.25,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.5,
+                0.25,
+                0.25
+              ],
+              "checks": {
+                "applied_target_observer_preserved": true,
+                "applied_target_slot_continuity": true,
+                "calibration_ticks_exact": true,
+                "calibrator_sha_exact": true,
+                "context_finite": true,
+                "context_immutable": true,
+                "context_shape": true,
+                "first_hidden_zero": true,
+                "first_previous_action_matches_calibration": true,
+                "full_observation_traced": true,
+                "graph_authoritative_no_host_delta": true,
+                "handoff_state_preserved": true,
+                "phase_reset_exact": true,
+                "policy_hidden_zero": true,
+                "previous_action_preserved": true,
+                "recurrent_state_chains_exact": true,
+                "response_enabled": true,
+                "zero_home_return_ticks": true
+              },
+              "context_sha256": "2750ddf5c5cac23b797b05bfb3b45d88e89fc4f5cdde47d3fea65d9d728efcf2",
+              "observer_bridge_applied_target_rad": [
+                0.0020000000949949026,
+                0.05299999937415123,
+                -0.7549999952316284,
+                1.4305000305175781,
+                -0.7214999794960022,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.003000000026077032,
+                -0.06499999761581421,
+                0.7599999904632568,
+                1.441499948501587,
+                -0.7335000038146973
+              ],
+              "response_audit": {
+                "applied_target_observation_matches_bridge": true,
+                "calibration_final_action": [
+                  0.0,
+                  0.0,
+                  -0.5,
+                  0.25,
+                  0.25,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.5,
+                  0.25,
+                  0.25
+                ],
+                "calibration_ticks": 250,
+                "calibrator_abi": {
+                  "input_names": [
+                    "obs",
+                    "previous_action",
+                    "h_in"
+                  ],
+                  "output_names": [
+                    "calibration_actions",
+                    "previous_action_out",
+                    "h_out"
+                  ]
+                },
+                "calibrator_sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576",
+                "context_finite": true,
+                "context_sha256": "2750ddf5c5cac23b797b05bfb3b45d88e89fc4f5cdde47d3fea65d9d728efcf2",
+                "context_shape": [
+                  1,
+                  64
+                ],
+                "enabled": true,
+                "handoff_state_preserved": true,
+                "home_return_ticks": 0,
+                "locomotion_applied_target_observation_rad": [
+                  0.0020000000949949026,
+                  0.05299999937415123,
+                  -0.7549999952316284,
+                  1.4305000305175781,
+                  -0.7214999794960022,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -0.003000000026077032,
+                  -0.06499999761581421,
+                  0.7599999904632568,
+                  1.441499948501587,
+                  -0.7335000038146973
+                ],
+                "locomotion_hidden_exact_zero": true,
+                "locomotion_phase_reset": [
+                  1.0,
+                  0.0
+                ],
+                "locomotion_previous_action_exact_zero": false,
+                "locomotion_previous_action_matches_calibration": true,
+                "observer_bridge_applied_target_rad": [
+                  0.0020000000949949026,
+                  0.05299999937415123,
+                  -0.7549999952316284,
+                  1.4305000305175781,
+                  -0.7214999794960022,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -0.003000000026077032,
+                  -0.06499999761581421,
+                  0.7599999904632568,
+                  1.4414999485015867,
+                  -0.7335000038146973
+                ]
+              }
+            },
+            "override_readback_exact": true,
+            "protection": {
+              "duration_protection_pass": true,
+              "maximum_full_measured_vector_excess_rad_s": 0.0,
+              "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_HALF\\p31_34\\traces\\x0.074_seed167931544_head_prefix_mean.jsonl",
+              "rows": 192,
+              "sha256": "e8b49276dbc2455c16c554cac35e75ae062cb439810fd5abbd644e4f8b46e30c",
+              "simulator_force_limit_hit_ticks_diagnostic": 0,
+              "ticks_contiguous_from_zero": true,
+              "worst_peak_current_a_diagnostic": 2.9296020387069737,
+              "worst_peak_torque_nm_diagnostic": 2.2983665466308594,
+              "worst_strict_overcurrent_run_ticks": 7,
+              "worst_strict_overload_run_ticks": 8
+            },
+            "trace_valid": false
+          },
+          {
+            "behavior": {
+              "action_saturation_pct": 0.0,
+              "body_pitch_p95_rad": 0.4084689545930207,
+              "command_x_m_s": 0.077,
+              "core_checks": {
+                "bilateral_transitions": true,
+                "body_pitch": false,
+                "duration": false,
+                "emergence": false,
+                "finite_mean_vx": true,
+                "height": false,
+                "minimum_track_ratio": true,
+                "positive_velocity": true,
+                "samples": false,
+                "saturation": true
+              },
+              "core_pass": false,
+              "emergence_pass": false,
+              "evaluator_candidate_gate_status_diagnostic": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+              "instant_rate_excess_rad_s": 0.0,
+              "left_contact_transitions": 35,
+              "mean_local_vx_m_s": 0.11125560254677111,
+              "minimum_base_height_m": 0.009998166933655739,
+              "p95_rate_excess_rad_s": 0.0,
+              "pitch_tracking_p95_rad": 0.16592724919319152,
+              "replacement_quality_checks": {
+                "instant_rate": true,
+                "p95_rate": true,
+                "tracking": true,
+                "zero_saturation": true
+              },
+              "replacement_quality_pass": true,
+              "right_contact_transitions": 28,
+              "samples": 320,
+              "termination_reason": "fall_or_nan",
+              "track_ratio": 1.4448779551528717
+            },
+            "cell_green": false,
+            "command_x_m_s": 0.077,
+            "handoff": {
+              "all_checks_pass": true,
+              "calibration_final_action": [
+                0.0,
+                0.0,
+                -0.5,
+                0.25,
+                0.25,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.5,
+                0.25,
+                0.25
+              ],
+              "checks": {
+                "applied_target_observer_preserved": true,
+                "applied_target_slot_continuity": true,
+                "calibration_ticks_exact": true,
+                "calibrator_sha_exact": true,
+                "context_finite": true,
+                "context_immutable": true,
+                "context_shape": true,
+                "first_hidden_zero": true,
+                "first_previous_action_matches_calibration": true,
+                "full_observation_traced": true,
+                "graph_authoritative_no_host_delta": true,
+                "handoff_state_preserved": true,
+                "phase_reset_exact": true,
+                "policy_hidden_zero": true,
+                "previous_action_preserved": true,
+                "recurrent_state_chains_exact": true,
+                "response_enabled": true,
+                "zero_home_return_ticks": true
+              },
+              "context_sha256": "2750ddf5c5cac23b797b05bfb3b45d88e89fc4f5cdde47d3fea65d9d728efcf2",
+              "observer_bridge_applied_target_rad": [
+                0.0020000000949949026,
+                0.05299999937415123,
+                -0.7549999952316284,
+                1.4305000305175781,
+                -0.7214999794960022,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.003000000026077032,
+                -0.06499999761581421,
+                0.7599999904632568,
+                1.441499948501587,
+                -0.7335000038146973
+              ],
+              "response_audit": {
+                "applied_target_observation_matches_bridge": true,
+                "calibration_final_action": [
+                  0.0,
+                  0.0,
+                  -0.5,
+                  0.25,
+                  0.25,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.5,
+                  0.25,
+                  0.25
+                ],
+                "calibration_ticks": 250,
+                "calibrator_abi": {
+                  "input_names": [
+                    "obs",
+                    "previous_action",
+                    "h_in"
+                  ],
+                  "output_names": [
+                    "calibration_actions",
+                    "previous_action_out",
+                    "h_out"
+                  ]
+                },
+                "calibrator_sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576",
+                "context_finite": true,
+                "context_sha256": "2750ddf5c5cac23b797b05bfb3b45d88e89fc4f5cdde47d3fea65d9d728efcf2",
+                "context_shape": [
+                  1,
+                  64
+                ],
+                "enabled": true,
+                "handoff_state_preserved": true,
+                "home_return_ticks": 0,
+                "locomotion_applied_target_observation_rad": [
+                  0.0020000000949949026,
+                  0.05299999937415123,
+                  -0.7549999952316284,
+                  1.4305000305175781,
+                  -0.7214999794960022,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -0.003000000026077032,
+                  -0.06499999761581421,
+                  0.7599999904632568,
+                  1.441499948501587,
+                  -0.7335000038146973
+                ],
+                "locomotion_hidden_exact_zero": true,
+                "locomotion_phase_reset": [
+                  1.0,
+                  0.0
+                ],
+                "locomotion_previous_action_exact_zero": false,
+                "locomotion_previous_action_matches_calibration": true,
+                "observer_bridge_applied_target_rad": [
+                  0.0020000000949949026,
+                  0.05299999937415123,
+                  -0.7549999952316284,
+                  1.4305000305175781,
+                  -0.7214999794960022,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -0.003000000026077032,
+                  -0.06499999761581421,
+                  0.7599999904632568,
+                  1.4414999485015867,
+                  -0.7335000038146973
+                ]
+              }
+            },
+            "override_readback_exact": true,
+            "protection": {
+              "duration_protection_pass": true,
+              "maximum_full_measured_vector_excess_rad_s": 0.0,
+              "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_HALF\\p31_34\\traces\\x0.077_seed167931544_head_prefix_mean.jsonl",
+              "rows": 320,
+              "sha256": "00ebac6b3426841d3c75d9252e247c4b6eff273887888b047f939804e3a8d2b7",
+              "simulator_force_limit_hit_ticks_diagnostic": 0,
+              "ticks_contiguous_from_zero": true,
+              "worst_peak_current_a_diagnostic": 3.038050260658235,
+              "worst_peak_torque_nm_diagnostic": 2.3834476470947266,
+              "worst_strict_overcurrent_run_ticks": 12,
+              "worst_strict_overload_run_ticks": 13
+            },
+            "trace_valid": false
+          },
+          {
+            "behavior": {
+              "action_saturation_pct": 0.0,
+              "body_pitch_p95_rad": 0.15640877252824165,
+              "command_x_m_s": 0.08,
+              "core_checks": {
+                "bilateral_transitions": true,
+                "body_pitch": true,
+                "duration": true,
+                "emergence": true,
+                "finite_mean_vx": true,
+                "height": true,
+                "minimum_track_ratio": true,
+                "positive_velocity": true,
+                "samples": true,
+                "saturation": true
+              },
+              "core_pass": true,
+              "emergence_pass": true,
+              "evaluator_candidate_gate_status_diagnostic": "PASS_CANDIDATE_SIM_GATE",
+              "instant_rate_excess_rad_s": 0.0,
+              "left_contact_transitions": 46,
+              "mean_local_vx_m_s": 0.05759332214017377,
+              "minimum_base_height_m": 0.15413928031921387,
+              "p95_rate_excess_rad_s": 0.0,
+              "pitch_tracking_p95_rad": 0.1677112400531769,
+              "replacement_quality_checks": {
+                "instant_rate": true,
+                "p95_rate": true,
+                "tracking": true,
+                "zero_saturation": true
+              },
+              "replacement_quality_pass": true,
+              "right_contact_transitions": 32,
+              "samples": 600,
+              "termination_reason": "duration_complete",
+              "track_ratio": 0.7199165267521721
+            },
+            "cell_green": true,
+            "command_x_m_s": 0.08,
+            "handoff": {
+              "all_checks_pass": true,
+              "calibration_final_action": [
+                0.0,
+                0.0,
+                -0.5,
+                0.25,
+                0.25,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.5,
+                0.25,
+                0.25
+              ],
+              "checks": {
+                "applied_target_observer_preserved": true,
+                "applied_target_slot_continuity": true,
+                "calibration_ticks_exact": true,
+                "calibrator_sha_exact": true,
+                "context_finite": true,
+                "context_immutable": true,
+                "context_shape": true,
+                "first_hidden_zero": true,
+                "first_previous_action_matches_calibration": true,
+                "full_observation_traced": true,
+                "graph_authoritative_no_host_delta": true,
+                "handoff_state_preserved": true,
+                "phase_reset_exact": true,
+                "policy_hidden_zero": true,
+                "previous_action_preserved": true,
+                "recurrent_state_chains_exact": true,
+                "response_enabled": true,
+                "zero_home_return_ticks": true
+              },
+              "context_sha256": "2750ddf5c5cac23b797b05bfb3b45d88e89fc4f5cdde47d3fea65d9d728efcf2",
+              "observer_bridge_applied_target_rad": [
+                0.0020000000949949026,
+                0.05299999937415123,
+                -0.7549999952316284,
+                1.4305000305175781,
+                -0.7214999794960022,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.003000000026077032,
+                -0.06499999761581421,
+                0.7599999904632568,
+                1.441499948501587,
+                -0.7335000038146973
+              ],
+              "response_audit": {
+                "applied_target_observation_matches_bridge": true,
+                "calibration_final_action": [
+                  0.0,
+                  0.0,
+                  -0.5,
+                  0.25,
+                  0.25,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.5,
+                  0.25,
+                  0.25
+                ],
+                "calibration_ticks": 250,
+                "calibrator_abi": {
+                  "input_names": [
+                    "obs",
+                    "previous_action",
+                    "h_in"
+                  ],
+                  "output_names": [
+                    "calibration_actions",
+                    "previous_action_out",
+                    "h_out"
+                  ]
+                },
+                "calibrator_sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576",
+                "context_finite": true,
+                "context_sha256": "2750ddf5c5cac23b797b05bfb3b45d88e89fc4f5cdde47d3fea65d9d728efcf2",
+                "context_shape": [
+                  1,
+                  64
+                ],
+                "enabled": true,
+                "handoff_state_preserved": true,
+                "home_return_ticks": 0,
+                "locomotion_applied_target_observation_rad": [
+                  0.0020000000949949026,
+                  0.05299999937415123,
+                  -0.7549999952316284,
+                  1.4305000305175781,
+                  -0.7214999794960022,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -0.003000000026077032,
+                  -0.06499999761581421,
+                  0.7599999904632568,
+                  1.441499948501587,
+                  -0.7335000038146973
+                ],
+                "locomotion_hidden_exact_zero": true,
+                "locomotion_phase_reset": [
+                  1.0,
+                  0.0
+                ],
+                "locomotion_previous_action_exact_zero": false,
+                "locomotion_previous_action_matches_calibration": true,
+                "observer_bridge_applied_target_rad": [
+                  0.0020000000949949026,
+                  0.05299999937415123,
+                  -0.7549999952316284,
+                  1.4305000305175781,
+                  -0.7214999794960022,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -0.003000000026077032,
+                  -0.06499999761581421,
+                  0.7599999904632568,
+                  1.4414999485015867,
+                  -0.7335000038146973
+                ]
+              }
+            },
+            "override_readback_exact": true,
+            "protection": {
+              "duration_protection_pass": true,
+              "maximum_full_measured_vector_excess_rad_s": 0.0,
+              "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_HALF\\p31_34\\traces\\x0.080_seed167931544_head_prefix_mean.jsonl",
+              "rows": 600,
+              "sha256": "b5f90db5b05fa5943a13ddddb15bfb9ce4d5d46484f480706ad3bb5ec4943cf7",
+              "simulator_force_limit_hit_ticks_diagnostic": 0,
+              "ticks_contiguous_from_zero": true,
+              "worst_peak_current_a_diagnostic": 3.2829710651864943,
+              "worst_peak_torque_nm_diagnostic": 2.5755958557128906,
+              "worst_strict_overcurrent_run_ticks": 13,
+              "worst_strict_overload_run_ticks": 13
+            },
+            "trace_valid": true
+          }
+        ],
+        "execution_platform": "cpu",
+        "worker_inputs_exact": true
+      },
+      "step": 1003520,
+      "traces": [
+        {
+          "bytes": 8244577,
+          "command_x_m_s": 0.0,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_HALF\\p31_34\\traces\\x0.000_seed167931544_head_prefix_mean.jsonl",
+          "sha256": "e39035a8612bc39d83a96cda98843fc376952894ee03d0b2335470f40658efae"
+        },
+        {
+          "bytes": 3442647,
+          "command_x_m_s": 0.074,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_HALF\\p31_34\\traces\\x0.074_seed167931544_head_prefix_mean.jsonl",
+          "sha256": "e8b49276dbc2455c16c554cac35e75ae062cb439810fd5abbd644e4f8b46e30c"
+        },
+        {
+          "bytes": 5742187,
+          "command_x_m_s": 0.077,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_HALF\\p31_34\\traces\\x0.077_seed167931544_head_prefix_mean.jsonl",
+          "sha256": "00ebac6b3426841d3c75d9252e247c4b6eff273887888b047f939804e3a8d2b7"
+        },
+        {
+          "bytes": 10772063,
+          "command_x_m_s": 0.08,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_HALF\\p31_34\\traces\\x0.080_seed167931544_head_prefix_mean.jsonl",
+          "sha256": "b5f90db5b05fa5943a13ddddb15bfb9ce4d5d46484f480706ad3bb5ec4943cf7"
+        }
+      ]
+    },
+    {
+      "cached": false,
+      "checkpoint_id": "T175_HEAD_MEAN_FINAL",
+      "condition_id": "TORSO_COM_Z_POS",
+      "condition_index": 12,
+      "fit_id": "p30",
+      "manifest": {
+        "bytes": 6844,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_FINAL\\p30\\manifest.json",
+        "sha256": "ad67d204fdde682ded173c3002477c1b919d71b318b7a62b999c42333af93e58"
+      },
+      "result": {
+        "block_green": false,
+        "cells": [
+          {
+            "behavior": {
+              "action_saturation_pct": 0.0,
+              "body_pitch_p95_rad": 0.0338883713458849,
+              "command_x_m_s": 0.0,
+              "core_checks": {
+                "body_pitch": true,
+                "duration": true,
+                "finite_mean_vx": true,
+                "height": true,
+                "samples": true,
+                "saturation": true,
+                "zero_velocity": true
+              },
+              "core_pass": true,
+              "emergence_pass": true,
+              "evaluator_candidate_gate_status_diagnostic": "PASS_CANDIDATE_SIM_GATE",
+              "instant_rate_excess_rad_s": 0.0,
+              "left_contact_transitions": 0,
+              "mean_local_vx_m_s": -1.5522622736045359e-06,
+              "minimum_base_height_m": 0.1551559716463089,
+              "p95_rate_excess_rad_s": 0.0,
+              "pitch_tracking_p95_rad": 0.03685784339904785,
+              "replacement_quality_checks": {
+                "instant_rate": true,
+                "p95_rate": true,
+                "tracking": true,
+                "zero_saturation": true
+              },
+              "replacement_quality_pass": true,
+              "right_contact_transitions": 0,
+              "samples": 600,
+              "termination_reason": "duration_complete",
+              "track_ratio": null
+            },
+            "cell_green": true,
+            "command_x_m_s": 0.0,
+            "handoff": {
+              "all_checks_pass": true,
+              "calibration_final_action": [
+                0.0,
+                0.0,
+                -0.5,
+                0.25,
+                0.25,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.5,
+                0.25,
+                0.25
+              ],
+              "checks": {
+                "applied_target_observer_preserved": true,
+                "applied_target_slot_continuity": true,
+                "calibration_ticks_exact": true,
+                "calibrator_sha_exact": true,
+                "context_finite": true,
+                "context_immutable": true,
+                "context_shape": true,
+                "first_hidden_zero": true,
+                "first_previous_action_matches_calibration": true,
+                "full_observation_traced": true,
+                "graph_authoritative_no_host_delta": true,
+                "handoff_state_preserved": true,
+                "phase_reset_exact": true,
+                "policy_hidden_zero": true,
+                "previous_action_preserved": true,
+                "recurrent_state_chains_exact": true,
+                "response_enabled": true,
+                "zero_home_return_ticks": true
+              },
+              "context_sha256": "6600b682ef79d7d55d97b249a40ef0e40a11b416f876754cf8442a67177ebf54",
+              "observer_bridge_applied_target_rad": [
+                0.0020000000949949026,
+                0.05299999937415123,
+                -0.7549999952316284,
+                1.4305000305175781,
+                -0.7214999794960022,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.003000000026077032,
+                -0.06499999761581421,
+                0.7599999904632568,
+                1.441499948501587,
+                -0.7335000038146973
+              ],
+              "response_audit": {
+                "applied_target_observation_matches_bridge": true,
+                "calibration_final_action": [
+                  0.0,
+                  0.0,
+                  -0.5,
+                  0.25,
+                  0.25,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.5,
+                  0.25,
+                  0.25
+                ],
+                "calibration_ticks": 250,
+                "calibrator_abi": {
+                  "input_names": [
+                    "obs",
+                    "previous_action",
+                    "h_in"
+                  ],
+                  "output_names": [
+                    "calibration_actions",
+                    "previous_action_out",
+                    "h_out"
+                  ]
+                },
+                "calibrator_sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576",
+                "context_finite": true,
+                "context_sha256": "6600b682ef79d7d55d97b249a40ef0e40a11b416f876754cf8442a67177ebf54",
+                "context_shape": [
+                  1,
+                  64
+                ],
+                "enabled": true,
+                "handoff_state_preserved": true,
+                "home_return_ticks": 0,
+                "locomotion_applied_target_observation_rad": [
+                  0.0020000000949949026,
+                  0.05299999937415123,
+                  -0.7549999952316284,
+                  1.4305000305175781,
+                  -0.7214999794960022,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -0.003000000026077032,
+                  -0.06499999761581421,
+                  0.7599999904632568,
+                  1.441499948501587,
+                  -0.7335000038146973
+                ],
+                "locomotion_hidden_exact_zero": true,
+                "locomotion_phase_reset": [
+                  1.0,
+                  0.0
+                ],
+                "locomotion_previous_action_exact_zero": false,
+                "locomotion_previous_action_matches_calibration": true,
+                "observer_bridge_applied_target_rad": [
+                  0.0020000000949949026,
+                  0.05299999937415123,
+                  -0.7549999952316284,
+                  1.4305000305175781,
+                  -0.7214999794960022,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -0.003000000026077032,
+                  -0.06499999761581421,
+                  0.7599999904632568,
+                  1.4414999485015867,
+                  -0.7335000038146973
+                ]
+              }
+            },
+            "override_readback_exact": true,
+            "protection": {
+              "duration_protection_pass": true,
+              "maximum_full_measured_vector_excess_rad_s": 0.0,
+              "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_FINAL\\p30\\traces\\x0.000_seed167931544_head_prefix_mean.jsonl",
+              "rows": 600,
+              "sha256": "27050c645a0a177e7c9191c7d59381aad29a48586062755adc3e44a523e1c346",
+              "simulator_force_limit_hit_ticks_diagnostic": 0,
+              "ticks_contiguous_from_zero": true,
+              "worst_peak_current_a_diagnostic": 0.8060401271984942,
+              "worst_peak_torque_nm_diagnostic": 0.6323642730712891,
+              "worst_strict_overcurrent_run_ticks": 0,
+              "worst_strict_overload_run_ticks": 0
+            },
+            "trace_valid": true
+          },
+          {
+            "behavior": {
+              "action_saturation_pct": 0.0,
+              "body_pitch_p95_rad": 0.46771599218397,
+              "command_x_m_s": 0.074,
+              "core_checks": {
+                "bilateral_transitions": true,
+                "body_pitch": false,
+                "duration": false,
+                "emergence": false,
+                "finite_mean_vx": true,
+                "height": false,
+                "minimum_track_ratio": true,
+                "positive_velocity": true,
+                "samples": false,
+                "saturation": true
+              },
+              "core_pass": false,
+              "emergence_pass": false,
+              "evaluator_candidate_gate_status_diagnostic": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+              "instant_rate_excess_rad_s": 0.0,
+              "left_contact_transitions": 29,
+              "mean_local_vx_m_s": 0.1060213933802533,
+              "minimum_base_height_m": -0.015645677223801613,
+              "p95_rate_excess_rad_s": 0.0,
+              "pitch_tracking_p95_rad": 0.16777584552764893,
+              "replacement_quality_checks": {
+                "instant_rate": true,
+                "p95_rate": true,
+                "tracking": true,
+                "zero_saturation": true
+              },
+              "replacement_quality_pass": true,
+              "right_contact_transitions": 27,
+              "samples": 309,
+              "termination_reason": "fall_or_nan",
+              "track_ratio": 1.4327215321655853
+            },
+            "cell_green": false,
+            "command_x_m_s": 0.074,
+            "handoff": {
+              "all_checks_pass": true,
+              "calibration_final_action": [
+                0.0,
+                0.0,
+                -0.5,
+                0.25,
+                0.25,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.5,
+                0.25,
+                0.25
+              ],
+              "checks": {
+                "applied_target_observer_preserved": true,
+                "applied_target_slot_continuity": true,
+                "calibration_ticks_exact": true,
+                "calibrator_sha_exact": true,
+                "context_finite": true,
+                "context_immutable": true,
+                "context_shape": true,
+                "first_hidden_zero": true,
+                "first_previous_action_matches_calibration": true,
+                "full_observation_traced": true,
+                "graph_authoritative_no_host_delta": true,
+                "handoff_state_preserved": true,
+                "phase_reset_exact": true,
+                "policy_hidden_zero": true,
+                "previous_action_preserved": true,
+                "recurrent_state_chains_exact": true,
+                "response_enabled": true,
+                "zero_home_return_ticks": true
+              },
+              "context_sha256": "6600b682ef79d7d55d97b249a40ef0e40a11b416f876754cf8442a67177ebf54",
+              "observer_bridge_applied_target_rad": [
+                0.0020000000949949026,
+                0.05299999937415123,
+                -0.7549999952316284,
+                1.4305000305175781,
+                -0.7214999794960022,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.003000000026077032,
+                -0.06499999761581421,
+                0.7599999904632568,
+                1.441499948501587,
+                -0.7335000038146973
+              ],
+              "response_audit": {
+                "applied_target_observation_matches_bridge": true,
+                "calibration_final_action": [
+                  0.0,
+                  0.0,
+                  -0.5,
+                  0.25,
+                  0.25,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.5,
+                  0.25,
+                  0.25
+                ],
+                "calibration_ticks": 250,
+                "calibrator_abi": {
+                  "input_names": [
+                    "obs",
+                    "previous_action",
+                    "h_in"
+                  ],
+                  "output_names": [
+                    "calibration_actions",
+                    "previous_action_out",
+                    "h_out"
+                  ]
+                },
+                "calibrator_sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576",
+                "context_finite": true,
+                "context_sha256": "6600b682ef79d7d55d97b249a40ef0e40a11b416f876754cf8442a67177ebf54",
+                "context_shape": [
+                  1,
+                  64
+                ],
+                "enabled": true,
+                "handoff_state_preserved": true,
+                "home_return_ticks": 0,
+                "locomotion_applied_target_observation_rad": [
+                  0.0020000000949949026,
+                  0.05299999937415123,
+                  -0.7549999952316284,
+                  1.4305000305175781,
+                  -0.7214999794960022,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -0.003000000026077032,
+                  -0.06499999761581421,
+                  0.7599999904632568,
+                  1.441499948501587,
+                  -0.7335000038146973
+                ],
+                "locomotion_hidden_exact_zero": true,
+                "locomotion_phase_reset": [
+                  1.0,
+                  0.0
+                ],
+                "locomotion_previous_action_exact_zero": false,
+                "locomotion_previous_action_matches_calibration": true,
+                "observer_bridge_applied_target_rad": [
+                  0.0020000000949949026,
+                  0.05299999937415123,
+                  -0.7549999952316284,
+                  1.4305000305175781,
+                  -0.7214999794960022,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -0.003000000026077032,
+                  -0.06499999761581421,
+                  0.7599999904632568,
+                  1.4414999485015867,
+                  -0.7335000038146973
+                ]
+              }
+            },
+            "override_readback_exact": true,
+            "protection": {
+              "duration_protection_pass": true,
+              "maximum_full_measured_vector_excess_rad_s": 0.0,
+              "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_FINAL\\p30\\traces\\x0.074_seed167931544_head_prefix_mean.jsonl",
+              "rows": 309,
+              "sha256": "ba7332619c01c28d99cefbd77793c7afe60fc462e583b63391d8bdee0723ee4a",
+              "simulator_force_limit_hit_ticks_diagnostic": 0,
+              "ticks_contiguous_from_zero": true,
+              "worst_peak_current_a_diagnostic": 2.9773968600430836,
+              "worst_peak_torque_nm_diagnostic": 2.3358631134033203,
+              "worst_strict_overcurrent_run_ticks": 7,
+              "worst_strict_overload_run_ticks": 7
+            },
+            "trace_valid": false
+          },
+          {
+            "behavior": {
+              "action_saturation_pct": 0.0,
+              "body_pitch_p95_rad": 0.3095016554160782,
+              "command_x_m_s": 0.077,
+              "core_checks": {
+                "bilateral_transitions": true,
+                "body_pitch": false,
+                "duration": false,
+                "emergence": false,
+                "finite_mean_vx": true,
+                "height": false,
+                "minimum_track_ratio": true,
+                "positive_velocity": true,
+                "samples": false,
+                "saturation": true
+              },
+              "core_pass": false,
+              "emergence_pass": false,
+              "evaluator_candidate_gate_status_diagnostic": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+              "instant_rate_excess_rad_s": 0.0,
+              "left_contact_transitions": 53,
+              "mean_local_vx_m_s": 0.09223705743625892,
+              "minimum_base_height_m": -0.009442802518606186,
+              "p95_rate_excess_rad_s": 0.0,
+              "pitch_tracking_p95_rad": 0.1706284761428833,
+              "replacement_quality_checks": {
+                "instant_rate": true,
+                "p95_rate": true,
+                "tracking": true,
+                "zero_saturation": true
+              },
+              "replacement_quality_pass": true,
+              "right_contact_transitions": 43,
+              "samples": 529,
+              "termination_reason": "fall_or_nan",
+              "track_ratio": 1.1978838628085573
+            },
+            "cell_green": false,
+            "command_x_m_s": 0.077,
+            "handoff": {
+              "all_checks_pass": true,
+              "calibration_final_action": [
+                0.0,
+                0.0,
+                -0.5,
+                0.25,
+                0.25,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.5,
+                0.25,
+                0.25
+              ],
+              "checks": {
+                "applied_target_observer_preserved": true,
+                "applied_target_slot_continuity": true,
+                "calibration_ticks_exact": true,
+                "calibrator_sha_exact": true,
+                "context_finite": true,
+                "context_immutable": true,
+                "context_shape": true,
+                "first_hidden_zero": true,
+                "first_previous_action_matches_calibration": true,
+                "full_observation_traced": true,
+                "graph_authoritative_no_host_delta": true,
+                "handoff_state_preserved": true,
+                "phase_reset_exact": true,
+                "policy_hidden_zero": true,
+                "previous_action_preserved": true,
+                "recurrent_state_chains_exact": true,
+                "response_enabled": true,
+                "zero_home_return_ticks": true
+              },
+              "context_sha256": "6600b682ef79d7d55d97b249a40ef0e40a11b416f876754cf8442a67177ebf54",
+              "observer_bridge_applied_target_rad": [
+                0.0020000000949949026,
+                0.05299999937415123,
+                -0.7549999952316284,
+                1.4305000305175781,
+                -0.7214999794960022,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.003000000026077032,
+                -0.06499999761581421,
+                0.7599999904632568,
+                1.441499948501587,
+                -0.7335000038146973
+              ],
+              "response_audit": {
+                "applied_target_observation_matches_bridge": true,
+                "calibration_final_action": [
+                  0.0,
+                  0.0,
+                  -0.5,
+                  0.25,
+                  0.25,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.5,
+                  0.25,
+                  0.25
+                ],
+                "calibration_ticks": 250,
+                "calibrator_abi": {
+                  "input_names": [
+                    "obs",
+                    "previous_action",
+                    "h_in"
+                  ],
+                  "output_names": [
+                    "calibration_actions",
+                    "previous_action_out",
+                    "h_out"
+                  ]
+                },
+                "calibrator_sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576",
+                "context_finite": true,
+                "context_sha256": "6600b682ef79d7d55d97b249a40ef0e40a11b416f876754cf8442a67177ebf54",
+                "context_shape": [
+                  1,
+                  64
+                ],
+                "enabled": true,
+                "handoff_state_preserved": true,
+                "home_return_ticks": 0,
+                "locomotion_applied_target_observation_rad": [
+                  0.0020000000949949026,
+                  0.05299999937415123,
+                  -0.7549999952316284,
+                  1.4305000305175781,
+                  -0.7214999794960022,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -0.003000000026077032,
+                  -0.06499999761581421,
+                  0.7599999904632568,
+                  1.441499948501587,
+                  -0.7335000038146973
+                ],
+                "locomotion_hidden_exact_zero": true,
+                "locomotion_phase_reset": [
+                  1.0,
+                  0.0
+                ],
+                "locomotion_previous_action_exact_zero": false,
+                "locomotion_previous_action_matches_calibration": true,
+                "observer_bridge_applied_target_rad": [
+                  0.0020000000949949026,
+                  0.05299999937415123,
+                  -0.7549999952316284,
+                  1.4305000305175781,
+                  -0.7214999794960022,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -0.003000000026077032,
+                  -0.06499999761581421,
+                  0.7599999904632568,
+                  1.4414999485015867,
+                  -0.7335000038146973
+                ]
+              }
+            },
+            "override_readback_exact": true,
+            "protection": {
+              "duration_protection_pass": true,
+              "maximum_full_measured_vector_excess_rad_s": 0.0,
+              "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_FINAL\\p30\\traces\\x0.077_seed167931544_head_prefix_mean.jsonl",
+              "rows": 529,
+              "sha256": "62b7b04d8410a79490fa0b62bf5cefbc118443df56c1f271634f5a6f96248f9a",
+              "simulator_force_limit_hit_ticks_diagnostic": 0,
+              "ticks_contiguous_from_zero": true,
+              "worst_peak_current_a_diagnostic": 3.2142339481593902,
+              "worst_peak_torque_nm_diagnostic": 2.521669387817383,
+              "worst_strict_overcurrent_run_ticks": 11,
+              "worst_strict_overload_run_ticks": 13
+            },
+            "trace_valid": false
+          },
+          {
+            "behavior": {
+              "action_saturation_pct": 0.0,
+              "body_pitch_p95_rad": 0.16014823273805756,
+              "command_x_m_s": 0.08,
+              "core_checks": {
+                "bilateral_transitions": true,
+                "body_pitch": true,
+                "duration": true,
+                "emergence": true,
+                "finite_mean_vx": true,
+                "height": true,
+                "minimum_track_ratio": true,
+                "positive_velocity": true,
+                "samples": true,
+                "saturation": true
+              },
+              "core_pass": true,
+              "emergence_pass": true,
+              "evaluator_candidate_gate_status_diagnostic": "PASS_CANDIDATE_SIM_GATE",
+              "instant_rate_excess_rad_s": 0.0,
+              "left_contact_transitions": 52,
+              "mean_local_vx_m_s": 0.05428426155927203,
+              "minimum_base_height_m": 0.15302731096744537,
+              "p95_rate_excess_rad_s": 0.0,
+              "pitch_tracking_p95_rad": 0.16920667290687558,
+              "replacement_quality_checks": {
+                "instant_rate": true,
+                "p95_rate": true,
+                "tracking": true,
+                "zero_saturation": true
+              },
+              "replacement_quality_pass": true,
+              "right_contact_transitions": 35,
+              "samples": 600,
+              "termination_reason": "duration_complete",
+              "track_ratio": 0.6785532694909003
+            },
+            "cell_green": true,
+            "command_x_m_s": 0.08,
+            "handoff": {
+              "all_checks_pass": true,
+              "calibration_final_action": [
+                0.0,
+                0.0,
+                -0.5,
+                0.25,
+                0.25,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.5,
+                0.25,
+                0.25
+              ],
+              "checks": {
+                "applied_target_observer_preserved": true,
+                "applied_target_slot_continuity": true,
+                "calibration_ticks_exact": true,
+                "calibrator_sha_exact": true,
+                "context_finite": true,
+                "context_immutable": true,
+                "context_shape": true,
+                "first_hidden_zero": true,
+                "first_previous_action_matches_calibration": true,
+                "full_observation_traced": true,
+                "graph_authoritative_no_host_delta": true,
+                "handoff_state_preserved": true,
+                "phase_reset_exact": true,
+                "policy_hidden_zero": true,
+                "previous_action_preserved": true,
+                "recurrent_state_chains_exact": true,
+                "response_enabled": true,
+                "zero_home_return_ticks": true
+              },
+              "context_sha256": "6600b682ef79d7d55d97b249a40ef0e40a11b416f876754cf8442a67177ebf54",
+              "observer_bridge_applied_target_rad": [
+                0.0020000000949949026,
+                0.05299999937415123,
+                -0.7549999952316284,
+                1.4305000305175781,
+                -0.7214999794960022,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.003000000026077032,
+                -0.06499999761581421,
+                0.7599999904632568,
+                1.441499948501587,
+                -0.7335000038146973
+              ],
+              "response_audit": {
+                "applied_target_observation_matches_bridge": true,
+                "calibration_final_action": [
+                  0.0,
+                  0.0,
+                  -0.5,
+                  0.25,
+                  0.25,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.5,
+                  0.25,
+                  0.25
+                ],
+                "calibration_ticks": 250,
+                "calibrator_abi": {
+                  "input_names": [
+                    "obs",
+                    "previous_action",
+                    "h_in"
+                  ],
+                  "output_names": [
+                    "calibration_actions",
+                    "previous_action_out",
+                    "h_out"
+                  ]
+                },
+                "calibrator_sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576",
+                "context_finite": true,
+                "context_sha256": "6600b682ef79d7d55d97b249a40ef0e40a11b416f876754cf8442a67177ebf54",
+                "context_shape": [
+                  1,
+                  64
+                ],
+                "enabled": true,
+                "handoff_state_preserved": true,
+                "home_return_ticks": 0,
+                "locomotion_applied_target_observation_rad": [
+                  0.0020000000949949026,
+                  0.05299999937415123,
+                  -0.7549999952316284,
+                  1.4305000305175781,
+                  -0.7214999794960022,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -0.003000000026077032,
+                  -0.06499999761581421,
+                  0.7599999904632568,
+                  1.441499948501587,
+                  -0.7335000038146973
+                ],
+                "locomotion_hidden_exact_zero": true,
+                "locomotion_phase_reset": [
+                  1.0,
+                  0.0
+                ],
+                "locomotion_previous_action_exact_zero": false,
+                "locomotion_previous_action_matches_calibration": true,
+                "observer_bridge_applied_target_rad": [
+                  0.0020000000949949026,
+                  0.05299999937415123,
+                  -0.7549999952316284,
+                  1.4305000305175781,
+                  -0.7214999794960022,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -0.003000000026077032,
+                  -0.06499999761581421,
+                  0.7599999904632568,
+                  1.4414999485015867,
+                  -0.7335000038146973
+                ]
+              }
+            },
+            "override_readback_exact": true,
+            "protection": {
+              "duration_protection_pass": true,
+              "maximum_full_measured_vector_excess_rad_s": 0.0,
+              "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_FINAL\\p30\\traces\\x0.080_seed167931544_head_prefix_mean.jsonl",
+              "rows": 600,
+              "sha256": "12a752546acb795428adb79b5ac8a035e333b45f24d069780fcf261876b0ea93",
+              "simulator_force_limit_hit_ticks_diagnostic": 0,
+              "ticks_contiguous_from_zero": true,
+              "worst_peak_current_a_diagnostic": 3.0869585683452243,
+              "worst_peak_torque_nm_diagnostic": 2.4218177795410156,
+              "worst_strict_overcurrent_run_ticks": 12,
+              "worst_strict_overload_run_ticks": 12
+            },
+            "trace_valid": true
+          }
+        ],
+        "execution_platform": "cpu",
+        "worker_inputs_exact": true
+      },
+      "step": 2007040,
+      "traces": [
+        {
+          "bytes": 8245867,
+          "command_x_m_s": 0.0,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_FINAL\\p30\\traces\\x0.000_seed167931544_head_prefix_mean.jsonl",
+          "sha256": "27050c645a0a177e7c9191c7d59381aad29a48586062755adc3e44a523e1c346"
+        },
+        {
+          "bytes": 5544707,
+          "command_x_m_s": 0.074,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_FINAL\\p30\\traces\\x0.074_seed167931544_head_prefix_mean.jsonl",
+          "sha256": "ba7332619c01c28d99cefbd77793c7afe60fc462e583b63391d8bdee0723ee4a"
+        },
+        {
+          "bytes": 9494668,
+          "command_x_m_s": 0.077,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_FINAL\\p30\\traces\\x0.077_seed167931544_head_prefix_mean.jsonl",
+          "sha256": "62b7b04d8410a79490fa0b62bf5cefbc118443df56c1f271634f5a6f96248f9a"
+        },
+        {
+          "bytes": 10771978,
+          "command_x_m_s": 0.08,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_FINAL\\p30\\traces\\x0.080_seed167931544_head_prefix_mean.jsonl",
+          "sha256": "12a752546acb795428adb79b5ac8a035e333b45f24d069780fcf261876b0ea93"
+        }
+      ]
+    },
+    {
+      "cached": false,
+      "checkpoint_id": "T175_HEAD_MEAN_FINAL",
+      "condition_id": "TORSO_COM_Z_POS",
+      "condition_index": 12,
+      "fit_id": "p31_34",
+      "manifest": {
+        "bytes": 6876,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_FINAL\\p31_34\\manifest.json",
+        "sha256": "ab8855ac820c2f074da96cf076972d64a70ffaed7b8da9fb04a42fd2f524c461"
+      },
+      "result": {
+        "block_green": true,
+        "cells": [
+          {
+            "behavior": {
+              "action_saturation_pct": 0.0,
+              "body_pitch_p95_rad": 0.03389321351754832,
+              "command_x_m_s": 0.0,
+              "core_checks": {
+                "body_pitch": true,
+                "duration": true,
+                "finite_mean_vx": true,
+                "height": true,
+                "samples": true,
+                "saturation": true,
+                "zero_velocity": true
+              },
+              "core_pass": true,
+              "emergence_pass": true,
+              "evaluator_candidate_gate_status_diagnostic": "PASS_CANDIDATE_SIM_GATE",
+              "instant_rate_excess_rad_s": 0.0,
+              "left_contact_transitions": 0,
+              "mean_local_vx_m_s": -1.6579787526194156e-06,
+              "minimum_base_height_m": 0.15515601634979248,
+              "p95_rate_excess_rad_s": 0.0,
+              "pitch_tracking_p95_rad": 0.036859869956970215,
+              "replacement_quality_checks": {
+                "instant_rate": true,
+                "p95_rate": true,
+                "tracking": true,
+                "zero_saturation": true
+              },
+              "replacement_quality_pass": true,
+              "right_contact_transitions": 0,
+              "samples": 600,
+              "termination_reason": "duration_complete",
+              "track_ratio": null
+            },
+            "cell_green": true,
+            "command_x_m_s": 0.0,
+            "handoff": {
+              "all_checks_pass": true,
+              "calibration_final_action": [
+                0.0,
+                0.0,
+                -0.5,
+                0.25,
+                0.25,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.5,
+                0.25,
+                0.25
+              ],
+              "checks": {
+                "applied_target_observer_preserved": true,
+                "applied_target_slot_continuity": true,
+                "calibration_ticks_exact": true,
+                "calibrator_sha_exact": true,
+                "context_finite": true,
+                "context_immutable": true,
+                "context_shape": true,
+                "first_hidden_zero": true,
+                "first_previous_action_matches_calibration": true,
+                "full_observation_traced": true,
+                "graph_authoritative_no_host_delta": true,
+                "handoff_state_preserved": true,
+                "phase_reset_exact": true,
+                "policy_hidden_zero": true,
+                "previous_action_preserved": true,
+                "recurrent_state_chains_exact": true,
+                "response_enabled": true,
+                "zero_home_return_ticks": true
+              },
+              "context_sha256": "2750ddf5c5cac23b797b05bfb3b45d88e89fc4f5cdde47d3fea65d9d728efcf2",
+              "observer_bridge_applied_target_rad": [
+                0.0020000000949949026,
+                0.05299999937415123,
+                -0.7549999952316284,
+                1.4305000305175781,
+                -0.7214999794960022,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.003000000026077032,
+                -0.06499999761581421,
+                0.7599999904632568,
+                1.441499948501587,
+                -0.7335000038146973
+              ],
+              "response_audit": {
+                "applied_target_observation_matches_bridge": true,
+                "calibration_final_action": [
+                  0.0,
+                  0.0,
+                  -0.5,
+                  0.25,
+                  0.25,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.5,
+                  0.25,
+                  0.25
+                ],
+                "calibration_ticks": 250,
+                "calibrator_abi": {
+                  "input_names": [
+                    "obs",
+                    "previous_action",
+                    "h_in"
+                  ],
+                  "output_names": [
+                    "calibration_actions",
+                    "previous_action_out",
+                    "h_out"
+                  ]
+                },
+                "calibrator_sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576",
+                "context_finite": true,
+                "context_sha256": "2750ddf5c5cac23b797b05bfb3b45d88e89fc4f5cdde47d3fea65d9d728efcf2",
+                "context_shape": [
+                  1,
+                  64
+                ],
+                "enabled": true,
+                "handoff_state_preserved": true,
+                "home_return_ticks": 0,
+                "locomotion_applied_target_observation_rad": [
+                  0.0020000000949949026,
+                  0.05299999937415123,
+                  -0.7549999952316284,
+                  1.4305000305175781,
+                  -0.7214999794960022,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -0.003000000026077032,
+                  -0.06499999761581421,
+                  0.7599999904632568,
+                  1.441499948501587,
+                  -0.7335000038146973
+                ],
+                "locomotion_hidden_exact_zero": true,
+                "locomotion_phase_reset": [
+                  1.0,
+                  0.0
+                ],
+                "locomotion_previous_action_exact_zero": false,
+                "locomotion_previous_action_matches_calibration": true,
+                "observer_bridge_applied_target_rad": [
+                  0.0020000000949949026,
+                  0.05299999937415123,
+                  -0.7549999952316284,
+                  1.4305000305175781,
+                  -0.7214999794960022,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -0.003000000026077032,
+                  -0.06499999761581421,
+                  0.7599999904632568,
+                  1.4414999485015867,
+                  -0.7335000038146973
+                ]
+              }
+            },
+            "override_readback_exact": true,
+            "protection": {
+              "duration_protection_pass": true,
+              "maximum_full_measured_vector_excess_rad_s": 0.0,
+              "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_FINAL\\p31_34\\traces\\x0.000_seed167931544_head_prefix_mean.jsonl",
+              "rows": 600,
+              "sha256": "e39035a8612bc39d83a96cda98843fc376952894ee03d0b2335470f40658efae",
+              "simulator_force_limit_hit_ticks_diagnostic": 0,
+              "ticks_contiguous_from_zero": true,
+              "worst_peak_current_a_diagnostic": 0.806125218950199,
+              "worst_peak_torque_nm_diagnostic": 0.6324310302734375,
+              "worst_strict_overcurrent_run_ticks": 0,
+              "worst_strict_overload_run_ticks": 0
+            },
+            "trace_valid": true
+          },
+          {
+            "behavior": {
+              "action_saturation_pct": 0.0,
+              "body_pitch_p95_rad": 0.12346644347764504,
+              "command_x_m_s": 0.074,
+              "core_checks": {
+                "bilateral_transitions": true,
+                "body_pitch": true,
+                "duration": true,
+                "emergence": true,
+                "finite_mean_vx": true,
+                "height": true,
+                "minimum_track_ratio": true,
+                "positive_velocity": true,
+                "samples": true,
+                "saturation": true
+              },
+              "core_pass": true,
+              "emergence_pass": true,
+              "evaluator_candidate_gate_status_diagnostic": "PASS_CANDIDATE_SIM_GATE",
+              "instant_rate_excess_rad_s": 0.0,
+              "left_contact_transitions": 56,
+              "mean_local_vx_m_s": 0.05878550677232246,
+              "minimum_base_height_m": 0.1554047018289566,
+              "p95_rate_excess_rad_s": 0.0,
+              "pitch_tracking_p95_rad": 0.16347484588623043,
+              "replacement_quality_checks": {
+                "instant_rate": true,
+                "p95_rate": true,
+                "tracking": true,
+                "zero_saturation": true
+              },
+              "replacement_quality_pass": true,
+              "right_contact_transitions": 44,
+              "samples": 600,
+              "termination_reason": "duration_complete",
+              "track_ratio": 0.7943987401665197
+            },
+            "cell_green": true,
+            "command_x_m_s": 0.074,
+            "handoff": {
+              "all_checks_pass": true,
+              "calibration_final_action": [
+                0.0,
+                0.0,
+                -0.5,
+                0.25,
+                0.25,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.5,
+                0.25,
+                0.25
+              ],
+              "checks": {
+                "applied_target_observer_preserved": true,
+                "applied_target_slot_continuity": true,
+                "calibration_ticks_exact": true,
+                "calibrator_sha_exact": true,
+                "context_finite": true,
+                "context_immutable": true,
+                "context_shape": true,
+                "first_hidden_zero": true,
+                "first_previous_action_matches_calibration": true,
+                "full_observation_traced": true,
+                "graph_authoritative_no_host_delta": true,
+                "handoff_state_preserved": true,
+                "phase_reset_exact": true,
+                "policy_hidden_zero": true,
+                "previous_action_preserved": true,
+                "recurrent_state_chains_exact": true,
+                "response_enabled": true,
+                "zero_home_return_ticks": true
+              },
+              "context_sha256": "2750ddf5c5cac23b797b05bfb3b45d88e89fc4f5cdde47d3fea65d9d728efcf2",
+              "observer_bridge_applied_target_rad": [
+                0.0020000000949949026,
+                0.05299999937415123,
+                -0.7549999952316284,
+                1.4305000305175781,
+                -0.7214999794960022,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.003000000026077032,
+                -0.06499999761581421,
+                0.7599999904632568,
+                1.441499948501587,
+                -0.7335000038146973
+              ],
+              "response_audit": {
+                "applied_target_observation_matches_bridge": true,
+                "calibration_final_action": [
+                  0.0,
+                  0.0,
+                  -0.5,
+                  0.25,
+                  0.25,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.5,
+                  0.25,
+                  0.25
+                ],
+                "calibration_ticks": 250,
+                "calibrator_abi": {
+                  "input_names": [
+                    "obs",
+                    "previous_action",
+                    "h_in"
+                  ],
+                  "output_names": [
+                    "calibration_actions",
+                    "previous_action_out",
+                    "h_out"
+                  ]
+                },
+                "calibrator_sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576",
+                "context_finite": true,
+                "context_sha256": "2750ddf5c5cac23b797b05bfb3b45d88e89fc4f5cdde47d3fea65d9d728efcf2",
+                "context_shape": [
+                  1,
+                  64
+                ],
+                "enabled": true,
+                "handoff_state_preserved": true,
+                "home_return_ticks": 0,
+                "locomotion_applied_target_observation_rad": [
+                  0.0020000000949949026,
+                  0.05299999937415123,
+                  -0.7549999952316284,
+                  1.4305000305175781,
+                  -0.7214999794960022,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -0.003000000026077032,
+                  -0.06499999761581421,
+                  0.7599999904632568,
+                  1.441499948501587,
+                  -0.7335000038146973
+                ],
+                "locomotion_hidden_exact_zero": true,
+                "locomotion_phase_reset": [
+                  1.0,
+                  0.0
+                ],
+                "locomotion_previous_action_exact_zero": false,
+                "locomotion_previous_action_matches_calibration": true,
+                "observer_bridge_applied_target_rad": [
+                  0.0020000000949949026,
+                  0.05299999937415123,
+                  -0.7549999952316284,
+                  1.4305000305175781,
+                  -0.7214999794960022,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -0.003000000026077032,
+                  -0.06499999761581421,
+                  0.7599999904632568,
+                  1.4414999485015867,
+                  -0.7335000038146973
+                ]
+              }
+            },
+            "override_readback_exact": true,
+            "protection": {
+              "duration_protection_pass": true,
+              "maximum_full_measured_vector_excess_rad_s": 0.0,
+              "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_FINAL\\p31_34\\traces\\x0.074_seed167931544_head_prefix_mean.jsonl",
+              "rows": 600,
+              "sha256": "f5d39c1c268436bc58b1ec27cf790745a8b0b1253b8572f1175b2cb08126dea8",
+              "simulator_force_limit_hit_ticks_diagnostic": 0,
+              "ticks_contiguous_from_zero": true,
+              "worst_peak_current_a_diagnostic": 2.95991658305002,
+              "worst_peak_torque_nm_diagnostic": 2.3221492767333984,
+              "worst_strict_overcurrent_run_ticks": 8,
+              "worst_strict_overload_run_ticks": 8
+            },
+            "trace_valid": true
+          },
+          {
+            "behavior": {
+              "action_saturation_pct": 0.0,
+              "body_pitch_p95_rad": 0.16097230658733502,
+              "command_x_m_s": 0.077,
+              "core_checks": {
+                "bilateral_transitions": true,
+                "body_pitch": true,
+                "duration": true,
+                "emergence": true,
+                "finite_mean_vx": true,
+                "height": true,
+                "minimum_track_ratio": true,
+                "positive_velocity": true,
+                "samples": true,
+                "saturation": true
+              },
+              "core_pass": true,
+              "emergence_pass": true,
+              "evaluator_candidate_gate_status_diagnostic": "PASS_CANDIDATE_SIM_GATE",
+              "instant_rate_excess_rad_s": 0.0,
+              "left_contact_transitions": 52,
+              "mean_local_vx_m_s": 0.06082822775499153,
+              "minimum_base_height_m": 0.15510162711143494,
+              "p95_rate_excess_rad_s": 0.0,
+              "pitch_tracking_p95_rad": 0.1662961959838867,
+              "replacement_quality_checks": {
+                "instant_rate": true,
+                "p95_rate": true,
+                "tracking": true,
+                "zero_saturation": true
+              },
+              "replacement_quality_pass": true,
+              "right_contact_transitions": 50,
+              "samples": 600,
+              "termination_reason": "duration_complete",
+              "track_ratio": 0.7899769838310589
+            },
+            "cell_green": true,
+            "command_x_m_s": 0.077,
+            "handoff": {
+              "all_checks_pass": true,
+              "calibration_final_action": [
+                0.0,
+                0.0,
+                -0.5,
+                0.25,
+                0.25,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.5,
+                0.25,
+                0.25
+              ],
+              "checks": {
+                "applied_target_observer_preserved": true,
+                "applied_target_slot_continuity": true,
+                "calibration_ticks_exact": true,
+                "calibrator_sha_exact": true,
+                "context_finite": true,
+                "context_immutable": true,
+                "context_shape": true,
+                "first_hidden_zero": true,
+                "first_previous_action_matches_calibration": true,
+                "full_observation_traced": true,
+                "graph_authoritative_no_host_delta": true,
+                "handoff_state_preserved": true,
+                "phase_reset_exact": true,
+                "policy_hidden_zero": true,
+                "previous_action_preserved": true,
+                "recurrent_state_chains_exact": true,
+                "response_enabled": true,
+                "zero_home_return_ticks": true
+              },
+              "context_sha256": "2750ddf5c5cac23b797b05bfb3b45d88e89fc4f5cdde47d3fea65d9d728efcf2",
+              "observer_bridge_applied_target_rad": [
+                0.0020000000949949026,
+                0.05299999937415123,
+                -0.7549999952316284,
+                1.4305000305175781,
+                -0.7214999794960022,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.003000000026077032,
+                -0.06499999761581421,
+                0.7599999904632568,
+                1.441499948501587,
+                -0.7335000038146973
+              ],
+              "response_audit": {
+                "applied_target_observation_matches_bridge": true,
+                "calibration_final_action": [
+                  0.0,
+                  0.0,
+                  -0.5,
+                  0.25,
+                  0.25,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.5,
+                  0.25,
+                  0.25
+                ],
+                "calibration_ticks": 250,
+                "calibrator_abi": {
+                  "input_names": [
+                    "obs",
+                    "previous_action",
+                    "h_in"
+                  ],
+                  "output_names": [
+                    "calibration_actions",
+                    "previous_action_out",
+                    "h_out"
+                  ]
+                },
+                "calibrator_sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576",
+                "context_finite": true,
+                "context_sha256": "2750ddf5c5cac23b797b05bfb3b45d88e89fc4f5cdde47d3fea65d9d728efcf2",
+                "context_shape": [
+                  1,
+                  64
+                ],
+                "enabled": true,
+                "handoff_state_preserved": true,
+                "home_return_ticks": 0,
+                "locomotion_applied_target_observation_rad": [
+                  0.0020000000949949026,
+                  0.05299999937415123,
+                  -0.7549999952316284,
+                  1.4305000305175781,
+                  -0.7214999794960022,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -0.003000000026077032,
+                  -0.06499999761581421,
+                  0.7599999904632568,
+                  1.441499948501587,
+                  -0.7335000038146973
+                ],
+                "locomotion_hidden_exact_zero": true,
+                "locomotion_phase_reset": [
+                  1.0,
+                  0.0
+                ],
+                "locomotion_previous_action_exact_zero": false,
+                "locomotion_previous_action_matches_calibration": true,
+                "observer_bridge_applied_target_rad": [
+                  0.0020000000949949026,
+                  0.05299999937415123,
+                  -0.7549999952316284,
+                  1.4305000305175781,
+                  -0.7214999794960022,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -0.003000000026077032,
+                  -0.06499999761581421,
+                  0.7599999904632568,
+                  1.4414999485015867,
+                  -0.7335000038146973
+                ]
+              }
+            },
+            "override_readback_exact": true,
+            "protection": {
+              "duration_protection_pass": true,
+              "maximum_full_measured_vector_excess_rad_s": 0.0,
+              "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_FINAL\\p31_34\\traces\\x0.077_seed167931544_head_prefix_mean.jsonl",
+              "rows": 600,
+              "sha256": "071401014f61a40c4e99329fbb5bd24bcb86379fc8bbe3f1f959168220256683",
+              "simulator_force_limit_hit_ticks_diagnostic": 0,
+              "ticks_contiguous_from_zero": true,
+              "worst_peak_current_a_diagnostic": 2.981345117322184,
+              "worst_peak_torque_nm_diagnostic": 2.338960647583008,
+              "worst_strict_overcurrent_run_ticks": 13,
+              "worst_strict_overload_run_ticks": 14
+            },
+            "trace_valid": true
+          },
+          {
+            "behavior": {
+              "action_saturation_pct": 0.0,
+              "body_pitch_p95_rad": 0.13859565400079246,
+              "command_x_m_s": 0.08,
+              "core_checks": {
+                "bilateral_transitions": true,
+                "body_pitch": true,
+                "duration": true,
+                "emergence": true,
+                "finite_mean_vx": true,
+                "height": true,
+                "minimum_track_ratio": true,
+                "positive_velocity": true,
+                "samples": true,
+                "saturation": true
+              },
+              "core_pass": true,
+              "emergence_pass": true,
+              "evaluator_candidate_gate_status_diagnostic": "PASS_CANDIDATE_SIM_GATE",
+              "instant_rate_excess_rad_s": 0.0,
+              "left_contact_transitions": 54,
+              "mean_local_vx_m_s": 0.05550787452889684,
+              "minimum_base_height_m": 0.15540489554405212,
+              "p95_rate_excess_rad_s": 0.0,
+              "pitch_tracking_p95_rad": 0.16670007705688475,
+              "replacement_quality_checks": {
+                "instant_rate": true,
+                "p95_rate": true,
+                "tracking": true,
+                "zero_saturation": true
+              },
+              "replacement_quality_pass": true,
+              "right_contact_transitions": 41,
+              "samples": 600,
+              "termination_reason": "duration_complete",
+              "track_ratio": 0.6938484316112105
+            },
+            "cell_green": true,
+            "command_x_m_s": 0.08,
+            "handoff": {
+              "all_checks_pass": true,
+              "calibration_final_action": [
+                0.0,
+                0.0,
+                -0.5,
+                0.25,
+                0.25,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.5,
+                0.25,
+                0.25
+              ],
+              "checks": {
+                "applied_target_observer_preserved": true,
+                "applied_target_slot_continuity": true,
+                "calibration_ticks_exact": true,
+                "calibrator_sha_exact": true,
+                "context_finite": true,
+                "context_immutable": true,
+                "context_shape": true,
+                "first_hidden_zero": true,
+                "first_previous_action_matches_calibration": true,
+                "full_observation_traced": true,
+                "graph_authoritative_no_host_delta": true,
+                "handoff_state_preserved": true,
+                "phase_reset_exact": true,
+                "policy_hidden_zero": true,
+                "previous_action_preserved": true,
+                "recurrent_state_chains_exact": true,
+                "response_enabled": true,
+                "zero_home_return_ticks": true
+              },
+              "context_sha256": "2750ddf5c5cac23b797b05bfb3b45d88e89fc4f5cdde47d3fea65d9d728efcf2",
+              "observer_bridge_applied_target_rad": [
+                0.0020000000949949026,
+                0.05299999937415123,
+                -0.7549999952316284,
+                1.4305000305175781,
+                -0.7214999794960022,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.003000000026077032,
+                -0.06499999761581421,
+                0.7599999904632568,
+                1.441499948501587,
+                -0.7335000038146973
+              ],
+              "response_audit": {
+                "applied_target_observation_matches_bridge": true,
+                "calibration_final_action": [
+                  0.0,
+                  0.0,
+                  -0.5,
+                  0.25,
+                  0.25,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.5,
+                  0.25,
+                  0.25
+                ],
+                "calibration_ticks": 250,
+                "calibrator_abi": {
+                  "input_names": [
+                    "obs",
+                    "previous_action",
+                    "h_in"
+                  ],
+                  "output_names": [
+                    "calibration_actions",
+                    "previous_action_out",
+                    "h_out"
+                  ]
+                },
+                "calibrator_sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576",
+                "context_finite": true,
+                "context_sha256": "2750ddf5c5cac23b797b05bfb3b45d88e89fc4f5cdde47d3fea65d9d728efcf2",
+                "context_shape": [
+                  1,
+                  64
+                ],
+                "enabled": true,
+                "handoff_state_preserved": true,
+                "home_return_ticks": 0,
+                "locomotion_applied_target_observation_rad": [
+                  0.0020000000949949026,
+                  0.05299999937415123,
+                  -0.7549999952316284,
+                  1.4305000305175781,
+                  -0.7214999794960022,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -0.003000000026077032,
+                  -0.06499999761581421,
+                  0.7599999904632568,
+                  1.441499948501587,
+                  -0.7335000038146973
+                ],
+                "locomotion_hidden_exact_zero": true,
+                "locomotion_phase_reset": [
+                  1.0,
+                  0.0
+                ],
+                "locomotion_previous_action_exact_zero": false,
+                "locomotion_previous_action_matches_calibration": true,
+                "observer_bridge_applied_target_rad": [
+                  0.0020000000949949026,
+                  0.05299999937415123,
+                  -0.7549999952316284,
+                  1.4305000305175781,
+                  -0.7214999794960022,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -0.003000000026077032,
+                  -0.06499999761581421,
+                  0.7599999904632568,
+                  1.4414999485015867,
+                  -0.7335000038146973
+                ]
+              }
+            },
+            "override_readback_exact": true,
+            "protection": {
+              "duration_protection_pass": true,
+              "maximum_full_measured_vector_excess_rad_s": 0.0,
+              "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_FINAL\\p31_34\\traces\\x0.080_seed167931544_head_prefix_mean.jsonl",
+              "rows": 600,
+              "sha256": "12d350762c0f90ab6d7d705819cb3fffe632fe2e5ea20bfdeeba0ffd9cc71450",
+              "simulator_force_limit_hit_ticks_diagnostic": 0,
+              "ticks_contiguous_from_zero": true,
+              "worst_peak_current_a_diagnostic": 3.1004638449372224,
+              "worst_peak_torque_nm_diagnostic": 2.432413101196289,
+              "worst_strict_overcurrent_run_ticks": 10,
+              "worst_strict_overload_run_ticks": 10
+            },
+            "trace_valid": true
+          }
+        ],
+        "execution_platform": "cpu",
+        "worker_inputs_exact": true
+      },
+      "step": 2007040,
+      "traces": [
+        {
+          "bytes": 8244577,
+          "command_x_m_s": 0.0,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_FINAL\\p31_34\\traces\\x0.000_seed167931544_head_prefix_mean.jsonl",
+          "sha256": "e39035a8612bc39d83a96cda98843fc376952894ee03d0b2335470f40658efae"
+        },
+        {
+          "bytes": 10770798,
+          "command_x_m_s": 0.074,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_FINAL\\p31_34\\traces\\x0.074_seed167931544_head_prefix_mean.jsonl",
+          "sha256": "f5d39c1c268436bc58b1ec27cf790745a8b0b1253b8572f1175b2cb08126dea8"
+        },
+        {
+          "bytes": 10770087,
+          "command_x_m_s": 0.077,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_FINAL\\p31_34\\traces\\x0.077_seed167931544_head_prefix_mean.jsonl",
+          "sha256": "071401014f61a40c4e99329fbb5bd24bcb86379fc8bbe3f1f959168220256683"
+        },
+        {
+          "bytes": 10772241,
+          "command_x_m_s": 0.08,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t177_head_prefix_mean_full_r2_v1\\12_TORSO_COM_Z_POS\\T175_HEAD_MEAN_FINAL\\p31_34\\traces\\x0.080_seed167931544_head_prefix_mean.jsonl",
+          "sha256": "12d350762c0f90ab6d7d705819cb3fffe632fe2e5ea20bfdeeba0ffd9cc71450"
+        }
+      ]
+    }
+  ]
+}
