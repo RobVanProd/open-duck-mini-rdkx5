@@ -1,0 +1,109 @@
+{
+  "authority": {
+    "additional_attempt_retry_or_same_run_resume": false,
+    "behavior_evaluation": false,
+    "checkpoint_selection": false,
+    "gate5": false,
+    "one_exact_cli_launch": true,
+    "rdkx5_or_robot": false
+  },
+  "checks": {
+    "executor_l4_and_pinned_software": true,
+    "executor_no_retry_or_same_run_resume": true,
+    "executor_uses_exact_driver_and_mechanism": true,
+    "executor_verifies_every_manifest_member": true,
+    "hardware_or_robot_absent": true,
+    "package_contract_green": true,
+    "package_file_exact": true,
+    "preregistration_green": true,
+    "training_or_behavior_not_run": true
+  },
+  "commands": [
+    [
+      "colab",
+      "new",
+      "--session",
+      "t228-command-atom-20260730",
+      "--gpu",
+      "L4"
+    ],
+    [
+      "colab",
+      "upload",
+      "--session",
+      "t228-command-atom-20260730",
+      "D:\\CodexArtifacts\\open-duck-policy\\t228_command_atom_20260730.tar.gz",
+      "/content/t228-command-atom-20260730.tar.gz"
+    ],
+    [
+      "colab",
+      "exec",
+      "--session",
+      "t228-command-atom-20260730",
+      "--file",
+      "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\execute_t228_colab_cli.py",
+      "--timeout",
+      "43200"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "t228-command-atom-20260730",
+      "/content/t228_result.json",
+      "<LOCAL_RESULT>"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "t228-command-atom-20260730",
+      "/content/t228_artifacts.tar.gz",
+      "<LOCAL_ARCHIVE>"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "t228-command-atom-20260730",
+      "/content/t228_launch_receipt.json",
+      "<LOCAL_RECEIPT>"
+    ],
+    [
+      "colab",
+      "stop",
+      "--session",
+      "t228-command-atom-20260730"
+    ]
+  ],
+  "execution_now": {
+    "colab_sessions_opened": 0,
+    "formal_behavior_cells": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "hashes": {
+    "executor": "e7749a3fdbf24fea216f954bad6ffea40e15711419d015af2e9ee8b7f901cf06",
+    "manifest": "d898deae1e7c183225dd4cf766ae87d88af6fde20f7fff4141d7c0e75486d4ba",
+    "package": "8999a2855a0c976f1d384c034906698fdb09699b9029d8f59af6fbad49b0486c",
+    "package_contract": "316bb64d9398f830ed5177b5b5017204f0d9fd7dde802d844997186d25eac319",
+    "preregistration": "b3c847c713669a42c48f18f5266ba061dd34bb70399943be7aaecc83fb223af3"
+  },
+  "package_bytes": 4360846,
+  "recovery": {
+    "download_result_archive_receipt_before_stop": true,
+    "retry": false,
+    "same_run_resume": false,
+    "stop_session_after_pass_or_hold": true
+  },
+  "schema_version": "open_duck.t228_colab_cli_launch_contract.v1",
+  "session": {
+    "accelerator": "L4",
+    "count": 1,
+    "max_wall_seconds": 43200,
+    "maximum_compute_units_at_prior_rate": 6.42,
+    "name": "t228-command-atom-20260730"
+  },
+  "status": "PASS_T228_COLAB_CLI_LAUNCH_CONTRACT"
+}
