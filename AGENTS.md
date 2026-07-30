@@ -5481,3 +5481,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   select the half checkpoint or fit, run the targeted Y-negative matrix,
   run full R2, or proceed to deployment/Gate 5. A saved-trace mechanism
   audit is required before any new policy work.
+- 2026-07-30: T213B passes its preregistered saved-trace support-
+  continuity autopsy with no failed checks. Across all `15` passing T213
+  traces, the longest `[0,0]` no-contact run is one tick; the sole
+  final/P30/x=`.080` failure has two consecutive no-contact ticks beginning
+  at tick `307`, after which base height decreases strictly through terminal
+  tick `317`. Both the current passing-envelope and frozen T201 roll-risk
+  thresholds first cross only at tick `314`, three ticks before terminal.
+  Result SHA-256: `3f753be1...55a5e4b`; classification
+  `SUPPORT_CONTINUITY_BREAK_PRECEDES_HEIGHT_AND_ROLL_COLLAPSE`. This earns
+  only a prior-art-reviewed support-continuity CPU falsifier
+  preregistration. It does not reopen the closed T55/T186/T194
+  single-support objective families and authorizes no training, Colab,
+  behavior, Gate 5, or hardware.
