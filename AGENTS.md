@@ -5207,3 +5207,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   fails. Result SHA-256: `6ade0e77...dbd0f04d`; decision
   `CLOSE_T194_CORRECTED_DYNAMIC_REFERENCE_SUPPORT_CONTINUATION`. Full R2,
   deployment audit, Gate 5, and hardware remain closed.
+- 2026-07-30: T199 preregisters a saved-trace-only support-credit autopsy
+  under contract SHA-256 `054cdf94...e0e949a5`. It freezes the sole T194
+  failure, four matched passes, both composed heads, both Y-negative
+  calibration contexts, and the exact T193 polynomial/reference assets.
+  It will byte-replay every recorded ONNX row, reconstruct reference support
+  from obs phase, and compare zero-credit/mismatch occupancy over the frozen
+  ticks `254-307`. A dense signed-support diagnostic is earned only if the
+  failure has at least one `27`-tick zero-credit run and strictly exceeds
+  every comparator over that aligned window. It runs no simulator,
+  optimizer, hosted compute, Gate 5, or hardware.
