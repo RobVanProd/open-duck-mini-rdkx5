@@ -27,8 +27,9 @@ def test_t173_result_when_present() -> None:
     if not path.exists():
         return
     value = json.loads(path.read_text(encoding="utf-8"))
-    assert value["status"] == "PASS_T173_T170_TARGETED_Y_NEGATIVE"
-    assert value["condition"]["condition_green"] is True
-    assert value["condition"]["green_cells"] == 16
+    assert value["status"] == "HOLD_T173_T170_TARGETED_Y_NEGATIVE"
+    assert value["decision"] == "CLOSE_T170_EIGHT_STRATUM_HEAD_CONTINUATION"
+    assert value["condition"]["condition_green"] is False
+    assert value["condition"]["green_cells"] == 15
     assert value["execution"]["behavior_cells"] == 16
     assert value["authority"]["gate5"] is False
