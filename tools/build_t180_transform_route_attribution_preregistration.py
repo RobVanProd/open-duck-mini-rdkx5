@@ -60,9 +60,12 @@ def _block_for(
     checkpoint_id: str,
     fit_id: str,
 ) -> Mapping[str, Any]:
+    blocks = result.get("blocks", result.get("source_blocks"))
+    if not isinstance(blocks, list):
+        raise RuntimeError("result has no behavior block population")
     return next(
         block
-        for block in result["blocks"]
+        for block in blocks
         if block["checkpoint_id"] == checkpoint_id
         and block["fit_id"] == fit_id
     )
