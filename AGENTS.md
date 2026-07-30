@@ -4548,3 +4548,10 @@ Do not proceed to grounded walking until low-risk gates pass.
   `1e53786c...0f369d0`. Only a fresh T180B preregistration with exact
   condition/checkpoint/fit binding is authorized; all cases, prefixes,
   thresholds, and decision rules must remain unchanged.
+- 2026-07-30: T180B preregisters the corrected route attribution under
+  contract SHA-256 `7f644933...13cf5316`. Only the positive-Z transformed
+  trace receipts change; every case now binds uniquely on condition,
+  checkpoint, and fit. The six cases, `162`-tick prefixes, replay tolerance,
+  cosine threshold, equations, and decision rules are identical to T180.
+  Execution remains saved-trace CPU inference only, with no behavior,
+  optimizer, hosted compute, deployment audit, Gate 5, or hardware.
