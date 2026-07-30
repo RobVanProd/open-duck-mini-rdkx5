@@ -4576,3 +4576,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   allowed. A green CPU graph contract earns only T182 shared-failure
   single-cell preregistration, not execution, training, Colab, deployment
   audit, Gate 5, or hardware.
+- 2026-07-30: T181 passes its complete CPU graph contract at fixed
+  `alpha=0.20`. The half/final candidate hashes are
+  `f6582ab8...a201124c` / `7e04cc59...3104c0fa`; exactly the two allowed
+  adapter-head tensors change, while every node and other initializer remains
+  source-exact. All 40 calibration contexts are finite, inactive routes and
+  x=0 remain bit-exact, and no check fails. Result SHA-256:
+  `889db5f9...016f7369`. This earns only a separately preregistered T182
+  single CPU behavior cell at the failure shared by both endpoints:
+  positive-Z, half, P31-34, x=`.077`. No other cell, alternate alpha,
+  training, Colab, deployment audit, Gate 5, or hardware is authorized.
