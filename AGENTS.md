@@ -4501,3 +4501,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   separate T179 source-versus-T175 positive-Z CPU A/B preregistration. No new
   behavior, optimizer, Colab, deployment audit, Gate 5, or hardware is
   authorized.
+- 2026-07-30: T178B passes all exact pre-action handoff checks in all `4/4`
+  checkpoint/fit blocks. Calibration context, recurrent inputs, pre-action
+  joint positions, phase reset, and `obs_state[83:97]` are identical across
+  x=`0/.074/.077/.080` before the current action. Result SHA-256:
+  `7c6a48b8...69c2242c`. The T177 failures are therefore genuine closed-loop
+  robustness failures, not handoff contamination. Preserved T178 evidence
+  shows pitch-positive collapse in `5/5`, but no `4/5` replicated phase
+  bucket, contact vector, or action-precursor joint. This earns only a
+  separately preregistered T179 CPU-only source-versus-T175 positive-Z A/B.
+  T179 execution, training, Colab, deployment audit, Gate 5, and hardware
+  remain unauthorized.
