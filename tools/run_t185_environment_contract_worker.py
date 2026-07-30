@@ -110,13 +110,15 @@ def enabled(
     )
     target_contacts = np.stack([sides == 0, sides == 1], axis=-1)
     expected_anchors = np.asarray([2, 15], dtype=np.int32)[sides]
-    expected_vectors = np.stack(
-        [
-            np.asarray(
-                t185.phase_vector(anchor, t185.REFERENCE_PERIOD_TICKS)
+    expected_vectors = np.asarray(
+        jax.device_get(
+            jax.jit(jax.vmap(t185.phase_vector))(
+                jnp.asarray(expected_anchors, dtype=jnp.int32)
             )
-            for anchor in expected_anchors
-        ]
+        )
+    )
+    phase_vector_maximum_abs_error = float(
+        np.max(np.abs(phase_vectors - expected_vectors))
     )
 
     timeline = []
@@ -240,6 +242,9 @@ def enabled(
             "left": 2,
             "right": 15,
         },
+        "phase_vector_maximum_abs_error": (
+            phase_vector_maximum_abs_error
+        ),
         "prefix_ticks": t185.PREFIX_TICKS,
         "simulator_transitions": env_count * (t185.PREFIX_TICKS + 1),
         "platforms": sorted({device.platform for device in jax.devices()}),

@@ -70,7 +70,10 @@ def _canonical_without(value: dict[str, Any], field: str) -> str:
 def validate_prereg(value: dict[str, Any]) -> None:
     if (
         value.get("status")
-        != "PREREGISTERED_T185_IN_EPISODE_SINGLE_SUPPORT_CPU_CONTRACT"
+        not in (
+            "PREREGISTERED_T185_IN_EPISODE_SINGLE_SUPPORT_CPU_CONTRACT",
+            "PREREGISTERED_T185B_JIT_PHASE_DIAGNOSTIC_RECOVERY",
+        )
         or value.get("failed_checks")
         or _canonical_without(
             value, "preregistered_contract_sha256"
@@ -177,20 +180,36 @@ def positive_finite_metric(
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--cpu-contract-authorized", action="store_true")
+    parser.add_argument("--preregistration", type=Path, default=PREREG)
+    parser.add_argument("--result", type=Path, default=RESULT)
+    parser.add_argument("--markdown", type=Path, default=MARKDOWN)
+    parser.add_argument("--work-root", type=Path, default=WORK)
     args = parser.parse_args()
     if not args.cpu_contract_authorized:
         raise PermissionError("T185 requires --cpu-contract-authorized")
-    for path in (RESULT, MARKDOWN, WORK):
+    preregistration_path = args.preregistration.resolve()
+    result_path = args.result.resolve()
+    markdown_path = args.markdown.resolve()
+    work = args.work_root.resolve()
+    output = work / "smoke"
+    cpu_source = work / "t170_half_cpu_remap"
+    for path in (result_path, markdown_path, work):
         if path.exists():
             raise FileExistsError(f"refusing to overwrite T185: {path}")
     if subprocess.check_output(
         ["git", "status", "--porcelain"], cwd=ROOT, text=True
     ).strip():
         raise RuntimeError("formal T185 execution requires clean worktree")
-    prereg = json.loads(PREREG.read_text(encoding="utf-8"))
+    prereg = json.loads(
+        preregistration_path.read_text(encoding="utf-8")
+    )
     validate_prereg(prereg)
+    recovery_run = (
+        prereg["status"]
+        == "PREREGISTERED_T185B_JIT_PHASE_DIAGNOSTIC_RECOVERY"
+    )
 
-    WORK.mkdir(parents=True)
+    work.mkdir(parents=True)
     playground = Path(prereg["playground"]["path"])
     base_playground = Path(prereg["playground"]["base_path"])
     reference = Path(prereg["assets"]["reference_features"]["path"])
@@ -205,27 +224,27 @@ def main() -> int:
         mode="default_off",
         playground=base_playground,
         reference=reference,
-        output=WORK / "base_default_off.json",
+        output=work / "base_default_off.json",
     )
     composed_default = run_worker(
         mode="default_off",
         playground=playground,
         reference=reference,
-        output=WORK / "composed_default_off.json",
+        output=work / "composed_default_off.json",
     )
     enabled = run_worker(
         mode="enabled",
         playground=playground,
         reference=reference,
-        output=WORK / "enabled_contract.json",
+        output=work / "enabled_contract.json",
     )
 
-    t112.CPU_SOURCE = CPU_SOURCE
+    t112.CPU_SOURCE = cpu_source
     source, remap = t112.cpu_remap(source_path, topology)
     command = training_command(
         playground=playground,
-        output=OUTPUT,
-        restore=CPU_SOURCE,
+        output=output,
+        restore=cpu_source,
         reference=reference,
         gate_asset=gate_asset,
     )
@@ -241,7 +260,7 @@ def main() -> int:
         timeout=1800,
     )
     elapsed = time.monotonic() - started
-    log = WORK / "training.log"
+    log = work / "training.log"
     log.write_text(completed.stdout, encoding="utf-8", newline="\n")
     if completed.returncode != 0:
         raise RuntimeError(
@@ -250,12 +269,12 @@ def main() -> int:
         )
     checkpoints = {
         int(path.name.rsplit("_", 1)[1]): path
-        for path in OUTPUT.iterdir()
+        for path in output.iterdir()
         if path.is_dir()
     }
     graphs = {
         int(path.stem.rsplit("_", 1)[1]): path
-        for path in OUTPUT.glob("*.onnx")
+        for path in output.glob("*.onnx")
     }
     if sorted(checkpoints) != [0, 1024] or sorted(graphs) != [0, 1024]:
         raise RuntimeError("T185 export steps changed")
@@ -289,7 +308,7 @@ def main() -> int:
         if name.startswith("2/params/")
     }
     events = t55.all_scalar_events(
-        next(OUTPUT.glob("events.out.tfevents*"))
+        next(output.glob("events.out.tfevents*"))
     )
     graph_contracts = {
         str(step): {
@@ -394,12 +413,24 @@ def main() -> int:
     passed = not failed
     result: dict[str, Any] = {
         "schema_version": (
-            "open_duck.t185_in_episode_single_support_cpu_result.v1"
+            (
+                "open_duck.t185b_in_episode_single_support_cpu_result.v1"
+                if recovery_run
+                else "open_duck.t185_in_episode_single_support_cpu_result.v1"
+            )
         ),
         "status": (
-            "PASS_T185_IN_EPISODE_SINGLE_SUPPORT_CPU_CONTRACT"
+            (
+                "PASS_T185B_IN_EPISODE_SINGLE_SUPPORT_CPU_CONTRACT"
+                if recovery_run
+                else "PASS_T185_IN_EPISODE_SINGLE_SUPPORT_CPU_CONTRACT"
+            )
             if passed
-            else "HOLD_T185_IN_EPISODE_SINGLE_SUPPORT_CPU_CONTRACT"
+            else (
+                "HOLD_T185B_IN_EPISODE_SINGLE_SUPPORT_CPU_CONTRACT"
+                if recovery_run
+                else "HOLD_T185_IN_EPISODE_SINGLE_SUPPORT_CPU_CONTRACT"
+            )
         ),
         "decision": (
             prereg["decision_rule"]["pass"]
@@ -426,7 +457,7 @@ def main() -> int:
             "final_checkpoint": t20.directory_receipt(checkpoints[1024]),
             "graphs": graph_contracts,
             "event_file": t20.receipt(
-                next(OUTPUT.glob("events.out.tfevents*"))
+                next(output.glob("events.out.tfevents*"))
             ),
         },
         "tree_contract": {
@@ -457,14 +488,18 @@ def main() -> int:
         },
     }
     result["result_sha256"] = t20.canonical_sha256(result)
-    RESULT.write_text(
+    result_path.write_text(
         json.dumps(result, allow_nan=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
         newline="\n",
     )
-    MARKDOWN.write_text(
-        "# T185 in-episode bilateral single-support CPU result\n\n"
-        f"- Status: `{result['status']}`\n"
+    markdown_path.write_text(
+        (
+            "# T185B in-episode bilateral single-support CPU result\n\n"
+            if recovery_run
+            else "# T185 in-episode bilateral single-support CPU result\n\n"
+        )
+        + f"- Status: `{result['status']}`\n"
         f"- Decision: `{result['decision']}`\n"
         f"- Failed checks: `{failed}`\n"
         f"- Environment side counts: `{enabled['side_counts']}`\n"

@@ -4734,3 +4734,17 @@ Do not proceed to grounded walking until low-risk gates pass.
   zero formal behavior cells. Pass earns only T186 hosted preregistration.
   No hosted training, policy selection, deployment audit, Gate 5, or hardware
   is authorized.
+- 2026-07-30: The first T185 CPU launch stops before optimizer construction.
+  Its enabled environment contract passes `9/10` checks over `7,168`
+  transitions, including exact phase indices `2/15`, reference contacts,
+  the `27`-tick hold, support-only prefix reward, same-episode locomotion
+  resume, and the `115`-D ABI. The only miss is the diagnostic's expected
+  phase vector: it used scalar eager trigonometry while the environment used
+  batched JIT trigonometry, differing by at most
+  `2.384185791015625e-07`. Recovery status:
+  `INVALIDATE_T185_PHASE_VECTOR_DIAGNOSTIC_BEFORE_OPTIMIZER`. The correction
+  must use the same JIT/vmap path and retain exact equality; it may not add a
+  tolerance or change the mechanism. Optimizer / behavior / hosted / robot
+  execution remains `0/0/0/0`. This earns only T185B recovery
+  preregistration, not a rerun, training, deployment audit, Gate 5, or
+  hardware.
