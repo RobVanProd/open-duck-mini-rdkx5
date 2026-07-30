@@ -4887,3 +4887,18 @@ Do not proceed to grounded walking until low-risk gates pass.
   Behavior evaluation, checkpoint selection, deployment audit, Gate 5, and
   robot/RDK access remain unauthorized. The one hosted training launch is
   now earned.
+- 2026-07-30: The one T186 L4 continuation completes in `1,561.835` seconds,
+  recovers all three exports, and the session is stopped with no active Colab
+  runtime remaining. The local archive is `8,526,094` bytes with SHA-256
+  `f0585378...56c0294`; result and archive hashes match the completed launch
+  receipt. T187 CPU validation then passes every check under result SHA-256
+  `c34862bf...307f0966`: step zero restores bit-exact to T170 half, both
+  nonzero checkpoints update only the two allowed
+  `negative_adapter_location` leaves plus every critic leaf, mature actor and
+  normalizer remain bit-exact, all trees are finite, and all three
+  `115/14/64` stateful ONNX graphs pass 256-tick CPU chains. All three hosted
+  evaluations have finite positive balance/left/right support metrics,
+  terminal prefix-active is zero, and resumed original reward is positive.
+  No behavior cell has run. This earns only T188 post-export composition
+  preregistration; policy selection, deployment audit, Gate 5, and hardware
+  remain unauthorized.
