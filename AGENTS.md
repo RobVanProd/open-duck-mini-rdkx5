@@ -4586,3 +4586,11 @@ Do not proceed to grounded walking until low-risk gates pass.
   single CPU behavior cell at the failure shared by both endpoints:
   positive-Z, half, P31-34, x=`.077`. No other cell, alternate alpha,
   training, Colab, deployment audit, Gate 5, or hardware is authorized.
+- 2026-07-30: T182 preregisters exactly one fresh CPU behavior cell under
+  contract SHA-256 `95c704eb...bd511d2`: T181 alpha-0.20 half,
+  positive torso-COM Z, P31-34, x=`.077`. This is the unique cell failed by
+  both alpha endpoints, so it is the cheapest falsifier for an interior
+  interpolation. Pass earns only T183 dual-condition matrix
+  preregistration; failure permanently closes alpha `0.20`. No retry,
+  alternate alpha, optimizer, hosted compute, deployment audit, Gate 5, or
+  hardware is authorized.
