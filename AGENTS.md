@@ -4610,3 +4610,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   unchanged. A fresh cache is mandatory. Pass/fail authority remains exactly
   T182's; no retry, alternate alpha, training, Colab, deployment audit,
   Gate 5, or hardware is authorized.
+- 2026-07-30: T182B completes as a genuine policy failure. Every calibration,
+  handoff, applied-target, response, context, and override-readback check
+  passes, and the cell keeps tracking (`0.16768` rad p95), rate, and
+  saturation checks green, but it falls after `476/600` ticks with minimum
+  base height `-0.00442` m. Diagnostic peak torque/current reach
+  `2.47463` N.m / `3.15428` A. The canonical result, manifest, and trace
+  receipts independently reproduce; result SHA-256:
+  `4f191b6c...7006f958`. Decision:
+  `CLOSE_COUNT_WEIGHTED_ALPHA_0P2_WITHOUT_MORE_BEHAVIOR`. Alpha `0.20` is
+  permanently closed with no retry or alternate interpolation coefficient.
+  This earns only a separately preregistered CPU-only context-gated head
+  feasibility study. No optimizer, hosted compute, deployment audit, Gate 5,
+  or hardware is authorized.
