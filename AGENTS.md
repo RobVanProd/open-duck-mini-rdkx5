@@ -5076,3 +5076,12 @@ Do not proceed to grounded walking until low-risk gates pass.
   preregistered, saved-event-only namespace attribution may determine
   whether this is a reporting defect; no optimizer retry, behavior, hosted
   compute, deployment audit, Gate 5, or hardware is authorized.
+- 2026-07-30: T193B preregisters one immutable-event-only namespace recovery
+  under contract SHA-256 `9301db26...e0f4d60f`. It preserves all fourteen
+  substantive T193 checks and reads the already-frozen event file exactly
+  once. The only correction is to read environment metrics from the emitted
+  `eval/episode_t193/*` namespace instead of the nonexistent
+  `eval/episode_reward/t193/*` namespace. The support-reward tags remain
+  unchanged. It executes no simulator transition, optimizer step, model
+  inference, behavior cell, hosted compute, deployment audit, Gate 5, or
+  hardware.
