@@ -4748,3 +4748,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   execution remains `0/0/0/0`. This earns only T185B recovery
   preregistration, not a rerun, training, deployment audit, Gate 5, or
   hardware.
+- 2026-07-30: T185B preregisters the checker-only recovery under contract
+  SHA-256 `9e9346ef...6b10054`. The expected phase vector now uses the same
+  `jax.jit(jax.vmap(phase_vector))` path as the batched environment and still
+  requires exact equality (`tolerance = 0`). Phase indices, contacts,
+  prefix, mechanism, playground, CPU contract, decision rule, and authority
+  are unchanged. Execution paths are isolated so no T185 artifact can be
+  overwritten. The authorized execution is one fresh T185B CPU contract:
+  exact default-off comparison, `256 x 28` environment transitions, and a
+  `1,024`-step optimizer/export smoke with zero formal behavior cells. Pass
+  earns only T186 hosted preregistration; hosted training, policy selection,
+  deployment audit, Gate 5, and hardware remain unauthorized.
