@@ -1,0 +1,107 @@
+{
+  "authority": {
+    "behavior_matrix": false,
+    "execute_one_saved_result_recovery": true,
+    "gate5": false,
+    "robot_or_rdk": false,
+    "training": false
+  },
+  "checks": {
+    "all_three_bind_exactly_allowed_pair": true,
+    "all_three_preserve_graph_and_other_initializers": true,
+    "prior_t172_passed_with_same_diagnostic_false": true,
+    "prior_t196b_passed_with_same_diagnostic_false": true,
+    "routing_and_inactive_exactness_green": true,
+    "t205_only_output_sensitivity_assertion_failed": true,
+    "zero_new_transform_inference_behavior_or_training": true
+  },
+  "classification": "NON_REQUIRED_RANDOM_FINAL_OUTPUT_SENSITIVITY_ASSERTION",
+  "corrected_contract": {
+    "all_nodes_and_other_initializers_exact": true,
+    "all_three_graphs_change_exactly": [
+      "nominal_condition_negative_adapter_bias",
+      "nominal_condition_negative_adapter_weight"
+    ],
+    "all_three_source_bindings_exact": true,
+    "final_output_difference_on_random_independent_state": "diagnostic_only",
+    "inactive_routes_and_x0_bit_exact": true,
+    "new_inference_samples": 0,
+    "new_transform_operations": 0,
+    "scientific_transform_change": false,
+    "y_negative_contexts_route_nominal": true
+  },
+  "decision_rule": {
+    "fail": "HOLD_T203_BEHAVIOR_AND_AUDIT_COMPOSITION",
+    "pass": "EARN_T206_T203_NOMINAL_BEHAVIOR_MATRIX_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "inference_samples": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "saved_result_files": 0,
+    "transform_operations": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 8590,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t205b_output_sensitivity_recovery_preregistration.py",
+      "sha256": "d5ad156ec9470709b629cf3d68228731e898cefcc263a0d21d3bcafac36254a3"
+    },
+    "runner": {
+      "bytes": 6085,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t205b_output_sensitivity_recovery.py",
+      "sha256": "218a72364ac299c310fe7e53847185e6a4b4e680c8447749fa14fc011883f2da"
+    },
+    "t172_result": {
+      "bytes": 237840,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t172_t170_postexport_composition_result.json",
+      "sha256": "f78f6f3d8f485d56d9bb073c2456bdf7955225c3003a852d2c84ee0210244c49"
+    },
+    "t196_result": {
+      "bytes": 238171,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t196_t194_postexport_composition_result.json",
+      "sha256": "17b77229f5d81dc383c61fe943f5348b17c2191d4414a5e844cf7be0bd978485"
+    },
+    "t196b_result": {
+      "bytes": 1787,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t196b_step_zero_binding_recovery_result.json",
+      "sha256": "f75390d9789ea09448021e8c1c8b7e2dfb37c42b2d7786272334a80890cfba4f"
+    },
+    "t205_preregistration": {
+      "bytes": 88824,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t205_t203_postexport_composition_preregistration.json",
+      "sha256": "6724f07529ea62469b9550537a13b03d152f7412d8867736e449f18a72bab212"
+    },
+    "t205_result": {
+      "bytes": 238216,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t205_t203_postexport_composition_result.json",
+      "sha256": "bd9227b363b2f435259497c835c41dfa1032438b967ae5055b3607536fe275b5"
+    }
+  },
+  "observed": {
+    "explanation": "The synthetic comparison asks final hard-projected actions to differ from the base. That is not a necessary structural composition property: the nominal expert is hidden-gated and later action/rate projections can mask an internal adapter difference. T172 and T196 recorded the same false diagnostic; neither used it as a composition gate.",
+    "t172_same_diagnostic_false": true,
+    "t196_same_diagnostic_false": true,
+    "t205_failed_check": "both_y_negative_fits_exercise_changed_moving_action",
+    "t205_preserved_checks": {
+      "all_graphs_change_only_nominal_pair": true,
+      "all_inactive_routes_bit_exact": true,
+      "all_initializer_names_exact": true,
+      "all_initializers_finite": true,
+      "all_nodes_byte_exact": true,
+      "all_other_initializers_exact": true,
+      "all_outputs_finite": true,
+      "all_source_bindings_exact": true,
+      "all_x0_outputs_bit_exact": true,
+      "both_y_negative_contexts_route_nominal": true,
+      "cpu_only": true,
+      "three_graphs": true
+    }
+  },
+  "preregistered_contract_sha256": "ebea4bde410e453bc94753f75dc7b76d816000810edfef94a4241286e4b32ae1",
+  "schema_version": "open_duck.t205b_output_sensitivity_recovery_preregistration.v1",
+  "status": "PREREGISTERED_T205B_OUTPUT_SENSITIVITY_RECOVERY"
+}
