@@ -4689,3 +4689,10 @@ Do not proceed to grounded walking until low-risk gates pass.
   clean T184B saved-trace rerun with a `27`-tick support-loss allowance and a
   `54`-tick terminal window. No new behavior, optimizer, hosted compute,
   deployment audit, Gate 5, or hardware is authorized.
+- 2026-07-30: T184B preregisters that saved-trace recovery under contract
+  SHA-256 `68972edc...b31f3be6`. It changes only the gait-period-dependent
+  constants from `20/40/20` to `27/54/27`; the `13` traces, expected outcomes,
+  population, contact mapping, decision rule, and authority remain frozen.
+  T184B execution is saved-trace CPU analysis only. No new behavior,
+  curriculum implementation, optimizer, hosted compute, deployment audit,
+  Gate 5, or hardware is authorized.
