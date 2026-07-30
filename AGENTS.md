@@ -5356,3 +5356,11 @@ Do not proceed to grounded walking until low-risk gates pass.
   zero times, eight strata, `256` environments, and `2,007,040` steps.
   No optimizer, behavior, hosted session, Gate 5, or hardware ran while
   packaging. A separate hash-frozen Colab CLI launch contract is required.
+- 2026-07-30: T203's Colab CLI launch contract passes every check. It
+  authorizes one fresh session named
+  `t203-predicted-roll-risk-20260730` on exactly one L4, with the exact
+  `4,340,024`-byte package, pinned software, `43,200`-second hard wall, and
+  a conservative maximum `6.42` compute units at the previously measured
+  rate. Result, archive, and launch receipt must all be recovered before the
+  session stops. Retry, same-run resume, checkpoint selection, behavior,
+  Gate 5, and hardware remain unauthorized.
