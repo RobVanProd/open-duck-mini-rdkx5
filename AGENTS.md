@@ -4555,3 +4555,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   cosine threshold, equations, and decision rules are identical to T180.
   Execution remains saved-trace CPU inference only, with no behavior,
   optimizer, hosted compute, deployment audit, Gate 5, or hardware.
+- 2026-07-30: T180B replays all `12 x 162` saved-state banks with exact
+  own-graph action equality (`0` maximum error). The negative-Y rescue and
+  positive-Z regressions share `head_pitch` as the aggregate dominant joint,
+  with signed-mean cosine `0.916828`; source-to-T175 action differences begin
+  at ticks `11-15`, reach up to `0.12` normalized action, and are distributed
+  enough that no single-joint clamp is supported. Classification:
+  `SHARED_HEAD_DIRECTION_CONTEXT_AMPLITUDE_TRADEOFF`. Result SHA-256:
+  `7dcdd2e2...abbea3c9`. This earns only a separately preregistered T181
+  one-dimensional head-interpolation feasibility screen. No interpolation,
+  behavior test, training, Colab, deployment audit, Gate 5, or hardware is
+  yet authorized.
