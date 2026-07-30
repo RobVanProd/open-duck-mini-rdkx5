@@ -5248,3 +5248,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   `RETURN_TO_MECHANISM_SELECTION_WITHOUT_COMMAND_CHORD`. No chord wrapper,
   behavior, training, full R2, deployment audit, Gate 5, or hardware is
   earned.
+- 2026-07-30: T201 preregisters a saved-trace predicted-roll-risk
+  diagnostic under contract SHA-256 `57caf93f...11ef59e9f`. It freezes all
+  `16` T198 traces and computes the runtime-observable signal
+  `abs(roll + 0.08 * roll_rate)`. The threshold is derived once as
+  `nextafter(maximum over all rows of all 15 passing cells, +infinity)`.
+  A training-only CPU contract is earned only if every pass has zero
+  exceedance while the failure has at least four exceedance rows, first
+  appearing at least four ticks before termination. No simulator,
+  optimizer, hosted compute, deployment graph change, Gate 5, or hardware
+  is authorized by this diagnostic.
