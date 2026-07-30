@@ -5317,3 +5317,11 @@ Do not proceed to grounded walking until low-risk gates pass.
   `b5ce1507...f018027`. This is not yet reclassified; a frozen read-only T202B
   namespace-recovery audit is required. No rerun, hosted training, behavior,
   Gate 5, or hardware is authorized.
+- 2026-07-30: T202B preregisters the immutable event-file namespace recovery
+  under contract SHA-256 `7c979ce3...3c30c703d`. It may classify T202's hold
+  as reporting-only only if the frozen event file contains exactly two finite
+  events for cost, risk, excess, and original clipped reward under the actual
+  emitted namespaces, with positive cost/excess, while the anticipated
+  reward-prefixed diagnostics are absent and every non-reporting T202 check
+  remains green. It runs no simulator, optimizer, behavior, hosted compute,
+  Gate 5, or hardware.
