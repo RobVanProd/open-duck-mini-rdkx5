@@ -4792,3 +4792,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   hosted compute, Gate 5, or hardware occurs. Only a separately
   preregistered, saved-artifact metric-readback recovery may reconsider the
   check; no optimizer rerun or hosted training is authorized.
+- 2026-07-30: The read-only T185C attribution passes every frozen check and
+  classifies the sole hold as
+  `POSTRUN_METRIC_NAMESPACE_AND_TERMINAL_STATE_CHECKER_MISMATCH`. At both
+  evaluations, balance, left-support, and right-support metrics are finite
+  and positive; the actual terminal `eval/episode_t185/prefix_active` values
+  are exactly `[0.0, 0.0]`; resumed original reward is finite and positive;
+  and the requested `eval/episode_reward/t185/prefix_active` tag is absent.
+  Attribution SHA-256: `d9296dd3...83137da`. No simulator, optimizer,
+  behavior, hosted, or robot execution occurs. This earns only a separately
+  preregistered T185D immutable-event recovery, not an optimizer rerun,
+  training, deployment audit, Gate 5, or hardware.
