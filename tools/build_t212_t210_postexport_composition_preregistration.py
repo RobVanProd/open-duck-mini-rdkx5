@@ -40,6 +40,7 @@ def main() -> int:
 
     paths = {
         "t211": ANALYSIS / "t211_t210_recovered_training_validation.json",
+        "t211b": ANALYSIS / "t211b_cost_init_backend_recovery_result.json",
         "t205b": ANALYSIS / "t205b_output_sensitivity_recovery_result.json",
         "t172": ANALYSIS / "t172_t170_postexport_composition_result.json",
         "t164": ANALYSIS / "t164_prior_repair_composition_result.json",
@@ -100,14 +101,18 @@ def main() -> int:
         **{name: receipt(path) for name, path in paths.items()},
     }
     checks = {
-        "t211_recovery_green": (
+        "t211_recovery_green_via_t211b": (
             t211["status"]
-            == "PASS_T211_T210_RECOVERED_TRAINING_VALIDATION"
-            and not t211["failed_checks"]
-            and t211["decision"]
+            == "HOLD_T211_T210_RECOVERED_TRAINING_VALIDATION"
+            and t211["failed_checks"]
+            == ["step_zero_cost_tree_reproducible_bit_exact"]
+            and values["t211b"]["status"]
+            == "PASS_T211B_COST_INIT_BACKEND_RECOVERY"
+            and not values["t211b"]["failed_checks"]
+            and values["t211b"]["decision"]
             == (
-                "EARN_T212_T210_POSTEXPORT_COMPOSITION_"
-                "PREREGISTRATION_ONLY"
+                "RECOVER_T211_AND_EARN_T212_T210_POSTEXPORT_"
+                "COMPOSITION_PREREGISTRATION_ONLY"
             )
         ),
         "prior_composition_contract_green": (

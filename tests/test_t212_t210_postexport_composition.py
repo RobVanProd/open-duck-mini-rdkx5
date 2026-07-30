@@ -16,7 +16,7 @@ def test_t212_contract_source() -> None:
     runner = (
         ROOT / "tools/run_t212_t210_postexport_composition.py"
     ).read_text(encoding="utf-8")
-    assert "PASS_T211_T210_RECOVERED_TRAINING_VALIDATION" in builder
+    assert "PASS_T211B_COST_INIT_BACKEND_RECOVERY" in builder
     assert "T164_COMPOSED_FINAL_FOR_ALL_THREE_T210_EXPORTS" in builder
     assert "output_sensitivity_is_diagnostic_only" in builder
     assert "t172.transform" in runner

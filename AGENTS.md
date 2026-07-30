@@ -5453,3 +5453,12 @@ Do not proceed to grounded walking until low-risk gates pass.
   `1.490116119e-8`, while six of eight leaves are bit-exact. Do not
   reclassify the hold by assertion; a preregistered float32-resolution
   recovery must pass before composition or behavior.
+- 2026-07-30: T211B passes the preregistered read-only backend-
+  initialization recovery under result SHA-256
+  `e83858ea...dde61ae`. The T210 cost critic is structure-exact and finite;
+  only two of eight leaves differ from the CPU smoke initialization, with
+  maximum absolute delta `1.490116119e-8`, exactly `0.125` of the frozen
+  float32 machine-epsilon bound `1.192092896e-7`. No optimizer, simulator,
+  ONNX inference, behavior, hosted compute, or robot access ran. This
+  recovers T211 and earns only T212's post-export composition
+  preregistration.
