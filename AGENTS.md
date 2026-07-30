@@ -5012,3 +5012,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   `af2c9641...6c75d0370`. This earns only T192's one-cell CPU feasibility
   preregistration, not a transform, training, deployment audit, Gate 5, or
   hardware.
+- 2026-07-30: T192 preregisters one exact CPU behavior cell under contract
+  SHA-256 `d027c8ad...3b82598a`: T186 half controls the sealed
+  Y-negative/P31-34/x=`.080` failure through tick `519`, then the
+  ABI-identical T186 final graph takes over at tick `520` for the final
+  `27`-tick gait period. Ticks `0-519` must match every common field in the
+  sealed failure trace exactly, the switch schedule must be exact, and
+  recurrent hidden/previous-action state must remain continuous. Pass earns
+  only a checkpoint-consistency teacher-contract preregistration; failure
+  closes late head switching and points to a gait-state-distribution
+  curriculum. One fresh cell, no retry, no optimizer, hosted compute,
+  deployment audit, Gate 5, or hardware is authorized.
