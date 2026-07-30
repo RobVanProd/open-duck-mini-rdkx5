@@ -179,7 +179,7 @@ def main() -> int:
             )
             == 2
             and all(
-                block["block_green"]
+                block["result"]["block_green"]
                 for block in t225["blocks"]
                 if block["condition_id"] == "TORSO_COM_Z_POS"
                 and block["checkpoint_id"]
