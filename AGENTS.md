@@ -5197,3 +5197,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   mandatory with no retry or selection. Pass earns only T199's full-R2
   preregistration; training, hosted compute, deployment audit, Gate 5, and
   hardware remain unauthorized.
+- 2026-07-30: T198 completes the full targeted matrix at `15/16` and closes
+  the T194 corrected dynamic-reference-support continuation under the
+  preregistered both-checkpoint rule. T194 half/P31-34/x=`.077` walks with
+  bilateral transitions, zero saturation and rate excess, and tracking p95
+  `0.164085650` rad, but falls after `308/600` ticks with minimum base
+  height `0.053843658` m. Both final-checkpoint blocks pass `8/8`, and the
+  former T186 x=`.080` miss is repaired, but checkpoint persistence still
+  fails. Result SHA-256: `6ade0e77...dbd0f04d`; decision
+  `CLOSE_T194_CORRECTED_DYNAMIC_REFERENCE_SUPPORT_CONTINUATION`. Full R2,
+  deployment audit, Gate 5, and hardware remain closed.
