@@ -37,6 +37,10 @@ def main() -> int:
     t171_graphs = {
         int(row["step"]): row for row in values["t171"]["exports"]["onnx"]
     }
+    t171_checkpoints = {
+        int(row["step"]): row
+        for row in values["t171"]["exports"]["checkpoints"]
+    }
     t164_final = next(
         row["structure"]["transformed"]
         for row in values["t164"]["graphs"]
@@ -46,8 +50,10 @@ def main() -> int:
         {
             "step": step,
             "raw": {
-                "path": t171_graphs[step]["path"],
-                "bytes": Path(t171_graphs[step]["path"]).stat().st_size,
+                "path": f"{t171_checkpoints[step]['path']}.onnx",
+                "bytes": Path(
+                    f"{t171_checkpoints[step]['path']}.onnx"
+                ).stat().st_size,
                 "sha256": t171_graphs[step]["sha256"],
             },
             "base": t164_final,
