@@ -5063,3 +5063,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   a 1,024-step eight-stratum restore/update/export smoke. It authorizes only
   that CPU contract, not hosted training, formal behavior, deployment audit,
   Gate 5, or hardware.
+- 2026-07-30: T193's formal CPU execution records a hold under result
+  SHA-256 `5ff3fc91...ab78bcb5`: `14/15` checks pass, including default-off
+  bit equality, exact enabled reward wiring, bilateral 108-tick support,
+  exact T170 restore, negative-head-only actor updates, protected
+  actor/normalizer equality, finite critic updates, step-zero ONNX equality,
+  and both export chains. The sole failed check queried reference-request
+  metrics under `eval/episode_reward/t193/...`; the immutable event file
+  emits those environment metrics under `eval/episode_t193/...`, while all
+  three support-reward tags are already finite and positive at both
+  evaluations. The formal T193 result remains a hold. Only a separately
+  preregistered, saved-event-only namespace attribution may determine
+  whether this is a reporting defect; no optimizer retry, behavior, hosted
+  compute, deployment audit, Gate 5, or hardware is authorized.
