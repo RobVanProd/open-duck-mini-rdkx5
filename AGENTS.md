@@ -5113,3 +5113,11 @@ Do not proceed to grounded walking until low-risk gates pass.
   No credentials or robot material are present. No hosted session or
   optimizer execution has occurred; one launch still requires a green
   launch contract.
+- 2026-07-30: The first T194 launch contract holds before execution on one
+  source-text check: the executor constructs the correct driver filename
+  from two adjacent string literals, while the verifier requires the
+  contiguous literal. All package, manifest, L4, pinned-software,
+  no-retry, full-member verification, and robot-absence checks are green.
+  No Colab session, optimizer step, or behavior cell was opened. Only a
+  launch-verifier/executor spelling recovery is admissible; the frozen
+  package and scientific contract may not change.
