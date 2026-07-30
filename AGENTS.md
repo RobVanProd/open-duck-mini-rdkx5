@@ -4540,3 +4540,11 @@ Do not proceed to grounded walking until low-risk gates pass.
   cosine plus dominant-joint equality. It runs no new behavior and authorizes
   only a separately preregistered T181 CPU feasibility screen, never its
   execution, training, Colab, deployment audit, Gate 5, or hardware.
+- 2026-07-30: The first T180 launch produced no result. Its builder bound
+  positive-Z T177 comparators by checkpoint/fit but omitted condition ID, so
+  they pointed at floor-friction traces. The frozen calibration-context SHA
+  check rejected row 1 before any attribution (`0` replay rows, behavior,
+  optimizer, hosted compute, or hardware). Recovery SHA-256:
+  `1e53786c...0f369d0`. Only a fresh T180B preregistration with exact
+  condition/checkpoint/fit binding is authorized; all cases, prefixes,
+  thresholds, and decision rules must remain unchanged.
