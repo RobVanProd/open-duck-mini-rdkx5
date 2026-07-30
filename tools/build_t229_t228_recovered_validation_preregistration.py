@@ -158,10 +158,10 @@ def main() -> int:
         "launch_receipt": receipt(receipt_path),
         "recovery_archive": receipt(archive_path),
         "extracted_work": directory_receipt(EXTRACTED),
-        "source_checkpoint": receipt(source),
+        "source_checkpoint": directory_receipt(source),
         "source_raw_onnx": receipt(source_raw),
-        "policy_cpu_template": receipt(policy_template),
-        "cost_cpu_template": receipt(cost_template),
+        "policy_cpu_template": directory_receipt(policy_template),
+        "cost_cpu_template": directory_receipt(cost_template),
     }
     basis: dict[str, Any] = {
         "schema_version": (

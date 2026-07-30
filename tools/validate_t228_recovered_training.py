@@ -77,22 +77,17 @@ def main() -> int:
     ):
         raise RuntimeError("T229 preregistration identity changed")
     for name, item in prereg["frozen_inputs"].items():
-        if name != "extracted_work":
+        if item.get("kind") != "directory":
             verify(item, f"frozen_inputs.{name}")
-    extracted_receipt = prereg["frozen_inputs"]["extracted_work"]
-    extracted_path = Path(extracted_receipt["path"])
-    extracted_files = [
-        item for item in extracted_path.rglob("*") if item.is_file()
-    ]
-    if (
-        extracted_receipt["kind"] != "directory"
-        or len(extracted_files) != extracted_receipt["file_count"]
-        or sum(item.stat().st_size for item in extracted_files)
-        != extracted_receipt["bytes"]
-        or base.directory_sha256(extracted_path)
-        != extracted_receipt["sha256"]
-    ):
-        raise RuntimeError("frozen_inputs.extracted_work changed")
+            continue
+        directory = Path(item["path"])
+        files = [path for path in directory.rglob("*") if path.is_file()]
+        if (
+            len(files) != item["file_count"]
+            or sum(path.stat().st_size for path in files) != item["bytes"]
+            or base.directory_sha256(directory) != item["sha256"]
+        ):
+            raise RuntimeError(f"frozen_inputs.{name} changed")
 
     frozen = prereg["frozen_inputs"]
     hosted_path = Path(frozen["hosted_result"]["path"])
