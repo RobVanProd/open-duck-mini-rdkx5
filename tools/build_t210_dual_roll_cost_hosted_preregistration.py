@@ -114,11 +114,11 @@ def main() -> int:
         "pure_v127_lagrangian_engine_frozen": (
             inventory[
                 "playground/common/winner_v127_constrained_ppo_train.py"
-            ]
+            ]["sha256"]
             == "b749d956c4651e5a9037b542e946fcc81425915c17495e1b68ee27f4a7435615"
             and inventory[
                 "playground/common/winner_v127_constrained_ppo_losses.py"
-            ]
+            ]["sha256"]
             == "996e292f76a4071f2c3117b0f1dacd9b1a3bf9e31d6d97128ce2f054f9bc6ff1"
         ),
         "all_inputs_present": all(
