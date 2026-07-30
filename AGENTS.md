@@ -5506,3 +5506,16 @@ Do not proceed to grounded walking until low-risk gates pass.
   that repeating a single-support curriculum is not admissible. This earns
   only T215B's CPU software-contract preregistration for the axis-complete
   tilt cost; no training, Colab, behavior, Gate 5, or hardware is authorized.
+- 2026-07-30: T215B passes the axis-complete predicted-tilt CPU software
+  contract with no failed checks under result SHA-256
+  `a6e2f57a...8d56e819`. Default-off trajectories, the `115/14/64` ABI,
+  protected T203-half restore, step-zero raw ONNX, normalizer, mature actor,
+  and deployment graph remain exact. Both synthetic roll-only and pitch-only
+  paths activate the correct box face with analytic/recorded cost and reward
+  errors at or below `2.98e-8`; only the negative adapter pair plus separate
+  reward/cost critics update in the sole `1,024`-step CPU smoke. The live
+  smoke encounters zero cost, so lambda remains zero exactly; the inherited
+  synthetic dual contract proves initialization and monotone quarter-run
+  convergence. This earns only one T216 hosted-continuation preregistration.
+  No hosted session, formal behavior, deployment audit, Gate 5, or hardware
+  is yet authorized.
