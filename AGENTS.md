@@ -5095,3 +5095,12 @@ Do not proceed to grounded walking until low-risk gates pass.
   repeated. This earns only one T194 hosted-continuation preregistration;
   it does not yet authorize launch, behavior evaluation, promotion,
   deployment audit, Gate 5, or hardware.
+- 2026-07-30: T194 preregisters one hash-frozen L4 continuation under
+  contract SHA-256 `3a9ff4a8...0a04b4d6`. It restores exact T170 half,
+  keeps the original eight-stratum command/model recipe, enables only the
+  corrected `[32:34]` reference-contact support objective throughout gait,
+  and trains only the existing `negative_adapter_location` pair plus the
+  critic. Exports are frozen at `0/1,003,520/2,007,040`; both post-update
+  checkpoints must pass, with no selection, retry, or same-run resume.
+  Packaging and one exact launch are conditional on their own green
+  contracts. Gate 5 and all robot access remain closed.
