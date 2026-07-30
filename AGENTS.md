@@ -5258,3 +5258,15 @@ Do not proceed to grounded walking until low-risk gates pass.
   appearing at least four ticks before termination. No simulator,
   optimizer, hosted compute, deployment graph change, Gate 5, or hardware
   is authorized by this diagnostic.
+- 2026-07-30: T201 passes every trace, contiguity, finite-signal, and
+  threshold check and selects predicted-roll risk. The exact 15-pass
+  envelope is `0.354180266` rad; the sole T194 failure first exceeds it at
+  tick `260`, `47` ticks before termination, and remains above it for `40`
+  rows with squared-excess integral `18.593126156`. Every passing row has
+  zero exceedance. Result SHA-256:
+  `1539dba7...a76f47e5d`; decision
+  `EARN_T202_PREDICTED_ROLL_RISK_CPU_CONTRACT_PREREGISTRATION_ONLY`.
+  Because the admissible training source remains exact T170 half rather
+  than a failed T194 checkpoint, a saved-trace source-transfer audit is
+  required before that CPU contract. No behavior, training, hosted compute,
+  full R2, deployment audit, Gate 5, or hardware is yet authorized.
