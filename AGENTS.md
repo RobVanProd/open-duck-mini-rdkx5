@@ -5325,3 +5325,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   reward-prefixed diagnostics are absent and every non-reporting T202 check
   remains green. It runs no simulator, optimizer, behavior, hosted compute,
   Gate 5, or hardware.
+- 2026-07-30: T202B passes and classifies the T202 CPU hold as reporting
+  namespace only. The actual cost events are
+  `0.023624320/0.031832099`, the excess events are
+  `0.025786888/0.031251509`, and all cost/risk/excess/original-reward values
+  are finite across both evaluations. The anticipated reward-prefixed
+  diagnostics are absent exactly as frozen, while every non-reporting T202
+  check remains green. Result SHA-256:
+  `75d3f3f4...5b662e03d`; decision
+  `EARN_T203_PREDICTED_ROLL_RISK_HOSTED_PREREGISTRATION_ONLY`. This earns
+  only a no-retry hosted-package preregistration; no hosted execution,
+  behavior, full R2, deployment audit, Gate 5, or hardware is yet authorized.
