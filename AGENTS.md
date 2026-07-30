@@ -4530,3 +4530,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   its prior Y-negative failure remains. It earns only a separately
   preregistered T180 CPU transform-route attribution. No training, Colab,
   deployment audit, Gate 5, or hardware is authorized.
+- 2026-07-30: T180 preregisters exact CPU graph replay attribution under
+  contract SHA-256 `900683b9...2a19978a`. It freezes six decisive paired
+  cells: the negative-Y rescue, four positive-Z regressions introduced by
+  T175, and the positive-Z failure shared with source. Both source and T175
+  graphs are evaluated on the same recorded recurrent states for the first
+  `162` ticks of both trajectories. Own-graph replay must agree within
+  `1e-6`; the route classification uses a frozen `0.90` signed-direction
+  cosine plus dominant-joint equality. It runs no new behavior and authorizes
+  only a separately preregistered T181 CPU feasibility screen, never its
+  execution, training, Colab, deployment audit, Gate 5, or hardware.
