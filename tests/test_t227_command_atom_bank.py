@@ -127,3 +127,23 @@ def test_t227b_retry_defers_activation_past_abi_probe() -> None:
     assert "t227b_command_atom_cpu_contract_v3" in runner
     assert '"prior_environment_contract_green": True' in runner
     assert '"prior_optimizer_steps": 0' in runner
+
+
+def test_t227c_recovers_without_training_rerun() -> None:
+    builder = (
+        ROOT
+        / "tools/build_t227c_recovered_cpu_validation_preregistration.py"
+    ).read_text(encoding="utf-8")
+    runner = (
+        ROOT / "tools/run_t227c_recovered_cpu_validation.py"
+    ).read_text(encoding="utf-8")
+    assert "REPORT_ONLY" not in builder
+    assert "KeyError: 'simulator_transitions'" in builder
+    assert '"optimizer_steps": 0' in builder
+    assert '"rerun_training": False' in builder
+    assert "1024 // (32 * 8) == 4" in builder
+    assert "REPORT_ONLY_ENVIRONMENT_COUNTER_ALIAS" in runner
+    assert '"training_rerun": False' in runner
+    assert "only_t216_negative_adapter_head_changes" in runner
+    assert "graph_abi_and_cpu_chain_exact" in runner
+    assert '"optimizer_steps": 0' in runner
