@@ -4902,3 +4902,11 @@ Do not proceed to grounded walking until low-risk gates pass.
   No behavior cell has run. This earns only T188 post-export composition
   preregistration; policy selection, deployment audit, Gate 5, and hardware
   remain unauthorized.
+- 2026-07-30: T188 preregisters exact post-export composition under contract
+  SHA-256 `219ab4c2...6bee7748`. Each of the three raw T186 exports may
+  replace only T164-final's nominal conditional adapter weight/bias pair.
+  All deployment repairs, nodes, other initializers, inactive routes, x=0
+  outputs, state chain, and ABI must remain exact across the frozen 40
+  calibration contexts and four commands. Execution is CPU inference only
+  with zero behavior, optimizer, hosted compute, or robot access. Pass earns
+  only T189 nominal behavior-matrix preregistration; Gate 5 remains closed.
