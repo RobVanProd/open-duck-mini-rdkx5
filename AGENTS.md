@@ -5152,3 +5152,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   semantics, and performs no optimizer step or behavior cell. Pass earns
   only T197's nominal-behavior preregistration; deployment audit, Gate 5,
   and hardware remain closed.
+- 2026-07-30: T196 composition holds on the same contradictory step-zero
+  assertion previously isolated by T188. T194 step zero is exact T170 half,
+  while T164 final contains an older nominal adapter pair, so exact source
+  binding correctly changes that pair. Every graph changes only the allowed
+  nominal weight/bias pair; all nodes, other initializers, source bindings,
+  inactive routes, x=0 outputs, and finite CPU inference checks pass. Result
+  SHA-256: `e0cb0717...78620d19`. Only a separately preregistered
+  immutable-result correction may recover the known expectation; no
+  transform, inference, behavior, optimizer, hosted compute, Gate 5, or
+  hardware rerun is authorized.
