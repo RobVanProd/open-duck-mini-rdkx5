@@ -4566,3 +4566,13 @@ Do not proceed to grounded walking until low-risk gates pass.
   one-dimensional head-interpolation feasibility screen. No interpolation,
   behavior test, training, Colab, deployment audit, Gate 5, or hardware is
   yet authorized.
+- 2026-07-30: T181 preregisters exactly one count-weighted interpolation
+  between source and T175 under contract SHA-256
+  `523511d3...586e5518`. Its fixed coefficient is
+  `alpha = 1 / (1 + 4) = 0.20`, derived from one T175-only negative-Y rescue
+  versus four source-only positive-Z passes lost by T175. Only the same two
+  nominal adapter-head initializers may change; all nodes and other
+  initializers remain source-exact. No alternate alpha or scalar sweep is
+  allowed. A green CPU graph contract earns only T182 shared-failure
+  single-cell preregistration, not execution, training, Colab, deployment
+  audit, Gate 5, or hardware.
