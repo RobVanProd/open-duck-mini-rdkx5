@@ -4659,3 +4659,14 @@ Do not proceed to grounded walking until low-risk gates pass.
   `CLOSE_EXISTING_HIDDEN_SCORE_CONTEXT_GATE_AND_RETURN_TO_MECHANISM_SELECTION`.
   No threshold retry, feature scan, graph transform, training, deployment
   audit, Gate 5, or hardware is authorized.
+- 2026-07-30: T184 preregisters a CPU-only anatomy test of the bilateral
+  single-support curriculum hypothesis under contract SHA-256
+  `38c0e370...e46823d6`. It freezes the `8` current failures and `5` matched
+  passes across `13` saved traces. A curriculum contract is earned only if
+  every failure follows a left-only or right-only support tick by no more
+  than one `20`-tick gait period, both support sides occur across failures,
+  every passing trace is a complete `600` ticks, and every failing trace is
+  short with terminal `done`. The terminal window is fixed at two gait
+  periods; no feature or threshold search is allowed. No new behavior,
+  curriculum implementation, optimizer, hosted compute, deployment audit,
+  Gate 5, or hardware is authorized.
