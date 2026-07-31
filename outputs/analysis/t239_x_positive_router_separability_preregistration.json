@@ -1,0 +1,84 @@
+{
+  "authority": {
+    "behavior": false,
+    "execute_saved_context_audit": true,
+    "gate5": false,
+    "hosted": false,
+    "robot_or_rdk": false,
+    "router_transform_preregistration": false,
+    "training": false
+  },
+  "checks": {
+    "forty_frozen_contexts_two_fits_twenty_conditions": true,
+    "frozen_t167_family_available": true,
+    "positive_and_control_present": true,
+    "read_only_no_simulator_optimizer_hosted_robot": true,
+    "t238_selected_router_separability_only": true
+  },
+  "classifier": {
+    "combined_direction": "unit(mean of the two per-fit positive-minus-control unit vectors)",
+    "combined_threshold": "midpoint of the minimum positive and maximum negative score over all forty frozen contexts",
+    "control_condition": "ARMATURE_LO",
+    "cross_fit_test": "train p30/test all twenty p31_34 contexts, then reverse",
+    "feature": "calibration_context[1,64]",
+    "no_scalar_search": true,
+    "per_fit_direction": "unit(TORSO_COM_X_POS - ARMATURE_LO) on the training fit",
+    "per_fit_threshold": "midpoint of the training-fit positive score and maximum training-fit non-positive score",
+    "positive_condition": "TORSO_COM_X_POS"
+  },
+  "decision_rule": {
+    "fail_decision": "RETURN_TO_CONTEXT_GEOMETRY_SELECTION_WITHOUT_ROUTER_TRANSFORM",
+    "no_behavior_or_training_authorized": true,
+    "pass_decision": "EARN_T240_X_POSITIVE_ROUTER_TRANSFORM_PREREGISTRATION_ONLY",
+    "pass_if": {
+      "both_cross_fit_classifiers": "20/20",
+      "both_cross_fit_training_margins_positive": true,
+      "combined_classifier": "40/40",
+      "combined_false_positives": 0,
+      "combined_margin_positive": true,
+      "combined_true_positives": 2,
+      "cross_fit_false_positives": 0,
+      "cross_fit_true_positives": 1
+    }
+  },
+  "execution_now": {
+    "behavior_cells": 0,
+    "context_rows": 0,
+    "hosted_sessions": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_steps": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 6663,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t239_x_positive_router_separability_preregistration.py",
+      "sha256": "db4a26e25da01a1e3535fb1f9d9bb1a2d17cb3ef84550c1c9ae9b3e6e264c741"
+    },
+    "runner": {
+      "bytes": 7535,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t239_x_positive_router_separability.py",
+      "sha256": "78eb3d5e8f09a7d56656c37e56131a183a04145b61e5a792495b7407d13e8905"
+    },
+    "t167_contexts": {
+      "bytes": 128322,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t167_calibration_context_separability_result.json",
+      "sha256": "0d55e78a96317bff9bb1363a65a1de48beaa61217609a768e148b63a59827e35"
+    },
+    "t238_result": {
+      "bytes": 31851,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t238_home_offset_route_autopsy_result.json",
+      "sha256": "d46d99e6d46aca116a1eeb03b5cceb5802200c03da7a87d2f57619c391d51bc0"
+    },
+    "test": {
+      "bytes": 1038,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t239_x_positive_router_separability.py",
+      "sha256": "78de9e7a00cf2aad6d391f23a9a8e4604c6373e117dc0ab950cba28faf123019"
+    }
+  },
+  "preregistered_contract_sha256": "9bc32f01eb29eb4e11e3c102317f597cb216cd90d64eda113c405a4495df75b2",
+  "question": "Can the already-frozen T167 cross-fit linear family separate TORSO_COM_X_POS from every other R2 response context, including HOME_JOINT_OFFSET_NEG, without fitting a scalar?",
+  "schema_version": "open_duck.t239_x_positive_router_separability_preregistration.v1",
+  "status": "PREREGISTERED_T239_X_POSITIVE_ROUTER_SEPARABILITY"
+}
