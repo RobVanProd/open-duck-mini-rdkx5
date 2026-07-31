@@ -1,0 +1,257 @@
+{
+  "authority": {
+    "execute_transform_and_cpu_contract": true,
+    "gate5": false,
+    "home_offset_behavior_preregistration": false,
+    "hosted": false,
+    "robot_or_rdk": false,
+    "training": false
+  },
+  "checks": {
+    "read_only_no_behavior_optimizer_hosted_robot": true,
+    "t240_earns_transform_only": true,
+    "twelve_frozen_home_offset_moving_traces": true,
+    "two_exact_graphs_and_forty_contexts": true
+  },
+  "cpu_contract": {
+    "abi": "obs[1,115], previous_action[1,14], h_in[1,64], calibration_context[1,64] -> actions[1,14], previous_action_out[1,14], h_out[1,64]",
+    "all_non_home_negative_context_outputs": "bit-exact source for all outputs",
+    "commands_x_m_s": [
+      0.0,
+      0.074,
+      0.077,
+      0.08
+    ],
+    "home_negative_moving": "finite, route changed, and at least one action differs",
+    "home_negative_x0": "bit-exact source for all outputs",
+    "random_seed": 241,
+    "samples_per_context_command": 8,
+    "trace_replay": "source output exact to all stored policy outputs; transformed output finite and different on every failed moving trace"
+  },
+  "decision_rule": {
+    "fail_decision": "CLOSE_BOUNDED_POSITIVE_ROUTER_WITHOUT_BEHAVIOR",
+    "no_behavior_or_training_authorized": true,
+    "pass_decision": "EARN_T242_BOUNDED_ROUTER_HOME_OFFSET_MATRIX_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "behavior_cells": 0,
+    "hosted_sessions": 0,
+    "inference_rows": 0,
+    "onnx_transforms": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 7891,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t241_bounded_positive_router_transform_preregistration.py",
+      "sha256": "7ca313c54091f642592ae4a30d8f1183fbf09450a4af9aba61414adc26125c58"
+    },
+    "runner": {
+      "bytes": 17271,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t241_bounded_positive_router_transform.py",
+      "sha256": "bf9554e15915b6a3c615379f17b53df8ffef2a19d151fb4de7f6f7c33b4528ed"
+    },
+    "t167_contexts": {
+      "bytes": 128322,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t167_calibration_context_separability_result.json",
+      "sha256": "0d55e78a96317bff9bb1363a65a1de48beaa61217609a768e148b63a59827e35"
+    },
+    "t234b_graphs": {
+      "bytes": 99512,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t234b_abi_helper_recovery_result.json",
+      "sha256": "e0edaf063b40f60418fbd99771c618ca12bf0af571b69c487abadb3f8b3b900f"
+    },
+    "t238_preregistration": {
+      "bytes": 24422,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t238_home_offset_route_autopsy_preregistration.json",
+      "sha256": "de9e5ad7df463f6f87b815880a66bba3ac601ce04c45a6ce430130a729925d38"
+    },
+    "t240_result": {
+      "bytes": 20699,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t240_bounded_positive_router_result.json",
+      "sha256": "280cb2377f453d16a3938a885a28b9dcea6a2faa63e96d161a5b40a56699c265"
+    },
+    "test": {
+      "bytes": 1361,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t241_bounded_positive_router_transform.py",
+      "sha256": "fb35986a8104d95ef64f83ae61e9c3933d14e225604b6390d4187f39d282fe3f"
+    }
+  },
+  "graphs": [
+    {
+      "bytes": 988264,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t234b_abi_helper_recovery_v1\\graphs\\1003520\\exact_low_command_final_head.onnx",
+      "role": "half",
+      "sha256": "c34cdba0c1e1c1310f16926161ed3b1cefe89e79ea88636ed2b4d5feb535b370",
+      "step": 1003520
+    },
+    {
+      "bytes": 988264,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t234b_abi_helper_recovery_v1\\graphs\\2007040\\exact_low_command_final_head.onnx",
+      "role": "final",
+      "sha256": "b19b81262aba747871058238c92f0f4bd57ffaa16b8e70ab007c8c9849c02e51",
+      "step": 2007040
+    }
+  ],
+  "home_offset_traces": [
+    {
+      "checkpoint_id": "T234_EXACT_LOW_COMMAND_HALF",
+      "command_x_m_s": 0.074,
+      "fit_id": "p30",
+      "role": "half",
+      "trace": {
+        "bytes": 1376120,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t237_exact_low_command_full_r2_v1\\17_HOME_JOINT_OFFSET_NEG\\T234_EXACT_LOW_COMMAND_HALF\\p30\\traces\\x0.074_seed167931544_exact_low_command_final_head.jsonl",
+        "sha256": "974fcfbcf8bb1c1e6a3e3c9bfe4d55eb756f97479e1e01dd852f2360b83e43ae"
+      }
+    },
+    {
+      "checkpoint_id": "T234_EXACT_LOW_COMMAND_HALF",
+      "command_x_m_s": 0.077,
+      "fit_id": "p30",
+      "role": "half",
+      "trace": {
+        "bytes": 1376114,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t237_exact_low_command_full_r2_v1\\17_HOME_JOINT_OFFSET_NEG\\T234_EXACT_LOW_COMMAND_HALF\\p30\\traces\\x0.077_seed167931544_exact_low_command_final_head.jsonl",
+        "sha256": "b65638718738ad06093637001b3100fd47cf5c5e6814cb71344069feeb221862"
+      }
+    },
+    {
+      "checkpoint_id": "T234_EXACT_LOW_COMMAND_HALF",
+      "command_x_m_s": 0.08,
+      "fit_id": "p30",
+      "role": "half",
+      "trace": {
+        "bytes": 1376040,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t237_exact_low_command_full_r2_v1\\17_HOME_JOINT_OFFSET_NEG\\T234_EXACT_LOW_COMMAND_HALF\\p30\\traces\\x0.080_seed167931544_exact_low_command_final_head.jsonl",
+        "sha256": "3cb95069cabe51683679a99c83bf3c3785d781374d8885fb3fe359b5de7ae103"
+      }
+    },
+    {
+      "checkpoint_id": "T234_EXACT_LOW_COMMAND_HALF",
+      "command_x_m_s": 0.074,
+      "fit_id": "p31_34",
+      "role": "half",
+      "trace": {
+        "bytes": 1448556,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t237_exact_low_command_full_r2_v1\\17_HOME_JOINT_OFFSET_NEG\\T234_EXACT_LOW_COMMAND_HALF\\p31_34\\traces\\x0.074_seed167931544_exact_low_command_final_head.jsonl",
+        "sha256": "87ebb3bdaa71953e6c58549bd64c58128466e974896ebf621b72506571c7c229"
+      }
+    },
+    {
+      "checkpoint_id": "T234_EXACT_LOW_COMMAND_HALF",
+      "command_x_m_s": 0.077,
+      "fit_id": "p31_34",
+      "role": "half",
+      "trace": {
+        "bytes": 1448561,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t237_exact_low_command_full_r2_v1\\17_HOME_JOINT_OFFSET_NEG\\T234_EXACT_LOW_COMMAND_HALF\\p31_34\\traces\\x0.077_seed167931544_exact_low_command_final_head.jsonl",
+        "sha256": "8204aae3c1f0282f7a6e00f234c31cefdacb3bbc26b15a5b8ac18489f1e0b0b8"
+      }
+    },
+    {
+      "checkpoint_id": "T234_EXACT_LOW_COMMAND_HALF",
+      "command_x_m_s": 0.08,
+      "fit_id": "p31_34",
+      "role": "half",
+      "trace": {
+        "bytes": 1448475,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t237_exact_low_command_full_r2_v1\\17_HOME_JOINT_OFFSET_NEG\\T234_EXACT_LOW_COMMAND_HALF\\p31_34\\traces\\x0.080_seed167931544_exact_low_command_final_head.jsonl",
+        "sha256": "e04315d0571c9fa6abede45e85f457a033c884439ae827ed86b8af16bd6e35dd"
+      }
+    },
+    {
+      "checkpoint_id": "T234_EXACT_LOW_COMMAND_FINAL",
+      "command_x_m_s": 0.074,
+      "fit_id": "p30",
+      "role": "final",
+      "trace": {
+        "bytes": 1376120,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t237_exact_low_command_full_r2_v1\\17_HOME_JOINT_OFFSET_NEG\\T234_EXACT_LOW_COMMAND_FINAL\\p30\\traces\\x0.074_seed167931544_exact_low_command_final_head.jsonl",
+        "sha256": "974fcfbcf8bb1c1e6a3e3c9bfe4d55eb756f97479e1e01dd852f2360b83e43ae"
+      }
+    },
+    {
+      "checkpoint_id": "T234_EXACT_LOW_COMMAND_FINAL",
+      "command_x_m_s": 0.077,
+      "fit_id": "p30",
+      "role": "final",
+      "trace": {
+        "bytes": 1376114,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t237_exact_low_command_full_r2_v1\\17_HOME_JOINT_OFFSET_NEG\\T234_EXACT_LOW_COMMAND_FINAL\\p30\\traces\\x0.077_seed167931544_exact_low_command_final_head.jsonl",
+        "sha256": "b65638718738ad06093637001b3100fd47cf5c5e6814cb71344069feeb221862"
+      }
+    },
+    {
+      "checkpoint_id": "T234_EXACT_LOW_COMMAND_FINAL",
+      "command_x_m_s": 0.08,
+      "fit_id": "p30",
+      "role": "final",
+      "trace": {
+        "bytes": 1376040,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t237_exact_low_command_full_r2_v1\\17_HOME_JOINT_OFFSET_NEG\\T234_EXACT_LOW_COMMAND_FINAL\\p30\\traces\\x0.080_seed167931544_exact_low_command_final_head.jsonl",
+        "sha256": "3cb95069cabe51683679a99c83bf3c3785d781374d8885fb3fe359b5de7ae103"
+      }
+    },
+    {
+      "checkpoint_id": "T234_EXACT_LOW_COMMAND_FINAL",
+      "command_x_m_s": 0.074,
+      "fit_id": "p31_34",
+      "role": "final",
+      "trace": {
+        "bytes": 1448556,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t237_exact_low_command_full_r2_v1\\17_HOME_JOINT_OFFSET_NEG\\T234_EXACT_LOW_COMMAND_FINAL\\p31_34\\traces\\x0.074_seed167931544_exact_low_command_final_head.jsonl",
+        "sha256": "87ebb3bdaa71953e6c58549bd64c58128466e974896ebf621b72506571c7c229"
+      }
+    },
+    {
+      "checkpoint_id": "T234_EXACT_LOW_COMMAND_FINAL",
+      "command_x_m_s": 0.077,
+      "fit_id": "p31_34",
+      "role": "final",
+      "trace": {
+        "bytes": 1448561,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t237_exact_low_command_full_r2_v1\\17_HOME_JOINT_OFFSET_NEG\\T234_EXACT_LOW_COMMAND_FINAL\\p31_34\\traces\\x0.077_seed167931544_exact_low_command_final_head.jsonl",
+        "sha256": "8204aae3c1f0282f7a6e00f234c31cefdacb3bbc26b15a5b8ac18489f1e0b0b8"
+      }
+    },
+    {
+      "checkpoint_id": "T234_EXACT_LOW_COMMAND_FINAL",
+      "command_x_m_s": 0.08,
+      "fit_id": "p31_34",
+      "role": "final",
+      "trace": {
+        "bytes": 1448475,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t237_exact_low_command_full_r2_v1\\17_HOME_JOINT_OFFSET_NEG\\T234_EXACT_LOW_COMMAND_FINAL\\p31_34\\traces\\x0.080_seed167931544_exact_low_command_final_head.jsonl",
+        "sha256": "e04315d0571c9fa6abede45e85f457a033c884439ae827ed86b8af16bd6e35dd"
+      }
+    }
+  ],
+  "preregistered_contract_sha256": "a18ea6c4db914ac14c86254a1ab794a86b41145687046b7fa758e56d293aa58d",
+  "question": "Can one uniform graph-internal upper bound remove the proven HOME_JOINT_OFFSET_NEG false-positive route while preserving every other frozen context, the recurrent ABI, and x=0 exactly?",
+  "schema_version": "open_duck.t241_bounded_positive_router_transform_preregistration.v1",
+  "status": "PREREGISTERED_T241_BOUNDED_POSITIVE_ROUTER_TRANSFORM",
+  "transform": {
+    "existing_lower_gate": "positive_router_score >= 0",
+    "expected_added_initializer": "t241_positive_router_upper_bound",
+    "expected_added_nodes": [
+      "t241_t162_positive_upper_gate",
+      "t241_t162_bounded_positive_gate",
+      "t241_t156_positive_upper_gate",
+      "t241_t156_bounded_positive_gate"
+    ],
+    "expected_changed_old_nodes": [
+      "t162_positive_router_gate",
+      "t156_positive_router_gate"
+    ],
+    "gate_sites": [
+      "t162_positive_router_gate",
+      "t156_positive_router_gate"
+    ],
+    "new_gate": "existing_lower_gate AND positive_router_score <= t241_positive_router_upper_bound",
+    "same_transform_both_checkpoints": true,
+    "upper_bound_float32": 0.17300140857696533
+  }
+}
