@@ -1,0 +1,71 @@
+{
+  "authority": {
+    "behavior_matrix_preregistration": true,
+    "gate5": false,
+    "hosted": false,
+    "rdkx5_or_robot": false,
+    "training": false
+  },
+  "checks": {
+    "all_other_original_contract_checks_green": true,
+    "only_target_input_rewired_exactly": true,
+    "only_two_expected_new_outputs": true,
+    "random_mapping_equivalence_and_finiteness_green": true,
+    "real_failed_trace_sensitive_and_exact": true,
+    "target_is_unnamed_where_in_both_sources": true,
+    "zero_new_inference_behavior_optimizer_hosted_or_robot": true
+  },
+  "classification": {
+    "random_sensitivity_check": "reporting-only; exact mapping is green and the real failed trace changes 24 actions",
+    "selection_weight": 0,
+    "unnamed_node_check": "recovered by unique output-tuple comparison"
+  },
+  "decision": "EARN_T248_HOME_NEGATIVE_HALF_ADAPTER_MATRIX_PREREGISTRATION_ONLY",
+  "execution": {
+    "behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "onnx_inferences": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_steps": 0
+  },
+  "failed_checks": [],
+  "preregistered_contract_sha256": "1ade6c45cc46e52cebbbeff62c06d78744d6e6f7d9d862bad6bdb4603f716cbe",
+  "result_sha256": "da744c4957ee4f0913f1eb9fc96556b964ee1c321c9c583e747ab7c1fe6d7a50",
+  "schema_version": "open_duck.t247b_reporting_recovery_result.v1",
+  "status": "PASS_T247B_REPORTING_RECOVERY",
+  "structural_rows": [
+    {
+      "added_outputs": [
+        [
+          "t247_home_negative_half_adapter_location"
+        ],
+        [
+          "t247_home_negative_selected_adapter_location"
+        ]
+      ],
+      "all_old_outputs_present": true,
+      "role": "half",
+      "source_target_input": "t234_command_selected_adapter_location",
+      "source_target_name_is_empty": true,
+      "transformed_target_input": "t247_home_negative_selected_adapter_location",
+      "unexpected_changed_old_outputs": []
+    },
+    {
+      "added_outputs": [
+        [
+          "t247_home_negative_half_adapter_location"
+        ],
+        [
+          "t247_home_negative_selected_adapter_location"
+        ]
+      ],
+      "all_old_outputs_present": true,
+      "role": "final",
+      "source_target_input": "t234_command_selected_adapter_location",
+      "source_target_name_is_empty": true,
+      "transformed_target_input": "t247_home_negative_selected_adapter_location",
+      "unexpected_changed_old_outputs": []
+    }
+  ]
+}
