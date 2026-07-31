@@ -1,0 +1,87 @@
+{
+  "authority": {
+    "behavior": false,
+    "construct_missing_final_and_run_cpu_contract": true,
+    "gate5": false,
+    "hosted": false,
+    "rdkx5_or_robot": false,
+    "reuse_partial_half_graph": true,
+    "training": false
+  },
+  "checks": {
+    "exactly_one_partial_half_graph": true,
+    "failure_is_exact_path_vs_model_helper_mismatch": true,
+    "failure_occurs_after_graph_save_before_inference": true,
+    "partial_graph_has_all_expected_t243_nodes": true,
+    "partial_graph_onnx_checker_green": true,
+    "t243_exact_preregistration": true,
+    "t243_formal_result_absent": true,
+    "zero_inference_behavior_optimizer_hosted_or_robot": true
+  },
+  "decision_rule": {
+    "all_contract_checks_green": "EARN_T244_HOME_NEGATIVE_LOW_COMMAND_BEHAVIOR_PREREGISTRATION_ONLY",
+    "no_behavior_now": true,
+    "no_hosted_run_authorized": true,
+    "otherwise": "CLOSE_HOME_NEGATIVE_LOW_COMMAND_FLOOR_WITHOUT_BEHAVIOR"
+  },
+  "execution_now": {
+    "behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "onnx_inferences": 0,
+    "onnx_transforms": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "abi_helper": {
+      "bytes": 15756,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t136_static_calibration_router_transform.py",
+      "sha256": "9ed19a2e1e0f3dc7e9d043cf87f1a1d2e8add928dcebb3e40c7f059223ef5c98"
+    },
+    "builder": {
+      "bytes": 7021,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t243b_abi_helper_recovery_preregistration.py",
+      "sha256": "ac2b5bc5172cfe3a1b7256f88873e95e0f765cb4f9696eb67d93fb2d1a6fb0cd"
+    },
+    "partial_half_graph": {
+      "bytes": 989748,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t243_home_negative_low_command_floor_v1\\graphs\\1003520\\home_negative_low_command_floor.onnx",
+      "sha256": "3d64d2d99bb6ea5246bed39b9e7836bf7c75977210f79d8f378c85e0c0b3b68d"
+    },
+    "runner": {
+      "bytes": 11959,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t243b_abi_helper_recovery.py",
+      "sha256": "98a4ba8047d27beb80b224504ad3498c583bffffbf5163b2e91aca3812922ba7"
+    },
+    "t243_preregistration": {
+      "bytes": 104086,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t243_home_negative_low_command_floor_preregistration.json",
+      "sha256": "4258a9d13c598c951ae8c771ad1ae9f83f4dd1107e0df68aa847a594bb4bd9a5"
+    },
+    "t243_runner": {
+      "bytes": 19291,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t243_home_negative_low_command_floor.py",
+      "sha256": "4fd0bd4b0f21f3832d9ab3f2d7b67e6a460b67d36f545af474cbeaa89b9713a3"
+    },
+    "test": {
+      "bytes": 2375,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t243b_abi_helper_recovery.py",
+      "sha256": "5c76d78a12c105c41fb1c502eac19af49a32afcf3d155f91fbaa621b414dcd29"
+    }
+  },
+  "preregistered_contract_sha256": "7b53a5fa437eb3d42a486144f59d8d809873a8a2bbcdcf3447e9e7fb7bb9ee5d",
+  "question": "Can T243 be recovered by reusing its immutable checker-green half graph, applying the source transform only to the missing final graph with the ABI helper called on loaded models, and then executing the originally frozen inference contracts?",
+  "recovery": {
+    "abi_reporting_call_only_corrected": true,
+    "cause": "report-only ABI call passed Path objects to a helper that accepts loaded ONNX ModelProto objects",
+    "construct_only_missing_final_graph": true,
+    "execute_original_random_and_trace_contracts": true,
+    "overwrite_partial_graph": false,
+    "reuse_partial_half_graph": true,
+    "source_transform_logic_changed": false
+  },
+  "schema_version": "open_duck.t243b_abi_helper_recovery_preregistration.v1",
+  "source_t243_contract_sha256": "600aaec0e30e0e88f05a9249bbbfd5ebee253df795b7d759f4ee3cad699e0723",
+  "status": "PREREGISTERED_T243B_ABI_HELPER_RECOVERY"
+}
