@@ -1,0 +1,58 @@
+{
+  "authority": {
+    "behavior_matrix_preregistration": false,
+    "gate5": false,
+    "hosted": false,
+    "rdkx5_or_robot": false,
+    "read_only_recovery": true,
+    "training": false
+  },
+  "checks": {
+    "graphs_present_for_output_key_structural_audit": true,
+    "random_equivalence_itself_is_exact": true,
+    "real_failed_trace_is_causally_sensitive": true,
+    "t247_failed_only_two_reporting_assertions": true,
+    "zero_new_inference_behavior_optimizer_hosted_or_robot": true
+  },
+  "classification_rule": {
+    "new_inference": false,
+    "node_check": "compare old nodes by unique output tuple because the target Where node has an empty name",
+    "selection_weight": 0,
+    "sensitivity_check": "exact expected mapping plus nonzero real failed-trace sensitivity supersedes clipped random final-action equality"
+  },
+  "execution_now": {
+    "behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "onnx_inferences": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_steps": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 5453,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t247b_reporting_recovery_preregistration.py",
+      "sha256": "69268453561efe2c54eb89bf4dfd8aee6bac2cb2567601bfdaa6e6547808f44c"
+    },
+    "runner": {
+      "bytes": 8244,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t247b_reporting_recovery.py",
+      "sha256": "d8147e6b07ae9de3e3b43924637ccaf9c761107b66b157168ba83a3ebc2bd2ec"
+    },
+    "t247_result": {
+      "bytes": 111025,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t247_home_negative_half_adapter_route_result.json",
+      "sha256": "dc759d1285cb7c9140e2f503f089275a5b58ca8004b5b5307d27b45d1eaa6390"
+    },
+    "test": {
+      "bytes": 1542,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t247b_reporting_recovery.py",
+      "sha256": "3bb83227ef9b25eaf63197aa7c02d9150569e04ac2c766cbb199ff1df10916fc"
+    }
+  },
+  "preregistered_contract_sha256": "1ade6c45cc46e52cebbbeff62c06d78744d6e6f7d9d862bad6bdb4603f716cbe",
+  "question": "Do output-key node comparison and real-trace sensitivity prove that T247's two failed assertions are reporting-only?",
+  "schema_version": "open_duck.t247b_reporting_recovery_preregistration.v1",
+  "status": "PREREGISTERED_T247B_REPORTING_RECOVERY"
+}
