@@ -1,0 +1,406 @@
+{
+  "analysis": {
+    "closed_loop_drift": "tick-align source against half/final for each fit and command; report first action/state divergence, prefix RMS, termination precursors, pitch, force, and contact changes",
+    "graph_scope": "verify source-to-half/final initializer changes are exactly nominal_condition_negative_adapter_weight and bias",
+    "head_replay": "on every frozen source trace row, compute the source, half, and final nominal-condition adapter locations from the stored h_out; report gate duty and per-command/per-joint head deltas",
+    "hosted_distribution": "compare exact step-0/half/final eval cost, reward, and episode length without assigning selection weight",
+    "joint_order": [
+      "left_hip_yaw",
+      "left_hip_roll",
+      "left_hip_pitch",
+      "left_knee",
+      "left_ankle",
+      "neck_yaw",
+      "head_pitch",
+      "head_roll",
+      "head_yaw",
+      "right_hip_yaw",
+      "right_hip_roll",
+      "right_hip_pitch",
+      "right_knee",
+      "right_ankle"
+    ],
+    "thresholds": {
+      "nonzero_float32_effect": 1.1920928955078125e-07,
+      "prefix_ticks": 64,
+      "termination_precursor_ticks": 64,
+      "trip_ticks": 100
+    }
+  },
+  "authority": {
+    "behavior": false,
+    "cpu_falsifier_preregistration": false,
+    "execute_read_only_autopsy": true,
+    "gate5": false,
+    "hosted": false,
+    "robot_or_rdk": false,
+    "training": false
+  },
+  "checks": {
+    "every_t231_failure_is_fall_with_quality_and_protection_green": true,
+    "hosted_metrics_have_three_exact_steps": true,
+    "no_t231_duration_trip": true,
+    "only_negative_adapter_location_trainable": true,
+    "paired_trace_lattice_exact": true,
+    "read_only_no_behavior_training_hosted_robot": true,
+    "source_is_four_of_four_green": true,
+    "t228_final_is_zero_of_four_green": true,
+    "t228_formally_closed_at_t231": true,
+    "three_frozen_graphs_present": true
+  },
+  "classification_rule": {
+    "no_checkpoint_selection": true,
+    "no_hosted_run_authorized": true,
+    "otherwise": "RETURN_TO_MECHANISM_SELECTION_WITHOUT_ATTRACTOR_PRESERVATION",
+    "pass_decision": "EARN_T233_SOURCE_ATTRACTOR_PRESERVATION_CPU_FALSIFIER_PREREGISTRATION_ONLY",
+    "training_distribution_cost_improvement_with_nominal_attractor_loss_if": {
+      "all_failures_are_falls_not_quality_or_duration_trips": true,
+      "hosted_eval_cost_half_and_final_below_step_zero": true,
+      "only_trainable_head_changed": true,
+      "source_four_of_four_green": true,
+      "t228_final_zero_of_four_green": true,
+      "trained_head_nonzero_on_every_source_moving_trace": true
+    }
+  },
+  "execution_now": {
+    "behavior_cells": 0,
+    "hosted_sessions": 0,
+    "inference_rows": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "trace_rows": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 12587,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t232_t228_nominal_failure_autopsy_preregistration.py",
+      "sha256": "0be154ef85c50327a33f794ee22159f39ae43307f5f32aa9259d8c5c9ce45641"
+    },
+    "runner": {
+      "bytes": 16488,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t232_t228_nominal_failure_autopsy.py",
+      "sha256": "9420274306ad00c8e4b8a6397e197f1c54c4b30d968b1dd539ef23a53e2aa292"
+    },
+    "t219_result": {
+      "bytes": 120096,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t219_t216_nominal_matrix_result.json",
+      "sha256": "1f6e609391f508d912deb0864fd053bbde4cd5b5179347b196117ee42d3938d5"
+    },
+    "t228_preregistration": {
+      "bytes": 28291,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t228_command_atom_hosted_preregistration.json",
+      "sha256": "b3c847c713669a42c48f18f5266ba061dd34bb70399943be7aaecc83fb223af3"
+    },
+    "t229_validation": {
+      "bytes": 18146,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t229_t228_recovered_training_validation.json",
+      "sha256": "f9237981140599867c351ebb2ed301caba461b1a6893ab1cf8ff0cde816d0d4a"
+    },
+    "t230_composition": {
+      "bytes": 439343,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t230_t228_deployment_composition_result.json",
+      "sha256": "cdcb8fd6d0ffa951ec24e017d40ce11368a7f63a168bca26f9cd291b744ff2c8"
+    },
+    "t231_result": {
+      "bytes": 120400,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t231_t228_nominal_matrix_result.json",
+      "sha256": "e0b93a7862ff16eadbc58c07fe78a2fb60166b162e19c62b97f4d14594ccd345"
+    },
+    "test": {
+      "bytes": 1084,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t232_t228_nominal_failure_autopsy.py",
+      "sha256": "88265ea8208b9a2f5e7f8aa0c38a7db5357acb9e54bfa64cd89517e53a7cd3a7"
+    }
+  },
+  "graphs": {
+    "0": {
+      "bytes": 984071,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t230_t228_deployment_composition_v1\\0\\t228_global_plateau.onnx",
+      "role": "source_anchor",
+      "sha256": "bf7882a3869119d14663e5f01f84586ba50b44c36cf5d8283135b02acfc4c45d"
+    },
+    "1003520": {
+      "bytes": 984071,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t230_t228_deployment_composition_v1\\1003520\\t228_global_plateau.onnx",
+      "role": "half",
+      "sha256": "89a7a1cc136c9cead5ac6880800d76067f999372261a2d71bfbbf244951acc90"
+    },
+    "2007040": {
+      "bytes": 984071,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t230_t228_deployment_composition_v1\\2007040\\t228_global_plateau.onnx",
+      "role": "final",
+      "sha256": "44c9336b804f1101e8ca67f1e0424bb30da382a6da4d2cb874ce3978aaf66684"
+    }
+  },
+  "hosted_metrics": {
+    "eval_dense_torque_cost": [
+      {
+        "step": 0,
+        "value": 68.81663513183594
+      },
+      {
+        "step": 1003520,
+        "value": 63.01276397705078
+      },
+      {
+        "step": 2007040,
+        "value": 64.40552520751953
+      }
+    ],
+    "eval_reward": [
+      {
+        "step": 0,
+        "value": 246.6149139404297
+      },
+      {
+        "step": 1003520,
+        "value": 246.774658203125
+      },
+      {
+        "step": 2007040,
+        "value": 241.80430603027344
+      }
+    ]
+  },
+  "preregistered_contract_sha256": "a137d685c21538ebee92742785049df7420c80be920aaf78b3031adffa3245e9",
+  "question": "Did T228 improve its hosted randomized constraint objective while the only trainable negative-adapter output head drifted the previously passing nominal closed-loop attractor into falls?",
+  "schema_version": "open_duck.t232_t228_nominal_failure_autopsy_preregistration.v1",
+  "status": "PREREGISTERED_T232_T228_NOMINAL_FAILURE_AUTOPSY",
+  "traces": {
+    "source_t216_final": [
+      {
+        "cell_green": true,
+        "checkpoint_id": "T216_COMPOSED_FINAL",
+        "command_x_m_s": 0.074,
+        "core_pass": true,
+        "duration_protection_pass": true,
+        "fit_id": "p30",
+        "replacement_quality_pass": true,
+        "samples": 600,
+        "step": 2007040,
+        "strict_overcurrent_run_ticks": 9,
+        "strict_overload_run_ticks": 10,
+        "termination_reason": "duration_complete",
+        "trace": {
+          "bytes": 10770472,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t219_t216_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T216_COMPOSED_FINAL\\p30\\traces\\x0.074_seed167931544_t216_composed.jsonl",
+          "sha256": "69ce7d0f71636fa1300f4a905802829fa4094b90cbf364baea317e994228577a"
+        }
+      },
+      {
+        "cell_green": true,
+        "checkpoint_id": "T216_COMPOSED_FINAL",
+        "command_x_m_s": 0.077,
+        "core_pass": true,
+        "duration_protection_pass": true,
+        "fit_id": "p30",
+        "replacement_quality_pass": true,
+        "samples": 600,
+        "step": 2007040,
+        "strict_overcurrent_run_ticks": 10,
+        "strict_overload_run_ticks": 11,
+        "termination_reason": "duration_complete",
+        "trace": {
+          "bytes": 10770277,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t219_t216_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T216_COMPOSED_FINAL\\p30\\traces\\x0.077_seed167931544_t216_composed.jsonl",
+          "sha256": "0eac5b957087ace11d77a440a4693c24b6e6528b8b74b5e0d68fc1b478ed76bf"
+        }
+      },
+      {
+        "cell_green": true,
+        "checkpoint_id": "T216_COMPOSED_FINAL",
+        "command_x_m_s": 0.074,
+        "core_pass": true,
+        "duration_protection_pass": true,
+        "fit_id": "p31_34",
+        "replacement_quality_pass": true,
+        "samples": 600,
+        "step": 2007040,
+        "strict_overcurrent_run_ticks": 9,
+        "strict_overload_run_ticks": 10,
+        "termination_reason": "duration_complete",
+        "trace": {
+          "bytes": 10768937,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t219_t216_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T216_COMPOSED_FINAL\\p31_34\\traces\\x0.074_seed167931544_t216_composed.jsonl",
+          "sha256": "a7e7e9febb48ebcbe43777e018c7b5fa815867a37417c81f6f664b053fc10219"
+        }
+      },
+      {
+        "cell_green": true,
+        "checkpoint_id": "T216_COMPOSED_FINAL",
+        "command_x_m_s": 0.077,
+        "core_pass": true,
+        "duration_protection_pass": true,
+        "fit_id": "p31_34",
+        "replacement_quality_pass": true,
+        "samples": 600,
+        "step": 2007040,
+        "strict_overcurrent_run_ticks": 9,
+        "strict_overload_run_ticks": 9,
+        "termination_reason": "duration_complete",
+        "trace": {
+          "bytes": 10770201,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t219_t216_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T216_COMPOSED_FINAL\\p31_34\\traces\\x0.077_seed167931544_t216_composed.jsonl",
+          "sha256": "71e9bf7bf41fabbdb7e6c0fb7766f7201147423aa1dc4c7dc07bb018e65c3c47"
+        }
+      }
+    ],
+    "t228_final": [
+      {
+        "cell_green": false,
+        "checkpoint_id": "T228_COMMAND_ATOM_FINAL",
+        "command_x_m_s": 0.074,
+        "core_pass": false,
+        "duration_protection_pass": true,
+        "fit_id": "p30",
+        "replacement_quality_pass": true,
+        "samples": 199,
+        "step": 2007040,
+        "strict_overcurrent_run_ticks": 13,
+        "strict_overload_run_ticks": 13,
+        "termination_reason": "fall_or_nan",
+        "trace": {
+          "bytes": 3567167,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t231_t228_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T228_COMMAND_ATOM_FINAL\\p30\\traces\\x0.074_seed167931544_t228_global_plateau.jsonl",
+          "sha256": "db98673bd02f4d58c43508c32c02f6b4cc815c715e08d286edbfe8f3e0ab747b"
+        }
+      },
+      {
+        "cell_green": false,
+        "checkpoint_id": "T228_COMMAND_ATOM_FINAL",
+        "command_x_m_s": 0.077,
+        "core_pass": false,
+        "duration_protection_pass": true,
+        "fit_id": "p30",
+        "replacement_quality_pass": true,
+        "samples": 411,
+        "step": 2007040,
+        "strict_overcurrent_run_ticks": 12,
+        "strict_overload_run_ticks": 13,
+        "termination_reason": "fall_or_nan",
+        "trace": {
+          "bytes": 7378228,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t231_t228_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T228_COMMAND_ATOM_FINAL\\p30\\traces\\x0.077_seed167931544_t228_global_plateau.jsonl",
+          "sha256": "47252e3ee7566c1835467ebf57e08b16de96e7bd6e94e57cb71e982c13d8279c"
+        }
+      },
+      {
+        "cell_green": false,
+        "checkpoint_id": "T228_COMMAND_ATOM_FINAL",
+        "command_x_m_s": 0.074,
+        "core_pass": false,
+        "duration_protection_pass": true,
+        "fit_id": "p31_34",
+        "replacement_quality_pass": true,
+        "samples": 176,
+        "step": 2007040,
+        "strict_overcurrent_run_ticks": 11,
+        "strict_overload_run_ticks": 12,
+        "termination_reason": "fall_or_nan",
+        "trace": {
+          "bytes": 3155653,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t231_t228_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T228_COMMAND_ATOM_FINAL\\p31_34\\traces\\x0.074_seed167931544_t228_global_plateau.jsonl",
+          "sha256": "dee50d406e8bb2976dcf9448c0731f5123afd0ed93dc189eac485f6f960b0392"
+        }
+      },
+      {
+        "cell_green": false,
+        "checkpoint_id": "T228_COMMAND_ATOM_FINAL",
+        "command_x_m_s": 0.077,
+        "core_pass": false,
+        "duration_protection_pass": true,
+        "fit_id": "p31_34",
+        "replacement_quality_pass": true,
+        "samples": 333,
+        "step": 2007040,
+        "strict_overcurrent_run_ticks": 13,
+        "strict_overload_run_ticks": 13,
+        "termination_reason": "fall_or_nan",
+        "trace": {
+          "bytes": 5975799,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t231_t228_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T228_COMMAND_ATOM_FINAL\\p31_34\\traces\\x0.077_seed167931544_t228_global_plateau.jsonl",
+          "sha256": "3b5be5f21a758c07742e319e5f69eddaf67345c628ad243aaee10339233d300b"
+        }
+      }
+    ],
+    "t228_half": [
+      {
+        "cell_green": true,
+        "checkpoint_id": "T228_COMMAND_ATOM_HALF",
+        "command_x_m_s": 0.074,
+        "core_pass": true,
+        "duration_protection_pass": true,
+        "fit_id": "p30",
+        "replacement_quality_pass": true,
+        "samples": 600,
+        "step": 1003520,
+        "strict_overcurrent_run_ticks": 14,
+        "strict_overload_run_ticks": 14,
+        "termination_reason": "duration_complete",
+        "trace": {
+          "bytes": 10769105,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t231_t228_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T228_COMMAND_ATOM_HALF\\p30\\traces\\x0.074_seed167931544_t228_global_plateau.jsonl",
+          "sha256": "548e30b2ae691cb5e8bff4a0482ffaf4fe21686e2fe106907fa2ef2300ca8256"
+        }
+      },
+      {
+        "cell_green": true,
+        "checkpoint_id": "T228_COMMAND_ATOM_HALF",
+        "command_x_m_s": 0.077,
+        "core_pass": true,
+        "duration_protection_pass": true,
+        "fit_id": "p30",
+        "replacement_quality_pass": true,
+        "samples": 600,
+        "step": 1003520,
+        "strict_overcurrent_run_ticks": 10,
+        "strict_overload_run_ticks": 10,
+        "termination_reason": "duration_complete",
+        "trace": {
+          "bytes": 10770529,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t231_t228_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T228_COMMAND_ATOM_HALF\\p30\\traces\\x0.077_seed167931544_t228_global_plateau.jsonl",
+          "sha256": "09faf515f480bdd4f3833f5d6ef85400ceafce4fb94608b0f5324da86adf1db1"
+        }
+      },
+      {
+        "cell_green": true,
+        "checkpoint_id": "T228_COMMAND_ATOM_HALF",
+        "command_x_m_s": 0.074,
+        "core_pass": true,
+        "duration_protection_pass": true,
+        "fit_id": "p31_34",
+        "replacement_quality_pass": true,
+        "samples": 600,
+        "step": 1003520,
+        "strict_overcurrent_run_ticks": 11,
+        "strict_overload_run_ticks": 12,
+        "termination_reason": "duration_complete",
+        "trace": {
+          "bytes": 10768306,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t231_t228_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T228_COMMAND_ATOM_HALF\\p31_34\\traces\\x0.074_seed167931544_t228_global_plateau.jsonl",
+          "sha256": "1171e1bae2dede2dcf9061dbbb921a1ce770abf3b89c107e3f1090c4ad8d993d"
+        }
+      },
+      {
+        "cell_green": false,
+        "checkpoint_id": "T228_COMMAND_ATOM_HALF",
+        "command_x_m_s": 0.077,
+        "core_pass": false,
+        "duration_protection_pass": true,
+        "fit_id": "p31_34",
+        "replacement_quality_pass": true,
+        "samples": 297,
+        "step": 1003520,
+        "strict_overcurrent_run_ticks": 12,
+        "strict_overload_run_ticks": 13,
+        "termination_reason": "fall_or_nan",
+        "trace": {
+          "bytes": 5329239,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t231_t228_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T228_COMMAND_ATOM_HALF\\p31_34\\traces\\x0.077_seed167931544_t228_global_plateau.jsonl",
+          "sha256": "a832ff398cc006e827768a23ffc12d1e3b3b3f45df2c60fc98f62c36e287a93d"
+        }
+      }
+    ]
+  }
+}
