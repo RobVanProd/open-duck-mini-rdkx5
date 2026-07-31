@@ -1,0 +1,72 @@
+{
+  "status": "HOLD_DOUBLE_SUPPORT_STANDSTILL",
+  "generated_at": "2026-06-25T17:15:00Z",
+  "robot_tests_run": false,
+  "ssh_attempted": false,
+  "deployment_attempted": false,
+  "runtime_behavior_changed": false,
+  "policy_sha256": "d8a92162cfee07cb4c6f2643c5206a182882fd46c0098f93a1c65c03e99c86c7",
+  "command_x": 0.04,
+  "seed": 0,
+  "bridge_mode": "vanilla",
+  "platform": "cpu",
+  "raw_trace": "outputs/analysis/v23_seed0_x004_vanilla_trace_cpu/trace.jsonl",
+  "gate": {
+    "overall_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+    "samples": 750,
+    "termination": "duration_complete",
+    "mean_local_vx_m_s": -0.0002,
+    "track_ratio": -0.0051,
+    "base_height_min_m": 0.1537,
+    "body_pitch_p95_rad": 0.0105,
+    "max_pitch_tracking_p95_rad": 0.0446,
+    "max_sent_target_velocity_p95_rad_s": 0.0974,
+    "action_saturation_pct": 0.0
+  },
+  "contacts": {
+    "ticks": 750,
+    "patterns": {
+      "01": {
+        "ticks": 5,
+        "percent": 0.67
+      },
+      "11": {
+        "ticks": 745,
+        "percent": 99.33
+      }
+    },
+    "transitions": 3,
+    "runs": [
+      {
+        "pattern": "01",
+        "start_tick": 0,
+        "end_tick": 1,
+        "length_ticks": 2
+      },
+      {
+        "pattern": "11",
+        "start_tick": 2,
+        "end_tick": 5,
+        "length_ticks": 4
+      },
+      {
+        "pattern": "01",
+        "start_tick": 6,
+        "end_tick": 8,
+        "length_ticks": 3
+      },
+      {
+        "pattern": "11",
+        "start_tick": 9,
+        "end_tick": 749,
+        "length_ticks": 741
+      }
+    ]
+  },
+  "interpretation": [
+    "V23 seed-0 x=0.04 vanilla does not fall but produces essentially zero forward motion.",
+    "The policy spends 99.33% of the rollout in double support and remains in double support from tick 9 onward.",
+    "The support-contact reward was satisfied by double-support standstill rather than alternating weight transfer.",
+    "The next branch needs structural support-transition mechanics, not another unchanged V23 run."
+  ]
+}

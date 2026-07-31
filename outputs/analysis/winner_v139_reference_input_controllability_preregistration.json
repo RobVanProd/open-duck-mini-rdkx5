@@ -1,0 +1,73 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "cpu_audit": true,
+    "gate5": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "reference_artifact_change": false,
+    "shared_reference_synthesis": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "checks": {
+    "all_input_hashes_exact": true,
+    "behavior_not_authorized": true,
+    "one_minimum_norm_solve_no_search": true,
+    "per_event_upper_bound_only": true,
+    "phase_start_route_closed": true,
+    "reference_change_not_authorized": true,
+    "reference_input_route_is_mechanically_distinct": true,
+    "robot_surface_absent": true,
+    "training_not_authorized": true,
+    "v131_teacher_green": true
+  },
+  "failed_checks": [],
+  "green_followup": "a pass earns only preregistration of a shared phase/command reference synthesis with preservation testing",
+  "input_hashes": {
+    "cpu_template": "217a1551c4cc778e4b957636a40ca6e01eafa51efeaef905eb73e9debc7c26e5",
+    "network_source": "ffd07d0a6e96d846aa1f62a8d131bf892f10db6b2a22710affe3946b7b145ebd",
+    "runner": "7f1272ad9cbf34b802b8e544313357582facd73c198da01486ddf9a0fb2a5fda",
+    "source_checkpoint": "c1d9b8574c941e2279294de14aca1cb57d4736bdc63635b5aaf1e205fa7f86c1",
+    "teacher_loader": "632a2e12ae10d940be38858c52e738281ca6a2de1736d1be90b8adcbdbd8baa8",
+    "v121_transform": "4bd5eab5343cd8401db1789773fa3cc345727d903cb31222e0ea9870f0e9e640",
+    "v131_behavior_result": "ab1535e11287f191e8ee6b4be5c020c44726c6263465c7cb760892387b07c9ea",
+    "v138_phase20_result": "8e0ee98ac9208496bc357ede853a2bee3269426b506666359f2a5267fc8a502d"
+  },
+  "method": {
+    "fixed": [
+      "V121 final actor weights",
+      "normalizer",
+      "recorded obs[0:101]",
+      "recorded previous_action",
+      "recorded h_in",
+      "deployment transition"
+    ],
+    "parameter_or_threshold_search": false,
+    "solver": "one actor action Jacobian and one NumPy minimum-L2 least-squares solve per event; one nonlinear readback",
+    "variable": "reference input obs[101:115] only"
+  },
+  "pass_rule": {
+    "each_event": "nonlinear action error strictly improves",
+    "finite": "all Jacobians, solutions, and actions finite",
+    "linear_combined_ratio": "<=0.25",
+    "nonlinear_combined_ratio": "<=0.25",
+    "reference_box": "every candidate reference value remains [-1,1]",
+    "source_reproduction": "<=1e-6 max error"
+  },
+  "population": {
+    "commands_m_s": [
+      0.074,
+      0.077,
+      0.08
+    ],
+    "plants": 2,
+    "rows": 17,
+    "source": "V131 final-checkpoint torque-projected rows",
+    "x0_rows": 0
+  },
+  "question": "With policy weights and recurrent state frozen, can each of the 17 robust torque-oracle action corrections be expressed by a deployment-valid perturbation of obs[101:115]?",
+  "schema_version": "winner_v139.reference_input_controllability_preregistration.v1",
+  "status": "PREREGISTERED_WINNER_V139_REFERENCE_INPUT_CONTROLLABILITY",
+  "stop_rule": "if any pass rule fails, close reference-input redirection; do not add Jacobian iterations, regularization, bounds tuning, or behavior evaluation"
+}

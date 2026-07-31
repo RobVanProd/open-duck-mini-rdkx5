@@ -1,0 +1,66 @@
+{
+  "status": "HOLD_GLOBAL_TARGET_FILTERS_NOT_PROMOTABLE",
+  "base_candidate": "policy/candidates/phase2_stagea2_seed5_recovery_command_gated_20260628/candidate.onnx",
+  "corrected_bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+  "task": "rough_terrain_backlash",
+  "terrain_hfield_z_scale": 0.002,
+  "duration_s": 5.0,
+  "wrapper_formula": "target = obs[83:97] + alpha * (desired_target - obs[83:97])",
+  "command_scale_changed": false,
+  "results": [
+    {
+      "candidate": "unsmoothed_promoted_candidate",
+      "gentle_push_status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+      "gentle_push_failure_seed": 6,
+      "gentle_push_max_velocity_excess_rad_s": 0.0212,
+      "no_push_status": "PASS_CANDIDATE_SIM_GATE",
+      "decision": "baseline"
+    },
+    {
+      "candidate": "target_smooth_alpha_0.995",
+      "gentle_push_status": "PASS_CANDIDATE_SIM_GATE",
+      "gentle_push_max_tracking_p95_rad": 0.1981,
+      "no_push_status": "HOLD_CANDIDATE_TRACKING",
+      "no_push_failure_seed": 7,
+      "no_push_max_tracking_p95_rad": 0.2005,
+      "decision": "not_promotable"
+    },
+    {
+      "candidate": "target_smooth_alpha_0.997",
+      "gentle_push_status": "PASS_CANDIDATE_SIM_GATE",
+      "gentle_push_max_tracking_p95_rad": 0.1986,
+      "no_push_status": "HOLD_CANDIDATE_TRACKING",
+      "no_push_failure_seed": 7,
+      "no_push_max_tracking_p95_rad": 0.2013,
+      "decision": "not_promotable"
+    },
+    {
+      "candidate": "target_smooth_alpha_0.999",
+      "gentle_push_status": "PASS_CANDIDATE_SIM_GATE",
+      "gentle_push_screen_seeds": [6, 7],
+      "gentle_push_max_tracking_p95_rad": 0.1967,
+      "no_push_status": "HOLD_CANDIDATE_TRACKING",
+      "no_push_screen_seeds": [5, 7],
+      "no_push_failure_seed": 7,
+      "no_push_max_tracking_p95_rad": 0.2002,
+      "decision": "not_promotable"
+    },
+    {
+      "candidate": "corrected_per_joint_target_delta_clamp",
+      "gentle_push_status": "HOLD_CANDIDATE_TRACKING",
+      "gentle_push_screen_seeds": [6, 7],
+      "gentle_push_failure_seed": 7,
+      "gentle_push_max_tracking_p95_rad": 0.2007,
+      "no_push_status": "NOT_RUN_AFTER_PUSH_HOLD",
+      "decision": "not_promotable"
+    }
+  ],
+  "interpretation": "Simple global target filters fix or reduce the push-induced rate margin but still miss strict seed-7 tracking, so they are mechanism evidence rather than promotable candidates.",
+  "next_recommendation": "Stop global target-filter sweeps; pursue a local push-recovery policy correction that leaves nominal gait timing unchanged.",
+  "robot_tests": false,
+  "ssh": false,
+  "deploy": false,
+  "grounded_replay": false,
+  "training": false,
+  "runtime_behavior_changed": false
+}

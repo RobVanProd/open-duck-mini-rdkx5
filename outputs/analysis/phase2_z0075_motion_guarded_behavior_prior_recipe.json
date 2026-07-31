@@ -1,0 +1,60 @@
+{
+  "status": "PASS_PHASE2_Z0075_MOTION_GUARDED_RECIPE_READY",
+  "artifact": "outputs/analysis/PHASE2_Z0075_MOTION_GUARDED_BEHAVIOR_PRIOR_RECIPE.md",
+  "offline_only": true,
+  "robot_touched": false,
+  "ssh_used": false,
+  "deployed": false,
+  "grounded_replay": false,
+  "source_result": {
+    "status": "HOLD_BEHAVIOR_PRIOR_LOW_FORWARD_PROGRESS",
+    "artifact": "outputs/analysis/PHASE2_Z0075_BEHAVIOR_PRIOR_LOCAL_ROCM_RESULT.md",
+    "sha256": "2f945c72d32cc38e20a198ce128fa633c0d33d500e546bec1f34370f2f47b421"
+  },
+  "inputs": {
+    "corrected_bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+    "corrected_bridge_sha256": "3661543d0745073b561eb4fa2ae8f9616368ee8b72cb397f8b953dada532c8c0",
+    "moving_anchor_policy": "policy/candidates/phase2_z0075_iter21_early_lunge_gain095_rate150_20260704/candidate.onnx",
+    "moving_anchor_policy_sha256": "72aa93c2ab249d2e9b22bb5415ef6c96c7407833fbfd21233892b6daa6afda14",
+    "behavior_prior_mlp_npz": "outputs/analysis/phase2_z0075_iter21_early_lunge_gain095_rate150_candidate/candidate_mlp.npz",
+    "behavior_prior_mlp_sha256": "71f520712a10613d3e2304a33cbcd641f6bb59fb0d5c1dc3e34a5c8fe93569b2",
+    "restore_checkpoint": "outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_checkpoint"
+  },
+  "diagnosis": "The previous local ROCm behavior-prior run completed but all triaged checkpoints collapsed to stable near-standstill. Repeat runs with the same recipe are rejected.",
+  "recipe_changes": {
+    "command_progress_failure_enable": true,
+    "command_progress_failure_min_ratio": 0.3,
+    "command_progress_failure_warmup_steps": 120,
+    "command_progress_failure_scale": -10.0,
+    "reward_clip_min": -100.0,
+    "reason": "Make safe standstill invalid after warmup while keeping the floor below the known slow moving anchor."
+  },
+  "training": {
+    "platform": "gpu",
+    "local_rocm_safe_env": true,
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0075,
+    "num_timesteps": 122880,
+    "ppo_num_envs": 16,
+    "push_enable": true,
+    "push_magnitude_min": 0.075,
+    "push_magnitude_max": 0.125,
+    "push_interval_min_s": 1.0,
+    "push_interval_max_s": 1.5,
+    "behavior_prior_enabled": true,
+    "behavior_prior_scale": -0.22,
+    "behavior_prior_huber_delta": 0.06,
+    "restore_policy_kl_scale": 4.5
+  },
+  "checkpoint_selection": {
+    "cheap_screen": "seed0 x=0.08 corrected-bridge CPU gate with reset-mode home-support and reset-settle-ticks 10",
+    "reject_if_track_ratio_lt": 0.25,
+    "full_gate_only_after_screen": true
+  },
+  "falsifiers": [
+    "HOLD_MOTION_GUARD_STILL_COLLAPSES",
+    "HOLD_MOTION_GUARD_OVER_ENVELOPE",
+    "HOLD_PUSH_RECOVERY_REMAINS"
+  ],
+  "next_step": "Run the bounded local ROCm diagnostic command, then screen exported checkpoints for x=0.08 seed0 motion before any full gate."
+}

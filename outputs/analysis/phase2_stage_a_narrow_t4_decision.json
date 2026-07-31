@@ -1,0 +1,69 @@
+{
+  "artifact_root": "outputs/analysis/colab_cli_stage_a_flat/open-duck-t4-stagea-phase2-stage-a-narrow-20260706T081244Z/extracted_artifacts/open_duck_colab_cli_phase2-stage-a-narrow_20260706T081308Z",
+  "colab_session": "open-duck-t4-stagea",
+  "decision": "Do not promote any corrected flat/no-push T4 checkpoint from this run. This run is superseded for Phase 2 because it used the phase-modulated health-routed parent checkpoint instead of the Phase 1 rate175 trainable checkpoint.",
+  "hardware": "Tesla T4",
+  "no_robot_ssh_deploy_grounded_replay": true,
+  "status": "HOLD_STAGE_A_FLAT_WRONG_WARMSTART_SUPERSEDED",
+  "stage_a_curriculum": {
+    "pushes": "disabled",
+    "task": "flat_terrain_backlash",
+    "terrain_hfield": "none",
+    "warmstart_issue": "used phase2_health_routed_parent_phase_mod_rate150_step0_checkpoint instead of ppo_bc_command_conditioned_rate175_step0_checkpoint"
+  },
+  "training_run": {
+    "elapsed_s": 870.09,
+    "remote_dir": "/content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260706T081336Z_gpu",
+    "returncode": 0,
+    "status": "PASS_SMOKE_RUN"
+  },
+  "transport": {
+    "detached_console": "HOLD_REMOTE_NO_SENTINEL after artifacts were produced",
+    "exec_remote_without_memory_flags": "HOLD_CUDA_OOM_DURING_ENV_CONSTRUCTION",
+    "exec_remote_with_memory_flags": "PASS_STAGE_A_EXEC_PATH",
+    "memory_flags": {
+      "XLA_PYTHON_CLIENT_MEM_FRACTION": "0.50",
+      "XLA_PYTHON_CLIENT_PREALLOCATE": "false"
+    },
+    "stale_session": "stopped and recreated before corrected Stage A run"
+  },
+  "checkpoints": [
+    {
+      "decision": "HOLD_REJECT_CANDIDATE_CHECKPOINT",
+      "envelope_status": "ABOVE_MEASURED_ENVELOPE",
+      "max_pitch_sent_target_velocity_p95_rad_s": 3.3839,
+      "max_pitch_tracking_p95_rad": 0.2651,
+      "sha256": "30a7cf3a964a4cb9891db46b23aaebec214741871a678fe735d46321728dd28b",
+      "step": 81920,
+      "x0_status": "HOLD_CANDIDATE_TRACKING",
+      "x008_mean_local_vx_m_s": 0.0222,
+      "x008_status": "HOLD_CANDIDATE_TRACKING",
+      "x008_track_ratio": 0.2781
+    },
+    {
+      "decision": "HOLD_REJECT_CANDIDATE_CHECKPOINT",
+      "envelope_status": "ABOVE_MEASURED_ENVELOPE",
+      "max_pitch_sent_target_velocity_p95_rad_s": 3.4042,
+      "max_pitch_tracking_p95_rad": 0.2655,
+      "sha256": "99d4922bab86670f59b1ad1526af9a3685c7e4a4ffe0e9a11f83999ff18d5c28",
+      "step": 163840,
+      "x0_status": "HOLD_CANDIDATE_TRACKING",
+      "x008_mean_local_vx_m_s": 0.0213,
+      "x008_status": "HOLD_CANDIDATE_TRACKING",
+      "x008_track_ratio": 0.2664
+    },
+    {
+      "decision": "HOLD_REJECT_CANDIDATE_CHECKPOINT",
+      "envelope_status": "INSIDE_MEASURED_ENVELOPE",
+      "max_pitch_sent_target_velocity_p95_rad_s": 2.8349,
+      "max_pitch_tracking_p95_rad": 0.2659,
+      "sha256": "2ed742ac1af9ca71699d2ce029285e8debb67ce88389bbd29ac961b5fd14941d",
+      "step": 245760,
+      "x0_status": "HOLD_CANDIDATE_TRACKING",
+      "x008_mean_local_vx_m_s": 0.0154,
+      "x008_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "x008_track_ratio": 0.1919
+    }
+  ],
+  "recommended_next": "Keep the proven exec-remote memory-safe T4 path, but rerun Stage A from outputs/analysis/ppo_bc_command_conditioned_rate175_step0_checkpoint with the matching default PPO network and an explicit behavior-prior continuity hook. The prior run is useful infrastructure evidence but not the authoritative Phase 2 warm-start verdict."
+}

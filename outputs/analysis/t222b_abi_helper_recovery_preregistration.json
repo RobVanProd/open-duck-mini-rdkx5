@@ -1,0 +1,82 @@
+{
+  "authority": {
+    "behavior": false,
+    "colab": false,
+    "execute_abi_helper_recovery": true,
+    "gate5": false,
+    "nominal_matrix_preregistration": false,
+    "robot_or_rdk": false,
+    "training": false
+  },
+  "checks": {
+    "abi_path_call_defect_exact": true,
+    "failure_occurs_after_graph_save_before_contract_result": true,
+    "single_partial_half_graph_exists": true,
+    "t222_exact_preregistration": true,
+    "t222_formal_result_absent": true,
+    "zero_simulator_optimizer_behavior_hosted_or_robot_now": true
+  },
+  "decision_rule": {
+    "fail": "CLOSE_GLOBAL_COMMAND_PLATEAU_WITHOUT_BEHAVIOR",
+    "no_retry_after_recovery": true,
+    "pass": "RECOVER_T222_AND_EARN_T223_GLOBAL_PLATEAU_NOMINAL_MATRIX_PREREGISTRATION_ONLY",
+    "rerun_original_output": false
+  },
+  "execution_now": {
+    "behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "onnx_inferences": 0,
+    "onnx_transforms": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_transitions": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 6263,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t222b_abi_helper_recovery_preregistration.py",
+      "sha256": "2b91f7152e235c38402be7df763ca58073adb5e7e1d50f7a561e13dfc185e05c"
+    },
+    "runner": {
+      "bytes": 6843,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t222b_abi_helper_recovery.py",
+      "sha256": "10d5c143b3b244c329e6048aa870ddd3cba44a80978daa5b72c566da5ce1489b"
+    },
+    "t222_partial_half_graph": {
+      "bytes": 984071,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t222_global_command_plateau_v1\\1003520\\global_command_plateau.onnx",
+      "sha256": "f87eb1cbee7b002c43728a366a287f493748d53d52e32939527b8ace8b0c72f7"
+    },
+    "t222_preregistration": {
+      "bytes": 99887,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t222_global_command_plateau_preregistration.json",
+      "sha256": "89f8c9c9c5a2c8cf23a93d24ab2464dfe311e4fb2219b7ab7475bc8a7a990939"
+    },
+    "t222_source_runner": {
+      "bytes": 20820,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t222_global_command_plateau_transform.py",
+      "sha256": "5f2d09188cf749e238829130c314b8634bcea39e0969ef023ed15d56bc607303"
+    },
+    "test": {
+      "bytes": 1704,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t222b_abi_helper_recovery.py",
+      "sha256": "55511e03d30bf3e4b7d5a0a440cad22dee56fd4c886035965d1bf450a114d9f4"
+    }
+  },
+  "preregistered_contract_sha256": "8253b7908ed2dbb853aa0747e57c5279560d8a34b9bf98a7ecc41cff669b846e",
+  "question": "Does adapting only the ABI helper call from Path to loaded ModelProto recover the exact frozen T222 transform and contract?",
+  "recovery": {
+    "allowed_change": "in-process adapter loads Path with onnx.load before calling the immutable shared abi helper",
+    "cap_change": false,
+    "contract_change": false,
+    "failure": "run_t136 abi() expects ModelProto; T222 passed WindowsPath",
+    "fresh_output_root": "D:/CodexArtifacts/open-duck-policy/t222b_abi_helper_recovery_v1",
+    "partial_graph_must_match_regenerated_half_sha256": true,
+    "source_runner_change": false,
+    "transform_change": false
+  },
+  "schema_version": "open_duck.t222b_abi_helper_recovery_preregistration.v1",
+  "source_t222_contract_sha256": "626b4a9a66d16430be69b0606e1b2ef483c1e650a5042a023f5be64d713e3f9d",
+  "status": "PREREGISTERED_T222B_ABI_HELPER_RECOVERY"
+}

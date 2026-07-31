@@ -1,0 +1,438 @@
+{
+  "checkpoint_remap": {
+    "max_save_restore_error": 0.0,
+    "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_applied_target_state_cpu_source_remap.json",
+    "sha256": "232ccdd08bca8cb2656e96784b8facefc13b5e7139d2fd4eca25851812825e6f",
+    "status": "PASS_CPU_CHECKPOINT_REMAP"
+  },
+  "checkpoints": {
+    "changed_final_leaf_count": 25,
+    "changed_policy_leaf_count": 10,
+    "checks": {
+      "all_checkpoint_leaves_finite": true,
+      "at_least_one_policy_leaf_changed": true,
+      "step_zero_exactly_matches_protected_source": true
+    },
+    "final_directory_sha256": "bbb82227c085993140cddf74176fa548b6a7f531ef4f312510fe5dc35cc2c4d9",
+    "leaf_count": 27,
+    "max_policy_leaf_delta": 0.0012030898360535502,
+    "max_source_to_step_zero_error": 0.0,
+    "policy_leaf_count": 10,
+    "source_directory_sha256": "4ad36da228a97c3f1cd7d19535896b7f256d519bbc9bd7d584b4c15d6dca8eb8",
+    "step_zero_directory_sha256": "4f12b75d32cfa8aaa9f483f1d009e40c9aab7fd119b735bf06091ebba9241821"
+  },
+  "checks": {
+    "all_checkpoint_leaves_finite": true,
+    "all_metrics_finite": true,
+    "applied_target_observation_contract_passed": true,
+    "at_least_one_policy_leaf_changed": true,
+    "contains_step_zero_and_1024": true,
+    "cpu_checkpoint_remap_passed": true,
+    "final_onnx_actions_finite": true,
+    "final_onnx_eight_tick_bound_excess_at_most_1e_6": true,
+    "final_onnx_interface_exact": true,
+    "final_onnx_state_output_exact": true,
+    "metrics_present": true,
+    "step_zero_exactly_matches_protected_source": true,
+    "step_zero_onnx_actions_finite": true,
+    "step_zero_onnx_eight_tick_bound_excess_at_most_1e_6": true,
+    "step_zero_onnx_interface_exact": true,
+    "step_zero_onnx_state_output_exact": true
+  },
+  "execution": {
+    "colab_access": false,
+    "jax_backend": "cpu",
+    "jax_devices": [
+      "TFRT_CPU_0"
+    ],
+    "local_gpu_access": false,
+    "rdk_access": false,
+    "robot_access": false
+  },
+  "failed_checks": [],
+  "failed_invocations": [
+    {
+      "reason": "Direct CUDA-sharded source restore was not CPU-portable and stopped before an update.",
+      "updated_policy": false
+    },
+    {
+      "reason": "Missing composed-checkout PYTHONPATH loaded the editable canonical BaseRunner and stopped before an update.",
+      "updated_policy": false
+    }
+  ],
+  "final_onnx": {
+    "checks": {
+      "actions_finite": true,
+      "eight_tick_bound_excess_at_most_1e_6": true,
+      "interface_exact": true,
+      "state_output_exact": true
+    },
+    "graph_name": "open_duck_reference_residual_hard_vector_final_action",
+    "inputs": [
+      "obs",
+      "previous_action"
+    ],
+    "max_bound_excess": 2.9802322387695312e-08,
+    "max_state_output_error": 0.0,
+    "outputs": [
+      "continuous_actions",
+      "previous_action_out"
+    ],
+    "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/ground_up_applied_target_state_cpu_smoke_retry2/2026_07_14_131642_1024.onnx",
+    "sha256": "212f2eccfe383997603ced5679b149101523e846a7bf0eddc251c80b278591d9"
+  },
+  "interpretation": "This proves CPU restore/update/export compatibility for the frozen applied-target observation continuation. Reward does not select a policy, and no robot or RDK clearance follows.",
+  "metrics": {
+    "checks": {
+      "all_metrics_finite": true,
+      "contains_step_zero_and_1024": true,
+      "metrics_present": true
+    },
+    "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/ground_up_applied_target_state_cpu_smoke_retry2/events.out.tfevents.1784049342.LSD",
+    "scalars": {
+      "eval/avg_episode_length": [
+        {
+          "step": 0,
+          "value": 99.8125
+        },
+        {
+          "step": 1024,
+          "value": 100.0
+        }
+      ],
+      "eval/episode_cost/action_rate": [
+        {
+          "step": 0,
+          "value": 35.777374267578125
+        },
+        {
+          "step": 1024,
+          "value": 35.93878173828125
+        }
+      ],
+      "eval/episode_cost/action_rate_std": [
+        {
+          "step": 0,
+          "value": 2.0566792488098145
+        },
+        {
+          "step": 1024,
+          "value": 1.5864351987838745
+        }
+      ],
+      "eval/episode_cost/stand_still": [
+        {
+          "step": 0,
+          "value": 0.0
+        },
+        {
+          "step": 1024,
+          "value": 0.0
+        }
+      ],
+      "eval/episode_cost/stand_still_std": [
+        {
+          "step": 0,
+          "value": 0.0
+        },
+        {
+          "step": 1024,
+          "value": 0.0
+        }
+      ],
+      "eval/episode_cost/torques": [
+        {
+          "step": 0,
+          "value": 1.0175668001174927
+        },
+        {
+          "step": 1024,
+          "value": 1.0171862840652466
+        }
+      ],
+      "eval/episode_cost/torques_std": [
+        {
+          "step": 0,
+          "value": 0.13260586559772491
+        },
+        {
+          "step": 1024,
+          "value": 0.12990298867225647
+        }
+      ],
+      "eval/episode_reward": [
+        {
+          "step": 0,
+          "value": 46.61595153808594
+        },
+        {
+          "step": 1024,
+          "value": 46.86378479003906
+        }
+      ],
+      "eval/episode_reward/alive": [
+        {
+          "step": 0,
+          "value": 1996.25
+        },
+        {
+          "step": 1024,
+          "value": 2000.0
+        }
+      ],
+      "eval/episode_reward/alive_std": [
+        {
+          "step": 0,
+          "value": 42.260353088378906
+        },
+        {
+          "step": 1024,
+          "value": 0.0
+        }
+      ],
+      "eval/episode_reward/imitation": [
+        {
+          "step": 0,
+          "value": 110.13491821289062
+        },
+        {
+          "step": 1024,
+          "value": 113.34673309326172
+        }
+      ],
+      "eval/episode_reward/imitation_std": [
+        {
+          "step": 0,
+          "value": 17.87848472595215
+        },
+        {
+          "step": 1024,
+          "value": 15.341015815734863
+        }
+      ],
+      "eval/episode_reward/tracking_ang_vel": [
+        {
+          "step": 0,
+          "value": 66.14678192138672
+        },
+        {
+          "step": 1024,
+          "value": 69.12891387939453
+        }
+      ],
+      "eval/episode_reward/tracking_ang_vel_std": [
+        {
+          "step": 0,
+          "value": 16.74005126953125
+        },
+        {
+          "step": 1024,
+          "value": 19.608781814575195
+        }
+      ],
+      "eval/episode_reward/tracking_lin_vel": [
+        {
+          "step": 0,
+          "value": 195.06109619140625
+        },
+        {
+          "step": 1024,
+          "value": 197.66969299316406
+        }
+      ],
+      "eval/episode_reward/tracking_lin_vel_std": [
+        {
+          "step": 0,
+          "value": 16.758264541625977
+        },
+        {
+          "step": 1024,
+          "value": 14.078497886657715
+        }
+      ],
+      "eval/episode_reward_std": [
+        {
+          "step": 0,
+          "value": 1.2617050409317017
+        },
+        {
+          "step": 1024,
+          "value": 0.7149838209152222
+        }
+      ],
+      "eval/episode_swing_peak": [
+        {
+          "step": 0,
+          "value": 0.4912800192832947
+        },
+        {
+          "step": 1024,
+          "value": 0.5094417333602905
+        }
+      ],
+      "eval/episode_swing_peak_std": [
+        {
+          "step": 0,
+          "value": 0.10625942051410675
+        },
+        {
+          "step": 1024,
+          "value": 0.09107476472854614
+        }
+      ],
+      "eval/epoch_eval_time": [
+        {
+          "step": 0,
+          "value": 25.08615493774414
+        },
+        {
+          "step": 1024,
+          "value": 26.17443084716797
+        }
+      ],
+      "eval/sps": [
+        {
+          "step": 0,
+          "value": 510.2416076660156
+        },
+        {
+          "step": 1024,
+          "value": 489.02685546875
+        }
+      ],
+      "eval/std_episode_length": [
+        {
+          "step": 0,
+          "value": 2.1130177974700928
+        },
+        {
+          "step": 1024,
+          "value": 0.0
+        }
+      ],
+      "eval/walltime": [
+        {
+          "step": 0,
+          "value": 25.08615493774414
+        },
+        {
+          "step": 1024,
+          "value": 51.26058578491211
+        }
+      ],
+      "training/entropy_loss": [
+        {
+          "step": 1024,
+          "value": -0.0007184053538367152
+        }
+      ],
+      "training/kl_mean": [
+        {
+          "step": 1024,
+          "value": 0.05850497633218765
+        }
+      ],
+      "training/learning_rate": [
+        {
+          "step": 1024,
+          "value": 0.0003000000142492354
+        }
+      ],
+      "training/policy_dist_max_loc": [
+        {
+          "step": 1024,
+          "value": 1.5730756521224976
+        }
+      ],
+      "training/policy_dist_max_std": [
+        {
+          "step": 1024,
+          "value": 0.9576604962348938
+        }
+      ],
+      "training/policy_dist_mean_loc": [
+        {
+          "step": 1024,
+          "value": 0.02338126301765442
+        }
+      ],
+      "training/policy_dist_mean_std": [
+        {
+          "step": 1024,
+          "value": 0.379634827375412
+        }
+      ],
+      "training/policy_dist_min_loc": [
+        {
+          "step": 1024,
+          "value": -1.7087531089782715
+        }
+      ],
+      "training/policy_dist_min_std": [
+        {
+          "step": 1024,
+          "value": 0.08868254721164703
+        }
+      ],
+      "training/policy_loss": [
+        {
+          "step": 1024,
+          "value": 0.04041943699121475
+        }
+      ],
+      "training/sps": [
+        {
+          "step": 1024,
+          "value": 73.76030731201172
+        }
+      ],
+      "training/total_loss": [
+        {
+          "step": 1024,
+          "value": 0.05159938707947731
+        }
+      ],
+      "training/v_loss": [
+        {
+          "step": 1024,
+          "value": 0.01189835462719202
+        }
+      ],
+      "training/walltime": [
+        {
+          "step": 1024,
+          "value": 13.882805824279785
+        }
+      ]
+    },
+    "sha256": "8de4fe045af9da13c5ba683f1853d40f264e4faf55384cb01d3d0b0116dbd4bc"
+  },
+  "observation_contract": {
+    "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_applied_target_observation_cpu_contract.json",
+    "sha256": "48d41993e03b7d20a526ac6f2a71f38709357ae8151cd2773a91ad5bfa5c05b0",
+    "status": "PASS_CPU_APPLIED_TARGET_OBSERVATION_CONTRACT"
+  },
+  "schema_version": "ground_up_applied_target_continuation_smoke.v1",
+  "status": "PASS_CPU_APPLIED_TARGET_CONTINUATION_SMOKE",
+  "step_zero_onnx": {
+    "checks": {
+      "actions_finite": true,
+      "eight_tick_bound_excess_at_most_1e_6": true,
+      "interface_exact": true,
+      "state_output_exact": true
+    },
+    "graph_name": "open_duck_reference_residual_hard_vector_final_action",
+    "inputs": [
+      "obs",
+      "previous_action"
+    ],
+    "max_bound_excess": 2.9802322387695312e-08,
+    "max_state_output_error": 0.0,
+    "outputs": [
+      "continuous_actions",
+      "previous_action_out"
+    ],
+    "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/ground_up_applied_target_state_cpu_smoke_retry2/2026_07_14_131624_0.onnx",
+    "sha256": "4350900f959a25da6b3e05a942b456124db67ca3a1458c499d540551bbd593d0"
+  }
+}

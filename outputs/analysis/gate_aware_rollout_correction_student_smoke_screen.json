@@ -1,0 +1,200 @@
+{
+  "config": {
+    "policies": [
+      "outputs/analysis/gate_aware_rollout_correction_student_smoke/candidate.onnx"
+    ],
+    "policy_labels": [
+      "gate_aware_rollout_correction_student_smoke"
+    ],
+    "seeds": [
+      1,
+      4
+    ],
+    "command_x": 0.08,
+    "task": "flat_terrain_backlash",
+    "duration_s": 10.0,
+    "bridge_mode": "fitted",
+    "reward_overrides_json": null,
+    "reward_overrides_phase": null,
+    "jax_platform": "cpu",
+    "run": true,
+    "trace_seeds": [],
+    "trace_full_obs": false
+  },
+  "results": [
+    {
+      "policy": "outputs/analysis/gate_aware_rollout_correction_student_smoke/candidate.onnx",
+      "policy_label": "gate_aware_rollout_correction_student_smoke",
+      "seed": 1,
+      "output_dir": "outputs/analysis/gate_aware_rollout_correction_student_smoke_screen/gate_aware_rollout_correction_student_smoke/seed_001",
+      "command": [
+        "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python",
+        "/home/lsd/robots/open-duck-mini-rdkx5/tools/eval_policy_with_actuator_bridge.py",
+        "--mode",
+        "closed-loop-sim",
+        "--eval-role",
+        "candidate",
+        "--policy",
+        "outputs/analysis/gate_aware_rollout_correction_student_smoke/candidate.onnx",
+        "--fit-json",
+        "outputs/analysis/actuator_response_fit.json",
+        "--playground-path",
+        "../Open_Duck_Playground",
+        "--env-python",
+        "../envs/open-duck-playground/bin/python",
+        "--command-x",
+        "0.08",
+        "--task",
+        "flat_terrain_backlash",
+        "--duration",
+        "10.0",
+        "--seed",
+        "1",
+        "--bridge-mode",
+        "fitted",
+        "--jax-platform",
+        "cpu",
+        "--sim-preflight-timeout-s",
+        "600",
+        "--closed-loop-timeout-s",
+        "1800",
+        "--output-dir",
+        "outputs/analysis/gate_aware_rollout_correction_student_smoke_screen/gate_aware_rollout_correction_student_smoke/seed_001"
+      ],
+      "command_shell": "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python /home/lsd/robots/open-duck-mini-rdkx5/tools/eval_policy_with_actuator_bridge.py --mode closed-loop-sim --eval-role candidate --policy outputs/analysis/gate_aware_rollout_correction_student_smoke/candidate.onnx --fit-json outputs/analysis/actuator_response_fit.json --playground-path ../Open_Duck_Playground --env-python ../envs/open-duck-playground/bin/python --command-x 0.08 --task flat_terrain_backlash --duration 10.0 --seed 1 --bridge-mode fitted --jax-platform cpu --sim-preflight-timeout-s 600 --closed-loop-timeout-s 1800 --output-dir outputs/analysis/gate_aware_rollout_correction_student_smoke_screen/gate_aware_rollout_correction_student_smoke/seed_001",
+      "returncode": 0,
+      "stdout_tail": "outputs/analysis/gate_aware_rollout_correction_student_smoke_screen/gate_aware_rollout_correction_student_smoke/seed_001/SIM_ACTUATOR_BRIDGE_EVAL.md\noutputs/analysis/gate_aware_rollout_correction_student_smoke_screen/gate_aware_rollout_correction_student_smoke/seed_001/sim_actuator_bridge_eval.json\noutputs/analysis/gate_aware_rollout_correction_student_smoke_screen/gate_aware_rollout_correction_student_smoke/seed_001/CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md\noutputs/analysis/gate_aware_rollout_correction_student_smoke_screen/gate_aware_rollout_correction_student_smoke/seed_001/closed_loop_actuator_bridge_eval.json\n",
+      "result_json": "outputs/analysis/gate_aware_rollout_correction_student_smoke_screen/gate_aware_rollout_correction_student_smoke/seed_001/closed_loop_actuator_bridge_eval.json",
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "summary": {
+        "overall_status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "candidate_gate_status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "samples": 98,
+        "termination_reason": "fall_or_nan",
+        "elapsed_s": 1.94,
+        "mean_local_vx_m_s": 0.19487504844021583,
+        "track_ratio": 2.435938105502698,
+        "body_pitch_p95_rad": 1.0659424470762082,
+        "base_height_min_m": -0.012542447075247765,
+        "max_pitch_vel_p95_rad_s": 5.239999294281006,
+        "max_tracking_p95_rad": 0.31397111415863055,
+        "action_saturation_pct": 85.71428571428571
+      }
+    },
+    {
+      "policy": "outputs/analysis/gate_aware_rollout_correction_student_smoke/candidate.onnx",
+      "policy_label": "gate_aware_rollout_correction_student_smoke",
+      "seed": 4,
+      "output_dir": "outputs/analysis/gate_aware_rollout_correction_student_smoke_screen/gate_aware_rollout_correction_student_smoke/seed_004",
+      "command": [
+        "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python",
+        "/home/lsd/robots/open-duck-mini-rdkx5/tools/eval_policy_with_actuator_bridge.py",
+        "--mode",
+        "closed-loop-sim",
+        "--eval-role",
+        "candidate",
+        "--policy",
+        "outputs/analysis/gate_aware_rollout_correction_student_smoke/candidate.onnx",
+        "--fit-json",
+        "outputs/analysis/actuator_response_fit.json",
+        "--playground-path",
+        "../Open_Duck_Playground",
+        "--env-python",
+        "../envs/open-duck-playground/bin/python",
+        "--command-x",
+        "0.08",
+        "--task",
+        "flat_terrain_backlash",
+        "--duration",
+        "10.0",
+        "--seed",
+        "4",
+        "--bridge-mode",
+        "fitted",
+        "--jax-platform",
+        "cpu",
+        "--sim-preflight-timeout-s",
+        "600",
+        "--closed-loop-timeout-s",
+        "1800",
+        "--output-dir",
+        "outputs/analysis/gate_aware_rollout_correction_student_smoke_screen/gate_aware_rollout_correction_student_smoke/seed_004"
+      ],
+      "command_shell": "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python /home/lsd/robots/open-duck-mini-rdkx5/tools/eval_policy_with_actuator_bridge.py --mode closed-loop-sim --eval-role candidate --policy outputs/analysis/gate_aware_rollout_correction_student_smoke/candidate.onnx --fit-json outputs/analysis/actuator_response_fit.json --playground-path ../Open_Duck_Playground --env-python ../envs/open-duck-playground/bin/python --command-x 0.08 --task flat_terrain_backlash --duration 10.0 --seed 4 --bridge-mode fitted --jax-platform cpu --sim-preflight-timeout-s 600 --closed-loop-timeout-s 1800 --output-dir outputs/analysis/gate_aware_rollout_correction_student_smoke_screen/gate_aware_rollout_correction_student_smoke/seed_004",
+      "returncode": 0,
+      "stdout_tail": "outputs/analysis/gate_aware_rollout_correction_student_smoke_screen/gate_aware_rollout_correction_student_smoke/seed_004/SIM_ACTUATOR_BRIDGE_EVAL.md\noutputs/analysis/gate_aware_rollout_correction_student_smoke_screen/gate_aware_rollout_correction_student_smoke/seed_004/sim_actuator_bridge_eval.json\noutputs/analysis/gate_aware_rollout_correction_student_smoke_screen/gate_aware_rollout_correction_student_smoke/seed_004/CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md\noutputs/analysis/gate_aware_rollout_correction_student_smoke_screen/gate_aware_rollout_correction_student_smoke/seed_004/closed_loop_actuator_bridge_eval.json\n",
+      "result_json": "outputs/analysis/gate_aware_rollout_correction_student_smoke_screen/gate_aware_rollout_correction_student_smoke/seed_004/closed_loop_actuator_bridge_eval.json",
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "summary": {
+        "overall_status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "candidate_gate_status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "samples": 56,
+        "termination_reason": "fall_or_nan",
+        "elapsed_s": 1.1,
+        "mean_local_vx_m_s": -0.24438294249453715,
+        "track_ratio": -3.0547867811817144,
+        "body_pitch_p95_rad": 0.03041130698893276,
+        "base_height_min_m": 0.09874439984560013,
+        "max_pitch_vel_p95_rad_s": 5.239999294281006,
+        "max_tracking_p95_rad": 0.3174218535423279,
+        "action_saturation_pct": 87.5
+      }
+    }
+  ],
+  "aggregate": {
+    "gate_aware_rollout_correction_student_smoke": {
+      "runs": 2,
+      "fall_count": 2,
+      "duration_complete_count": 0,
+      "samples": {
+        "min": 56.0,
+        "mean": 77.0,
+        "p50": 77.0,
+        "p95": 95.89999999999999,
+        "max": 98.0
+      },
+      "track_ratio": {
+        "min": -3.0547867811817144,
+        "mean": -0.3094243378395083,
+        "p50": -0.3094243378395083,
+        "p95": 2.161401861168477,
+        "max": 2.435938105502698
+      },
+      "mean_local_vx_m_s": {
+        "min": -0.24438294249453715,
+        "mean": -0.02475394702716066,
+        "p50": -0.02475394702716066,
+        "p95": 0.17291214889347814,
+        "max": 0.19487504844021583
+      },
+      "body_pitch_p95_rad": {
+        "min": 0.03041130698893276,
+        "mean": 0.5481768770325705,
+        "p50": 0.5481768770325705,
+        "p95": 1.0141658900718442,
+        "max": 1.0659424470762082
+      },
+      "base_height_min_m": {
+        "min": -0.012542447075247765,
+        "mean": 0.04310097638517618,
+        "p50": 0.04310097638517618,
+        "p95": 0.09318005749955773,
+        "max": 0.09874439984560013
+      },
+      "max_pitch_vel_p95_rad_s": {
+        "min": 5.239999294281006,
+        "mean": 5.239999294281006,
+        "p50": 5.239999294281006,
+        "p95": 5.239999294281006,
+        "max": 5.239999294281006
+      },
+      "max_tracking_p95_rad": {
+        "min": 0.31397111415863055,
+        "mean": 0.3156964838504792,
+        "p50": 0.3156964838504792,
+        "p95": 0.31724931657314304,
+        "max": 0.3174218535423279
+      }
+    }
+  }
+}

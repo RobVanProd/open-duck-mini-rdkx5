@@ -1,0 +1,63 @@
+{
+  "authority": {
+    "authorizes_only": "the exact snapshot-reader correction and a freshly preregistered CPU proof",
+    "joint_recurrent_training_authorized": false,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "correction_boundary": {
+    "fresh_run_required": true,
+    "only_change": "add a Winner-v20 readback loader that requires the exact joint_recurrent_stage2 label, all base parameter leaves, and the exact nine preregistered optimizer leaves; use it only for Winner-v20 snapshots",
+    "preserve": [
+      "rollout, population, seed, reward, masks, and action bounds",
+      "trainable and frozen leaf sets",
+      "all gradient, replay, ONNX, and snapshot equality thresholds",
+      "one proof update and zero formal support/robot work"
+    ],
+    "workflow_rerun_permitted": false
+  },
+  "decision": "CORRECT_ONLY_JOINT_SNAPSHOT_READER_AND_FRESHLY_PREREGISTER",
+  "execution": {
+    "authorized_training_arm_updates": 0,
+    "formal_support_cells": 0,
+    "invalid_proof_optimizer_updates": 1,
+    "locomotion_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_run": {
+    "artifact_members": {
+      "winner-v20-joint-recurrent-cpu-work/winner_v20_joint_recurrent_update_001.npz": {
+        "bytes": 78649,
+        "sha256": "7371e93671d52982bdbb913a32c9070226b3387403654e013cf48a0591f427f8"
+      },
+      "winner-v20-joint-recurrent-cpu-work/winner_v20_joint_recurrent_update_001.onnx": {
+        "bytes": 54896,
+        "sha256": "b375ca14dc9c5417f6c006e07efa30ebdaff3d5d3fe7a6d0d6e8d5089139ab5f"
+      }
+    },
+    "artifact_zip_bytes": 121956,
+    "artifact_zip_sha256": "2a340086d940b3b134cdbc377a23fd075add1c93b7a4092f37831aee7e1a4134",
+    "formal_result_present": false,
+    "github_artifact_id": 8503746957,
+    "github_artifact_name": "winner-v20-joint-recurrent-cpu-29851858965",
+    "github_job_id": 88706461568,
+    "github_run_attempt": 1,
+    "github_run_head_sha": "39ae6045e0324d05632d2bc1c63d9c3b84c10830",
+    "github_run_id": 29851858965,
+    "repository": "RobVanProd/open-duck-mini-rdkx5"
+  },
+  "failure": {
+    "behavior_or_objective_semantics_change": false,
+    "cause": "The inherited Winner-v12 loader accepts only stage1/stage2 labels and hard-codes their seven-leaf or five-leaf optimizer schemas. Winner-v20 honestly writes joint_recurrent_stage2 with the preregistered nine-leaf optimizer, so that inherited loader cannot validate this snapshot.",
+    "exception": "ValueError: snapshot stage is invalid",
+    "numerical_gate_relaxed": false,
+    "proof_valid": false,
+    "step": "snapshot readback after rollout, gradient, Adam update, export, and save"
+  },
+  "schema_version": "winner_v20.joint_recurrent_cpu_proof_failure_attribution.v1",
+  "sources": {
+    "failed_contract_lf_sha256": "84f764934a8709d6e124e926c05a30e3194221642c48262d344144718d7d2bd8",
+    "failed_runner_lf_sha256": "81c290298d492cf34c5f76751eba184ef868ee5c176caf4dc276cfac87f62e06"
+  },
+  "status": "INVALID_WINNER_V20_JOINT_RECURRENT_SUPPORT_CPU_CONTRACT_PROOF"
+}

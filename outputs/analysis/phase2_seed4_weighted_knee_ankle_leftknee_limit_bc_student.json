@@ -1,0 +1,98 @@
+{
+  "status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+  "manifest": "outputs/analysis/phase2_seed4_weighted_knee_ankle_leftknee_limit_manifest.json",
+  "samples": 500,
+  "hidden_sizes": [
+    512,
+    256,
+    128
+  ],
+  "activation": "swish",
+  "saved_npz": "outputs/analysis/phase2_seed4_weighted_knee_ankle_leftknee_limit_bc_student/candidate_mlp.npz",
+  "exported_onnx": "outputs/analysis/phase2_seed4_weighted_knee_ankle_leftknee_limit_bc_student/candidate.onnx",
+  "train_metrics": {
+    "samples": 500,
+    "mae": 0.0024920212097265656,
+    "rmse": 0.003340292573419453,
+    "p50_abs_error": 0.0019545680700235185,
+    "p95_abs_error": 0.006546801748382683,
+    "p99_abs_error": 0.009380573586468937,
+    "max_abs_error": 0.03755247972883835,
+    "pred_action_saturation_pct": 0.0
+  },
+  "target_rate": {
+    "pair_count": 498,
+    "p50_rad_s": 0.46484894545647854,
+    "p95_rad_s": 2.0017364680786125,
+    "p99_rad_s": 2.2763104537885064,
+    "max_rad_s": 2.443300940466444
+  },
+  "sample_weight": {
+    "p50": 1.0,
+    "p95": 1.0,
+    "max": 1.0,
+    "weighted_samples": 500.0
+  },
+  "loss_rows": [
+    {
+      "step": 1,
+      "loss": 0.1864016205072403
+    },
+    {
+      "step": 500,
+      "loss": 6.015492544975132e-05
+    },
+    {
+      "step": 1000,
+      "loss": 3.296925569884479e-05
+    },
+    {
+      "step": 1500,
+      "loss": 4.742565579363145e-05
+    },
+    {
+      "step": 2000,
+      "loss": 1.7993696019402705e-05
+    },
+    {
+      "step": 2500,
+      "loss": 1.9086550310021266e-05
+    },
+    {
+      "step": 3000,
+      "loss": 1.4998362530604936e-05
+    },
+    {
+      "step": 3500,
+      "loss": 1.2849086488131434e-05
+    },
+    {
+      "step": 4000,
+      "loss": 1.0537233720242511e-05
+    },
+    {
+      "step": 4500,
+      "loss": 1.4313783140096348e-05
+    },
+    {
+      "step": 5000,
+      "loss": 1.0203528290730901e-05
+    }
+  ],
+  "onnx_verify": {
+    "path": "outputs/analysis/phase2_seed4_weighted_knee_ankle_leftknee_limit_bc_student/candidate.onnx",
+    "samples_checked": 64,
+    "max_abs_error": 2.893460497865874e-07,
+    "p95_abs_error": 1.5640719150389337e-07
+  },
+  "config": {
+    "steps": 5000,
+    "batch_size": 256,
+    "learning_rate": 0.0008,
+    "target_rate_scale": 0.02,
+    "target_rate_limit_rad_s": 2.25,
+    "action_scale_rad": 0.25,
+    "dt_s": 0.02,
+    "seed": 29
+  }
+}

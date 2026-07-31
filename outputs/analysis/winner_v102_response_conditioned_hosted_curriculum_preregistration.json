@@ -1,0 +1,169 @@
+{
+  "authority": {
+    "additional_training_or_retry": false,
+    "behavior_evaluation_after_valid_artifact": false,
+    "checkpoint_selection": false,
+    "deployment": false,
+    "gate5": false,
+    "one_hosted_gpu_curriculum_after_package_contract": true,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "composed_playground_files": {
+    "WINNER_V98_COMPOSED_SOURCE.diff": "6255ec07a577f54ab9b68f716cd6deb8c3c8ac60d23d53b8f3b3314e94958722",
+    "WINNER_V98_COMPOSED_SOURCE_MANIFEST.json": "b4cde8ba531ba0695471970bb30ce0034b0e4ce637a05e15a73df2c75896625d",
+    "playground/common/randomize.py": "c6e7a48f714a2267b3b19d75ffc9ce3938350aabceb3eda61727a3c48f2d6dd8",
+    "playground/common/runner.py": "57c3b5c3114b9b24992078c75090ef46b9c9b62578cab4640109691b9f6d2d76",
+    "playground/common/winner_v3_variable_configuration.py": "daab44325e6dd98b8b4054fc5c5fe7391ca9e358e7aca97999ef1a2441285ab7",
+    "playground/common/winner_v98_response_calibration_wrapper.py": "04339bf7bbe16f2721ce92bbe62c458e70c1c8a5e9bdfe02424478ebc066a7ba",
+    "playground/common/winner_v98_response_conditioned_export.py": "83c8667828a51bdb379091fbf657725410bae5e0d655273f63cf47bdc913f28c",
+    "playground/common/winner_v98_response_conditioned_ppo_networks.py": "767b0d4dc7d72d6c126eca9ed1f0497ca38214a9e2caa57c8a1e6b5cea3ad17a",
+    "playground/open_duck_mini_v2/joystick.py": "262fda69c1bbb758ae52329f90911477cd52d7a43289095cf46fca4f3cdf3843",
+    "playground/open_duck_mini_v2/runner.py": "cc9953f66f98278c937bcf071d61941dc6b16c474443c98cb176a327ffa8415b"
+  },
+  "contract": {
+    "build_specific_response_is_automatically_inferred": true,
+    "formal_behavior_cells_during_training": 0,
+    "graph_authoritative_rate_guard_deadband": true,
+    "only_response_adapter_and_critic_may_update": true,
+    "powered_off_manual_com_packet_required": false,
+    "protected_source_actor_and_normalizer_remain_bit_exact": true,
+    "stateful_onnx_abi": {
+      "inputs": {
+        "calibration_context": [
+          1,
+          64
+        ],
+        "h_in": [
+          1,
+          64
+        ],
+        "obs": [
+          1,
+          115
+        ],
+        "previous_action": [
+          1,
+          14
+        ]
+      },
+      "outputs": {
+        "continuous_actions": [
+          1,
+          14
+        ],
+        "h_out": [
+          1,
+          64
+        ],
+        "previous_action_out": [
+          1,
+          14
+        ]
+      }
+    },
+    "x0_deadband_exact": true
+  },
+  "cpu_prerequisite": {
+    "adapter_update_families": {
+      "adapter_action": 0.010400150902569294,
+      "adapter_context": 0.008986538276076317,
+      "adapter_state": 0.012109413743019104,
+      "critic": 0.013466011732816696,
+      "protected": 0.0
+    },
+    "preregistration_sha256": "f4a92918b148c4ee1d5ae50b66086084cffff91925de27f7c16007af845d437e",
+    "protected_parameter_update_max": 0.0,
+    "result_sha256": "4f44c2ff9de0ee715b09c1c95048bedb0a43f3334eaa70970dac8c08d6e047d0",
+    "status": "PASS_WINNER_V101_RESPONSE_CONDITIONED_CPU_CONTRACT"
+  },
+  "date": "2026-07-22",
+  "decision": "AUTHORIZE_ONE_HASH_FROZEN_GPU_CURRICULUM_WITHOUT_RETRY",
+  "execution_now": {
+    "formal_behavior_cells": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_locomotion_steps": 0
+  },
+  "input_hashes": {
+    "calibrator": "cb3380ed99b3e9d7e9000904a210227aa397db2a064aa80d8f70e77c8339783b",
+    "composed_manifest": "b4cde8ba531ba0695471970bb30ce0034b0e4ce637a05e15a73df2c75896625d",
+    "cpu_contract": "4f44c2ff9de0ee715b09c1c95048bedb0a43f3334eaa70970dac8c08d6e047d0",
+    "driver": "c815fb43ab3582ae365fd4b69e1c832e03a1472bd01390a60a6d2015c259f190",
+    "protected_policy": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de",
+    "reference_features": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212",
+    "source_archive": "ae4c631a6ce1c0b36c3231113740acc6c1b8a463c0911ce7cad30b8f8d8ca60f",
+    "v96_network": "b0f964340c627a199edb3be6ca89dbc6be59cdb86fa536af3d5f9f7f0e9cfe83"
+  },
+  "pass_rule": [
+    "all input, composed-source, software, and package hashes match",
+    "exactly one GPU process runs the frozen three-stage curriculum without retry or resume",
+    "all seven scheduled checkpoints and ONNX graphs exist and are finite",
+    "the protected actor and protected normalizer have exactly zero update",
+    "state, context, and action adapter families each update",
+    "stage restore continuity is exact",
+    "every ONNX graph has the frozen four-input/three-output ABI and exact x=0 deadband",
+    "the run completes within 21,600 seconds"
+  ],
+  "rationale": "Winner-v101 passed exact restore, automatic calibration, finite update, protected-actor isolation, stateful export, graph-boundary, and x=0 checks.",
+  "schema_version": "winner_v102.response_conditioned_hosted_curriculum_preregistration.v1",
+  "software_versions": {
+    "brax": "0.14.2",
+    "flax": "0.11.2",
+    "jax": "0.7.2",
+    "jaxlib": "0.7.2",
+    "mujoco": "3.9.0",
+    "mujoco-mjx": "3.9.0",
+    "numpy": "2.0.2",
+    "onnx": "1.22.0",
+    "onnxruntime": "1.27.0",
+    "optax": "0.2.5",
+    "orbax-checkpoint": "0.11.25",
+    "playground": "0.0.3"
+  },
+  "source_checkpoint_directory_sha256": "311ce59807ad872795dd95e4a30c626f11d3d80f1b3f78c5b2b997639da4d67e",
+  "status": "PREREGISTERED_WINNER_V102_RESPONSE_CONDITIONED_HOSTED_CURRICULUM",
+  "training": {
+    "architecture": "response_conditioned_reference_residual",
+    "automatic_calibration_ticks_per_reset": 250,
+    "automatic_home_return_ticks_per_reset": 250,
+    "batch_size": 256,
+    "calibration_context_dimensions": 64,
+    "discounting": 0.97,
+    "entropy_cost": 0.005,
+    "episode_length": 600,
+    "flat_transport": false,
+    "learning_rate": 0.0003,
+    "num_envs": 256,
+    "num_minibatches": 4,
+    "num_updates_per_batch": 4,
+    "recurrent_hidden_dimensions": 64,
+    "resume": false,
+    "retry": false,
+    "reward_curve_selection": false,
+    "seed": 100,
+    "stages": [
+      {
+        "deviation_scale": 0.25,
+        "id": "DOMAIN_25_PERCENT",
+        "timesteps": 245760
+      },
+      {
+        "deviation_scale": 0.5,
+        "id": "DOMAIN_50_PERCENT",
+        "timesteps": 245760
+      },
+      {
+        "deviation_scale": 1.0,
+        "exports": [
+          1003520,
+          2007040
+        ],
+        "id": "DOMAIN_100_PERCENT",
+        "timesteps": 2007040
+      }
+    ],
+    "unroll_length": 20,
+    "wall_ceiling_seconds": 21600
+  }
+}

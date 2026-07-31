@@ -1,0 +1,28 @@
+{
+  "status": "HOLD_RECURRENT_BC_UNSTABLE",
+  "aggregate_manifest": "outputs/analysis/phase2_health_routed_parent_live_compact_iter2/live_oracle_dagger_aggregate_manifest.json",
+  "dataset_id": "3fbfc23526cdaaf6",
+  "samples": 8550,
+  "student": "outputs/analysis/phase2_health_routed_parent_live_compact_iter2_recurrent_h96_s32/candidate.onnx",
+  "contract": {
+    "inputs": ["obs[1,101]", "h_in[1,96]"],
+    "outputs": ["continuous_actions[1,14]", "h_out[1,96]"]
+  },
+  "fit": {
+    "status": "PASS_RECURRENT_BC_FIT_SMOKE",
+    "json": "outputs/analysis/phase2_health_routed_parent_live_compact_iter2_recurrent_h96_s32.json"
+  },
+  "gate": {
+    "json": "outputs/analysis/phase2_health_routed_parent_live_compact_iter2_recurrent_h96_s32_gate.json",
+    "passes": 0,
+    "total": 5,
+    "falls": 5,
+    "mean_samples": 97.2,
+    "mean_track_ratio": -2.1853,
+    "mean_vx_m_s": -0.1748,
+    "p95_velocity_excess_rad_s": 3.24
+  },
+  "decision": "do_not_continue_supervised_only_recurrent_bc",
+  "recommended_next": "bounded_history_wrapper_or_online_router_mixture",
+  "phase2_domain_randomization": "blocked"
+}

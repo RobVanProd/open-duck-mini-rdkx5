@@ -1,0 +1,25 @@
+{
+  "schema_version": "contract_c2_phase_ordering_trace_format_correction.v1",
+  "status": "PREREGISTERED_CORRECTION_BEFORE_FORMAL_OUTCOME_AGGREGATION",
+  "failure": {
+    "formal_cells_aggregated": 0,
+    "partial_raw_traces": 1,
+    "exception": "KeyError: phase_index",
+    "cause": "phase_index is emitted at oracle_state.phase_index only when trace_oracle_state is enabled"
+  },
+  "authorized_changes": [
+    "set trace_oracle_state true",
+    "read oracle_state.phase_index",
+    "include evaluator return payload when a trace is absent"
+  ],
+  "behavior_changes": false,
+  "matrix_or_threshold_changes": false,
+  "restart_from_cell": 1,
+  "hashes": {
+    "original_wrapper": "fa02fcab8fbee417f438956fa9ecd14dd8081812a15e59b1a32189adb674f946",
+    "corrected_wrapper": "524d652e17f263bac78a67bb2934b62dbcd70fb8652e3af73f2e65f190b8f723",
+    "evaluator_unchanged": "f35d35789d50baf557d3b2427dfe326ccc60c7607e79069e5a9dd51f2f01f8d6",
+    "correction_markdown": "66b0df5457d4694ccaf3345fc203210d0e998f1ed6696fe800545465c9650c2b"
+  },
+  "robot_clearance": "NO"
+}

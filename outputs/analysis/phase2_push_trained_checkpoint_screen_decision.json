@@ -1,0 +1,66 @@
+{
+  "status": "HOLD_PUSH_TRAINED_CHECKPOINTS_NOT_PROMOTABLE",
+  "corrected_bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+  "task": "rough_terrain_backlash",
+  "terrain_hfield_z_scale": 0.002,
+  "command_x": 0.08,
+  "duration_s": 5.0,
+  "push": {
+    "enabled": true,
+    "interval_s": [1.0, 1.5],
+    "magnitude": [0.05, 0.10]
+  },
+  "results": [
+    {
+      "checkpoint": "outputs/phase2_domain_randomization/stage_b0_mild_push_from_a2_gpu/smoke_20260628T075006Z_gpu/2026_06_28_035626_491520.onnx",
+      "seeds": [6, 7],
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "max_tracking_p95_rad": 0.1997,
+      "max_velocity_excess_rad_s": 0.0,
+      "mean_track_ratio": 0.4693
+    },
+    {
+      "checkpoint": "outputs/phase2_domain_randomization/stage_b0_mild_push_from_a2_gpu/smoke_20260628T075006Z_gpu/2026_06_28_035626_491520.onnx",
+      "seeds": [0, 1, 2, 3, 4, 5, 6, 7],
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "held_seeds": [0, 2, 4, 5],
+      "max_tracking_p95_rad": 0.2050,
+      "max_velocity_excess_rad_s": 0.0,
+      "mean_track_ratio": 0.4306,
+      "falls": 0
+    },
+    {
+      "checkpoint": "outputs/phase2_domain_randomization/stage_b0_mild_push_from_a2_gpu/smoke_20260628T075006Z_gpu/2026_06_28_035337_163840.onnx",
+      "seeds": [0, 2, 4, 5],
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "held_seeds": [0, 5],
+      "max_tracking_p95_rad": 0.2038,
+      "max_velocity_excess_rad_s": 0.0,
+      "mean_track_ratio": 0.4401
+    },
+    {
+      "checkpoint": "outputs/phase2_domain_randomization/stage_b0_mild_push_from_a2_gpu/smoke_20260628T075006Z_gpu/2026_06_28_035542_327680.onnx",
+      "seeds": [0, 2, 4, 5],
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "held_seeds": [0, 2, 4, 5],
+      "max_tracking_p95_rad": 0.2057,
+      "max_velocity_excess_rad_s": 0.0,
+      "mean_track_ratio": 0.4231
+    },
+    {
+      "checkpoint": "outputs/phase2_domain_randomization/stage_b1_full_flat_gentle_push_from_a2_gpu/smoke_20260628T073620Z_gpu/2026_06_28_034241_491520.onnx",
+      "seeds": [0, 2, 4, 5, 6, 7],
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "held_seeds": [0, 2, 4, 5, 6, 7],
+      "mean_track_ratio": 0.1247,
+      "max_velocity_excess_rad_s": 0.0
+    }
+  ],
+  "interpretation": "Stage B0 preserves useful motion and fixes the original push envelope issue but misses strict tracking on several seeds. Stage B1 over-regularizes into low forward progress.",
+  "next_recommendation": "Continue from the B0/motion-preserving direction with explicit tracking-margin pressure and command-progress preservation; do not promote these checkpoints.",
+  "robot_tests": false,
+  "ssh": false,
+  "deploy": false,
+  "grounded_replay": false,
+  "runtime_behavior_changed": false
+}

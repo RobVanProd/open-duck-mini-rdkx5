@@ -1,0 +1,459 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "gate5_authorized": false,
+    "hosted_training_authorized": false,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "s0_s2_read_only_analysis_authorized": true,
+    "s3_behavior_screen_authorized": false,
+    "s4_cpu_contract_authorized": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "all_external_source_hashes_exact": true,
+    "all_repository_input_hashes_exact": true,
+    "analysis_is_zero_credit_and_read_only": true,
+    "frozen_failure_population_exact": true,
+    "v121_result_valid_and_11_of_16": true,
+    "v121_trace_inventory_exact": true,
+    "v121_transform_contract_exact": true,
+    "v123_result_valid_and_4_of_16": true,
+    "v123_trace_inventory_exact": true
+  },
+  "decision_after_s2": {
+    "all_s0_s2_requirements_pass": "authorize only a separately preregistered zero-credit S3 uniform wrapper behavior screen",
+    "any_requirement_fails": "close the predictive-box formulation without Colab or rollout",
+    "s3_fixes_torque_but_costs_gait": "a train-through S4 CPU contract may be designed; Colab remains unauthorized until that separate contract passes",
+    "s3_goes_16_of_16": "no hosted run; preregister the full frozen robustness matrix"
+  },
+  "exact_source_hypotheses": {
+    "bridge": {
+      "first_current_command_effect_tick": "decision_tick + delay_ticks",
+      "home_relative_gain": true,
+      "lag_alpha": "1-exp(-control_dt_s/tau_s)",
+      "mapping": "piecewise_affine_monotone_per_joint",
+      "post_lag_velocity_clip": true
+    },
+    "current": {
+      "mapping": "abs(actuator_force_nm)/0.784532",
+      "nm_per_a": 0.784532,
+      "peak_current_equivalent_torque_nm": 1.96133,
+      "peak_current_limit_a": 2.5,
+      "peak_torque_limit_nm": 1.91229675,
+      "strict_overcurrent_equivalent_torque_nm": 1.569064,
+      "strict_overcurrent_threshold_a": 2.0
+    },
+    "torque": {
+      "force_state_position": "qpos_post - sim_dt_s*qvel_post at the final semi-implicit Euler substep",
+      "forcerange_nm": [
+        -3.23,
+        3.23
+      ],
+      "kp_nm_per_rad": 17.11,
+      "kv_nm_s_per_rad": 0.0
+    }
+  },
+  "execution_now": {
+    "behavior_rollouts": 0,
+    "colab_compute_units": 0,
+    "robot_or_rdk_access": 0,
+    "training_steps": 0
+  },
+  "external_source_hashes": {
+    "base": "0e90b98b113c2e5ff4abd34b64482e3f1b3d365ef95481d1838f8b855de99988",
+    "joystick": "86fb379195f75a87da08623e5f8d9a1ab3f747c47d2cb8b5cc2fb3bd2db6e8d6",
+    "robot_xml": "11e922dc9524716e9f54b2fd8be54133fa65efbc61de96ddc846d991de1c9d38",
+    "runtime_sts3215": "a52b5a1551dce7940aadbd1b6446b91a796d279875d77ee247e4ef1cd43b4aa8",
+    "scene": "33af97247d6a876cf47c9e37185cb71bd09f6793bc0f62d90cbe2a91caa3ba63"
+  },
+  "external_source_paths": {
+    "base": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v122-episode-peak-playground-20260724\\playground\\open_duck_mini_v2\\base.py",
+    "joystick": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v122-episode-peak-playground-20260724\\playground\\open_duck_mini_v2\\joystick.py",
+    "robot_xml": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v122-episode-peak-playground-20260724\\playground\\open_duck_mini_v2\\xmls\\open_duck_mini_v2_backlash.xml",
+    "runtime_sts3215": "C:\\Users\\usa50\\Documents\\Codex\\2026-07-14\\ok-so-i-need-you-to\\src\\open_duck_x5\\bus\\sts3215.py",
+    "scene": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v122-episode-peak-playground-20260724\\playground\\open_duck_mini_v2\\xmls\\scene_flat_terrain_backlash.xml"
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "bridge_model": "82184df17195cf7241a70e806741a0fdb4e49904fd12b4ee8fe7a38617602472",
+    "closed_loop_evaluator": "66f2969d3acb324d21694771b8579a20662b9068b84020cb708667f99fa70504",
+    "episode_peak_patch": "afa07528fa832b0e64e220587936b3c699ee893f026d1caa822674b3850f6c8e",
+    "plant_preregistration": "c8f986ceb24863f33c1fc99170548d2e255cb6a26737d3f74762f8dcd4485a24",
+    "v121_diagnosis": "1c84a48c3f4eff354108240b4084d6546d1232cccd6bf67d715d9c1518b0e26a",
+    "v121_result": "8bdefb90032facb4a3f3f7c833e608d2b35dac958ac0fcc2bbbd393ddcbb6047",
+    "v121_transform": "4bd5eab5343cd8401db1789773fa3cc345727d903cb31222e0ea9870f0e9e640",
+    "v122_hosted_preregistration": "fbbd796fdbf30d0e634ea712ceadd2946af035037bf6481f4ef3e1d0caed8c8e",
+    "v123_attribution": "cdbade24b74472445eddd19bc2cac083b8ac263f275dd97b85f39dd6b87a9070",
+    "v123_result": "015fc6b85c5b3e3742f97c1e082987bc82c65da774e74d22b9a9e3c32907baa0"
+  },
+  "pre_run_ruling": {
+    "one_checkpoint_only": "reject persistence; no cherry-picking",
+    "reason": "One mechanism-selected deterministic transform must be applied unchanged to both independently frozen V121 checkpoints, and each checkpoint must still pass all eight cells. This is not checkpoint selection and cannot be revised after S3 results.",
+    "s3_pass_rule": "both uniformly wrapped checkpoints independently pass all eight frozen nominal cells",
+    "uniform_wrapper_satisfies_both_checkpoint_rule": true
+  },
+  "s0_model_closure": {
+    "bridge_trace_max_abs_error_rad_max": 6e-08,
+    "failure_rule": "any failed source or trace closure stops before S1",
+    "reported_current_max_abs_error_a_max": 1e-12,
+    "requirements": [
+      "extract constants and ordering from the frozen composed source",
+      "replay every V121 and V123 bridge target from sent-target history",
+      "reconstruct every logged actuator force from qpos/qvel and ctrl",
+      "reconstruct every reported current peak from actuator force"
+    ],
+    "torque_trace_max_abs_error_nm_max": 5e-06
+  },
+  "s1_event_autopsy": {
+    "committed_definition": "last_controlling_decision_tick < 0",
+    "event_definition": "abs(actuator_force_nm) > 1.91229675",
+    "failure_rule": "any committed or nonpreventable V121 event, or less than 95 percent locally preventable V123 events, stops before S2/S3",
+    "last_controlling_decision_tick": "event_tick-delay_ticks",
+    "local_preventability": "Using the exact piecewise bridge transition and the realized source-aligned force-state q at the event tick, the intersection of [-1,1], the frozen G3 target interval, the frozen final-action rate interval, and both P30/P31-34 torque-safe target intervals is nonempty at the last controlling decision.",
+    "prediction_error": "qhat=q_pre+horizon_s*qdot_pre; horizon_s=(delay_ticks+1)*control_dt_s-sim_dt_s",
+    "s1b": {
+      "counterfactual_reward": "clip((base_scaled_sum-307.48131091308585*increment_rate)*0.02,0,10000)",
+      "direct_credit_definition": "an element event directly sets the per-episode global running maximum; all other element events receive zero episode-peak increment credit by source construction",
+      "gate": "source identity and reconstruction must be exact; event fractions are reported without a post-hoc threshold",
+      "report": [
+        "directly credited versus zero-direct-credit event counts",
+        "max-setting tick count",
+        "intended un-clipped episode price",
+        "realized clipped reward price",
+        "fraction of intended price removed by clipping"
+      ]
+    },
+    "v121_requirement": "all 15 events locally preventable and none committed",
+    "v123_requirement": "at least 95 percent of 184 events locally preventable"
+  },
+  "s2_feasibility": {
+    "diagnostics_not_selection": [
+      "fraction of original targets requiring projection",
+      "p95 and maximum projected target correction",
+      "per-joint applied-error occupancy",
+      "per-joint >1.569064 N.m dwell occupancy"
+    ],
+    "failure_rule": "any hard requirement failure stops before S3",
+    "hard_requirements": [
+      "positive torque-safe half-width for every joint",
+      "zero empty robust-box and supreme-constraint intersections",
+      "existing >2 A dwell remains at most 99 consecutive ticks"
+    ],
+    "measurement_and_goal_floor": {
+      "formula": "position_half_lsb + horizon_s*velocity_half_lsb + goal_full_lsb",
+      "goal_full_lsb_rad": 0.0015339807878856412,
+      "position_half_lsb_rad": 0.0007669903939428206,
+      "velocity_half_lsb_rad_s": 0.0007671776931843207
+    },
+    "population": "all ticks with a complete prediction horizon in the six moving V121-half cells; x=0 remains on the frozen exact deadband bypass",
+    "prediction_reserve_by_joint_rad": "max(p99.9 absolute source-aligned q prediction error across the passing population and both fit delays, maximum V121-event precursor prediction error) + measurement_and_goal_floor",
+    "robustness": "derive one target interval per joint and fit using the exact piecewise bridge; intersect P30 and P31-34 intervals",
+    "supreme_constraints": [
+      "normalized action remains in [-1,1]",
+      "frozen G3 actual-position-centered margin remains 0.165 rad",
+      "frozen exact trained final-action rate delta remains unchanged"
+    ],
+    "torque_reserve_by_joint_nm": "17.11*prediction_reserve_by_joint_rad"
+  },
+  "schema_version": "winner_v124.predictive_torque_s0_s2_preregistration.v1",
+  "status": "PREREGISTERED_WINNER_V124_PREDICTIVE_TORQUE_S0_S2",
+  "trace_inputs": {
+    "v121": [
+      {
+        "cell_trace_hash_exact": true,
+        "filename": "v121_train_matched_final_p30_all_joint_x0.000_seed167931544.jsonl",
+        "first_tick": 0,
+        "last_tick": 599,
+        "required_fields": true,
+        "rows": 600,
+        "sha256": "f3fa6726897acd2037781f05d99ed25107e4c6f8f60ff639f936e67be2a16e2d"
+      },
+      {
+        "cell_trace_hash_exact": true,
+        "filename": "v121_train_matched_final_p30_all_joint_x0.074_seed167931544.jsonl",
+        "first_tick": 0,
+        "last_tick": 599,
+        "required_fields": true,
+        "rows": 600,
+        "sha256": "43710046f3abae7a84a691f77e2ca02533a8a484097c538768a0f4237d61de3a"
+      },
+      {
+        "cell_trace_hash_exact": true,
+        "filename": "v121_train_matched_final_p30_all_joint_x0.077_seed167931544.jsonl",
+        "first_tick": 0,
+        "last_tick": 599,
+        "required_fields": true,
+        "rows": 600,
+        "sha256": "4eb38694cbe76da3feda06260827b85ddd7497139920e75a9499ca76b508b127"
+      },
+      {
+        "cell_trace_hash_exact": true,
+        "filename": "v121_train_matched_final_p30_all_joint_x0.080_seed167931544.jsonl",
+        "first_tick": 0,
+        "last_tick": 599,
+        "required_fields": true,
+        "rows": 600,
+        "sha256": "3c3fcf5a68d1f7871d025d9364e4df3854c4054b8b33966a5936f0a17303574d"
+      },
+      {
+        "cell_trace_hash_exact": true,
+        "filename": "v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.000_seed167931544.jsonl",
+        "first_tick": 0,
+        "last_tick": 599,
+        "required_fields": true,
+        "rows": 600,
+        "sha256": "b553f9503207db8a11b0a67977385fc0df10c3f5adca3c527d2bd5f1c37e44a4"
+      },
+      {
+        "cell_trace_hash_exact": true,
+        "filename": "v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.jsonl",
+        "first_tick": 0,
+        "last_tick": 599,
+        "required_fields": true,
+        "rows": 600,
+        "sha256": "ea5267de5e7213e81f0e2fdf9f76fbf6f55557842ac536f45e6d86f8f48ea626"
+      },
+      {
+        "cell_trace_hash_exact": true,
+        "filename": "v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.jsonl",
+        "first_tick": 0,
+        "last_tick": 599,
+        "required_fields": true,
+        "rows": 600,
+        "sha256": "b2857eeeaed688436f82fbb75cd051d74776f471b5369e4547932ee6e688e323"
+      },
+      {
+        "cell_trace_hash_exact": true,
+        "filename": "v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.jsonl",
+        "first_tick": 0,
+        "last_tick": 599,
+        "required_fields": true,
+        "rows": 600,
+        "sha256": "f791f1273da5f88d4e31225bba9c418ef40f8f1d7b963371b9a6803d5638aad0"
+      },
+      {
+        "cell_trace_hash_exact": true,
+        "filename": "v121_train_matched_half_p30_all_joint_x0.000_seed167931544.jsonl",
+        "first_tick": 0,
+        "last_tick": 599,
+        "required_fields": true,
+        "rows": 600,
+        "sha256": "17b0a5c3c3db418aee2544076c851ca638055fb76c3a4b497f47b3e306aaeff0"
+      },
+      {
+        "cell_trace_hash_exact": true,
+        "filename": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+        "first_tick": 0,
+        "last_tick": 599,
+        "required_fields": true,
+        "rows": 600,
+        "sha256": "1abc0536a5d566f597dcca85a32acaa63387dea641cdd2f8785ae22e1368f3d2"
+      },
+      {
+        "cell_trace_hash_exact": true,
+        "filename": "v121_train_matched_half_p30_all_joint_x0.077_seed167931544.jsonl",
+        "first_tick": 0,
+        "last_tick": 599,
+        "required_fields": true,
+        "rows": 600,
+        "sha256": "57f70439a7a51d1c8625e615cfa5a86f0d1d79bafe1791f103cfb6f7b7944a83"
+      },
+      {
+        "cell_trace_hash_exact": true,
+        "filename": "v121_train_matched_half_p30_all_joint_x0.080_seed167931544.jsonl",
+        "first_tick": 0,
+        "last_tick": 599,
+        "required_fields": true,
+        "rows": 600,
+        "sha256": "1c88e7271977f6caf0cf3da90aff156bd21f0735b391b58ab7746cd708ed9b04"
+      },
+      {
+        "cell_trace_hash_exact": true,
+        "filename": "v121_train_matched_half_p31_34_pitch_with_p30_nonpitch_x0.000_seed167931544.jsonl",
+        "first_tick": 0,
+        "last_tick": 599,
+        "required_fields": true,
+        "rows": 600,
+        "sha256": "79d321e4a4dd518b6d05fbb3abcd48ca4b95a184713b6f3c4c6cac48a6d0b654"
+      },
+      {
+        "cell_trace_hash_exact": true,
+        "filename": "v121_train_matched_half_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.jsonl",
+        "first_tick": 0,
+        "last_tick": 599,
+        "required_fields": true,
+        "rows": 600,
+        "sha256": "0e1e77d1329af21c69a91f8f1a208f1554575c2a7c5d55667623afcde67cb0d1"
+      },
+      {
+        "cell_trace_hash_exact": true,
+        "filename": "v121_train_matched_half_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.jsonl",
+        "first_tick": 0,
+        "last_tick": 599,
+        "required_fields": true,
+        "rows": 600,
+        "sha256": "d55ef370c738a05df98507d83473a992d9f1b5915c30c57b3f295e23342d81d0"
+      },
+      {
+        "cell_trace_hash_exact": true,
+        "filename": "v121_train_matched_half_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.jsonl",
+        "first_tick": 0,
+        "last_tick": 599,
+        "required_fields": true,
+        "rows": 600,
+        "sha256": "b5cea58ec0e42c353fe3ef7a81d07c31b833335366538f7392d947ff3188346e"
+      }
+    ],
+    "v121_manifest_sha256": "3e6a456faf1acfa39c00d564d9ade35a51038637f8d466cf34c289307c4420c7",
+    "v121_run_root": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v121-nominal-run-20260724",
+    "v123": [
+      {
+        "cell_trace_hash_exact": true,
+        "filename": "v123_episode_peak_final_p30_all_joint_x0.000_seed167931544.jsonl",
+        "first_tick": 0,
+        "last_tick": 599,
+        "required_fields": true,
+        "rows": 600,
+        "sha256": "8ec38d5194a420923f99d489d05f61312b5f776f6ebf6c373570b66da9bd6b27"
+      },
+      {
+        "cell_trace_hash_exact": true,
+        "filename": "v123_episode_peak_final_p30_all_joint_x0.074_seed167931544.jsonl",
+        "first_tick": 0,
+        "last_tick": 599,
+        "required_fields": true,
+        "rows": 600,
+        "sha256": "ca567a5110836688557f5f72b0b6255661b2f02a72b602072650e9d49c3099bf"
+      },
+      {
+        "cell_trace_hash_exact": true,
+        "filename": "v123_episode_peak_final_p30_all_joint_x0.077_seed167931544.jsonl",
+        "first_tick": 0,
+        "last_tick": 599,
+        "required_fields": true,
+        "rows": 600,
+        "sha256": "35078175f326bcfc9e1d7c47fa6ae3ac3c615175ae7b20e24af26f01c23d6145"
+      },
+      {
+        "cell_trace_hash_exact": true,
+        "filename": "v123_episode_peak_final_p30_all_joint_x0.080_seed167931544.jsonl",
+        "first_tick": 0,
+        "last_tick": 599,
+        "required_fields": true,
+        "rows": 600,
+        "sha256": "121d9c54f69338d8ab3f9f12a857b1cc6428ae09f49841115ce4993b9f1a5d3e"
+      },
+      {
+        "cell_trace_hash_exact": true,
+        "filename": "v123_episode_peak_final_p31_34_pitch_with_p30_nonpitch_x0.000_seed167931544.jsonl",
+        "first_tick": 0,
+        "last_tick": 599,
+        "required_fields": true,
+        "rows": 600,
+        "sha256": "d14aab90e2f5794bb1790abc4a077f4edf20ae99c320ac0c263b66cca8865d5f"
+      },
+      {
+        "cell_trace_hash_exact": true,
+        "filename": "v123_episode_peak_final_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.jsonl",
+        "first_tick": 0,
+        "last_tick": 599,
+        "required_fields": true,
+        "rows": 600,
+        "sha256": "d806a5fc50eaea5432042332d4e9f0340d925ce4d980a5d9fcb0f2a0ab1d83dd"
+      },
+      {
+        "cell_trace_hash_exact": true,
+        "filename": "v123_episode_peak_final_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.jsonl",
+        "first_tick": 0,
+        "last_tick": 599,
+        "required_fields": true,
+        "rows": 600,
+        "sha256": "604f8321bf08b82deb18892fcad1607530bff3ba59fe679ebaac33aa0ae51553"
+      },
+      {
+        "cell_trace_hash_exact": true,
+        "filename": "v123_episode_peak_final_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.jsonl",
+        "first_tick": 0,
+        "last_tick": 599,
+        "required_fields": true,
+        "rows": 600,
+        "sha256": "9ff75676f6cfe64cf5db48227905f72eb2ae8866474367d5854a54a871d8d41f"
+      },
+      {
+        "cell_trace_hash_exact": true,
+        "filename": "v123_episode_peak_half_p30_all_joint_x0.000_seed167931544.jsonl",
+        "first_tick": 0,
+        "last_tick": 599,
+        "required_fields": true,
+        "rows": 600,
+        "sha256": "4c3b1598219be714efc82b88002e5716f7de6ea796787f6a7bd99a84d2349fa0"
+      },
+      {
+        "cell_trace_hash_exact": true,
+        "filename": "v123_episode_peak_half_p30_all_joint_x0.074_seed167931544.jsonl",
+        "first_tick": 0,
+        "last_tick": 599,
+        "required_fields": true,
+        "rows": 600,
+        "sha256": "840b874787883d6f97c0a6a93aae12973982d6b4e01e7b3bad1b5dd253727d42"
+      },
+      {
+        "cell_trace_hash_exact": true,
+        "filename": "v123_episode_peak_half_p30_all_joint_x0.077_seed167931544.jsonl",
+        "first_tick": 0,
+        "last_tick": 599,
+        "required_fields": true,
+        "rows": 600,
+        "sha256": "cb419e5dfdaedabf6c89c80b366e6b2dad2134debf452715c75ba38d8baee48f"
+      },
+      {
+        "cell_trace_hash_exact": true,
+        "filename": "v123_episode_peak_half_p30_all_joint_x0.080_seed167931544.jsonl",
+        "first_tick": 0,
+        "last_tick": 599,
+        "required_fields": true,
+        "rows": 600,
+        "sha256": "445d79bf02ebceb3cce51987b7f06cf8c676f4d000afa9fdceab067a955def59"
+      },
+      {
+        "cell_trace_hash_exact": true,
+        "filename": "v123_episode_peak_half_p31_34_pitch_with_p30_nonpitch_x0.000_seed167931544.jsonl",
+        "first_tick": 0,
+        "last_tick": 599,
+        "required_fields": true,
+        "rows": 600,
+        "sha256": "86c49d18f6f01fe45b22295284a0e1e59fb8a31f2bf96d457d7d3b7012b8d2b2"
+      },
+      {
+        "cell_trace_hash_exact": true,
+        "filename": "v123_episode_peak_half_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.jsonl",
+        "first_tick": 0,
+        "last_tick": 599,
+        "required_fields": true,
+        "rows": 600,
+        "sha256": "487cad77dad340f94d7e113738aaa25145a5e47cf41cd2523b2f3080a46a7aa4"
+      },
+      {
+        "cell_trace_hash_exact": true,
+        "filename": "v123_episode_peak_half_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.jsonl",
+        "first_tick": 0,
+        "last_tick": 599,
+        "required_fields": true,
+        "rows": 600,
+        "sha256": "827de2d2cdeb037a7e2a314c124791806e806573bce1fa4db9b2dc6c765a7b07"
+      },
+      {
+        "cell_trace_hash_exact": true,
+        "filename": "v123_episode_peak_half_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.jsonl",
+        "first_tick": 0,
+        "last_tick": 599,
+        "required_fields": true,
+        "rows": 600,
+        "sha256": "c1cc392852619ac219b2a5da9b6b0ff62812972d5b6e55ddd97c79f04801f370"
+      }
+    ],
+    "v123_manifest_sha256": "387a8b2d950e2a6d241515290ebd347865176aefd82b90b72807dbe71040350a",
+    "v123_run_root": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v123-nominal-run-20260724"
+  }
+}

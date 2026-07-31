@@ -1,0 +1,476 @@
+{
+  "checkpoint_remap": {
+    "max_save_restore_error": 0.0,
+    "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_tracking_tail_cpu_source_remap.json",
+    "sha256": "34bbe2e3214bae6d9087766e368ec5c2c227847315ae46780b9431018dc6bcfb",
+    "status": "PASS_CPU_CHECKPOINT_REMAP"
+  },
+  "checkpoints": {
+    "changed_final_leaf_count": 25,
+    "changed_policy_leaf_count": 10,
+    "checks": {
+      "all_checkpoint_leaves_finite": true,
+      "at_least_one_policy_leaf_changed": true,
+      "step_zero_exactly_matches_protected_source": true
+    },
+    "final_directory_sha256": "a63a58c643ae534456a2dc0704554ed6aa14b0fd1792a561728f97d021acd316",
+    "leaf_count": 27,
+    "max_policy_leaf_delta": 0.00981164537370205,
+    "max_source_to_step_zero_error": 0.0,
+    "policy_leaf_count": 10,
+    "source_directory_sha256": "9a49408ef3a3ec2e9f1985622524e06e2e1d1bc00bc8b4dec8f000446d256355",
+    "step_zero_directory_sha256": "9dab0cb9c8270d9b57b65b054af0238a6da1b3525232a18d3d48e31ff9a90373"
+  },
+  "checks": {
+    "all_checkpoint_leaves_finite": true,
+    "all_metrics_finite": true,
+    "all_policy_leaves_changed": true,
+    "at_least_one_policy_leaf_changed": true,
+    "contains_step_zero_and_1024": true,
+    "cpu_checkpoint_remap_passed": true,
+    "final_onnx_actions_finite": true,
+    "final_onnx_eight_tick_bound_excess_at_most_1e_6": true,
+    "final_onnx_interface_exact": true,
+    "final_onnx_state_output_exact": true,
+    "metrics_present": true,
+    "patch_matches_preregistration": true,
+    "step_zero_exactly_matches_protected_source": true,
+    "step_zero_onnx_actions_finite": true,
+    "step_zero_onnx_eight_tick_bound_excess_at_most_1e_6": true,
+    "step_zero_onnx_interface_exact": true,
+    "step_zero_onnx_state_output_exact": true,
+    "tail_cpu_contract_passed": true,
+    "tail_metric_finite": true,
+    "tail_metric_has_step_zero_and_1024": true,
+    "tail_metric_nonzero": true,
+    "tail_metric_present": true
+  },
+  "execution": {
+    "colab_access": false,
+    "jax_backend": "cpu",
+    "jax_devices": [
+      "TFRT_CPU_0"
+    ],
+    "local_gpu_access": false,
+    "rdk_access": false,
+    "robot_access": false
+  },
+  "failed_checks": [],
+  "failed_invocation": {
+    "reason": "The first host-CPU invocation reused an incompatible AOT cache and stopped after step-zero output, before any PPO update. The retry used a fresh CPU-only cache and is the result evaluated here.",
+    "updated_policy": false
+  },
+  "final_onnx": {
+    "checks": {
+      "actions_finite": true,
+      "eight_tick_bound_excess_at_most_1e_6": true,
+      "interface_exact": true,
+      "state_output_exact": true
+    },
+    "graph_name": "open_duck_reference_residual_hard_vector_final_action",
+    "inputs": [
+      "obs",
+      "previous_action"
+    ],
+    "max_bound_excess": 2.9802322387695312e-08,
+    "max_state_output_error": 0.0,
+    "outputs": [
+      "continuous_actions",
+      "previous_action_out"
+    ],
+    "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/ground_up_tracking_tail_cpu_smoke_retry1/2026_07_14_142514_1024.onnx",
+    "sha256": "9748c83534637a2615aadbe612618503a5bf0f6994188f8a9ae040ccce7ed220"
+  },
+  "implementation": {
+    "patch": "/home/lsd/robots/open-duck-mini-rdkx5/patches/ground_up_tracking_tail_exceedance.patch",
+    "patch_sha256": "9f716243e0c4ef487ef4227ef0cb9f389ed43c0456435987ac0846e1b629811e",
+    "preregistered_patch_sha256": "9f716243e0c4ef487ef4227ef0cb9f389ed43c0456435987ac0846e1b629811e"
+  },
+  "interpretation": "This proves only restore/update/export and metric-wiring compatibility for the preregistered tracking-tail continuation. Reward does not select a policy, and no robot, RDK-X5, deployment, or local-GPU clearance follows.",
+  "metrics": {
+    "checks": {
+      "all_metrics_finite": true,
+      "contains_step_zero_and_1024": true,
+      "metrics_present": true
+    },
+    "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/ground_up_tracking_tail_cpu_smoke_retry1/events.out.tfevents.1784053392.LSD",
+    "scalars": {
+      "eval/avg_episode_length": [
+        {
+          "step": 0,
+          "value": 600.0
+        },
+        {
+          "step": 1024,
+          "value": 588.7578125
+        }
+      ],
+      "eval/episode_cost/action_rate": [
+        {
+          "step": 0,
+          "value": 179.46597290039062
+        },
+        {
+          "step": 1024,
+          "value": 184.53195190429688
+        }
+      ],
+      "eval/episode_cost/action_rate_std": [
+        {
+          "step": 0,
+          "value": 5.924853324890137
+        },
+        {
+          "step": 1024,
+          "value": 21.641796112060547
+        }
+      ],
+      "eval/episode_cost/stand_still": [
+        {
+          "step": 0,
+          "value": 0.0
+        },
+        {
+          "step": 1024,
+          "value": 0.0
+        }
+      ],
+      "eval/episode_cost/stand_still_std": [
+        {
+          "step": 0,
+          "value": 0.0
+        },
+        {
+          "step": 1024,
+          "value": 0.0
+        }
+      ],
+      "eval/episode_cost/torques": [
+        {
+          "step": 0,
+          "value": 4.82750129699707
+        },
+        {
+          "step": 1024,
+          "value": 5.324398994445801
+        }
+      ],
+      "eval/episode_cost/torques_std": [
+        {
+          "step": 0,
+          "value": 0.07722077518701553
+        },
+        {
+          "step": 1024,
+          "value": 0.6109044551849365
+        }
+      ],
+      "eval/episode_cost/tracking_tail_exceedance": [
+        {
+          "step": 0,
+          "value": 14.173515319824219
+        },
+        {
+          "step": 1024,
+          "value": 17.65593719482422
+        }
+      ],
+      "eval/episode_cost/tracking_tail_exceedance_std": [
+        {
+          "step": 0,
+          "value": 5.264101505279541
+        },
+        {
+          "step": 1024,
+          "value": 8.223227500915527
+        }
+      ],
+      "eval/episode_reward": [
+        {
+          "step": 0,
+          "value": 308.3228759765625
+        },
+        {
+          "step": 1024,
+          "value": 286.9437255859375
+        }
+      ],
+      "eval/episode_reward/alive": [
+        {
+          "step": 0,
+          "value": 12000.0
+        },
+        {
+          "step": 1024,
+          "value": 11775.15625
+        }
+      ],
+      "eval/episode_reward/alive_std": [
+        {
+          "step": 0,
+          "value": 0.0
+        },
+        {
+          "step": 1024,
+          "value": 1362.9189453125
+        }
+      ],
+      "eval/episode_reward/imitation": [
+        {
+          "step": 0,
+          "value": 1232.1187744140625
+        },
+        {
+          "step": 1024,
+          "value": 979.2633056640625
+        }
+      ],
+      "eval/episode_reward/imitation_std": [
+        {
+          "step": 0,
+          "value": 30.637962341308594
+        },
+        {
+          "step": 1024,
+          "value": 131.32156372070312
+        }
+      ],
+      "eval/episode_reward/tracking_ang_vel": [
+        {
+          "step": 0,
+          "value": 981.845703125
+        },
+        {
+          "step": 1024,
+          "value": 431.60418701171875
+        }
+      ],
+      "eval/episode_reward/tracking_ang_vel_std": [
+        {
+          "step": 0,
+          "value": 68.72853088378906
+        },
+        {
+          "step": 1024,
+          "value": 73.54512023925781
+        }
+      ],
+      "eval/episode_reward/tracking_lin_vel": [
+        {
+          "step": 0,
+          "value": 1400.647705078125
+        },
+        {
+          "step": 1024,
+          "value": 1368.673828125
+        }
+      ],
+      "eval/episode_reward/tracking_lin_vel_std": [
+        {
+          "step": 0,
+          "value": 19.484983444213867
+        },
+        {
+          "step": 1024,
+          "value": 163.111083984375
+        }
+      ],
+      "eval/episode_reward_std": [
+        {
+          "step": 0,
+          "value": 1.5892484188079834
+        },
+        {
+          "step": 1024,
+          "value": 33.67074966430664
+        }
+      ],
+      "eval/episode_swing_peak": [
+        {
+          "step": 0,
+          "value": 4.054727077484131
+        },
+        {
+          "step": 1024,
+          "value": 4.099100112915039
+        }
+      ],
+      "eval/episode_swing_peak_std": [
+        {
+          "step": 0,
+          "value": 0.1963808387517929
+        },
+        {
+          "step": 1024,
+          "value": 0.4612264633178711
+        }
+      ],
+      "eval/epoch_eval_time": [
+        {
+          "step": 0,
+          "value": 77.8708724975586
+        },
+        {
+          "step": 1024,
+          "value": 73.02665710449219
+        }
+      ],
+      "eval/sps": [
+        {
+          "step": 0,
+          "value": 986.248046875
+        },
+        {
+          "step": 1024,
+          "value": 1051.670654296875
+        }
+      ],
+      "eval/std_episode_length": [
+        {
+          "step": 0,
+          "value": 0.0
+        },
+        {
+          "step": 1024,
+          "value": 68.14595794677734
+        }
+      ],
+      "eval/walltime": [
+        {
+          "step": 0,
+          "value": 77.8708724975586
+        },
+        {
+          "step": 1024,
+          "value": 150.8975372314453
+        }
+      ],
+      "training/entropy_loss": [
+        {
+          "step": 1024,
+          "value": 0.02052215114235878
+        }
+      ],
+      "training/kl_mean": [
+        {
+          "step": 1024,
+          "value": 0.0001399833126924932
+        }
+      ],
+      "training/learning_rate": [
+        {
+          "step": 1024,
+          "value": 0.00030000004335306585
+        }
+      ],
+      "training/policy_dist_max_loc": [
+        {
+          "step": 1024,
+          "value": 1.3020143508911133
+        }
+      ],
+      "training/policy_dist_max_std": [
+        {
+          "step": 1024,
+          "value": 0.5960037708282471
+        }
+      ],
+      "training/policy_dist_mean_loc": [
+        {
+          "step": 1024,
+          "value": -0.02041938342154026
+        }
+      ],
+      "training/policy_dist_mean_std": [
+        {
+          "step": 1024,
+          "value": 0.2849941849708557
+        }
+      ],
+      "training/policy_dist_min_loc": [
+        {
+          "step": 1024,
+          "value": -1.3798056840896606
+        }
+      ],
+      "training/policy_dist_min_std": [
+        {
+          "step": 1024,
+          "value": 0.08416499942541122
+        }
+      ],
+      "training/policy_loss": [
+        {
+          "step": 1024,
+          "value": 2.387751010246575e-07
+        }
+      ],
+      "training/sps": [
+        {
+          "step": 1024,
+          "value": 72.29185485839844
+        }
+      ],
+      "training/total_loss": [
+        {
+          "step": 1024,
+          "value": 0.03438638150691986
+        }
+      ],
+      "training/v_loss": [
+        {
+          "step": 1024,
+          "value": 0.013863987289369106
+        }
+      ],
+      "training/walltime": [
+        {
+          "step": 1024,
+          "value": 14.16480541229248
+        }
+      ]
+    },
+    "sha256": "24d1963d89a3596d915f3738d5efc369da2daf8a8e6604bc5160dce7f0a29557"
+  },
+  "schema_version": "ground_up_tracking_tail_continuation_smoke.v1",
+  "status": "PASS_CPU_TRACKING_TAIL_CONTINUATION_SMOKE",
+  "step_zero_onnx": {
+    "checks": {
+      "actions_finite": true,
+      "eight_tick_bound_excess_at_most_1e_6": true,
+      "interface_exact": true,
+      "state_output_exact": true
+    },
+    "graph_name": "open_duck_reference_residual_hard_vector_final_action",
+    "inputs": [
+      "obs",
+      "previous_action"
+    ],
+    "max_bound_excess": 2.9802322387695312e-08,
+    "max_state_output_error": 0.0,
+    "outputs": [
+      "continuous_actions",
+      "previous_action_out"
+    ],
+    "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/ground_up_tracking_tail_cpu_smoke_retry1/2026_07_14_142453_0.onnx",
+    "sha256": "bae176ffd2d7af4cfb85169c817a9b43bcbe4ac1e5d721dd16959e71aaaf51be"
+  },
+  "tail_contract": {
+    "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_tracking_tail_cpu_contract.json",
+    "sha256": "2a51adb9ca08af8125580085e73af104fb341c65cb4eab82508e2bba0b3619de",
+    "status": "PASS_TRACKING_TAIL_CPU_CONTRACT"
+  },
+  "tail_metric": {
+    "tag": "eval/episode_cost/tracking_tail_exceedance",
+    "values": [
+      {
+        "step": 0,
+        "value": 14.173515319824219
+      },
+      {
+        "step": 1024,
+        "value": 17.65593719482422
+      }
+    ]
+  }
+}

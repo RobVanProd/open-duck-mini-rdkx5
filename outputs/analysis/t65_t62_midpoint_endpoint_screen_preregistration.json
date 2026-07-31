@@ -1,0 +1,189 @@
+{
+  "authority": {
+    "colab": false,
+    "execute_one_cpu_diagnostic": true,
+    "gate5": false,
+    "policy_promotion": false,
+    "rdkx5_or_robot": false,
+    "t66_cpu_contract_preregistration": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "behavior_contract": {
+    "interpretation": {
+      "core": "minimum physical/semantic validity; thresholds passed by the T4 baseline where comparable",
+      "evaluator_candidate_gate_status": "diagnostic only because T4 invalidated its use as an unqualified feasibility classifier",
+      "replacement_quality": "explicit stretch goals for replacing the behaviorally bad baseline; T4 showed the baseline can fail some of these"
+    },
+    "moving_core": {
+      "bilateral_transitions": true,
+      "maximum_action_saturation_pct": 1.0,
+      "maximum_body_pitch_p95_rad": 0.25,
+      "minimum_base_height_m": 0.12,
+      "minimum_track_ratio": 0.25,
+      "positive_mean_local_velocity": true,
+      "samples": 600
+    },
+    "moving_replacement_quality": {
+      "maximum_action_saturation_pct": 0.0,
+      "maximum_pitch_tracking_p95_rad": 0.2,
+      "maximum_rate_excess_rad_s": 0.0
+    },
+    "x0_core": {
+      "maximum_absolute_mean_local_vx_m_s": 0.02,
+      "maximum_action_saturation_pct": 1.0,
+      "maximum_body_pitch_p95_rad": 0.25,
+      "minimum_base_height_m": 0.12,
+      "samples": 600
+    },
+    "x0_replacement_quality": {
+      "maximum_action_saturation_pct": 0.0,
+      "maximum_pitch_tracking_p95_rad": 0.2,
+      "maximum_rate_excess_rad_s": 0.0
+    }
+  },
+  "calibrator": {
+    "bytes": 55573,
+    "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v96-response-conditioned-mechanics\\winner_v96_universal_calibrator.onnx",
+    "sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576"
+  },
+  "checks": {
+    "cpu_only_diagnostic": true,
+    "exactly_four_frozen_commands": true,
+    "exactly_two_measured_fits": true,
+    "no_checkpoint_promotion": true,
+    "single_frozen_midpoint_endpoint": true,
+    "t63_transform_green": true,
+    "t64_midpoint_transfer_closed": true
+  },
+  "commands_x_m_s": [
+    0.0,
+    0.074,
+    0.077,
+    0.08
+  ],
+  "conditions": [
+    {
+      "condition_index": 2,
+      "id": "FLOOR_FRICTION_HI",
+      "override": {
+        "floor_friction": 1.0
+      }
+    }
+  ],
+  "decision_rule": {
+    "fail_decision": "CLOSE_BALANCE_FIRST_REWARD_HOMOTOPY_FAMILY",
+    "no_checkpoint_selection": true,
+    "no_hosted_training_authorization": true,
+    "no_policy_promotion": true,
+    "pass": "All 8 midpoint-endpoint cells pass the unchanged nominal behavior, tracking, rate, state-handoff, and duration contracts.",
+    "pass_decision": "EARN_T66_FIXED_MIDPOINT_PERSISTENCE_CPU_CONTRACT_PREREGISTRATION_ONLY"
+  },
+  "failed_checks": [],
+  "fits": [
+    {
+      "bytes": 18664,
+      "fit_id": "p30",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "a58db8ffc505d2bb64cba7f5618d0e2c65904fc9f9ac37b560a1231e090f5f4f"
+    },
+    {
+      "bytes": 18788,
+      "fit_id": "p31_34",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p31_34_actuator_fit_20260712.json",
+      "sha256": "2740513f6bdeb4ad3cc5dd6dc1709319389a593fd153c1ce5abae03b66131a57"
+    }
+  ],
+  "frozen_inputs": {
+    "runner": {
+      "bytes": 7999,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t65_t62_midpoint_endpoint_screen.py",
+      "sha256": "b865465c935254e83d7ccfe762b0d22218c3c36c7d716851df48459b7c62b059"
+    },
+    "t63_transform": {
+      "bytes": 40146,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t63_t62_postexport_result.json",
+      "sha256": "dca9f7c0d84fa835a4994eca457f3950442502fe1f941fb1fd60dadb1d85e2e1"
+    },
+    "t64_preregistration": {
+      "bytes": 10961,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t64_t62_nominal_matrix_preregistration.json",
+      "sha256": "d10f6264dd5cf8428351f4301d6dfdc7a1204010d7f5f3e1841caafe7d1f1cfc"
+    },
+    "t64_result": {
+      "bytes": 120156,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t64_t62_nominal_matrix_result.json",
+      "sha256": "b87e15fbb8cf1b722d51b6fd83d2316229b03fb0503c13e3bd400d4a0e324aa0"
+    },
+    "test": {
+      "bytes": 2116,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t65_t62_midpoint_endpoint_screen.py",
+      "sha256": "8769be5b21be5d00b56355ba11ae578c36e7cf9e2f24d382d427efd0f5a3fb62"
+    }
+  },
+  "matrix": {
+    "checkpoints": 1,
+    "commands": 4,
+    "condition_must_complete": true,
+    "cpu_only": true,
+    "diagnostic_only": true,
+    "fits": 2,
+    "maximum_cells": 8
+  },
+  "playground": {
+    "manifest": {
+      "bytes": 5190,
+      "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v6\\T19_COMPOSED_SOURCE_MANIFEST.json",
+      "sha256": "d7c9b615c32f0e2c8434e958a900cc38485c0db6fea107b6115a69bbd2122a77"
+    },
+    "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v6"
+  },
+  "policy": {
+    "bytes": 965047,
+    "checkpoint_id": "T62_MIDPOINT_FINAL",
+    "path": "D:\\CodexArtifacts\\open-duck-policy\\t63_t62_deployments_20260728\\0\\action_margin.onnx",
+    "promotion_eligible": false,
+    "selection_weight": 0,
+    "sha256": "54812c8823bdb2a70518502227e7764d07aa1d46c54d91a534465a06a14bc825",
+    "stage": "midpoint_training",
+    "step": 1003520
+  },
+  "preregistered_contract_sha256": "60255f9e24845f8659cf2f2fbb07dcf6b3983279fa28388fe69696df9c5b0060",
+  "protection_contract": {
+    "force_limit_tolerance_nm": 5e-06,
+    "instantaneous_stall_current_and_torque": "diagnostic_only",
+    "motor_constant_nm_per_a": 0.784532,
+    "overcurrent_threshold_a": 2.0,
+    "overload_threshold_nm": 1.5298374,
+    "pass_max_consecutive_ticks": 99,
+    "simulator_force_limit_abs_nm": 3.23,
+    "simulator_force_limit_hits": "diagnostic_only",
+    "source": "T5 manufacturer-derived duration rules",
+    "strict_comparison": true,
+    "trip_ticks": 100
+  },
+  "question": "Did the fixed midpoint-objective stage itself produce a complete nominal policy before the full-transfer objective was reintroduced?",
+  "reference_feature_table": {
+    "bytes": 259604,
+    "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+    "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+  },
+  "repository_commit": "86bd3d506096f8ab267f8ecef2ea578a15076523",
+  "schema_version": "open_duck.t65_t62_midpoint_endpoint_screen_preregistration.v1",
+  "seed": 167931544,
+  "status": "PREREGISTERED_T65_T62_MIDPOINT_ENDPOINT_SCREEN",
+  "support_handoff": {
+    "context_input_name": "calibration_context",
+    "context_is_diagnostic_only": true,
+    "locomotion_hidden_zero": true,
+    "locomotion_phase_reset": [
+      1.0,
+      0.0
+    ],
+    "preserve_applied_target_observer_state": true,
+    "preserve_final_support_action_as_previous_action": true,
+    "source": "T22/T24 exact support-train-through deployment chain and green T27 one-tick runner contract",
+    "unscored_calibration_ticks": 250,
+    "unscored_home_return_ticks": 0
+  }
+}

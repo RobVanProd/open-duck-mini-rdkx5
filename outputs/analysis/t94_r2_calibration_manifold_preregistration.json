@@ -1,0 +1,434 @@
+{
+  "authority": {
+    "deployment": false,
+    "gate5": false,
+    "hosted_training": false,
+    "locomotion_behavior": false,
+    "offline_calibration_screen": true,
+    "rdkx5_or_robot": false
+  },
+  "checks": {
+    "all_repository_inputs_present": true,
+    "calibration_only_no_locomotion_policy_selection": true,
+    "exact_t7_calibrator_and_playground_reused": true,
+    "no_training_colab_or_robot": true,
+    "r2_inventory_exact": true,
+    "t7_response_signal_is_repeatable_and_separable": true
+  },
+  "conditions": [
+    {
+      "condition_index": 1,
+      "id": "FLOOR_FRICTION_LO",
+      "override": {
+        "floor_friction": 0.5
+      }
+    },
+    {
+      "condition_index": 2,
+      "id": "FLOOR_FRICTION_HI",
+      "override": {
+        "floor_friction": 1.0
+      }
+    },
+    {
+      "condition_index": 3,
+      "id": "JOINT_FRICTIONLOSS_LO",
+      "override": {
+        "joint_frictionloss_scale": 0.9
+      }
+    },
+    {
+      "condition_index": 4,
+      "id": "JOINT_FRICTIONLOSS_HI",
+      "override": {
+        "joint_frictionloss_scale": 1.1
+      }
+    },
+    {
+      "condition_index": 5,
+      "id": "ARMATURE_LO",
+      "override": {
+        "armature_scale": 1.0
+      }
+    },
+    {
+      "condition_index": 6,
+      "id": "ARMATURE_HI",
+      "override": {
+        "armature_scale": 1.05
+      }
+    },
+    {
+      "condition_index": 7,
+      "id": "TORSO_COM_X_NEG",
+      "override": {
+        "torso_com_offset_m": [
+          -0.05,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "condition_index": 8,
+      "id": "TORSO_COM_X_POS",
+      "override": {
+        "torso_com_offset_m": [
+          0.05,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "condition_index": 9,
+      "id": "TORSO_COM_Y_NEG",
+      "override": {
+        "torso_com_offset_m": [
+          0.0,
+          -0.05,
+          0.0
+        ]
+      }
+    },
+    {
+      "condition_index": 10,
+      "id": "TORSO_COM_Y_POS",
+      "override": {
+        "torso_com_offset_m": [
+          0.0,
+          0.05,
+          0.0
+        ]
+      }
+    },
+    {
+      "condition_index": 11,
+      "id": "TORSO_COM_Z_NEG",
+      "override": {
+        "torso_com_offset_m": [
+          0.0,
+          0.0,
+          -0.05
+        ]
+      }
+    },
+    {
+      "condition_index": 12,
+      "id": "TORSO_COM_Z_POS",
+      "override": {
+        "torso_com_offset_m": [
+          0.0,
+          0.0,
+          0.05
+        ]
+      }
+    },
+    {
+      "condition_index": 13,
+      "id": "ALL_LINK_MASS_LO",
+      "override": {
+        "all_link_mass_scale": 0.9
+      }
+    },
+    {
+      "condition_index": 14,
+      "id": "ALL_LINK_MASS_HI",
+      "override": {
+        "all_link_mass_scale": 1.1
+      }
+    },
+    {
+      "condition_index": 15,
+      "id": "TORSO_MASS_NEG",
+      "override": {
+        "torso_mass_add_kg": -0.1
+      }
+    },
+    {
+      "condition_index": 16,
+      "id": "TORSO_MASS_POS",
+      "override": {
+        "torso_mass_add_kg": 0.1
+      }
+    },
+    {
+      "condition_index": 17,
+      "id": "HOME_JOINT_OFFSET_NEG",
+      "override": {
+        "joint_qpos0_offset_rad": -0.03
+      }
+    },
+    {
+      "condition_index": 18,
+      "id": "HOME_JOINT_OFFSET_POS",
+      "override": {
+        "joint_qpos0_offset_rad": 0.03
+      }
+    },
+    {
+      "condition_index": 19,
+      "id": "KP_LO",
+      "override": {
+        "kp_scale": 0.9
+      }
+    },
+    {
+      "condition_index": 20,
+      "id": "KP_HI",
+      "override": {
+        "kp_scale": 1.1
+      }
+    }
+  ],
+  "decision_rule": {
+    "fail": {
+      "classification": "R2_CALIBRATION_MANIFOLD_NOT_ROUTABLE",
+      "decision": "CLOSE_CALIBRATION_ROUTED_EXPERT_MECHANISM"
+    },
+    "pass": {
+      "classification": "R2_CALIBRATION_MANIFOLD_ROUTABLE",
+      "decision": "EARN_CALIBRATION_ROUTED_FIXED_EXPERT_CPU_PREREGISTRATION_ONLY"
+    },
+    "training_selection_weight": 0
+  },
+  "execution_now": {
+    "hosted_compute_units": 0,
+    "locomotion_policy_ticks": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_calibration_ticks": 0
+  },
+  "failed_checks": [],
+  "fits": [
+    "p30",
+    "p31_34"
+  ],
+  "frozen_policy": {
+    "abi": {
+      "inputs": {
+        "h_in": [
+          1,
+          64
+        ],
+        "obs": [
+          1,
+          115
+        ],
+        "previous_action": [
+          1,
+          14
+        ]
+      },
+      "outputs": {
+        "calibration_actions": [
+          1,
+          14
+        ],
+        "h_out": [
+          1,
+          64
+        ],
+        "previous_action_out": [
+          1,
+          14
+        ]
+      }
+    },
+    "bytes": 55573,
+    "expected_sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576",
+    "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v96-response-conditioned-mechanics\\winner_v96_universal_calibrator.onnx",
+    "sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576",
+    "universal_raw_action": [
+      0.0,
+      0.0,
+      -0.5,
+      0.25,
+      0.25,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.5,
+      0.25,
+      0.25
+    ],
+    "universal_raw_action_sha256": "2cd89ad56f98280f531686811beeafae42a698fe495a7ee4c1cfcd23b04d5dee"
+  },
+  "matrix": {
+    "cells": 40,
+    "command_x_m_s": 0.0,
+    "conditions": 20,
+    "duration_ticks": 250,
+    "fits": 2,
+    "frequency_hz": 50,
+    "no_early_stop": true,
+    "partial_results_selection_weight": 0,
+    "repeats": 1,
+    "response_context_tick": 249,
+    "seed": 167931544
+  },
+  "pass_contract": {
+    "all_40_calibration_cells_complete_250_ticks": true,
+    "all_contexts_finite": true,
+    "calibration_safety_matches_t7_thresholds": {
+      "all_cells": {
+        "duration_ticks": 600,
+        "graph_action_matches_bounded_universal_target_bit_exact": true,
+        "host_action_delta_max_abs": 0.0,
+        "maximum_absolute_mean_local_vx_m_s": 0.02,
+        "maximum_action_saturation_pct": 0.0,
+        "maximum_body_pitch_p95_rad": 0.25,
+        "maximum_sent_or_conservative_rate_excess_rad_s": 0.0,
+        "minimum_base_height_m": 0.12,
+        "model_com_readback_exact": true,
+        "previous_action_and_hidden_chains_bit_exact": true
+      },
+      "response_signal": {
+        "all_contexts_finite": true,
+        "context_tick": 249,
+        "minimum_signed_com_endpoint_linf_separation_per_fit": 0.15,
+        "nominal_context_must_differ_from_each_signed_endpoint": true,
+        "nominal_difference_floor_linf": 1e-07,
+        "repeat_trace_and_context_bit_exact": true,
+        "signed_threshold_source": "the previously frozen V96 same-plant COM_X_NEG versus COM_X_POS context threshold"
+      },
+      "servo_protection": {
+        "instantaneous_peak_current_and_torque": "diagnostic_only",
+        "maximum_consecutive_ticks": 99,
+        "motor_constant_nm_per_a": 0.784532,
+        "source": "T5 corrected manufacturer-duration rules",
+        "strict_overcurrent_threshold_a": 2.0,
+        "strict_overload_threshold_nm": 1.5298374
+      }
+    },
+    "fit_classification_accuracy": 1.0,
+    "negative_com_false_positives": 0,
+    "negative_com_true_positives": 2,
+    "six_nominal_and_com_anchor_contexts_bit_exact_to_t7": true,
+    "strict_positive_nearest_prototype_margin": true,
+    "universal_action_and_recurrent_chains_exact": true
+  },
+  "playground": {
+    "composition_manifests": {
+      "base_v98": {
+        "bytes": 5525,
+        "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-v175\\WINNER_V98_COMPOSED_SOURCE_MANIFEST.json",
+        "sha256": "b4cde8ba531ba0695471970bb30ce0034b0e4ce637a05e15a73df2c75896625d"
+      },
+      "constrained_v127": {
+        "bytes": 5078,
+        "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-v175\\WINNER_V127_COMPOSED_SOURCE_MANIFEST.json",
+        "sha256": "3514416307e1f12e72feb4228f50a42ae02ca91b86d9dbc339448cf1b2ac6564"
+      },
+      "tangent_v173": {
+        "bytes": 5435,
+        "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-v175\\WINNER_V173_COMPOSED_SOURCE_MANIFEST.json",
+        "sha256": "ba33a3467893c59ed4ff57388ef61ce3c1257b6abd38702b982fa3230438bfe7"
+      }
+    },
+    "control_commit": "b9be205ac64488c23504ca42e5ec790337adeec3",
+    "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-v175",
+    "required_file_sha256": {
+      "playground/common/phase_moe_networks.py": "6480f59f4039884be6743828ffed1c31f76896830b2b38689cad038200283cb7",
+      "playground/common/recurrent_ppo_networks.py": "a501000c6f959276514ba56f935d027b05b171a9ea62bb6a2bc1ecdd2fe8cb4e",
+      "playground/common/reference_residual_ppo_networks.py": "eeb1b758f32bb8a7e53cf59b269bed7f97126cf37ccc4d11090a5f8312b380e6",
+      "playground/common/rewards.py": "9c327866f2632265f14ef81318046f887aafa64384a06efa6cb264e144bbb1d3",
+      "playground/common/runner.py": "27fb16f56eb3dbbeea09b4395dd6073d88092d16dd2bc21265767922204b4546",
+      "playground/open_duck_mini_v2/custom_rewards.py": "16fdf5ed409f9abcfa6f68465c4351081c0c255a6683c09aee110c557890cd0c",
+      "playground/open_duck_mini_v2/joystick.py": "5bbdfcf77dc36fcc2b02751fa7234b89c38fea53e35fbf09b37084102d9033d3",
+      "playground/open_duck_mini_v2/runner.py": "3c04098dcac6b4e22011645a70f6276e57da55dacfc5c6a82e68f1c3c7312457",
+      "playground/open_duck_mini_v2/xmls/open_duck_mini_v2_backlash.xml": "11e922dc9524716e9f54b2fd8be54133fa65efbc61de96ddc846d991de1c9d38",
+      "playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml": "33af97247d6a876cf47c9e37185cb71bd09f6793bc0f62d90cbe2a91caa3ba63"
+    }
+  },
+  "preregistered_contract_sha256": "e116cdfa9c1b9054be216c1ffddc6282c6d5b619f80a08f29d2f78b3b6925fff",
+  "prototype_contract": {
+    "configurations": [
+      "NOMINAL",
+      "TORSO_COM_X_NEG",
+      "TORSO_COM_X_POS"
+    ],
+    "distance": "float64 Euclidean distance over the frozen 64-D context",
+    "fit_classifier": "nearest of the six frozen T7 configuration/fit prototypes; the prototype fit label is the prediction",
+    "fits": [
+      "p30",
+      "p31_34"
+    ],
+    "negative_com_classifier": "nearest of the three same-predicted-fit T7 prototypes; negative only when TORSO_COM_X_NEG is nearest",
+    "no_fitted_parameters_or_threshold_sweep": true,
+    "repeat": 0,
+    "source": {
+      "bytes": 120017,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t7_universal_response_support_result.json",
+      "sha256": "411cd8ca398a1da45bf5e4ed2da4601e8d2e18eff4b75c67c41a308c1a60e7ac"
+    }
+  },
+  "question": "Does the already frozen 250-tick automatic calibration state repeatably identify the negative-X COM condition and actuator fit across every one-axis R2 configuration, without manual geometry?",
+  "repository_inputs": {
+    "builder": {
+      "bytes": 8794,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t94_r2_calibration_manifold_preregistration.py",
+      "sha256": "75fcbc245b3abb8ed7174ceadb692fd256c3d2dcd83f63dad632a7d1904bd072"
+    },
+    "closed_loop": {
+      "bytes": 155236,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\closed_loop_sim_eval.py",
+      "sha256": "a5bff87f2cce5e5f5c661a9fe73dee9de77a4c356912279e4771025c3379a4ac"
+    },
+    "evaluator": {
+      "bytes": 19183,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\evaluate_ground_up_policy.py",
+      "sha256": "e9fd1a434ccaa647efc0ed1ce8fddafca9a0fd753c37a2d7d050975d9deb0227"
+    },
+    "fit_p30": {
+      "bytes": 18664,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "a58db8ffc505d2bb64cba7f5618d0e2c65904fc9f9ac37b560a1231e090f5f4f"
+    },
+    "fit_p31_34": {
+      "bytes": 18788,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p31_34_actuator_fit_20260712.json",
+      "sha256": "2740513f6bdeb4ad3cc5dd6dc1709319389a593fd153c1ce5abae03b66131a57"
+    },
+    "r2_basis": {
+      "bytes": 12988,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t41_uniform_normalizer_r2_preregistration.json",
+      "sha256": "f0f8337b90d97e08b98db669000ddb43080717f5fe90153ab569d08c0cbd25d3"
+    },
+    "reference_features": {
+      "bytes": 259604,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+      "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+    },
+    "runner": {
+      "bytes": 15024,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t94_r2_calibration_manifold.py",
+      "sha256": "afc230445e5c4ee1bde69c0ec6fa06afaabbfe434604b9049449d2f4c464d200"
+    },
+    "t7_preregistration": {
+      "bytes": 11784,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t7_universal_response_support_preregistration.json",
+      "sha256": "3bb4b051dfc400a363fd705fa47bc097337923ce4aea0b40962512f12b35ef83"
+    },
+    "t7_result": {
+      "bytes": 120017,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t7_universal_response_support_result.json",
+      "sha256": "411cd8ca398a1da45bf5e4ed2da4601e8d2e18eff4b75c67c41a308c1a60e7ac"
+    },
+    "t7_runner": {
+      "bytes": 29404,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t7_universal_response_support.py",
+      "sha256": "eeb7b35d5d3b4764473f6d038e84b1b4d5ad686d2eaef63d8a30bc0f657c0072"
+    },
+    "test": {
+      "bytes": 1450,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t94_r2_calibration_manifold.py",
+      "sha256": "1bb3f4a3b18a1d2896034bcc50ba899165e03c1d001b9db85a35bd748a826596"
+    }
+  },
+  "schema_version": "open_duck.t94_r2_calibration_manifold_preregistration.v1",
+  "status": "PREREGISTERED_T94_R2_CALIBRATION_MANIFOLD"
+}

@@ -1,0 +1,76 @@
+diff --git a/playground/common/winner_v127_constrained_ppo_train.py b/playground/common/winner_v127_constrained_ppo_train.py
+--- a/playground/common/winner_v127_constrained_ppo_train.py
++++ b/playground/common/winner_v127_constrained_ppo_train.py
+@@ -73,6 +73,7 @@ class TrainingState:
+   v171_projected_reward_direction_retention: jax.Array
+   v171_projection_active: jax.Array
+   v171_cost_descent_derivative: jax.Array
++  v172_geometry_batch_cost: jax.Array
+ 
+ 
+ def _unpmap(v):
+@@ -752,12 +753,13 @@ def train(
+     def first_geometry(name):
+       return jnp.ravel(metrics[f'winner_v171_{name}'])[0]
+ 
++    capture_geometry = jnp.logical_and(
++        jnp.logical_not(training_state.v171_geometry_initialized),
++        batch_cost > 0.0,
++    )
+     geometry_values = {
+         name: jnp.where(
+-            training_state.v171_geometry_initialized,
+-            getattr(training_state, f'v171_{name}'),
++            capture_geometry,
+             first_geometry(name),
++            getattr(training_state, f'v171_{name}'),
+         )
+         for name in (
+             'reward_gradient_norm',
+@@ -778,7 +780,10 @@ def train(
+         dual_eta=dual_eta,
+         dual_initial_cost=dual_initial_cost,
+         dual_initialized=dual_initialized,
+-        v171_geometry_initialized=jnp.asarray(True),
++        v171_geometry_initialized=jnp.logical_or(
++            training_state.v171_geometry_initialized,
++            capture_geometry,
++        ),
+         v171_reward_gradient_norm=geometry_values['reward_gradient_norm'],
+         v171_cost_gradient_norm=geometry_values['cost_gradient_norm'],
+         v171_reward_cost_gradient_cosine=geometry_values['reward_cost_gradient_cosine'],
+@@ -787,6 +792,11 @@ def train(
+         v171_projected_reward_direction_retention=geometry_values['projected_reward_direction_retention'],
+         v171_projection_active=geometry_values['projection_active'],
+         v171_cost_descent_derivative=geometry_values['cost_descent_derivative'],
++        v172_geometry_batch_cost=jnp.where(
++            capture_geometry,
++            batch_cost,
++            training_state.v172_geometry_batch_cost,
++        ),
+     )
+     metrics['winner_v127_batch_episode_cost'] = batch_cost
+     metrics['winner_v127_dual_eta'] = dual_eta
+@@ -885,6 +895,7 @@ def train(
+       v171_projected_reward_direction_retention=jnp.asarray(0.0, dtype=jnp.float32),
+       v171_projection_active=jnp.asarray(0.0, dtype=jnp.float32),
+       v171_cost_descent_derivative=jnp.asarray(0.0, dtype=jnp.float32),
++      v172_geometry_batch_cost=jnp.asarray(0.0, dtype=jnp.float32),
+   )
+ 
+   if restore_checkpoint_path is not None:
+@@ -990,6 +1001,7 @@ def train(
+           'v171_projected_reward_direction_retention': float(_unpmap(training_state.v171_projected_reward_direction_retention)),
+           'v171_projection_active': float(_unpmap(training_state.v171_projection_active)),
+           'v171_cost_descent_derivative': float(_unpmap(training_state.v171_cost_descent_derivative)),
++          'v172_geometry_batch_cost': float(_unpmap(training_state.v172_geometry_batch_cost)),
+       },
+   )
+ 
+@@ -1046,6 +1058,7 @@ def train(
+             'v171_projected_reward_direction_retention': float(_unpmap(training_state.v171_projected_reward_direction_retention)),
+             'v171_projection_active': float(_unpmap(training_state.v171_projection_active)),
+             'v171_cost_descent_derivative': float(_unpmap(training_state.v171_cost_descent_derivative)),
++            'v172_geometry_batch_cost': float(_unpmap(training_state.v172_geometry_batch_cost)),
+         },
+     )

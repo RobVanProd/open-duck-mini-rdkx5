@@ -1,0 +1,232 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "colab_gpu_runtime_robot_torque_motion": false,
+    "dynamic_calibrator_or_training": false,
+    "full_behavior_revalidation_preregistration_design": true,
+    "robot_clearance": false
+  },
+  "checks": {
+    "all_8192_arbitrary_stress_cases_strictly_bounded": true,
+    "both_256_tick_x0_chains_exact_zero": true,
+    "both_32_tick_moving_chains_strictly_bounded": true,
+    "both_output_abis_exact": true,
+    "cpu_provider_only": true,
+    "frozen_input_hashes_exact": true,
+    "maximum_perturbation_within_eight_epsilons": true,
+    "no_behavior_or_training_executed": true,
+    "source_graphs_preserved_except_reviewed_append": true
+  },
+  "decision": "AUTHORIZE_SEPARATE_FULL_BEHAVIOR_REVALIDATION_PREREGISTRATION_ONLY",
+  "failed_checks": [],
+  "input_hashes": {
+    "importer": "4eb600d24bcec70e243a0cb13aafb52cb546f77885dbd860effe8e6eeea5e4c8",
+    "numeric_attribution": "eb3ed6a951b76e4c88b9adcbb52de3b3a6a84719f469ebfcd788dcef65ee879c",
+    "protected_final": "0dfc24bde5d839e4d346dd8c08d9a7d0222a3847764ec6738bfc7f8d947f4ece",
+    "protected_half": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de",
+    "runner": "8aaa73e1eda903eadb29547ca5c3556e78ee265cfee03092cfc3dc7e175a7eab"
+  },
+  "margin": {
+    "maximum_allowed_perturbation": 9.5367431640625e-07,
+    "normalized_action": 4.76837158203125e-07,
+    "rate_rad_s": 5.9604644775390625e-06,
+    "target_rad": 1.1920928955078125e-07
+  },
+  "policies": [
+    {
+      "abi": {
+        "inputs": [
+          {
+            "dtype": "float32",
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "dtype": "float32",
+            "name": "continuous_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          }
+        ]
+      },
+      "graph_change": {
+        "appended_initializer_names": [
+          "v7_action_maximum",
+          "v7_action_minimum",
+          "v7_inward_margin",
+          "v7_safe_max_action_delta"
+        ],
+        "appended_node_count": 6,
+        "input_interface_exact": true,
+        "margin_exact": true,
+        "original_nodes_exact_after_output_rename_restore": true,
+        "safe_delta_exact": true,
+        "source_initializers_exact": true
+      },
+      "label": "half",
+      "moving_chain": {
+        "all_finite": true,
+        "changed_ticks": 32,
+        "command_x": 0.077,
+        "maximum_excess": 0.0,
+        "maximum_perturbation": 7.003545761108398e-07,
+        "seed": 60742,
+        "strict_bounds_without_tolerance": true,
+        "ticks": 32,
+        "zero_action_and_state_exact": true
+      },
+      "output_bytes": 907531,
+      "output_filename": "winner_v7_half_inward_projection.onnx",
+      "output_sha256": "456c6f804a81f04a8e9f4b7423c63c6f870623b92ba7a876b1172046b7f0fdbb",
+      "source_path": "outputs/analysis/ground_up_dual_fit_conservative_envelope_repair_policies/T2_EQUAL_512000.onnx",
+      "source_sha256": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de",
+      "stress": {
+        "all_finite": true,
+        "cases": 4096,
+        "changed_cases": 4096,
+        "maximum_excess": 0.0,
+        "maximum_perturbation": 1.9148808717727661,
+        "seed": 60770,
+        "state_equals_action_bit_exact": true,
+        "strict_bounds_without_tolerance": true
+      },
+      "x0_chain": {
+        "all_finite": true,
+        "changed_ticks": 0,
+        "command_x": 0.0,
+        "maximum_excess": 0.0,
+        "maximum_perturbation": 0.0,
+        "seed": 60780,
+        "strict_bounds_without_tolerance": true,
+        "ticks": 256,
+        "zero_action_and_state_exact": true
+      }
+    },
+    {
+      "abi": {
+        "inputs": [
+          {
+            "dtype": "float32",
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "dtype": "float32",
+            "name": "continuous_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "dtype": "float32",
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          }
+        ]
+      },
+      "graph_change": {
+        "appended_initializer_names": [
+          "v7_action_maximum",
+          "v7_action_minimum",
+          "v7_inward_margin",
+          "v7_safe_max_action_delta"
+        ],
+        "appended_node_count": 6,
+        "input_interface_exact": true,
+        "margin_exact": true,
+        "original_nodes_exact_after_output_rename_restore": true,
+        "safe_delta_exact": true,
+        "source_initializers_exact": true
+      },
+      "label": "final",
+      "moving_chain": {
+        "all_finite": true,
+        "changed_ticks": 32,
+        "command_x": 0.077,
+        "maximum_excess": 0.0,
+        "maximum_perturbation": 7.003545761108398e-07,
+        "seed": 60752,
+        "strict_bounds_without_tolerance": true,
+        "ticks": 32,
+        "zero_action_and_state_exact": true
+      },
+      "output_bytes": 907531,
+      "output_filename": "winner_v7_final_inward_projection.onnx",
+      "output_sha256": "3fd56c98162502b5ec430a4c383128df5996bd69cde7c079c1c5f5344103eb0c",
+      "source_path": "outputs/analysis/ground_up_dual_fit_conservative_envelope_repair_policies/T2_EQUAL_1024000.onnx",
+      "source_sha256": "0dfc24bde5d839e4d346dd8c08d9a7d0222a3847764ec6738bfc7f8d947f4ece",
+      "stress": {
+        "all_finite": true,
+        "cases": 4096,
+        "changed_cases": 4096,
+        "maximum_excess": 0.0,
+        "maximum_perturbation": 1.9045815467834473,
+        "seed": 60771,
+        "state_equals_action_bit_exact": true,
+        "strict_bounds_without_tolerance": true
+      },
+      "x0_chain": {
+        "all_finite": true,
+        "changed_ticks": 0,
+        "command_x": 0.0,
+        "maximum_excess": 0.0,
+        "maximum_perturbation": 0.0,
+        "seed": 60781,
+        "strict_bounds_without_tolerance": true,
+        "ticks": 256,
+        "zero_action_and_state_exact": true
+      }
+    }
+  ],
+  "preregistration_sha256": "683e861ca71b2113683f27f980c144df3577fde5f134e4ed7abd3a61de1db77a",
+  "repository_attribution": {
+    "contract_commit": "1e0257c5e7e2b4a64aa5716d903ffecfb9c17af3",
+    "policy_binaries_committed": false,
+    "preregistration_path": "outputs/analysis/winner_v7_inward_projection_preregistration.json",
+    "preregistration_sha256": "683e861ca71b2113683f27f980c144df3577fde5f134e4ed7abd3a61de1db77a",
+    "raw_result_filename": "winner_v7_inward_projection_raw_1e0257c.json",
+    "raw_result_sha256": "e8ce91fded35c3b170e90780eb6b087c8ddba9969e2fa83083a3e21603cfb9b9"
+  },
+  "schema_version": "winner_v7.inward_projection_transform_contract_result.v1",
+  "status": "PASS_WINNER_V7_INWARD_PROJECTION_TRANSFORM_CONTRACT"
+}

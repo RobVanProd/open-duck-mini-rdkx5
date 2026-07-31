@@ -1,0 +1,306 @@
+{
+  "authority": {
+    "joint_recurrent_training_executed": false,
+    "pass_authorizes_only": "a separate frozen 100-update joint-recurrent training preregistration",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "checks": {
+    "all_values_finite": true,
+    "auxiliary_predictor_bit_exact_frozen": true,
+    "both_action_boundaries_exact": true,
+    "both_episode_receipts_exact": true,
+    "both_observation_captures_exact": true,
+    "both_reward_formulas_exact_and_nonzero": true,
+    "both_sampled_hidden_replays_at_most_1e_6": true,
+    "both_winner_v15_rollouts_bit_exact": true,
+    "cumulative_all_joint_leaves_changed": true,
+    "exact_two_80_episode_populations": true,
+    "onnx_abi_exact": true,
+    "onnx_jax_chain_at_most_1e_7": true,
+    "onnx_previous_action_chain_exact": true,
+    "onnx_training_only_tensors_absent": true,
+    "snapshot_readback_exact": true,
+    "source_stage1_snapshot_exact": true,
+    "two_adam_updates_exact": true,
+    "update_1_other_deltas_nonzero": true,
+    "update_1_other_gradients_nonzero": true,
+    "update_1_recurrent_deltas_exact_zero": true,
+    "update_1_recurrent_gradients_exact_zero": true,
+    "update_2_all_joint_gradients_nonzero": true,
+    "update_2_all_joint_leaves_changed": true
+  },
+  "decision": "AUTHORIZE_SEPARATE_JOINT_RECURRENT_100_UPDATE_PREREGISTRATION_ONLY",
+  "environment": {
+    "jax_devices": [
+      "TFRT_CPU_0"
+    ],
+    "software_versions": {
+      "jax": "0.7.2",
+      "jaxlib": "0.7.2",
+      "mujoco": "3.9.0",
+      "numpy": "2.0.2",
+      "onnx": "1.22.0",
+      "onnxruntime": "1.27.0",
+      "python": "3.12.13"
+    }
+  },
+  "execution": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "optimizer_updates": 2,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "graph": {
+    "bytes": 54896,
+    "contract": {
+      "abi_exact": true,
+      "all_chain_outputs_finite": true,
+      "all_initializers_finite": true,
+      "bytes": 54896,
+      "chain_ticks": 250,
+      "forbidden_training_or_privileged_tokens": [],
+      "initializer_count": 9,
+      "inputs": [
+        {
+          "name": "obs",
+          "shape": [
+            1,
+            115
+          ]
+        },
+        {
+          "name": "previous_action",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "name": "h_in",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "jax_onnx_at_most_1e_7": true,
+      "jax_onnx_max_abs_error": 0.0,
+      "outputs": [
+        {
+          "name": "calibration_actions",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "name": "previous_action_out",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "name": "h_out",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "path": "/tmp/winner-v20-joint-recurrent-cpu-work/winner_v20_joint_recurrent_update_002.onnx",
+      "previous_action_out_equals_action_bit_exact": true,
+      "sha256": "2149960ff1e3e82fb9a5dfce4ee76597aad4a9493808c54b9d6172e46f6f1c6b",
+      "training_only_tensors_absent": true
+    },
+    "path": "/tmp/winner-v20-joint-recurrent-cpu-work/winner_v20_joint_recurrent_update_002.onnx",
+    "sha256": "2149960ff1e3e82fb9a5dfce4ee76597aad4a9493808c54b9d6172e46f6f1c6b"
+  },
+  "optimization": {
+    "cumulative_leaf_max_abs_delta": {
+      "action_bias": 0.0001991380559047684,
+      "action_weight": 0.00020013005996588618,
+      "hidden_bias": 7.441267371177673e-05,
+      "hidden_weight": 7.44163990020752e-05,
+      "obs_weight": 7.441290654242039e-05,
+      "previous_action_weight": 7.43381679058075e-05,
+      "training_only_log_std": 0.00019884109497070312,
+      "training_only_value_bias": 0.00019984714163001627,
+      "training_only_value_weight": 0.00019989203428849578
+    },
+    "frozen_auxiliary_leaves": [
+      "auxiliary_hidden_weight",
+      "auxiliary_action_weight",
+      "auxiliary_bias"
+    ],
+    "trainable_leaves": [
+      "obs_weight",
+      "previous_action_weight",
+      "hidden_weight",
+      "hidden_bias",
+      "action_weight",
+      "action_bias",
+      "training_only_log_std",
+      "training_only_value_weight",
+      "training_only_value_bias"
+    ],
+    "updates": [
+      {
+        "gradient_max_abs": {
+          "action_bias": 1.3344776630401611,
+          "action_weight": 0.9146648645401001,
+          "hidden_bias": 0.0,
+          "hidden_weight": 0.0,
+          "obs_weight": 0.0,
+          "previous_action_weight": 0.0,
+          "training_only_log_std": 0.01571536622941494,
+          "training_only_value_bias": 14.056812286376953,
+          "training_only_value_weight": 9.699370384216309
+        },
+        "leaf_max_abs_delta": {
+          "action_bias": 9.999934263760224e-05,
+          "action_weight": 9.999934263760224e-05,
+          "hidden_bias": 0.0,
+          "hidden_weight": 0.0,
+          "obs_weight": 0.0,
+          "previous_action_weight": 0.0,
+          "training_only_log_std": 0.00010013580322265625,
+          "training_only_value_bias": 9.999933536164463e-05,
+          "training_only_value_weight": 9.999934991355985e-05
+        },
+        "loss": 453.4029541015625,
+        "loss_metrics": {
+          "entropy": -37.28169631958008,
+          "policy_loss": -4.5146819616093126e-08,
+          "ratio_max": 1.0,
+          "ratio_min": 1.0,
+          "sampled_hidden_replay_max_abs_error": 2.980232238769531e-07,
+          "value_loss": 906.7313232421875
+        },
+        "update": 1
+      },
+      {
+        "gradient_max_abs": {
+          "action_bias": 0.7374594807624817,
+          "action_weight": 0.5083922743797302,
+          "hidden_bias": 0.002790454775094986,
+          "hidden_weight": 0.0019244577270001173,
+          "obs_weight": 0.027463598176836967,
+          "previous_action_weight": 1.4041245776752476e-05,
+          "training_only_log_std": 0.027583114802837372,
+          "training_only_value_bias": 13.407340049743652,
+          "training_only_value_weight": 9.252273559570312
+        },
+        "leaf_max_abs_delta": {
+          "action_bias": 9.913872054312378e-05,
+          "action_weight": 0.000100130753708072,
+          "hidden_bias": 7.441267371177673e-05,
+          "hidden_weight": 7.44163990020752e-05,
+          "obs_weight": 7.441290654242039e-05,
+          "previous_action_weight": 7.43381679058075e-05,
+          "training_only_log_std": 9.894371032714844e-05,
+          "training_only_value_bias": 9.984780626837164e-05,
+          "training_only_value_weight": 9.989269892685115e-05
+        },
+        "loss": 405.775390625,
+        "loss_metrics": {
+          "entropy": -37.28168487548828,
+          "policy_loss": -3.211309262951545e-08,
+          "ratio_max": 1.0000038146972656,
+          "ratio_min": 0.9999961853027344,
+          "sampled_hidden_replay_max_abs_error": 3.5762786865234375e-07,
+          "value_loss": 811.4761962890625
+        },
+        "update": 2
+      }
+    ]
+  },
+  "repository_attribution": {
+    "artifact_zip_bytes": 212575,
+    "artifact_zip_sha256": "e61cab6412927f11356e35a65a9515417036988b1212d961f7ca8e570401c5c6",
+    "contract_lf_sha256": "7466469f3f52c4a5693c587006e7b195bde24a351a9b1b1a5914f3ecaf246db5",
+    "github_artifact_digest": "sha256:e61cab6412927f11356e35a65a9515417036988b1212d961f7ca8e570401c5c6",
+    "github_artifact_id": 8504369891,
+    "github_artifact_name": "winner-v20-joint-recurrent-cpu-29853236226",
+    "github_run_attempt": 1,
+    "github_run_head_sha": "489cd0be67f9599389aa1625d1b8d1e1617f7112",
+    "github_run_id": 29853236226,
+    "importer_lf_sha256": "38bc5d8191ab784a032ebdb128738c012c88e78899632e46f2b0298b3a4076db",
+    "raw_result_receipt_sha256": "7d1400701a8831c14efdb07eac88940043ed7f98f6686a1ae066c47db4177315",
+    "raw_result_sha256": "8419e343b9608dafc325619da50f70901286618975d64b854b93ee5d8f647900",
+    "repository": "RobVanProd/open-duck-mini-rdkx5",
+    "runner_lf_sha256": "a3cdb920034073ac6703e2c1a1265c432ba89ab335c6475a44cf077e95d73c16",
+    "workflow_lf_sha256": "281a50858efb7492b05dba432547758665760d1e8d7efcc9aa0a751b0fbae8a3"
+  },
+  "rollouts": [
+    {
+      "action_boundary_exact": true,
+      "episode_receipts_sha256": "95cc50c6401b5e44904702922783ae9f2d7dfaf680f0769ee3be4dcedb1a18e7",
+      "observation_capture_exact": true,
+      "reward": {
+        "all_penalties_in_unit_interval": true,
+        "all_rewards_nonnegative": true,
+        "nonzero_penalty_count": 5911,
+        "only_zero_or_settled_bonus": true,
+        "penalty_formula_bit_exact": true,
+        "penalty_max": 0.9979662299156189,
+        "penalty_min": 0.0,
+        "reward_formula_bit_exact": true,
+        "reward_max_without_terminal_bonus": 1.0,
+        "reward_min": 0.0020337700843811035,
+        "settled_bonus_count": 36,
+        "valid_transition_count": 18243
+      },
+      "sampled_count": 18251,
+      "sampled_hidden_replay_max_abs_error": 2.980232238769531e-07,
+      "update": 1,
+      "valid_transition_count": 18243,
+      "winner_v15_transition_exact": true
+    },
+    {
+      "action_boundary_exact": true,
+      "episode_receipts_sha256": "00b7c387d7429a248a397ccbe94d894c67f95d098726731a2c13c44cf5504f9e",
+      "observation_capture_exact": true,
+      "reward": {
+        "all_penalties_in_unit_interval": true,
+        "all_rewards_nonnegative": true,
+        "nonzero_penalty_count": 6316,
+        "only_zero_or_settled_bonus": true,
+        "penalty_formula_bit_exact": true,
+        "penalty_max": 0.9927710294723511,
+        "penalty_min": 0.0,
+        "reward_formula_bit_exact": true,
+        "reward_max_without_terminal_bonus": 1.0,
+        "reward_min": 0.007228970527648926,
+        "settled_bonus_count": 31,
+        "valid_transition_count": 18047
+      },
+      "sampled_count": 18056,
+      "sampled_hidden_replay_max_abs_error": 3.5762786865234375e-07,
+      "update": 2,
+      "valid_transition_count": 18047,
+      "winner_v15_transition_exact": true
+    }
+  ],
+  "schema_version": "winner_v20.joint_recurrent_support_cpu_result.v2",
+  "snapshot": {
+    "array_count": 34,
+    "bit_exact_readback": true,
+    "bytes": 162570,
+    "path": "/tmp/winner-v20-joint-recurrent-cpu-work/winner_v20_joint_recurrent_update_002.npz",
+    "sha256": "45f73dc842e77f67edb05f7e8e4d1613b8238a924ab48aefffe9251f456c8bf4"
+  },
+  "source_snapshot": {
+    "bytes": 189027,
+    "sha256": "8c1392c738eddfb098e61c1a6ae2f863eda883e1eba6ac546aef695da6f163af"
+  },
+  "sources": {
+    "attribution_lf_sha256": "656b79fb0abbc64cd526f184977cecd15416fdd92ca15234b15a02a40f16317f",
+    "contract_lf_sha256": "7466469f3f52c4a5693c587006e7b195bde24a351a9b1b1a5914f3ecaf246db5",
+    "cpu_hold_attribution_lf_sha256": "0eb54aa23db4db8bb08d148f091833cc9521e3b7dce2fc576229c76b1d49c157",
+    "runner_lf_sha256": "a3cdb920034073ac6703e2c1a1265c432ba89ab335c6475a44cf077e95d73c16"
+  },
+  "status": "PASS_WINNER_V20_JOINT_RECURRENT_SUPPORT_CPU_CONTRACT"
+}

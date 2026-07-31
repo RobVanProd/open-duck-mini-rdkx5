@@ -1,0 +1,96 @@
+{
+  "authority": {
+    "behavior": false,
+    "gate5": false,
+    "hosted_training": false,
+    "policy_change": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false,
+    "v151_preregistration": true
+  },
+  "causal_result": {
+    "all_actual_events_labeled": true,
+    "event": {
+      "actual_force_nm": 1.9200553894042969,
+      "base_action": [
+        0.11835576593875885,
+        0.3900794982910156,
+        -0.2859025001525879,
+        0.07789945602416992,
+        0.40424370765686035,
+        0.22671055793762207,
+        -0.5812497138977051,
+        -0.43937423825263977,
+        -0.2653627097606659,
+        -0.24395520985126495,
+        -0.05857488885521889,
+        0.9308292865753174,
+        -0.355072021484375,
+        0.5368061065673828
+      ],
+      "final_action": [
+        0.11835576593875885,
+        0.3900794982910156,
+        -0.2859025001525879,
+        0.07789945602416992,
+        0.40424370765686035,
+        0.22671055793762207,
+        -0.5812497138977051,
+        -0.43937423825263977,
+        -0.2653627097606659,
+        -0.24395520985126495,
+        -0.05857488885521889,
+        0.9308292865753174,
+        -0.355072021484375,
+        0.5388380885124207
+      ],
+      "joint": 13,
+      "projected_force_nm": -1.9117708206176758,
+      "source_action_delta": 0.002031981945037842,
+      "source_empty_joint_indices": [],
+      "source_projected_joint_indices": [
+        6,
+        8,
+        13
+      ],
+      "source_tick": 583,
+      "tick": 586
+    },
+    "torque_events": 1,
+    "trajectory_bit_exact": true
+  },
+  "checks": {
+    "all_causal_checks_green": true,
+    "extra_failures_are_shadow_prediction_bookkeeping_only": true,
+    "input_hashes_exact": true,
+    "no_rerun_training_or_behavior": true,
+    "original_hold_only_reporting_check": true,
+    "physical_failure_is_torque_only": true,
+    "preregistered_shadow_does_not_apply": true,
+    "single_displaced_event_has_safe_nonempty_precursor_label": true,
+    "trajectory_reproduction_bit_exact": true
+  },
+  "decision": "EARN_V151_BOUNDED_TWO_CENTER_CONTRACT_PREREGISTRATION",
+  "failed_checks": [],
+  "input_hashes": {
+    "preregistration": "3d4421a5e7041faa48cc2ac1603e53a970b49aaad1eebc475c701e1e6492f270",
+    "result": "5232d59b0334a2e83d5d62ae06b5c89886e4cdac78a14425edf6557c54869e98"
+  },
+  "reporting_correction": {
+    "data_or_threshold_change": false,
+    "physical_failure_reasons": [
+      "torque_peak_at_most_1p91229675_nm"
+    ],
+    "reason": "the inherited applied-oracle audit expects projected-force predictions to equal realized force; shadow mode commits the unprojected V148 action, so those four oracle-only flags are expected and do not classify the physical gate",
+    "rerun": false,
+    "shadow_only_diagnostic_failures": [
+      "oracle_only_empty_or_prehistory_residuals",
+      "oracle_prediction_exact",
+      "oracle_zero_nonempty_residual_violations",
+      "oracle_zero_prediction_mismatches"
+    ]
+  },
+  "schema_version": "winner_v150.shadow_reporting_correction.v1",
+  "status": "PASS_WINNER_V150_V148_SHADOW_ORACLE_REPORTING_CORRECTION"
+}

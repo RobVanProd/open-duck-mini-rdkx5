@@ -1,0 +1,84 @@
+{
+  "authority": {
+    "behavior_evaluation_authorized": false,
+    "evaluator_recovery_preregistration_authorized": true,
+    "gate5_authorized": false,
+    "rdkx5_or_robot": false,
+    "training_authorized": false
+  },
+  "checks": {
+    "all_recurrent_chains_finite": true,
+    "both_policies_checked": true,
+    "context_metadata_exact": true,
+    "diagnostic_context_is_bit_exactly_ignored": true,
+    "evaluator_has_explicit_default_off_zero_context_mode": true,
+    "policy_hashes_exact": true,
+    "preregistration_green": true,
+    "previous_action_state_feedback_exact": true,
+    "robot_or_rdk_access_zero": true,
+    "simulator_locomotion_ticks_zero": true
+  },
+  "contract": {
+    "calibration_ticks": 0,
+    "default_off": true,
+    "graph_semantics": "diagnostic_input_bit_exactly_ignored",
+    "home_return_ticks": 0,
+    "input_name": "calibration_context",
+    "response_calibrator": false,
+    "shape": [
+      1,
+      64
+    ],
+    "value": "all_float32_zeros"
+  },
+  "execution": {
+    "formal_behavior_cells": 0,
+    "onnx_chain_ticks": 512,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_locomotion_ticks": 0
+  },
+  "failed_checks": [],
+  "policies": [
+    {
+      "all_context_output_errors_zero": true,
+      "all_outputs_finite": true,
+      "id": "T23_SUPPORT_HALF",
+      "io_context_input_name": "calibration_context",
+      "io_context_input_shape": [
+        1,
+        64
+      ],
+      "maximum_context_output_errors": {
+        "continuous_actions": 0.0,
+        "h_out": 0.0,
+        "previous_action_out": 0.0
+      },
+      "policy_sha256": "16cb8417b1e5c4d0a6fdadc8fc2830061712a513a7dcc5321a490302fde63e8c",
+      "previous_action_out_equals_action_bit_exact": true,
+      "step": 1003520,
+      "ticks": 256
+    },
+    {
+      "all_context_output_errors_zero": true,
+      "all_outputs_finite": true,
+      "id": "T23_SUPPORT_FINAL",
+      "io_context_input_name": "calibration_context",
+      "io_context_input_shape": [
+        1,
+        64
+      ],
+      "maximum_context_output_errors": {
+        "continuous_actions": 0.0,
+        "h_out": 0.0,
+        "previous_action_out": 0.0
+      },
+      "policy_sha256": "06d96e32545a4666432dea2f4b30848691c0270949b03400213530a494c66060",
+      "previous_action_out_equals_action_bit_exact": true,
+      "step": 2007040,
+      "ticks": 256
+    }
+  ],
+  "schema_version": "open_duck.t25_zero_context_contract.v1",
+  "status": "PASS_T25_ZERO_CONTEXT_EVALUATOR_CONTRACT"
+}

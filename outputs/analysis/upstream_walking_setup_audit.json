@@ -1,0 +1,63 @@
+{
+  "status": "HOLD_PUBLISHED_POLICY_SIM_AUDIT_NEEDED",
+  "robot_tests_run": false,
+  "ssh_attempted": false,
+  "deploy_attempted": false,
+  "training_run": false,
+  "upstream_playground": {
+    "worktree": "/tmp/open_duck_playground_origin_main",
+    "commit": "b9be205ac64488c23504ca42e5ec790337adeec3",
+    "readme_current_win_task": "flat_terrain_backlash",
+    "readme_current_win_timesteps": 300000000,
+    "runner_default_task": "flat_terrain",
+    "runner_default_timesteps": 150000000
+  },
+  "published_policy": {
+    "repo": "apirrone/Open_Duck_Mini",
+    "branch": "v2",
+    "path": "BEST_WALK_ONNX_2.onnx",
+    "github_blob_sha": "7e4536d90e35f9a3a886fb7584d489ad4894dfe0",
+    "size_bytes": 884177,
+    "local_sha256": "3c606f9381a1710cc8fecdb7442787dcbfce3ee9bc02a6f1224774ab2b3a1067"
+  },
+  "reference_push_effectiveness": {
+    "flat_terrain": {
+      "artifact": "outputs/analysis/REFERENCE_PUSH_EFFECTIVENESS_UPSTREAM_MAIN_NEAREST.md",
+      "status": "HOLD_REFERENCE_CONTACT_MISMATCH",
+      "best_reference_single_future_vx_delta_m_s": -0.0158
+    },
+    "flat_terrain_backlash": {
+      "artifact": "outputs/analysis/REFERENCE_PUSH_EFFECTIVENESS_UPSTREAM_MAIN_BACKLASH_NEAREST.md",
+      "status": "HOLD_REFERENCE_CONTACT_MISMATCH",
+      "best_reference_single_future_vx_delta_m_s": -0.0051,
+      "modes": {
+        "raw": {
+          "falls": "1/8",
+          "mean_vx_m_s": -0.0500,
+          "contact_mismatch_pct": 66.9833,
+          "reference_single_future_vx_delta_m_s": -0.0390,
+          "reference_single_vy_abs_p95_m_s": 0.1859,
+          "reference_single_pitch_target_velocity_p95_rad_s": 5.2400
+        },
+        "cycle_projected": {
+          "falls": "0/8",
+          "mean_vx_m_s": -0.0114,
+          "contact_mismatch_pct": 72.9500,
+          "reference_single_future_vx_delta_m_s": -0.0356,
+          "reference_single_vy_abs_p95_m_s": 0.1713,
+          "reference_single_pitch_target_velocity_p95_rad_s": 5.2400
+        },
+        "contact_synchronized_projected": {
+          "falls": "1/8",
+          "mean_vx_m_s": 0.0301,
+          "contact_mismatch_pct": 20.1366,
+          "reference_single_future_vx_delta_m_s": -0.0051,
+          "reference_single_vy_abs_p95_m_s": 0.1696,
+          "reference_single_pitch_target_velocity_p95_rad_s": 5.2400
+        }
+      }
+    }
+  },
+  "next_gate": "published_policy_sim_audit",
+  "next_gate_question": "Does BEST_WALK_ONNX_2 closed-loop feedback produce forward push-effectiveness in upstream-main Playground where the reference-target path does not?"
+}

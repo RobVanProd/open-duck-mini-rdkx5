@@ -1,0 +1,57 @@
+{
+  "authority": {
+    "policy_asset_and_clearance_commit_sequence": false,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "runtime_or_gate5": false,
+    "training_or_retry": false
+  },
+  "checks": {
+    "both_checkpoints_fail_all_cells": true,
+    "corrected_decision_is_frozen_hold_token": true,
+    "corrected_result_valid": true,
+    "no_behavior_rerun": true,
+    "no_cell_or_trace_mutation": true,
+    "physical_failures_remain": true,
+    "raw_result_preserved_invalid": true,
+    "robot_clearance_false": true
+  },
+  "corrected_result": {
+    "decision": "HOLD_WINNER_V3_VARIABLE_CONFIGURATION_REPLACEMENT",
+    "md_path": "outputs/analysis/WINNER_V3_VARIABLE_CONFIGURATION_RESULT_CORRECTED_20260720.md",
+    "md_sha256": "f60eb1ac7e61dfd3c08d6098a97b4e18f09ff03b7adaeadf8760a8e8f310d5ca",
+    "path": "outputs/analysis/winner_v3_variable_configuration_result_corrected.json",
+    "sha256": "bf072daf10473a43207e0f0a3d42c9c787edfedda9dbac03a5ac6f4ab07cd0d9",
+    "status": "HOLD_WINNER_V3_VARIABLE_CONFIGURATION_RESULT_REPORTING_CORRECTED"
+  },
+  "correction_tool": {
+    "path": "tools/correct_winner_v3_variable_configuration_reporting.py",
+    "sha256": "6879bd3907f7fd0bf37153549d7dc4abf19e3360601e373973451d1315c5d4c7"
+  },
+  "failed_checks": [],
+  "process_cpu_attestation_sha256": "ae1c51c8947554765d225e613e9c6be1223b7b6ca46f1e9e958802cfa24dec2f",
+  "raw_result": {
+    "decision": "INVALID_WINNER_V3_VARIABLE_CONFIGURATION_STUDY",
+    "path": "outputs/analysis/winner_v3_variable_configuration_result.json",
+    "sha256": "8fa33f862b2f55f527712a766c5d9c96fc526734d75f27c666ed439cc2dbca44",
+    "status": "INVALID_WINNER_V3_VARIABLE_CONFIGURATION_RESULT"
+  },
+  "schema_version": "winner_v3.variable_configuration_reporting_correction.v1",
+  "scope": {
+    "behavior_cells_rerun": 0,
+    "cell_or_trace_artifacts_mutated": false,
+    "cpu_only_cell_failure_removed": true,
+    "duration_and_trace_behavior_failures_preserved": true,
+    "physics_policy_threshold_or_gate_changes": 0,
+    "scope": [
+      "recognize TFRT_CPU_0 through device.platform == cpu rather than a CpuDevice display-name substring",
+      "treat an early-termination trace as complete evidence when its rows equal recorded samples and its hash, schema, finite-value, reset and readback audits pass"
+    ]
+  },
+  "status": "PASS_WINNER_V3_VARIABLE_CONFIGURATION_REPORTING_CORRECTION",
+  "trace_manifest": {
+    "path": "outputs/analysis/winner_v3_variable_configuration_trace_manifest.json",
+    "sha256": "0f31debf81dc1d5091556cd394f9f1c74696e005a3517ba8ff37c36608c2f4f4",
+    "status": "PASS_WINNER_V3_VARIABLE_CONFIGURATION_TRACE_MANIFEST"
+  }
+}

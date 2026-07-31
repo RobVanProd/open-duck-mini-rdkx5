@@ -1,0 +1,125 @@
+{
+  "audit": {
+    "expected_source_cells": 2,
+    "expected_source_support_passes": 0,
+    "expected_source_terminal_ticks": [
+      32,
+      31
+    ],
+    "expected_v38_terminal_ticks": [
+      69,
+      161
+    ],
+    "maximum_terminal_fringe_ticks": 2,
+    "plants": [
+      "P30_ALL_JOINT",
+      "P31_34_PITCH_WITH_P30_NONPITCH"
+    ],
+    "response_horizon_ticks": 8,
+    "source_status": "INVALID_WINNER_V39_RESPONSE_JACOBIAN_FEASIBILITY"
+  },
+  "authority": {
+    "pass_authorizes_only": "a separately frozen nonlocal support-controller feasibility design",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "simulation_or_training_authorized": false,
+    "v39_rerun_authorized": false
+  },
+  "decision": "AUTHORIZE_ONE_SAVED_RESULT_ONLY_V39_INVALIDITY_ATTRIBUTION",
+  "execution_now": {
+    "locomotion_training_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0,
+    "saved_result_audits": 0,
+    "simulation_cells": 0
+  },
+  "interpretation": {
+    "hold": "Keep DO_NOT_SELECT_NEXT_POLICY_MECHANISM. Do not rerun V39 or alter its rank, response, horizon, perturbation, solver, or bound.",
+    "pass": "Close only the exact V39 controller without rerun. The invalid rank gate is attributed, but no response-inversion family or physical controllability conclusion is authorized. Permit only a separately frozen nonlocal support-controller feasibility design."
+  },
+  "pass_rule": {
+    "all_pre_loss_jacobians_full_row_rank": true,
+    "all_rank_losses_accounted_for_by_terminal_truncated_identical_responses": true,
+    "all_rank_losses_in_final_two_tick_terminal_fringe": true,
+    "both_recorded_controllers_failed_support": true,
+    "both_recorded_controllers_terminate_earlier_than_v38": true,
+    "both_recorded_controllers_used_bounded_nonzero_actions": true,
+    "exact_two_saved_source_cells": true
+  },
+  "question": "Is Winner-v39's rank invalidity confined to the final two-tick terminal fringe and accounted for by terminal-truncated identical-response finite-difference branches, while its recorded bounded controller independently fails both support cells earlier than Winner-v38?",
+  "schema_version": "winner_v40.response_jacobian_invalidity_attribution_preregistration.v1",
+  "source_manifest_sha256": "864927dee3c80732b31dfaed18f5c31cbeb12073c2f2a7758b862763121268a4",
+  "source_result": {
+    "repository_attribution": {
+      "artifact_zip_bytes": 82534,
+      "artifact_zip_sha256": "c283b2911f1dac67915dbc2101ffb1cc5bc58648bfa7569fd5d2e9235c5b0cea",
+      "github_artifact_digest": "sha256:c283b2911f1dac67915dbc2101ffb1cc5bc58648bfa7569fd5d2e9235c5b0cea",
+      "github_artifact_id": 8521690886,
+      "github_artifact_name": "winner-v39-response-jacobian-feasibility-29900500665",
+      "github_run_attempt": 1,
+      "github_run_head_sha": "4f8c42c277b463724ee544cc0a6f7b5e7fe08fd9",
+      "github_run_id": 29900500665,
+      "importer_lf_sha256": "773001aad7c24b8fe5c7c8b45df301354a565b3c7390a9a1c218a074872494bd",
+      "preregistration_lf_sha256": "316f62dbcb19bf2b2abf47a04f350855fab6c84cfc551c68ec0b6da908c2c090",
+      "raw_result_receipt_sha256": "bef1ba7bca628a16a1ee435644a5f12fa9e76961f79a38cb2987b066012c5624",
+      "raw_result_sha256": "8234c6a7fea00368b924e0846ebaf9d35c8db6e5a36b8fff42905fa962dd0309",
+      "repository": "RobVanProd/open-duck-mini-rdkx5",
+      "runner_lf_sha256": "a42472d93c7e5eb97c3a67bc3e711e6c71f8b172d0009d644cebf4f452f8dc1b",
+      "workflow_lf_sha256": "ac965e45a30864777d33b121c5d00d587f5f4093d56f0ec1e773d3f10002d31a"
+    },
+    "winner_v39_result_lf_sha256": "7353dfbf43ba369863b8dfd38802f492d2368e64344779aff6bf81df89c7fed0"
+  },
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v40_response_jacobian_invalidity_attribution_preregistration.py",
+      "sha256": "16d694bb8e78515efe81c9e3fc551806047d2a3ba41d7e9f655c0a8b25ec9e13"
+    },
+    "preregistration_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v40_response_jacobian_invalidity_attribution_preregistration.py",
+      "sha256": "112582cc48724c035ee4f450b28fdd2a1aee18c7f95a952bd10903ad33c34a1e"
+    },
+    "result_importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v40_response_jacobian_invalidity_attribution.py",
+      "sha256": "809b2da544388a2ff490f25cfc7ab90a0180d514c7cb01b4ffcd13b77240d74c"
+    },
+    "result_importer_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v40_response_jacobian_invalidity_attribution_import.py",
+      "sha256": "9c471de132bb8896405f8adc3604f762cee51907ba451d9defcd522f08adbe6e"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v40_response_jacobian_invalidity_attribution.py",
+      "sha256": "e5679013e20fa506e9f75c6d864ea3deadbd27487e0a0da63e43a8949a30ce3a"
+    },
+    "runner_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v40_response_jacobian_invalidity_attribution.py",
+      "sha256": "450b617e0c3630165793cb81f63570d10d45172a14d85707cf6d5827728816b6"
+    },
+    "winner_v39_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v39_response_jacobian_feasibility_preregistration.json",
+      "sha256": "316f62dbcb19bf2b2abf47a04f350855fab6c84cfc551c68ec0b6da908c2c090"
+    },
+    "winner_v39_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v39_response_jacobian_feasibility_result.json",
+      "sha256": "7353dfbf43ba369863b8dfd38802f492d2368e64344779aff6bf81df89c7fed0"
+    },
+    "winner_v39_result_importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v39_response_jacobian_feasibility.py",
+      "sha256": "773001aad7c24b8fe5c7c8b45df301354a565b3c7390a9a1c218a074872494bd"
+    },
+    "workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v40-response-jacobian-invalidity-attribution.yml",
+      "sha256": "3c4e2cf4a3ed83adbb27dd403a90f0254e1ac7d99d2195a4d6b618435a0b96e1"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V40_RESPONSE_JACOBIAN_INVALIDITY_ATTRIBUTION"
+}

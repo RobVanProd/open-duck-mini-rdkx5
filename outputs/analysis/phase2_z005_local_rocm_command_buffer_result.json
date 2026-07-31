@@ -1,0 +1,54 @@
+{
+  "status": "HOLD_LOCAL_8ENV_LOW_FORWARD_PROGRESS",
+  "date": "2026-06-29",
+  "robot_touched": false,
+  "ssh_used": false,
+  "deploy_performed": false,
+  "backend_finding": {
+    "hsa_override_gfx_version": null,
+    "xla_flags": "--xla_gpu_enable_command_buffer=",
+    "reduced_run_status": "PASS_SMOKE_RUN",
+    "reduced_run_output_dir": "outputs/phase2_domain_randomization/stage_z005_support_local_rocm_no_override_8env_20480_nocmdbuf/smoke_20260629T164854Z_gpu",
+    "elapsed_s": 446.60642859400104,
+        "checkpoints": [
+            7680,
+            15360,
+            23040
+        ],
+        "note": "Disabling command buffers avoided the rocblas GPU graph capture failure seen in the same reduced 8-env run without this flag."
+    },
+    "longer_local_attempt": {
+        "status": "HOLD_SMOKE_RUN",
+        "output_dir": "outputs/phase2_domain_randomization/stage_z005_support_local_rocm_no_override_8env_81920_nocmdbuf/smoke_20260629T170558Z_gpu",
+        "num_envs": 8,
+        "num_timesteps": 81920,
+        "xla_flags": "--xla_gpu_enable_command_buffer=",
+        "hsa_override_gfx_version": null,
+        "elapsed_s": 33.01276889499968,
+        "returncode": 1,
+        "error": "rocblas_gemm_strided_batched_ex failed with rocblas_status_internal_error during evaluator reset before the first PPO step.",
+        "interpretation": "The command-buffer workaround is sufficient for a short reduced smoke run but did not make the local ROCm path reliable for a longer policy-producing run."
+    },
+    "candidate_gate": {
+    "policy": "outputs/phase2_domain_randomization/stage_z005_support_local_rocm_no_override_8env_20480_nocmdbuf/smoke_20260629T164854Z_gpu/2026_06_29_125557_23040.onnx",
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.005,
+    "command_x": 0.08,
+    "bridge": "corrected_fitted",
+    "duration_s": 15,
+    "planned_seeds": "0-7",
+    "completed_seeds": [
+      0
+    ],
+    "seed0": {
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "termination_reason": "duration_complete",
+      "track_ratio": 0.22337436764026333,
+      "mean_local_vx_m_s": 0.017869949411221067,
+      "max_tracking_p95_rad": 0.19483684301376342
+    },
+    "remaining_seeds_skipped_reason": "Seed 0 failed the 8/8 promotion gate."
+  },
+  "promotion": "NO_PROMOTION",
+  "interpretation": "The reduced local ROCm candidate is not a deployable or robot-test candidate. The backend workaround is useful; the policy result is a low-forward-progress hold."
+}

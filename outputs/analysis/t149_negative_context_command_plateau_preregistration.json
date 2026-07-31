@@ -1,0 +1,122 @@
+{
+  "authority": {
+    "colab": false,
+    "execute_transform_contract": true,
+    "gate5": false,
+    "negative_endpoint_preregistration": false,
+    "policy_promotion": false,
+    "rdkx5_or_robot": false,
+    "training": false
+  },
+  "causal_basis": {
+    "failure": "T146C proves identical starting physical/policy state and sustained collapse only at x=.077/.080",
+    "intervention": "under the existing calibrated negative condition only, replace the policy-internal obs[6] with min(obs[6], .074)",
+    "reference_alias": "T149 must prove obs[101:115] is bit-exact across x=.074/.077/.080 over every shared trace row"
+  },
+  "checks": {
+    "all_inputs_present": true,
+    "calibration_contexts_green": true,
+    "conditional_forward_path_green": true,
+    "grouped_risk_closed_without_hosted_run": true,
+    "negative_endpoint_failure_exact": true,
+    "no_training_runtime_abi_or_hardware_change": true,
+    "upper_command_attribution_exact": true
+  },
+  "decision_rule": {
+    "fail_decision": "CLOSE_NEGATIVE_CONTEXT_COMMAND_PLATEAU",
+    "pass": "Both transformed graphs retain exact ABI and old graph content except the two raw-observation consumers; nominal all-command, negative x=0/x=.074, and negative-upper counterfactual outputs are bit-exact over random samples and 256-step stateful chains.",
+    "pass_decision": "EARN_T150_NEGATIVE_COMMAND_PLATEAU_ENDPOINT_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "behavior_cells": 0,
+    "environment_steps": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 8284,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t149_negative_context_command_plateau_preregistration.py",
+      "sha256": "5b9a0173aed4d60948f578497ebea33339d206fd6b64c2358173fcd8ddafe17d"
+    },
+    "reference_feature_table": {
+      "bytes": 259604,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+      "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+    },
+    "runner": {
+      "bytes": 23528,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t149_negative_context_command_plateau_transform.py",
+      "sha256": "bc61dc83476d1c3a098c36cfd358b0c7409f497a16d98d56ee2af25f9c7542f8"
+    },
+    "source_graph_1003520": {
+      "bytes": 975291,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t143c_conditional_forward_path_v1\\1003520\\conditional_forward_path.onnx",
+      "sha256": "82ab93eb97db602561b3525bb3551f4e94b87808320b8c944f6e0a9c8a4b6869"
+    },
+    "source_graph_2007040": {
+      "bytes": 975291,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t143c_conditional_forward_path_v1\\2007040\\conditional_forward_path.onnx",
+      "sha256": "a43dbac7b4995a71f53cc3ee0145ad6e2698f624c4c02749c664a7a09c2be528"
+    },
+    "t135b_contexts": {
+      "bytes": 14765,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t135b_interrupted_calibration_context_router_recovery_result.json",
+      "sha256": "b01f711e751490fab17d327eebf770473636285dfbc97102478dc5328dfcd540"
+    },
+    "t143c_result": {
+      "bytes": 8412,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t143c_runner_receipt_recovery_result.json",
+      "sha256": "7a40d747ae4b700b21eb2545bc9f9992a7967539afc7b4fd83b8f45efb8b3504"
+    },
+    "t145c_result": {
+      "bytes": 121199,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t145c_cache_contract_recovery_result.json",
+      "sha256": "751220a22c8a92ce103af3f6cae5e9ad8ab07574867eeabf1db263a1a8a5f93d"
+    },
+    "t146c_result": {
+      "bytes": 10431,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t146c_test_receipt_recovery_result.json",
+      "sha256": "f16e0ab0df39c46e19a7f0ba8584580a317059b1cebb420f6964c84b5ba28f26"
+    },
+    "t148b_closure": {
+      "bytes": 16047,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t148b_command_group_risk_cpu_recovery_result.json",
+      "sha256": "ee83d76ae57ee94ba9a34ed1d233c094366d587e9c9dcdf602dd1de6c9e13dda"
+    },
+    "test": {
+      "bytes": 1128,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t149_negative_context_command_plateau.py",
+      "sha256": "0ab43c7b5e3bb7d460f810b11fcc4770d342203f377cf1c50f2701f44e271bcd"
+    }
+  },
+  "mechanism": {
+    "action_pipeline": "unchanged",
+    "cap_derivation": "only_full_horizon_passing_negative_command",
+    "cap_m_s": 0.074,
+    "external_command": "unchanged",
+    "external_input_abi": "unchanged_115_14_64_plus_context",
+    "negative_context_upper": "internal_command_capped_at_0.074",
+    "negative_context_x0": "bit_exact_source",
+    "negative_context_x074": "bit_exact_source",
+    "new_scalar_search": false,
+    "nominal_context": "bit_exact_source",
+    "reference_features": "unchanged",
+    "runtime_change": false,
+    "training": false
+  },
+  "preregistered_contract_sha256": "5c16ad88c59efad82f20956d7b1637b9ca6c46a63adca0b4b17450bbc51094c5",
+  "question": "Can a zero-credit graph-internal plateau preserve the proven negative-COM x=.074 gait at x=.077/.080 while leaving nominal, x=0, x=.074, external command semantics, and the ABI exact?",
+  "repository_commit": "515cdc83ebd4a5124bfc5bf67df8ba497327943c",
+  "schema_version": "open_duck.t149_negative_context_command_plateau_preregistration.v1",
+  "status": "PREREGISTERED_T149_NEGATIVE_CONTEXT_COMMAND_PLATEAU",
+  "thresholds": {
+    "maximum_equivalence_error": 0.0,
+    "maximum_reference_feature_delta": 0.0,
+    "minimum_shared_trace_rows": 95,
+    "random_equivalence_samples_per_context_command": 32,
+    "stateful_chain_steps_per_context": 256
+  }
+}

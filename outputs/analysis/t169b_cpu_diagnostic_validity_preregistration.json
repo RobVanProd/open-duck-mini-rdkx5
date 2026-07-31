@@ -1,0 +1,103 @@
+{
+  "audit": {
+    "endpoint_equality": "compare actual and preregistered endpoint arrays after both are represented as float32, the simulator dtype",
+    "instrumented_values": [
+      "hidden_gate_score",
+      "negative_adapter_location",
+      "conditional_adapter_location",
+      "anchored_location",
+      "raw_continuous_actions"
+    ],
+    "pass_rule": [
+      "endpoint arrays are bit-exact after float32 representation",
+      "the random population activates the dynamic gate at least once",
+      "the updated head, conditional head, and anchored location change",
+      "every changed anchored element masked at raw output is exactly tanh-saturated to abs(value)=1",
+      "T169 protected in-distribution traces already bind the update to final action on at least 5 percent of rows",
+      "no optimizer, simulator, formal behavior, hosted compute, or robot work is rerun"
+    ],
+    "random_population": {
+      "h_in": "standard_normal_float32_[1,64]",
+      "obs": "standard_normal_float32_[1,115]",
+      "previous_action": "uniform_-0.5_0.5_float32_[1,14]",
+      "rows": 256,
+      "seed": 1690001
+    }
+  },
+  "authority": {
+    "behavior_evaluation": false,
+    "gate5": false,
+    "hosted_preregistration": false,
+    "hosted_training": false,
+    "optimizer_rerun": false,
+    "policy_promotion": false,
+    "rdkx5_or_robot": false,
+    "read_only_diagnostic_audit": true
+  },
+  "checks": {
+    "all_safety_and_scope_checks_already_green": true,
+    "no_optimizer_rerun_or_behavior": true,
+    "t168_selection_remains_exact": true,
+    "t169_failed_only_the_two_diagnostic_checks": true,
+    "two_frozen_graphs_available": true
+  },
+  "decision_rule": {
+    "fail_decision": "CLOSE_EIGHT_STRATUM_NOMINAL_HEAD_CONTINUATION",
+    "pass_decision": "EARN_T170_EIGHT_STRATUM_HEAD_HOSTED_CONTINUATION_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_steps": 0,
+    "stored_onnx_inference_rows": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 6975,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t169b_cpu_diagnostic_validity_preregistration.py",
+      "sha256": "509877030c563b70693b862d3638f1da3d09021c28b95b07bf0e03ce6785ce4c"
+    },
+    "runner": {
+      "bytes": 12239,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t169b_cpu_diagnostic_validity.py",
+      "sha256": "59acd15e4de996440701abc98e9e00014ac8e7775020e1048a81dd05cd901f9a"
+    },
+    "step0_graph": {
+      "bytes": 960296,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t169_eight_stratum_head_continuation_cpu_v1\\smoke\\2026_07_29_200241_0.onnx",
+      "sha256": "772b72f191c2f95da83b50b428114e7b00e9fdbfb94883e8b76105615d139690"
+    },
+    "step1024_graph": {
+      "bytes": 960296,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t169_eight_stratum_head_continuation_cpu_v1\\smoke\\2026_07_29_200319_1024.onnx",
+      "sha256": "975b9e20826b24c94f741fac1cf07f8d7a10ecd7912fbe25603050c00791d16f"
+    },
+    "t168_result": {
+      "bytes": 18368,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t168_nominal_adapter_persistence_attribution_result.json",
+      "sha256": "68d90696b81fc888a5cdf59e4ab1b732f77ac3e798832a7ac44d8645c04e9684"
+    },
+    "t169_preregistration": {
+      "bytes": 14139,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t169_eight_stratum_head_continuation_cpu_preregistration.json",
+      "sha256": "e941c859fb7d8c5855b76a28ce0523bf06ee6103b01ad6651715e868e6f216d0"
+    },
+    "t169_result": {
+      "bytes": 12108,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t169_eight_stratum_head_continuation_cpu_result.json",
+      "sha256": "ae0bbefde5e606dfd63ca4d6ed94165aa0074b0cdf270491a277ada4a3e4ff5a"
+    },
+    "test": {
+      "bytes": 2076,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t169b_cpu_diagnostic_validity.py",
+      "sha256": "7e7bf8854ed44d1cc1a6b348219937d16b7e9149f2112588657bb55fa443bb8b"
+    }
+  },
+  "preregistered_contract_sha256": "447d144bd9be5e6e442cf8898b84257446889dc7d074e9f37dc45115c2a32da5",
+  "question": "Were T169's two failed checks diagnostic false negatives: JSON/Python-vs-float32 endpoint equality and out-of-distribution random inputs saturating tanh after a real adapter update?",
+  "schema_version": "open_duck.t169b_cpu_diagnostic_validity_preregistration.v1",
+  "status": "PREREGISTERED_T169B_CPU_DIAGNOSTIC_VALIDITY_AUDIT"
+}

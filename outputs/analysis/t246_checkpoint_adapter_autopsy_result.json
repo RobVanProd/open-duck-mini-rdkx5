@@ -1,0 +1,73 @@
+{
+  "authority": {
+    "adapter_route_preregistration": true,
+    "gate5": false,
+    "hosted": false,
+    "rdkx5_or_robot": false,
+    "training": false
+  },
+  "checks": {
+    "both_checkpoint_command_plateaus_exact": true,
+    "cpu_only_zero_simulator_optimizer_hosted_robot": true,
+    "exactly_two_nominal_adapter_initializers_differ": true,
+    "final_failed_trace_source_replay_exact": true,
+    "half_adapter_counterfactual_is_action_sensitive": true,
+    "half_and_final_duration_split_exact": true,
+    "initializer_names_exact": true,
+    "node_names_and_nodes_byte_exact": true
+  },
+  "decision": "EARN_T247_HOME_NEGATIVE_HALF_ADAPTER_ROUTE_PREREGISTRATION_ONLY",
+  "execution": {
+    "behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "onnx_inferences": 462,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_steps": 0,
+    "wall_seconds": 0.8577196598052979
+  },
+  "failed_checks": [],
+  "graph_identity": {
+    "changed_initializers": [
+      "nominal_condition_negative_adapter_bias",
+      "nominal_condition_negative_adapter_weight"
+    ],
+    "changed_nodes": [],
+    "initializer_deltas": [
+      {
+        "maximum_absolute_delta": 0.018447424517944455,
+        "name": "nominal_condition_negative_adapter_bias",
+        "rms_delta": 0.010354792409156688,
+        "shape": [
+          14
+        ]
+      },
+      {
+        "maximum_absolute_delta": 0.03992394357919693,
+        "name": "nominal_condition_negative_adapter_weight",
+        "rms_delta": 0.009471488901321181,
+        "shape": [
+          64,
+          14
+        ]
+      }
+    ]
+  },
+  "interpretation": {
+    "causal_split": "the two nominal-adapter tensors are the only graph difference aligned with the half-pass/final-fall split",
+    "next_mechanism": "uniformly add the half adapter as a home-negative-tail expert while preserving every other route"
+  },
+  "preregistered_contract_sha256": "38b8813e0dcfe3d2cbb20dd8dac992f966f8b64443593ba135ad36ae0c9c758c",
+  "result_sha256": "320f88b1f391cc847f2e1ec4f9d0718dc49251cb8f3e61ba70d1a2b43dc7eddb",
+  "schema_version": "open_duck.t246_checkpoint_adapter_autopsy_result.v1",
+  "status": "PASS_T246_CHECKPOINT_ADAPTER_CAUSAL_SPLIT",
+  "trace_identity": {
+    "final_rows_per_command": 231,
+    "final_source_replay_exact": true,
+    "final_three_command_plateau_exact": true,
+    "half_counterfactual_changed_rows": 24,
+    "half_counterfactual_maximum_action_delta": 0.19054248929023743,
+    "half_rows_per_command": 600,
+    "half_three_command_plateau_exact": true
+  }
+}

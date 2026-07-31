@@ -1,0 +1,326 @@
+{
+  "authority": {
+    "behavior": false,
+    "full_matrix": false,
+    "gate5": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "v148_behavior_preregistration": false
+  },
+  "checks": {
+    "all_correction_ratio_at_most_point95": true,
+    "all_preservation_ratio_at_most_point01": true,
+    "all_unselected_head_columns_bit_exact": true,
+    "behavior_cells_zero": true,
+    "both_export_inference_contracts_pass": true,
+    "both_updates_accepted": true,
+    "checkpoint_structure_exact": true,
+    "correction_weight_derived": true,
+    "cpu_only": true,
+    "dataset_exact_5400_21_rows_60_elements": true,
+    "every_selected_head_slice_changed": true,
+    "hidden_output_bit_exact": true,
+    "hosted_compute_zero": true,
+    "labeled_joint_set_exact": true,
+    "last_gradients_finite": true,
+    "loss_decreases": true,
+    "only_four_location_head_leaves_changed": true,
+    "shadow_correction_ratio_at_most_point95": true,
+    "shadow_preservation_ratio_at_most_point01": false,
+    "teacher_correction_ratio_at_most_point95": true,
+    "teacher_preservation_ratio_at_most_point01": true,
+    "v140_reconstruction_exact": true
+  },
+  "dataset": {
+    "corrected_rows": 21,
+    "correction_weight": 256.14285714285717,
+    "joint_labels": 60,
+    "labeled_joints": [
+      0,
+      1,
+      3,
+      7,
+      8,
+      10,
+      13
+    ],
+    "rows": 5400
+  },
+  "decision": "CLOSE_HEAD_ONLY_DAGGER",
+  "exports": {
+    "0": {
+      "deployed": {
+        "bytes": 958446,
+        "graph_io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          }
+        },
+        "inference": {
+          "changed_projection_is_exercised": true,
+          "checks": {
+            "all_outputs_finite": true,
+            "changed_projection_is_exercised": true,
+            "cpu_provider_exact": true,
+            "g3_guard_preserved_in_consistent_chain": true,
+            "moving_rate_delta_enforced": true,
+            "realized_state_feedback_exact": true,
+            "recurrent_hidden_output_bit_exact": true,
+            "zero_action_exact": true,
+            "zero_previous_exact": true
+          },
+          "max_guard_excess_rad": 0.0,
+          "max_hidden_error": 0.0,
+          "max_moving_delta_excess": 2.2351741790771484e-08,
+          "max_state_error": 0.0,
+          "max_zero_action": 0.0,
+          "max_zero_previous": 0.0,
+          "pass": true
+        },
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v147-head-only-dagger-cpu-20260725\\winner_v147_deployed_0.onnx",
+        "sha256": "ae87508d7bd25c7821cb167d7a61d8eeaa28d7d153be72dd9d537236ae5e92f6"
+      },
+      "raw_path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v147-head-only-dagger-cpu-20260725\\winner_v147_raw_0.onnx",
+      "raw_sha256": "aa1025ae4bd2daf1c513cd81374e8eb7961308a41ca10bbe55f6284944fd6460"
+    },
+    "2": {
+      "deployed": {
+        "bytes": 958446,
+        "graph_io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          }
+        },
+        "inference": {
+          "changed_projection_is_exercised": true,
+          "checks": {
+            "all_outputs_finite": true,
+            "changed_projection_is_exercised": true,
+            "cpu_provider_exact": true,
+            "g3_guard_preserved_in_consistent_chain": true,
+            "moving_rate_delta_enforced": true,
+            "realized_state_feedback_exact": true,
+            "recurrent_hidden_output_bit_exact": true,
+            "zero_action_exact": true,
+            "zero_previous_exact": true
+          },
+          "max_guard_excess_rad": 0.0,
+          "max_hidden_error": 0.0,
+          "max_moving_delta_excess": 2.2351741790771484e-08,
+          "max_state_error": 0.0,
+          "max_zero_action": 0.0,
+          "max_zero_previous": 0.0,
+          "pass": true
+        },
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v147-head-only-dagger-cpu-20260725\\winner_v147_deployed_2.onnx",
+        "sha256": "aab25bbc440bbcc246f24a16cb005fdde2fe902c7adcc1fe6ea5699693fda211"
+      },
+      "raw_path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v147-head-only-dagger-cpu-20260725\\winner_v147_raw_2.onnx",
+      "raw_sha256": "6f2b19921cf7ca72f0f5092088187ea556142da60d4c46dc2855178fa0cf4341"
+    }
+  },
+  "failed_checks": [
+    "shadow_preservation_ratio_at_most_point01"
+  ],
+  "input_hashes": {
+    "cpu_template": "217a1551c4cc778e4b957636a40ca6e01eafa51efeaef905eb73e9debc7c26e5",
+    "network_source": "ffd07d0a6e96d846aa1f62a8d131bf892f10db6b2a22710affe3946b7b145ebd",
+    "runner": "fd0f90c016191fae6b6b261441574083c9e9b464c3f1a8ba9454cba0a9f22d7b",
+    "shadow_trace": "eb432bdb64c251dcbb466bd795db381891837086dae9dcc7a2564a7f2a2930b5",
+    "source_checkpoint": "c1d9b8574c941e2279294de14aca1cb57d4736bdc63635b5aaf1e205fa7f86c1",
+    "training_module": "a75d7621947781dfdd1dd95c568c88948ef978a48f5ee3a6d95bc8dd36259ba1",
+    "v121_transform": "4bd5eab5343cd8401db1789773fa3cc345727d903cb31222e0ea9870f0e9e640",
+    "v131_result": "ab1535e11287f191e8ee6b4be5c020c44726c6263465c7cb760892387b07c9ea",
+    "v134_training_module": "632a2e12ae10d940be38858c52e738281ca6a2de1736d1be90b8adcbdbd8baa8",
+    "v140_result": "44921665d80235246737b333a5149ceacb702d477dcc2c7496395bf0c42ba637",
+    "v140_selected_deployed": "ae87508d7bd25c7821cb167d7a61d8eeaa28d7d153be72dd9d537236ae5e92f6",
+    "v144_correction": "4d955dacf6d30a0953c306ab6e7d9a1d87fea872a8b646aebd48c9e528c0dd0c",
+    "v145_result": "d1b9ee041130fd50b8be357749f2c8cdf38a884b8bde527eabfb19c80a3b14a8",
+    "v145_runner": "c6e18bc2679372eca83872aedb84d1e6f6430106a52bcc6aa21e211cfebdd104",
+    "v145_training_module": "b6f0cb28e86bc3561009af87ad5cc5136641e08057d54c81d74b119d627ded4c",
+    "v146_result": "8f9e2d69d34ee36066c54e6bc7f99eb009f395ae565ee8bc485bef626c9db90c"
+  },
+  "reconstruction": {
+    "step_zero_deployed_linf": 0.0,
+    "v134_updates": [
+      {
+        "accepted_step": 1.0,
+        "action_loss_after": 1.7017177015077323e-05,
+        "action_loss_before": 1.839688775362447e-05,
+        "backtracks": 0,
+        "gradient_norm": 0.0012322805123403668,
+        "hidden_loss_after": 2.542027255358903e-09,
+        "hidden_loss_before": 7.958043946043603e-17,
+        "initial_step": 1.0,
+        "loss_after": 1.7019718143274076e-05,
+        "loss_before": 1.839688775362447e-05,
+        "update": 1
+      },
+      {
+        "accepted_step": 1.0,
+        "action_loss_after": 1.6246713130385615e-05,
+        "action_loss_before": 1.7017177015077323e-05,
+        "backtracks": 0,
+        "gradient_norm": 0.0010250108316540718,
+        "hidden_loss_after": 1.0966425989522577e-08,
+        "hidden_loss_before": 2.542027255358903e-09,
+        "initial_step": 1.0,
+        "loss_after": 1.6257679817499593e-05,
+        "loss_before": 1.7019718143274076e-05,
+        "update": 2
+      }
+    ],
+    "v140_alpha": 0.7384653091430664
+  },
+  "schema_version": "winner_v147.head_only_dagger_cpu_result.v1",
+  "status": "HOLD_WINNER_V147_HEAD_ONLY_DAGGER_CPU_CONTRACT",
+  "training": {
+    "changed_leaves": [
+      "1/params/adapter_location/bias",
+      "1/params/adapter_location/kernel",
+      "1/params/residual_location/bias",
+      "1/params/residual_location/kernel"
+    ],
+    "expected_changed_leaves": [
+      "1/params/adapter_location/bias",
+      "1/params/adapter_location/kernel",
+      "1/params/residual_location/bias",
+      "1/params/residual_location/kernel"
+    ],
+    "head_deltas": {
+      "adapter_location": {
+        "selected_bias_linf": 0.00021171377738937736,
+        "selected_kernel_linf": 0.00019485130906105042,
+        "unselected_bias_linf": 0.0,
+        "unselected_kernel_linf": 0.0
+      },
+      "residual_location": {
+        "selected_bias_linf": 0.00021171383559703827,
+        "selected_kernel_linf": 0.00026858411729335785,
+        "unselected_bias_linf": 0.0,
+        "unselected_kernel_linf": 0.0
+      }
+    },
+    "hidden_linf": 0.0,
+    "last_gradient_norms": {
+      "params/adapter_hidden_bias": 0.0,
+      "params/adapter_hidden_projection/kernel": 0.0,
+      "params/adapter_location/bias": 8.918189450923819e-06,
+      "params/adapter_location/kernel": 0.00022899924078956246,
+      "params/adapter_obs_projection/kernel": 0.0,
+      "params/residual_location/bias": 8.918189450923819e-06,
+      "params/residual_location/kernel": 0.0002936701930593699,
+      "params/residual_trunk/hidden_0/bias": 0.0,
+      "params/residual_trunk/hidden_0/kernel": 0.0,
+      "params/residual_trunk/hidden_1/bias": 0.0,
+      "params/residual_trunk/hidden_1/kernel": 0.0,
+      "params/residual_trunk/hidden_2/bias": 0.0,
+      "params/residual_trunk/hidden_2/kernel": 0.0,
+      "params/scale_logits/bias": 0.0,
+      "params/scale_logits/kernel": 0.0
+    },
+    "metrics": {
+      "baseline_corrected_mse": 3.1788149499334395e-05,
+      "corrected_mse": 2.989425411215052e-05,
+      "corrected_ratio_to_zero_predictor": 0.9404213388632915,
+      "error_linf": 0.04929376021027565,
+      "preservation_mse": 2.955139279947616e-07,
+      "preservation_ratio_to_corrected_baseline": 0.009296355171632414
+    },
+    "shadow_metrics": {
+      "baseline_corrected_mse": 6.023568857926875e-06,
+      "corrected_mse": 4.35301353718387e-06,
+      "corrected_ratio_to_zero_predictor": 0.722663530517362,
+      "error_linf": 0.014623433351516724,
+      "preservation_mse": 4.998059353056306e-07,
+      "preservation_ratio_to_corrected_baseline": 0.08297505135147541
+    },
+    "teacher_metrics": {
+      "baseline_corrected_mse": 3.7850404623895884e-05,
+      "corrected_mse": 3.590395499486476e-05,
+      "corrected_ratio_to_zero_predictor": 0.9485751962661376,
+      "error_linf": 0.04929376021027565,
+      "preservation_mse": 2.700574839309411e-07,
+      "preservation_ratio_to_corrected_baseline": 0.0071348638571870696
+    },
+    "updates": [
+      {
+        "accepted_step": 1.0,
+        "action_loss_after": 1.5224904018396046e-05,
+        "action_loss_before": 1.58940765686566e-05,
+        "backtracks": 0,
+        "gradient_norm": 0.0010813558474183083,
+        "hidden_loss_after": 0.0,
+        "hidden_loss_before": 0.0,
+        "initial_step": 1.0,
+        "loss_after": 1.5224904018396046e-05,
+        "loss_before": 1.58940765686566e-05,
+        "update": 1
+      },
+      {
+        "accepted_step": 1.0,
+        "action_loss_after": 1.5094874470378272e-05,
+        "action_loss_before": 1.5224904018396046e-05,
+        "backtracks": 0,
+        "gradient_norm": 0.0003726149443536997,
+        "hidden_loss_after": 0.0,
+        "hidden_loss_before": 0.0,
+        "initial_step": 1.0,
+        "loss_after": 1.5094874470378272e-05,
+        "loss_before": 1.5224904018396046e-05,
+        "update": 2
+      }
+    ]
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "status": "HOLD_BEHAVIOR_PRIOR_LOW_FORWARD_PROGRESS",
+  "colab_allocation": {
+    "A100": "rejected_by_backend_quota_or_entitlement",
+    "H100": "rejected_by_backend_quota_or_entitlement",
+    "L4": "rejected_by_backend_quota_or_entitlement",
+    "G4": "rejected_by_backend_quota_or_entitlement",
+    "T4": "service_unavailable"
+  },
+  "training": {
+    "output_dir": "outputs/phase2_domain_randomization/stage_z0075_post_push_stability_local_rocm/smoke_20260704T184444Z_gpu",
+    "manifest": "outputs/phase2_domain_randomization/stage_z0075_post_push_stability_local_rocm/smoke_20260704T184444Z_gpu/smoke_manifest.final.json",
+    "manifest_sha256": "09619f3adb31584b752b3228919b4d6c30e013959df8c36d026642c49705c268",
+    "manifest_status": "PASS_SMOKE_RUN",
+    "returncode": 0,
+    "elapsed_s": 750.0285300349933,
+    "platform": "gpu",
+    "local_rocm_safe_env": true,
+    "behavior_prior": {
+      "enabled": true,
+      "mlp_npz": "outputs/analysis/phase2_z0075_iter21_early_lunge_gain095_rate150_candidate/candidate_mlp.npz",
+      "mlp_npz_sha256": "71f520712a10613d3e2304a33cbcd641f6bb59fb0d5c1dc3e34a5c8fe93569b2",
+      "scale": -0.22,
+      "huber_delta": 0.06
+    }
+  },
+  "checkpoints": [
+    {
+      "step": 40960,
+      "onnx": "outputs/phase2_domain_randomization/stage_z0075_post_push_stability_local_rocm/smoke_20260704T184444Z_gpu/2026_07_04_145200_40960.onnx",
+      "sha256": "0da8dadb8de5294d0d1dfb8a1847725021cb9390304495a889f2eea3e0aca06c",
+      "training_reward": 121.14765930175781,
+      "triage": {
+        "seeds_tested": [0, 1],
+        "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "track_ratio": 0.023790727494633755,
+        "mean_vx_m_s": 0.0019032581995707006,
+        "max_pitch_tracking_p95_rad": 0.05186075568199157,
+        "max_sent_target_velocity_p95_rad_s": 0.2198837697505951,
+        "max_sent_target_velocity_limit_excess_rad_s": 0.0
+      }
+    },
+    {
+      "step": 81920,
+      "onnx": "outputs/phase2_domain_randomization/stage_z0075_post_push_stability_local_rocm/smoke_20260704T184444Z_gpu/2026_07_04_145522_81920.onnx",
+      "sha256": "09ee185eb3febf832babc94b1dd9a8d80a8ce302cd9f8b2e143ce0c139010793",
+      "training_reward": 148.7467803955078,
+      "triage": {
+        "seeds_tested": [0],
+        "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "track_ratio": 0.028388569279741205,
+        "mean_vx_m_s": 0.0022710855423792964,
+        "max_pitch_tracking_p95_rad": 0.05342047810554504,
+        "max_sent_target_velocity_p95_rad_s": 0.18230348825454712,
+        "max_sent_target_velocity_limit_excess_rad_s": 0.0
+      }
+    },
+    {
+      "step": 122880,
+      "onnx": "outputs/phase2_domain_randomization/stage_z0075_post_push_stability_local_rocm/smoke_20260704T184444Z_gpu/2026_07_04_145636_122880.onnx",
+      "sha256": "66639cca3cb530271225b58c0bf3e6690c6f71e8f4e6648944f99aa5e91cc160",
+      "training_reward": 90.92532348632812,
+      "triage": {
+        "seeds_tested": [0],
+        "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "track_ratio": 0.027564587371064896,
+        "mean_vx_m_s": 0.0022051669896851916,
+        "max_pitch_tracking_p95_rad": 0.048922741413116456,
+        "max_sent_target_velocity_p95_rad_s": 0.1521831750869751,
+        "max_sent_target_velocity_limit_excess_rad_s": 0.0
+      }
+    }
+  ],
+  "candidate_promoted": false,
+  "robot_touched": false,
+  "ssh_used": false,
+  "deployed": false,
+  "grounded_replay": false,
+  "interpretation": "Local ROCm backend completed the behavior-prior training/export path, but all tested checkpoints collapsed to near-standstill under the corrected x=0.08 z=0.0075 gate.",
+  "next_step": "Do not promote these checkpoints. Design the next recipe to reject low-progress collapse during training or preserve Iter21 motion more directly while adding push recovery pressure."
+}

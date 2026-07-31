@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Open Duck Mini — Evidence Status</title>
+  <style>
+    :root {
+      --ink: #f4f0e6;
+      --muted: #aaa89f;
+      --paper: #111311;
+      --panel: #191c19;
+      --line: #30352f;
+      --green: #70d68b;
+      --amber: #f2bc61;
+      --red: #ed7b6f;
+      --blue: #76b9e6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% -10%, #263425 0, transparent 32rem),
+        radial-gradient(circle at 95% 15%, #1c2d37 0, transparent 28rem),
+        var(--paper);
+      font: 15px/1.55 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+    main { width: min(1180px, calc(100% - 32px)); margin: 0 auto; padding: 46px 0 72px; }
+    header { display: flex; justify-content: space-between; gap: 24px; align-items: flex-start; margin-bottom: 30px; }
+    .eyebrow { color: var(--green); text-transform: uppercase; letter-spacing: .18em; font-size: 12px; }
+    h1 { margin: 8px 0 6px; font: 700 clamp(30px, 6vw, 64px)/1.02 system-ui, sans-serif; letter-spacing: -.05em; }
+    .subtitle { color: var(--muted); max-width: 720px; }
+    .live { display: flex; align-items: center; gap: 9px; color: var(--green); white-space: nowrap; padding-top: 7px; }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: currentColor; box-shadow: 0 0 16px currentColor; animation: pulse 1.8s infinite; }
+    @keyframes pulse { 50% { opacity: .35; } }
+    .hero, .grid, .mechanisms { display: grid; gap: 14px; }
+    .hero { grid-template-columns: 1.7fr 1fr 1fr; margin-bottom: 14px; }
+    .grid { grid-template-columns: 1fr 1fr; margin-bottom: 14px; }
+    .mechanisms { grid-template-columns: repeat(5, 1fr); }
+    .card { border: 1px solid var(--line); border-radius: 15px; background: color-mix(in srgb, var(--panel) 94%, transparent); padding: 20px; box-shadow: 0 18px 55px #0004; }
+    .label { color: var(--muted); text-transform: uppercase; letter-spacing: .12em; font-size: 11px; }
+    .big { margin-top: 10px; font: 650 clamp(21px, 3vw, 36px)/1.15 system-ui, sans-serif; letter-spacing: -.025em; }
+    .big.amber { color: var(--amber); }
+    .big.red { color: var(--red); }
+    .metric { margin-top: 8px; color: var(--muted); }
+    .metric strong { color: var(--ink); font-size: 20px; }
+    h2 { margin: 0 0 15px; font: 650 20px/1.2 system-ui, sans-serif; }
+    ol { margin: 0; padding-left: 20px; }
+    li + li { margin-top: 9px; }
+    code { color: #c9e6ff; overflow-wrap: anywhere; }
+    .candidate { min-height: 178px; position: relative; overflow: hidden; }
+    .candidate::before { content: ''; position: absolute; inset: 0 auto 0 0; width: 3px; background: var(--line); }
+    .candidate.eliminated::before { background: var(--red); }
+    .candidate.running::before { background: var(--amber); }
+    .candidate .name { margin: 8px 0 16px; font: 650 17px/1.2 system-ui, sans-serif; }
+    .status { display: inline-block; border: 1px solid currentColor; border-radius: 999px; padding: 3px 8px; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
+    .eliminated .status { color: var(--red); }
+    .running .status { color: var(--amber); }
+    .facts { margin-top: 15px; color: var(--muted); font-size: 12px; }
+    .facts b { color: var(--ink); }
+    .constraints { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .chip { border: 1px solid var(--line); border-radius: 999px; padding: 5px 9px; color: var(--muted); font-size: 11px; }
+    footer { margin-top: 22px; color: var(--muted); font-size: 11px; display: flex; justify-content: space-between; gap: 12px; }
+    a { color: var(--blue); }
+    @media (max-width: 900px) { .hero, .mechanisms { grid-template-columns: 1fr 1fr; } .hero .card:first-child { grid-column: 1 / -1; } }
+    @media (max-width: 620px) { header { display: block; } .live { margin-top: 12px; } .hero, .grid, .mechanisms { grid-template-columns: 1fr; } .hero .card:first-child { grid-column: auto; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <div class="eyebrow">Open Duck Mini / evidence console</div>
+        <h1>Policy search status</h1>
+        <div class="subtitle">Ground-up, reference-motion policy development. Decisions come from frozen offline gates—not reward curves, visual preference, or robot improvisation.</div>
+      </div>
+      <div class="live"><span class="dot"></span><span id="page-state">LIVE STATUS</span></div>
+    </header>
+
+    <section class="hero">
+      <div class="card">
+        <div class="label">Current operation</div>
+        <div class="big" id="operation">Winner-v12 zero-PPO mechanics passed</div>
+        <div class="metric" id="operation-detail">The one frozen CPU-only run passed all 22 checks. Both deployable graphs are byte-identical to Winner-v11; the new response branch stays within the unchanged 1e-7 backend threshold (worst 7.45e-8), and complete authoritative ONNX outputs obey the stored/inward physical bounds. This authorizes only a separate training preregistration—not training, behavior evaluation, runtime deployment, or robot work.</div>
+      </div>
+      <div class="card">
+        <div class="label">Latest nominal candidate</div>
+        <div class="big" id="winner">WINNER-V10</div>
+        <div class="metric">Nominal and R2 conditions 1-6 only; not a supported-configuration winner</div>
+        <div class="metric">Robot clearance: <strong style="color:var(--red)">NO</strong></div>
+      </div>
+      <div class="card">
+        <div class="label">Compute</div>
+        <div class="big">0 active sessions</div>
+        <div class="metric">0 active sessions. Hosted execution 958.80 s; total session 1,068.78 s. Compute usage is recorded as unmeasured.</div>
+      </div>
+    </section>
+
+    <section class="card" style="margin-bottom:14px">
+      <div class="label">Preregistered structural screen</div>
+      <h2 style="margin-top:8px">Five mechanisms, one unchanged behavior gate</h2>
+      <div class="mechanisms">
+        <div class="card candidate eliminated"><span class="status">eliminated</span><div class="name">M0 · Upstream</div><div class="facts"><b>0</b> full · <b>0</b> moving<br><b>1</b> hard failure</div></div>
+        <div class="card candidate eliminated"><span class="status">eliminated</span><div class="name">M1 · Ref-conditioned</div><div class="facts"><b>0</b> full · <b>1</b> isolated moving<br><b>2</b> hard failures</div></div>
+        <div class="card candidate eliminated"><span class="status">eliminated</span><div class="name">M2 · Phase MoE</div><div class="facts"><b>0</b> full · <b>0</b> moving<br><b>2</b> hard failures</div></div>
+        <div class="card candidate eliminated"><span class="status">eliminated</span><div class="name">M3 · Recurrent</div><div class="facts"><b>0</b> full · <b>0</b> moving<br><b>4</b> hard failures</div></div>
+        <div class="card candidate eliminated"><span class="status" id="m4-state">eliminated</span><div class="name">M4 · Symmetric critic</div><div class="facts" id="m4-facts"><b>0</b> full · <b>0</b> moving<br><b>1</b> hard failure</div></div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <div class="label">What the evidence says</div>
+        <h2 style="margin-top:8px">Scalar tuning did not solve behavior emergence</h2>
+        <ol>
+          <li>Learning rate, entropy, imitation scale, discount, and unroll searches produced no persistent gait and no full checkpoint pass.</li>
+          <li>Four structurally different policy/critic mechanisms also failed the frozen advancement rule.</li>
+          <li>The shared-setup audit found the missing clean bootstrap: full randomization, delays, noise, and pushes were active from update one. Reset also used a zero-norm phase feature and a single-support phase inconsistent with home.</li>
+          <li>A corrected nominal phase-0 / phase-20 bootstrap still produced only one isolated moving pass per arm and six hard failures each. Curriculum cleanup and phase alignment are insufficient.</li>
+          <li>Signed progress preserved x=.074 seed 100 at both 3M and 4M, but still had six hard failures, two saturated x=.08 runs per checkpoint pair, and no full checkpoint pass. It is not a winner.</li>
+          <li>Recorded return reconstructs to within 2.83e-5 at mature checkpoints, so clipping is not selected. Alive plus yaw tracking are 79.81–81.55% of final positive-scaled reward mass and are now the evidence-selected factor.</li>
+          <li>Progress-conditioned survival tied O1 exactly: 2/8 moving passes, one persistent seed, six hard failures, and zero full checkpoint passes. The reward-objective family is closed.</li>
+          <li>Direct reference execution is not a valid cloning label: every audited form moved backward on average, with 2–4 falls per 8 runs. The selected formulation anchors the actor at the projected reference and learns state-feedback residuals.</li>
+          <li>The reference-residual software contract passed on CPU: initial JAX and ONNX actions match the projected reference within 2.98e-8, PPO log probability is finite, and a 1,024-step training smoke exported the correct final-action graph.</li>
+          <li>The original causal A/B scored A0 at 1/8 and A1 at 0/8 under an unintended randomized reset. Those classifications are superseded by the corrected home-reset evaluation below.</li>
+          <li>The exact-command audit found a concrete input mismatch: command [.074, 0, 0] receives nearest table cell [.074, -.037, -.074] because the table has no zero lateral/yaw cell.</li>
+          <li>Exact interpolation removed that alias and changed actions by as much as .2120, but still scored 0/4: seed 100 moved backward and seed 101 fell at both commands. The lookup defect was real but not causal.</li>
+          <li>A body-frame gate audit corrected world-X displacement under randomized yaw. It changed only 2 of 62 historical randomized-reset runs, but those runs no longer decide the nominal home-reset gate.</li>
+          <li>The new oracle shooting controller generated +.0899 m body-forward motion in seed 100 with bilateral transitions and zero rate excess, but touched saturation; seed 101 rolled, reversed, and fell. It is not a source pass.</li>
+          <li>Doubling only the oracle horizon increased propulsion in both seeds, but both fell near 0.81 rad pitch while reaching 0.66–0.68 m/s against a 0.074 m/s command. The fixed shooting formulation is closed with 0/2 passes.</li>
+          <li>Lexicographic viability removed the propulsion exploit but did not create a teacher: seed 100 became stable-but-slow and seed 101 still reversed and fell. It scored 0/2 and is closed without parameter tuning.</li>
+          <li>The follow-up bank found 2,489/4,096 viable seed-100 horizons and 0/4,096 for seed 101, then exposed the causal mismatch: those probes used randomized joint/base reset state instead of the preregistered deterministic home state.</li>
+          <li>Correct home-reset re-evaluation found 8/8 x=.074 emergence passes across A0/A1 at 3M/4M. A1 4M reaches 0.0640 m/s with bilateral transitions, but exceeds measured per-joint rate limits by up to 4.24 rad/s.</li>
+          <li>The x=.08 failure is digitally explained: fixed-command training leaves command standard deviation at 1e-6, so a .006 command change becomes a normalized shift near 6000 and saturates the actor.</li>
+          <li>Measured hard-vector projection preserves A1 4M gait 2/2 and eliminates rate excess. The remaining candidate hold is pitch-chain tracking p95 0.20246 versus the frozen 0.20 limit.</li>
+          <li>The corrected training/export contract passes every CPU check: 4,096 commands span x=.074–.080 with std .001744; first-tick targets obey all 14 measured limits; returned observations carry the realized bounded action; and the stateful ONNX chain has zero measured bound excess.</li>
+          <li>The preregistered 1,024-step CPU continuation smoke restored A1 4M with exact parameter equality, kept all parameters and metrics finite, changed all 10 policy leaves, and exported valid stateful ONNX at step 0 and 1,024.</li>
+          <li>The single frozen T4 continuation completed at 0/1,003,520/2,007,040. The 8.16 MB archive and manifest were hash-verified locally before the session was stopped.</li>
+          <li>Behavior evaluation is complete: all 12 post-update runs walk with bilateral transitions and zero rate excess, but 1M tracking is .212–.222 and 2M tracking is .219–.239; 2M x=.08 also reaches 1.85% saturation. Neither checkpoint passes.</li>
+          <li>The measured-bridge audit passes: five 256-tick CPU sequences agree within 1.43e-7 rad, all provenance and ordering checks pass, and the old collapse-inducing penalty stack remains excluded.</li>
+          <li>The bridge-only CPU contract passes: physics receives the bridged target exactly, no bridge penalty exists, protected restore error is zero, all 10 policy leaves update, and both stateful ONNX exports pass.</li>
+          <li>Bridge-only training keeps gait and clears tracking at 1M x=.08 (.18858), but the other five command/checkpoint cells remain .20137–.21099 versus .20. Persistence fails, so the exact feedforward arm is closed.</li>
+          <li>The 115-D observability audit proves the bridge's applied target is missing while the sent-target slot is redundant. An identical-observation fork changes next physics control by .0299975 rad, selecting a same-size applied-target slot rather than recurrence.</li>
+          <li>The applied-target CPU contract passes all checks: the state remains 115-D, default-off output is exact, enabled obs[83:97] equals applied target with zero measured error, no other observation or physics value changes, and the .04 rad hidden-state fork is now fully visible in that slot.</li>
+          <li>The protected Colab checkpoint required an explicit CPU topology remap; save/restore error is zero. With composed-checkout module precedence fixed, the 1,024-step smoke restores the protected source exactly, changes all 10 actor leaves, keeps metrics finite, and exports two valid hard-bounded stateful ONNX graphs.</li>
+          <li>The applied-target 1M checkpoint is the first full nominal pass: all six command/seed cells walk and clear tracking at .18877/.18502/.17679 with zero saturation and rate excess.</li>
+          <li>The 2M checkpoint still walks cleanly but tracking regresses to .21617/.21694/.20817, failing all six cells. The frozen persistence rule rejects the exact arm; 1M is not cherry-picked.</li>
+          <li>The read-only drift audit replayed both policies exactly on 324 CPU trace samples and restored matching finite checkpoint trees. Actor-only changes produce .09496 raw-action RMS drift versus .01407 from normalization, a 6.75× ratio.</li>
+          <li>Hosted reward improves by 16.73 from 1M to 2M while the largest external tracking regressions are left hip yaw +.02899 rad and left knee +.02816 rad. Their bridge-error deltas are 0 and +.000008 rad, isolating policy/objective drift rather than bridge corruption.</li>
+          <li>The 600-tick audit invalidates the apparent 1M pass: its tracking p95 rises to .21334–.22317 and first crosses .20 by cumulative tick 108–162. The prior 54-tick gate covered only 9% of the training episode.</li>
+          <li>Both applied-target checkpoints remain upright and walking for all 12 seconds with zero rate excess. BEST_WALK_ONNX_2 is much slower and has 3.61–3.87 rad/s rate excess, but all three policies still fail full-horizon tracking.</li>
+          <li>Mean pitch-chain error can improve while p95 and the fraction above .20 worsen. The next selected quantity is therefore tail exceedance above the existing gate, not another mean pseudo-Huber or behavior-retention penalty.</li>
+          <li>The tail diagnostic CPU contract matches its analytic definition, changes no default-off transition or observation, and reproduces all 3,600 frozen trace rows within 9.95e-11.</li>
+          <li>The preregistered continuation smoke restores the protected 1M checkpoint exactly, changes all 10 actor leaves, records a finite nonzero tail metric, and exports valid hard-bounded stateful ONNX at step 0 and 1,024.</li>
+          <li>The hosted package contract passes: T1/T2/T3 use exactly the preregistered scales, independently restore the protected source, request 1M steps and three exports each, and cannot exceed 4.28 compute units at the reported rate before its wall cutoff.</li>
+          <li>All 36 preregistered 600-tick cells completed on CPU. Every cell walks with bilateral support, zero saturation, and zero measured rate excess.</li>
+          <li>T1 half/final worst tracking is .22883/.23242; T2 is .21505/.20972; T3 is .22048/.20410. No arm passes both checkpoints against the unchanged .20 limit, so the exact tail-exceedance formulation is closed.</li>
+          <li>Phase-A closure is now explicit: <code>CLOSE_TAIL_SCALE_FAMILY_NO_PERSISTENT_WINNER</code>. The pass fork is not entered and a fourth scale is prohibited.</li>
+          <li>The preregistered stateful pitch-rate boundary screen completed all 72 CPU-only cells. All cells remained full-duration walks with bilateral support, zero saturation, and zero measured rate excess.</li>
+          <li>R1 T2 half/final worst tracking is .21493/.20887 and R1 T3 is .21985/.20074; R2 T2 is .21214/.20430 and R2 T3 is .21317/.19931; R3 T2 is .20789/.21070 and R3 T3 is .21298/.19852. No combination passes both checkpoints, so the screen is closed without promoting a closest result.</li>
+          <li>A preregistered smooth-occupancy diagnostic improved exact-occupancy ranking from 20 to 14 discordant pairs, but worsened p95 ranking from 17 to 20. It fails the frozen dual-ranking rule, so no surrogate or training run advances.</li>
+          <li>Actor-only cumulative averaging also fails: unchanged T2 half/final is .21767/.21530, unchanged T3 is .22404/.21492, R3 T2 is .22102/.21761, and R3 T3 is .22189/.21141. All 48 cells walk, but no checkpoint clears .20.</li>
+          <li>Error decomposition is exact across 156 traces: all 3,329 failing events are compound sub-threshold accumulation. Bridge and servo components are each below .20 alone and align in sign every time; their sum crosses the gate.</li>
+          <li>The actual-centered guard repairs that exact mechanism. G1/T2 passes both half and final over all commands/seeds, with worst tracking .18167 and minimum vx .08338. This is the first persistent nominal winner, not robot clearance.</li>
+          <li>Direct x=0 does not preserve it: half/final fall at ticks 73/211 with 87.67%/95.73% saturation. This is an out-of-support command failure, while rate excess stays zero and tracking remains below .20 before termination.</li>
+          <li>The preregistered deadband wrapper passes its transform contract on both checkpoints: outputs are exactly zero at x=0 and action/state outputs are bit-exact to the source policies at x=.074/.077/.080.</li>
+          <li>The full 16-cell behavior matrix passes. All x=0 cells hold home for 600 ticks with zero saturation/rate excess and .03032 rad tracking p95; moving-command worst tracking remains .18082/.18167 at half/final.</li>
+          <li>R1 preserves gait, x=0, tracking, and saturation under P31/34, but fails its left-ankle envelope in all six moving cells: 1.750001 versus 1.50 rad/s. The frozen policy closes at R1.</li>
+          <li>The one-variable conservative repair resolves R1: all 16 P30/P31-34 cells pass at both checkpoints, with worst tracking .18317 rad and zero envelope excess.</li>
+          <li>The targeted torso-COM training package, hosted archive, and six baked-in guard/deadband/conservative-envelope policy transforms pass their frozen contracts.</li>
+          <li>All 12 remediation nominal matrices pass, but all 12 corrected X_NEG and all 12 symmetric X_POS matrices fail. Each arm passes exactly 4/12 matrices and 20/48 cells.</li>
+          <li>No arm satisfies both-checkpoint persistence across every cell. The exact targeted-COM formulation is closed without ranking or promoting a closest arm.</li>
+          <li>Corrected full-range exposure reproduces the pre-remediation X_NEG reversal magnitude, falsifying missing axis exposure as a sufficient explanation. XPOS fails with the opposite signed forward runaway while nominal remains fully preserved.</li>
+          <li>The frozen CPU decode uses only saved <code>obs0_6</code> prefixes. N=1 reproduces perfectly because each class has one bit-identical tick-zero vector; effective n is three, so p=1/1001 is withdrawn as an inferential claim.</li>
+          <li>Prefix construction and standardization preserve tick zero exactly, and a tick-zero-only probe remains perfect. The all-feature ridge becomes non-monotone by reallocating weight onto later command-dependent nuisance inputs.</li>
+          <li>The table therefore cannot select objective failure, optimizer failure, memory, an estimator input, explicit COM, or a narrower range. Full 115-D mid-gait replay and actor accelerometer sensitivity remain unmeasured.</li>
+          <li>The next study is now preregistered with no p-value: one exact CPU reporting replay, separate ACCEL3/FULL115 probes that cannot erase a passing subset, and identical-state actor forks changing only obs[3:6].</li>
+          <li>The pre-replay contract passes all 15 checks and freezes exact hashes of both execution tools. No simulator behavior was run during the contract.</li>
+          <li>The CPU reporting replay passes 36/36 matrices and 144/144 cells with exact non-reporting behavior reproduction; 40,520 finite 115-D rows are now available.</li>
+          <li>ACCEL3 and FULL115 pass only at tick zero. No instantaneous tick 24-40 or one fixed local-window width satisfies the frozen persistence rule.</li>
+          <li>All six actors have substantial response to obs[3:6]-only identical-state forks; mid-gait p95 maximum action difference is .07206-.12575, but corrective sign is not measured.</li>
+          <li>The signed study is preregistered across six policies, two fits, three moving commands, and ticks 0/24/32/40, with fixed eight-tick pitch-alignment and persistence rules.</li>
+          <li>Its pre-outcome contract passes every check with zero formal cells. Baseline and identical-branch errors are exactly zero; bridge/target reconstruction error is at most 5.15e-08 rad.</li>
+          <li>The full 144-cell signed study completes: 67 corrective, 55 amplifying, 22 mixed, zero negligible. Every checkpoint is mixed, so no arm or policy family advances.</li>
+          <li>The mixture localizes most strongly by time: corrective/amplifying is 19/7 at tick 0, 21/9 at tick 24, 16/15 at tick 32, and 11/24 at tick 40. This is descriptive, not a new selection rule.</li>
+          <li>The physical COM pitch response stays positive in all cells, while actor-effect sign changes. A 576-cell target-state × donor-response study is preregistered to separate actor, plant, and interaction effects.</li>
+          <li>The crossed pre-outcome contract passes all checks with zero formal cells. All 1,152 planned first actions remain inside [-1,1], and the maximum bridge/target error is 5.15e-08 rad.</li>
+          <li>The full crossed study is valid: all 144 diagonal cells reproduce exactly. Every checkpoint is distributed/unresolved; interaction is largest for all six but misses the frozen .60 and 2x rule.</li>
+          <li>A 144-cell matched-state accelerometer map is preregistered to test the still-unproven assumption that the reset COM vector remains physically valid mid-gait.</li>
+          <li>Its pre-outcome contract passes with zero formal cells, dynamic steps, or actor calls; sensor identity and body-2-only mutations are locked.</li>
+          <li>The formal static map fails both readback validity gates. Reporting-only qpos/qvel/ctrl cannot reproduce the MJX actor sensor through native mj_forward; all apparent classes are invalid.</li>
+          <li>The exact correction is preregistered: default-off append-only evaluator instrumentation, exact baseline replay, and live MJX state/model forwarding at four ticks.</li>
+          <li>The pre-outcome contract passes: a complete default-off trace is byte-identical to its prior hash, and zero formal COM cells were read.</li>
+          <li>The full 36-run replay preserves all 21,600 baseline rows exactly, but fails the uniform tick-zero direction anchor. This localizes the method issue to COM model/data initialization ordering.</li>
+          <li>A seven-variant single-state MJX initialization audit is preregistered against exact NOMINAL/NEG/POS endpoint sensors.</li>
+          <li>Its zero-outcome contract passes all checks with zero formal endpoint reads, dynamic steps, or actor calls.</li>
+          <li>The audit is invalid by its frozen rule: reconstructed live-forward unexpectedly matches the oracle exactly, as do all seven variants.</li>
+          <li>The remaining explicit source difference is frozen into a four-variant evaluator JIT-boundary methods audit.</li>
+          <li>The JIT-boundary zero-outcome contract passes all checks with zero endpoint reads, dynamic steps, or actor calls.</li>
+          <li>The valid audit isolates a general JIT-versus-eager MJX forward discrepancy: eager has zero oracle error; all three JIT controls miss.</li>
+          <li>The eager correction replay is preregistered with the original map thresholds and a byte-identical default-off regression gate.</li>
+          <li>The gate passes: one full default-off trace is byte-identical and executed zero formal COM cells.</li>
+          <li>The corrected 144-cell map is valid: tick-zero error is zero; mid-gait cells are dominated by weak and nonlinear-center signatures.</li>
+          <li>Its frozen decision selects the already-completed matched actor-response study, which found material but mixed signed response and unresolved crossed localization.</li>
+          <li>An 11-point reset-COM estimator feasibility curve is preregistered with three anchors and eight held-out offsets.</li>
+          <li>Its zero-outcome contract passes all checks with zero formal sensor reads, dynamic steps, or actor calls.</li>
+          <li>The 11-point curve passes and selects a reset-latched piecewise-linear estimator-input arm for separate preregistration.</li>
+          <li>The estimator-input arm is preregistered as one default-off coordinate at index 101, immediately before the unchanged final 14-D reference action.</li>
+          <li>The CPU package contract passes: all noninserted checkpoint values and save/restore are bit-exact, new actor/critic rows are zero, and step-zero actor/critic error is exactly zero.</li>
+          <li>Three reset cells independently reproduce the frozen latch at torso X-COM -.05/0/+.05 with maximum anchor error .000130 m/s²; default-off remains 115/226-D.</li>
+          <li>The single-arm hosted package passes all 17 CPU checks. GPU-topology expansion is verified algebraically on CPU and every asset/command field is frozen.</li>
+          <li>The corrected launch dry run passes all 20 checks with zero remote bytes and zero sessions. Cleanup is armed before allocation, 120 seconds is reserved for stop, and pass requires cleanup inside the total ceiling.</li>
+          <li>The one approved live launch stopped at its rate check: session status omitted the required usage rate. Cleanup passed; no uploads or PPO steps occurred, and no session remains active.</li>
+          <li>The CLI causal audit proves version 0.6.0 has no rate/balance output surface. A fresh operator-attestation correction is preregistered and passes all 20 zero-session checks.</li>
+          <li>The corrected launcher rejects stale, future, missing, nonfinite, underfunded, and over-2.0-CU inputs before allocation while preserving all 19 assets and lifecycle gates.</li>
+          <li>The idle 0/hour reading falsified pre-allocation rate acquisition; the same-session handshake then passed all 20 checks and accepted the live 1.07/hour reading.</li>
+          <li>The approved launch uploaded all 19 assets but failed before PPO at hosted step-zero output equivalence. Error magnitude was not recovered; zero training steps.</li>
+          <li>The report-before-raise GPU diagnostic package passes: 21 exact uploads, pass/fail report capture, atomic recovery, and forced stop before training.</li>
+          <li>The wall-only T4 report is valid after correcting two classifier-method defects. Actor error is exactly 1.1920928955078125e-07 at z=-1/0/+1; critic error and every other expansion check are exact.</li>
+          <li>The unchanged 1e-7 threshold fails. Only a CPU action-distribution/ULP sensitivity audit is selected; no tolerance change or training is authorized by this result.</li>
+          <li>The frozen ULP audit passes all 58 perturbation cases. Maximum deterministic action difference is 1.18e-7 and the rigorous distribution W2/tanh upper bound is 4.80e-7, both below the established 1e-6 identity boundary.</li>
+          <li>The first correction launch failed before restore/PPO because the wrapper imported JAX before upgrading it in-process. A one-line post-install import correction passed both contracts.</li>
+          <li>The fresh epsilon2 job completed and its local artifact contract passes all three checkpoints and ONNX exports.</li>
+          <li>The reset-estimator transform and corrected evaluator contracts pass. The initial stochastic-reset contract failure remains preserved; nominal reset produces ordered latches -1/approximately 0/+0.999989 before behavior.</li>
+          <li>The full 12-matrix/48-cell CPU behavior evaluation is valid. Both checkpoints pass nominal, XNEG fails x=0 and moving cells, and XPOS preserves x=0 but fails all moving cells.</li>
+          <li>Decision: <code>CLOSE_RESET_EST_LATCH_U05_NO_PASS</code>. The arm passes 4/12 matrices and 20/48 cells; no retry, midpoint, or closest checkpoint is promoted.</li>
+          <li>The oracle phase-COM residual has exact default-off behavior: all four loaded-controller nominal comparison traces have zero maximum numeric difference and exactly zero residual.</li>
+          <li>The frozen 25-branch authority screen passes at both signs and checkpoints. All 38 screened states have an improving bounded pulse; 36 also clear every eight-tick hard gate.</li>
+          <li>Local authority does not become sustained control: all four fixed scales fail every endpoint design cell. The selected .25 affine controller preserves nominal but does not arrest either signed failure.</li>
+          <li>The complete formal matrix passes 20/48 cells: NOMINAL 16/16, XNEG 0/16, XPOS 4/16. XNEG falls at ticks 40-47; XPOS moving cells fall at ticks 52-57. Rate and envelope excess remain zero and tracking remains below .20 rad.</li>
+          <li>Decision: <code>HOLD_ORACLE_PARTIAL</code>. This exact affine residual is insufficient; the passing local authority screen prevents a no-authority conclusion. No closest scale advances.</li>
+          <li>C1 resolved offline: the explicit, default-off winner-v2 runtime supplies bridge-realized obs[83:97], appends the projected-reference feature, and carries the graph's 14-D state. It passes all 40,520 frozen observation rows and reconstructs all 9,600 bridge targets with zero error.</li>
+          <li>The frozen observer-by-plant cross-fit passes all 32/32 cells: both checkpoints, P30 and P31/34 plants, P30 and P31/34 observers, and x=0/.074/.077/.080. Maximum observer/plant separation is .004135804 rad.</li>
+          <li>Measured P30 observer semantics pass both plant fits at worst tracking .183170038 rad, minimum vx .084084972 m/s, and zero rate/envelope excess. The v2 path is pinned to the P30 fit hash and rejects P31/34 or gain overrides before hardware initialization.</li>
+          <li>The formal post-preregistration Windows CPU replay and independent Linux CPU replay both pass <code>PASS_RECURSIVE_BIT_EXACT_WIRE_CLOSURE</code>. Selected x=0 is exact and all 16,800 selected raw STS goal words match; runtime tests pass 254/254.</li>
+          <li>The corrected reduced artifact is byte-reproducible, all four observation values are exactly zero under the exact-zero gate, the old at-most-1e-6 key is absent, and the full formal result is unchanged.</li>
+          <li>Replacement offline asset lock <code>48fd6d81…4ef31</code> passes independent policy review and binds the final policy result, corrected runtime evidence, selected ONNX and handoff package. The original lock remains revoked; this freezes offline identities only and does not grant X5, Gate 5, deployment or robot authority.</li>
+          <li>The 2026-07-19 policy-readiness re-audit reran the frozen calculator and all five unit cases. The physical template still fails closed on exactly 46 missing fields, emits no estimate, and keeps robot clearance at NO.</li>
+          <li>The measurement template now has an auditable numeric datum origin, uncertainty and axis transform. Its CPU calculator passes five contract cases and reads the frozen asymmetric bounds from the hashed break-radius result.</li>
+          <li>The untouched template fails closed on 46 missing fields with no estimate object. A physical measurement packet identifies the exact mass, placement, datum and evidence records needed.</li>
+          <li>Frank Fu source audit: the authored RDK-X5 article is a software/runtime adaptation. Its hardware path is the stock upstream repository; the pinned 436-file v2 tree has zero RDK/X5 paths and supplies 0/46 measurement fields.</li>
+          <li>C3: June 21 telemetry supplies a valid adjacent tick-0/1 golden vector with exact previous-target and obs-then-advance phase chaining; no new hardware capture is needed.</li>
+          <li>The follow-up viability-funnel study freezes 298 exact cadence states from all 24 failing moving cells; 49 P30/x=.077 states form the sequence-design subset.</li>
+          <li>Only 5/49 states admit an 8-tick sequence, 4/49 a 16-tick sequence, and 0/49 a 32-tick sequence. XNEG first has no valid sequence at tick 4; XPOS at tick 12.</li>
+          <li>Decision: <code>HOLD_LOCAL_AUTHORITY_NOT_COMPOSABLE</code>. The Stage-B hard stop blocks the online planner and 48-cell Stage-C matrix; no closest sequence advances.</li>
+          <li>C2 completed 24/24 cells under both phase orderings. All passed, 0/12 pairs were material, and maximum absolute tracking-p95 delta was .0072455 rad. Keep observe-then-advance.</li>
+          <li>The B1 metric is frozen at radius .695473201359 over 298 states with XNEG weighted 3x. It was not widened after replay.</li>
+          <li>B2 completed all 18 comparator cells. Every run reached 600 ticks; there were zero actual falls, so the prevention corpus provides no routed fall labels and B3 closes with zero training spend.</li>
+          <li>C4's guarded servo-health round robin covers all 14 IDs and passes schema/default-off/mock tests. Incremental mock p95 is 1.994 µs versus a 5 ms mock budget; real RDK binding and serial timing remain unverified.</li>
+          <li>Final decision: <code>STOP_FOR_REVIEW_NO_NEW_FORMULATION</code>. Future preregistrations must cite the seven-entry closed-branches ledger. Robot clearance remains NO.</li>
+          <li>The winner-v3 recurrent candidate completed its only seed-100 no-retry CPU curriculum, passed artifact/ABI checks, and entered the unchanged 1,024-cell gate with two persistent full-domain checkpoints.</li>
+          <li>The exact matrix completed once in one CPU process: 64 conditions, 1,024 cells, 26,772.001 s, both checkpoints, both measured actuator plants, all four commands, and no reward-based selection.</li>
+          <li>The raw aggregate is preserved as invalid because it confused <code>TFRT_CPU_0</code> with non-CPU and treated expected early-termination traces as missing evidence. A zero-rerun correction verifies all 1,024 trace hashes, row/sample counts, finite/reset audits and per-run readbacks.</li>
+          <li>Corrected result: 48/1,024 physical passes; each checkpoint is 24/512. Failures include current 944, duration 239, candidate gate 251, wrong-direction motion 107, tracking 4, saturation 38, envelope 34 and rate 12.</li>
+          <li>Decision: <code>HOLD_WINNER_V3_VARIABLE_CONFIGURATION_REPLACEMENT</code>. Negative X still reverses/falls and positive X still runs away/falls. No graph or closest result advances; robot clearance remains NO.</li>
+          <li>The read-only failure-attribution audit rehashes all 1,024 traces and exactly replays current and tracking. Excluding current for attribution only leaves 753 otherwise-passing cells; 705 fail current alone.</li>
+          <li>Current exceedance follows wrong-direction onset in all 107 wrong-direction/current failures. Signed body-2 mutation, command at obs[6], reset and graph identities all validate; current does not cause the reversal.</li>
+          <li>Primary-source correction: Feetech's 2024 catalog supports 0.65 A as rated current at 7.4 V, but not the exact 0.784532 N.m/A conversion or a 600-tick p95 application. The rated-point quotient is 4% lower.</li>
+          <li>All eight nominal x=0 cells take exact-zero graph action for all 600 ticks yet report the same 0.661276083 A home-hold p95. Training cannot change that frozen deadband cell.</li>
+          <li>Decision: <code>HOLD_TRAINING_PENDING_CURRENT_GATE_APPLICATION_CONTRACT_AND_RESPONSE_CONDITIONING_PREREGISTRATION</code>. Runtime field-level review is pending; no compute is allocated.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <div class="label">Next decision sequence</div>
+        <h2 style="margin-top:8px">No skipped gates</h2>
+        <ol>
+          <li>Completed: implement the measured vector as a hard train-time transition, initialized from home action zero.</li>
+          <li>Completed: sample command support across x=.074–.080 so observation normalization is nondegenerate.</li>
+          <li>Completed: one finite CPU PPO update restored A1 exactly and verified both exported stateful ONNX graphs.</li>
+          <li>Completed: the single frozen 2,000,000-step Colab continuation and every checkpoint were recovered before shutdown.</li>
+          <li>Completed: both post-update stateful ONNX checkpoints were evaluated at x=.074/.077/.080 on seeds 100/101; the route fails the frozen gate.</li>
+          <li>Completed: audit integration of the already measured per-joint delay/tau actuator transition into the ground-up stack.</li>
+          <li>Completed: freeze and CPU-contract one bridge-only continuation from the strongest hard-vector checkpoint.</li>
+          <li>Completed: run the preregistered bridge-only T4 continuation, recover every artifact, stop Colab, and evaluate both checkpoints.</li>
+          <li>Completed: audit actor state for the fitted 2–3 tick delay and lag.</li>
+          <li>Completed: freeze and CPU-contract replacement of the redundant sent-target slot with applied-target state.</li>
+          <li>Completed: run the single preregistered T4 continuation, recover/hash every artifact, stop Colab, and evaluate both checkpoints.</li>
+          <li>Completed: the read-only 1M→2M audit isolates actor drift at 6.75× the normalizer contribution and verifies exact ONNX trace replay.</li>
+          <li>Completed: extend nominal evaluation to the complete 600-tick training horizon and compare both checkpoints with BEST_WALK_ONNX_2.</li>
+          <li>Completed: CPU-contract a default-off pitch-chain tail-exceedance diagnostic that exactly matches the existing .20 rad gate.</li>
+          <li>Completed: preregister and pass the restore/update/export CPU smoke for three fixed tail scales derived from frozen source statistics.</li>
+          <li>Completed: package the three sequential Colab arms and verify every source, asset, patch, command, export step, and compute boundary.</li>
+          <li>Completed: run T1 → T2 → T3, recover and hash all artifacts locally, and stop Colab.</li>
+          <li>Completed: evaluate every half/final checkpoint on the complete 600-tick, three-command, two-seed gate.</li>
+          <li>Completed: the joint audit finds only left-knee/ankle exceedance, but rejects per-tick max because it is exactly 6× the closed mean objective on every trace.</li>
+          <li>Completed: the occupancy audit finds T3 final misses the 30-tick boundary by only 1/7/3 ticks, but rejects linear hinge because its gate ranking is worse than squared hinge.</li>
+          <li>Completed: 97.63% of gate-setting exceedance ticks occur at or within the two-tick lag window after a measured target-rate boundary; the odds ratio is 10.46.</li>
+          <li>Completed: run the preregistered CPU-only stateful pitch-rate screen. Twelve ONNX variants passed exact graph, initializer, bound, and state-feedback checks before all 72 behavior cells were evaluated.</li>
+          <li>Completed: test three preregistered smooth approximations to temporal occupancy on all 36 frozen traces; none beats both hinge baselines on occupancy and p95 rankings.</li>
+          <li>Completed: run the frozen 48-cell actor-only cumulative-average screen; every policy retains gait but every checkpoint fails tracking.</li>
+          <li>Completed: decompose all tail, rate, and actor-SWA traces; every failing event is compound accumulated lag, not bridge-only or servo-only corruption.</li>
+          <li>Completed: run the frozen 72-cell actual-centered guard screen; G1/T2 is the first persistent full-horizon nominal winner.</li>
+          <li>Completed: run the four-cell x=0 preservation gate; both checkpoints saturate and fall, so the nominal winner is held.</li>
+          <li>Completed: preregister and CPU-contract a command-deadband zero-action wrapper; both half/final transforms are exact at x=0 and source-identical over x=.074–.080.</li>
+          <li>Completed: run the frozen 16-cell CPU behavior matrix; both checkpoints preserve x=0 and the complete nominal gait gate.</li>
+          <li>Completed: preregister the sequential offline robustness ladder—measured actuator A/B, isolated dynamics, isolated sensor/delay, minimum push, z=.002 terrain, then their passed combination.</li>
+          <li>Completed: contract R1; all hashes, fit schemas, policy interfaces, CPU inference, and matrix dimensions pass.</li>
+          <li>Completed: run R1. P30 passes; P31/34 isolates a persistent .250001 rad/s left-ankle envelope violation at both checkpoints.</li>
+          <li>Completed: preregister a one-variable conservative-envelope feasibility test before spending Colab credit.</li>
+          <li>Completed: contract the exact left-ankle .14→.12 ONNX constant change; graph identity, x=0, and chained rate checks pass.</li>
+          <li>Completed: repeat the frozen 16 R1 cells; the repaired policy passes both measured actuator fits at both checkpoints.</li>
+          <li>Completed: freeze the exact 20-condition R2 matrix—320 cells maximum, sequential, stopping at the first failure.</li>
+          <li>Completed: contract one-axis model mutation, readback, home-reset propagation, exact 600-tick default-off behavior, and CPU-only execution.</li>
+          <li>Completed: detect and contract a reporting-only fix for omitted per-run model readback; the first unaggregated outputs are invalid.</li>
+          <li>Completed: the evidence-complete floor-friction 0.5 rerun passes all 16 cells.</li>
+          <li>Completed: floor friction 1.0 passes all 16 cells and reproduces the default boundary exactly.</li>
+          <li>Completed: joint friction loss 0.9× passes the complete 16-cell matrix.</li>
+          <li>Completed: joint friction loss 1.1× passes the complete 16-cell matrix.</li>
+          <li>Completed: armature 1.0× passes the complete 16-cell matrix.</li>
+          <li>Completed: armature 1.05× passes the complete 16-cell matrix.</li>
+          <li>Completed: invalidate the first condition-7 result after proving it mutated massless body 1 and produced 16 traces identical to default.</li>
+          <li>Completed: correct torso COM/mass mutation to name-resolved <code>trunk_assembly</code> body 2 and pass identity plus dynamics-sensitivity contracts.</li>
+          <li>Completed: rerun condition 7 against the actual 0.698526 kg torso; all 16 cells have exact requested/readback evidence.</li>
+          <li>Stopped: condition 7 fails all four matrices—x=0 falls at 47 samples and moving commands fall at 41–42 samples.</li>
+          <li>Completed: trace the failure into training—upstream COM jitter and torso mass targeted massless body 1, so the policy had no real torso-uncertainty exposure.</li>
+          <li>Completed: contract a name-checked targeted torso-X randomizer; uniform and exact-anchor distributions change only <code>body_ipos[2,0]</code>.</li>
+          <li>Completed: package and CPU-smoke the preregistered uniform/direct, anchor/direct, and .01→.03→.05 curriculum search; the contract passes with zero failed checks.</li>
+          <li>Completed: run the three frozen arms sequentially on Colab, recover the final archive with exact hash, stop all sessions, and pass the local artifact contract.</li>
+          <li>Completed: apply the frozen guard/deadband/envelope transforms and run all 144 preregistered CPU behavior cells on both full-range checkpoints per arm.</li>
+          <li>Stopped: no arm advances. Any new hypothesis requires a separate preregistration; R2 resumption, R3+, training, runtime design, RDK-X5, and robot work remain unauthorized.</li>
+          <li>Completed: preregister, contract, and run the saved-trace COM observability decode on CPU without simulator replay or policy training.</li>
+          <li>Corrected: the deterministic tick-zero measurement remains, but its p-value and the objective/exploitation selection are superseded; the N&gt;1 prefix table cannot decide memory.</li>
+          <li>Preregistered: CPU-only full-observation replay and six-actor obs[3:6] sensitivity at tick zero and mid-gait.</li>
+          <li>Completed: pass the exact source/device/graph/reproduction contract without running a behavior cell.</li>
+          <li>Completed: run the exact 144-cell CPU reporting replay with no behavior mismatch.</li>
+          <li>Completed: run the frozen descriptive decode and 576 identical-state actor forks with exact baseline replay.</li>
+          <li>Preregistered: read-only CPU signed causal-response study. No policy arm or training is selected.</li>
+          <li>Completed: pass exact state/recurrent/bridge reconstruction, body-2 COM mutation, and matched-branch isolation contracts before formal cells.</li>
+          <li>Completed: run the exact frozen 144-cell matrix; decision <code>MIXED_SIGN_NO_POLICY_FAMILY_SELECTED</code>.</li>
+          <li>Preregistered: exact 576-cell crossed phase-localization study with frozen target/donor/interaction rules.</li>
+          <li>Completed: pass the zero-formal-cell CPU source, reconstruction, Cartesian-index, and crossed-action-range contract.</li>
+          <li>Completed: run the exact 576-cell crossed matrix; all 144 diagonal cells reproduce with zero error.</li>
+          <li>Decision: <code>CROSSED_LOCALIZATION_UNRESOLVED_NO_FAMILY_SELECTED</code>. A further evidence question requires separate preregistration.</li>
+          <li>Preregistered: static CPU nominal/COM-NEG/COM-POS accelerometer map at ticks 0/24/32/40.</li>
+          <li>Completed: pass its zero-outcome source, state-index, sensor, body-mutation, and CPU contract.</li>
+          <li>Stopped invalid: native nominal error 7.427465 m/s² and tick-zero direction error .173359 m/s² exceed frozen 1e-3 tolerances.</li>
+          <li>Next boundary: separately preregister exact CPU MJX replay/state cloning; do not relax tolerance or interpret invalid cell classes.</li>
+          <li>Preregistered: exact 12-matrix/36-run CPU MJX sensor replay with baseline field identity and no dynamic COM branch.</li>
+          <li>Completed: pass the append-only instrumentation/default-off contract with exact 600-tick trace identity.</li>
+          <li>Stopped invalid: all baseline rows are exact, but the tick-zero direction error .0133886 m/s² exceeds the frozen 1e-3 tolerance.</li>
+          <li>Next boundary: separately preregister a read-only MJX COM model/data initialization-order audit; do not interpret invalid classes.</li>
+          <li>Preregistered: fresh init, live forward, warmstart, _impl, combined, and fresh-primary-copy causal variants.</li>
+          <li>Completed: the zero-endpoint-outcome source/field/model/CPU contract passes.</li>
+          <li>Next boundary: execute the seven frozen tick-zero initialization variants exactly once.</li>
+          <li>Stopped invalid: the standalone live-data reconstruction removed the discrepancy before any reset variant could distinguish it.</li>
+          <li>Next evidence boundary: preregister an evaluator-in-situ tick-zero MJX data provenance comparison against standalone fresh data.</li>
+          <li>Preregistered: exact eager/JIT closure, external-model JIT, and paired-endpoint JIT; zero-outcome contract next.</li>
+          <li>Completed: the JIT-boundary zero-outcome contract passes; execute the four frozen variants next.</li>
+          <li>Completed valid: exact evaluator JIT reproduces the invalid map; external models and paired calls do not repair it.</li>
+          <li>Next boundary: separately preregister an eager, default-off exact-map correction with baseline identity protection.</li>
+          <li>Preregistered: one-line eager diagnostic runner correction; zero-formal-cell byte-identity contract next.</li>
+          <li>Completed: eager correction contract passes; corrected 36-run/144-cell replay next.</li>
+          <li>Completed valid: 36 runs, 21,600 exact baseline rows, 144 cells; decision supports the already-completed matched actor-response study.</li>
+          <li>That evidence boundary selected no policy family; the later reset-estimator feasibility chain supplied the next falsifiable arm.</li>
+          <li>Preregistered: frozen reset-latched piecewise-linear estimator curve; zero-outcome contract next.</li>
+          <li>Completed: reset-estimator contract passes; execute the frozen 11-point eager curve next.</li>
+          <li>Completed valid: exact anchors, correct held-out signs/order, 1.214 mm worst error, .2797 m/s² minimum separation.</li>
+          <li>Next boundary: preregister the estimator-input policy arm; no training or hardware action is authorized yet.</li>
+          <li>Completed: preregister <code>RESET_EST_LATCH_U05</code> with the protected T2 recipe, fixed insertion index, normalizer state, checkpoint surgery, and unchanged future behavior gate.</li>
+          <li>Completed: pass the CPU-only package contract with three resets, zero dynamic steps, zero training, and exact default-off behavior.</li>
+          <li>Completed: freeze a separate hosted-training authorization and package before any Colab session.</li>
+          <li>Completed: preregister and contract the hosted package—one 2M process, no resume/retry, 2,400-second wall and 2.0-CU ceilings.</li>
+          <li>Completed negative: the approved single launch reached a fresh T4 session but failed closed before upload/training because the required compute-rate field was absent.</li>
+          <li>Completed: freeze and contract the exact T4 CLI lifecycle, rate projection, 19 uploads, remaining-time execution, cleanup, and atomic recovery.</li>
+          <li>Closed: the frozen no-retry rule ended the failed launch and required a separate launch-method correction before any further allocation.</li>
+          <li>Completed: preregister, implement, and pass the 20-check rate-attestation correction without opening a session.</li>
+          <li>Completed: same-session rate handshake passed, live 1.07/hour evidence validated, and all 19 assets uploaded.</li>
+          <li>Completed negative: hosted checkpoint expansion failed step-zero output equivalence before PPO; cleanup passed and no session remains.</li>
+          <li>Closed boundary: the failed training launch required a separately preregistered report-before-raise diagnostic; 1e-7 remains unchanged.</li>
+          <li>Completed: preregister and contract the short no-PPO GPU expansion diagnostic.</li>
+          <li>Completed: run the wall-only T4 diagnostic, recover its report, stop the session, and record compute usage as unmeasured.</li>
+          <li>Completed: correct the raw classifier's source-hash/device predicates on CPU while preserving the original raw result.</li>
+          <li>Completed: preregister and run the selected CPU-only action-distribution/ULP sensitivity audit.</li>
+          <li>Completed: preregister and contract the epsilon-aware expansion and wall-only launch path.</li>
+          <li>Completed: record the preinstall-JAX import failure, freeze the one-line correction, and pass both corrected contracts.</li>
+          <li>Completed: run the fresh epsilon2 T4 job, recover all artifacts, stop Colab, and pass the local artifact contract.</li>
+          <li>Completed: contract both frozen transformed policies and the default-off reset-estimator evaluator plumbing on CPU.</li>
+          <li>Completed: run all 48 frozen behavior cells and validate exact per-run body-2 readback.</li>
+          <li>Closed: <code>RESET_EST_LATCH_U05</code> does not advance. A new evidence question requires a separate preregistration.</li>
+          <li>Completed: preregister the CPU-only phase/contact-conditioned simulator-oracle residual with frozen joints, limits, pulse bank, fit, matrix, and decisions.</li>
+          <li>Completed: pass default-off identity, preserve the initial one-ULP audit failure, and prove exact nominal identity after the nominal projection correction.</li>
+          <li>Completed: pass the 38-state local corrective-authority screen and freeze the deterministic ridge controller plus .25 global scale before formal outcomes.</li>
+          <li>Completed: run all 48 formal cells with per-cell JSON, full oracle traces, and exact per-run body-2 readback.</li>
+          <li>Completed: localize all 24 moving endpoint failures and commit all 298 cadence states before sequence optimization.</li>
+          <li>Completed: run the fixed 8/16/32-tick bounded sequence screen over all 49 design states.</li>
+          <li>Held: <code>HOLD_LOCAL_AUTHORITY_NOT_COMPOSABLE</code>. Stage C is skipped by the frozen rule; any gait retraining or broader controller requires a separate preregistration.</li>
+          <li>Completed: measure C2 phase ordering over 24 cells and retain observe-then-advance.</li>
+          <li>Completed: freeze B1, run all 18 B2 cells, and close B3 without hosted training because the corpus contains zero nominal falls.</li>
+          <li>Completed: add and CPU-contract guarded 14-tick round-robin servo-health telemetry.</li>
+          <li>Completed: preregister and implement the default-off 115-D winner-v2 runtime contract with exact bridge observer, projected-reference suffix, stateful ONNX ABI, and legacy-path preservation.</li>
+          <li>Completed: validate 40,520 full-observation rows, 9,600 bridge rows, both checkpoints, and all fail-closed negatives on CPU.</li>
+          <li>Completed: audit measured gain provenance and run the frozen 32-cell observer-by-plant cross-fit over both persistent checkpoints and both measured fits.</li>
+          <li>Completed: pin winner-v2 to P30 observer semantics after 32/32 cross-fit cells pass; reject P31/34 and gain overrides before hardware initialization.</li>
+          <li>Completed: answer native-runtime <code>Comms.md</code> with the hash-bound 115-D policy handoff, both persistent graphs, four lossless 600-tick golden traces, exact P30/phase/action semantics, and a passing CPU verifier.</li>
+          <li>Completed: run the prospective native-representation selection once. All 16/16 cells and 9,600/9,600 trace rows pass; both checkpoints are eligible.</li>
+          <li>Selected: the frozen first criterion chooses the original 512K graph on lower worst tracking p95, .1809259653 versus .1818299592 rad. <code>SELECTED_ONNX_SHA256=99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de</code>.</li>
+          <li>Completed: accept the reviewed CPU runtime-v2 recursive closure. This is not X5 equivalence, deployment, Gate 5, or robot clearance.</li>
+          <li>Completed: preregister and CPU-contract a direct powered-off two-support torso-COM measurement. The clean URDF and simulator XML agree on the bilateral hip-axis datum at X=-.019 m.</li>
+          <li>Superseded: per-unit powered-off COM measurement is no longer an advancement requirement; its artifacts remain historical evidence only.</li>
+          <li>Completed: derive the replacement domain from frozen R2 and compiled-model evidence—X/Y/Z COM ±.05 m, torso mass .5286734–.8683786 kg, and coupled valid inertia ranges.</li>
+          <li>Held: the selected nominal winner fails inside the minimum X domain and cannot publish a passing supported-configuration envelope.</li>
+          <li>Completed: preregister the single zero-head 64-state recurrent adapter, CPU-only no-retry curriculum, exact 1,024-cell coupled/heldout matrix, and all 73 response-bound derivations before candidate outcomes.</li>
+          <li>Completed: pass the recurrent-adapter CPU restore/update/export contract. Step-zero logits are bit-exact, ONNX action/hidden error is zero, all required parameter families update, and the stateful ABI/256-tick chain pass.</li>
+          <li>Completed: implement and pre-outcome hash-freeze the coupled model/actuator/sensor curriculum. Its development checker passes bit-exact default-off behavior, tensor/readback bounds, native quantization and the measured bridge equation over 4,096 model and episode samples per stage.</li>
+          <li>Completed: independently compose fresh simulator trees and pass the formal hash-locked CPU implementation contract with zero PPO steps and zero behavior cells.</li>
+          <li>Completed: hash-freeze and CPU-validate the one-process no-retry curriculum driver against the formal composed simulator, protected restore and exact stage/export schedule; no PPO step or behavior cell was run.</li>
+          <li>Completed: execute the one seed-100 CPU curriculum in one PID with no retry. Exact stage exports, finite parameters/ONNX, and zero-error restore continuity pass; the persistent full-domain graphs are <code>3d5e6dd4...ab77b04d</code> and <code>fb725c5e...195544f0</code>.</li>
+          <li>Completed: independently extract and validate the 23,521,941-byte archive, all 171 safe members, every checkpoint hash, both continuity boundaries and the stateful ONNX ABI on CPU.</li>
+          <li>Completed: run the unchanged 1,024-cell CPU behavior matrix once. All 1,024 cell and trace artifacts are hash-verified; both checkpoints fail the all-cells rule.</li>
+          <li>Completed: preserve the raw invalid aggregate and issue a reporting-only correction with zero behavior reruns. Corrected decision: <code>HOLD_WINNER_V3_VARIABLE_CONFIGURATION_REPLACEMENT</code>.</li>
+          <li>Completed: commit the standalone winner-v3 failure-attribution audit with all 1,024 trace hashes and replayed metric checks.</li>
+          <li>Completed: correct the current interpretation against Feetech's 2024 primary-source catalog without changing any completed winner-v3 result.</li>
+          <li>Completed: correct the exact motor conversion from Feetech's detailed STS3215 A/0 specification and freeze the prospective stall / &gt;2 A for 2 s current application without reclassifying winner-v3.</li>
+          <li>Completed: preregister the exact 73-field automatic-response input as a separate immutable ONNX input; no true configuration or manual measurement is present.</li>
+          <li>Completed: receive native-runtime field-level acceptance of the exact response73 order while preserving its implementation hold.</li>
+          <li>Completed: run the single frozen zero-PPO CPU falsification. Both fitted endpoint pairs are deterministic and signed-distinct, but the -0.05 m model ends setup inverted, invalidating the support mode.</li>
+          <li>Completed: design and runtime-review a safe dynamic-calibration ABI that cannot turn a fall into a calibration profile; runtime accepted the default-off schema and automatic per-session context handoff.</li>
+          <li>Closed: the original winner-v6/v6b zero-PPO contracts miss the protected float32 boundary and are not retried.</li>
+          <li>Completed: the distinct winner-v7 through winner-v10 path repairs the protected graph representation, passes the exact nominal gate, and passes R2 floor friction, joint friction loss, and armature endpoints.</li>
+          <li>Stopped: winner-v10 fails the frozen R2 torso-COM X=-0.05 m endpoint in all 16 cells after 42-47 ticks. Condition 8 and every later R2 condition remain unrun by rule.</li>
+          <li>Completed: runtime rereview and independent policy audit accepted the Winner-v11 automatic-calibration ABI and exact Winner-v10 graph wrapper for one zero-PPO CPU mechanics run.</li>
+          <li>Held: Winner-v11 passes every frozen mechanics check except the two moving-chain JAX/ONNX tolerance checks. Maximum action difference is 4.768e-7 versus 1e-7; the exact run is not retried or retuned.</li>
+          <li>Completed: numeric attribution preserves the Winner-v11 hold and preregisters a distinct Winner-v12 decomposed-backend question without changing its threshold, protected policy, deployable ABI, or physical bounds.</li>
+          <li>Passed: the only Winner-v12 zero-PPO CPU run passes all 22 frozen checks. The new calibrator/response backend error is at most 7.45e-8, both deployable exports are byte-identical to Winner-v11, and all authoritative ONNX bound checks remain green.</li>
+          <li>Current boundary: no checkpoint is selected for deployment and robot clearance remains false. A separate Winner-v12 training preregistration may now be designed and reviewed, but no optimizer step, behavior evaluation, runtime implementation, hardware, Gate 5, or deployment is authorized.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="label">Authority boundary</div>
+      <h2 style="margin-top:8px">Offline only</h2>
+      <div>The baseline <code>BEST_WALK_ONNX_2.onnx</code> remains a frozen comparator, not a teacher or warm start. No new policy is cleared for the robot. No robot, RDK-X5, iGPU, or onboard GPU access is part of this work.</div>
+      <div class="constraints"><span class="chip">Robot blocked</span><span class="chip">RDK blocked</span><span class="chip">Local GPU / iGPU blocked</span><span class="chip">0 hosted sessions</span><span class="chip">P30 observer pinned</span><span class="chip">Policy envelope unavailable</span></div>
+    </section>
+
+    <footer>
+      <span id="updated">Evidence snapshot: 2026-07-20 · winner-v12 zero-PPO mechanics passed · training preregistration only · robot clearance false</span>
+      <span>branch <code>codex/winner-v4-response-contract</code> · live evidence is repository-backed</span>
+    </footer>
+  </main>
+</body>
+</html>

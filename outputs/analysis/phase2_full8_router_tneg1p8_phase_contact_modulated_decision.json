@@ -1,0 +1,66 @@
+{
+  "status": "HOLD_PHASE_CONTACT_MODULATED_COMPRESSION_NOT_PROMOTABLE",
+  "source_router": {
+    "path": "policy/candidates/phase2_full8_router_tneg1p8_20260705/candidate.onnx",
+    "sha256": "f3e88820b87025788c97636599cd2caf6ef249f7cb7e50ddde31ff5c1c5457d0",
+    "status": "PASS_PHASE2_ROUTER_WARMSTART_SIM_GATE",
+    "x008_duration_complete": 8,
+    "x008_falls": 0,
+    "x000_duration_complete": 8,
+    "x000_falls": 0
+  },
+  "student": {
+    "architecture": "phase_contact_modulated_bc",
+    "manifest": "outputs/analysis/phase2_full8_router_tneg1p8_bc_trace_manifest_seed56_weighted.json",
+    "samples": 12000,
+    "context_indices": [6, 97, 98, 99, 100],
+    "trunk_hidden_sizes": [512, 256],
+    "context_hidden_sizes": [128, 64],
+    "modulation_scale": 0.75,
+    "onnx": "outputs/analysis/phase2_full8_router_tneg1p8_phase_contact_modulated_student/candidate.onnx",
+    "onnx_sha256": "bf13b86c9aafa66b1c66a509a26115bad56e1f1e7c6b56d6670321a77e09a195",
+    "npz_sha256": "054df1573e60a2382d503ced614f65df0d0e3306a440e0c3cf71894f2b03061d"
+  },
+  "fit_smoke": {
+    "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+    "mae": 0.002042,
+    "p95_abs_error": 0.006017,
+    "max_abs_error": 0.029472,
+    "target_rate_p95_rad_s": 1.259359,
+    "target_rate_max_rad_s": 1.837669,
+    "onnx_p95_abs_error": 0.00000003,
+    "onnx_max_abs_error": 0.00000005
+  },
+  "x008_gate": {
+    "artifact_md": "outputs/analysis/PHASE2_FULL8_ROUTER_TNEG1P8_PHASE_CONTACT_MODULATED_STUDENT_X008_GATE.md",
+    "artifact_json": "outputs/analysis/phase2_full8_router_tneg1p8_phase_contact_modulated_student_x008_gate.json",
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0075,
+    "bridge": "corrected_fitted",
+    "pushes_enabled": true,
+    "push_magnitude_range": [0.075, 0.125],
+    "seeds": [0, 1, 2, 3, 4, 5, 6, 7],
+    "duration_complete": 3,
+    "falls": 5,
+    "failed_seeds": [0, 3, 4, 5, 6],
+    "samples_mean": 432.25,
+    "samples_min": 149,
+    "samples_max": 750,
+    "mean_vx_m_s": 0.07551659387279289,
+    "mean_track_ratio": 0.943957423409911,
+    "mean_body_pitch_p95_rad": 0.5016833868525072,
+    "mean_base_height_min_m": 0.07152426187531091,
+    "p95_velocity_excess_mean_rad_s": 0.0,
+    "p95_velocity_excess_max_rad_s": 0.0,
+    "max_velocity_excess_mean_rad_s": 0.11156114935874939,
+    "max_velocity_excess_max_rad_s": 0.4198877811431885,
+    "max_tracking_p95_mean_rad": 0.1903131045401096,
+    "max_tracking_p95_max_rad": 0.19866576194763186
+  },
+  "x000_gate": {
+    "status": "SKIPPED",
+    "reason": "x=0.08 corrected-bridge rough/push gate already failed 5/8, so this student is not promotable for DR warm-start."
+  },
+  "decision": "Do not launch domain-randomized PPO from this student.",
+  "recommended_next": "Use live-oracle DAgger or a genuinely stateful/branch-aware conversion from current-student rollouts; do not continue DR from this failed compression."
+}

@@ -1,0 +1,84 @@
+{
+  "status": "FAIL_CAUSAL_SCREEN_EARLY_STOP_ROUTE_CLOSED",
+  "preregistration": "outputs/analysis/PHASE2_STAGE_A_RIGHT_KNEE_BRIDGE_RESET_ALIGNMENT_CAUSAL_PREREGISTRATION.md",
+  "baseline": "outputs/analysis/phase2_stage_a_disagreement_independent_seed40_71.json",
+  "candidate": "outputs/analysis/phase2_stage_a_right_knee_bridge_reset_alignment_seed40_71/candidate_seed_sweep.partial.json",
+  "evaluated_seeds": [
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50
+  ],
+  "evaluated_runs": 11,
+  "planned_runs": 32,
+  "candidate_falls": [
+    41,
+    42,
+    43,
+    44,
+    48,
+    50
+  ],
+  "new_falls": [
+    50
+  ],
+  "recovered_baseline_falls": [
+    49
+  ],
+  "tracking_error_on_tested_baseline_falls": [
+    {
+      "seed": 41,
+      "baseline_p95_rad": 0.4039849460124968,
+      "candidate_p95_rad": 0.4120306506156922,
+      "decreased": false
+    },
+    {
+      "seed": 42,
+      "baseline_p95_rad": 0.4094062626361845,
+      "candidate_p95_rad": 0.43494262242317205,
+      "decreased": false
+    },
+    {
+      "seed": 43,
+      "baseline_p95_rad": 0.3258537232875823,
+      "candidate_p95_rad": 0.276852245092392,
+      "decreased": true
+    },
+    {
+      "seed": 44,
+      "baseline_p95_rad": 0.3531376481056212,
+      "candidate_p95_rad": 0.25469892048835757,
+      "decreased": true
+    },
+    {
+      "seed": 48,
+      "baseline_p95_rad": 0.5142949908971786,
+      "candidate_p95_rad": 0.10385743057727824,
+      "decreased": true
+    },
+    {
+      "seed": 49,
+      "baseline_p95_rad": 0.27832596302032464,
+      "candidate_p95_rad": 0.13773490786552425,
+      "decreased": true
+    }
+  ],
+  "criteria": {
+    "falls_at_most_5": false,
+    "no_new_falls": false,
+    "passes_at_least_4": null,
+    "mean_vx_not_regressed_more_than_0p01": null,
+    "tracking_decreased_on_at_least_9_of_11_baseline_falls": null
+  },
+  "early_stop_justified": true,
+  "decision": "Close exact right-knee bridge reset-alignment route without tuning.",
+  "deployment_authorized": false,
+  "offline_only": true
+}

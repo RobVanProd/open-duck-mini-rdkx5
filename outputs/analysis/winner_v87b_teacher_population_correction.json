@@ -1,0 +1,75 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "deployment_authorized": false,
+    "diagnostic_authorized": true,
+    "gate5_authorized": false,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "result_authorizes": "one separate mechanism proof preregistration only",
+    "robot_clearance": false,
+    "support_gate_authorized_now": false,
+    "training_authorized_now": false
+  },
+  "correction": {
+    "complete_teacher_table_entries_unchanged": 16,
+    "corrected_runner_lf_sha256": "b6935125dafaf196926faded4f743db47ccd8f05a1391f25102c24197fa0c180",
+    "fit_solver_features_targets_thresholds_checkpoints_authority_unchanged": true,
+    "leave_one_configuration_out_fits_per_checkpoint": {
+      "new": 12,
+      "old": 16
+    },
+    "original_runner_lf_sha256": "ff4fd30434a5090cbb760eddf230b9c5082e0dbab4deed97c2d725155c0de730",
+    "reason": "complete_teacher_table contains four entries not selected by the V80/V84 training objective; the diagnostic must use the exact 12-ID TRAINING_TEACHER_IDS population, each represented on two plants",
+    "selected_teacher_episodes_per_checkpoint": {
+      "new": 24,
+      "old": 32
+    },
+    "selected_training_teacher_configurations": {
+      "new": 12,
+      "old": 16
+    },
+    "total_least_squares_fits": {
+      "new": 26,
+      "old": 34
+    }
+  },
+  "decision": "RERUN_EXACT_V87_AUDIT_ON_TWELVE_SELECTED_TEACHER_CONFIGURATIONS",
+  "failure": {
+    "exception": "ValueError: Winner-v87 teacher table changed",
+    "least_squares_fits": 0,
+    "optimizer_updates": 0,
+    "result_written": false,
+    "stage": "teacher table validation before stage2_rollout",
+    "stage2_rollout_episodes": 0
+  },
+  "schema_version": "winner_v87b.teacher_population_correction.v1",
+  "source_manifest_sha256": "afdc4d1bbdb0999f8f1eff0684e564f20049c97876ed936ed2d05bbbcd26b5f7",
+  "sources": {
+    "correction_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v87b_teacher_population_correction.py",
+      "sha256": "fc85d5b7736d862f084abdb5762830d276d473f46cb90e76c26083d9dba84367"
+    },
+    "correction_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v87b_teacher_population_correction.py",
+      "sha256": "310dc153be02b854382d964c21da5781d7e0171649b0bcfc6b2283af66602801"
+    },
+    "correction_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v87b_teacher_population_correction.py",
+      "sha256": "f9db65d4027a9c574323c2cab93ba2f18648dbe408b13dfe5a6b2fd05f272732"
+    },
+    "v87_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v87_pitch_head_linear_feasibility_preregistration.json",
+      "sha256": "9cfa3f29cb30a5272f9290de3fdb6e63d46db7219c33224273718d5c62ea0282"
+    },
+    "v87_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v87_pitch_head_linear_feasibility.py",
+      "sha256": "ff4fd30434a5090cbb760eddf230b9c5082e0dbab4deed97c2d725155c0de730"
+    }
+  },
+  "status": "CORRECTED_WINNER_V87_TEACHER_POPULATION_PRE_ROLLOUT"
+}

@@ -1,0 +1,58 @@
+{
+  "status": "PASS_B0E_GPU_1ENV_PLUMBING",
+  "robot_touched": false,
+  "deploy_performed": false,
+  "grounded_replay_performed": false,
+  "runtime_behavior_changed": false,
+  "policy_overwritten": false,
+  "not_a_policy_result": true,
+  "interpretation": "B0E reaches PPO on local ROCm at 1 env, but 16/32-env attempts fail at evaluator reset. The blocker is scale-dependent local ROCm evaluator reset, not B0E command wiring.",
+  "path": "outputs/phase2_domain_randomization/stage_b0e_motion_preserving_tracking_gpu_path_check/smoke_20260629T083953Z_gpu",
+  "configuration": {
+    "platform": "gpu",
+    "jax_platforms": "rocm",
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.002,
+    "num_envs": 1,
+    "num_timesteps": 20,
+    "episode_length": 20,
+    "export_min_step": 1,
+    "restore_checkpoint_path": "outputs/phase2_domain_randomization/stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu/smoke_20260629T062042Z_gpu/2026_06_29_022725_245760",
+    "actuator_bridge_enabled": true,
+    "actuator_tracking_scale": -0.015,
+    "restore_policy_kl_scale": 1.5,
+    "tracking_lin_vel_scale": 3.0,
+    "tracking_sigma": 0.01,
+    "forward_progress_scale": 2.5,
+    "command_progress_scale": 1.5,
+    "command_progress_shortfall_scale": -4.0,
+    "command_progress_required_ratio": 0.45,
+    "mild_domain_randomization": true,
+    "mild_pushes": true
+  },
+  "result": {
+    "status": "PASS_SMOKE_RUN",
+    "returncode": 0,
+    "elapsed_s": 172.02001808199566,
+    "step_lines": [
+      "STEP: 100 reward: 1.9270280599594116 reward_std: 0.9255342483520508"
+    ],
+    "checkpoint_lines": [
+      "Saving checkpoint (step: 100): /home/lsd/robots/open-duck-mini-rdkx5/outputs/phase2_domain_randomization/stage_b0e_motion_preserving_tracking_gpu_path_check/smoke_20260629T083953Z_gpu/2026_06_29_044139_100"
+    ]
+  },
+  "terrain_hfield_override": {
+    "enabled": true,
+    "restored": true,
+    "destination_sha256_restored": "879768817f5ae5d2c01b5494f855686bb10d1ec444a404efeced8f5766574ffc"
+  },
+  "evidence_sha256": {
+    "manifest": "24551880b4250f742b23c5d762262e173d63c444c3f6db8a5635259b2d16eaa2",
+    "stderr": "3c2b683c24e8aca15951c65d2b899d4daac7689e5593e4772b49195e4da9779c",
+    "stdout": "b2b7e2593c15ac35fbfb54fa201d60325bce575ceae2b068d03476dd168b8c4d"
+  },
+  "next_valid_actions": [
+    "Run the pinned CUDA/A100 phase2-b0e workflow when a Colab session is visible.",
+    "Retry local ROCm only after a backend fix or with a bounded scale matrix; do not promote 1-env smoke artifacts."
+  ]
+}

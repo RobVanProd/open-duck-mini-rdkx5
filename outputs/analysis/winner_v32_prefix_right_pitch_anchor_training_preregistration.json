@@ -1,0 +1,483 @@
+{
+  "authority": {
+    "formal_support_gate_authorized": false,
+    "pass_authorizes_only": "a separate prefix right-pitch anchor support gate preregistration",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "training_authorized": true
+  },
+  "causal_hypothesis": "Winner-v27 localized negative-X failure to ticks 4-8, Winner-v28 isolated the right pitch chain, Winner-v29 proved the exact anchor gradient, Winner-v30 reduced same-batch anchor error in one update, and Winner-v31 proved its two HOLD checks were only bounded cross-worker float replay. One unchanged continuation now tests persistence.",
+  "decision": "AUTHORIZE_ONE_100_UPDATE_PREFIX_RIGHT_PITCH_ANCHOR_ARM_ONLY",
+  "execution_now": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "frozen_training": {
+    "anchor_scale": 197.3112030029297,
+    "coefficient_or_length_search": false,
+    "continuation_optimizer_updates": 100,
+    "environments_per_update": 80,
+    "final_optimizer_count": 301,
+    "learning_rate": 0.0001,
+    "persistent_checkpoints": {
+      "final": 301,
+      "half": 251
+    },
+    "persistent_snapshots": "atomic digest-protected readback after every update",
+    "predictor_scale": 380.9135437011719,
+    "rollout_update_indices": [
+      201,
+      300
+    ],
+    "scheduled_episode_slots": 2000000,
+    "source_completed_updates": 201,
+    "source_optimizer_count": 201,
+    "ticks_per_environment": 250,
+    "training_root_seed": 120120
+  },
+  "objective": {
+    "baseline_transition_objective": {
+      "advantage_operation": "add only the analytically propagated -250 terminal reward delta, then renormalize sampled advantages",
+      "anchor": "recorded baseline returns and rederived values",
+      "baseline_gae_reconstruction": false,
+      "failure_selector": "terminal.checks.roll_pitch is false",
+      "modified_batch_keys": [
+        "advantages",
+        "returns",
+        "rewards"
+      ],
+      "reads_hidden_configuration": false,
+      "roll_pitch_failure_penalty": -250.0,
+      "settled_success_bonus": 250.0,
+      "zero_failure_behavior": "bit-exact batch no-op"
+    },
+    "combined_gradient": "Winner-v24 PPO plus Winner-v22 predictor gradient plus exact 197.3112030029297 times the Winner-v29 prefix-anchor gradient",
+    "ppo": "unchanged Winner-v24 recurrent PPO objective",
+    "predictor": "unchanged Winner-v22 normalized successor predictor at exact scale 380.9135437011719",
+    "prefix_anchor": {
+      "action_indices": [
+        11,
+        12,
+        13
+      ],
+      "action_replacement": false,
+      "candidate_action": "deterministic graph-authoritative bounded mean action",
+      "loss": "raw mean squared action error over the selected elements",
+      "prefix_ticks": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "scale": 197.3112030029297,
+      "scale_source": "sole Winner-v29 same-leaf gradient-RMS balance",
+      "selected_elements_per_update": 384,
+      "selected_training_configuration_ids": [
+        "COM_X_NEG",
+        "COM_CORNER_00",
+        "COM_CORNER_01",
+        "COM_CORNER_02",
+        "COM_CORNER_03",
+        "DISCOVERY_03",
+        "DISCOVERY_09",
+        "DISCOVERY_10"
+      ],
+      "teacher": "frozen Winner-v22 final update-100 trainable policy leaves",
+      "teacher_action": "stop-gradient deterministic graph-authoritative bounded mean action",
+      "teacher_state": "own recurrent shadow state evaluated on each candidate observation and realized previous-action history"
+    }
+  },
+  "post_training_selection": {
+    "authorized_now": false,
+    "checkpoint_rule": "both checkpoints remain evidence until one separately frozen support and context gate classifies both",
+    "pass_authorizes_only": "a separately preregistered prefix right-pitch anchor support gate over both half and final checkpoints"
+  },
+  "schema_version": "winner_v32.prefix_right_pitch_anchor_training_preregistration.v1",
+  "source_checkpoint": {
+    "completed_updates": 201,
+    "graph": {
+      "bytes": 54896,
+      "contract": {
+        "abi_exact": true,
+        "all_chain_outputs_finite": true,
+        "all_initializers_finite": true,
+        "bytes": 54896,
+        "chain_ticks": 250,
+        "forbidden_training_or_privileged_tokens": [],
+        "initializer_count": 9,
+        "inputs": [
+          {
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "jax_onnx_at_most_1e_7": true,
+        "jax_onnx_max_abs_error": 0.0,
+        "outputs": [
+          {
+            "name": "calibration_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "path": "/tmp/winner-v30-prefix-anchor-work/winner_v30_prefix_right_pitch_anchor_update_201.onnx",
+        "previous_action_out_equals_action_bit_exact": true,
+        "sha256": "d905d2541ae071644ba7d77eaf6b3c7467405d85a4c88fe3ae164ef792829df9",
+        "training_only_tensors_absent": true
+      },
+      "path": "/tmp/winner-v30-prefix-anchor-work/winner_v30_prefix_right_pitch_anchor_update_201.onnx",
+      "sha256": "d905d2541ae071644ba7d77eaf6b3c7467405d85a4c88fe3ae164ef792829df9"
+    },
+    "optimizer_count": 201,
+    "repository_attribution": {
+      "artifact_zip_bytes": 246907,
+      "artifact_zip_sha256": "50533add5c2f403ec4ffa6d7f82110a930636e47ec9bf7672038b99eece0fb86",
+      "correction_lf_sha256": "b22620dac03c08f1f07de7d8dab2e9b5b054cb26821de07724e3953727c33d8f",
+      "github_artifact_digest": "sha256:50533add5c2f403ec4ffa6d7f82110a930636e47ec9bf7672038b99eece0fb86",
+      "github_artifact_id": 8517769530,
+      "github_artifact_name": "winner-v30-prefix-right-pitch-anchor-one-update-29889578085",
+      "github_run_attempt": 1,
+      "github_run_head_sha": "92fe3e88c4d81ebed48a6c9d5e54f774aa25d0cf",
+      "github_run_id": 29889578085,
+      "graph_member": "winner-v30-prefix-anchor-work/winner_v30_prefix_right_pitch_anchor_update_201.onnx",
+      "graph_sha256": "d905d2541ae071644ba7d77eaf6b3c7467405d85a4c88fe3ae164ef792829df9",
+      "importer_lf_sha256": "86f5ab4decb736adc10a495c784ce91344505bf8c94b3043c90afa6b3159973c",
+      "raw_result_receipt_sha256": "74cf7d03a792a807211cab4ac6d4d76a68ffffc50782716c5f0d57e555cd97b4",
+      "raw_result_sha256": "5258f54830bdf42108952fb860161803356bd64c5b5e500e034af1542837fd64",
+      "repository": "RobVanProd/open-duck-mini-rdkx5",
+      "snapshot_member": "winner-v30-prefix-anchor-work/winner_v30_prefix_right_pitch_anchor_update_201.npz",
+      "snapshot_sha256": "405b61a905a47b4460b849b4329f218c9350b4522dfe03e9a46a6941105b7d2d"
+    },
+    "snapshot": {
+      "bytes": 195001,
+      "completed_updates": 201,
+      "metadata_payload_sha256": "8f4f73e3bcd2632c69564f7ec470535ef8c42c882e63b9b33ccbdbc4822f4e3c",
+      "path": "/tmp/winner-v30-prefix-anchor-work/winner_v30_prefix_right_pitch_anchor_update_201.npz",
+      "sha256": "405b61a905a47b4460b849b4329f218c9350b4522dfe03e9a46a6941105b7d2d",
+      "state_payload_sha256": "a74303489a100e0e28a8db29bef48651aee78ab0d5696efba58fe3c072350ade"
+    }
+  },
+  "source_manifest_sha256": "1040ccb6264554233d7a4eff7afcb53d1e430db35573bb1c063d24cf832f1260",
+  "sources": {
+    "base_training": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_calibrator_training.py",
+      "sha256": "f5736a357d73baedae2bba1d15254dd688bddf3761eb731d757a971783c77227"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v32_prefix_right_pitch_anchor_training_preregistration.py",
+      "sha256": "22adcc62ea426d28faeef15a03e3d0e7ea019c01848da0c32aff2fb43b64d490"
+    },
+    "calibrator_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_training_preregistration.json",
+      "sha256": "1ec76a587c6fa50b92866c1632a7046ae0c6687ed17b1636b664bf45c2e8ba34"
+    },
+    "canonical_p30_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "cpu_smoke": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "environment_builder": {
+      "hash_mode": "lf",
+      "path": "tools/prepare_winner_v15_cpu_environment.py",
+      "sha256": "33e54c3a16d5684e2d2520270acf25a28df42dc89e9f302c1ef3bd5f37d867c2"
+    },
+    "full_training_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_preregistration.json",
+      "sha256": "99500648d6683097a13f894b0949bf4b5494e5653f36878710817bd0952f71dd"
+    },
+    "full_training_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_full_calibrator_training.py",
+      "sha256": "8cd2c9267f356adba1127f8fb837138bbe6e39b5c3326300eeed9fdd5b524610"
+    },
+    "importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v32_prefix_right_pitch_anchor_training.py",
+      "sha256": "0af667b7d9448d9f6c463a565c196eb64bbc7c8e41af88b125c6c2c150b8f830"
+    },
+    "importer_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v32_prefix_right_pitch_anchor_training_import.py",
+      "sha256": "520fb23aed5bae21e2903e4f4b6419df54e5ac794fb81949db7f7db943060f82"
+    },
+    "network_export": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_decomposed_backend_networks.py",
+      "sha256": "f463223a33f80baf81b2604e0df22c647660f2752a7ca60b8c75a3441460d015"
+    },
+    "preregistration_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v32_prefix_right_pitch_anchor_training_preregistration.py",
+      "sha256": "1b5cc232011c51572d3a48c1568a58c4ee827d37122b6158686344da9af98a0e"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v32_prefix_right_pitch_anchor_training.py",
+      "sha256": "a90180f55dabe5bd8e2e2c67b02bf9f2a1a0c0b62900f96c155c32a2a78d16f3"
+    },
+    "runner_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v32_prefix_right_pitch_anchor_training.py",
+      "sha256": "793f6ff11fee3e7d1f694921087010cd3088e2f2205f526c6650d2fadf1a3526"
+    },
+    "runtime_observer": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py",
+      "sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889"
+    },
+    "v15_pitch_margin": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v15_pitch_margin_support.py",
+      "sha256": "b2dfecf77971596e2c67a7185b1a9c1acea2d49ecbb04eaf846666239b3326e8"
+    },
+    "v20_recurrent_support": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v20_joint_recurrent_support.py",
+      "sha256": "276f0008049be9e28cbfc7cb430a5fec6c0a092c02e605f08f3ea95e2df942c7"
+    },
+    "v21_predictor_preserving": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v21_predictor_preserving_joint_support.py",
+      "sha256": "2d274c6c7c63fa2de5e3a7114ac047df1346189e66ec7bf8d83221e2f93aef0a"
+    },
+    "v22_gate_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v22_normalized_predictor_support_gate.py",
+      "sha256": "0a217b355f43b304187f02bc3025feb3d4aa26fb7b9fae7d0c395667ce501cd3"
+    },
+    "v22_gradient_composition": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v22_normalized_predictor_v2.py",
+      "sha256": "2f67394c0fc7f5cec14370d38a6a860a9c7bb2ce409e8578466b278c7c8c5b2a"
+    },
+    "v22_normalized_predictor": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v22_normalized_predictor.py",
+      "sha256": "cc8e0249033af7264ed7e6c6e3faa51e8dcef1471e0d2fdda5a89091e810ad17"
+    },
+    "v22_training_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v22_normalized_predictor_training_result.json",
+      "sha256": "10bae5bb32f32cc90e222eb1d6644d97e2a0253baa6ad1a37fe06fde48cf11c1"
+    },
+    "v24_contract_common": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v24_symmetric_failure_cpu_contract.py",
+      "sha256": "dfecb9453c49a472c03e5d2d9c0f94da85a80c5619af7f89b8ff005e329ca263"
+    },
+    "v24_training_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v24_baseline_anchored_training_preregistration.json",
+      "sha256": "8659a2937f2c119b2f6fc3a83e3ebda85355c98dbbdddb3c6f57da0219cc16cc"
+    },
+    "v24_training_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v24_baseline_anchored_training_result.json",
+      "sha256": "2354e52b68645e67c7289c029e792429099d590cda54f3dbe99633b2bfe2983f"
+    },
+    "v24_transition": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v24_symmetric_support_failure.py",
+      "sha256": "98a149c6630a4a22837a98328989b572e9ace8a7fa889777b7b91d253abede9f"
+    },
+    "v24_transition_v2": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v24_symmetric_support_failure_v2.py",
+      "sha256": "50be218d889ff37c5c8b59f75caf385db94f5b984a9894d0921adf369910fcb3"
+    },
+    "v24_transition_v3": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v24_symmetric_support_failure_v3.py",
+      "sha256": "337f93832a93c74425564b1ddf7c274426a2de0544b51a1c5de83922b287d787"
+    },
+    "v29_anchor": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v29_prefix_right_pitch_anchor.py",
+      "sha256": "7c01b3db8c359464d122fc4f915df02eb9833720ef65837a99c5838dd42db36f"
+    },
+    "v29_anchor_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v29_prefix_right_pitch_anchor.py",
+      "sha256": "89ba7b119bf4c82a1289bb0f72a7b0190f19f140f513169af1d27437167f53ac"
+    },
+    "v29_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v29_prefix_right_pitch_anchor_cpu_result.json",
+      "sha256": "d77ec2d11cf92faccce8de75f4946fbdb5949bf0a4ddba8016953c726db81cda"
+    },
+    "v30_hold_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v30_prefix_right_pitch_anchor_one_update_cpu_hold_result.json",
+      "sha256": "684f922d596cf0674a9925b79cf2778c7abc3820ebcee1aae231d41cda9c1994"
+    },
+    "v31_attribution_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v31_cross_worker_replay_attribution_result.json",
+      "sha256": "68e1a96ea2e32f15d49ae74dc20c99fc4b487ce997f94623e0faa0bfd3b133f7"
+    },
+    "workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v32-prefix-right-pitch-anchor-training.yml",
+      "sha256": "7b6c7e820cf4e2c7c825289d5ccafed8fa022fa4bbaf5b31d8286cad09e90bff"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V32_PREFIX_RIGHT_PITCH_ANCHOR_TRAINING",
+  "stop_rules": [
+    "stop if the preserved count-201 snapshot, Adam state, or teacher differs",
+    "stop if any environment, population, receipt, action boundary, reward, mask, or V24 transition differs",
+    "stop unless every update selects exactly 384 valid prefix-anchor elements",
+    "stop unless anchor gradients are nonzero on exactly the six recurrent/action leaves and zero on all other leaves",
+    "stop if hidden replay exceeds 1e-6 or successor masks disagree",
+    "stop if any combined gradient, parameter delta, loss, metric, snapshot, or ONNX contract is invalid",
+    "do not run or inspect the formal support gate in this workflow",
+    "do not select a checkpoint from training losses or intermediate behavior"
+  ],
+  "teacher_checkpoint": {
+    "completed_updates": 100,
+    "graph": {
+      "bytes": 54896,
+      "contract": {
+        "abi_exact": true,
+        "all_chain_outputs_finite": true,
+        "all_initializers_finite": true,
+        "bytes": 54896,
+        "chain_ticks": 250,
+        "forbidden_training_or_privileged_tokens": [],
+        "initializer_count": 9,
+        "inputs": [
+          {
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "jax_onnx_at_most_1e_7": true,
+        "jax_onnx_max_abs_error": 0.0,
+        "outputs": [
+          {
+            "name": "calibration_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "path": "/tmp/winner-v22-normalized-predictor-training-work/graphs/winner_v22_final.onnx",
+        "previous_action_out_equals_action_bit_exact": true,
+        "sha256": "cb3380ed99b3e9d7e9000904a210227aa397db2a064aa80d8f70e77c8339783b",
+        "training_only_tensors_absent": true
+      },
+      "label": "final",
+      "path": "/tmp/winner-v22-normalized-predictor-training-work/graphs/winner_v22_final.onnx",
+      "sha256": "cb3380ed99b3e9d7e9000904a210227aa397db2a064aa80d8f70e77c8339783b",
+      "update": 100
+    },
+    "optimizer_count": 100,
+    "repository_attribution": {
+      "artifact_zip_bytes": 19215207,
+      "artifact_zip_sha256": "9b06e6b3e129a1cb7d59b8383174ba4c7ae2b77837b85671a48b2ccb1fe93b45",
+      "github_artifact_digest": "sha256:9b06e6b3e129a1cb7d59b8383174ba4c7ae2b77837b85671a48b2ccb1fe93b45",
+      "github_artifact_id": 8513413219,
+      "github_artifact_name": "winner-v22-normalized-predictor-training-29872492309",
+      "github_run_attempt": 1,
+      "github_run_head_sha": "161af0031fb35225a689e516b2963bcdc8564ab3",
+      "github_run_id": 29872492309,
+      "importer_lf_sha256": "3211c965c43e2a88897958c4036e2b7c17d0d43616a612eb68d917fab4a9e96b",
+      "raw_result_receipt_sha256": "8559a510b5421c8ffb41ed06be185023287fc5a5254a17a659e30087ecea5d3a",
+      "raw_result_sha256": "da09efe6b4e54b08855d40891e7d7f0460ad231cbe0e6d5cfc654cedc9b8fe52",
+      "repository": "RobVanProd/open-duck-mini-rdkx5"
+    },
+    "snapshot": {
+      "bytes": 194808,
+      "completed_updates": 100,
+      "metadata_payload_sha256": "9c6adf74ec64d10e3d0ee21d9b502f1bb4b9a4b02fcc946e2fdfbacc16e967e5",
+      "path": "/tmp/winner-v22-normalized-predictor-training-work/snapshots/snapshot_normalized_predictor_update_100.npz",
+      "sha256": "ddc8c4b905bb9acac2d7d48c3e9c1f0c0ca0173a1ba21f375740b051bc48c806",
+      "state_payload_sha256": "6743dfe113fef16a7a40caa77457a9e29ccd5c28696f8c70ce6a1793d27faea7",
+      "update": 100
+    }
+  }
+}

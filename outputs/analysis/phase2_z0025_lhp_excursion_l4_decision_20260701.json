@@ -1,0 +1,80 @@
+{
+  "status": "HOLD_LHP_EXCURSION_PROGRESS_REGRESSION",
+  "date": "2026-07-01",
+  "session": "open-duck-l4-z0025-lhp-excursion",
+  "workflow": "phase2-z0025-boundary",
+  "artifact": {
+    "remote": "/content/open_duck_colab_cli_phase2-z0025-boundary_20260701T120208Z_artifacts.tar.gz",
+    "local": "outputs/analysis/colab_cli/open-duck-l4-z0025-lhp-excursion-phase2-z0025-boundary-20260701T120141Z/manual_download/open_duck_colab_cli_phase2-z0025-boundary_20260701T120208Z_artifacts.tar.gz",
+    "sha256": "947cf48909212d717a2ad462342165de961368fbd92bf488bc085eb8dd0048b4"
+  },
+  "training": {
+    "returncode": 0,
+    "elapsed_s": 946.82432326,
+    "stack": {
+      "jax": "0.7.2",
+      "jaxlib": "0.7.2",
+      "brax": "0.14.2",
+      "mujoco": "3.9.0",
+      "mujoco_mjx": "3.9.0",
+      "playground": "0.0.5"
+    },
+    "exports": [
+      {
+        "step": 40960,
+        "sha256": "67c6e0526bbebaa448fa7538bc783f8d81e3039a26a3e17068f9914b804a7b9f"
+      },
+      {
+        "step": 81920,
+        "sha256": "de23ab2433800a008cd25eb9ba1641ffdb7d90a86b2628e146925ded18dda489"
+      },
+      {
+        "step": 122880,
+        "sha256": "827b4832672e7b669365305538bfea47fe3aa3bd5061a1b42c0c91d93ecd09f5"
+      }
+    ]
+  },
+  "compact_sweep": {
+    "path": "outputs/analysis/phase2_z0025_lhp_excursion_l4_checkpoint_sweep_local/candidate_checkpoint_sweep.json",
+    "results": [
+      {
+        "step": 40960,
+        "x0_status": "PASS_CANDIDATE_SIM_GATE",
+        "x008_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "x008_track_ratio": 0.1611,
+        "x008_mean_vx_m_s": 0.0129,
+        "x008_max_sent_vel_p95_rad_s": 1.4187,
+        "x008_max_tracking_p95_rad": 0.214
+      },
+      {
+        "step": 81920,
+        "x0_status": "PASS_CANDIDATE_SIM_GATE",
+        "x008_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "x008_track_ratio": 0.1638,
+        "x008_mean_vx_m_s": 0.0131,
+        "x008_max_sent_vel_p95_rad_s": 1.4106,
+        "x008_max_tracking_p95_rad": 0.2127
+      },
+      {
+        "step": 122880,
+        "x0_status": "PASS_CANDIDATE_SIM_GATE",
+        "x008_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "x008_track_ratio": 0.1525,
+        "x008_mean_vx_m_s": 0.0122,
+        "x008_max_sent_vel_p95_rad_s": 1.4141,
+        "x008_max_tracking_p95_rad": 0.2122
+      }
+    ],
+    "best_step": 81920,
+    "best_x008_track_ratio": 0.1638,
+    "prior_boundary_x008_track_ratio": 0.235,
+    "prior_boundary_x008_mean_vx_m_s": 0.0188
+  },
+  "decision": {
+    "promote": false,
+    "run_full_gate": false,
+    "reason": "compact x=0.08 progress regressed below the prior z=0.0025 boundary candidate",
+    "next": "stop reward-side target-rate penalty tuning; use targeted data/teacher correction or gate-aware relabeling for seeds 0,3,4,6"
+  },
+  "robot_validation": "blocked"
+}

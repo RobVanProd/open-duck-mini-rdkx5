@@ -1,0 +1,78 @@
+{
+  "authority": {
+    "colab": false,
+    "cpu_behavior_eval": true,
+    "local_gpu": false,
+    "rdk_or_robot": false,
+    "robustness_ladder": false,
+    "training": false
+  },
+  "checks": {
+    "all_append_exactly_five_nodes": true,
+    "all_cpu_inference_contracts_pass": true,
+    "all_source_initializers_exact": true,
+    "all_source_node_prefixes_preserved": true,
+    "exactly_two_policies_built": true,
+    "external_interfaces_exact": true,
+    "preregistration_status_valid": true
+  },
+  "failed_checks": [],
+  "policies": [
+    {
+      "appended_node_count": 5,
+      "inference_contract": {
+        "all_finite": true,
+        "max_positive_action_error": 0.0,
+        "max_positive_state_error": 0.0,
+        "max_zero_action": 0.0,
+        "max_zero_state": 0.0,
+        "pass": true,
+        "provider": "CPUExecutionProvider"
+      },
+      "inputs": [
+        "obs",
+        "previous_action"
+      ],
+      "output_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_command_deadband_repair_policies/T2_EQUAL_512000.onnx",
+      "output_sha256": "5c0b20a186408077ac14bbf6c9cefb4c5421c2db0ac351641f7f89e05e52fe2b",
+      "outputs": [
+        "continuous_actions",
+        "previous_action_out"
+      ],
+      "source_initializers_exact": true,
+      "source_node_types_and_attributes_prefix_exact": true,
+      "source_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_actual_centered_guard_policies/G1_EXACT_BOUNDARY/T2_EQUAL_512000.onnx",
+      "source_sha256": "195fadcb1946f94d5a84bf0d7ffc60d095f64d37b80c883968879823c19052c8",
+      "step": 512000
+    },
+    {
+      "appended_node_count": 5,
+      "inference_contract": {
+        "all_finite": true,
+        "max_positive_action_error": 0.0,
+        "max_positive_state_error": 0.0,
+        "max_zero_action": 0.0,
+        "max_zero_state": 0.0,
+        "pass": true,
+        "provider": "CPUExecutionProvider"
+      },
+      "inputs": [
+        "obs",
+        "previous_action"
+      ],
+      "output_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_command_deadband_repair_policies/T2_EQUAL_1024000.onnx",
+      "output_sha256": "a964dc980bb2fc8aecc664a197964be18747188a880b570968774626bdd803a8",
+      "outputs": [
+        "continuous_actions",
+        "previous_action_out"
+      ],
+      "source_initializers_exact": true,
+      "source_node_types_and_attributes_prefix_exact": true,
+      "source_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_actual_centered_guard_policies/G1_EXACT_BOUNDARY/T2_EQUAL_1024000.onnx",
+      "source_sha256": "92e98f84c25a7560df117b97fdf0a225e2ffa2a5d836482b6319611dbbd0bf89",
+      "step": 1024000
+    }
+  ],
+  "schema_version": "ground_up_command_deadband_repair_transform_contract.v1",
+  "status": "PASS_COMMAND_DEADBAND_REPAIR_TRANSFORM_CONTRACT"
+}

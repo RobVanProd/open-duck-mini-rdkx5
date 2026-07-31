@@ -1,0 +1,75 @@
+{
+  "status": "PLAN_DEPLOYABLE_POLICY_VALIDATION_AND_WARMSTART",
+  "scope": {
+    "offline_only": true,
+    "robot_tests": false,
+    "ssh": false,
+    "deploy": false,
+    "runtime_behavior_changes": false,
+    "training_started": false
+  },
+  "source_vx_selector_fitted_bridge": {
+    "artifact": "outputs/analysis/CLOSED_LOOP_TEACHER_DATASET_SOURCE_VX_BLEND080_100_SRCVX002_ALT_EXCLUDE_SEED4_FITTED_BRIDGE_BC_GATE_X008_10S.md",
+    "status": "PASS_BC_FIT_SMOKE_FORWARD_REPLAY",
+    "command_x": 0.08,
+    "duration_s": 10,
+    "moving_seeds": 8,
+    "total_seeds": 8,
+    "terminated_seeds": 0,
+    "track_ratio_range": [0.5491, 0.6172],
+    "sent_target_velocity_p95_range_rad_s": [2.2569, 2.3622],
+    "joint_tracking_p95_range_rad": [0.1809, 0.1863],
+    "interpretation": "In-envelope forward walking is achievable in the fitted-bridge sim proxy, but the passing controller is a diagnostic selector rather than a deployable learned policy."
+  },
+  "deployable_policy_evidence": {
+    "early_mlp": {
+      "artifact": "outputs/analysis/SOURCE_VX_SELECTOR_TRACE_MLP128_FITTED_BRIDGE_BC_GATE_X008_10S.md",
+      "status": "HOLD_BC_REPLAY_TERMINATED",
+      "interpretation": "Plain early MLP distillation failed with reverse/fall and high target rate."
+    },
+    "dagger2_mlp": {
+      "artifact": "outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER2_MLP128_FITTED_BRIDGE_BC_GATE_X008_10S.md",
+      "status": "PASS_BC_FIT_SMOKE_FORWARD_REPLAY",
+      "onnx": "outputs/analysis/source_vx_selector_trace_dagger2_mlp128_candidate/candidate.onnx",
+      "moving_seeds": 8,
+      "total_seeds": 8,
+      "terminated_seeds": 0,
+      "track_ratio_range": [0.5208, 0.6182],
+      "sent_target_velocity_p95_range_rad_s": [2.1174, 2.1601]
+    },
+    "dagger2_rate_reg_mlp": {
+      "artifact": "outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER2_MLP128_RATE_REG_ONNX_FITTED_BRIDGE_BC_GATE_X008_10S.md",
+      "status": "PASS_BC_FIT_SMOKE_FORWARD_REPLAY",
+      "onnx": "outputs/analysis/source_vx_selector_trace_dagger2_mlp128_rate_reg_candidate/candidate.onnx",
+      "moving_seeds": 8,
+      "total_seeds": 8,
+      "terminated_seeds": 0,
+      "track_ratio_range": [0.4124, 0.5334],
+      "sent_target_velocity_p95_range_rad_s": [2.1256, 2.1971]
+    }
+  },
+  "current_decision": "Stop refining the non-deployable selector by default. Validate deployable ONNX candidates, then use the best validated candidate as PPO warm start if it survives stricter offline gates.",
+  "recommended_next": "DEPLOYABLE_SOURCE_VX_POLICY_VALIDATION",
+  "candidate_onnx_paths": [
+    "outputs/analysis/source_vx_selector_trace_dagger2_mlp128_candidate/candidate.onnx",
+    "outputs/analysis/source_vx_selector_trace_dagger2_mlp128_rate_reg_candidate/candidate.onnx"
+  ],
+  "required_validation": [
+    "straight x=0.08",
+    "fitted bridge",
+    "stress bridge",
+    "8+ seeds",
+    "10 s minimum",
+    "target-rate p95 and max checks",
+    "tracking p95 checks",
+    "track-ratio and forward-progress checks",
+    "termination checks"
+  ],
+  "stop_rules": [
+    "Do not run robot validation from the selector result.",
+    "Do not deploy the source-VX selector.",
+    "Do not treat a 10-second smoke as robot-ready.",
+    "Do not continue selector knob tuning unless candidate validation identifies a specific missing teacher state.",
+    "Do not relax the fitted actuator envelope to pass a candidate."
+  ]
+}

@@ -1,0 +1,171 @@
+diff --git a/playground/open_duck_mini_v2/joystick.py b/playground/open_duck_mini_v2/joystick.py
+--- a/playground/open_duck_mini_v2/joystick.py
++++ b/playground/open_duck_mini_v2/joystick.py
+@@ -29,6 +29,7 @@ from . import constants
+ from . import base as open_duck_mini_v2_base
+ from playground.common import winner_v3_variable_configuration as winner_v3
+ from playground.common import t19_support_trainthrough as t19
++from playground.common import t185_in_episode_single_support_prefix as t185
+ 
+ # from playground.common.utils import LowPassActionFilter
+ from playground.common.poly_reference_motion import PolyReferenceMotion
+@@ -222,6 +223,7 @@ def default_config() -> config_dict.ConfigDict:
+         winner_v119_train_transition_match=False,
+         winner_t19_support_trainthrough=False,
+         winner_t31_action_margin_trainthrough=False,
++        winner_t185_in_episode_single_support_prefix=False,
+     )
+ 
+ 
+@@ -470,6 +472,25 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+             ),
+             "policy_hidden": jp.zeros(self._config.recurrent_hidden_dim),
+         }
++        if self._config.winner_t185_in_episode_single_support_prefix:
++            info["rng"], t185_rng = jax.random.split(info["rng"])
++            support_side = t185.sample_support_side(t185_rng)
++            support_phase = t185.support_phase_index(support_side)
++            info["t185_support_side"] = support_side
++            info["t185_support_phase"] = support_phase
++            info["t185_prefix_ticks_remaining"] = jp.asarray(
++                t185.PREFIX_TICKS, dtype=jp.int32
++            )
++            info["imitation_i"] = support_phase
++            info["imitation_phase"] = t185.phase_vector(
++                support_phase, self.PRM.nb_steps_in_period
++            )
++            if USE_IMITATION_REWARD:
++                info[
++                    "current_reference_motion"
++                ] = self.PRM.get_reference_motion(
++                    info["command"][0],
++                    info["command"][1],
++                    info["command"][2],
++                    support_phase,
++                )
+         if self._config.winner_v127_constrained_cost:
+             info[
+                 "winner_v127_dense_torque_exceedance_cost"
+@@ -502,6 +523,13 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+             metrics[
+                 "cost/winner_v127_dense_torque_exceedance"
+             ] = jp.zeros(())
++        if self._config.winner_t185_in_episode_single_support_prefix:
++            metrics[
++                "reward/t185_single_support_balance"
++            ] = jp.zeros(())
++            metrics["reward/t185_left_support_match"] = jp.zeros(())
++            metrics["reward/t185_right_support_match"] = jp.zeros(())
++            metrics["t185/prefix_active"] = jp.zeros(())
++            metrics["t185/original_reward"] = jp.zeros(())
+ 
+         contact = jp.array(
+             [
+@@ -563,10 +591,22 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+     def step(self, state: mjx_env.State, action: jax.Array) -> mjx_env.State:
+ 
+         if USE_IMITATION_REWARD:
+-            state.info["imitation_i"] += 1
+-            state.info["imitation_i"] = (
+-                state.info["imitation_i"] % self.PRM.nb_steps_in_period
+-            )  # not critical, is already moduloed in get_reference_motion
++            if self._config.winner_t185_in_episode_single_support_prefix:
++                state.info["imitation_i"] = t185.phase_for_step(
++                    state.info["imitation_i"],
++                    state.info["t185_support_phase"],
++                    state.info["t185_prefix_ticks_remaining"],
++                    self.PRM.nb_steps_in_period,
++                )
++            else:
++                state.info["imitation_i"] += 1
++                state.info["imitation_i"] = (
++                    state.info["imitation_i"]
++                    % self.PRM.nb_steps_in_period
++                )
++                # not critical, get_reference_motion already moduloes.
+             state.info["imitation_phase"] = jp.array(
+                 [
+                     jp.cos(
+@@ -778,6 +818,29 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+             k: v * self._config.reward_config.scales[k] for k, v in rewards.items()
+         }
+         reward = jp.clip(sum(rewards.values()) * self.dt, 0.0, 10000.0)
++        if self._config.winner_t185_in_episode_single_support_prefix:
++            prefix_remaining = state.info[
++                "t185_prefix_ticks_remaining"
++            ]
++            support_reward = t185.single_support_balance_reward(
++                self.get_gravity(data),
++                self.get_gyro(data),
++                contact,
++                state.info["t185_support_side"],
++            )
++            support_sides = t185.matched_support_sides(
++                contact, state.info["t185_support_side"]
++            )
++            state.metrics["t185/original_reward"] = reward
++            reward = t185.curriculum_reward(
++                reward, support_reward, prefix_remaining
++            )
++            state.metrics[
++                "reward/t185_single_support_balance"
++            ] = support_reward
++            state.metrics["reward/t185_left_support_match"] = (
++                support_sides[0].astype(jp.float32)
++            )
++            state.metrics["reward/t185_right_support_match"] = (
++                support_sides[1].astype(jp.float32)
++            )
++            state.metrics["t185/prefix_active"] = (
++                prefix_remaining > 0
++            ).astype(jp.float32)
++            state.info["t185_prefix_ticks_remaining"] = (
++                t185.remaining_after_step(prefix_remaining)
++            )
+         # jax.debug.print('STEP REWARD: {}',reward)
+         state.info["push"] = push
+         state.info["step"] += 1
+diff --git a/playground/open_duck_mini_v2/runner.py b/playground/open_duck_mini_v2/runner.py
+--- a/playground/open_duck_mini_v2/runner.py
++++ b/playground/open_duck_mini_v2/runner.py
+@@ -103,6 +103,24 @@ class OpenDuckMiniV2Runner(BaseRunner):
+         self.env_config.winner_t31_action_margin_trainthrough = (
+             args.winner_t31_action_margin_trainthrough
+         )
++        self.env_config.winner_t185_in_episode_single_support_prefix = (
++            args.winner_t185_in_episode_single_support_prefix
++        )
++        if args.winner_t185_in_episode_single_support_prefix and not (
++            args.winner_t19_support_trainthrough
++            and args.winner_t31_action_margin_trainthrough
++            and args.winner_v3_variable_configuration
++            and args.winner_t98_hidden_expert_continuation
++        ):
++            raise ValueError(
++                "T185 requires the exact T170 V3/T19/T31/T98 continuation"
++            )
++        if args.winner_t185_in_episode_single_support_prefix:
++            print(
++                "T185_IN_EPISODE_SINGLE_SUPPORT_PREFIX="
++                "ticks=27,left_phase=2,right_phase=15,"
++                "side_probability=0.5,transition=same_episode"
++            )
+         if (
+             args.winner_t31_action_margin_trainthrough
+             and not args.winner_t19_support_trainthrough
+         ):
+             raise ValueError(
+                 "T31 action-margin train-through requires T19 support "
+                 "train-through"
+             )
+@@ -463,6 +478,10 @@ def main() -> None:
+         "--winner_t31_action_margin_trainthrough",
+         action="store_true",
+     )
++    parser.add_argument(
++        "--winner_t185_in_episode_single_support_prefix",
++        action="store_true",
++    )
+     parser.add_argument(
+         "--winner_t37_freeze_observation_normalizer",
+         action="store_true",

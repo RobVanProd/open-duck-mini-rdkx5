@@ -1,0 +1,150 @@
+diff --git a/playground/open_duck_mini_v2/joystick.py b/playground/open_duck_mini_v2/joystick.py
+index 96b370e..3b82bea 100644
+--- a/playground/open_duck_mini_v2/joystick.py
++++ b/playground/open_duck_mini_v2/joystick.py
+@@ -104,6 +104,9 @@ def default_config() -> config_dict.ConfigDict:
+         ground_up_command_curriculum=False,
+         ground_up_forward_command_range=[0.04, 0.12],
+         ground_up_zero_command_probability=0.5,
++        nominal_reference_bootstrap=False,
++        nominal_reference_command_x=0.074,
++        reference_start_phase=0,
+     )
+ 
+ 
+@@ -224,6 +227,7 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+         # x=+U(-0.05, 0.05), y=+U(-0.05, 0.05), yaw=U(-3.14, 3.14).
+         rng, key = jax.random.split(rng)
+         dxy = jax.random.uniform(key, (2,), minval=-0.05, maxval=0.05)
++        dxy = jp.where(self._config.nominal_reference_bootstrap, jp.zeros(2), dxy)
+ 
+         # floating base
+         base_qpos = self.get_floating_base_qpos(qpos)
+@@ -234,6 +238,7 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+ 
+         rng, key = jax.random.split(rng)
+         yaw = jax.random.uniform(key, (1,), minval=-3.14, maxval=3.14)
++        yaw = jp.where(self._config.nominal_reference_bootstrap, jp.zeros(1), yaw)
+         quat = math.axis_angle_to_quat(jp.array([0, 0, 1]), yaw)
+         new_quat = math.quat_mul(
+             qpos[self._floating_base_qpos_addr + 3 : self._floating_base_qpos_addr + 7],
+@@ -249,9 +254,15 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+         rng, key = jax.random.split(rng)
+ 
+         # multiply actual joints with noise (excluding floating base and backlash)
+-        qpos_j = self.get_actuator_joints_qpos(qpos) * jax.random.uniform(
++        joint_multiplier = jax.random.uniform(
+             key, (self._actuators,), minval=0.5, maxval=1.5
+         )
++        joint_multiplier = jp.where(
++            self._config.nominal_reference_bootstrap,
++            jp.ones(self._actuators),
++            joint_multiplier,
++        )
++        qpos_j = self.get_actuator_joints_qpos(qpos) * joint_multiplier
+         qpos = self.set_actuator_joints_qpos(qpos_j, qpos)
+         # print(f'DEBUG2 joint qpos: {qpos}')
+         # init joint vel
+@@ -261,9 +272,13 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+         #     jax.random.uniform(key, (6,), minval=-0.5, maxval=0.5)
+         # )
+ 
+-        qvel = self.set_floating_base_qvel(
+-            jax.random.uniform(key, (6,), minval=-0.05, maxval=0.05), qvel
++        reset_base_qvel = jax.random.uniform(key, (6,), minval=-0.05, maxval=0.05)
++        reset_base_qvel = jp.where(
++            self._config.nominal_reference_bootstrap,
++            jp.zeros(6),
++            reset_base_qvel,
+         )
++        qvel = self.set_floating_base_qvel(reset_base_qvel, qvel)
+         # print(f'DEBUG3 base qvel: {qvel}')
+         ctrl = self.get_actuator_joints_qpos(qpos)
+         # print(f'DEBUG4 ctrl: {ctrl}')
+@@ -280,9 +295,10 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+         )
+         push_interval_steps = jp.round(push_interval / self.dt).astype(jp.int32)
+ 
++        initial_reference_phase = int(self._config.reference_start_phase)
+         if USE_IMITATION_REWARD:
+             current_reference_motion = self.PRM.get_reference_motion(
+-                cmd[0], cmd[1], cmd[2], 0
++                cmd[0], cmd[1], cmd[2], initial_reference_phase
+             )
+         else:
+             current_reference_motion = jp.zeros(0)
+@@ -308,9 +324,22 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+             ),
+             "imu_history": jp.zeros(self._config.noise_config.imu_max_delay * 3),
+             # imitation related
+-            "imitation_i": 0,
++            "imitation_i": initial_reference_phase,
+             "current_reference_motion": current_reference_motion,
+-            "imitation_phase": jp.zeros(2),
++            "imitation_phase": jp.array(
++                [
++                    jp.cos(
++                        (initial_reference_phase / self.PRM.nb_steps_in_period)
++                        * 2
++                        * jp.pi
++                    ),
++                    jp.sin(
++                        (initial_reference_phase / self.PRM.nb_steps_in_period)
++                        * 2
++                        * jp.pi
++                    ),
++                ]
++            ),
+             "policy_hidden": jp.zeros(self._config.recurrent_hidden_dim),
+         }
+ 
+@@ -737,6 +766,11 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+             maxval=self._config.head_roll_range[1] * self._config.head_range_factor,
+         )
+ 
++        if self._config.nominal_reference_bootstrap:
++            return jp.array(
++                [self._config.nominal_reference_command_x, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
++            )
++
+         if self._config.ground_up_command_curriculum:
+             forward = jax.random.uniform(
+                 rng1,
+diff --git a/playground/open_duck_mini_v2/runner.py b/playground/open_duck_mini_v2/runner.py
+index 86299e0..920453f 100644
+--- a/playground/open_duck_mini_v2/runner.py
++++ b/playground/open_duck_mini_v2/runner.py
+@@ -27,9 +27,21 @@ class OpenDuckMiniV2Runner(BaseRunner):
+         if args.policy_architecture == "recurrent":
+             self.env_config.recurrent_hidden_dim = args.recurrent_hidden_size
+         self.env_config.ground_up_command_curriculum = args.ground_up_command_curriculum
++        self.env_config.nominal_reference_bootstrap = args.nominal_reference_bootstrap
++        self.env_config.nominal_reference_command_x = args.nominal_reference_command_x
++        self.env_config.reference_start_phase = args.reference_start_phase
++        if args.nominal_reference_bootstrap:
++            self.env_config.noise_config.level = 0.0
++            self.env_config.noise_config.action_min_delay = 0
++            self.env_config.noise_config.action_max_delay = 1
++            self.env_config.noise_config.imu_min_delay = 0
++            self.env_config.noise_config.imu_max_delay = 1
++            self.env_config.push_config.enable = False
+         self.env = self.env_file[1](task=args.task, config=self.env_config)
+         self.eval_env = self.env_file[1](task=args.task, config=self.env_config)
+-        self.randomizer = randomize.domain_randomize
++        self.randomizer = (
++            None if args.nominal_reference_bootstrap else randomize.domain_randomize
++        )
+         self.action_size = self.env.action_size
+         self.obs_size = int(
+             self.env.observation_size["state"][0]
+@@ -68,6 +80,9 @@ def main() -> None:
+     parser.add_argument("--imitation_scale", type=float, default=None)
+     parser.add_argument("--reference_feature_table_path", default=None)
+     parser.add_argument("--ground_up_command_curriculum", action="store_true")
++    parser.add_argument("--nominal_reference_bootstrap", action="store_true")
++    parser.add_argument("--nominal_reference_command_x", type=float, default=0.074)
++    parser.add_argument("--reference_start_phase", type=int, default=0)
+     parser.add_argument(
+         "--critic_observation", choices=["privileged_state", "state"], default="privileged_state"
+     )
+

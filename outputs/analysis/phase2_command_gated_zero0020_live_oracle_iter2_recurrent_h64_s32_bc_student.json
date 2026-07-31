@@ -1,0 +1,90 @@
+{
+  "config": {
+    "batch_size": 256,
+    "learning_rate": 0.00075,
+    "seed": 53,
+    "sequence_length": 32,
+    "steps": 12000,
+    "target_rate_limit_rad_s": 2.0,
+    "target_rate_scale": 0.2
+  },
+  "exported_onnx": "outputs/analysis/phase2_command_gated_zero0020_live_oracle_iter2_recurrent_h64_s32_bc_student/candidate.onnx",
+  "hidden_dim": 64,
+  "loss_rows": [
+    {
+      "loss": 1.1365362405776978,
+      "step": 1
+    },
+    {
+      "loss": 0.0010265699820593,
+      "step": 1000
+    },
+    {
+      "loss": 0.0005593673558905721,
+      "step": 2000
+    },
+    {
+      "loss": 0.00031971686985343695,
+      "step": 3000
+    },
+    {
+      "loss": 0.00019899537437595427,
+      "step": 4000
+    },
+    {
+      "loss": 0.00013155907799955457,
+      "step": 5000
+    },
+    {
+      "loss": 0.00010583579569356516,
+      "step": 6000
+    },
+    {
+      "loss": 9.124262578552589e-05,
+      "step": 7000
+    },
+    {
+      "loss": 8.036925282794982e-05,
+      "step": 8000
+    },
+    {
+      "loss": 7.158260268624872e-05,
+      "step": 9000
+    },
+    {
+      "loss": 6.775458314223215e-05,
+      "step": 10000
+    },
+    {
+      "loss": 6.277902139117941e-05,
+      "step": 11000
+    },
+    {
+      "loss": 5.68563882552553e-05,
+      "step": 12000
+    }
+  ],
+  "manifest": "outputs/analysis/phase2_command_gated_zero0020_live_oracle_iter2/live_oracle_dagger_aggregate_manifest.json",
+  "no_deploy": true,
+  "no_robot_tests": true,
+  "onnx_verify": {
+    "max_action_error": 5.145174646146305e-07,
+    "max_hidden_error": 5.228647657062879e-07,
+    "path": "outputs/analysis/phase2_command_gated_zero0020_live_oracle_iter2_recurrent_h64_s32_bc_student/candidate.onnx",
+    "steps_checked": 64
+  },
+  "runtime_behavior_changed": false,
+  "samples": 11555,
+  "saved_npz": "outputs/analysis/phase2_command_gated_zero0020_live_oracle_iter2_recurrent_h64_s32_bc_student/candidate_rnn.npz",
+  "sequences": 16,
+  "status": "PASS_RECURRENT_BC_FIT_SMOKE",
+  "train_metrics": {
+    "mae": 0.004679675823204905,
+    "max_abs_error": 0.19368851320344704,
+    "p95_abs_error": 0.015230119680371666,
+    "p99_abs_error": 0.025124691603953257,
+    "samples": 11555,
+    "target_rate_max_rad_s": 2.398595031050282,
+    "target_rate_p95_rad_s": 1.2154059353960154
+  }
+}

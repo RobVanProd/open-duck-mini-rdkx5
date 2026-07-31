@@ -1,0 +1,96 @@
+{
+  "status": "HOLD_Z00245_MOTION_RECOVERY_LOW_FORWARD_PROGRESS",
+  "date": "2026-07-02",
+  "branch_head": "977092e790766654e14af32f4e0aa0942276a684",
+  "colab_session": "open-duck-a100-phase2-z00245",
+  "workflow": "phase2-z0025-boundary",
+  "remote_workflow_id": "open_duck_colab_cli_phase2-z0025-boundary_20260702T225135Z",
+  "remote_training_dir": "/content/open_duck_training_phase2_z0025_boundary_cli/smoke_20260702T225504Z_gpu",
+  "artifact_bundle": {
+    "local_path": "outputs/analysis/colab_cli/open-duck-a100-phase2-z00245-phase2-z0025-boundary-20260702T225107Z/open_duck_colab_cli_phase2-z0025-boundary_20260702T225135Z_artifacts.tar.gz",
+    "sha256": "8684153880a555be32571cf68862d3447f61fb0b7c4a5763b7d986b5c854de49",
+    "size_bytes": 4608519
+  },
+  "training": {
+    "status": "PASS_SMOKE_RUN",
+    "jax_pin": "0.7.2",
+    "gpu": "A100",
+    "num_timesteps": 122880,
+    "ppo_num_envs": 64,
+    "ppo_batch_size": 512,
+    "terrain_hfield_z_scale": 0.0025,
+    "push_enable": false,
+    "restore_policy_kl_scale": 3.0,
+    "target_rate_scale": -0.005,
+    "actuator_tracking_scale": -0.005,
+    "forward_progress_scale": 5.0,
+    "command_progress_scale": 4.0,
+    "command_progress_shortfall_scale": -12.0,
+    "command_progress_required_ratio": 0.55,
+    "corrected_bridge": {
+      "delay_ticks": 3,
+      "velocity_limit_min_rad_s": 2.0,
+      "velocity_limit_max_rad_s": 3.25
+    },
+    "robot_touched": false,
+    "ssh_used": false,
+    "deploy_performed": false
+  },
+  "exported_checkpoints": [
+    {
+      "step": 40960,
+      "sha256": "05148a0c556542d898393365a31ab4ce43e84e0440c0883302e7fd3f9635c0d4",
+      "compact_x0_status": "PASS_CANDIDATE_SIM_GATE",
+      "compact_x008_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "x008_track_ratio": 0.2339,
+      "x008_mean_local_vx_m_s": 0.0187,
+      "max_pitch_sent_target_velocity_p95_rad_s": 1.4191,
+      "max_pitch_tracking_p95_rad": 0.2138
+    },
+    {
+      "step": 81920,
+      "sha256": "2413e72fe998fee194570dde5fcf50438cfa72b30e1f9a6492749d3ebcee8d53",
+      "compact_x0_status": "PASS_CANDIDATE_SIM_GATE",
+      "compact_x008_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "x008_track_ratio": 0.1660,
+      "x008_mean_local_vx_m_s": 0.0133,
+      "max_pitch_sent_target_velocity_p95_rad_s": 1.4132,
+      "max_pitch_tracking_p95_rad": 0.2113
+    },
+    {
+      "step": 122880,
+      "sha256": "36f236cef8bdd709249801d0d47d7e7281b86bcce7ca5cfe59813b316fce9a01",
+      "compact_x0_status": "PASS_CANDIDATE_SIM_GATE",
+      "compact_x008_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "x008_track_ratio": 0.1684,
+      "x008_mean_local_vx_m_s": 0.0135,
+      "max_pitch_sent_target_velocity_p95_rad_s": 1.4296,
+      "max_pitch_tracking_p95_rad": 0.2160
+    }
+  ],
+  "selected_checkpoint": {
+    "step": 40960,
+    "selection_status": "HOLD_PARTIAL_CANDIDATE_CHECKPOINT",
+    "selection_reason": "best_available_but_not_promoted",
+    "promote": false,
+    "failure_reasons": [
+      "command 0.08: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "command 0.08: track ratio 0.2339 < 0.2500",
+      "command 0.08: mean vx 0.0187 < 0.0200"
+    ]
+  },
+  "full_seed_gate": {
+    "status": "HOLD_REMOTE_SESSION_LOST_DURING_FULL_SEED_GATE",
+    "started": true,
+    "completed": false,
+    "note": "The full 8-seed 15s z=0.0025 x=0.08 no-push gate started on the best partial checkpoint, but the Colab session was lost with 404/401 before a final seed-gate artifact or exit sentinel was recoverable."
+  },
+  "stable_artifacts": {
+    "checkpoint_sweep_md": "outputs/analysis/phase2_z00245_motion_recovery_a100_20260702/checkpoint_sweep/CANDIDATE_CHECKPOINT_SWEEP.md",
+    "checkpoint_sweep_json": "outputs/analysis/phase2_z00245_motion_recovery_a100_20260702/checkpoint_sweep/candidate_checkpoint_sweep.json",
+    "selected_checkpoint_json": "outputs/analysis/phase2_z00245_motion_recovery_a100_20260702/selected_checkpoint.json",
+    "training_summary_md": "outputs/analysis/phase2_z00245_motion_recovery_a100_20260702/training_run_summary.md",
+    "training_summary_json": "outputs/analysis/phase2_z00245_motion_recovery_a100_20260702/training_run_summary.json"
+  },
+  "decision": "Do not promote these checkpoints. Stop the small scalar-progress-pressure path; the next offline branch should use teacher-action, trust-region, or live-oracle continuity and re-run the corrected-bridge gates."
+}

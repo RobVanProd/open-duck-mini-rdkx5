@@ -1,0 +1,163 @@
+{
+  "status": "HOLD_TERRAIN_Z005_SEED5_BACKWARD_PITCH_COLLAPSE",
+  "scope": "offline CPU sim trace analysis only; no robot tests, SSH, deploy, grounded replay, runtime behavior changes, or policy overwrite",
+  "candidate": {
+    "path": "policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/candidate.onnx",
+    "sha256": "209b85a75cf9cbbcf10df573c1b530921943a72e81082111889c15f63a9a2c7b"
+  },
+  "source_trace": "outputs/analysis/phase2_stagea2_gain099_z005_seed5_trace_cpu/gain099/seed_005/trace.jsonl",
+  "configuration": {
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.005,
+    "command_x": 0.08,
+    "bridge_mode": "fitted corrected knee bridge",
+    "duration_s": 15.0,
+    "seed": 5,
+    "pushes": "disabled",
+    "policy_action_gain": 1.0,
+    "jax_platform": "cpu"
+  },
+  "termination": {
+    "samples": 56,
+    "first_tick": 0,
+    "last_tick": 55,
+    "last_done": true,
+    "termination_reason": "fall_or_nan"
+  },
+  "body_metrics": {
+    "base_height_min_m": 0.06767331063747406,
+    "base_height_last_m": 0.06767331063747406,
+    "base_height_min_tick": 55,
+    "body_pitch_min_rad": -1.4489177880670794,
+    "body_pitch_last_rad": -1.4183990800217134,
+    "body_pitch_max_abs_tick": 54,
+    "local_vx_mean_m_s": -0.2654421792498657,
+    "local_vx_min_m_s": -1.4738351106643677,
+    "local_vx_max_m_s": 0.2222074419260025,
+    "local_vx_last_m_s": -1.4738351106643677,
+    "local_vy_mean_m_s": -0.010946007237570094,
+    "local_vy_min_m_s": -0.2009638100862503,
+    "local_vy_max_m_s": 0.09333468973636627,
+    "local_vy_last_m_s": -0.2009638100862503
+  },
+  "contact_metrics": {
+    "single_support_pct": 7.142857142857142,
+    "double_support_pct": 91.07142857142857,
+    "no_contact_pct": 1.7857142857142858,
+    "contact_counts": {
+      "11": 51,
+      "10": 3,
+      "00": 1,
+      "01": 1
+    },
+    "left_foot_z_min_m": 0.002969730645418167,
+    "left_foot_z_max_m": 0.04193555936217308,
+    "left_foot_z_last_m": 0.04193555936217308,
+    "right_foot_z_min_m": 0.0063942112028598785,
+    "right_foot_z_max_m": 0.055290497839450836,
+    "right_foot_z_last_m": 0.04394524544477463
+  },
+  "actuator_metrics": {
+    "max_pitch_chain_sent_vel_p95_rad_s": 1.9284397363662718,
+    "max_pitch_chain_applied_vel_p95_rad_s": 1.6039616273683728,
+    "max_pitch_chain_tracking_p95_rad": 0.1533292202669812,
+    "corrected_envelope_excess_rad_s": 0.0,
+    "per_pitch_joint": {
+      "left_hip_pitch": {
+        "tracking_p95_rad": 0.0653156016352113,
+        "tracking_max_rad": 0.07832211256027222,
+        "sent_vel_p95_rad_s": 1.4374852180480955,
+        "applied_vel_p95_rad_s": 1.4285202219729205,
+        "last_tracking_rad": 0.022127370480038544
+      },
+      "left_knee": {
+        "tracking_p95_rad": 0.14095859872687894,
+        "tracking_max_rad": 0.4996706247329712,
+        "sent_vel_p95_rad_s": 1.9284397363662718,
+        "applied_vel_p95_rad_s": 1.6039616273683728,
+        "last_tracking_rad": 0.0032088086752553036
+      },
+      "left_ankle": {
+        "tracking_p95_rad": 0.08873578579024491,
+        "tracking_max_rad": 0.21345478296279907,
+        "sent_vel_p95_rad_s": 1.0510504245758054,
+        "applied_vel_p95_rad_s": 0.9231753618820651,
+        "last_tracking_rad": 0.002078184398717098
+      },
+      "right_hip_pitch": {
+        "tracking_p95_rad": 0.14183293719969836,
+        "tracking_max_rad": 0.26312166452407837,
+        "sent_vel_p95_rad_s": 1.181111931800842,
+        "applied_vel_p95_rad_s": 0.9347077795587643,
+        "last_tracking_rad": 0.016045349160215272
+      },
+      "right_knee": {
+        "tracking_p95_rad": 0.1533292202669812,
+        "tracking_max_rad": 0.5288368463516235,
+        "sent_vel_p95_rad_s": 1.8312102556228629,
+        "applied_vel_p95_rad_s": 1.377488371037616,
+        "last_tracking_rad": 0.052815628359748734
+      },
+      "right_ankle": {
+        "tracking_p95_rad": 0.09846931895729508,
+        "tracking_max_rad": 0.23240655660629272,
+        "sent_vel_p95_rad_s": 1.6011652350425718,
+        "applied_vel_p95_rad_s": 1.3027357985638324,
+        "last_tracking_rad": 0.0006928293452279632
+      }
+    }
+  },
+  "window_metrics": {
+    "first10": {
+      "ticks": [0, 9],
+      "base_height_mean_m": 0.16559563875198363,
+      "base_height_min_m": 0.14651799201965332,
+      "body_pitch_mean_rad": -0.12916087860750852,
+      "body_pitch_max_abs_rad": 0.2282991762915554,
+      "local_vx_mean_m_s": 0.11648267395794391,
+      "local_vx_min_m_s": -0.019380496814846992,
+      "local_vx_max_m_s": 0.2222074419260025,
+      "contact_counts": {"11": 7, "10": 2, "00": 1}
+    },
+    "ticks10_30": {
+      "ticks": [10, 29],
+      "base_height_mean_m": 0.17695560529828072,
+      "base_height_min_m": 0.17347919940948486,
+      "body_pitch_mean_rad": -0.22454581658528855,
+      "body_pitch_max_abs_rad": 0.27603864970389347,
+      "local_vx_mean_m_s": -0.04727840851992369,
+      "local_vx_min_m_s": -0.07417017221450806,
+      "local_vx_max_m_s": -0.028526077046990395,
+      "contact_counts": {"11": 20}
+    },
+    "ticks30_end": {
+      "ticks": [30, 55],
+      "base_height_mean_m": 0.16217091908821693,
+      "base_height_min_m": 0.06767331063747406,
+      "body_pitch_mean_rad": -0.690723984263392,
+      "body_pitch_max_abs_rad": 1.4489177880670794,
+      "local_vx_mean_m_s": -0.5801546387374401,
+      "local_vx_min_m_s": -1.4738351106643677,
+      "local_vx_max_m_s": -0.09597489982843399,
+      "contact_counts": {"11": 24, "10": 1, "01": 1}
+    },
+    "last10": {
+      "ticks": [46, 55],
+      "base_height_mean_m": 0.13594695031642914,
+      "base_height_min_m": 0.06767331063747406,
+      "body_pitch_mean_rad": -1.1137960190091156,
+      "body_pitch_max_abs_rad": 1.4489177880670794,
+      "local_vx_mean_m_s": -1.0482785403728485,
+      "local_vx_min_m_s": -1.4738351106643677,
+      "local_vx_max_m_s": -0.6142353415489197,
+      "contact_counts": {"11": 8, "10": 1, "01": 1}
+    }
+  },
+  "interpretation": [
+    "The z=0.005 failure is a rough-terrain support/contact failure, not a corrected actuator-envelope failure.",
+    "The seed spends 91.1% of the short rollout in double support and only 7.1% in single support before falling.",
+    "The body initially moves forward, then reverses after tick 10, accumulates backward pitch, and collapses by tick 55.",
+    "Pitch-chain p95 target velocity and p95 tracking remain inside the corrected gate, so widening actuator allowance is not the right next lever.",
+    "The next Phase 2 training target should be seed-5 rough-terrain support timing and step/clearance margin between z=0.002 and z=0.005."
+  ]
+}

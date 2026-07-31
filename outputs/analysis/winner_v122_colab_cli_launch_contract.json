@@ -1,0 +1,121 @@
+{
+  "authority": {
+    "additional_attempt": false,
+    "behavior_evaluation": false,
+    "checkpoint_selection": false,
+    "deployment": false,
+    "gate5": false,
+    "one_exact_cli_launch": true,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false
+  },
+  "checks": {
+    "executor_exact": true,
+    "hardware_or_robot_absent": true,
+    "l4_exact": true,
+    "launcher_exact": true,
+    "no_retry_or_resume": true,
+    "package_contract_exact": true,
+    "package_file_exact": true,
+    "pinned_software_exact": true,
+    "preregistration_exact": true,
+    "single_frozen_driver_exact": true,
+    "training_or_behavior_not_run": true
+  },
+  "commands": [
+    [
+      "colab",
+      "new",
+      "--session",
+      "winner-v122-episode-peak-20260724",
+      "--gpu",
+      "L4"
+    ],
+    [
+      "colab",
+      "upload",
+      "--session",
+      "winner-v122-episode-peak-20260724",
+      "<LOCAL_PACKAGE>",
+      "/content/winner-v122-hosted-20260724.tar.gz"
+    ],
+    [
+      "colab",
+      "upload",
+      "--session",
+      "winner-v122-episode-peak-20260724",
+      "<LOCAL_LAUNCHER>",
+      "/content/launch_winner_v122_episode_peak_colab.py"
+    ],
+    [
+      "colab",
+      "exec",
+      "--session",
+      "winner-v122-episode-peak-20260724",
+      "--file",
+      "<LOCAL_EXECUTOR>",
+      "--timeout",
+      "21600"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "winner-v122-episode-peak-20260724",
+      "/content/winner_v122_result.json",
+      "<LOCAL_RESULT>"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "winner-v122-episode-peak-20260724",
+      "/content/winner_v122_artifacts.tar.gz",
+      "<LOCAL_ARCHIVE>"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "winner-v122-episode-peak-20260724",
+      "/content/winner_v122_launch_receipt.json",
+      "<LOCAL_RECEIPT>"
+    ],
+    [
+      "colab",
+      "stop",
+      "--session",
+      "winner-v122-episode-peak-20260724"
+    ]
+  ],
+  "execution_now": {
+    "colab_sessions_opened": 0,
+    "formal_behavior_cells": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_locomotion_steps": 0
+  },
+  "failed_checks": [],
+  "hashes": {
+    "executor": "5644e16eb114d461ba6a4380473c5baf82589a79f8b4a81ab3c383ab11faf7c2",
+    "launcher": "933871c0814ad0238b1a302aee9ae484a0ecd9ac60b2a8a5c3552739f33fb597",
+    "package": "2ea6bf726c21831137dfbc321c099a166b21bf8b3485038489d80d2a00fe1562",
+    "package_contract": "ac313412a362d33d1ed3803777aa0e0a45fca6c4a45cc69b235584a40107926d",
+    "preregistration": "fbbd796fdbf30d0e634ea712ceadd2946af035037bf6481f4ef3e1d0caed8c8e"
+  },
+  "package_bytes": 91222310,
+  "recovery": {
+    "download_result_archive_receipt_before_stop": true,
+    "resume": false,
+    "retry": false,
+    "stop_session_after_pass_or_hold": true
+  },
+  "schema_version": "winner_v122.colab_cli_launch_contract.v1",
+  "session": {
+    "accelerator": "L4",
+    "count": 1,
+    "max_wall_seconds": 21600,
+    "name": "winner-v122-episode-peak-20260724"
+  },
+  "status": "PASS_WINNER_V122_COLAB_CLI_LAUNCH_CONTRACT"
+}

@@ -1,0 +1,53 @@
+{
+  "status": "HOLD_SEED5_CAPPED_NOT_SUFFICIENT",
+  "offline_only": true,
+  "robot_tests": false,
+  "ssh": false,
+  "deploy": false,
+  "grounded_replay": false,
+  "runtime_behavior_changed": false,
+  "inputs": {
+    "base_manifest": "outputs/analysis/phase2_seed4_right_swing_weighted_command_manifest.json",
+    "curated_x008_manifest": "outputs/analysis/phase2_live_oracle_right_swing_iter1_seed5_capped_x008_manifest.json",
+    "x0_manifest": "outputs/analysis/phase2_live_oracle_right_swing_iter1/live_oracle_dagger_x0_manifest.json",
+    "aggregate_manifest": "outputs/analysis/phase2_live_oracle_right_swing_iter1_seed5_capped_aggregate_manifest.json",
+    "candidate": "outputs/analysis/phase2_live_oracle_right_swing_iter1_seed5_capped_phasecmd_bc_student/candidate.onnx"
+  },
+  "curation": {
+    "drop_live_x008_seed4": true,
+    "transform_live_x008_seed5": true,
+    "right_ankle_max_target_velocity_rad_s": 2.25,
+    "seed5_weight_clamped_rows": 219,
+    "seed5_right_ankle_action_delta_capped_rows": 4,
+    "max_matched_weight": 0.25
+  },
+  "x008_rough_z002_gate": {
+    "status": "HOLD",
+    "passes": 6,
+    "runs": 8,
+    "falls": 1,
+    "duration_complete": 7,
+    "pass_seeds": [1, 2, 3, 4, 6, 7],
+    "hold_seeds": {
+      "0": "HOLD_CANDIDATE_TERRAIN_SWING",
+      "5": "HOLD_CANDIDATE_FALL_OR_TERMINATION"
+    },
+    "seed5": {
+      "mean_local_vx_m_s": -0.2492,
+      "track_ratio": -3.1144,
+      "max_velocity_excess_rad_s": 0.2094,
+      "max_tracking_p95_rad": 0.2049
+    }
+  },
+  "x0_rough_z002_gate": {
+    "status": "HOLD",
+    "passes": 7,
+    "runs": 8,
+    "falls": 1,
+    "duration_complete": 7,
+    "fall_seeds": [5],
+    "mean_local_vx_m_s_including_fall": -0.047
+  },
+  "decision": "Do not promote. Seed5 remains a broader state-dependent stability problem, not only a right-ankle label-rate burst.",
+  "recommended_next": "Collect and compare seed5 x=0.0/x=0.08 full-observation traces against passing seeds 4 and 6; emphasize early seed5 divergent states before another live-oracle fit."
+}

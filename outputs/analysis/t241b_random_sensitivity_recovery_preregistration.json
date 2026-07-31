@@ -1,0 +1,71 @@
+{
+  "authority": {
+    "execute_immutable_result_review": true,
+    "gate5": false,
+    "home_offset_behavior_preregistration": false,
+    "hosted": false,
+    "robot_or_rdk": false,
+    "training": false
+  },
+  "checks": {
+    "read_only_no_transform_inference_behavior_training_hosted_robot": true,
+    "t241_contract_sha_exact": true,
+    "t241_is_immutable_single_check_hold": true
+  },
+  "execution_now": {
+    "behavior_cells": 0,
+    "hosted_sessions": 0,
+    "inference_rows": 0,
+    "onnx_transforms": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 5218,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t241b_random_sensitivity_recovery_preregistration.py",
+      "sha256": "56f2cd40081f1a8252ee01f42cfd064ae7c1663b1164f2d42645167dfc0d9197"
+    },
+    "runner": {
+      "bytes": 5403,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t241b_random_sensitivity_recovery.py",
+      "sha256": "a135e9c36aa53b229545086128191a6e45c6b6a8bfe01fa99f160e93e031638a"
+    },
+    "t241_preregistration": {
+      "bytes": 11226,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t241_bounded_positive_router_transform_preregistration.json",
+      "sha256": "bbcf8a71145d5ec7762de8f0bed00f532ad7426b6c07c574434e6ccb2b56af97"
+    },
+    "t241_result": {
+      "bytes": 100248,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t241_bounded_positive_router_transform_result.json",
+      "sha256": "ebf55152c7d2b54ff694a9abb628c4067ec0dbf7cb35a253972c84901a080af1"
+    },
+    "test": {
+      "bytes": 645,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t241b_random_sensitivity_recovery.py",
+      "sha256": "2d170f46a3ee0b8f8540f2f6fb6660f9eedc67ff64c4e5a5d37c89747b9270c9"
+    }
+  },
+  "preregistered_contract_sha256": "e1ed9a1a2a15fc6e5f2d65ae05084a8b064a2f4a4185b49d8922e2dc049a518d",
+  "question": "Is T241's sole hold a non-causal random-output sensitivity expectation when structure, preservation, finiteness, exact source replay, and all 948 actual failed-state deltas are green?",
+  "recovery_rule": {
+    "fail_decision": "CLOSE_BOUNDED_POSITIVE_ROUTER_WITHOUT_BEHAVIOR",
+    "interpretation": "random branch-output equality is not required for route binding; exact failed-state replay is the causal sensitivity test",
+    "no_rerun": true,
+    "pass_decision": "EARN_T242_BOUNDED_ROUTER_HOME_OFFSET_MATRIX_PREREGISTRATION_ONLY",
+    "pass_if": {
+      "all_six_failed_traces_per_graph_source_exact": true,
+      "all_six_failed_traces_per_graph_transformed_finite": true,
+      "all_structure_and_abi_checks_green": true,
+      "every_failed_trace_has_changed_actions": true,
+      "random_home_negative_x0_bit_exact": true,
+      "random_non_home_contexts_bit_exact": true,
+      "random_outputs_finite": true,
+      "sole_failed_check": "random_contract_exact"
+    }
+  },
+  "schema_version": "open_duck.t241b_random_sensitivity_recovery_preregistration.v1",
+  "status": "PREREGISTERED_T241B_RANDOM_SENSITIVITY_RECOVERY"
+}

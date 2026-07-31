@@ -1,0 +1,133 @@
+{
+  "candidate": "policy/candidates/phase2_z0075_late_lunge_rate150_20260704/candidate.onnx",
+  "candidate_sha256": "84a7dea96b37fb088edbf1e69b31494a68cfca27319c00531b96614811d13f39",
+  "decision": "HOLD_LATE_LUNGE_TRADEOFF",
+  "distribution_summary": {
+    "duration_complete": 2,
+    "falls_or_terminations": 6,
+    "max_instantaneous_velocity_excess_rad_s": 1.5385,
+    "max_p95_velocity_excess_rad_s": 0.0,
+    "mean_local_vx_m_s": 0.029,
+    "mean_track_ratio": 0.3621,
+    "passes": 1,
+    "runs": 8
+  },
+  "fit_metrics": {
+    "mae": 0.010445,
+    "max_abs_error": 0.884549,
+    "onnx_max_abs_error": 0.0000003,
+    "p95_abs_error": 0.032991,
+    "target_rate_max_rad_s": 2.319002,
+    "target_rate_p95_rad_s": 1.368537
+  },
+  "gate": {
+    "bridge_mode": "fitted",
+    "command_x": 0.08,
+    "eval_push_magnitude": [
+      0.075,
+      0.125
+    ],
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0075
+  },
+  "inputs": {
+    "dataset_id": "d58e3c29a3503c0d",
+    "late_window_ticks": 80,
+    "merged_manifest": "outputs/analysis/phase2_z0075_iter9_late_lunge_merged_manifest.json",
+    "sample_weight": 1.5,
+    "samples": 52765
+  },
+  "per_seed": [
+    {
+      "max_tracking_p95": 0.2049,
+      "max_velocity_excess": 0.1199,
+      "p95_velocity_excess": 0.0,
+      "samples": 150,
+      "seed": 0,
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "termination": "fall_or_nan",
+      "track_ratio": 1.7842
+    },
+    {
+      "max_tracking_p95": 0.1847,
+      "max_velocity_excess": 1.0405,
+      "p95_velocity_excess": 0.0,
+      "samples": 580,
+      "seed": 1,
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "termination": "fall_or_nan",
+      "track_ratio": 0.7284
+    },
+    {
+      "max_tracking_p95": 0.1941,
+      "max_velocity_excess": 0.0,
+      "p95_velocity_excess": 0.0,
+      "samples": 154,
+      "seed": 2,
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "termination": "fall_or_nan",
+      "track_ratio": 1.6349
+    },
+    {
+      "max_tracking_p95": 0.1859,
+      "max_velocity_excess": 0.24,
+      "p95_velocity_excess": 0.0,
+      "samples": 750,
+      "seed": 3,
+      "status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+      "termination": "duration_complete",
+      "track_ratio": 0.3365
+    },
+    {
+      "max_tracking_p95": 0.1822,
+      "max_velocity_excess": 0.0537,
+      "p95_velocity_excess": 0.0,
+      "samples": 277,
+      "seed": 4,
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "termination": "fall_or_nan",
+      "track_ratio": 1.1543
+    },
+    {
+      "max_tracking_p95": 0.2101,
+      "max_velocity_excess": 0.0,
+      "p95_velocity_excess": 0.0,
+      "samples": 46,
+      "seed": 5,
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "termination": "fall_or_nan",
+      "track_ratio": -3.9985
+    },
+    {
+      "max_tracking_p95": 0.1847,
+      "max_velocity_excess": 1.5385,
+      "p95_velocity_excess": 0.0,
+      "samples": 425,
+      "seed": 6,
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "termination": "fall_or_nan",
+      "track_ratio": 0.8839
+    },
+    {
+      "max_tracking_p95": 0.1914,
+      "max_velocity_excess": 0.0,
+      "p95_velocity_excess": 0.0,
+      "samples": 750,
+      "seed": 7,
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "termination": "duration_complete",
+      "track_ratio": 0.3733
+    }
+  ],
+  "student_npz_sha256": "e2109e993868d6db16317e4608d9ba2aedffee7c253ce5c91d37e49388adb0de"
+}

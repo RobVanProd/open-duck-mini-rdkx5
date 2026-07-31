@@ -1,0 +1,91 @@
+{
+  "authority": {
+    "execute_exact_recovery": true,
+    "gate5": false,
+    "hosted": false,
+    "nominal_behavior_preregistration": false,
+    "robot_or_rdk": false,
+    "training": false
+  },
+  "checks": {
+    "failure_line_is_exact_path_to_model_mismatch": true,
+    "no_behavior_training_hosted_robot": true,
+    "no_original_result_written": true,
+    "original_runner_frozen_exact": true,
+    "original_t234_preregistered": true,
+    "recovery_patch_is_api_adapter_only": true,
+    "single_partial_file_before_abi_call": true
+  },
+  "decision_rule": {
+    "inner_t234_passes_exactly": "RECOVER_T234_AND_EARN_T235_EXACT_LOW_COMMAND_NOMINAL_MATRIX_PREREGISTRATION_ONLY",
+    "no_new_mechanism_or_threshold": true,
+    "otherwise": "CLOSE_T234_RECOVERY_WITHOUT_BEHAVIOR"
+  },
+  "execution_now": {
+    "behavior_cells": 0,
+    "hosted_sessions": 0,
+    "inference_rows": 0,
+    "onnx_transforms": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "failure": {
+    "behavior_cells": 0,
+    "exception": "AttributeError: 'WindowsPath' object has no attribute 'graph'",
+    "hosted_sessions": 0,
+    "inference_rows": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "stage": "first transformed graph receipt construction"
+  },
+  "frozen_inputs": {
+    "abi_helper": {
+      "bytes": 15756,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t136_static_calibration_router_transform.py",
+      "sha256": "9ed19a2e1e0f3dc7e9d043cf87f1a1d2e8add928dcebb3e40c7f059223ef5c98"
+    },
+    "builder": {
+      "bytes": 6693,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t234b_abi_helper_recovery_preregistration.py",
+      "sha256": "c9a4c8ae5b02218e327e74aaba8da56fb94deff14125f373f9af58343314a4aa"
+    },
+    "original_preregistration": {
+      "bytes": 104301,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t234_exact_low_command_head_route_preregistration.json",
+      "sha256": "296ae3015677f03ddfe9678fca6e206c8b9931536c7b1cb012ba06af72bd06c8"
+    },
+    "original_runner": {
+      "bytes": 18884,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t234_exact_low_command_head_route.py",
+      "sha256": "b813b37d9e9fd1befd9295ab810272fe77de709fde0a6aaf83e7cc9e493ab09c"
+    },
+    "partial_transform": {
+      "bytes": 988264,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t234_exact_low_command_final_head_v1\\1003520\\exact_low_command_final_head.onnx",
+      "sha256": "c34cdba0c1e1c1310f16926161ed3b1cefe89e79ea88636ed2b4d5feb535b370"
+    },
+    "runner": {
+      "bytes": 6261,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t234b_abi_helper_recovery.py",
+      "sha256": "d6a41926361a93f5f6a16f4a2ae2d9eaed7a6cfbabc1d6c0b8c4c399aaecfcee"
+    },
+    "test": {
+      "bytes": 862,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t234b_abi_helper_recovery.py",
+      "sha256": "3d2b3f73ab5fcf6eb91403e422c966bb34b50d155dfce26727fc3718f0b440c4"
+    }
+  },
+  "preregistered_contract_sha256": "b3c95f9f7edc27c09ce704ca95eb9d28f979c63e2cffd9fd20cf30643db2d6e3",
+  "question": "Does adapting only the T234 runner's ABI helper call from Path to loaded ModelProto recover the unchanged T234 contract?",
+  "recovery": {
+    "adapter": "abi(value) loads ONNX only when value is a Path; all other T234 code and the original preregistered inputs are reused",
+    "inner_result_must_pass_original_t234_checks": true,
+    "new_work_root": "D:/CodexArtifacts/open-duck-policy/t234b_abi_helper_recovery_v1",
+    "original_preregistration_unchanged": true,
+    "original_runner_file_unchanged": true,
+    "partial_original_left_unchanged": true
+  },
+  "schema_version": "open_duck.t234b_abi_helper_recovery_preregistration.v1",
+  "status": "PREREGISTERED_T234B_ABI_HELPER_RECOVERY"
+}

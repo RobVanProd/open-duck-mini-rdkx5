@@ -1,0 +1,377 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "gate5": false,
+    "hosted_preregistration": true,
+    "hosted_training": false,
+    "robot_or_rdk": false
+  },
+  "checks": {
+    "all_checkpoint_trees_finite": true,
+    "all_export_sets_exact": true,
+    "artifact_span_at_most_1800_seconds": true,
+    "cost_critic_structure_exact": true,
+    "cpu_only": true,
+    "default_off_trajectory_bit_exact": true,
+    "environment_lattice_all_green": true,
+    "every_cost_critic_leaf_changes": true,
+    "every_reward_critic_leaf_changes": true,
+    "exact_command_scope": true,
+    "final_dual_state_obeys_derived_branch": true,
+    "graph_abi_and_cpu_chain_exact": true,
+    "initial_dual_state_exact": true,
+    "legacy_reward_penalties_disabled": true,
+    "no_rerun_optimizer_simulator_behavior_hosted_or_robot": true,
+    "normalizer_bit_exact": true,
+    "only_t216_negative_adapter_head_changes": true,
+    "runner_readbacks_exact": true,
+    "source_cpu_remap_exact": true,
+    "step_zero_raw_onnx_byte_exact": true,
+    "step_zero_tree_exact": true,
+    "tilt_cost_and_dual_metrics_finite": true,
+    "update_structure_exact": true
+  },
+  "decision": "EARN_T228_COMMAND_ATOM_HOSTED_CONTINUATION_PREREGISTRATION_ONLY",
+  "execution": {
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "onnx_chain_inferences": 512,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "saved_artifact_reads": 67,
+    "simulator_transitions": 0
+  },
+  "failed_checks": [],
+  "mechanism": {
+    "action_change": false,
+    "actor_update_mask_change": false,
+    "axis_complete_tilt_dual_change": false,
+    "cartesian_strata": 32,
+    "command_strata": [
+      "broad_continuous_[.074,.080)",
+      "exact_.074",
+      "exact_.077",
+      "exact_.080"
+    ],
+    "configuration_semantics": "unchanged T216 one-broad plus seven isolated exact strata",
+    "configuration_strata": 8,
+    "cost_change": false,
+    "cpu_population": 32,
+    "cpu_repetitions_per_cartesian_stratum": 1,
+    "deployment_graph_change": false,
+    "global_command_transform_retry": false,
+    "hosted_population_if_earned": 256,
+    "hosted_repetitions_per_cartesian_stratum": 8,
+    "observation_change": false,
+    "policy_abi_change": false,
+    "reward_change": false,
+    "source": "T216_FINAL",
+    "source_reason": "the final checkpoint is the member that already passes all eight upper-Z cells; the new run is still judged at both preregistered exports",
+    "x_zero_handling_change": false
+  },
+  "metadata_correction": {
+    "classification": "MISSING_CARRIED_FORWARD_RUNNER_READBACK",
+    "evidence_artifacts_changed": false,
+    "prior_onnx_inferences": 0,
+    "prior_optimizer_steps": 0,
+    "scientific_mechanism_changed": false
+  },
+  "preregistered_contract_sha256": "8fbdba7281580f4245d39298ac0a2f859f077af865dac1971abc3b3b51894cc4",
+  "recovery": {
+    "artifact_span_seconds": 855.1775639057159,
+    "classification": "REPORT_ONLY_ENVIRONMENT_COUNTER_ALIAS",
+    "environment_contract_transitions": 8000,
+    "source_work": {
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t227b_command_atom_cpu_contract_v3",
+      "sha256": "eda0d636d227945a1f73f61b4f03bc6b101be87c8b5dda04792a62d95ef079fd"
+    },
+    "training_rerun": false
+  },
+  "result_sha256": "ac164d44c17f7859651bd63472b4c8b07443fe5cca224b2426613be3d2fba787",
+  "schema_version": "open_duck.t227d_recovered_cpu_validation_result.v1",
+  "status": "PASS_T227D_RECOVERED_CPU_VALIDATION",
+  "training": {
+    "aux": {
+      "0": {
+        "eta": 0.0,
+        "initial_cost": 0.0,
+        "initialized": false,
+        "lambda": 0.0,
+        "quarter_iterations": 1,
+        "step": 0,
+        "total_training_iterations": 4
+      },
+      "1024": {
+        "eta": 0.0,
+        "initial_cost": 0.0,
+        "initialized": false,
+        "lambda": 0.0,
+        "quarter_iterations": 1,
+        "step": 1024,
+        "total_training_iterations": 4
+      }
+    },
+    "command": [
+      "D:\\CodexArtifacts\\venvs\\open-duck-policy-py31213\\Scripts\\python.exe",
+      "playground/open_duck_mini_v2/runner.py",
+      "--task",
+      "flat_terrain_backlash",
+      "--env",
+      "joystick",
+      "--output_dir",
+      "D:\\CodexArtifacts\\open-duck-policy\\t227b_command_atom_cpu_contract_v3\\smoke",
+      "--num_timesteps",
+      "1024",
+      "--ppo_seed",
+      "100",
+      "--ppo_num_envs",
+      "32",
+      "--ppo_num_evals",
+      "2",
+      "--ppo_episode_length",
+      "64",
+      "--ppo_unroll_length",
+      "8",
+      "--ppo_batch_size",
+      "32",
+      "--ppo_num_minibatches",
+      "1",
+      "--ppo_num_updates_per_batch",
+      "2",
+      "--ppo_learning_rate",
+      "0.0003",
+      "--ppo_discounting",
+      "0.97",
+      "--ppo_entropy_cost",
+      "0.005",
+      "--policy_architecture",
+      "reference_residual_recurrent_adapter",
+      "--recurrent_hidden_size",
+      "64",
+      "--imitation_scale",
+      "1.0",
+      "--reference_feature_table_path",
+      "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+      "--nominal_reference_bootstrap",
+      "--ground_up_hard_vector_command_support",
+      "--ground_up_command_support_min_x",
+      "0.074",
+      "--ground_up_command_support_max_x",
+      "0.080",
+      "--ground_up_action_velocity_limits_rad_s",
+      "1.0,.75,1.4736209064722061,1.4300791546702385,1.3976470567286015,.5,.5,.5,.5,.5,.75,1.25,1.0,1.2215287424623966",
+      "--ground_up_measured_actuator_bridge",
+      "--ground_up_actuator_bridge_delay_ticks",
+      "3,3,3,3,3,3,2,3,3,3,2,3,2,3",
+      "--ground_up_actuator_bridge_tau_s",
+      ".015,.015,.005,.010,.010,.120,.120,.120,.120,.020,.035,.010,.030,.005",
+      "--ground_up_applied_target_observation",
+      "--ground_up_tracking_tail_exceedance_scale",
+      "-6572.254964031055",
+      "--ground_up_tracking_tail_threshold_rad",
+      "0.20",
+      "--ground_up_peak_torque_exceedance_scale",
+      "0",
+      "--ground_up_linear_peak_torque_exceedance_scale",
+      "0",
+      "--reference_start_phase",
+      "0",
+      "--ground_up_signed_progress_objective",
+      "--winner_v3_variable_configuration",
+      "--winner_v3_deviation_scale",
+      "1.0",
+      "--winner_v119_train_transition_match",
+      "--winner_t19_support_trainthrough",
+      "--winner_t31_action_margin_trainthrough",
+      "--winner_t37_freeze_observation_normalizer",
+      "--winner_t98_hidden_expert_continuation",
+      "--winner_v127_constrained_cost",
+      "--winner_t215b_axis_complete_tilt_cost",
+      "--winner_t227_command_atom_bank",
+      "--winner_t98_hidden_gate_asset_path",
+      "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t98_hidden_gate_asset.json",
+      "--critic_observation",
+      "privileged_state",
+      "--restore_checkpoint_path",
+      "D:\\CodexArtifacts\\open-duck-policy\\t227b_command_atom_cpu_contract_v3\\t203_half_cpu_remap"
+    ],
+    "cost_checkpoints": {
+      "0": {
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t227b_command_atom_cpu_contract_v3\\smoke\\2026_07_30_184034_0_v127_cost_value",
+        "sha256": "7432dcc7e91e281fbd5408ed44829088f26cc07e60baca31a9d73860f371bc11"
+      },
+      "1024": {
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t227b_command_atom_cpu_contract_v3\\smoke\\2026_07_30_184221_1024_v127_cost_value",
+        "sha256": "442cafd282e8fa0b75e9e2eb667e87760dd193bc87d2baf6cbfdc7e2775b78a5"
+      }
+    },
+    "event_file": {
+      "bytes": 7509,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t227b_command_atom_cpu_contract_v3\\smoke\\events.out.tfevents.1785450779.WinLSD",
+      "sha256": "9e89808d5cb7beb98d1f028f2995f0e803ec68c9f93da5e4c47430f706edcf6b"
+    },
+    "graphs": {
+      "0": {
+        "chain": {
+          "finite": true,
+          "maximum_abs_action": 1.0,
+          "maximum_abs_hidden": 1.0,
+          "steps": 256
+        },
+        "io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          },
+          "providers": [
+            "CPUExecutionProvider"
+          ]
+        },
+        "receipt": {
+          "bytes": 960296,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t227b_command_atom_cpu_contract_v3\\smoke\\2026_07_30_184032_0.onnx",
+          "sha256": "2dd89adfc487da6ad41008bb2094b3e8d24c2fdff4ba233459df36879e2aa770"
+        }
+      },
+      "1024": {
+        "chain": {
+          "finite": true,
+          "maximum_abs_action": 1.0,
+          "maximum_abs_hidden": 1.0,
+          "steps": 256
+        },
+        "io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          },
+          "providers": [
+            "CPUExecutionProvider"
+          ]
+        },
+        "receipt": {
+          "bytes": 960296,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t227b_command_atom_cpu_contract_v3\\smoke\\2026_07_30_184220_1024.onnx",
+          "sha256": "259c6000c5991b3c679ba64fcd385a1b45c997d8680dcaafda7a69c9d5c6f3c9"
+        }
+      }
+    },
+    "policy_checkpoints": {
+      "0": {
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t227b_command_atom_cpu_contract_v3\\smoke\\2026_07_30_184032_0",
+        "sha256": "93e58b1284c29521904fdd33541b05a02ebbac54500c8a065ddc00b829354199"
+      },
+      "1024": {
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t227b_command_atom_cpu_contract_v3\\smoke\\2026_07_30_184220_1024",
+        "sha256": "8ab2e5736404233c05c363532fcbcfb664313565f73fbf42a8c4e24743448d52"
+      }
+    }
+  },
+  "tree_contract": {
+    "cost_critic_leaf_deltas": {
+      "params/hidden_0/bias": 0.0020519548561424017,
+      "params/hidden_0/kernel": 0.002402614802122116,
+      "params/hidden_1/bias": 0.0015802379930391908,
+      "params/hidden_1/kernel": 0.0023748651146888733,
+      "params/hidden_2/bias": 0.00041166399023495615,
+      "params/hidden_2/kernel": 0.002290084958076477,
+      "params/hidden_3/bias": 0.00011511868797242641,
+      "params/hidden_3/kernel": 0.0022041648626327515
+    },
+    "normalizer_leaf_deltas": {
+      "0/count/hi": 0.0,
+      "0/count/lo": 0.0,
+      "0/mean/policy_hidden": 0.0,
+      "0/mean/privileged_state": 0.0,
+      "0/mean/state": 0.0,
+      "0/std/policy_hidden": 0.0,
+      "0/std/privileged_state": 0.0,
+      "0/std/state": 0.0,
+      "0/std_eps": 0.0,
+      "0/summed_variance/policy_hidden": 0.0,
+      "0/summed_variance/privileged_state": 0.0,
+      "0/summed_variance/state": 0.0
+    },
+    "protected_actor_leaf_deltas": {
+      "1/params/adapter_hidden_bias": 0.0,
+      "1/params/adapter_hidden_projection/kernel": 0.0,
+      "1/params/adapter_location/bias": 0.0,
+      "1/params/adapter_location/kernel": 0.0,
+      "1/params/adapter_obs_projection/kernel": 0.0,
+      "1/params/residual_location/bias": 0.0,
+      "1/params/residual_location/kernel": 0.0,
+      "1/params/residual_trunk/hidden_0/bias": 0.0,
+      "1/params/residual_trunk/hidden_0/kernel": 0.0,
+      "1/params/residual_trunk/hidden_1/bias": 0.0,
+      "1/params/residual_trunk/hidden_1/kernel": 0.0,
+      "1/params/residual_trunk/hidden_2/bias": 0.0,
+      "1/params/residual_trunk/hidden_2/kernel": 0.0,
+      "1/params/scale_logits/bias": 0.0,
+      "1/params/scale_logits/kernel": 0.0
+    },
+    "reward_critic_leaf_deltas": {
+      "2/params/hidden_0/bias": 0.002068590372800827,
+      "2/params/hidden_0/kernel": 0.002364799380302429,
+      "2/params/hidden_1/bias": 0.001852184534072876,
+      "2/params/hidden_1/kernel": 0.0023623090237379074,
+      "2/params/hidden_2/bias": 0.0008799117058515549,
+      "2/params/hidden_2/kernel": 0.0020466819405555725,
+      "2/params/hidden_3/bias": 0.0007507354021072388,
+      "2/params/hidden_3/kernel": 0.001327727921307087
+    },
+    "source_remap_max_abs": 0.0,
+    "step_zero_max_abs": 0.0,
+    "trainable_head_leaf_deltas": {
+      "1/params/negative_adapter_location/bias": 0.0018676593899726868,
+      "1/params/negative_adapter_location/kernel": 0.002041444182395935
+    }
+  }
+}

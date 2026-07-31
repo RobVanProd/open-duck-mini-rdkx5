@@ -1,0 +1,44 @@
+{
+  "status": "PLAN_Z005_SOURCE_REBUILD_REQUIRED",
+  "offline_only": true,
+  "robot_tests": false,
+  "ssh": false,
+  "deploy": false,
+  "grounded_replay": false,
+  "runtime_behavior_changes": false,
+  "evidence": [
+    "outputs/analysis/PHASE2_Z005_LIVE_ORACLE_ITER0_STUDENT_FIT_DECISION.md",
+    "outputs/analysis/PHASE2_Z005_SEED5_RECOVERY_ENHANCED_SOURCE_DECISION.md"
+  ],
+  "closed_branches": [
+    "larger supervised fits on 3f68992af82062f7",
+    "recurrent hidden-size or sequence-length tweaks on the same aggregate",
+    "same-tick neighbor recovery relabeling for seed 5",
+    "scalar support/base-height reward continuation as the next default move",
+    "treating z=0.0024 pass traces as sufficient z=0.005 source data"
+  ],
+  "required_source_gate": {
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.005,
+    "bridge": "corrected fitted bridge",
+    "fit_json": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+    "command_x": 0.08,
+    "seeds": 8,
+    "duration_s": 15,
+    "duration_complete": 8,
+    "falls": 0,
+    "seed5_duration_complete": true,
+    "mean_track_ratio_min": 0.35,
+    "corrected_pitch_chain_p95_velocity_excess": 0.0,
+    "max_pitch_chain_tracking_p95_rad": 0.2,
+    "min_base_height_m_per_seed": 0.12,
+    "single_support_mean_pct_min": 20.0,
+    "double_support_mean_pct_max": 80.0
+  },
+  "next_allowed_work": [
+    "build or mine a z=0.005 source that passes the source gate",
+    "write a compact source manifest with hashes and metrics",
+    "run live-oracle DAgger iteration 1 only after the source gate passes"
+  ],
+  "stop_rule": "HOLD_Z005_SOURCE_NOT_AVAILABLE"
+}

@@ -1,0 +1,236 @@
+{
+  "always_on_references": {
+    "1003520": {
+      "identity_exact": true,
+      "reference": {
+        "bytes": 970387,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t143c_conditional_forward_path_v1\\1003520\\negative_always_on_reference.onnx",
+        "sha256": "cb32341e5ff3d32cd4294975c41d7c3942d8f2050e42eeda14a1c58ad34bdc18"
+      },
+      "replacement_index": 37,
+      "source": {
+        "bytes": 970391,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t131_t129_deployments_v1\\1003520\\deployment\\action_margin.onnx",
+        "sha256": "de0e24e1d719b76b274beb5202355c3915670a6feb64ed2f618e29b1d12b4171"
+      },
+      "source_where": {
+        "inputs": [
+          "negative_com_gate",
+          "negative_adapter_location",
+          "zero_adapter_location"
+        ],
+        "outputs": [
+          "conditional_adapter_location"
+        ]
+      }
+    },
+    "2007040": {
+      "identity_exact": true,
+      "reference": {
+        "bytes": 970387,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t143c_conditional_forward_path_v1\\2007040\\negative_always_on_reference.onnx",
+        "sha256": "0f30ad9d050b0416ed9fe99e02438c3f662b3fd709db30cc00be1d7816439b6f"
+      },
+      "replacement_index": 37,
+      "source": {
+        "bytes": 970391,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t131_t129_deployments_v1\\2007040\\deployment\\action_margin.onnx",
+        "sha256": "0676a0fd52c13f11cefe051f416c25baf74ffc05e942436570a3c512890a2c20"
+      },
+      "source_where": {
+        "inputs": [
+          "negative_com_gate",
+          "negative_adapter_location",
+          "zero_adapter_location"
+        ],
+        "outputs": [
+          "conditional_adapter_location"
+        ]
+      }
+    }
+  },
+  "authority": {
+    "behavior_evaluation": false,
+    "gate5": false,
+    "negative_endpoint_preregistration": false,
+    "nominal_identity_reuse_preregistration": true,
+    "rdkx5_or_robot": false,
+    "training": false
+  },
+  "checks": {
+    "all_always_on_references_exact": true,
+    "all_feedback_finite_cpu": true,
+    "all_graph_transforms_exact": true,
+    "all_selected_source_outputs_bit_exact": true,
+    "both_checkpoints_transformed": true,
+    "formal_behavior_cells_zero": true,
+    "optimizer_colab_robot_zero": true
+  },
+  "contracts": {
+    "1003520": {
+      "all_action_feedback_bit_exact": true,
+      "all_outputs_finite": true,
+      "all_selected_source_outputs_bit_exact": true,
+      "cpu_only": true,
+      "rows": [
+        {
+          "action_feedback_bit_exact": true,
+          "all_outputs_bit_exact": true,
+          "all_outputs_finite": true,
+          "fit_id": "p30",
+          "population": "nominal",
+          "samples": 64,
+          "selected_source": "T100C_nominal_dynamic_gate"
+        },
+        {
+          "action_feedback_bit_exact": true,
+          "all_outputs_bit_exact": true,
+          "all_outputs_finite": true,
+          "fit_id": "p30",
+          "population": "com_x_negative",
+          "samples": 64,
+          "selected_source": "T129_negative_expert_always_on"
+        },
+        {
+          "action_feedback_bit_exact": true,
+          "all_outputs_bit_exact": true,
+          "all_outputs_finite": true,
+          "fit_id": "p31_34",
+          "population": "nominal",
+          "samples": 64,
+          "selected_source": "T100C_nominal_dynamic_gate"
+        },
+        {
+          "action_feedback_bit_exact": true,
+          "all_outputs_bit_exact": true,
+          "all_outputs_finite": true,
+          "fit_id": "p31_34",
+          "population": "com_x_negative",
+          "samples": 64,
+          "selected_source": "T129_negative_expert_always_on"
+        }
+      ],
+      "samples": 256
+    },
+    "2007040": {
+      "all_action_feedback_bit_exact": true,
+      "all_outputs_finite": true,
+      "all_selected_source_outputs_bit_exact": true,
+      "cpu_only": true,
+      "rows": [
+        {
+          "action_feedback_bit_exact": true,
+          "all_outputs_bit_exact": true,
+          "all_outputs_finite": true,
+          "fit_id": "p30",
+          "population": "nominal",
+          "samples": 64,
+          "selected_source": "T100C_nominal_dynamic_gate"
+        },
+        {
+          "action_feedback_bit_exact": true,
+          "all_outputs_bit_exact": true,
+          "all_outputs_finite": true,
+          "fit_id": "p30",
+          "population": "com_x_negative",
+          "samples": 64,
+          "selected_source": "T129_negative_expert_always_on"
+        },
+        {
+          "action_feedback_bit_exact": true,
+          "all_outputs_bit_exact": true,
+          "all_outputs_finite": true,
+          "fit_id": "p31_34",
+          "population": "nominal",
+          "samples": 64,
+          "selected_source": "T100C_nominal_dynamic_gate"
+        },
+        {
+          "action_feedback_bit_exact": true,
+          "all_outputs_bit_exact": true,
+          "all_outputs_finite": true,
+          "fit_id": "p31_34",
+          "population": "com_x_negative",
+          "samples": 64,
+          "selected_source": "T129_negative_expert_always_on"
+        }
+      ],
+      "samples": 256
+    }
+  },
+  "decision": "EARN_T144_CONDITIONAL_PATH_NOMINAL_IDENTITY_REUSE_PREREGISTRATION_ONLY",
+  "execution": {
+    "cpu_equivalence_samples": 512,
+    "formal_behavior_cells": 0,
+    "graphs_transformed": 2,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "wall_seconds": 0.4548368453979492
+  },
+  "failed_checks": [],
+  "graphs": {
+    "1003520": {
+      "abi_exact": true,
+      "all_other_nodes_byte_exact": true,
+      "dynamic_nominal_gate_rewire_exact": true,
+      "existing_initializers_byte_exact": true,
+      "expert_output_rewire_exact": true,
+      "five_initializers_added": true,
+      "five_nodes_inserted": true,
+      "negative_source": {
+        "bytes": 970391,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t131_t129_deployments_v1\\1003520\\deployment\\action_margin.onnx",
+        "sha256": "de0e24e1d719b76b274beb5202355c3915670a6feb64ed2f618e29b1d12b4171"
+      },
+      "nominal_source": {
+        "bytes": 970391,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t101_t100c_postexport_v1\\1003520\\action_margin.onnx",
+        "sha256": "fcf4260ba6e866bba51d90a62d15027501098c693b1ca02fde6baf996e899564"
+      },
+      "source_differences": [
+        "negative_adapter_bias",
+        "negative_adapter_weight"
+      ],
+      "transformed": {
+        "bytes": 975291,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t143c_conditional_forward_path_v1\\1003520\\conditional_forward_path.onnx",
+        "sha256": "82ab93eb97db602561b3525bb3551f4e94b87808320b8c944f6e0a9c8a4b6869"
+      }
+    },
+    "2007040": {
+      "abi_exact": true,
+      "all_other_nodes_byte_exact": true,
+      "dynamic_nominal_gate_rewire_exact": true,
+      "existing_initializers_byte_exact": true,
+      "expert_output_rewire_exact": true,
+      "five_initializers_added": true,
+      "five_nodes_inserted": true,
+      "negative_source": {
+        "bytes": 970391,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t131_t129_deployments_v1\\2007040\\deployment\\action_margin.onnx",
+        "sha256": "0676a0fd52c13f11cefe051f416c25baf74ffc05e942436570a3c512890a2c20"
+      },
+      "nominal_source": {
+        "bytes": 970391,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t101_t100c_postexport_v1\\2007040\\action_margin.onnx",
+        "sha256": "f57f9e2055cab9aefbb190622dd1a5953a7391d4fdb52f4411f97ac4bdd218ab"
+      },
+      "source_differences": [
+        "negative_adapter_bias",
+        "negative_adapter_weight"
+      ],
+      "transformed": {
+        "bytes": 975291,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t143c_conditional_forward_path_v1\\2007040\\conditional_forward_path.onnx",
+        "sha256": "a43dbac7b4995a71f53cc3ee0145ad6e2698f624c4c02749c664a7a09c2be528"
+      }
+    }
+  },
+  "preregistered_contract_sha256": "496b6bb3460e41866f63b07a5c6c407edff3c96f8faf9648b1b9c67e2209c086",
+  "recovery_kind": "T143B_OBSOLETE_PRIMARY_RUNNER_RECEIPT",
+  "result_sha256": "bc49450e8bce71b82f4340dc0d2c1bd475292c28f6cd6ff5bbb3813dd977729b",
+  "schema_version": "open_duck.t143c_runner_receipt_recovery_result.v1",
+  "source_t143_contract_sha256": "92209d81c77c84347fd19669f55cb37a4109639163b157956f50d6ac612f21b6",
+  "status": "PASS_T143C_CONDITIONAL_FORWARD_PATH_TRANSFORM"
+}

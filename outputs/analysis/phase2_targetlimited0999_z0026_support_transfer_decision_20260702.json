@@ -1,0 +1,66 @@
+{
+  "status": "HOLD_Z0026_MOVING_COMMAND_SUPPORT_TRANSFER",
+  "date": "2026-07-02",
+  "offline_only": true,
+  "robot_tests": false,
+  "ssh": false,
+  "deploy": false,
+  "grounded_replay": false,
+  "training": false,
+  "runtime_behavior_change": false,
+  "candidate": {
+    "path": "outputs/analysis/phase2_z0025_command_gated_bestrec70_rate1p9_targetlimited0999_candidate/candidate.onnx",
+    "sha256": "6ba399528c6bc7543e0a5a3a43c30b0804357a4b98e21d723cbb5188e446b2a2"
+  },
+  "bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+  "task": "rough_terrain_backlash",
+  "terrain_hfield_z_scale": 0.0026,
+  "bridge_mode": "fitted",
+  "jax_platform": "cpu",
+  "short_gates": {
+    "x0_seed5": {
+      "source_md": "outputs/analysis/PHASE2_TARGETLIMITED0999_Z0026_X0_SEED5_SHORT.md",
+      "source_json": "outputs/analysis/phase2_targetlimited0999_z0026_x0_seed5_short.json",
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "samples": 100,
+      "termination": "duration_complete",
+      "mean_local_vx_m_s": 0.0123,
+      "base_height_min_m": 0.1457,
+      "max_pitch_vel_p95_rad_s": 2.8524,
+      "p95_vel_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.2042
+    },
+    "x008_seed5": {
+      "source_md": "outputs/analysis/PHASE2_TARGETLIMITED0999_Z0026_X008_SEED5_TRACE_SHORT.md",
+      "source_json": "outputs/analysis/phase2_targetlimited0999_z0026_x008_seed5_trace_short.json",
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 57,
+      "termination": "fall_or_nan",
+      "mean_local_vx_m_s": -0.2573,
+      "track_ratio": -3.2164,
+      "base_height_min_m": 0.0710,
+      "max_pitch_vel_p95_rad_s": 1.8292,
+      "p95_vel_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.1874
+    }
+  },
+  "trace_analysis": {
+    "source_md": "outputs/analysis/PHASE2_TARGETLIMITED0999_Z0026_X008_SEED5_TRACE_ANALYSIS.md",
+    "source_json": "outputs/analysis/phase2_targetlimited0999_z0026_x008_seed5_trace_analysis.json",
+    "failure_surface": "REVERSE_HEIGHT_COLLAPSE",
+    "first_no_contact_tick": 0,
+    "first_one_foot_tick": 5,
+    "first_reverse_tick": 10,
+    "first_reverse_time_s": 0.20,
+    "first_low_height_tick": 54,
+    "first_done_tick": 56,
+    "contact_counts": {
+      "(0, 0)": 5,
+      "(0, 1)": 2,
+      "(1, 0)": 4,
+      "(1, 1)": 46
+    }
+  },
+  "decision": "Target z=0.0026 moving-command support transfer on seed 5. The x=0.08 failure is reverse-height collapse without corrected-envelope velocity excess; x=0.0 seed5 survives the same short terrain height.",
+  "next_recommendation": "Use the target-limited command-gated candidate as parent and repair z=0.0026 x=0.08 seed5 moving-support behavior before wider terrain or A100 scaling."
+}

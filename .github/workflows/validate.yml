@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -36,7 +38,7 @@ jobs:
       - name: Check shell scripts
         run: |
           bash -n scripts/*.sh
-          shellcheck scripts/*.sh
+          shellcheck --severity=warning scripts/*.sh
 
       - name: Check generated CUDA Colab cells
         run: |

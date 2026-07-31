@@ -1,0 +1,288 @@
+{
+  "authority": {
+    "pass_authorizes_only": "a zero-cell CPU contract; it does not authorize the 248-cell gate until its training artifact and exact hashes are independently verified",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "checks": {
+    "binding_correction_only": true,
+    "boundary_tests_present": true,
+    "model_population_exact": true,
+    "runner_has_context_and_prediction_gate": true,
+    "runner_has_exact_model_and_transport_counts": true,
+    "runner_has_no_robot_or_locomotion_authority": true,
+    "runner_requires_explicit_offline_authority": true,
+    "runner_uses_graph_authoritative_outputs": true,
+    "transport_population_exact": true,
+    "upstream_gate_exact": true
+  },
+  "decision": "AUTHORIZE_SUPPORT_GATE_CPU_CONTRACT_ONLY",
+  "execution_now": {
+    "formal_support_cells": 0,
+    "heldout_repeat_cells": 0,
+    "locomotion_training_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "graph_and_state_contract": {
+    "action_source": "stateful checkpoint ONNX calibration_actions only",
+    "auxiliary_target_indices": "next valid observation [0:6], [13:41], and [83:99]",
+    "hidden_crosscheck": "training response_step h_out versus ONNX h_out max absolute error <= 1e-7 every tick",
+    "normalization": "the checkpoint's immutable Stage-1 target_mean/target_std only",
+    "previous_action_chain": "previous_action_out must equal calibration_actions bit-exact every tick"
+  },
+  "heldout_context_gate": {
+    "actions": "the checkpoint's bounded deployable calibrator actions",
+    "cells": "the existing 16 heldout configurations x 2 hidden plants within the 112 model/plant cells; no additional behavior cells",
+    "constant_baseline": "predict the frozen Stage-1 training target mean, equivalently zero in normalized target space, on the identical heldout rows",
+    "matched_plant_context_rule": "for every heldout configuration, start P30 and P31/34 from the same deterministic reset, initial observation, previous action, and h_in with no stochastic sensor perturbation; the deployable calibrator remains authoritative in each closed loop, and final h_out L-infinity separation must exceed 1e-7",
+    "normalization": "the frozen Stage-1 training normalization only",
+    "prediction_metric": "mean squared normalized next-response error over all 250 valid transitions using the frozen Stage-1 auxiliary predictor",
+    "repeat_cells_both_checkpoints": 64,
+    "repeat_cells_per_checkpoint": 32,
+    "repeat_outputs": [
+      "observations",
+      "actions",
+      "auxiliary_predictions",
+      "h_out"
+    ],
+    "repeat_rule": "repeat every heldout context cell from reset and require all actions, observations, predictions, and h_out values bit-exact",
+    "required_prediction_rule": "learned aggregate mean MSE must be strictly below the constant baseline separately for P30 and P31/34 at each checkpoint",
+    "stochastic_inputs": false,
+    "true_configuration_or_plant_label_enters_network": false
+  },
+  "main_matrix": {
+    "both_checkpoints_total": 248,
+    "model_configuration_ids": [
+      "MASS_LOW",
+      "MASS_HIGH",
+      "COM_X_NEG",
+      "COM_X_POS",
+      "COM_Y_NEG",
+      "COM_Y_POS",
+      "COM_Z_NEG",
+      "COM_Z_POS",
+      "INERTIA_X_LOW",
+      "INERTIA_X_HIGH",
+      "INERTIA_Y_LOW",
+      "INERTIA_Y_HIGH",
+      "INERTIA_Z_LOW",
+      "INERTIA_Z_HIGH",
+      "COM_CORNER_00",
+      "COM_CORNER_01",
+      "COM_CORNER_02",
+      "COM_CORNER_03",
+      "COM_CORNER_04",
+      "COM_CORNER_05",
+      "COM_CORNER_06",
+      "COM_CORNER_07",
+      "OPTIONAL_AGGREGATE_LIGHT_FORWARD",
+      "OPTIONAL_AGGREGATE_HEAVY_AFT",
+      "DISCOVERY_00",
+      "DISCOVERY_01",
+      "DISCOVERY_02",
+      "DISCOVERY_03",
+      "DISCOVERY_04",
+      "DISCOVERY_05",
+      "DISCOVERY_06",
+      "DISCOVERY_07",
+      "DISCOVERY_08",
+      "DISCOVERY_09",
+      "DISCOVERY_10",
+      "DISCOVERY_11",
+      "DISCOVERY_12",
+      "DISCOVERY_13",
+      "DISCOVERY_14",
+      "DISCOVERY_15",
+      "HELDOUT_00",
+      "HELDOUT_01",
+      "HELDOUT_02",
+      "HELDOUT_03",
+      "HELDOUT_04",
+      "HELDOUT_05",
+      "HELDOUT_06",
+      "HELDOUT_07",
+      "HELDOUT_08",
+      "HELDOUT_09",
+      "HELDOUT_10",
+      "HELDOUT_11",
+      "HELDOUT_12",
+      "HELDOUT_13",
+      "HELDOUT_14",
+      "HELDOUT_15"
+    ],
+    "nominal_sensor_transport_model": "load the exact composed scene and apply identity mass scale, zero torso mass/COM change, and the scene's exact nominal torso principal inertia",
+    "per_checkpoint": {
+      "model_plant_cells": 112,
+      "sensor_transport_plant_cells": 12,
+      "total": 124
+    },
+    "plants": [
+      "P30_ALL_JOINT",
+      "P31_34_PITCH_WITH_P30_NONPITCH"
+    ],
+    "sensor_transport_conditions": [
+      {
+        "id": "NATIVE_INPUT_QUANTIZATION",
+        "native_quantization": true
+      },
+      {
+        "id": "DECLARED_SENSOR_NOISE",
+        "sensor_noise_scales": {
+          "accelerometer": 0.05,
+          "ankle_pos_rad": 0.08,
+          "gravity": 0.1,
+          "gyro_rad_s": 0.1,
+          "hip_pos_rad": 0.03,
+          "joint_vel_rad_s": 2.5,
+          "knee_pos_rad": 0.05,
+          "linvel_m_s": 0.1
+        }
+      },
+      {
+        "additional_action_delay_ticks": 1,
+        "id": "ACTION_DELAY_1"
+      },
+      {
+        "additional_action_delay_ticks": 2,
+        "id": "ACTION_DELAY_2"
+      },
+      {
+        "id": "IMU_DELAY_1",
+        "imu_delay_ticks": 1
+      },
+      {
+        "id": "IMU_DELAY_2",
+        "imu_delay_ticks": 2
+      }
+    ]
+  },
+  "prerequisites_before_launch": [
+    "successful corrected full-training workflow result",
+    "safe ZIP extraction and independent artifact/snapshot/ONNX verification",
+    "exact half/final checkpoint and ONNX hashes frozen into a launch contract",
+    "one zero-cell CPU contract of this gate implementation in the pinned CPU environment"
+  ],
+  "schema_version": "winner_v12.calibrator_support_gate_preregistration.v2",
+  "selection": {
+    "all_cells_at_both_checkpoints_must_pass": true,
+    "checkpoint_labels": [
+      "half",
+      "final"
+    ],
+    "selection_by_closest_result": false,
+    "selection_by_training_reward": false
+  },
+  "source_manifest_sha256": "039c5b1549f5fc5a6f9dbe0ba339e304e1c57e281f5f89a3bec9a66e9ffdc7f5",
+  "sources": {
+    "actuator_bridge": {
+      "hash_mode": "lf",
+      "path": "tools/actuator_bridge_model.py",
+      "sha256": "bb5ddb1847e773ab21d8ddfadab307ceaf22599a51f686dbb4f6121cde2d0bec"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v12_calibrator_support_gate_preregistration.py",
+      "sha256": "5e32ac10de1842d0831e7b064044e69b81c8d3f03f9c4aea681ac3ca19cc7886"
+    },
+    "calibrator_design_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_training_preregistration.json",
+      "sha256": "1ec76a587c6fa50b92866c1632a7046ae0c6687ed17b1636b664bf45c2e8ba34"
+    },
+    "cpu_smoke": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "deployable_network": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_decomposed_backend_networks.py",
+      "sha256": "f463223a33f80baf81b2604e0df22c647660f2752a7ca60b8c75a3441460d015"
+    },
+    "failed_formal_gate_attribution": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_support_gate_preexecution_failure_attribution.json",
+      "sha256": "09051f5920003827489267acea2afa4c406d44329d7804637364c5bc6218aac7"
+    },
+    "failed_formal_gate_attribution_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v12_calibrator_support_gate_preexecution_failure_attribution.py",
+      "sha256": "54dadc11ca2bbea7923910022c236c7f7f811284d1333579f0ab20af2186a685"
+    },
+    "full_training_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_preregistration.json",
+      "sha256": "99500648d6683097a13f894b0949bf4b5494e5653f36878710817bd0952f71dd"
+    },
+    "full_training_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_full_calibrator_training.py",
+      "sha256": "8cd2c9267f356adba1127f8fb837138bbe6e39b5c3326300eeed9fdd5b524610"
+    },
+    "gate_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_support_gate.py",
+      "sha256": "18873eee55c77a278fc065de64c0b912803bf29b4440cde7f3adaabe1297baca"
+    },
+    "gate_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v12_calibrator_support_gate.py",
+      "sha256": "7904a43b09c144b07c32c2a4321b14d0ddde57678b9fa7a75e03c0e48cb8c04d"
+    },
+    "runtime_observer": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py",
+      "sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889"
+    },
+    "training_primitives": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_calibrator_training.py",
+      "sha256": "f5736a357d73baedae2bba1d15254dd688bddf3761eb731d757a971783c77227"
+    },
+    "variable_configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V12_CALIBRATOR_SUPPORT_GATE",
+  "supersedes_preexecution_failure": {
+    "failed_launch_lf_sha256": "c753a29c2ef358bac0af3148b7a8816d1d64b048489d5d8a865a5ff0c7ffa74e",
+    "formal_support_cells_completed": 0,
+    "github_run_id": 29815413956,
+    "only_change": "bind the separately frozen calibrator-design preregistration to Episode"
+  },
+  "support_thresholds": {
+    "duration_valid_ticks": 250,
+    "maximum_abs_roll_pitch_rad": 0.35,
+    "maximum_final_50_tick_gyro_xy_norm_rad_s": 0.05,
+    "minimum_base_z_m": 0.1,
+    "per_joint_peak_current_a_max": 2.5,
+    "per_joint_peak_torque_nm_max": 1.91229675,
+    "rated_current_p95_a": "0.65 diagnostic only; not candidate pass/fail",
+    "strict_overcurrent_max_consecutive_ticks": 99,
+    "strict_overcurrent_threshold_a": 2.0,
+    "two_foot_contact_failure_ticks": 0
+  },
+  "transport_semantics": {
+    "action_delay": "delay only the action sent to the physical bridge by exactly 1 or 2 ticks; policy previous_action/history remains the graph-authoritative requested action; prehistory is zero",
+    "declared_sensor_noise": {
+      "accelerometer": "obs[3:6], native scale",
+      "distribution": "independent NumPy PCG64 uniform[-scale,+scale]",
+      "gravity_and_linvel": "declared domain fields have no deployable slot in the frozen calibrator 115-D observation and therefore do not alter another slot",
+      "gyro": "obs[0:3], rad/s scale",
+      "joint_position": "obs[13:27], hip/knee/ankle category scale; head zero",
+      "joint_velocity": "obs[27:41], rad/s scale multiplied by frozen 0.05 observation scale"
+    },
+    "imu_delay": "delay the complete obs[0:6] gyro/accelerometer pair by exactly 1 or 2 ticks; prehistory is zero",
+    "native_quantization": {
+      "accelerometer_lsb_m_s2": 0.01,
+      "gyro_lsb_rad_s": 0.001090830782496456,
+      "position_lsb_rad": 0.0015339807878856412,
+      "unchanged_slots": "obs[6:13] and obs[41:115]",
+      "velocity_observation_lsb": 7.671776931843207e-05
+    },
+    "seed_derivation": "numpy SeedSequence([120120, 3, checkpoint_index, condition_index, plant_index]); checkpoint order half/final and plant order P30/P31-34"
+  }
+}

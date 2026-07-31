@@ -1,0 +1,237 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "deployment_authorized": false,
+    "formal_support_gate_authorized": false,
+    "pass_authorizes_only": "the unchanged persistence gate for counts 605 and 655",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "training_authorized": true
+  },
+  "decision": "AUTHORIZE_ONE_53_UPDATE_FUNCTIONAL_NUMERIC_GUARD_ARM_ONLY",
+  "execution_now": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "frozen_training": {
+    "conditional_moment_reset": "only after inherited grid exhaustion with nonnegative teacher-gradient dot parameter delta",
+    "continuation_optimizer_updates": 53,
+    "environments_per_update": 80,
+    "final_optimizer_count": 655,
+    "fractions_largest_first": [
+      1.0,
+      0.5,
+      0.25,
+      0.125,
+      0.0625,
+      0.03125,
+      0.015625,
+      0.0078125,
+      0.00390625,
+      0.001953125,
+      0.0009765625
+    ],
+    "functional_numeric_guard": {
+      "audit_only_if_legacy_scan_guard_crosses": true,
+      "eager_hidden_max_abs_error": 0.0,
+      "legacy_scan_hidden_max_abs_error": 2e-06,
+      "log_probability_max_abs_delta": 0.0001,
+      "mean_action_max_abs_delta": 1e-06,
+      "ppo_loss_abs_delta": 0.0001,
+      "probability_ratio_max_abs_delta": 0.0001,
+      "value_max_abs_delta": 1e-05
+    },
+    "guard_behavior": "retain the legacy 2e-6 fast path; on a crossing require bit-exact eager replay and every unchanged V59 functional bound",
+    "persistent_checkpoints": {
+      "final": 655,
+      "half": 605
+    },
+    "persistent_snapshots": true,
+    "source_completed_updates": 602,
+    "ticks_per_environment": 250
+  },
+  "objective": {
+    "attention_or_flat_transport_added": false,
+    "coefficient_or_length_search": false,
+    "persistent_teacher_scale": 136.35153198242188,
+    "update_gradient": "full_action_persistent_teacher_only"
+  },
+  "schema_version": "winner_v75.functional_numeric_guard_continuation_preregistration.v1",
+  "source_checkpoint": {
+    "completed_updates": 602,
+    "graph": {
+      "bytes": 54896,
+      "completed_updates": 602,
+      "contract": {
+        "abi_exact": true,
+        "all_chain_outputs_finite": true,
+        "all_initializers_finite": true,
+        "bytes": 54896,
+        "chain_ticks": 250,
+        "forbidden_training_or_privileged_tokens": [],
+        "initializer_count": 9,
+        "inputs": [
+          {
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "jax_onnx_at_most_1e_7": true,
+        "jax_onnx_max_abs_error": 8.731149137020111e-11,
+        "outputs": [
+          {
+            "name": "calibration_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v70-fresh-moment-step\\graphs\\winner_v70_fresh_moment_update_602.onnx",
+        "previous_action_out_equals_action_bit_exact": true,
+        "sha256": "45ac3122addc7938511bd255ca25fab0ced03f9ef5fd6aa969a83ca306ed9ac4",
+        "training_only_tensors_absent": true
+      },
+      "label": "proof",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v70-fresh-moment-step\\graphs\\winner_v70_fresh_moment_update_602.onnx",
+      "sha256": "45ac3122addc7938511bd255ca25fab0ced03f9ef5fd6aa969a83ca306ed9ac4",
+      "v46_forbidden_tokens_present": []
+    },
+    "optimizer_count": 602,
+    "snapshot": {
+      "bytes": 194956,
+      "completed_updates": 602,
+      "metadata_payload_sha256": "cbfa25c238f75f2c1dd0d09753c33286cd4e2abd794194198f369aaa6989012a",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v70-fresh-moment-step\\snapshots\\snapshot_fresh_moment_update_602.npz",
+      "sha256": "24fd0b25de5cd5e198a61288cff2d6e437e251a63fa1a05213d33d585838ec7b",
+      "state_payload_sha256": "df75505e730d9488d36a8a04ae0ef238b7dba9a0be330eadc9b65cc136a7fd9b"
+    }
+  },
+  "source_manifest_sha256": "31465eecee85db8442c10717ec7217e734bfaf067e9f2ae433691ed336849d4a",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v75_functional_numeric_guard_continuation.py",
+      "sha256": "81b37574423cfdad932e4b804ba27cde3e7b59ffc9913de8b90d0f4c1e2dfa35"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v75_functional_numeric_guard_continuation.py",
+      "sha256": "baac5a6d8f842144b8cff3c47122f56557a1fe9fb61315659f87cf2d584aa53e"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v75_functional_numeric_guard_continuation.py",
+      "sha256": "f74c552f0107b7aa3083569380eecf2b147c68631c63b36f1e2fbabaf5372957"
+    },
+    "v71b_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v71b_full_loss_binding_correction.py",
+      "sha256": "ed29ac5a1c8a8f205a8ac049408cdd7d2023d80348d09ee3518335586d45c208"
+    },
+    "v71b_contract": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v71b_full_loss_binding_correction.json",
+      "sha256": "f0353230595698f8aa65de191b3521b05cf56c27fa2aa6230b4e63decd9442d3"
+    },
+    "v74_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v74_update638_hidden_replay_numeric_audit_preregistration.json",
+      "sha256": "6fdce216beaa808aba7a0e9c5eb3cf4e1244ca3c52855ab893aaf38d0e871bf9"
+    },
+    "v74_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v74_update638_hidden_replay_numeric_audit_result.json",
+      "sha256": "a4f0e8b4611387ebf21d2c683db86fffd1de223c1b81049cbe3883137070b3d8"
+    },
+    "v75_invalid_invocation": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v75_functional_numeric_guard_continuation_invalid_invocation.json",
+      "sha256": "ed8a1c14a3b8b6d680b039de99e6c37edec7919dd282576bee541245f623c0ec"
+    },
+    "v75b_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v75b_helper_import_correction.py",
+      "sha256": "86b19c654c56ffd75dba5effe699e84a74c48b1150cdd4122a4930a3c66a23cf"
+    },
+    "v75b_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v75b_helper_import_correction.py",
+      "sha256": "ff8c4d8581e55aa965122dec39be2b4a35a86216a17b32a7d88dd97dead1920b"
+    },
+    "v75b_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v75b_helper_import_correction.py",
+      "sha256": "4b883222943fcfb9f95276e460380fa75e2416519585b2f8be3132a378af4e03"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V75_FUNCTIONAL_NUMERIC_GUARD_CONTINUATION",
+  "teacher_checkpoint": {
+    "completed_updates": 100,
+    "optimizer_count": 100,
+    "snapshot": {
+      "bytes": 194808,
+      "completed_updates": 100,
+      "optimizer_count": 100,
+      "path": null,
+      "sha256": "ddc8c4b905bb9acac2d7d48c3e9c1f0c0ca0173a1ba21f375740b051bc48c806"
+    }
+  },
+  "transformation": {
+    "transformed_source_sha256": "0bae13d2df59ea6ba23728cae9e64e799bde3b8eef5f3f70afce3be7a8d4c161",
+    "v71b_corrected_source_sha256": "e4fde7915dfe8ac2d8a7ad07600cf8ce9778084f9a5620f0b66b788ecc137be1"
+  },
+  "v74_evidence": {
+    "bytes": 5100,
+    "classification": "EAGER_SCAN_FLOAT32_DRIFT_WITH_BOUNDED_POLICY_EFFECT_AND_STALE_ABSOLUTE_SCAN_GUARD",
+    "path": "outputs/analysis/winner_v74_update638_hidden_replay_numeric_audit_result.json",
+    "sha256": "c30027f0fdc4cb93499461692ece2ed65bcb831c9858b7c65e80575c81d6bc33"
+  },
+  "v75b": {
+    "corrected_source_sha256": "4fff0b8e1ddea4826e84e51a2d4393231d8eff41b4ebb18df294357854d413c3",
+    "identity": "WINNER_V75B_HELPER_IMPORT_CORRECTION",
+    "invalid_invocation": {
+      "bytes": 780,
+      "path": "outputs/analysis/winner_v75_functional_numeric_guard_continuation_invalid_invocation.json",
+      "sha256": "ed8a1c14a3b8b6d680b039de99e6c37edec7919dd282576bee541245f623c0ec"
+    },
+    "new_fragment_sha256": "640d151320006a458e4b153c13060d4dfc9e96910e881fbd5bcf146b6372519c",
+    "objective_rollout_gradient_guard_optimizer_or_authority_change": false,
+    "old_fragment_sha256": "28e86c539b168372526f9a6a35fe1d90a1dd7fa5ea71ba55e1df18471a84bed4",
+    "replacement_count": 1,
+    "semantic_change": "restore the reviewed select_first_descent helper import"
+  }
+}

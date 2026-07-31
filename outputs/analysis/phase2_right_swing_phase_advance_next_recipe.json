@@ -1,0 +1,98 @@
+{
+  "acceptance": [
+    "x=0.08 z=0.0024 corrected-bridge gate passes 8/8 seeds.",
+    "x=0.0 corrected-bridge gate passes 8/8 seeds if x=0.08 passes.",
+    "No corrected per-joint envelope excess in p95 or max target velocity.",
+    "Planted percentage during phase-commanded swing drops in the rerun swing diagnostic without increasing rate utilization above corrected limits.",
+    "Forward progress improves over the phase-lift run without falls."
+  ],
+  "candidate_gate": {
+    "bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+    "bridge_sha256": "3661543d0745073b561eb4fa2ae8f9616368ee8b72cb397f8b953dada532c8c0",
+    "command_x": 0.08,
+    "duration_s": 15.0,
+    "seeds": "0-7",
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0024
+  },
+  "closed_prior": {
+    "doc": "docs/PHASE2_RIGHT_SWING_PHASE_LIFT_RESULT.md",
+    "gate": "outputs/analysis/phase2_right_swing_phase_lift_a100_20260630/PHASE2_RIGHT_SWING_PHASE_LIFT_A100_X008_GATE.md",
+    "workflow": "phase2-right-swing-phase-lift"
+  },
+  "colab_workflow_command": [
+    "python3",
+    "tools/run_colab_cli_cuda_workflow.py",
+    "--workflow",
+    "phase2-right-swing-phase-advance",
+    "--run",
+    "--no-candidate-checkpoint-sweep",
+    "--phase2-skip-post-training-gates",
+    "--artifact-checkpoint-mode",
+    "all",
+    "--timeout-s",
+    "7200",
+    "--no-poll"
+  ],
+  "deploy_performed": false,
+  "diagnostic": {
+    "aggregate_verdict": "LATENCY_LIMITED",
+    "path": "outputs/analysis/phase2_right_swing_phase_lift_a100_20260630/phase2_right_swing_phase_lift_81920_swing_diagnostic.json",
+    "rate_driver_joint_counts": {
+      "left_hip_pitch": 8,
+      "right_ankle": 7,
+      "right_knee": 1
+    },
+    "sha256": "861b32a6d3ec465d1269a6517db3313a50e137de0a5c1d3663365bd4432cb7c0",
+    "side_classification_counts": {
+      "left": {
+        "LATENCY_LIMITED": 8
+      },
+      "right": {
+        "LATENCY_LIMITED": 5,
+        "STRUCTURAL": 3
+      }
+    },
+    "side_verdicts": {
+      "left": "LATENCY_LIMITED",
+      "right": "LATENCY_LIMITED"
+    }
+  },
+  "falsifiers": [
+    "If mean track ratio remains around 0.25, phase advance did not solve the low-progress mode.",
+    "If max target-velocity excess increases, phase advance is moving illegal swing commands earlier instead of fixing timing.",
+    "If planted swing does not decrease, latency is not the missing control knob.",
+    "If the candidate becomes unstable, reject the recipe and return to swing duration or knee-bend-first geometry."
+  ],
+  "objective": "Test whether advancing phase-primary swing-side lift/rate signals by the corrected 3-tick actuator delay reduces planted swing and restores forward progress.",
+  "offline_only": true,
+  "recipe_id": "right_swing_phase_advance",
+  "reward_overrides": {
+    "forward_phase_swing_lift_huber_delta": 0.003,
+    "forward_phase_swing_lift_scale": -0.0006,
+    "forward_phase_swing_lift_target_m": 0.012,
+    "forward_swing_advance_huber_delta": 0.002,
+    "forward_swing_advance_scale": -0.001,
+    "forward_swing_advance_target_m": 0.004,
+    "forward_swing_clearance_huber_delta": 0.003,
+    "forward_swing_clearance_scale": -0.00025,
+    "forward_swing_clearance_target_m": 0.016,
+    "forward_swing_phase_advance_ticks": 3,
+    "forward_swing_target_rate_limit_huber_delta": 0.05,
+    "forward_swing_target_rate_limit_joint_indices": "11,12,13",
+    "forward_swing_target_rate_limit_scale": -0.0025,
+    "forward_swing_target_rate_limit_values": "2.25,2.75,2.00",
+    "forward_wrong_direction_allowed_reverse_ratio": 0.01,
+    "forward_wrong_direction_scale": -6
+  },
+  "status": "PRE_REGISTERED_NOT_STARTED",
+  "supersedes": "right_swing_phase_lift",
+  "training": {
+    "artifact_checkpoint_mode": "all",
+    "push_enable": false,
+    "restore_checkpoint_path": "outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232221_491520",
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0024,
+    "warm_start_required": true
+  }
+}

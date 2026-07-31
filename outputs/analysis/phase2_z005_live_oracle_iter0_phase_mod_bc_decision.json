@@ -1,0 +1,45 @@
+{
+  "status": "HOLD_ITER0_PHASE_MOD_STUDENT_NOT_PROMOTABLE",
+  "scope": "offline_student_fit_and_gate",
+  "robot_tests": false,
+  "ssh": false,
+  "deploy": false,
+  "grounded_replay": false,
+  "ppo_training": false,
+  "fit": {
+    "manifest": "outputs/analysis/phase2_z005_live_oracle_terrain_support_iter0_aggregate_manifest.json",
+    "samples": 12806,
+    "model": "phase_modulated_feed_forward_bc",
+    "onnx": "outputs/analysis/phase2_z005_live_oracle_iter0_phase_mod_bc_candidate/candidate.onnx",
+    "onnx_sha256": "2fb9e4c791970dae3dc3069aa5fc037bb51b4fbc9e91d8938c44e80d1bf1e3ef",
+    "p95_action_error": 0.018830112507566815,
+    "target_rate_p95_rad_s": 1.7831669747829406,
+    "target_rate_max_rad_s": 2.163395404815674,
+    "onnx_fidelity_max_error": 2.086162567138672e-7
+  },
+  "x008_gate": {
+    "report": "outputs/analysis/PHASE2_Z005_LIVE_ORACLE_ITER0_PHASE_MOD_BC_GATE_X008.md",
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.005,
+    "bridge": "corrected_fitted",
+    "seeds": "0-7",
+    "duration_s": 15.0,
+    "pass_seeds": 1,
+    "total_seeds": 8,
+    "duration_complete": 7,
+    "falls": 1,
+    "mean_track_ratio": -0.1398,
+    "mean_vx_m_s": -0.0112,
+    "p95_velocity_excess_mean": 0.0,
+    "max_velocity_excess_mean": 0.0387,
+    "single_support_mean_pct": 20.7185,
+    "double_support_mean_pct": 78.5704,
+    "seed5": {
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 54,
+      "mean_vx_m_s": -0.2817,
+      "base_height_min_m": 0.0605
+    }
+  },
+  "decision": "Do not promote this ONNX. x=0.08 z=0.005 failed, so x=0.0 promotion gating was not run. Next work should strengthen the corrected z=0.005 source or move to a representation with explicit history/recurrence; do not launch another scalar reward tweak."
+}

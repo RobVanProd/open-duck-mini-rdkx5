@@ -1,0 +1,421 @@
+{
+  "bridge_contract": {
+    "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_measured_bridge_contract.json",
+    "sha256": "818334a0656d3a4db72101fbeb62986a342cf3a2914fe9d64b2afce262a92e49",
+    "status": "PASS_CPU_MEASURED_BRIDGE_CONTRACT"
+  },
+  "checkpoints": {
+    "changed_final_leaf_count": 25,
+    "changed_policy_leaf_count": 10,
+    "checks": {
+      "all_checkpoint_leaves_finite": true,
+      "at_least_one_policy_leaf_changed": true,
+      "step_zero_exactly_matches_protected_source": true
+    },
+    "final_directory_sha256": "5d8954dbbf6be88a294d41224ca8c4d0360297d22bbe917be08d1ff56056dd1c",
+    "leaf_count": 27,
+    "max_policy_leaf_delta": 0.0012029558420181274,
+    "max_source_to_step_zero_error": 0.0,
+    "policy_leaf_count": 10,
+    "source_directory_sha256": "96cd5e6f15bb45f589be45c8c568098d0a2cafcfc317c1ce8f818247e080fd14",
+    "step_zero_directory_sha256": "382e1baab9b02144d682f54578ded95ff69ddad6c076d3406a9e45803e243299"
+  },
+  "checks": {
+    "all_checkpoint_leaves_finite": true,
+    "all_metrics_finite": true,
+    "at_least_one_policy_leaf_changed": true,
+    "bridge_environment_contract_passed": true,
+    "contains_step_zero_and_1024": true,
+    "final_onnx_actions_finite": true,
+    "final_onnx_eight_tick_bound_excess_at_most_1e_6": true,
+    "final_onnx_interface_exact": true,
+    "final_onnx_state_output_exact": true,
+    "metrics_present": true,
+    "step_zero_exactly_matches_protected_source": true,
+    "step_zero_onnx_actions_finite": true,
+    "step_zero_onnx_eight_tick_bound_excess_at_most_1e_6": true,
+    "step_zero_onnx_interface_exact": true,
+    "step_zero_onnx_state_output_exact": true
+  },
+  "execution": {
+    "colab_access": false,
+    "jax_backend": "cpu",
+    "jax_devices": [
+      "TFRT_CPU_0"
+    ],
+    "local_gpu_access": false,
+    "rdk_access": false,
+    "robot_access": false
+  },
+  "failed_checks": [],
+  "final_onnx": {
+    "checks": {
+      "actions_finite": true,
+      "eight_tick_bound_excess_at_most_1e_6": true,
+      "interface_exact": true,
+      "state_output_exact": true
+    },
+    "graph_name": "open_duck_reference_residual_hard_vector_final_action",
+    "inputs": [
+      "obs",
+      "previous_action"
+    ],
+    "max_bound_excess": 2.9802322387695312e-08,
+    "max_state_output_error": 0.0,
+    "outputs": [
+      "continuous_actions",
+      "previous_action_out"
+    ],
+    "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/ground_up_measured_bridge_cpu_smoke/2026_07_14_123040_1024.onnx",
+    "sha256": "4fde5754cb71f396c3ea2275666094273f96b01022b126fcafdafd86b6900be0"
+  },
+  "interpretation": "This proves CPU restore/update/export compatibility with the bridge-only transition. Training reward and this short rollout are not policy-selection evidence, and no robot clearance follows.",
+  "metrics": {
+    "checks": {
+      "all_metrics_finite": true,
+      "contains_step_zero_and_1024": true,
+      "metrics_present": true
+    },
+    "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/ground_up_measured_bridge_cpu_smoke/events.out.tfevents.1784046579.LSD",
+    "scalars": {
+      "eval/avg_episode_length": [
+        {
+          "step": 0,
+          "value": 100.0
+        },
+        {
+          "step": 1024,
+          "value": 100.0
+        }
+      ],
+      "eval/episode_cost/action_rate": [
+        {
+          "step": 0,
+          "value": 40.33531188964844
+        },
+        {
+          "step": 1024,
+          "value": 41.01462173461914
+        }
+      ],
+      "eval/episode_cost/action_rate_std": [
+        {
+          "step": 0,
+          "value": 1.9486044645309448
+        },
+        {
+          "step": 1024,
+          "value": 1.5875680446624756
+        }
+      ],
+      "eval/episode_cost/stand_still": [
+        {
+          "step": 0,
+          "value": 0.0
+        },
+        {
+          "step": 1024,
+          "value": 0.0
+        }
+      ],
+      "eval/episode_cost/stand_still_std": [
+        {
+          "step": 0,
+          "value": 0.0
+        },
+        {
+          "step": 1024,
+          "value": 0.0
+        }
+      ],
+      "eval/episode_cost/torques": [
+        {
+          "step": 0,
+          "value": 1.8410732746124268
+        },
+        {
+          "step": 1024,
+          "value": 1.8628435134887695
+        }
+      ],
+      "eval/episode_cost/torques_std": [
+        {
+          "step": 0,
+          "value": 0.17045098543167114
+        },
+        {
+          "step": 1024,
+          "value": 0.16146613657474518
+        }
+      ],
+      "eval/episode_reward": [
+        {
+          "step": 0,
+          "value": 43.03874969482422
+        },
+        {
+          "step": 1024,
+          "value": 42.76429748535156
+        }
+      ],
+      "eval/episode_reward/alive": [
+        {
+          "step": 0,
+          "value": 2000.0
+        },
+        {
+          "step": 1024,
+          "value": 2000.0
+        }
+      ],
+      "eval/episode_reward/alive_std": [
+        {
+          "step": 0,
+          "value": 0.0
+        },
+        {
+          "step": 1024,
+          "value": 0.0
+        }
+      ],
+      "eval/episode_reward/imitation": [
+        {
+          "step": 0,
+          "value": 16.392465591430664
+        },
+        {
+          "step": 1024,
+          "value": 16.35446548461914
+        }
+      ],
+      "eval/episode_reward/imitation_std": [
+        {
+          "step": 0,
+          "value": 16.778493881225586
+        },
+        {
+          "step": 1024,
+          "value": 16.755464553833008
+        }
+      ],
+      "eval/episode_reward/tracking_ang_vel": [
+        {
+          "step": 0,
+          "value": 32.7820930480957
+        },
+        {
+          "step": 1024,
+          "value": 31.8509521484375
+        }
+      ],
+      "eval/episode_reward/tracking_ang_vel_std": [
+        {
+          "step": 0,
+          "value": 9.118412971496582
+        },
+        {
+          "step": 1024,
+          "value": 9.30622673034668
+        }
+      ],
+      "eval/episode_reward/tracking_lin_vel": [
+        {
+          "step": 0,
+          "value": 144.93936157226562
+        },
+        {
+          "step": 1024,
+          "value": 132.88697814941406
+        }
+      ],
+      "eval/episode_reward/tracking_lin_vel_std": [
+        {
+          "step": 0,
+          "value": 31.173564910888672
+        },
+        {
+          "step": 1024,
+          "value": 33.68413543701172
+        }
+      ],
+      "eval/episode_reward_std": [
+        {
+          "step": 0,
+          "value": 0.8902435898780823
+        },
+        {
+          "step": 1024,
+          "value": 0.9316222667694092
+        }
+      ],
+      "eval/episode_swing_peak": [
+        {
+          "step": 0,
+          "value": 0.513170599937439
+        },
+        {
+          "step": 1024,
+          "value": 0.4285787045955658
+        }
+      ],
+      "eval/episode_swing_peak_std": [
+        {
+          "step": 0,
+          "value": 0.1850559115409851
+        },
+        {
+          "step": 1024,
+          "value": 0.14280886948108673
+        }
+      ],
+      "eval/epoch_eval_time": [
+        {
+          "step": 0,
+          "value": 25.645483016967773
+        },
+        {
+          "step": 1024,
+          "value": 26.437923431396484
+        }
+      ],
+      "eval/sps": [
+        {
+          "step": 0,
+          "value": 499.1132507324219
+        },
+        {
+          "step": 1024,
+          "value": 484.15301513671875
+        }
+      ],
+      "eval/std_episode_length": [
+        {
+          "step": 0,
+          "value": 0.0
+        },
+        {
+          "step": 1024,
+          "value": 0.0
+        }
+      ],
+      "eval/walltime": [
+        {
+          "step": 0,
+          "value": 25.645483016967773
+        },
+        {
+          "step": 1024,
+          "value": 52.083404541015625
+        }
+      ],
+      "training/entropy_loss": [
+        {
+          "step": 1024,
+          "value": 0.008376019075512886
+        }
+      ],
+      "training/kl_mean": [
+        {
+          "step": 1024,
+          "value": 0.13789013028144836
+        }
+      ],
+      "training/learning_rate": [
+        {
+          "step": 1024,
+          "value": 0.0003000000142492354
+        }
+      ],
+      "training/policy_dist_max_loc": [
+        {
+          "step": 1024,
+          "value": 2.1801962852478027
+        }
+      ],
+      "training/policy_dist_max_std": [
+        {
+          "step": 1024,
+          "value": 0.9539077877998352
+        }
+      ],
+      "training/policy_dist_mean_loc": [
+        {
+          "step": 1024,
+          "value": 0.029469283297657967
+        }
+      ],
+      "training/policy_dist_mean_std": [
+        {
+          "step": 1024,
+          "value": 0.35097286105155945
+        }
+      ],
+      "training/policy_dist_min_loc": [
+        {
+          "step": 1024,
+          "value": -2.1327812671661377
+        }
+      ],
+      "training/policy_dist_min_std": [
+        {
+          "step": 1024,
+          "value": 0.04608045518398285
+        }
+      ],
+      "training/policy_loss": [
+        {
+          "step": 1024,
+          "value": 0.07836300134658813
+        }
+      ],
+      "training/sps": [
+        {
+          "step": 1024,
+          "value": 73.00657653808594
+        }
+      ],
+      "training/total_loss": [
+        {
+          "step": 1024,
+          "value": 0.12885136902332306
+        }
+      ],
+      "training/v_loss": [
+        {
+          "step": 1024,
+          "value": 0.04211235046386719
+        }
+      ],
+      "training/walltime": [
+        {
+          "step": 1024,
+          "value": 14.02613353729248
+        }
+      ]
+    },
+    "sha256": "a0c5ebd998d816c33c5926db730c2e3a37593bc46a269f53cefba278cc0f90c0"
+  },
+  "schema_version": "ground_up_measured_bridge_continuation_smoke.v1",
+  "status": "PASS_CPU_MEASURED_BRIDGE_CONTINUATION_SMOKE",
+  "step_zero_onnx": {
+    "checks": {
+      "actions_finite": true,
+      "eight_tick_bound_excess_at_most_1e_6": true,
+      "interface_exact": true,
+      "state_output_exact": true
+    },
+    "graph_name": "open_duck_reference_residual_hard_vector_final_action",
+    "inputs": [
+      "obs",
+      "previous_action"
+    ],
+    "max_bound_excess": 2.9802322387695312e-08,
+    "max_state_output_error": 0.0,
+    "outputs": [
+      "continuous_actions",
+      "previous_action_out"
+    ],
+    "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/ground_up_measured_bridge_cpu_smoke/2026_07_14_123022_0.onnx",
+    "sha256": "f583377fef75e90f93380b9f4bf971f664f484629193a0e58ae6f466c3bad2be"
+  }
+}

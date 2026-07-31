@@ -1,0 +1,44 @@
+{
+  "authority": {
+    "additional_alpha": false,
+    "additional_training": false,
+    "colab": false,
+    "deployment_contract_audit": false,
+    "gate5": false,
+    "rdkx5_or_robot": false,
+    "t182b_single_command_worker_preregistration": true
+  },
+  "decision": "PREREGISTER_T182B_EXACT_SINGLE_COMMAND_FORMAL_WORKER",
+  "execution": {
+    "manifests_created": 0,
+    "new_behavior_cells": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "trace_files_created": 0
+  },
+  "failure": {
+    "error": "formal T27 commands, seed, or duration changed",
+    "mechanism": "the inherited T27 formal worker accepts only (0,.074,.077,.080), while T182 preregistered exactly one .077 cell",
+    "policy_outcome_measured": false,
+    "worker_returncode": 1
+  },
+  "recovery_contract": {
+    "allowed_formal_commands": [
+      0.077
+    ],
+    "all_other_worker_source_and_behavior_contract_unchanged": true,
+    "fresh_cache_required": true,
+    "same_policy_fit_condition_seed_duration": true
+  },
+  "result_sha256": "01b8e7efe60d9075fd032605bc6e31a73f73e9b1e58ea910fb288162f66b3557",
+  "schema_version": "open_duck.t182_worker_command_contract_recovery.v1",
+  "source": {
+    "preregistered_contract_sha256": "95c704ebea493bcc72171db72fd5fee88786fdde44219bba2cb0d6cedbd511d2",
+    "stdout": {
+      "bytes": 472,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t182_shared_failure_single_cell_v1\\12_TORSO_COM_Z_POS\\T181_ALPHA_0P2_HALF\\p31_34\\stdout.log",
+      "sha256": "afc07b4e5e28a2178f11417f11041f73cff8ab76a11ae0f7e7c56d53efe3f43f"
+    }
+  },
+  "status": "INVALID_T182_WORKER_COMMAND_CONTRACT_NO_BEHAVIOR"
+}

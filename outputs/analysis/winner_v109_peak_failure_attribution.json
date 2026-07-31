@@ -1,0 +1,573 @@
+{
+  "authority": {
+    "checkpoint_selection": false,
+    "gate5": false,
+    "hosted_training": false,
+    "one_frozen_cpu_feasibility_screen_next": true,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "all_12_moving_traces_fail_current_and_torque": true,
+    "all_16_traces_present": true,
+    "failure_joints_exactly_bilateral_knees_and_left_ankle": true,
+    "four_zero_traces_pass_current_torque": true,
+    "frozen_inputs_exact": true,
+    "g3_prior_persistent_behavior_pass": true,
+    "g3_was_frozen_before_v109": true,
+    "no_overcurrent_duration_failure": true,
+    "v109_valid_rejection_exact": true
+  },
+  "decision": {
+    "reason": "the failure is isolated to instantaneous bilateral-knee and left-ankle peaks, the overcurrent duration rule passes, and every noncurrent behavior metric passed",
+    "repair": "change the already-present symmetric pitch guard from the selected G1 0.20-rad boundary to the already-preregistered G3 0.165-rad full-tick buffer; do not tune a new value",
+    "status": "SELECT_FROZEN_G3_GUARD_FEASIBILITY_SCREEN"
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "current": "17e841450a2dde66182c3d41a06abf8d14366011f811bcde20adb1f1c8f68ddb",
+    "guard_prereg": "9bf9b3ec4e4423a5e44a582d29a69927382468e24d7aa3a478712b6c87988dae",
+    "guard_result": "b90b5d4032b50b34470bead489394a91d9c2520830876f58d05caf3e9683a5f9",
+    "result": "dd79fc3976e1e8aae37aba7a0838c20c2e10f34ab1337526c9eaea3d4860cf5b"
+  },
+  "population": {
+    "failure_joint_counts": {
+      "left_ankle": 12,
+      "left_knee": 12,
+      "right_knee": 2
+    },
+    "maximum_overcurrent_streak_ticks": 9,
+    "moving": 12,
+    "traces": 16,
+    "worst_peak_current_a": 2.914791211524534,
+    "worst_peak_torque_nm": 2.2867469787597656,
+    "zero_command": 4
+  },
+  "schema_version": "winner_v109.peak_failure_attribution.v1",
+  "status": "PASS_WINNER_V109_PEAK_FAILURE_ATTRIBUTION",
+  "trace_audits": [
+    {
+      "current_fail_joints": [],
+      "gates": {
+        "current_peak_pass": true,
+        "overcurrent_duration_pass": true,
+        "torque_peak_pass": true
+      },
+      "identity_from_stem": "r64_recurrent_final_p30_all_joint_x0.000_seed167931544",
+      "maximum_consecutive_ticks_strictly_above_2a": 0,
+      "peak": {
+        "action": 0.0,
+        "actual_position_rad": 1.4097161293029785,
+        "applied_target_rad": 1.3789999542928437,
+        "current_a": 0.6698665813489164,
+        "joint": "right_knee",
+        "sent_target_rad": 1.378999948501587,
+        "tick": 599,
+        "torque_nm": 0.5255317687988281,
+        "tracking_error_rad": 0.030716175010134794
+      },
+      "torque_fail_joints": [],
+      "trace": {
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v109-recurrent-source-run-20260724\\traces\\r64_recurrent_final_p30_all_joint_x0.000_seed167931544.jsonl",
+        "rows": 600,
+        "sha256": "6ba69b92163f61671e8c3615117997ad9af36552d389b6bf1d35c4c82b0d516f"
+      },
+      "zero_command": true
+    },
+    {
+      "current_fail_joints": [
+        "left_knee",
+        "left_ankle"
+      ],
+      "gates": {
+        "current_peak_pass": false,
+        "overcurrent_duration_pass": true,
+        "torque_peak_pass": false
+      },
+      "identity_from_stem": "r64_recurrent_final_p30_all_joint_x0.074_seed167931544",
+      "maximum_consecutive_ticks_strictly_above_2a": 8,
+      "peak": {
+        "action": -0.11796045303344727,
+        "actual_position_rad": 1.4854329824447632,
+        "applied_target_rad": 1.3634055046139735,
+        "current_a": 2.6871148582774707,
+        "joint": "left_knee",
+        "sent_target_rad": 1.3385099172592163,
+        "tick": 187,
+        "torque_nm": 2.1081275939941406,
+        "tracking_error_rad": 0.12202747783078971
+      },
+      "torque_fail_joints": [
+        "left_knee",
+        "left_ankle"
+      ],
+      "trace": {
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v109-recurrent-source-run-20260724\\traces\\r64_recurrent_final_p30_all_joint_x0.074_seed167931544.jsonl",
+        "rows": 600,
+        "sha256": "4bb51a2d9bdd6b17afab29e6a7288382520b0b0880b21b99f0cb75c99bac5264"
+      },
+      "zero_command": false
+    },
+    {
+      "current_fail_joints": [
+        "left_knee",
+        "left_ankle"
+      ],
+      "gates": {
+        "current_peak_pass": false,
+        "overcurrent_duration_pass": true,
+        "torque_peak_pass": false
+      },
+      "identity_from_stem": "r64_recurrent_final_p30_all_joint_x0.077_seed167931544",
+      "maximum_consecutive_ticks_strictly_above_2a": 6,
+      "peak": {
+        "action": -0.1921992301940918,
+        "actual_position_rad": 1.4769890308380127,
+        "applied_target_rad": 1.3566462406965363,
+        "current_a": 2.6435600373691637,
+        "joint": "left_knee",
+        "sent_target_rad": 1.3199502229690552,
+        "tick": 457,
+        "torque_nm": 2.0739574432373047,
+        "tracking_error_rad": 0.12034279014147642
+      },
+      "torque_fail_joints": [
+        "left_knee",
+        "left_ankle"
+      ],
+      "trace": {
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v109-recurrent-source-run-20260724\\traces\\r64_recurrent_final_p30_all_joint_x0.077_seed167931544.jsonl",
+        "rows": 600,
+        "sha256": "93b7c8757c71f5652979a726b5cab2457cc71b32353c81dfcf94648e287da774"
+      },
+      "zero_command": false
+    },
+    {
+      "current_fail_joints": [
+        "left_knee",
+        "left_ankle"
+      ],
+      "gates": {
+        "current_peak_pass": false,
+        "overcurrent_duration_pass": true,
+        "torque_peak_pass": false
+      },
+      "identity_from_stem": "r64_recurrent_final_p30_all_joint_x0.080_seed167931544",
+      "maximum_consecutive_ticks_strictly_above_2a": 6,
+      "peak": {
+        "action": -0.18121337890625,
+        "actual_position_rad": 1.4808011054992676,
+        "applied_target_rad": 1.35898514636844,
+        "current_a": 2.678829352854333,
+        "joint": "left_knee",
+        "sent_target_rad": 1.3226966857910156,
+        "tick": 214,
+        "torque_nm": 2.1016273498535156,
+        "tracking_error_rad": 0.12181595913082766
+      },
+      "torque_fail_joints": [
+        "left_knee",
+        "left_ankle",
+        "right_knee"
+      ],
+      "trace": {
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v109-recurrent-source-run-20260724\\traces\\r64_recurrent_final_p30_all_joint_x0.080_seed167931544.jsonl",
+        "rows": 600,
+        "sha256": "31a1da4fe30ba3d6d7adea7a939b0623e848f75c3d94f9d89219a91610419637"
+      },
+      "zero_command": false
+    },
+    {
+      "current_fail_joints": [],
+      "gates": {
+        "current_peak_pass": true,
+        "overcurrent_duration_pass": true,
+        "torque_peak_pass": true
+      },
+      "identity_from_stem": "r64_recurrent_final_p31_34_pitch_with_p30_nonpitch_x0.000_seed167931544",
+      "maximum_consecutive_ticks_strictly_above_2a": 0,
+      "peak": {
+        "action": 0.0,
+        "actual_position_rad": 1.4097161293029785,
+        "applied_target_rad": 1.3789999542928437,
+        "current_a": 0.6698665813489164,
+        "joint": "right_knee",
+        "sent_target_rad": 1.378999948501587,
+        "tick": 599,
+        "torque_nm": 0.5255317687988281,
+        "tracking_error_rad": 0.030716175010134794
+      },
+      "torque_fail_joints": [],
+      "trace": {
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v109-recurrent-source-run-20260724\\traces\\r64_recurrent_final_p31_34_pitch_with_p30_nonpitch_x0.000_seed167931544.jsonl",
+        "rows": 600,
+        "sha256": "95775bca51b2398184b9f3acbd0b4c27fc6f9a4a5a2f9dd5641e579d109f0a55"
+      },
+      "zero_command": true
+    },
+    {
+      "current_fail_joints": [
+        "left_knee"
+      ],
+      "gates": {
+        "current_peak_pass": false,
+        "overcurrent_duration_pass": true,
+        "torque_peak_pass": false
+      },
+      "identity_from_stem": "r64_recurrent_final_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544",
+      "maximum_consecutive_ticks_strictly_above_2a": 6,
+      "peak": {
+        "action": -0.1564340591430664,
+        "actual_position_rad": 1.4883837699890137,
+        "applied_target_rad": 1.3635357851419578,
+        "current_a": 2.7521079382295652,
+        "joint": "left_knee",
+        "sent_target_rad": 1.3288915157318115,
+        "tick": 565,
+        "torque_nm": 2.159116744995117,
+        "tracking_error_rad": 0.12484798484705584
+      },
+      "torque_fail_joints": [
+        "left_knee",
+        "left_ankle"
+      ],
+      "trace": {
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v109-recurrent-source-run-20260724\\traces\\r64_recurrent_final_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.jsonl",
+        "rows": 600,
+        "sha256": "1efc12c843839477155f234ce41b50abf3628d7d271406c2818acb2dfba7443a"
+      },
+      "zero_command": false
+    },
+    {
+      "current_fail_joints": [
+        "left_knee",
+        "left_ankle"
+      ],
+      "gates": {
+        "current_peak_pass": false,
+        "overcurrent_duration_pass": true,
+        "torque_peak_pass": false
+      },
+      "identity_from_stem": "r64_recurrent_final_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544",
+      "maximum_consecutive_ticks_strictly_above_2a": 6,
+      "peak": {
+        "action": -0.1490345001220703,
+        "actual_position_rad": 1.4923144578933716,
+        "applied_target_rad": 1.3601695607997675,
+        "current_a": 2.9003766687857477,
+        "joint": "left_knee",
+        "sent_target_rad": 1.3307414054870605,
+        "tick": 376,
+        "torque_nm": 2.2754383087158203,
+        "tracking_error_rad": 0.1321448970936041
+      },
+      "torque_fail_joints": [
+        "left_knee",
+        "left_ankle"
+      ],
+      "trace": {
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v109-recurrent-source-run-20260724\\traces\\r64_recurrent_final_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.jsonl",
+        "rows": 600,
+        "sha256": "278b85e90611e8b57d35b6207e6a6064f573626a2cd724696c3c6b8ace8d2948"
+      },
+      "zero_command": false
+    },
+    {
+      "current_fail_joints": [
+        "left_knee",
+        "left_ankle"
+      ],
+      "gates": {
+        "current_peak_pass": false,
+        "overcurrent_duration_pass": true,
+        "torque_peak_pass": false
+      },
+      "identity_from_stem": "r64_recurrent_final_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544",
+      "maximum_consecutive_ticks_strictly_above_2a": 8,
+      "peak": {
+        "action": -0.2212085723876953,
+        "actual_position_rad": 1.471899390220642,
+        "applied_target_rad": 1.3457837342382741,
+        "current_a": 2.775014637788486,
+        "joint": "left_knee",
+        "sent_target_rad": 1.3126978874206543,
+        "tick": 376,
+        "torque_nm": 2.1770877838134766,
+        "tracking_error_rad": 0.12611565598236796
+      },
+      "torque_fail_joints": [
+        "left_knee",
+        "left_ankle"
+      ],
+      "trace": {
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v109-recurrent-source-run-20260724\\traces\\r64_recurrent_final_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.jsonl",
+        "rows": 600,
+        "sha256": "5ec4ce8747d29a47018ca5714f5158e1377da024c17888b5649d0e353c8707b5"
+      },
+      "zero_command": false
+    },
+    {
+      "current_fail_joints": [],
+      "gates": {
+        "current_peak_pass": true,
+        "overcurrent_duration_pass": true,
+        "torque_peak_pass": true
+      },
+      "identity_from_stem": "r64_recurrent_half_p30_all_joint_x0.000_seed167931544",
+      "maximum_consecutive_ticks_strictly_above_2a": 0,
+      "peak": {
+        "action": 0.0,
+        "actual_position_rad": 1.4097161293029785,
+        "applied_target_rad": 1.3789999542928437,
+        "current_a": 0.6698665813489164,
+        "joint": "right_knee",
+        "sent_target_rad": 1.378999948501587,
+        "tick": 599,
+        "torque_nm": 0.5255317687988281,
+        "tracking_error_rad": 0.030716175010134794
+      },
+      "torque_fail_joints": [],
+      "trace": {
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v109-recurrent-source-run-20260724\\traces\\r64_recurrent_half_p30_all_joint_x0.000_seed167931544.jsonl",
+        "rows": 600,
+        "sha256": "7021f6d1403217e27be64e3bd584e81b55faa7693f686b8f69398654a4a057a6"
+      },
+      "zero_command": true
+    },
+    {
+      "current_fail_joints": [
+        "left_knee",
+        "left_ankle"
+      ],
+      "gates": {
+        "current_peak_pass": false,
+        "overcurrent_duration_pass": true,
+        "torque_peak_pass": false
+      },
+      "identity_from_stem": "r64_recurrent_half_p30_all_joint_x0.074_seed167931544",
+      "maximum_consecutive_ticks_strictly_above_2a": 8,
+      "peak": {
+        "action": 0.27086520195007324,
+        "actual_position_rad": -0.5442519187927246,
+        "applied_target_rad": -0.6636441015425052,
+        "current_a": 2.6612749244776412,
+        "joint": "left_ankle",
+        "sent_target_rad": -0.7162836790084839,
+        "tick": 252,
+        "torque_nm": 2.087855339050293,
+        "tracking_error_rad": 0.11939218274978058
+      },
+      "torque_fail_joints": [
+        "left_knee",
+        "left_ankle"
+      ],
+      "trace": {
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v109-recurrent-source-run-20260724\\traces\\r64_recurrent_half_p30_all_joint_x0.074_seed167931544.jsonl",
+        "rows": 600,
+        "sha256": "150ff08fbc7879a50c6c88d76fa28e3664125499f5115df4d9fbae3668841ec9"
+      },
+      "zero_command": false
+    },
+    {
+      "current_fail_joints": [
+        "left_knee",
+        "left_ankle"
+      ],
+      "gates": {
+        "current_peak_pass": false,
+        "overcurrent_duration_pass": true,
+        "torque_peak_pass": false
+      },
+      "identity_from_stem": "r64_recurrent_half_p30_all_joint_x0.077_seed167931544",
+      "maximum_consecutive_ticks_strictly_above_2a": 7,
+      "peak": {
+        "action": 0.2809414863586426,
+        "actual_position_rad": -0.5420228242874146,
+        "applied_target_rad": -0.6666412130991095,
+        "current_a": 2.777075073776194,
+        "joint": "left_ankle",
+        "sent_target_rad": -0.7137646079063416,
+        "tick": 549,
+        "torque_nm": 2.178704261779785,
+        "tracking_error_rad": 0.12461838881169496
+      },
+      "torque_fail_joints": [
+        "left_knee",
+        "left_ankle"
+      ],
+      "trace": {
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v109-recurrent-source-run-20260724\\traces\\r64_recurrent_half_p30_all_joint_x0.077_seed167931544.jsonl",
+        "rows": 600,
+        "sha256": "3d045adee9a238242e43bdb901b1cd22d7351ef6d875a0f1cc977478c07076a3"
+      },
+      "zero_command": false
+    },
+    {
+      "current_fail_joints": [
+        "left_knee",
+        "left_ankle"
+      ],
+      "gates": {
+        "current_peak_pass": false,
+        "overcurrent_duration_pass": true,
+        "torque_peak_pass": false
+      },
+      "identity_from_stem": "r64_recurrent_half_p30_all_joint_x0.080_seed167931544",
+      "maximum_consecutive_ticks_strictly_above_2a": 9,
+      "peak": {
+        "action": -0.4416160583496094,
+        "actual_position_rad": 1.432303547859192,
+        "applied_target_rad": 1.3051974070612269,
+        "current_a": 2.805375374796744,
+        "joint": "left_knee",
+        "sent_target_rad": 1.2575960159301758,
+        "tick": 84,
+        "torque_nm": 2.200906753540039,
+        "tracking_error_rad": 0.127106140797965
+      },
+      "torque_fail_joints": [
+        "left_knee",
+        "left_ankle"
+      ],
+      "trace": {
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v109-recurrent-source-run-20260724\\traces\\r64_recurrent_half_p30_all_joint_x0.080_seed167931544.jsonl",
+        "rows": 600,
+        "sha256": "2e05c50b092b6af45688e1baf4aa363d9ecf458b3e7963f8ad708dbeead2e507"
+      },
+      "zero_command": false
+    },
+    {
+      "current_fail_joints": [],
+      "gates": {
+        "current_peak_pass": true,
+        "overcurrent_duration_pass": true,
+        "torque_peak_pass": true
+      },
+      "identity_from_stem": "r64_recurrent_half_p31_34_pitch_with_p30_nonpitch_x0.000_seed167931544",
+      "maximum_consecutive_ticks_strictly_above_2a": 0,
+      "peak": {
+        "action": 0.0,
+        "actual_position_rad": 1.4097161293029785,
+        "applied_target_rad": 1.3789999542928437,
+        "current_a": 0.6698665813489164,
+        "joint": "right_knee",
+        "sent_target_rad": 1.378999948501587,
+        "tick": 599,
+        "torque_nm": 0.5255317687988281,
+        "tracking_error_rad": 0.030716175010134794
+      },
+      "torque_fail_joints": [],
+      "trace": {
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v109-recurrent-source-run-20260724\\traces\\r64_recurrent_half_p31_34_pitch_with_p30_nonpitch_x0.000_seed167931544.jsonl",
+        "rows": 600,
+        "sha256": "35518f1ff42eadc6af6e970481c35443c54c3561ab68ff2edbf3b01d0a1a0126"
+      },
+      "zero_command": true
+    },
+    {
+      "current_fail_joints": [
+        "left_knee",
+        "left_ankle"
+      ],
+      "gates": {
+        "current_peak_pass": false,
+        "overcurrent_duration_pass": true,
+        "torque_peak_pass": false
+      },
+      "identity_from_stem": "r64_recurrent_half_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544",
+      "maximum_consecutive_ticks_strictly_above_2a": 8,
+      "peak": {
+        "action": -0.5381197929382324,
+        "actual_position_rad": 1.4058964252471924,
+        "applied_target_rad": 1.2812288418459208,
+        "current_a": 2.7571842690169803,
+        "joint": "left_knee",
+        "sent_target_rad": 1.23347008228302,
+        "tick": 84,
+        "torque_nm": 2.1630992889404297,
+        "tracking_error_rad": 0.1246675834012716
+      },
+      "torque_fail_joints": [
+        "left_knee",
+        "left_ankle"
+      ],
+      "trace": {
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v109-recurrent-source-run-20260724\\traces\\r64_recurrent_half_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.jsonl",
+        "rows": 600,
+        "sha256": "0b08d2c5dc3c2c6abee882cc168ab28c34be626e26c9411f4295b9ddc84d7dda"
+      },
+      "zero_command": false
+    },
+    {
+      "current_fail_joints": [
+        "left_knee",
+        "left_ankle"
+      ],
+      "gates": {
+        "current_peak_pass": false,
+        "overcurrent_duration_pass": true,
+        "torque_peak_pass": false
+      },
+      "identity_from_stem": "r64_recurrent_half_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544",
+      "maximum_consecutive_ticks_strictly_above_2a": 9,
+      "peak": {
+        "action": -0.488558292388916,
+        "actual_position_rad": 1.4183275699615479,
+        "applied_target_rad": 1.29142034647285,
+        "current_a": 2.805776521626209,
+        "joint": "left_knee",
+        "sent_target_rad": 1.2458604574203491,
+        "tick": 84,
+        "torque_nm": 2.201221466064453,
+        "tracking_error_rad": 0.12690722348869787
+      },
+      "torque_fail_joints": [
+        "left_knee",
+        "left_ankle"
+      ],
+      "trace": {
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v109-recurrent-source-run-20260724\\traces\\r64_recurrent_half_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.jsonl",
+        "rows": 600,
+        "sha256": "8211752db321c97ee04e27930684a0d09c9da872d05a0fcd62a6323dee89fd38"
+      },
+      "zero_command": false
+    },
+    {
+      "current_fail_joints": [
+        "left_knee",
+        "left_ankle"
+      ],
+      "gates": {
+        "current_peak_pass": false,
+        "overcurrent_duration_pass": true,
+        "torque_peak_pass": false
+      },
+      "identity_from_stem": "r64_recurrent_half_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544",
+      "maximum_consecutive_ticks_strictly_above_2a": 9,
+      "peak": {
+        "action": -0.43906164169311523,
+        "actual_position_rad": 1.4295774698257446,
+        "applied_target_rad": 1.2978039672639836,
+        "current_a": 2.914791211524534,
+        "joint": "left_knee",
+        "sent_target_rad": 1.2582346200942993,
+        "tick": 165,
+        "torque_nm": 2.2867469787597656,
+        "tracking_error_rad": 0.131773502561761
+      },
+      "torque_fail_joints": [
+        "left_knee",
+        "left_ankle",
+        "right_knee"
+      ],
+      "trace": {
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v109-recurrent-source-run-20260724\\traces\\r64_recurrent_half_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.jsonl",
+        "rows": 600,
+        "sha256": "288c7857cfb63d2c76b06f49d18a278795053cba77c57cdd53a30ed79194e85f"
+      },
+      "zero_command": false
+    }
+  ],
+  "v109_gate_completeness_note": "Winner-v109 explicitly enforced current peak and duration but did not separately report the manufacturer peak-torque check. Replaying the immutable traces shows all 12 moving cells also fail the stricter 1.91229675 N.m torque gate, so the V109 rejection is unchanged. Winner-v110 must enforce both."
+}

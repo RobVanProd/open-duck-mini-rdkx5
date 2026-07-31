@@ -1,0 +1,199 @@
+name: Winner v25 directional support control diagnostic
+
+on:
+  push:
+    branches:
+      - codex/winner-v4-response-contract
+    paths:
+      - outputs/analysis/winner_v25_directional_support_control_diagnostic_preregistration.json
+      - outputs/analysis/WINNER_V25_DIRECTIONAL_SUPPORT_CONTROL_DIAGNOSTIC_PREREGISTRATION_20260722.md
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: winner-v25-directional-support-control-diagnostic
+  cancel-in-progress: false
+
+jobs:
+  diagnostic:
+    name: One zero-update same-state directional diagnostic
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+
+    steps:
+      - name: Reject workflow reruns
+        run: test "${{ github.run_attempt }}" = "1"
+
+      - name: Checkout frozen diagnostic
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up exact Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12.13"
+
+      - name: Install exact CPU environment
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            "jax[cpu]==0.7.2" \
+            "jaxlib==0.7.2" \
+            "mujoco==3.9.0" \
+            "numpy==2.0.2" \
+            "onnx==1.22.0" \
+            "onnxruntime==1.27.0" \
+            "pytest==8.4.2"
+
+      - name: Verify frozen diagnostic package
+        run: |
+          python -m pytest -q \
+            tests/test_winner_v25_directional_support_control_diagnostic.py \
+            tests/test_winner_v25_directional_support_control_diagnostic_preregistration.py \
+            tests/test_winner_v25_directional_support_control_diagnostic_import.py
+
+      - name: Resolve exact imported training artifacts
+        id: sources
+        shell: bash
+        run: |
+          python - <<'PY' >>"$GITHUB_OUTPUT"
+          import hashlib
+          import json
+          from pathlib import Path
+
+          path = Path("outputs/analysis/winner_v25_directional_support_control_diagnostic_preregistration.json")
+          value = json.loads(path.read_text())
+          if value["status"] != "PREREGISTERED_WINNER_V25_DIRECTIONAL_SUPPORT_CONTROL_DIAGNOSTIC":
+              raise SystemExit("Winner-v25 diagnostic is not preregistered")
+          if any(value["execution_now"].values()):
+              raise SystemExit("Winner-v25 preregistration already records execution")
+          sources = value["sources"]
+          for name, item in sources.items():
+              observed = hashlib.sha256(
+                  Path(item["path"]).read_bytes().replace(b"\r\n", b"\n")
+              ).hexdigest()
+              if item["hash_mode"] != "lf" or observed != item["sha256"]:
+                  raise SystemExit(f"Winner-v25 source changed: {name}")
+          canonical = hashlib.sha256(
+              json.dumps(sources, sort_keys=True, separators=(",", ":")).encode()
+          ).hexdigest()
+          if canonical != value["source_manifest_sha256"]:
+              raise SystemExit("Winner-v25 source manifest changed")
+          old = value["artifact_inputs"]["winner_v22_training"]["repository_attribution"]
+          new = value["artifact_inputs"]["winner_v24_training"]["repository_attribution"]
+          for label, row in (("v22", old), ("v24", new)):
+              if row["repository"] != "RobVanProd/open-duck-mini-rdkx5":
+                  raise SystemExit(f"{label} repository changed")
+              if row["github_run_attempt"] != 1:
+                  raise SystemExit(f"{label} source run was retried")
+          print(f"v22_run_id={old['github_run_id']}")
+          print(f"v22_artifact_name={old['github_artifact_name']}")
+          print(f"v24_run_id={new['github_run_id']}")
+          print(f"v24_artifact_name={new['github_artifact_name']}")
+          PY
+
+      - name: Download exact Winner-v22 training artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ steps.sources.outputs.v22_artifact_name }}
+          path: /tmp/winner-v22-training-artifact
+          repository: RobVanProd/open-duck-mini-rdkx5
+          run-id: ${{ steps.sources.outputs.v22_run_id }}
+          github-token: ${{ github.token }}
+
+      - name: Download exact Winner-v24 training artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ steps.sources.outputs.v24_artifact_name }}
+          path: /tmp/winner-v24-training-artifact
+          repository: RobVanProd/open-duck-mini-rdkx5
+          run-id: ${{ steps.sources.outputs.v24_run_id }}
+          github-token: ${{ github.token }}
+
+      - name: Verify exact source and candidate identities
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+
+          value = json.loads(
+              Path("outputs/analysis/winner_v25_directional_support_control_diagnostic_preregistration.json").read_text()
+          )
+          old_root = Path(
+              "/tmp/winner-v22-training-artifact/"
+              "winner-v22-normalized-predictor-training-work"
+          )
+          new_root = Path(
+              "/tmp/winner-v24-training-artifact/"
+              "winner-v24-baseline-anchored-training-work"
+          )
+          old = value["artifact_inputs"]["winner_v22_training"]
+          rows = [
+              (
+                  old_root / "snapshots/snapshot_normalized_predictor_update_100.npz",
+                  old["source_snapshot"],
+              ),
+              (old_root / "graphs/winner_v22_final.onnx", old["source_graph"]),
+          ]
+          for label, update in (("half", 150), ("final", 200)):
+              item = value["artifact_inputs"]["winner_v24_training"][label]
+              rows.extend(
+                  [
+                      (
+                          new_root / "snapshots" / f"snapshot_baseline_anchored_update_{update:03d}.npz",
+                          item["snapshot"],
+                      ),
+                      (new_root / "graphs" / f"winner_v24_{label}.onnx", item["graph"]),
+                  ]
+              )
+          for path, receipt in rows:
+              observed = hashlib.sha256(path.read_bytes()).hexdigest()
+              if observed != receipt["sha256"] or path.stat().st_size != receipt["bytes"]:
+                  raise SystemExit(f"training artifact changed: {path.name}")
+          PY
+
+      - name: Prepare exact reviewed simulation environment
+        run: |
+          git clone --quiet https://github.com/RobVanProd/Open_Duck_Playground.git \
+            /tmp/playground-source
+          python tools/prepare_winner_v15_cpu_environment.py \
+            --source-repository /tmp/playground-source \
+            --output-root /tmp/pg115-v25-directional \
+            --work-root /tmp/winner-v25-directional-environment \
+            --fit-output /tmp/fixed_target_p30_actuator_fit_lf.json
+
+      - name: Run exactly one zero-update same-state directional diagnostic
+        run: |
+          python tools/run_winner_v25_directional_support_control_diagnostic.py \
+            --v22-training-work-root /tmp/winner-v22-training-artifact/winner-v22-normalized-predictor-training-work \
+            --v24-training-work-root /tmp/winner-v24-training-artifact/winner-v24-baseline-anchored-training-work \
+            --playground-root /tmp/pg115-v25-directional \
+            --canonical-fit /tmp/fixed_target_p30_actuator_fit_lf.json \
+            --output /tmp/winner-v25-directional-support-control-diagnostic-result.json \
+            --offline-cpu-only \
+            --read-only-diagnostic-authorized
+
+      - name: Hash diagnostic result
+        if: always()
+        run: |
+          result=/tmp/winner-v25-directional-support-control-diagnostic-result.json
+          if test -f "$result"; then
+            sha256sum "$result" \
+              | tee /tmp/winner-v25-directional-support-control-diagnostic-result.sha256
+          fi
+
+      - name: Upload only diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: winner-v25-directional-support-control-diagnostic-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 14
+          compression-level: 6
+          path: |
+            /tmp/winner-v25-directional-support-control-diagnostic-result.json
+            /tmp/winner-v25-directional-support-control-diagnostic-result.sha256

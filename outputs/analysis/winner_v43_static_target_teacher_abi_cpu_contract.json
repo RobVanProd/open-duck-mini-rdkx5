@@ -1,0 +1,164 @@
+{
+  "authority": {
+    "one_update_authorized": false,
+    "pass_authorizes_only": "one separately preregistered zero-update source-gradient CPU contract",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "runtime_implementation_authorized": false,
+    "training_authorized": false
+  },
+  "decision": "AUTHORIZE_ONE_ZERO_UPDATE_STATIC_TARGET_TEACHER_ABI_CPU_PROOF_ONLY",
+  "execution_now": {
+    "deployable_graph_exports": 0,
+    "locomotion_training_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_behavior_ticks": 0,
+    "synthetic_teacher_rows": 0
+  },
+  "pass_checks": [
+    "bind the exact imported Winner-v42 result and all 15 selected targets",
+    "rederive every 14-action target and match both selected replay raw-target hashes",
+    "construct exactly 30 two-plant x 250-tick labels and 45,000 selected elements",
+    "match the inherited inward graph boundary bit-exactly",
+    "prove target and previous-action paths are stop-gradient",
+    "prove teacher gradients are finite/nonzero on all six pitch indices and exact zero elsewhere",
+    "prove the disabled combined loss and gradients are bit-exact to baseline",
+    "prove the enabled unit-scale diagnostic changes only pitch gradients",
+    "execute no optimizer update, behavior rollout, deployment export, or hardware access"
+  ],
+  "question": "Can the exact Winner-v42 selected table be represented as a stopped, training-only, pitch-only, graph-bounded teacher whose disabled objective is bit-exact and whose privileged configuration key cannot enter deployment?",
+  "schema_version": "winner_v43.static_target_teacher_abi_cpu_contract.v1",
+  "source_manifest_sha256": "bdacf6b7fc7074aab8012f3bd35ec462b1799de1ee5a03704e1b465407d37f11",
+  "source_result": {
+    "winner_v42_repository_attribution": {
+      "artifact_zip_bytes": 3777480,
+      "artifact_zip_sha256": "301cad42fb78c05411c6f2532e92b4c298e0d3da779ef844cf5777bd1f04550b",
+      "github_artifact_digest": "sha256:301cad42fb78c05411c6f2532e92b4c298e0d3da779ef844cf5777bd1f04550b",
+      "github_artifact_id": 8523288416,
+      "github_artifact_name": "winner-v42-static-target-teacher-table-29903694895",
+      "github_run_attempt": 1,
+      "github_run_head_sha": "b1bfbf0331e6393c0cf36d2b643887a80364fc0e",
+      "github_run_id": 29903694895,
+      "importer_lf_sha256": "9aeffcca31c9ea07533b993522f2646ab30ace6b6a6951259d0f054e80dce81b",
+      "preregistration_lf_sha256": "e0fc2585062230365b0cef857600382a934af637aefb3cd06f4dabf7eb9ba32d",
+      "raw_result_receipt_sha256": "35e5f21d6f528e1928712a114c628a9dcc9742b2fc1ef1e7b5fe29d823bff748",
+      "raw_result_sha256": "90950f495483075d6f02eacd55bc4680ebfbc9ca9e0cb3995ea3ba4ec0fe4ca8",
+      "repository": "RobVanProd/open-duck-mini-rdkx5",
+      "runner_lf_sha256": "67194905e8a06d5167f699019ea24c82e6d76ea78a0bf365fc570e81cb147abc",
+      "workflow_lf_sha256": "567bf33bd09eb38ce1aa1004207b744e38a295da3a202396843331f81d836053"
+    },
+    "winner_v42_result_lf_sha256": "c465d9b3951941715ee0bb588a0ba24a9c4b15d7a2c99430340bcaea43964469"
+  },
+  "sources": {
+    "action_boundary": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_calibrator_training.py",
+      "sha256": "f5736a357d73baedae2bba1d15254dd688bddf3761eb731d757a971783c77227"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v43_static_target_teacher_abi_cpu_contract.py",
+      "sha256": "c3d3b9514bbfa44caca9dd6b354278021cd35485f28393f835cf7e5fe3995b58"
+    },
+    "inward_graph_constants": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v11_dynamic_calibration_networks.py",
+      "sha256": "3ac1166920ec1a3fbcfbca5a85870c6afc1dc0e5062023801edbed09fcdc4809"
+    },
+    "preregistration_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v43_static_target_teacher_abi_cpu_preregistration.py",
+      "sha256": "fb293f603af6d63d2e390d8230d6cd8cf636f5bdf977e5824d0ddd7bdeb9e31a"
+    },
+    "result_importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v43_static_target_teacher_abi_cpu_result.py",
+      "sha256": "5cb4b2d8eb5e2e901a8cde92ec85088bf1406f3c43d4ab7d3d340e055c8daeb4"
+    },
+    "result_importer_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v43_static_target_teacher_abi_cpu_import.py",
+      "sha256": "6934ed241e04daf02a7f8e21723bdc78a1b74f9d8d406d86259863fcbb126fc9"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v43_static_target_teacher_abi_cpu_contract.py",
+      "sha256": "e0c573059493c0692a2a1c701fe4142bcad260dda5e480e67a3b6d7ef5d41b85"
+    },
+    "runner_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v43_static_target_teacher_abi_cpu_contract.py",
+      "sha256": "5a2c1fea683cebde50c4c6c92bed57954a07328b2b1c76e1bc67997f854aa00f"
+    },
+    "teacher": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v43_static_target_teacher.py",
+      "sha256": "214df40f1b2033d190c4f601280679f7105267ddb8dbcd7a2fb0f6c3929242a3"
+    },
+    "teacher_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v43_static_target_teacher.py",
+      "sha256": "d46445ab440afb430d8bf530c611c593f7beb5618eb2975466070c79cde31dac"
+    },
+    "winner_v42_importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v42_static_target_teacher_table.py",
+      "sha256": "9aeffcca31c9ea07533b993522f2646ab30ace6b6a6951259d0f054e80dce81b"
+    },
+    "winner_v42_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v42_static_target_teacher_table_preregistration.json",
+      "sha256": "e0fc2585062230365b0cef857600382a934af637aefb3cd06f4dabf7eb9ba32d"
+    },
+    "winner_v42_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v42_static_target_teacher_table_result.json",
+      "sha256": "c465d9b3951941715ee0bb588a0ba24a9c4b15d7a2c99430340bcaea43964469"
+    },
+    "workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v43-static-target-teacher-abi-cpu.yml",
+      "sha256": "1397210e921f9c244a993b2e595e37424d11884b336fa4855ae9d578302ac1d0"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V43_STATIC_TARGET_TEACHER_ABI_CPU_CONTRACT",
+  "teacher_abi": {
+    "actor_inputs": "unchanged deployable observation, previous_action, and recurrent hidden state",
+    "bounded_target": "exact Winner-v11 inward graph boundary applied relative to realized previous_action at the same tick",
+    "configuration_ids": [
+      "COM_X_NEG",
+      "COM_CORNER_00",
+      "COM_CORNER_01",
+      "COM_CORNER_02",
+      "COM_CORNER_03",
+      "OPTIONAL_AGGREGATE_HEAVY_AFT",
+      "DISCOVERY_02",
+      "DISCOVERY_03",
+      "DISCOVERY_06",
+      "DISCOVERY_09",
+      "DISCOVERY_10",
+      "HELDOUT_04",
+      "HELDOUT_07",
+      "HELDOUT_09",
+      "HELDOUT_15"
+    ],
+    "configuration_occurrences": "exactly two, one per actuator plant",
+    "default_off": "baseline loss and gradients bit-exact",
+    "deployable_graph_inputs_or_outputs_added": [],
+    "duration_ticks": 250,
+    "loss": "mean squared candidate-minus-stopped-bounded-target on valid pitch elements",
+    "nonpitch_teacher_gradient": "exact zero",
+    "privileged_configuration_use": "training-label lookup only",
+    "raw_target": "selected Winner-v42 three-coordinate target expanded to 14 actions",
+    "supervised_action_indices": [
+      2,
+      3,
+      4,
+      11,
+      12,
+      13
+    ],
+    "supervised_elements": 45000
+  }
+}

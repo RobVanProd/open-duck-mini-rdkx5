@@ -1,0 +1,57 @@
+{
+  "status": "HOLD_RECOVERY_TRANSFERRED_BUT_RATE_SPIKED",
+  "candidate": "policy/candidates/phase2_z0075_iter3_seed0_recovery_snippet_augmented_rate150_20260704/candidate.onnx",
+  "candidate_sha256": "c6e665b743468e796b070ba3bd405627fb42f3c611ddac257fbfbfb33e132c84",
+  "student_npz": "policy/candidates/phase2_z0075_iter3_seed0_recovery_snippet_augmented_rate150_20260704/student.npz",
+  "student_npz_sha256": "8c9cbc4b5737b4424ae2161b068afad13fd382dea2afe0fefa3382f6a635111d",
+  "training_manifest": "outputs/analysis/phase2_z0075_iter3_seed0_recovery_snippet_augmented_weighted_manifest.json",
+  "dataset_id": "9f4ba6b1c342d17b",
+  "fit": {
+    "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+    "samples": 51294,
+    "weighted_samples": 51889.0,
+    "mae": 0.009070184115520566,
+    "p95_abs_error": 0.02817797998159262,
+    "max_abs_error": 0.6704790592193604,
+    "target_rate_p95_rad_s": 1.3550267219543457,
+    "target_rate_p99_rad_s": 1.711225152015686,
+    "target_rate_max_rad_s": 5.560377597808838,
+    "onnx_p95_abs_error": 1.1920928955078125e-07,
+    "onnx_max_abs_error": 2.384185791015625e-07
+  },
+  "screen": {
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0075,
+    "bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+    "bridge_mode": "fitted",
+    "reset_mode": "home-support",
+    "push_interval_s": [1.0, 1.5],
+    "push_magnitude": [0.075, 0.125],
+    "duration_s": 15.0,
+    "x008": {
+      "status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+      "falls": 0,
+      "duration_complete": 2,
+      "track_ratio_mean": 0.4186530718842055,
+      "vx_mean_m_s": 0.033492245750736435,
+      "push_success_mean": 0.9083333333333333,
+      "p95_velocity_excess_rad_s": 0.0,
+      "max_velocity_excess_mean_rad_s": 0.32284069061279297,
+      "max_velocity_excess_max_rad_s": 0.3722440004348755,
+      "result_md": "outputs/analysis/PHASE2_Z0075_ITER3_SNIPPET_AUGMENTED_RATE150_X008_PUSH_SCREEN.md",
+      "result_json": "outputs/analysis/phase2_z0075_iter3_snippet_augmented_rate150_x008_push_screen.json"
+    },
+    "x0": {
+      "status": "PASS",
+      "falls": 0,
+      "duration_complete": 2,
+      "vx_mean_m_s": 0.0008620709303258233,
+      "push_success_mean": 0.9198717948717949,
+      "max_velocity_excess_rad_s": 0.0,
+      "result_md": "outputs/analysis/PHASE2_Z0075_ITER3_SNIPPET_AUGMENTED_RATE150_X0_PUSH_SCREEN.md",
+      "result_json": "outputs/analysis/phase2_z0075_iter3_snippet_augmented_rate150_x0_push_screen.json"
+    }
+  },
+  "promote": false,
+  "interpretation": "Snippet weighting transferred seed-0 push recovery from fall to duration completion, but introduced max target-velocity excess on both x=0.08 compact seeds. Rate-clean the recovered behavior before any wider gate."
+}

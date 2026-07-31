@@ -1,0 +1,385 @@
+{
+  "additional_response_contract": {
+    "flat_transport": false,
+    "graph_authoritative_rate_guard_and_x0_deadband": true,
+    "host_action_clipping_deadband_or_projection": false,
+    "policy_abi": {
+      "inputs": {
+        "calibration_context": [
+          1,
+          64
+        ],
+        "h_in": [
+          1,
+          64
+        ],
+        "obs": [
+          1,
+          115
+        ],
+        "previous_action": [
+          1,
+          14
+        ]
+      },
+      "outputs": {
+        "continuous_actions": [
+          1,
+          14
+        ],
+        "h_out": [
+          1,
+          64
+        ],
+        "previous_action_out": [
+          1,
+          14
+        ]
+      }
+    },
+    "protected_actor_and_normalizer_exact": true,
+    "training_or_simulator_reward_selection_weight": 0
+  },
+  "authority_now": {
+    "behavior_execution": false,
+    "checkpoint_selection": false,
+    "deployment": false,
+    "gate5": false,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "automatic_calibration_per_cell": {
+    "calibration_command": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "calibration_phase": [
+      1.0,
+      0.0
+    ],
+    "calibration_projected_reference": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "calibration_ticks": 250,
+    "context": "final 64-D calibrator h_out after tick 250, finite and immutable through the scored locomotion episode",
+    "failure_is_cell_failure": [
+      "calibration terminates early",
+      "home return terminates early",
+      "context is nonfinite or wrong shape",
+      "context changes during locomotion",
+      "calibration or home-return tick count differs",
+      "locomotion reset state, phase, hidden, or previous action differs"
+    ],
+    "home_return_ticks": 250,
+    "initial_calibrator_hidden": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "initial_calibrator_previous_action": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "locomotion_hidden_reset": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "locomotion_phase_reset": [
+      1.0,
+      0.0
+    ],
+    "locomotion_previous_action_reset": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "same_simulated_build_plant_and_transport_as_scored_episode": true,
+    "ticks_count_toward_scored_duration": false
+  },
+  "causal_question": "Does the response-conditioned policy preserve the complete inherited variable-configuration, measured-actuator, sensor, transport, command, and persistence envelope after automatically inferring each simulated build response?",
+  "date": "2026-07-22",
+  "decision": "FREEZE_UNCHANGED_1024_CELL_MATRIX_BEFORE_V102_OUTCOME",
+  "execution_now": {
+    "checkpoint_selected": false,
+    "formal_behavior_cells": 0,
+    "robot_clearance": false,
+    "robot_or_rdk_access": 0,
+    "training_artifacts_observed": 0
+  },
+  "formal_matrix": {
+    "actuator_plants": [
+      "P30_ALL_JOINT",
+      "P31_34_PITCH_WITH_P30_NONPITCH"
+    ],
+    "all_numeric_configuration_samples_seeds_and_transport_values": "inherited without modification from the exact base preregistration",
+    "cells_per_checkpoint": 512,
+    "cells_total": 1024,
+    "checkpoints_full_domain_relative_steps": [
+      1003520,
+      2007040
+    ],
+    "commands_x_m_s": [
+      0.0,
+      0.074,
+      0.077,
+      0.08
+    ],
+    "conditions": 64,
+    "control_hz": 50,
+    "duration_valid_locomotion_ticks": 600,
+    "group_cell_counts": {
+      "DISCOVERY": 256,
+      "FIXED_ANCHOR": 384,
+      "HELDOUT": 256,
+      "NOMINAL": 32,
+      "SENSOR_TRANSPORT": 96
+    },
+    "matrix_plan_sha256": "10b5d3e407636d276275f3f39145233c3cd63688c3229235411ed2734651e073",
+    "population": "bit-exact inherited Winner-v3 1,024-cell matrix"
+  },
+  "frozen_sources": {
+    "base_behavior_preregistration": {
+      "path": "outputs\\analysis\\winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "c8f986ceb24863f33c1fc99170548d2e255cb6a26737d3f74762f8dcd4485a24"
+    },
+    "base_behavior_runner_contract": {
+      "matrix_plan_sha256": "10b5d3e407636d276275f3f39145233c3cd63688c3229235411ed2734651e073",
+      "path": "outputs\\analysis\\winner_v3_variable_configuration_behavior_runner_contract.json",
+      "sha256": "9519c0902a41a530092f39cf5fe645cee7ce638bfc60c6b79a1ad61a075337b4"
+    },
+    "builder": {
+      "path": "tools\\build_winner_v103_response_conditioned_behavior_preregistration.py",
+      "sha256": "e2de61dff88b8a6e529a1ecb877d2fb1f048b89792c19bce4e69b176c3d72c52"
+    },
+    "calibration_wrapper": {
+      "path": "patches\\winner_v98_response_calibration_wrapper.py",
+      "sha256": "04339bf7bbe16f2721ce92bbe62c458e70c1c8a5e9bdfe02424478ebc066a7ba"
+    },
+    "calibrator_onnx_sha256": "cb3380ed99b3e9d7e9000904a210227aa397db2a064aa80d8f70e77c8339783b",
+    "v102_launch_contract": {
+      "path": "outputs\\analysis\\winner_v102_colab_launch_contract.json",
+      "sha256": "a8000d448e17c95a06a9b6a5d2e5a9f806a2e68cce33aebcc54220eaf21e0a29"
+    },
+    "v102_package_contract": {
+      "path": "outputs\\analysis\\winner_v102_response_conditioned_hosted_package_contract.json",
+      "sha256": "d4218997ab5bc75745c32c3e4b29adda82e5e7846adce82db0e52016c3909ea0"
+    },
+    "v102_training_preregistration": {
+      "path": "outputs\\analysis\\winner_v102_response_conditioned_hosted_curriculum_preregistration.json",
+      "sha256": "819b89d80dcd03b30e88e3596e55c343c14c753575b1797996a9107867b388fe"
+    }
+  },
+  "manual_measurement_disposition": {
+    "powered_off_46_field_com_packet_required": false,
+    "reason": "the accepted route automatically infers a build-response context from measured motion; it does not use static build measurements"
+  },
+  "pass_authorizes_only": {
+    "formal_checkpoint_selection": "bind the final full-domain locomotion ONNX SHA-256 plus the exact calibrator SHA-256",
+    "gate5_preparation": true,
+    "grounded_walking": false,
+    "policy_clearance_artifact": "write robot_clearance=true for the selected two-stage policy asset set and CPU/mock runtime freeze only",
+    "robot_access_or_motion_without_separate_gate_authorization": false
+  },
+  "pass_rule": [
+    "the V102 training artifact and the V103 zero-cell runner contract pass",
+    "one CPU-only no-retry process completes all 1,024 formal cells",
+    "all recorded models, plants, sensor and transport values read back exactly",
+    "automatic calibration and home return pass exactly in every cell",
+    "both persistent checkpoints pass every one of their 512 cells",
+    "all traces, outputs, graph inputs, graph outputs, and contexts are finite",
+    "the protected actor and normalizer remain exact and graph boundaries remain authoritative"
+  ],
+  "per_cell_contract": {
+    "all_joint_current_p95_a_max": 0.65,
+    "all_joint_tracking_p95_rad_max": 0.2,
+    "current_derivation": "abs(sim actuator torque N.m)/(8 kgf.cm/A = 0.784532 N.m/A)",
+    "model_readback": "exact per-run body name/id, mass, COM, full inertia tensor, actuator, delay, sensor and transport readback",
+    "moving": "600 ticks, duration_complete, PASS_CANDIDATE_SIM_GATE, bilateral left/right transitions, positive command-consistent mean vx, zero saturation, zero rate/envelope excess, tracking p95<=0.20 rad",
+    "reset": "deterministic home-support; exact h/previous-action zero",
+    "training_or_simulator_reward_has_selection_weight": false,
+    "zero_command": "600 ticks, duration_complete, PASS_CANDIDATE_SIM_GATE, |mean local vx|<=0.02 m/s, body pitch p95<=0.25 rad, base height>=0.12 m, tracking p95<=0.20 rad, zero saturation and zero rate/envelope excess"
+  },
+  "prerequisites": {
+    "runner_contract": "a separately hash-frozen V103 CPU runner contract must pass with zero formal behavior cells before execution",
+    "runner_contract_exists_now": false,
+    "v102_training_artifact": "must independently pass the frozen V102 artifact contract before any formal behavior cell executes",
+    "v102_training_artifact_exists_now": false
+  },
+  "schema_version": "winner_v103.response_conditioned_behavior_preregistration.v1",
+  "selection_rule": {
+    "both_checkpoints_must_pass_all_512_cells": true,
+    "no_closest_checkpoint_or_metric_ranking": true,
+    "no_selection_if_either_checkpoint_holds": true,
+    "selected_checkpoint_if_both_pass": {
+      "full_domain_relative_step": 2007040,
+      "label": "final"
+    },
+    "selection_also_binds_exact_calibrator_onnx_sha256": "cb3380ed99b3e9d7e9000904a210227aa397db2a064aa80d8f70e77c8339783b",
+    "selection_records_exact_locomotion_onnx_sha256": true
+  },
+  "status": "PREREGISTERED_WINNER_V103_RESPONSE_CONDITIONED_CPU_BEHAVIOR_AND_SELECTION_GATE"
+}

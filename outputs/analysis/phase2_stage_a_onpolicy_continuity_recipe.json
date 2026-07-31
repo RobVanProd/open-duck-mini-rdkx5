@@ -1,0 +1,163 @@
+{
+  "acceptance": [
+    "Compact x=0.0 remains PASS_CANDIDATE_SIM_GATE.",
+    "Compact x=0.08 tracking p95 <= 0.20 rad.",
+    "Compact x=0.08 mean vx >= 0.0298 m/s and tracking ratio >= 0.3724.",
+    "Pitch-chain sent-target velocity p95 remains within [2.0, 3.25] rad/s envelope and action saturation remains zero.",
+    "Only after compact acceptance: full 15 s x=0.0 and x=0.08 corrected-bridge seeds 0-7, with no falls and no regression from the teacher full-gate mean vx 0.0339 m/s / ratio 0.4238."
+  ],
+  "data_gate_before_training": [
+    "Collect full-observation x=0.08 corrected-bridge traces for seeds 0-7 from step 163840.",
+    "Confirm knee/ankle or hip-pitch teacher deltas dominate tracking-damage windows across at least 6/8 seeds.",
+    "Confirm teacher relabel target-rate p95 stays <= 1.75 rad/s and max <= 2.0 rad/s.",
+    "Confirm no required teacher correction exceeds 0.25 normalized action on any pitch-chain joint.",
+    "Run a default-off and uniform-weight CPU wiring parity check before any GPU allocation."
+  ],
+  "diagnosis": {
+    "best_checkpoint_step": 163840,
+    "compact_x008_mean_vx_m_s": 0.0298,
+    "compact_x008_track_ratio": 0.3724,
+    "compact_x008_tracking_p95_rad": 0.2177,
+    "interpretation": "The global policy remains close to the teacher, but small on-policy pitch-chain deviations coincide with the tracking hold. Constrain those joints on visited states instead of increasing a uniform scalar.",
+    "onpolicy_teacher_delta_mean": 0.019652692017934445,
+    "onpolicy_teacher_delta_p95": 0.05240445968750864,
+    "ranked_joint_teacher_delta": [
+      {
+        "joint": "left_knee",
+        "mean": 0.025278242521999256,
+        "p95": 0.06319326276873553
+      },
+      {
+        "joint": "right_knee",
+        "mean": 0.021507667449382265,
+        "p95": 0.06029067501132487
+      },
+      {
+        "joint": "left_hip_roll",
+        "mean": 0.026707459380404367,
+        "p95": 0.05798302817807987
+      },
+      {
+        "joint": "left_ankle",
+        "mean": 0.02810641516160595,
+        "p95": 0.05618894002307461
+      },
+      {
+        "joint": "right_ankle",
+        "mean": 0.023145639115133135,
+        "p95": 0.05096095663894976
+      },
+      {
+        "joint": "head_yaw",
+        "mean": 0.0213479254541909,
+        "p95": 0.050250830620752904
+      },
+      {
+        "joint": "right_hip_roll",
+        "mean": 0.020114703302051243,
+        "p95": 0.04523759379009692
+      },
+      {
+        "joint": "left_hip_pitch",
+        "mean": 0.019706639504946576,
+        "p95": 0.04432109819244952
+      },
+      {
+        "joint": "right_hip_pitch",
+        "mean": 0.014326452861454191,
+        "p95": 0.0425625500940165
+      },
+      {
+        "joint": "head_pitch",
+        "mean": 0.01981362998065131,
+        "p95": 0.0406996950406981
+      },
+      {
+        "joint": "right_hip_yaw",
+        "mean": 0.015400345285047025,
+        "p95": 0.03984368780062953
+      },
+      {
+        "joint": "head_roll",
+        "mean": 0.014503942153224574,
+        "p95": 0.030251974762135626
+      },
+      {
+        "joint": "neck_pitch",
+        "mean": 0.012642357046191195,
+        "p95": 0.028500038868997307
+      },
+      {
+        "joint": "left_hip_yaw",
+        "mean": 0.01253626903480026,
+        "p95": 0.026413630030636556
+      }
+    ],
+    "seed0_fullobs_tracking_p95_rad": 0.2384,
+    "stage_a_status": "HOLD_STAGE_A_TRACKING_GATE"
+  },
+  "falsifier": "If the weighted smoke remains above 0.20 rad tracking p95 or loses the Stage A forward-progress floor, stop behavior-prior/KL tuning. The next branch must change the teacher target manifold or actuator objective, not the scalar or joint weights.",
+  "first_training_smoke_if_data_gate_passes": {
+    "all_other_stage_a_settings": "frozen",
+    "behavior_prior_huber_delta": 0.05,
+    "behavior_prior_joint_weights": [
+      0.25,
+      0.5,
+      1.0,
+      2.0,
+      2.0,
+      0.25,
+      0.25,
+      0.25,
+      0.25,
+      0.25,
+      0.5,
+      1.0,
+      2.0,
+      2.0
+    ],
+    "behavior_prior_scale": -0.6,
+    "note": "Only the joint weighting may change in the first causal smoke.",
+    "restore": "Stage A step 163840 checkpoint directory is unavailable; use the original rate175 restore checkpoint and pre-register equivalent initialization evidence before launch.",
+    "restore_policy_kl_scale": 4.0,
+    "timesteps": 40960
+  },
+  "inputs": {
+    "onpolicy_comparison": "outputs/analysis/phase2_stage_a_rate175_step163840_onpolicy_prior_comparison.json",
+    "stage_a_policy": {
+      "path": "outputs/analysis/colab_cli_stage_a_rate175_prior/open-duck-t4-stagea-phase2-stage-a-narrow-20260711T020114Z/artifact/open_duck_colab_cli_phase2-stage-a-narrow_20260711T020137Z/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260711T020210Z_gpu/2026_07_11_021603_163840.onnx",
+      "sha256": "7f00297b33cc470f5371dde0ce3f8fdf4f529f9c3cc68743cad1343082539960"
+    },
+    "stage_a_result": "outputs/analysis/PHASE2_STAGE_A_RATE175_20260711_RESULT.md",
+    "teacher_mlp": {
+      "path": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz",
+      "sha256": "312f1ef0ba758af5fdeae900ce0a34dab659fe348a9f389988ddaaaa15659497"
+    }
+  },
+  "mechanism": {
+    "default_off": true,
+    "joint_weight_csv": "0.25,0.5,1.0,2.0,2.0,0.25,0.25,0.25,0.25,0.25,0.5,1.0,2.0,2.0",
+    "joint_weights_action_order": [
+      0.25,
+      0.5,
+      1.0,
+      2.0,
+      2.0,
+      0.25,
+      0.25,
+      0.25,
+      0.25,
+      0.25,
+      0.5,
+      1.0,
+      2.0,
+      2.0
+    ],
+    "name": "joint_weighted_onpolicy_teacher_continuity",
+    "scope": "behavior-prior auxiliary cost only; no runtime or robot change",
+    "teacher_source": "frozen rate175 command-conditioned MLP queried on PPO-visited observations"
+  },
+  "robot_authorized": false,
+  "status": "PASS_ONPOLICY_CONTINUITY_RECIPE_PRE_REGISTERED_DATA_GATE_OPEN",
+  "training_authorized": false
+}

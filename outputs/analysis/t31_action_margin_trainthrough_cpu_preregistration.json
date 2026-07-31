@@ -1,0 +1,173 @@
+{
+  "assets": {
+    "cpu_topology_template": {
+      "kind": "directory",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v119-transition-cpu-smoke-20260724\\smoke\\2026_07_24_150649_0",
+      "sha256": "16a867c653476d6829ddaf400e5f02fc21658a78d3efc5ddfd167cc497f3ac83"
+    },
+    "frozen_t18_context_abi_onnx": {
+      "bytes": 958485,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t24_t23_postexport_v1\\1003520\\context_abi.onnx",
+      "sha256": "95eef5a37aa68f955a3ecba31af29b60324b12835136e2b14359dcf2f602b6f9"
+    },
+    "frozen_t18_pre_margin_wrapped_onnx": {
+      "bytes": 964682,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t24_t23_postexport_v1\\1003520\\rate_coherent_support.onnx",
+      "sha256": "16cb8417b1e5c4d0a6fdadc8fc2830061712a513a7dcc5321a490302fde63e8c"
+    },
+    "frozen_t18_wrapped_onnx": {
+      "bytes": 965047,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t28_t23_action_margin_policies_v1\\T28_MARGIN_1003520.onnx",
+      "sha256": "b2450530ff3751cfc84ff56f023b880ece8dbc7ee21166d9af7b00e10e14fd24"
+    },
+    "source_checkpoint": {
+      "kind": "directory",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t23b_extracted_20260726\\t23_support_trainthrough_continuation\\training\\2026_07_26_231352_1003520",
+      "sha256": "7a570f670813b0405615d4e253869402129183f7f18d14625fb56f74569db39b"
+    },
+    "source_v121_half_onnx": {
+      "bytes": 954952,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t23b_extracted_20260726\\t23_support_trainthrough_continuation\\training\\2026_07_26_231352_1003520.onnx",
+      "sha256": "0c8b2d05df4baa796b9e2a95b8020b23538b95e070a6fd0bd8ea9fb26cc9aa2b"
+    }
+  },
+  "authority": {
+    "behavior_evaluation": false,
+    "execute_1024_cpu_steps": true,
+    "gate5": false,
+    "hosted_preregistration": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "composed_source_inventory_complete": true,
+    "half_checkpoint_is_margin_feasible": true,
+    "posthoc_t28_closed": true,
+    "runner_present": true,
+    "source_checkpoint_and_graphs_present": true,
+    "t22_cpu_restore_pipeline_green": true,
+    "t28_exact_transform_contract_green": true,
+    "t31_default_off_source_present": true
+  },
+  "cpu_smoke": {
+    "checks": [
+      "CPU topology remap and source restore exact",
+      "step-zero raw/context/pre-margin/final hashes exact",
+      "environment command includes the default-off T31 flag",
+      "both final graphs enforce the margin and exact feedback",
+      "all policy and critic leaves update and remain finite",
+      "reward metric finite",
+      "no formal behavior, hosted compute, or robot access"
+    ],
+    "exports": [
+      0,
+      1024
+    ],
+    "ppo_envs": 4,
+    "restore": "T23_SUPPORT_HALF step 1003520",
+    "simulator_steps": 1024
+  },
+  "decision_rule": {
+    "fail": "Close T31 without hosted training or behavior evaluation.",
+    "pass": "Authorize only a separate hosted-continuation preregistration. Do not launch hosted compute."
+  },
+  "failed_checks": [],
+  "playground": {
+    "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t31-v1",
+    "python_inventory": {
+      "playground/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "playground/common/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "playground/common/export_onnx.py": "30bc705bf59babb59c5ba3045b601c838db00ebb569bb9fc6aa520f1e61139cc",
+      "playground/common/onnx_infer.py": "e610c2b94d15cd0ea4be1c0cee8853dc33b10c3b440e6d9bb1b1bb73168f34f2",
+      "playground/common/phase_moe_networks.py": "6480f59f4039884be6743828ffed1c31f76896830b2b38689cad038200283cb7",
+      "playground/common/plot_saved_obs.py": "911fe1de5668c31fdc2a10a4285b8343c04fd4f662a38207d6f06a91fd4e0a8e",
+      "playground/common/poly_reference_motion.py": "cc2430d82a9e41bf2081a4a9bed45731a43aad8b860e5b168f5850eb3748cf21",
+      "playground/common/poly_reference_motion_numpy.py": "585e783722ffb403a14288aafc1fcdf86c8a5d1b39949171a3b2d918028c4406",
+      "playground/common/randomize.py": "c6e7a48f714a2267b3b19d75ffc9ce3938350aabceb3eda61727a3c48f2d6dd8",
+      "playground/common/recurrent_ppo_networks.py": "a501000c6f959276514ba56f935d027b05b171a9ea62bb6a2bc1ecdd2fe8cb4e",
+      "playground/common/reference_residual_ppo_networks.py": "eeb1b758f32bb8a7e53cf59b269bed7f97126cf37ccc4d11090a5f8312b380e6",
+      "playground/common/reference_residual_recurrent_adapter_ppo_networks.py": "ffd07d0a6e96d846aa1f62a8d131bf892f10db6b2a22710affe3946b7b145ebd",
+      "playground/common/rewards.py": "9c327866f2632265f14ef81318046f887aafa64384a06efa6cb264e144bbb1d3",
+      "playground/common/rewards_numpy.py": "f1dba8838b29fdc4701bc3759e2533fa9d51ec550c8f70b83a23d3de64b97f48",
+      "playground/common/runner.py": "cc33330735fb984c384f85e5b7fa63cc53b98e670773ba7a676fb7d76c5adec4",
+      "playground/common/t19_support_trainthrough.py": "dc6c4270a4a5569f4c82dc3f9d1f07c395512bea86c15cd62a634fe10c895057",
+      "playground/common/utils.py": "dbeb9fd88bb41aaca5ab242a954cbae7ae9755b7f13ff2d7d2b27cc9094a284c",
+      "playground/common/winner_v127_constrained_ppo_losses.py": "996e292f76a4071f2c3117b0f1dacd9b1a3bf9e31d6d97128ce2f054f9bc6ff1",
+      "playground/common/winner_v127_constrained_ppo_train.py": "9ac5b96d2f810644b4ee2e019c1a8e4f2e5a92b5f1e6455298df5c1ecaa896c0",
+      "playground/common/winner_v171_gradient_geometry.py": "dfbadab3ef4021c71c27c358135bed87307c04f53310fdf9093f6436e00008c3",
+      "playground/common/winner_v173_lexicographic_tangent.py": "b7ff83f8d68f1034ab1ddb5562d4a32a384756a330bb150b8ca69d92a63f3841",
+      "playground/common/winner_v3_variable_configuration.py": "daab44325e6dd98b8b4054fc5c5fe7391ca9e358e7aca97999ef1a2441285ab7",
+      "playground/common/winner_v98_response_calibration_wrapper.py": "04339bf7bbe16f2721ce92bbe62c458e70c1c8a5e9bdfe02424478ebc066a7ba",
+      "playground/common/winner_v98_response_conditioned_export.py": "83c8667828a51bdb379091fbf657725410bae5e0d655273f63cf47bdc913f28c",
+      "playground/common/winner_v98_response_conditioned_ppo_networks.py": "767b0d4dc7d72d6c126eca9ed1f0497ca38214a9e2caa57c8a1e6b5cea3ad17a",
+      "playground/open_duck_mini_v2/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "playground/open_duck_mini_v2/base.py": "0e90b98b113c2e5ff4abd34b64482e3f1b3d365ef95481d1838f8b855de99988",
+      "playground/open_duck_mini_v2/constants.py": "8fafc240bfb8e70c93b722d89148cffb03688882fd4e6250735eccdf53363374",
+      "playground/open_duck_mini_v2/custom_rewards.py": "16fdf5ed409f9abcfa6f68465c4351081c0c255a6683c09aee110c557890cd0c",
+      "playground/open_duck_mini_v2/custom_rewards_numpy.py": "51422e858c4058f5c114004ab6ebd7900cbae544f09aaf430f9398adf9032333",
+      "playground/open_duck_mini_v2/joystick.py": "8e6b04c8e9f71e42f468ca559e0fbeb0651652fc83734d0ccf8348154808f4b3",
+      "playground/open_duck_mini_v2/mujoco_infer.py": "67a933e043fe54a3bf252524e71fbb8a7eff973e8bb693d9fe1f1d6f323b11ed",
+      "playground/open_duck_mini_v2/mujoco_infer_base.py": "4c8fd11e4659126d49985a9c048e1cb5a5cfde5f4d54cdfe433e4b165d3b0ab1",
+      "playground/open_duck_mini_v2/ref_motion_viewer.py": "78c267d86d7de9a942c9bd4007990369eb39a7dae7a410acaa316dd9da0a5322",
+      "playground/open_duck_mini_v2/runner.py": "0f276d7bd5b653e46c61302b38ee5efe66df3b62675d1e4d34a6fd40c7a96a11",
+      "playground/open_duck_mini_v2/standing.py": "123419cb68f3dcf0908b3c77e4c98206de48d719058d38998ddcd69ef32dcdd6"
+    },
+    "python_inventory_sha256": "db54e0aae6d282a1066b61c35ebcda30fb4c7e62eca4cb6f522e21e80508e00b"
+  },
+  "preregistered_contract_sha256": "995287efde8acd8d8f7c913a0578c9e581de0230c1c360fafa48bb9bdcf2a992",
+  "question": "Can the exact T23 half checkpoint restore and take one finite PPO update while the final physical action is clipped to the frozen 0.98 margin inside the environment and export graph?",
+  "schema_version": "open_duck.t31_action_margin_trainthrough_cpu_preregistration.v1",
+  "selection_evidence": {
+    "half_margin_green_cells": 24,
+    "mechanism": "Train through the exact final physical margin so state, reward, applied-target observation, and recurrent feedback all carry the realized bounded action.",
+    "new_scalar_search": false,
+    "posthoc_wrapper_closed": true,
+    "reward_changes": 0
+  },
+  "sources": {
+    "reference": {
+      "bytes": 259604,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+      "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+    },
+    "runner": {
+      "bytes": 9064,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t31_action_margin_trainthrough_cpu_smoke.py",
+      "sha256": "a0845fab1237836af5d9b9fe8ce47c7dc53e3ac1b4e784fa5abc647f39759d48"
+    },
+    "t28_condition": {
+      "bytes": 123456,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t28_t23_action_margin_condition_result.json",
+      "sha256": "1d20aab02f86b931df7e974a5f866f7cfa2cace3fbad03895a01ea0024378c77"
+    },
+    "t29_result": {
+      "bytes": 247094,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t29_t28_remaining_r2_result.json",
+      "sha256": "06a2f2bb275e4d8cd3604dcfcfca7e99ea7c0c711bccdbe389b13231b43abfb2"
+    },
+    "t30_reconciliation": {
+      "bytes": 2115,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t30_t28_margin_causality_reconciliation.json",
+      "sha256": "430ac2a683361a41f61280106dbfa773ab253cc29c287038d84ad3d98b489685"
+    }
+  },
+  "status": "PREREGISTERED_T31_ACTION_MARGIN_TRAINTHROUGH_CPU_SMOKE",
+  "transition": {
+    "default_off": true,
+    "deployment": "Append the same two-output float32 Clip transform after the complete frozen T24 graph.",
+    "flag": "--winner_t31_action_margin_trainthrough",
+    "insertion": "After T19 support homeomorphism and external physical rate projection; before motor physics, applied-target observer, reward, last-action history, and inverse source-state update.",
+    "limit_equation": "nextafter(float32(0.98), float32(0.0))",
+    "requires": "--winner_t19_support_trainthrough"
+  }
+}

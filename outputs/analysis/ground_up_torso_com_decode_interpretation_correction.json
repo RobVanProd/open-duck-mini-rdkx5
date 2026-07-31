@@ -1,0 +1,142 @@
+{
+  "authority": {
+    "gpu_or_igpu": false,
+    "memory_selected": false,
+    "objective_study_selected": false,
+    "policy_training": false,
+    "preregister_full_observation_cpu_replay_and_sensitivity_contract": true,
+    "rdk_or_robot": false
+  },
+  "cause": "The fixed all-feature ridge reallocates regularized weight from the preserved tick-zero separator onto later command-dependent nuisance dimensions; construction and standardization preserve tick zero exactly.",
+  "checks": {
+    "all_windows_are_exact_tick0_prefixes": true,
+    "full_prefix_probe_is_nonmonotone": true,
+    "n2_full_prefix_regresses_while_tick0_is_preserved": true,
+    "one_unique_tick0_vector_per_class": true,
+    "permutation_units_not_independent": true,
+    "source_result_reproduced": true,
+    "tick0_only_probe_perfect_for_every_window": true,
+    "tick0_standardization_identical_at_every_window": true
+  },
+  "command_zero_coefficient_audit": {
+    "1": {
+      "accuracy": 1.0,
+      "held_out_command_x": 0.0,
+      "weight_norm_by_tick": [
+        2.741096074218427
+      ]
+    },
+    "16": {
+      "accuracy": 0.3333333333333333,
+      "held_out_command_x": 0.0,
+      "weight_norm_by_tick": [
+        0.1921554768504232,
+        0.2774979462210046,
+        0.3502743630528126,
+        0.13690736215584337,
+        0.14183168470858257,
+        0.23178564218761827,
+        0.12523576168542447,
+        0.29902792732915856,
+        0.12717655942821524,
+        0.2548803166670412,
+        0.15064558473580578,
+        0.19479936377534987,
+        0.2544278510442353,
+        0.1623635865008854,
+        0.1637164905172896,
+        0.21622544968441756
+      ]
+    },
+    "2": {
+      "accuracy": 0.6666666666666666,
+      "held_out_command_x": 0.0,
+      "weight_norm_by_tick": [
+        1.9662959726135354,
+        0.8048249142406206
+      ]
+    },
+    "4": {
+      "accuracy": 1.0,
+      "held_out_command_x": 0.0,
+      "weight_norm_by_tick": [
+        1.089308991134903,
+        0.7996370857999391,
+        0.9296115723415225,
+        0.42868642901407866
+      ]
+    },
+    "8": {
+      "accuracy": 0.6666666666666666,
+      "held_out_command_x": 0.0,
+      "weight_norm_by_tick": [
+        0.5250871763613393,
+        0.3629274450968354,
+        0.7761307032683925,
+        0.327684932383325,
+        0.3080964645596716,
+        0.2854446443331833,
+        0.23874093493562126,
+        0.6033784432749303
+      ]
+    }
+  },
+  "decision": "SUPERSEDE_DECODE_SELECTION_NO_ARM_FAMILY_SELECTED",
+  "effective_tick0_prototypes": 3,
+  "failed_checks": [],
+  "invalidated_inferences": [
+    "family-wise statistical significance from 144 non-independent tick-zero duplicates",
+    "N>1 prefix accuracy as a monotone measure of information availability",
+    "history or memory is not selected",
+    "objective or exploitation study is selected next"
+  ],
+  "nominal_trace_rows": 144,
+  "permutation_p_value_interpretable": false,
+  "preserved_measurement": "Under the deterministic reset protocol, tick-zero accelerometer is an exact function of COM class and is inside the actor input.",
+  "schema_version": "ground_up_torso_com_decode_interpretation_correction.v1",
+  "source_preregistration_sha256": "0e09cc573a539e31c962ae927d073685c067fb39eda2f2be680a4833dd298199",
+  "source_result_sha256": "fd052680c67ea8af8a5f69bf130607c6cc307513f4503219728a67d6c76fc6f4",
+  "status": "PASS_TORSO_COM_DECODE_INTERPRETATION_CORRECTION",
+  "windows": {
+    "1": {
+      "full_prefix_minimum_fold_accuracy": 1.0,
+      "last_tick_only_minimum_fold_accuracy": 1.0,
+      "tick0_only_minimum_fold_accuracy": 1.0
+    },
+    "16": {
+      "full_prefix_minimum_fold_accuracy": 0.3333333333333333,
+      "last_tick_only_minimum_fold_accuracy": 0.3333333333333333,
+      "tick0_only_minimum_fold_accuracy": 1.0
+    },
+    "2": {
+      "full_prefix_minimum_fold_accuracy": 0.6666666666666666,
+      "last_tick_only_minimum_fold_accuracy": 0.3333333333333333,
+      "tick0_only_minimum_fold_accuracy": 1.0
+    },
+    "24": {
+      "full_prefix_minimum_fold_accuracy": 0.6666666666666666,
+      "last_tick_only_minimum_fold_accuracy": 0.3333333333333333,
+      "tick0_only_minimum_fold_accuracy": 1.0
+    },
+    "32": {
+      "full_prefix_minimum_fold_accuracy": 0.75,
+      "last_tick_only_minimum_fold_accuracy": 0.3333333333333333,
+      "tick0_only_minimum_fold_accuracy": 1.0
+    },
+    "4": {
+      "full_prefix_minimum_fold_accuracy": 0.7916666666666666,
+      "last_tick_only_minimum_fold_accuracy": 0.5416666666666666,
+      "tick0_only_minimum_fold_accuracy": 1.0
+    },
+    "40": {
+      "full_prefix_minimum_fold_accuracy": 0.8125,
+      "last_tick_only_minimum_fold_accuracy": 0.6666666666666666,
+      "tick0_only_minimum_fold_accuracy": 1.0
+    },
+    "8": {
+      "full_prefix_minimum_fold_accuracy": 0.6041666666666666,
+      "last_tick_only_minimum_fold_accuracy": 0.3333333333333333,
+      "tick0_only_minimum_fold_accuracy": 1.0
+    }
+  }
+}

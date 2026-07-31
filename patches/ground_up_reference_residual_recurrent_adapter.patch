@@ -1,0 +1,75 @@
+diff --git a/playground/common/runner.py b/playground/common/runner.py
+--- a/playground/common/runner.py
++++ b/playground/common/runner.py
+@@ -112,6 +112,26 @@ class BaseRunner(ABC):
+                 control_dt=float(self.env.dt),
+                 action_scale=float(self.env_config.action_scale),
+             )
++        elif self.args.policy_architecture == "reference_residual_recurrent_adapter":
++            from playground.common.reference_residual_recurrent_adapter_ppo_networks import (
++                export_reference_residual_recurrent_adapter_onnx,
++            )
++
++            export_reference_residual_recurrent_adapter_onnx(
++                params,
++                self.action_size,
++                self.obs_size,
++                self.args.recurrent_hidden_size,
++                onnx_export_path,
++                self.ppo_params.network_factory.policy_hidden_layer_sizes,
++                action_velocity_limits_rad_s=(
++                    self.env_config.ground_up_action_velocity_limits_rad_s
++                    if self.args.ground_up_hard_vector_command_support
++                    else None
++                ),
++                control_dt=float(self.env.dt),
++                action_scale=float(self.env_config.action_scale),
++            )
+         else:
+             export_onnx(
+                 params,
+@@ -177,3 +197,14 @@ class BaseRunner(ABC):
+                 network_builder = make_reference_residual_ppo_networks
++            elif self.args.policy_architecture == "reference_residual_recurrent_adapter":
++                from playground.common.reference_residual_recurrent_adapter_ppo_networks import (
++                    install_recurrent_adapter_collector_hooks,
++                    make_reference_residual_recurrent_adapter_ppo_networks,
++                )
++
++                install_recurrent_adapter_collector_hooks()
++                network_builder = functools.partial(
++                    make_reference_residual_recurrent_adapter_ppo_networks,
++                    recurrent_hidden_size=self.args.recurrent_hidden_size,
++                )
+             else:
+                 network_builder = ppo_networks.make_ppo_networks
+             network_factory = functools.partial(
+diff --git a/playground/open_duck_mini_v2/runner.py b/playground/open_duck_mini_v2/runner.py
+--- a/playground/open_duck_mini_v2/runner.py
++++ b/playground/open_duck_mini_v2/runner.py
+@@ -24,7 +24,10 @@ class OpenDuckMiniV2Runner(BaseRunner):
+         if args.imitation_scale is not None:
+             self.env_config.reward_config.scales.imitation = args.imitation_scale
+         self.env_config.reference_feature_table_path = args.reference_feature_table_path
+-        if args.policy_architecture == "recurrent":
++        if args.policy_architecture in (
++            "recurrent",
++            "reference_residual_recurrent_adapter",
++        ):
+             self.env_config.recurrent_hidden_dim = args.recurrent_hidden_size
+         self.env_config.ground_up_command_curriculum = args.ground_up_command_curriculum
+         self.env_config.nominal_reference_bootstrap = args.nominal_reference_bootstrap
+@@ -146,6 +149,12 @@ def main() -> None:
+     parser.add_argument(
+         "--policy_architecture",
+-        choices=["mlp", "phase_moe", "recurrent", "reference_residual"],
++        choices=[
++            "mlp",
++            "phase_moe",
++            "recurrent",
++            "reference_residual",
++            "reference_residual_recurrent_adapter",
++        ],
+         default="mlp",
+     )
+     parser.add_argument("--recurrent_hidden_size", type=int, default=64)

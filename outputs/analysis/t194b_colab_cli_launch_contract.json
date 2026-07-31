@@ -1,0 +1,114 @@
+{
+  "artifact_recovery": {
+    "download_result_archive_receipt_before_stop": true,
+    "retry": false,
+    "same_run_resume": false,
+    "stop_session_after_pass_or_hold": true
+  },
+  "authority": {
+    "additional_attempt_retry_or_same_run_resume": false,
+    "behavior_evaluation": false,
+    "checkpoint_selection": false,
+    "gate5": false,
+    "one_exact_cli_launch": true,
+    "rdkx5_or_robot": false
+  },
+  "checks": {
+    "executor_driver_literal_and_objective_now_exact": true,
+    "executor_l4_pins_no_retry_and_manifest_checks_preserved": true,
+    "hardware_or_robot_absent": true,
+    "package_and_manifest_unchanged_green": true,
+    "preregistration_unchanged_green": true,
+    "prior_held_only_on_driver_literal_source_check": true,
+    "training_or_behavior_not_run": true
+  },
+  "commands": [
+    [
+      "colab",
+      "new",
+      "--session",
+      "t194-corrected-dynamic-support-20260730",
+      "--gpu",
+      "L4"
+    ],
+    [
+      "colab",
+      "upload",
+      "--session",
+      "t194-corrected-dynamic-support-20260730",
+      "D:\\CodexArtifacts\\open-duck-policy\\t194_corrected_dynamic_reference_support_bundle_20260730.tar.gz",
+      "/content/t194-corrected-dynamic-support-20260730.tar.gz"
+    ],
+    [
+      "colab",
+      "exec",
+      "--session",
+      "t194-corrected-dynamic-support-20260730",
+      "--file",
+      "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\execute_t194_colab_cli.py",
+      "--timeout",
+      "43200"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "t194-corrected-dynamic-support-20260730",
+      "/content/t194_result.json",
+      "<LOCAL_RESULT>"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "t194-corrected-dynamic-support-20260730",
+      "/content/t194_artifacts.tar.gz",
+      "<LOCAL_ARCHIVE>"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "t194-corrected-dynamic-support-20260730",
+      "/content/t194_launch_receipt.json",
+      "<LOCAL_RECEIPT>"
+    ],
+    [
+      "colab",
+      "stop",
+      "--session",
+      "t194-corrected-dynamic-support-20260730"
+    ]
+  ],
+  "execution_now": {
+    "colab_sessions_opened": 0,
+    "formal_behavior_cells": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "hashes": {
+    "executor": "fc7ee4a256126cbe06d9cd6b724442a8523b6055f54d85b8d8bb2d6e2745d764",
+    "manifest": "e839c443cc6dafe920e07c02f8a875b0ecfd484522caf6090398cc57d0ff2469",
+    "package": "5e1ea887ec4fcfef81a82d209b033436a7e3cdf42e086fac182fa4ddf4a8c7c3",
+    "package_contract": "1172a468f3dd955d83898ae31ce2f97ffd463db0a7a6f272faf793a18bd205af",
+    "preregistration": "b28c6d7bbfae64a1b7618348e56d5fc57421c67c3a21c341d90590d0858ebadb",
+    "prior_launch_contract": "fa395447ccc5946a8ba70ad5cfdfde6b00b65de421f71255ec40fc22a93df4cc"
+  },
+  "package_bytes": 4340170,
+  "recovery": {
+    "hosted_session_previously_opened": false,
+    "only_change": "spell the already-correct remote driver path as one contiguous source literal",
+    "package_change": false,
+    "scientific_contract_change": false
+  },
+  "schema_version": "open_duck.t194b_colab_cli_launch_recovery.v1",
+  "session": {
+    "accelerator": "L4",
+    "count": 1,
+    "max_wall_seconds": 43200,
+    "maximum_compute_units_at_prior_rate": 6.42,
+    "name": "t194-corrected-dynamic-support-20260730"
+  },
+  "status": "PASS_T194B_COLAB_CLI_LAUNCH_CONTRACT"
+}

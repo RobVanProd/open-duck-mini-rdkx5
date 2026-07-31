@@ -1,0 +1,54 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "gate5": false,
+    "one_corrected_pretraining_launch": true,
+    "rdkx5_or_robot": false,
+    "training_resume": false,
+    "training_retry": false
+  },
+  "checks": {
+    "correction_is_only_runner_cwd": true,
+    "failed_session_stopped": true,
+    "failure_artifacts_recovered": true,
+    "failure_before_environment_construction": true,
+    "formal_behavior_cells_zero": true,
+    "launcher_returned_hold": true,
+    "no_checkpoint_or_onnx_exports": true,
+    "optimizer_steps_zero": true,
+    "runner_elapsed_under_10_seconds": true,
+    "simulator_locomotion_steps_zero": true
+  },
+  "correction": {
+    "new": "subprocess.run(command, cwd=playground, ...)",
+    "old": "subprocess.run(command, cwd=bundle, ...)",
+    "package_assets_unchanged": true,
+    "training_command_unchanged": true,
+    "training_objective_unchanged": true,
+    "training_source_unchanged": true
+  },
+  "decision": "AUTHORIZE_ONE_V127C_PRETRAINING_LAUNCH_CORRECTION",
+  "failed_checks": [],
+  "failure": {
+    "cause": "driver used cwd=bundle while PolyReferenceMotion resolves playground/open_duck_mini_v2/data relative to cwd",
+    "elapsed_seconds": 7.446646079999994,
+    "returncode": 1,
+    "stage": "environment_constructor_before_reset_or_training"
+  },
+  "recovered": {
+    "archive": {
+      "bytes": 1249,
+      "sha256": "b891d951de24818bfc1d96057a6841fe80c3562a65da30ca94c897e1638bd2c9"
+    },
+    "receipt": {
+      "bytes": 1818,
+      "sha256": "5810f85290b86500cde9f6804f424a04d5f95ad950209158631689f089067a42"
+    },
+    "result": {
+      "bytes": 6556,
+      "sha256": "3c108c43d9334bde0f5f27876ea44c261d9951dd43e43fe3f8eb660395df09cf"
+    }
+  },
+  "schema_version": "winner_v127.pretraining_launch_correction.v1",
+  "status": "PASS_WINNER_V127_PRETRAINING_LAUNCH_CORRECTION"
+}

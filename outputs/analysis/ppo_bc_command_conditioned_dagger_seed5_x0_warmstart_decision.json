@@ -1,0 +1,39 @@
+{
+  "status": "PASS_WARMSTART_INFRASTRUCTURE_READY_BUT_POLICY_STILL_HOLDS_X008_TRACKING",
+  "robot_tests_run": false,
+  "ssh_run": false,
+  "deploy_run": false,
+  "runtime_behavior_changed": false,
+  "bc_npz": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_candidate/candidate_mlp.npz",
+  "bc_reference_onnx": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_candidate/candidate.onnx",
+  "bc_manifest": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_manifest.json",
+  "ppo_checkpoint": "outputs/analysis/ppo_bc_command_conditioned_dagger_seed5_x0_step0_checkpoint",
+  "ppo_step0_onnx": "outputs/analysis/ppo_bc_command_conditioned_dagger_seed5_x0_step0.onnx",
+  "fidelity": {
+    "status": "PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY",
+    "samples_checked": 2048,
+    "p95_abs_error": 0.00000011920928955078125,
+    "max_abs_error": 0.00000035762786865234375
+  },
+  "step0_gates": {
+    "x0_fitted_10s": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "max_pitch_tracking_p95_rad": 0.0691,
+      "max_sent_target_velocity_p95_rad_s": 0.2964
+    },
+    "x008_fitted_10s": {
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "mean_local_vx_m_s": 0.0213,
+      "track_ratio": 0.2663,
+      "max_pitch_tracking_p95_rad": 0.1872,
+      "max_sent_target_velocity_p95_rad_s": 1.9571
+    }
+  },
+  "restore_smoke": {
+    "relative_path_initial_status": "HOLD_SMOKE_RUN",
+    "relative_path_fix_status": "PASS_SMOKE_RUN",
+    "path_fixed_num_timesteps": 16,
+    "path_fixed_checkpoint_step": 20
+  },
+  "next_branch": "PPO fine-tuning from the step-0 checkpoint with fitted actuator bridge active; preserve x=0 hard-seed stability while reducing x=0.08 pitch tracking error."
+}

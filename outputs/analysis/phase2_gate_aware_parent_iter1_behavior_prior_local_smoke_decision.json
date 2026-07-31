@@ -1,0 +1,107 @@
+{
+  "baseline_comparison": {
+    "iter0_restore_kl_only": "0/5 on all three exports, rewarded freeze",
+    "iter1_restore_kl_plus_behavior_prior": "0/5 on all three exports, rewarded freeze",
+    "step0_trainable_restore_point": "3/5 compact x=0.08 pass, 5/5 x=0.0 pass"
+  },
+  "behavior_prior": {
+    "enabled": true,
+    "huber_delta": 0.04,
+    "mlp_npz": "outputs/analysis/phase2_command_gated_zero0020_live_oracle_iter2_ppo_loc_bc_student/candidate_mlp.npz",
+    "scale": -0.35
+  },
+  "deploy_performed": false,
+  "exports": [
+    {
+      "path": "outputs/phase2_domain_randomization/gate_aware_parent_iter1_behavior_prior_local_smoke/smoke_20260705T161023Z_gpu/2026_07_05_121457_15360.onnx",
+      "sha256": "8a5eb0baeecb01ae698109c2fdad9c5679a4d9980cf91bd9a95c6cce55d0b28d",
+      "size_bytes": 883946,
+      "step": 15360
+    },
+    {
+      "path": "outputs/phase2_domain_randomization/gate_aware_parent_iter1_behavior_prior_local_smoke/smoke_20260705T161023Z_gpu/2026_07_05_121719_30720.onnx",
+      "sha256": "292b1a61b0b659b3d3e85243d10112430e87c05a71df7dc4c6fa008e22185cd1",
+      "size_bytes": 884094,
+      "step": 30720
+    },
+    {
+      "path": "outputs/phase2_domain_randomization/gate_aware_parent_iter1_behavior_prior_local_smoke/smoke_20260705T161023Z_gpu/2026_07_05_121757_46080.onnx",
+      "sha256": "1ee6625b02ea8fe2b7c69923cabd5f734af5d3f397816873964a0ede537cbcd8",
+      "size_bytes": 884094,
+      "step": 46080
+    }
+  ],
+  "gate": {
+    "command_x": 0.08,
+    "eval_push_enable": true,
+    "path_json": "outputs/analysis/phase2_gate_aware_parent_iter1_behavior_prior_local_smoke_x008_gate.json",
+    "path_md": "outputs/analysis/PHASE2_GATE_AWARE_PARENT_ITER1_BEHAVIOR_PRIOR_LOCAL_SMOKE_X008_GATE.md",
+    "seeds": [
+      0,
+      1,
+      2,
+      6,
+      7
+    ],
+    "summary": {
+      "iter1bp_15360": {
+        "duration_complete": 5,
+        "falls": 0,
+        "mean_double_support_pct": 100.0,
+        "mean_max_tracking_p95_rad": 0.04701399564743042,
+        "mean_p95_vel_excess_rad_s": 0.0,
+        "mean_single_support_pct": 0.0,
+        "mean_track_ratio": 0.01779474366838561,
+        "mean_vx_m_s": 0.001423579493470849,
+        "passes": 0,
+        "runs": 5,
+        "statuses": []
+      },
+      "iter1bp_30720": {
+        "duration_complete": 5,
+        "falls": 0,
+        "mean_double_support_pct": 100.0,
+        "mean_max_tracking_p95_rad": 0.047115463018417354,
+        "mean_p95_vel_excess_rad_s": 0.0,
+        "mean_single_support_pct": 0.0,
+        "mean_track_ratio": 0.01934088739047487,
+        "mean_vx_m_s": 0.0015472709912379894,
+        "passes": 0,
+        "runs": 5,
+        "statuses": []
+      },
+      "iter1bp_46080": {
+        "duration_complete": 5,
+        "falls": 0,
+        "mean_double_support_pct": 100.0,
+        "mean_max_tracking_p95_rad": 0.049561039209365845,
+        "mean_p95_vel_excess_rad_s": 0.0,
+        "mean_single_support_pct": 0.0,
+        "mean_track_ratio": 0.01922101324702756,
+        "mean_vx_m_s": 0.001537681059762205,
+        "passes": 0,
+        "runs": 5,
+        "statuses": []
+      }
+    },
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0075
+  },
+  "interpretation": [
+    "The smoke completed and exported checkpoints, so this is not an environment/runtime failure.",
+    "All compact x=0.08 rollouts completed duration without falls, but every rollout held for low forward progress.",
+    "All exports spent 100% of the rollout in double support with 0% single support.",
+    "Corrected p95 velocity excess was zero, so the rejection is not an actuator-envelope violation.",
+    "Adding the state-conditioned behavior prior to restore-policy KL did not preserve the moving gait from the step-0 parent."
+  ],
+  "next_recommendation": "Do not scale this PPO objective into Phase 2 DR. Move to a different behavior-preservation structure: explicit online router/wrapper training target, stronger branch-aware objective, or a non-PPO distillation route that is gated before any long DR run.",
+  "restore_policy_kl_scale": 8.0,
+  "robot_touched": false,
+  "smoke_dir": "outputs/phase2_domain_randomization/gate_aware_parent_iter1_behavior_prior_local_smoke/smoke_20260705T161023Z_gpu",
+  "smoke_manifest_final": "outputs/phase2_domain_randomization/gate_aware_parent_iter1_behavior_prior_local_smoke/smoke_20260705T161023Z_gpu/smoke_manifest.final.json",
+  "smoke_manifest_final_sha256": "625e41a9ba811165097252e7ef16c68c140dc30400dc156c0da4b32b7eb0ad52",
+  "smoke_returncode": 0,
+  "smoke_status": "PASS_SMOKE_RUN",
+  "status": "HOLD_BEHAVIOR_PRIOR_PARENT_REWARDED_FREEZE",
+  "timestamp_utc": "2026-07-05T17:05:37.221912+00:00"
+}

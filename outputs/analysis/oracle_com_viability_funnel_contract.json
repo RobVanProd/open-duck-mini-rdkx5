@@ -1,0 +1,121 @@
+{
+  "schema_version": "oracle_com_viability_funnel_contract.v1",
+  "frozen_at": "2026-07-16T00:00:00-04:00",
+  "status": "PREREGISTERED_BEFORE_LOCALIZATION_AND_SEQUENCE_OUTCOMES",
+  "scope": "CPU_ONLY_RECEDING_HORIZON_ORACLE_COM_FEASIBILITY",
+  "safety": {
+    "robot_access": false,
+    "rdk_x5_access": false,
+    "gpu_or_igpu": false,
+    "colab_or_hosted_allocation": false,
+    "training_or_ppo": false,
+    "deployment": false,
+    "policy_overwrite": false,
+    "robot_clearance": "NO"
+  },
+  "protected": {
+    "policies": {
+      "T2_EQUAL_512000": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de",
+      "T2_EQUAL_1024000": "0dfc24bde5d839e4d346dd8c08d9a7d0222a3847764ec6738bfc7f8d947f4ece"
+    },
+    "p30_fit": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b",
+    "reference": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212",
+    "prior_affine_result": "fee28665b6354d6f40791cc9e9cb33491815988775258715f8669abc6e6cd535",
+    "prior_authority_result": "38b39f9ec9ab6485fb3689b720c0ff828b1e342379b79efa474d6a4dcecdcf68",
+    "prior_contract": "d40e5de1dc32ffb2b875c8909f548b488ecc23db8e1fc27f72147a12a684bc29"
+  },
+  "stage_a": {
+    "cells": 24,
+    "conditions": ["X_NEG", "X_POS"],
+    "commands_x": [0.074, 0.077, 0.08],
+    "fits": ["p30", "p31_34"],
+    "checkpoints": ["T2_EQUAL_512000", "T2_EQUAL_1024000"],
+    "state_cadence_ticks": 4,
+    "state_range": "tick_0_through_last_recorded_pretermination_tick",
+    "bridge_reconstruction_max_error_rad": 1e-6,
+    "divergence_thresholds": {
+      "local_velocity_linf_m_s": 0.05,
+      "pitch_or_roll_rad": 0.05,
+      "pitch_or_roll_rate_rad_s": 0.5,
+      "support_relative_com_linf_m": 0.01,
+      "policy_base_action_linf": 0.04,
+      "applied_target_linf_rad": 0.01
+    },
+    "velocity_event": {
+      "consecutive_ticks": 3,
+      "x_neg_vx_at_most_m_s": -0.02,
+      "x_pos_vx_at_least": "max(command_x+0.10,2*command_x)"
+    }
+  },
+  "stage_b": {
+    "design_subset": "both_conditions_x_both_checkpoints_p30_x0.077_seed167931544_all_four_tick_states",
+    "horizons_ticks": [8, 16, 32],
+    "block_ticks": 4,
+    "beam_width": 16,
+    "basis": "zero_plus_one_of_six_pitch_joints_at_one_of_four_amplitudes",
+    "corrected_joint_indices": [2, 3, 4, 11, 12, 13],
+    "amplitudes": [-0.08, -0.04, 0.04, 0.08],
+    "actions_per_expansion": 25,
+    "residual_normalized_abs_max": 0.08,
+    "base_tape_rule": "endpoint_policy_base_action_then_matched_nominal_same_absolute_tick_after_endpoint_eof",
+    "constraints_order": ["clip_normalized", "hard_vector_projection", "actual_centered_guard", "global_target_rate", "measured_p30_bridge"],
+    "tracking_p95_max_rad": 0.2,
+    "minimum_base_height_m": 0.12,
+    "maximum_consecutive_no_support_ticks": 1,
+    "saturation_ticks_max": 0,
+    "rate_excess_max_rad_s": 0.0,
+    "envelope_excess_max": 0.0,
+    "nominal_velocity_envelope": {
+      "sources": {
+        "T2_EQUAL_1024000_p30": "cb678a23cf1d7e1d4e4ffaf9f3f7395bf7078788027a2d7bf20e7b75cd39f96d",
+        "T2_EQUAL_1024000_p31_34": "6bc4ae7c80fc66d876b6ba4685dd52cdca9e19ab199a0eb366ae2e05661e885d",
+        "T2_EQUAL_512000_p30": "544263492d9c49ff0cc078a010d806ee5fd1559ec115676e43f32759ac28fb00",
+        "T2_EQUAL_512000_p31_34": "53abf61dfc4bf42336338be8047d961d4a82de819cbc4204a956e42a11d8ce6a"
+      },
+      "formula": "per_start_and_horizon_min_to_max_rolling_mean_body_vx_plus_minus_0.03_m_s",
+      "positive_direction_required_from_tick": 4,
+      "attitude_formula": "max_nominal_terminal_abs_pitch_and_roll_plus_0.05_rad"
+    },
+    "advance_rule": "one_same_horizon_valid_from_every_design_state_both_signs_both_checkpoints",
+    "failure_token": "HOLD_LOCAL_AUTHORITY_NOT_COMPOSABLE"
+  },
+  "stage_c_if_authorized": {
+    "selected_horizon_rule": "first_globally_passing_in_order_8_16_32",
+    "replan_cadence_ticks": 4,
+    "applied_plan_prefix_ticks": 4,
+    "nominal_residual_exact_zero": true,
+    "formal_cells": 48,
+    "conditions": ["NOMINAL", "X_NEG", "X_POS"],
+    "commands_x": [0.0, 0.074, 0.077, 0.08],
+    "fits": ["p30", "p31_34"],
+    "checkpoints": ["T2_EQUAL_512000", "T2_EQUAL_1024000"],
+    "seed": 167931544,
+    "ticks": 600,
+    "all_prior_gates_unchanged": true
+  },
+  "decision_tokens": [
+    "PASS_ORACLE_RECEDING_HORIZON",
+    "HOLD_LOCAL_AUTHORITY_NOT_COMPOSABLE",
+    "HOLD_SEQUENCE_EXISTS_PLANNER_FAILS",
+    "HOLD_SIGNED_ASYMMETRY"
+  ],
+  "source_hashes": {
+    "localization_tool": "4a77a7f1f8a32db96ac422d6c439e3b715ebce35d7172a7f5a2b6353f84cca82",
+    "sequence_tool": "f1348cb4ed00f7568dbe585c1f743adab100a11116671f3a14ee6998484a7c75",
+    "evaluator": "0d96996758323330c5751d35ba1d1611c406ef0bba96e6b9b618447c3756a8b7",
+    "projection_helper": "06c8000fa77be03a246763d2696a1a474e691151d08d81aacb0de4cf7110ab2e"
+  },
+  "artifact_paths": [
+    "outputs/analysis/ORACLE_COM_VIABILITY_FUNNEL_PLAN.md",
+    "outputs/analysis/oracle_com_viability_funnel_contract.json",
+    "outputs/analysis/ORACLE_COM_FAILURE_LOCALIZATION.md",
+    "outputs/analysis/oracle_com_failure_localization.json",
+    "outputs/analysis/ORACLE_COM_SEQUENCE_RESCUE_RESULT.md",
+    "outputs/analysis/oracle_com_sequence_rescue_result.json",
+    "outputs/analysis/ORACLE_COM_RECEDING_HORIZON_RESULT.md",
+    "outputs/analysis/oracle_com_receding_horizon_result.json",
+    "outputs/analysis/oracle_com_viability_funnel_states/",
+    "outputs/analysis/oracle_com_sequence_rescue_states/"
+  ],
+  "hard_stop": "no_new_horizon_basis_amplitude_budget_margin_threshold_training_hosted_gpu_or_hardware_after_outcomes"
+}

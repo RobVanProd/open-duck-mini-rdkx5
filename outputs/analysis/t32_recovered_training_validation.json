@@ -1,0 +1,232 @@
+{
+  "authority": {
+    "behavior_evaluation_authorized": false,
+    "checkpoint_selection_authorized": false,
+    "gate5_authorized": false,
+    "postexport_transform_preregistration_authorized": true,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "torque_or_motion": false
+  },
+  "checkpoints": [
+    {
+      "directory_sha256": "f5d8c2c54dd5caf5c72d17fe53c924a246f9b10dbefef3b759577552db98b275",
+      "step": 0
+    },
+    {
+      "directory_sha256": "fea2e6456eec8fbc6eb7df33e6cfa0da6629c6b8c7379a1a1bc220dec52ac64f",
+      "step": 1003520
+    },
+    {
+      "directory_sha256": "f42e0d79672c85b382218ff209b4a9183db681d2dc44afcdd7c67811522ca596",
+      "step": 2007040
+    }
+  ],
+  "checks": {
+    "all_checkpoint_trees_finite": true,
+    "all_onnx_contracts_pass": true,
+    "all_postupdate_structures_exact": true,
+    "archive_hash_matches_result_and_receipt": true,
+    "checkpoint_hashes_match_hosted_result": true,
+    "cpu_only_validation": true,
+    "cpu_template_exact": true,
+    "every_critic_leaf_updated_at_both_checkpoints": true,
+    "every_policy_leaf_updated_at_both_checkpoints": true,
+    "formal_behavior_cells_zero": true,
+    "hosted_artifact_passed_pending_cpu_validation": true,
+    "hosted_inputs_match_preregistration": true,
+    "hosted_package_contract_exact": true,
+    "hosted_preregistration_exact": true,
+    "launch_receipt_complete": true,
+    "local_exact_exports": true,
+    "onnx_hashes_match_hosted_result": true,
+    "preexecution_identity_hold_exact_zero_weight": true,
+    "recovery_launch_contract_exact": true,
+    "result_hash_matches_receipt": true,
+    "source_checkpoint_exact": true,
+    "step_zero_source_parameters_bit_exact": true,
+    "step_zero_source_restore_structure_exact": true,
+    "t31_authority_exact": true,
+    "training_metrics_all_finite": true,
+    "training_metrics_have_exact_export_steps": true
+  },
+  "classification": {
+    "action_margin_trainthrough": true,
+    "behavior_cells": 0,
+    "correction_method": "read-only CPU topology remap using the frozen CPU template and exact T23-half source tree",
+    "prior_preexecution_hold_decision_weight": 0,
+    "support_trainthrough": true,
+    "training_completed": true,
+    "training_resume": false,
+    "training_retry": false
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "cpu_template": "16a867c653476d6829ddaf400e5f02fc21658a78d3efc5ddfd167cc497f3ac83",
+    "hosted_preregistration": "1fc70fa801d0793286f9b25a4736cb5bc087c06c3258f7aeabb92c24193b06a5",
+    "hosted_result": "acfd648069cb20363c40326167c25c13c53e8c3d03b4142bfc87f1f734fdb42e",
+    "launch_contract": "d08f7f39cddbe3b7c9b7bb9bb6f28450ffa212e0a0480b76754c035bb8a99724",
+    "launch_receipt": "5e410219e7ac9467c7e1cf7b0f1db76b506041df40ffca575fc2d5dcce413ea0",
+    "package_contract": "ba7733d4f4406bd5149dd4f6e8cac1343165c89906925297577ac25785c225c5",
+    "preexecution_attribution": "0d2b293b53405366c762a9437abd8746a2a53dbba063792064a6fa5130cbba15",
+    "recovery_archive": "11da894cd20944118645f372f9a0efe98d48adc64efc4eb8abe964ad0d366e39",
+    "source_checkpoint": "7a570f670813b0405615d4e253869402129183f7f18d14625fb56f74569db39b",
+    "t31_result": "56496de136758bbcc36e0231535a72fe9de7ac93ab157ee89bbccfaabfe5d37d"
+  },
+  "onnx": [
+    {
+      "abi_exact": true,
+      "chain_256_finite": true,
+      "cpu_provider_exact": true,
+      "initializers_finite": true,
+      "sha256": "0c8b2d05df4baa796b9e2a95b8020b23538b95e070a6fd0bd8ea9fb26cc9aa2b",
+      "step": 0
+    },
+    {
+      "abi_exact": true,
+      "chain_256_finite": true,
+      "cpu_provider_exact": true,
+      "initializers_finite": true,
+      "sha256": "43586754047278d751dcc76b74d43fbf2d4bc072cc6568d2153c90acab92bfd4",
+      "step": 1003520
+    },
+    {
+      "abi_exact": true,
+      "chain_256_finite": true,
+      "cpu_provider_exact": true,
+      "initializers_finite": true,
+      "sha256": "34c0752de90783c1dab8ac5b22e524b57db3acc83d1b119f2d7208d459cf097e",
+      "step": 2007040
+    }
+  ],
+  "schema_version": "open_duck.t32_recovered_training_validation.v1",
+  "status": "PASS_T32_RECOVERED_TRAINING_VALIDATION",
+  "trained_checkpoints": [
+    {
+      "critic_leaf_deltas": {
+        "2/params/hidden_0/bias": 0.007781982421875,
+        "2/params/hidden_0/kernel": 0.022518448531627655,
+        "2/params/hidden_1/bias": 0.009067639708518982,
+        "2/params/hidden_1/kernel": 0.026337414979934692,
+        "2/params/hidden_2/bias": 0.0025205910205841064,
+        "2/params/hidden_2/kernel": 0.01483452320098877,
+        "2/params/hidden_3/bias": 0.0025411173701286316,
+        "2/params/hidden_3/kernel": 0.005134671926498413
+      },
+      "every_critic_leaf_updated": true,
+      "every_policy_leaf_updated": true,
+      "policy_leaf_deltas": {
+        "1/params/adapter_hidden_bias": 0.01065900456160307,
+        "1/params/adapter_hidden_projection/kernel": 0.03416347876191139,
+        "1/params/adapter_location/bias": 0.007234295830130577,
+        "1/params/adapter_location/kernel": 0.02839798480272293,
+        "1/params/adapter_obs_projection/kernel": 0.030787386000156403,
+        "1/params/residual_location/bias": 0.007234279066324234,
+        "1/params/residual_location/kernel": 0.030275719240307808,
+        "1/params/residual_trunk/hidden_0/bias": 0.027734290808439255,
+        "1/params/residual_trunk/hidden_0/kernel": 0.2718784511089325,
+        "1/params/residual_trunk/hidden_1/bias": 0.017713606357574463,
+        "1/params/residual_trunk/hidden_1/kernel": 0.0321211963891983,
+        "1/params/residual_trunk/hidden_2/bias": 0.009907446801662445,
+        "1/params/residual_trunk/hidden_2/kernel": 0.03757370635867119,
+        "1/params/scale_logits/bias": 0.008031465113162994,
+        "1/params/scale_logits/kernel": 0.03752586990594864
+      },
+      "step": 1003520,
+      "structure_exact": true,
+      "tree_finite": true
+    },
+    {
+      "critic_leaf_deltas": {
+        "2/params/hidden_0/bias": 0.0130891352891922,
+        "2/params/hidden_0/kernel": 0.04086555540561676,
+        "2/params/hidden_1/bias": 0.01600414514541626,
+        "2/params/hidden_1/kernel": 0.04111483693122864,
+        "2/params/hidden_2/bias": 0.005005836486816406,
+        "2/params/hidden_2/kernel": 0.027445346117019653,
+        "2/params/hidden_3/bias": 0.005150794982910156,
+        "2/params/hidden_3/kernel": 0.010652422904968262
+      },
+      "every_critic_leaf_updated": true,
+      "every_policy_leaf_updated": true,
+      "policy_leaf_deltas": {
+        "1/params/adapter_hidden_bias": 0.011610763147473335,
+        "1/params/adapter_hidden_projection/kernel": 0.0440775603055954,
+        "1/params/adapter_location/bias": 0.006115119904279709,
+        "1/params/adapter_location/kernel": 0.03920772299170494,
+        "1/params/adapter_obs_projection/kernel": 0.04669450223445892,
+        "1/params/residual_location/bias": 0.006115127354860306,
+        "1/params/residual_location/kernel": 0.0357649028301239,
+        "1/params/residual_trunk/hidden_0/bias": 0.03288456052541733,
+        "1/params/residual_trunk/hidden_0/kernel": 0.5318101048469543,
+        "1/params/residual_trunk/hidden_1/bias": 0.021656736731529236,
+        "1/params/residual_trunk/hidden_1/kernel": 0.050328195095062256,
+        "1/params/residual_trunk/hidden_2/bias": 0.013406898826360703,
+        "1/params/residual_trunk/hidden_2/kernel": 0.04736437648534775,
+        "1/params/scale_logits/bias": 0.013510480523109436,
+        "1/params/scale_logits/kernel": 0.05166955292224884
+      },
+      "step": 2007040,
+      "structure_exact": true,
+      "tree_finite": true
+    }
+  ],
+  "training_metric_evidence": {
+    "eval/avg_episode_length": [
+      {
+        "step": 0,
+        "value": 497.9765625
+      },
+      {
+        "step": 1003520,
+        "value": 523.1328125
+      },
+      {
+        "step": 2007040,
+        "value": 529.3984375
+      }
+    ],
+    "eval/episode_cost/linear_peak_torque_exceedance": [
+      {
+        "step": 0,
+        "value": 114.17015075683594
+      },
+      {
+        "step": 1003520,
+        "value": 101.76739501953125
+      },
+      {
+        "step": 2007040,
+        "value": 99.64727783203125
+      }
+    ],
+    "eval/episode_cost/tracking_tail_exceedance": [
+      {
+        "step": 0,
+        "value": 0.00021859646949451417
+      },
+      {
+        "step": 1003520,
+        "value": 9.582797065377235e-05
+      },
+      {
+        "step": 2007040,
+        "value": 0.0004087413544766605
+      }
+    ],
+    "eval/episode_reward": [
+      {
+        "step": 0,
+        "value": 242.8644561767578
+      },
+      {
+        "step": 1003520,
+        "value": 257.00506591796875
+      },
+      {
+        "step": 2007040,
+        "value": 259.6929931640625
+      }
+    ]
+  }
+}

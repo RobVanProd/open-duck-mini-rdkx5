@@ -1,0 +1,52 @@
+{
+  "status": "HOLD_PPO_STEP0_SEED5_FAILURE",
+  "scope": "offline_phase2_ppo_step0_warmstart",
+  "robot_touched": false,
+  "ssh_performed": false,
+  "deploy_performed": false,
+  "source_parent": {
+    "policy": "policy/candidates/phase2_health_routed_parent_phase_mod_rate150_20260706/candidate.onnx",
+    "status": "PASS_HEALTH_ROUTED_PARENT_READY_FOR_PHASE2_DR_WARMSTART"
+  },
+  "ppo_loc_prior": {
+    "npz": "outputs/analysis/phase2_health_routed_pass_parent_ppo_loc_rate150_prior/candidate_mlp.npz",
+    "npz_sha256": "a4898be376c496b7f8de96844cb64827ac26b19c575482c622d129bdaefe2e16",
+    "onnx": "outputs/analysis/phase2_health_routed_pass_parent_ppo_loc_rate150_prior/candidate.onnx",
+    "onnx_sha256": "3bb1f33da245ee5e79df9ba55407e465e32ee4b56749c49be0dc5fa80f4dd0e6"
+  },
+  "step0": {
+    "checkpoint": "outputs/analysis/phase2_health_routed_parent_ppo_loc_rate150_step0_checkpoint",
+    "onnx": "outputs/analysis/phase2_health_routed_parent_ppo_loc_rate150_step0.onnx",
+    "onnx_sha256": "10499450f92307a49de9faf8de557cb6348977b9ec4f0ecb798758b57cfc5aa8",
+    "fidelity_status": "PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY",
+    "fidelity_json": "outputs/analysis/phase2_health_routed_parent_ppo_loc_rate150_step0_fidelity.json",
+    "fidelity_json_sha256": "bcdfa1d4d8067e77d1e4cd3585133963324940806c2360d4e5116c182923b5ab",
+    "p95_abs_action_error": 0.00000011920928955078125,
+    "max_abs_action_error": 0.0000004172325134277344
+  },
+  "x008_full8_gate": {
+    "status": "HOLD_PPO_STEP0_SEED5_FAILURE",
+    "report": "outputs/analysis/PHASE2_HEALTH_ROUTED_PARENT_PPO_LOC_RATE150_STEP0_X008_FULL8_GATE.md",
+    "json": "outputs/analysis/phase2_health_routed_parent_ppo_loc_rate150_step0_x008_full8_gate.json",
+    "json_sha256": "110e626948865fef867f02b76295ea00ffa06d80c2793f63f8553e4625af65ea",
+    "command_x": 0.08,
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0075,
+    "pushes_enabled": true,
+    "duration_complete": 7,
+    "falls_or_terminations": 1,
+    "failed_seeds": [5],
+    "mean_vx_m_s": 0.0238,
+    "mean_track_ratio": 0.2972,
+    "velocity_envelope_excess_rad_s": 0.0
+  },
+  "decision": {
+    "use_as_stage_a_dr_warmstart": false,
+    "reason": "The restorable PPO step-0 export preserves most parent behavior but fails seed 5 at x=0.08 rough+push.",
+    "next": [
+      "Trace seed 5 for the phase-modulated parent and PPO step-0 export under identical settings.",
+      "Compare action deltas, phase/context dependence, contact timing, and base-height collapse near samples 550-625.",
+      "Correct the PPO-compatible parent before launching Stage A DR."
+    ]
+  }
+}

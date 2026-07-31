@@ -1,0 +1,112 @@
+{
+  "activation": "swish",
+  "config": {
+    "batch_size": 1024,
+    "learning_rate": 0.0007,
+    "seed": 15031,
+    "steps": 6000,
+    "target_rate_limit_rad_s": 1.5,
+    "target_rate_scale": 0.1
+  },
+  "context_hidden_sizes": [
+    64
+  ],
+  "context_indices": [
+    6,
+    99,
+    100
+  ],
+  "exported_onnx": "policy/candidates/phase2_z0075_iter12_pass_control_reverse_soft_rate150_20260704/candidate.onnx",
+  "loss_rows": [
+    {
+      "loss": 0.19677342474460602,
+      "step": 1
+    },
+    {
+      "loss": 0.0007190864998847246,
+      "step": 500
+    },
+    {
+      "loss": 0.00044985220301896334,
+      "step": 1000
+    },
+    {
+      "loss": 0.0003931348619516939,
+      "step": 1500
+    },
+    {
+      "loss": 0.00040376948891207576,
+      "step": 2000
+    },
+    {
+      "loss": 0.00040864976472221315,
+      "step": 2500
+    },
+    {
+      "loss": 0.00032034117612056434,
+      "step": 3000
+    },
+    {
+      "loss": 0.00026367910322733223,
+      "step": 3500
+    },
+    {
+      "loss": 0.00028297441895119846,
+      "step": 4000
+    },
+    {
+      "loss": 0.00022588840511161834,
+      "step": 4500
+    },
+    {
+      "loss": 0.0005140513530932367,
+      "step": 5000
+    },
+    {
+      "loss": 0.00028086741804145277,
+      "step": 5500
+    },
+    {
+      "loss": 0.0002571777440607548,
+      "step": 6000
+    }
+  ],
+  "manifest": "outputs/analysis/phase2_z0075_iter12_pass_control_reverse_soft_merged_manifest.json",
+  "modulation_scale": 0.5,
+  "onnx_verify": {
+    "max_abs_error": 2.384185791015625e-07,
+    "p95_abs_error": 1.1920928955078125e-07,
+    "path": "policy/candidates/phase2_z0075_iter12_pass_control_reverse_soft_rate150_20260704/candidate.onnx",
+    "samples_checked": 64
+  },
+  "sample_weight": {
+    "max": 5.0,
+    "p50": 3.0,
+    "p95": 5.0,
+    "weighted_samples": 165878.84375
+  },
+  "samples": 55636,
+  "saved_npz": "outputs/analysis/phase2_z0075_iter12_pass_control_reverse_soft_rate150_candidate/candidate_mlp.npz",
+  "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+  "target_rate": {
+    "max_rad_s": 2.518000841140747,
+    "p50_rad_s": 0.1896812617778778,
+    "p95_rad_s": 1.3819915056228638,
+    "p99_rad_s": 1.5332856178283691,
+    "pair_count": 55548
+  },
+  "train_metrics": {
+    "mae": 0.00943732485274166,
+    "max_abs_error": 0.4258764386177063,
+    "p50_abs_error": 0.005626813948971798,
+    "p95_abs_error": 0.03080350160598755,
+    "p99_abs_error": 0.058605597034193345,
+    "pred_action_saturation_pct": 0.0,
+    "rmse": 0.016071839758917118,
+    "samples": 55636
+  },
+  "trunk_hidden_sizes": [
+    512,
+    256
+  ]
+}

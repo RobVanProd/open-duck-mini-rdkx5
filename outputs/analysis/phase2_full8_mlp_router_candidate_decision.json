@@ -1,0 +1,38 @@
+{
+  "branch_a_policy": "policy/candidates/phase2_parent_pair_lateral_seed7_weighted_command_gated_zero0020_20260705/candidate.onnx",
+  "branch_b_policy": "policy/candidates/phase2_z0075_iter25_dual_anchor_weight4_history_context_rate150_20260704/candidate.onnx",
+  "candidate_onnx": "outputs/analysis/phase2_full8_mlp_router_candidate/candidate.onnx",
+  "candidate_onnx_sha256": "6251a528b878fbfa3637727bd6d8463cd08b291556b285fbfe3cfab40ede5697",
+  "decision": "Do not promote this MLP-router candidate and do not launch Phase 2 domain randomization from it. Nonlinear stateless routing can preserve the seed-5 branch, but the source-label classifier gate is not closed-loop-safe and regresses seed 0.",
+  "gate": {
+    "falls": 1,
+    "max_instant_velocity_excess_rad_s": 0.0,
+    "max_p95_velocity_excess_rad_s": 0.0,
+    "mean_track_ratio": 0.10196695410794232,
+    "mean_vx_m_s": 0.008157356328635387,
+    "pass_count": 2,
+    "runs": 3,
+    "seeds": [
+      0,
+      5,
+      7
+    ]
+  },
+  "gate_json": "outputs/analysis/phase2_full8_mlp_router_candidate_x008_seed0_5_7_gate.json",
+  "gate_npz": "outputs/analysis/phase2_full8_mlp_router_gate/gate_mlp.npz",
+  "gate_npz_sha256": "8192fc152205635f4ccdbd1d9972944659bca4782bf8dfe43241ae6228fc45c0",
+  "next_recommendation": "Keep the MLP-router direction, but train the gate with closed-loop validation pressure or a branch-cost objective rather than source-label classification alone.",
+  "no_deploy": true,
+  "no_grounded_replay": true,
+  "no_robot_tests": true,
+  "no_ssh": true,
+  "onnx_verify": "outputs/analysis/phase2_full8_mlp_router_candidate/onnx_verify.json",
+  "runtime_behavior_changed": false,
+  "separability": {
+    "status": "PASS_MLP_ROUTER_SEPARABLE",
+    "test_balanced_accuracy_pct": 95.80952380952381,
+    "test_negative_false_selected_pct": 3.0476190476190474,
+    "test_positive_selected_pct": 94.66666666666667
+  },
+  "status": "HOLD_FULL8_MLP_ROUTER_SEED0_REGRESSION"
+}

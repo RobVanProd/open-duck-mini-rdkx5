@@ -1,0 +1,525 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "behavior_preregistration": false,
+    "formal_training": false,
+    "full_matrix": false,
+    "gate5": false,
+    "hosted_training": false,
+    "policy_bank_contract": false,
+    "rdkx5_or_robot": false,
+    "runtime_change": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "both_fit_contracts_pass": false,
+    "cpu_only": true,
+    "dataset_exact_4800": true,
+    "fit_partitions_are_disjoint_and_complete": true,
+    "formal_behavior_cells_zero": true,
+    "hosted_compute_zero": true,
+    "runtime_dispatch_unchanged": true
+  },
+  "decision": "CLOSE_FIT_CONDITIONED_TWO_POLICY_FULL_ACTOR_SMOKE_NO_RETRY",
+  "failed_checks": [
+    "both_fit_contracts_pass"
+  ],
+  "fits": {
+    "p30_all_joint": {
+      "changed_leaves": [
+        "1/params/adapter_hidden_bias",
+        "1/params/adapter_hidden_projection/kernel",
+        "1/params/adapter_location/bias",
+        "1/params/adapter_location/kernel",
+        "1/params/adapter_obs_projection/kernel",
+        "1/params/residual_location/bias",
+        "1/params/residual_location/kernel",
+        "1/params/residual_trunk/hidden_0/bias",
+        "1/params/residual_trunk/hidden_0/kernel",
+        "1/params/residual_trunk/hidden_1/bias",
+        "1/params/residual_trunk/hidden_1/kernel",
+        "1/params/residual_trunk/hidden_2/bias",
+        "1/params/residual_trunk/hidden_2/kernel"
+      ],
+      "checks": {
+        "action_loss_decreases": true,
+        "all_non_scale_actor_leaves_changed": true,
+        "both_export_abis_exact": true,
+        "both_export_inference_contracts_pass": true,
+        "both_line_search_updates_accepted": true,
+        "checkpoint_structure_exact": true,
+        "corrected_error_reduced_at_least_five_percent": true,
+        "correction_weight_fit_derived": true,
+        "fit_partition_exact": true,
+        "hidden_error_bounded": true,
+        "initial_actions_match_recorded_base": true,
+        "initial_hidden_matches_teacher": true,
+        "last_gradients_finite": true,
+        "preservation_leakage_within_one_percent": false,
+        "scale_logits_frozen": true,
+        "step_zero_matches_v121_final_deployment": true,
+        "total_loss_decreases": true
+      },
+      "dataset": {
+        "corrected_rows": 36,
+        "correction_weight": 65.66666666666667,
+        "fit_rows": 2400,
+        "preservation_rows": 2364,
+        "smoke_corrected_rows": 36,
+        "smoke_preservation_rows": 220,
+        "smoke_rows": 256
+      },
+      "expected_changed_leaves": [
+        "1/params/adapter_hidden_bias",
+        "1/params/adapter_hidden_projection/kernel",
+        "1/params/adapter_location/bias",
+        "1/params/adapter_location/kernel",
+        "1/params/adapter_obs_projection/kernel",
+        "1/params/residual_location/bias",
+        "1/params/residual_location/kernel",
+        "1/params/residual_trunk/hidden_0/bias",
+        "1/params/residual_trunk/hidden_0/kernel",
+        "1/params/residual_trunk/hidden_1/bias",
+        "1/params/residual_trunk/hidden_1/kernel",
+        "1/params/residual_trunk/hidden_2/bias",
+        "1/params/residual_trunk/hidden_2/kernel"
+      ],
+      "exports": {
+        "0": {
+          "deployed": {
+            "bytes": 958446,
+            "graph_io": {
+              "inputs": {
+                "h_in": [
+                  1,
+                  64
+                ],
+                "obs": [
+                  1,
+                  115
+                ],
+                "previous_action": [
+                  1,
+                  14
+                ]
+              },
+              "outputs": {
+                "continuous_actions": [
+                  1,
+                  14
+                ],
+                "h_out": [
+                  1,
+                  64
+                ],
+                "previous_action_out": [
+                  1,
+                  14
+                ]
+              }
+            },
+            "inference": {
+              "changed_projection_is_exercised": true,
+              "checks": {
+                "all_outputs_finite": true,
+                "changed_projection_is_exercised": true,
+                "cpu_provider_exact": true,
+                "g3_guard_preserved_in_consistent_chain": true,
+                "moving_rate_delta_enforced": true,
+                "realized_state_feedback_exact": true,
+                "recurrent_hidden_output_bit_exact": true,
+                "zero_action_exact": true,
+                "zero_previous_exact": true
+              },
+              "max_guard_excess_rad": 0.0,
+              "max_hidden_error": 0.0,
+              "max_moving_delta_excess": 2.2351741790771484e-08,
+              "max_state_error": 0.0,
+              "max_zero_action": 0.0,
+              "max_zero_previous": 0.0,
+              "pass": true
+            },
+            "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v168-fit-conditioned-policy-bank-cpu-20260725\\winner_v168_p30_all_joint_deployed_0.onnx",
+            "sha256": "bc54ea1bf39e617f76771e7416de91db2ccfe0b1bf903de08faaa64a67ce4aab"
+          },
+          "raw_path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v168-fit-conditioned-policy-bank-cpu-20260725\\winner_v168_p30_all_joint_raw_0.onnx",
+          "raw_sha256": "a8f883e8b087e940647fa62e5b79f4e7961db0ecb5bd36fc3bd88411b6e7bdce"
+        },
+        "2": {
+          "deployed": {
+            "bytes": 958446,
+            "graph_io": {
+              "inputs": {
+                "h_in": [
+                  1,
+                  64
+                ],
+                "obs": [
+                  1,
+                  115
+                ],
+                "previous_action": [
+                  1,
+                  14
+                ]
+              },
+              "outputs": {
+                "continuous_actions": [
+                  1,
+                  14
+                ],
+                "h_out": [
+                  1,
+                  64
+                ],
+                "previous_action_out": [
+                  1,
+                  14
+                ]
+              }
+            },
+            "inference": {
+              "changed_projection_is_exercised": true,
+              "checks": {
+                "all_outputs_finite": true,
+                "changed_projection_is_exercised": true,
+                "cpu_provider_exact": true,
+                "g3_guard_preserved_in_consistent_chain": true,
+                "moving_rate_delta_enforced": true,
+                "realized_state_feedback_exact": true,
+                "recurrent_hidden_output_bit_exact": true,
+                "zero_action_exact": true,
+                "zero_previous_exact": true
+              },
+              "max_guard_excess_rad": 0.0,
+              "max_hidden_error": 0.0,
+              "max_moving_delta_excess": 2.2351741790771484e-08,
+              "max_state_error": 0.0,
+              "max_zero_action": 0.0,
+              "max_zero_previous": 0.0,
+              "pass": true
+            },
+            "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v168-fit-conditioned-policy-bank-cpu-20260725\\winner_v168_p30_all_joint_deployed_2.onnx",
+            "sha256": "6af7859c77a0b79d350bbd38919c00931a43d42e853dd096b3323673509a0315"
+          },
+          "raw_path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v168-fit-conditioned-policy-bank-cpu-20260725\\winner_v168_p30_all_joint_raw_2.onnx",
+          "raw_sha256": "bcf71c4f3ca7829f7c360fa470d8b06cb3ecd8559125f6f4c33e74c1f0b42d3b"
+        }
+      },
+      "failed_checks": [
+        "preservation_leakage_within_one_percent"
+      ],
+      "hidden_mse": 6.013935660575953e-08,
+      "indices_sha256": "42bddc28b9bfb6e04bf2da262e820f87524e6952de27318dd5a1bcb7cd06c319",
+      "last_gradient_norms": {
+        "params/adapter_hidden_bias": 7.360809831880033e-06,
+        "params/adapter_hidden_projection/kernel": 6.118203600635752e-05,
+        "params/adapter_location/bias": 7.061111682560295e-05,
+        "params/adapter_location/kernel": 0.0005800781073048711,
+        "params/adapter_obs_projection/kernel": 0.00015771616017445922,
+        "params/residual_location/bias": 7.061111682560295e-05,
+        "params/residual_location/kernel": 0.000698984949849546,
+        "params/residual_trunk/hidden_0/bias": 2.3192116714199074e-05,
+        "params/residual_trunk/hidden_0/kernel": 0.00019898285972885787,
+        "params/residual_trunk/hidden_1/bias": 2.0916822904837318e-05,
+        "params/residual_trunk/hidden_1/kernel": 0.0002104009035974741,
+        "params/residual_trunk/hidden_2/bias": 2.232759288745001e-05,
+        "params/residual_trunk/hidden_2/kernel": 0.00019825977506116033,
+        "params/scale_logits/bias": 0.0,
+        "params/scale_logits/kernel": 0.0
+      },
+      "metrics": {
+        "baseline_corrected_mse": 1.8609462131280452e-05,
+        "corrected_mse": 1.5694875401095487e-05,
+        "corrected_ratio_to_zero_predictor": 0.843381463170509,
+        "error_linf": 0.03175938129425049,
+        "preservation_mse": 4.976111540599959e-07,
+        "preservation_ratio_to_corrected_baseline": 0.026739684927463134
+      },
+      "step_zero_v121_final_max_abs_error": 0.0,
+      "updates": [
+        {
+          "accepted_step": 1.0,
+          "action_loss_after": 1.5000610801507719e-05,
+          "action_loss_before": 1.7025038687279448e-05,
+          "backtracks": 0,
+          "gradient_norm": 0.0016973261954262853,
+          "hidden_loss_after": 4.788818674938966e-09,
+          "hidden_loss_before": 1.1145598333150986e-16,
+          "initial_step": 1.0,
+          "loss_after": 1.5005400200607255e-05,
+          "loss_before": 1.7025038687279448e-05,
+          "update": 1
+        },
+        {
+          "accepted_step": 1.0,
+          "action_loss_after": 1.4400991858565249e-05,
+          "action_loss_before": 1.5000610801507719e-05,
+          "backtracks": 0,
+          "gradient_norm": 0.0009941619355231524,
+          "hidden_loss_after": 6.013934950033217e-08,
+          "hidden_loss_before": 4.788818674938966e-09,
+          "initial_step": 1.0,
+          "loss_after": 1.4461131286225282e-05,
+          "loss_before": 1.5005400200607255e-05,
+          "update": 2
+        }
+      ]
+    },
+    "p31_34_pitch_with_p30_nonpitch": {
+      "changed_leaves": [
+        "1/params/adapter_hidden_bias",
+        "1/params/adapter_hidden_projection/kernel",
+        "1/params/adapter_location/bias",
+        "1/params/adapter_location/kernel",
+        "1/params/adapter_obs_projection/kernel",
+        "1/params/residual_location/bias",
+        "1/params/residual_location/kernel",
+        "1/params/residual_trunk/hidden_0/bias",
+        "1/params/residual_trunk/hidden_0/kernel",
+        "1/params/residual_trunk/hidden_1/bias",
+        "1/params/residual_trunk/hidden_1/kernel",
+        "1/params/residual_trunk/hidden_2/bias",
+        "1/params/residual_trunk/hidden_2/kernel"
+      ],
+      "checks": {
+        "action_loss_decreases": true,
+        "all_non_scale_actor_leaves_changed": true,
+        "both_export_abis_exact": true,
+        "both_export_inference_contracts_pass": true,
+        "both_line_search_updates_accepted": true,
+        "checkpoint_structure_exact": true,
+        "corrected_error_reduced_at_least_five_percent": true,
+        "correction_weight_fit_derived": true,
+        "fit_partition_exact": true,
+        "hidden_error_bounded": true,
+        "initial_actions_match_recorded_base": true,
+        "initial_hidden_matches_teacher": true,
+        "last_gradients_finite": true,
+        "preservation_leakage_within_one_percent": false,
+        "scale_logits_frozen": true,
+        "step_zero_matches_v121_final_deployment": true,
+        "total_loss_decreases": true
+      },
+      "dataset": {
+        "corrected_rows": 35,
+        "correction_weight": 67.57142857142857,
+        "fit_rows": 2400,
+        "preservation_rows": 2365,
+        "smoke_corrected_rows": 35,
+        "smoke_preservation_rows": 221,
+        "smoke_rows": 256
+      },
+      "expected_changed_leaves": [
+        "1/params/adapter_hidden_bias",
+        "1/params/adapter_hidden_projection/kernel",
+        "1/params/adapter_location/bias",
+        "1/params/adapter_location/kernel",
+        "1/params/adapter_obs_projection/kernel",
+        "1/params/residual_location/bias",
+        "1/params/residual_location/kernel",
+        "1/params/residual_trunk/hidden_0/bias",
+        "1/params/residual_trunk/hidden_0/kernel",
+        "1/params/residual_trunk/hidden_1/bias",
+        "1/params/residual_trunk/hidden_1/kernel",
+        "1/params/residual_trunk/hidden_2/bias",
+        "1/params/residual_trunk/hidden_2/kernel"
+      ],
+      "exports": {
+        "0": {
+          "deployed": {
+            "bytes": 958446,
+            "graph_io": {
+              "inputs": {
+                "h_in": [
+                  1,
+                  64
+                ],
+                "obs": [
+                  1,
+                  115
+                ],
+                "previous_action": [
+                  1,
+                  14
+                ]
+              },
+              "outputs": {
+                "continuous_actions": [
+                  1,
+                  14
+                ],
+                "h_out": [
+                  1,
+                  64
+                ],
+                "previous_action_out": [
+                  1,
+                  14
+                ]
+              }
+            },
+            "inference": {
+              "changed_projection_is_exercised": true,
+              "checks": {
+                "all_outputs_finite": true,
+                "changed_projection_is_exercised": true,
+                "cpu_provider_exact": true,
+                "g3_guard_preserved_in_consistent_chain": true,
+                "moving_rate_delta_enforced": true,
+                "realized_state_feedback_exact": true,
+                "recurrent_hidden_output_bit_exact": true,
+                "zero_action_exact": true,
+                "zero_previous_exact": true
+              },
+              "max_guard_excess_rad": 0.0,
+              "max_hidden_error": 0.0,
+              "max_moving_delta_excess": 2.2351741790771484e-08,
+              "max_state_error": 0.0,
+              "max_zero_action": 0.0,
+              "max_zero_previous": 0.0,
+              "pass": true
+            },
+            "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v168-fit-conditioned-policy-bank-cpu-20260725\\winner_v168_p31_34_pitch_with_p30_nonpitch_deployed_0.onnx",
+            "sha256": "bc54ea1bf39e617f76771e7416de91db2ccfe0b1bf903de08faaa64a67ce4aab"
+          },
+          "raw_path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v168-fit-conditioned-policy-bank-cpu-20260725\\winner_v168_p31_34_pitch_with_p30_nonpitch_raw_0.onnx",
+          "raw_sha256": "a8f883e8b087e940647fa62e5b79f4e7961db0ecb5bd36fc3bd88411b6e7bdce"
+        },
+        "2": {
+          "deployed": {
+            "bytes": 958446,
+            "graph_io": {
+              "inputs": {
+                "h_in": [
+                  1,
+                  64
+                ],
+                "obs": [
+                  1,
+                  115
+                ],
+                "previous_action": [
+                  1,
+                  14
+                ]
+              },
+              "outputs": {
+                "continuous_actions": [
+                  1,
+                  14
+                ],
+                "h_out": [
+                  1,
+                  64
+                ],
+                "previous_action_out": [
+                  1,
+                  14
+                ]
+              }
+            },
+            "inference": {
+              "changed_projection_is_exercised": true,
+              "checks": {
+                "all_outputs_finite": true,
+                "changed_projection_is_exercised": true,
+                "cpu_provider_exact": true,
+                "g3_guard_preserved_in_consistent_chain": true,
+                "moving_rate_delta_enforced": true,
+                "realized_state_feedback_exact": true,
+                "recurrent_hidden_output_bit_exact": true,
+                "zero_action_exact": true,
+                "zero_previous_exact": true
+              },
+              "max_guard_excess_rad": 0.0,
+              "max_hidden_error": 0.0,
+              "max_moving_delta_excess": 2.2351741790771484e-08,
+              "max_state_error": 0.0,
+              "max_zero_action": 0.0,
+              "max_zero_previous": 0.0,
+              "pass": true
+            },
+            "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v168-fit-conditioned-policy-bank-cpu-20260725\\winner_v168_p31_34_pitch_with_p30_nonpitch_deployed_2.onnx",
+            "sha256": "694319dcdf79b53a09d108a065a5f7d502cf2dd6180603a86bb4cfb4ba36b908"
+          },
+          "raw_path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v168-fit-conditioned-policy-bank-cpu-20260725\\winner_v168_p31_34_pitch_with_p30_nonpitch_raw_2.onnx",
+          "raw_sha256": "d89fa8ea65462e6ab24e0f59234622a835059b3f029770098481047f783468c2"
+        }
+      },
+      "failed_checks": [
+        "preservation_leakage_within_one_percent"
+      ],
+      "hidden_mse": 2.5399811143245188e-09,
+      "indices_sha256": "f02022e9ac131d291b5caff957c04d789e1b85c679994c1543fb437d1c356058",
+      "last_gradient_norms": {
+        "params/adapter_hidden_bias": 5.157954092283035e-06,
+        "params/adapter_hidden_projection/kernel": 4.831766273127869e-05,
+        "params/adapter_location/bias": 2.8301325073698536e-05,
+        "params/adapter_location/kernel": 0.00044943956891074777,
+        "params/adapter_obs_projection/kernel": 7.991405436769128e-05,
+        "params/residual_location/bias": 2.8301325073698536e-05,
+        "params/residual_location/kernel": 0.0005427835858426988,
+        "params/residual_trunk/hidden_0/bias": 2.0064328055013902e-05,
+        "params/residual_trunk/hidden_0/kernel": 0.00018074049148708582,
+        "params/residual_trunk/hidden_1/bias": 1.7566584574524313e-05,
+        "params/residual_trunk/hidden_1/kernel": 0.00018309493316337466,
+        "params/residual_trunk/hidden_2/bias": 1.7472877516411245e-05,
+        "params/residual_trunk/hidden_2/kernel": 0.00018123465997632593,
+        "params/scale_logits/bias": 0.0,
+        "params/scale_logits/kernel": 0.0
+      },
+      "metrics": {
+        "baseline_corrected_mse": 1.9638207959360443e-05,
+        "corrected_mse": 1.824036553443875e-05,
+        "corrected_ratio_to_zero_predictor": 0.9288202656874597,
+        "error_linf": 0.04929376021027565,
+        "preservation_mse": 2.651863155733736e-07,
+        "preservation_ratio_to_corrected_baseline": 0.013503590354178625
+      },
+      "step_zero_v121_final_max_abs_error": 0.0,
+      "updates": [
+        {
+          "accepted_step": 1.0,
+          "action_loss_after": 1.7201527953147888e-05,
+          "action_loss_before": 1.795992830011528e-05,
+          "backtracks": 0,
+          "gradient_norm": 0.0009373770444653928,
+          "hidden_loss_after": 1.030280638580905e-09,
+          "hidden_loss_before": 7.155734338404329e-17,
+          "initial_step": 1.0,
+          "loss_after": 1.7202557501150295e-05,
+          "loss_before": 1.795992830011528e-05,
+          "update": 1
+        },
+        {
+          "accepted_step": 1.0,
+          "action_loss_after": 1.670419987931382e-05,
+          "action_loss_before": 1.7201527953147888e-05,
+          "backtracks": 0,
+          "gradient_norm": 0.0007791102398186922,
+          "hidden_loss_after": 2.5399811143245188e-09,
+          "hidden_loss_before": 1.030280638580905e-09,
+          "initial_step": 1.0,
+          "loss_after": 1.670673918852117e-05,
+          "loss_before": 1.7202557501150295e-05,
+          "update": 2
+        }
+      ]
+    }
+  },
+  "input_hashes": {
+    "cpu_template": "217a1551c4cc778e4b957636a40ca6e01eafa51efeaef905eb73e9debc7c26e5",
+    "network_source": "ffd07d0a6e96d846aa1f62a8d131bf892f10db6b2a22710affe3946b7b145ebd",
+    "runner": "9bb2ec6bbd573fd87c0b84527c4f63fccb141c877260ffd08f1b92e476daafae",
+    "source_checkpoint": "c1d9b8574c941e2279294de14aca1cb57d4736bdc63635b5aaf1e205fa7f86c1",
+    "training_module": "632a2e12ae10d940be38858c52e738281ca6a2de1736d1be90b8adcbdbd8baa8",
+    "v121_final_deployed": "bc54ea1bf39e617f76771e7416de91db2ccfe0b1bf903de08faaa64a67ce4aab",
+    "v121_transform": "4bd5eab5343cd8401db1789773fa3cc345727d903cb31222e0ea9870f0e9e640",
+    "v130_feature_audit": "7b4078c3ea18c3a3e1d129de3329cca8e71d178d93b836ba37f552544bed33d7",
+    "v131_behavior_result": "ab1535e11287f191e8ee6b4be5c020c44726c6263465c7cb760892387b07c9ea",
+    "v134_cpu_result": "e25691c219eec4b76dea0f18b14e47b6fd840b6c0bc53c6c1817cdd5fbf3f387"
+  },
+  "schema_version": "winner_v168.fit_conditioned_policy_bank_cpu_result.v1",
+  "status": "HOLD_WINNER_V168_FIT_CONDITIONED_POLICY_BANK_CPU_FALSIFIER"
+}

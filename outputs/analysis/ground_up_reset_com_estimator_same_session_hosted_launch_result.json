@@ -1,0 +1,72 @@
+{
+  "schema_version": "ground_up_reset_estimator_same_session_hosted_launch_result.v1",
+  "status": "FAIL_HOSTED_LAUNCH_OR_RECOVERY",
+  "decision": "STOP_NO_RETRY_HOSTED_GPU_EXPANSION_EQUIVALENCE_FAILED",
+  "date": "2026-07-15",
+  "arm": "RESET_EST_LATCH_U05",
+  "authority": {
+    "single_interactive_launch_approved": true,
+    "retry_authorized": false,
+    "resume_authorized": false
+  },
+  "rate_attestation": {
+    "source": "COLAB_RESOURCES_UI_OPERATOR_ATTESTATION",
+    "session": "open-duck-reset-estimator-t4",
+    "compute_rate_per_hour": 1.07,
+    "available_compute_units": 79.36,
+    "age_seconds_at_validation": 5.855427,
+    "projected_full_ceiling_compute_units": 0.7133333333333334,
+    "passed": true
+  },
+  "execution": {
+    "session_count": 1,
+    "session_ready": true,
+    "assets_uploaded": 19,
+    "hosted_script_returncode": 0,
+    "hosted_script_elapsed_seconds": 77.00984764099985,
+    "session_elapsed_seconds": 184.64847018699993,
+    "projected_elapsed_compute_units_at_attested_rate": 0.054881628639,
+    "projected_elapsed_compute_units_note": "Elapsed wall multiplied by the attested rate; not claimed as an exact billed amount.",
+    "training_processes_started": 0,
+    "training_steps": 0,
+    "artifacts_recovered": false,
+    "session_stop_returncode": 0,
+    "session_stop_passed": true,
+    "active_sessions_after_cleanup": 0
+  },
+  "failure": {
+    "stage": "HOSTED_CHECKPOINT_EXPANSION_PRETRAINING_GATE",
+    "failed_checks": [
+      "step_zero_outputs_exact"
+    ],
+    "frozen_tolerance": 1e-7,
+    "measured_error": null,
+    "measured_error_note": "The expansion report was written remotely before the exception but was not part of the frozen recovery set after a failed hosted job; no numeric magnitude is inferred.",
+    "training_command_reached": false,
+    "policy_behavior_evaluated": false
+  },
+  "evidence": {
+    "launch_plan": {
+      "path": "outputs/analysis/ground_up_reset_com_estimator_hosted_handshake_run_20260715/launch_plan.json",
+      "sha256": "7452f5cd44dcc815bc19be3c0fcbc23ea6124459b52b065540ad1f56f144d5f4",
+      "bytes": 23658
+    },
+    "rate_attestation": {
+      "path": "outputs/analysis/ground_up_reset_com_estimator_hosted_handshake_run_20260715/live_rate_attestation.json",
+      "sha256": "06a5df9384390ab4f38b3cce1defa9a301e8dd4d0590ac6c68db321d438d7ccb",
+      "bytes": 228
+    },
+    "launch_record": {
+      "path": "outputs/analysis/ground_up_reset_com_estimator_hosted_handshake_run_20260715/recovery/GROUND_UP_RESET_COM_ESTIMATOR_TRAINING_launch.json",
+      "sha256": "09fbc7d1fe9de32c752a158c18abc6674a2b01e024cd33df0a3fd52d6aa472c0",
+      "bytes": 48806
+    }
+  },
+  "selection": {
+    "training_reward_used": false,
+    "policy_selected": false,
+    "closest_result_promoted": false,
+    "robot_clearance": false
+  },
+  "next_authority_boundary": "A separately preregistered report-before-raise GPU expansion diagnostic is required before any further Colab allocation."
+}

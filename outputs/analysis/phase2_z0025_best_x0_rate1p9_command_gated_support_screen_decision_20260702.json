@@ -1,0 +1,124 @@
+{
+  "status": "HOLD_BEST_X0_SUPPORT_REQUIRES_OVER_ENVELOPE_TRANSIENT",
+  "superseded_for_current_z0025_baseline_by": "outputs/analysis/PHASE2_Z0025_COMMAND_GATED_BESTREC70_RATE1P9_TARGETLIMITED0999_STRONGER_PUSH_DECISION_20260701.md",
+  "date": "2026-07-02",
+  "offline_only": true,
+  "robot_tests": false,
+  "ssh": false,
+  "deploy": false,
+  "grounded_replay": false,
+  "training": false,
+  "bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+  "task": "rough_terrain_backlash",
+  "terrain_hfield_z_scale": 0.0025,
+  "bridge_mode": "fitted",
+  "jax_platform": "cpu",
+  "command_gate": "high_weight = clip(abs(obs[6]) / 0.08, 0, 1)",
+  "low_policy": "policy/BEST_WALK_ONNX_2.onnx",
+  "high_policy": "outputs/analysis/phase2_z0025_live_oracle_boundary_iter0_contactphase_rate1p9_bc_candidate/candidate.onnx",
+  "full_strength_candidate": {
+    "path": "outputs/analysis/phase2_z0025_best_x0_rate1p9_x008_command_gated_candidate/candidate.onnx",
+    "sha256": "f4877984086b687206a79ae259bbcf30b393d05a05e58a34cb1d0e55351036ba"
+  },
+  "full_strength_results": {
+    "x0_seed5": {
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "samples": 100,
+      "termination": "duration_complete",
+      "mean_local_vx_m_s": 0.014789960348552995,
+      "base_height_min_m": 0.1456308364868164,
+      "max_pitch_vel_p95_rad_s": 4.062883257865904,
+      "p95_vel_excess_rad_s": 1.3673211038112631,
+      "max_vel_excess_rad_s": 2.989999294281006,
+      "max_tracking_p95_rad": 0.23634104430675507,
+      "source_json": "outputs/analysis/phase2_z0025_best_x0_rate1p9_x008_gated_x0_seed5.json"
+    },
+    "x008_seed5": {
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "samples": 100,
+      "termination": "duration_complete",
+      "mean_local_vx_m_s": 0.04009164812392555,
+      "track_ratio": 0.5011456015490694,
+      "base_height_min_m": 0.14638319611549377,
+      "max_pitch_vel_p95_rad_s": 1.905894875526428,
+      "p95_vel_excess_rad_s": 0.0,
+      "max_vel_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.20025060176849363,
+      "source_json": "outputs/analysis/phase2_z0025_best_x0_rate1p9_x008_gated_x008_seed5.json"
+    }
+  },
+  "scaled_results": [
+    {
+      "scale": 0.5,
+      "candidate_sha256": "c74f7f218ce5104663f35b80d904ce9f6dde6641982e5fe66e144d84eaac4ca5",
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 60,
+      "mean_local_vx_m_s": -0.2724,
+      "base_height_min_m": 0.0486,
+      "max_pitch_vel_p95_rad_s": 2.1520,
+      "p95_vel_excess_rad_s": 0.0,
+      "max_vel_excess_rad_s": 1.2818,
+      "max_tracking_p95_rad": 0.1677
+    },
+    {
+      "scale": 0.6,
+      "candidate_sha256": "d137b8551b465bb3a25316ef7ad4ede4f6c1630f36669e4309604a56947bde73",
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 57,
+      "mean_local_vx_m_s": -0.2871,
+      "base_height_min_m": 0.0633,
+      "max_pitch_vel_p95_rad_s": 4.2458,
+      "p95_vel_excess_rad_s": 1.7458,
+      "max_vel_excess_rad_s": 2.7400,
+      "max_tracking_p95_rad": 0.2123
+    },
+    {
+      "scale": 0.65,
+      "candidate_sha256": "785d9c06eca045c46256b701b199b3870744a2ca2aea52476f7468a07cf2f56c",
+      "status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+      "samples": 100,
+      "mean_local_vx_m_s": 0.0137,
+      "base_height_min_m": 0.1458,
+      "max_pitch_vel_p95_rad_s": 3.1015,
+      "p95_vel_excess_rad_s": 0.3515,
+      "max_vel_excess_rad_s": 2.7400,
+      "max_tracking_p95_rad": 0.1937
+    },
+    {
+      "scale": 0.7,
+      "candidate_sha256": "6584bf9a518dc83402dee21a3c75a59fa08a03773062886590cb246d725b8fa3",
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "samples": 100,
+      "mean_local_vx_m_s": 0.0109,
+      "base_height_min_m": 0.1457,
+      "max_pitch_vel_p95_rad_s": 3.3804,
+      "p95_vel_excess_rad_s": 0.6304,
+      "max_vel_excess_rad_s": 2.7400,
+      "max_tracking_p95_rad": 0.2067
+    }
+  ],
+  "existing_stronger_z0025_baseline": {
+    "candidate": "outputs/analysis/phase2_z0025_command_gated_bestrec70_rate1p9_targetlimited0999_candidate/candidate.onnx",
+    "candidate_sha256": "6ba399528c6bc7543e0a5a3a43c30b0804357a4b98e21d723cbb5188e446b2a2",
+    "decision": "outputs/analysis/PHASE2_Z0025_COMMAND_GATED_BESTREC70_RATE1P9_TARGETLIMITED0999_STRONGER_PUSH_DECISION_20260701.md",
+    "x0": {
+      "seeds": 8,
+      "duration_complete": 8,
+      "falls": 0,
+      "mean_local_vx_m_s": -0.0004,
+      "max_pitch_vel_p95_mean_rad_s": 2.7605,
+      "velocity_excess_mean_rad_s": 0.0
+    },
+    "x008": {
+      "seeds": 8,
+      "duration_complete": 8,
+      "falls": 0,
+      "mean_track_ratio": 0.3821,
+      "max_pitch_vel_p95_mean_rad_s": 1.9132,
+      "velocity_excess_mean_rad_s": 0.0
+    },
+    "known_blocker": "seed-5 support cliff at z=0.0026+"
+  },
+  "decision": "Do not promote BEST zero-command command-gated policies. They show the active support mechanism but are superseded at the current z=0.0025 rung by the target-limited command-gated candidate.",
+  "next_recommendation": "Use the target-limited command-gated candidate as the current z=0.0025 baseline and target the smallest failing terrain step, z=0.0026, with seed-5 support survival as the first gate."
+}

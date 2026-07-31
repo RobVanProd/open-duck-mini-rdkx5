@@ -1,0 +1,81 @@
+{
+  "status": "HOLD_LOCAL_ROCM_SCALE_BOUNDARY_4_PASS_8_FAIL",
+  "robot_touched": false,
+  "deploy_performed": false,
+  "grounded_replay_performed": false,
+  "runtime_behavior_changed": false,
+  "policy_overwritten": false,
+  "not_a_policy_result": true,
+  "interpretation": "B0E passes local ROCm plumbing through 4 envs, then fails at 8 envs during evaluator reset with the same rocblas_status_internal_error seen at 16/32 envs. Four envs is not enough throughput for the requested Phase 2 robustness training, so the policy-producing path remains CUDA/A100 or a local ROCm backend fix.",
+  "fixed_recipe": {
+    "platform": "gpu",
+    "jax_platforms": "rocm",
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.002,
+    "restore_checkpoint_path": "outputs/phase2_domain_randomization/stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu/smoke_20260629T062042Z_gpu/2026_06_29_022725_245760",
+    "actuator_tracking_scale": -0.015,
+    "restore_policy_kl_scale": 1.5,
+    "tracking_lin_vel_scale": 3.0,
+    "tracking_sigma": 0.01,
+    "forward_progress_scale": 2.5,
+    "command_progress_scale": 1.5,
+    "command_progress_shortfall_scale": -4.0,
+    "command_progress_required_ratio": 0.45,
+    "mild_domain_randomization": true,
+    "mild_pushes": true,
+    "corrected_actuator_bridge": true
+  },
+  "results": [
+    {
+      "num_envs": 1,
+      "num_timesteps": 20,
+      "status": "PASS_SMOKE_RUN",
+      "returncode": 0,
+      "ppo_step": 100,
+      "elapsed_s": 172.02001808199566,
+      "evidence": "outputs/analysis/PHASE2_B0E_LOCAL_GPU_PATH_CHECK_DECISION.md"
+    },
+    {
+      "num_envs": 2,
+      "num_timesteps": 40,
+      "status": "PASS_SMOKE_RUN",
+      "returncode": 0,
+      "ppo_step": 200,
+      "elapsed_s": 122.44902168899716,
+      "path": "outputs/phase2_domain_randomization/stage_b0e_motion_preserving_tracking_gpu_scale_matrix/smoke_20260629T084544Z_gpu",
+      "manifest_sha256": "9d668fd52364e7900a385baf7e1c92f32365f5a6236705f989d266d48df3a4f8",
+      "stderr_sha256": "745d48d982166319780d8dd0319a475dd913aa0588d8fd283b00a8d53a648b9d",
+      "stdout_sha256": "1fcd30bce6d7335d8134575a0245c3257537d7ead1d6721aab2ab67400b66d95"
+    },
+    {
+      "num_envs": 4,
+      "num_timesteps": 80,
+      "status": "PASS_SMOKE_RUN",
+      "returncode": 0,
+      "ppo_step": 400,
+      "elapsed_s": 122.07589709099557,
+      "path": "outputs/phase2_domain_randomization/stage_b0e_motion_preserving_tracking_gpu_scale_matrix/smoke_20260629T084814Z_gpu",
+      "manifest_sha256": "e5a905d212f9af59d67f2c6ad8e7b0683b830ad4285faea3c2cb07ef36678922",
+      "stderr_sha256": "f1204644024c247b114608bdc36d43f0ae43177d8f270c145bde6c9c6cbcd254",
+      "stdout_sha256": "f6d3e0e4df7e0efcc7280a5aa6d8c15c21b3e9681ce958f711d4eb4ecbe725a5"
+    },
+    {
+      "num_envs": 8,
+      "num_timesteps": 160,
+      "status": "HOLD_SMOKE_RUN",
+      "returncode": 1,
+      "ppo_step": null,
+      "elapsed_s": 32.96463399200002,
+      "path": "outputs/phase2_domain_randomization/stage_b0e_motion_preserving_tracking_gpu_scale_matrix/smoke_20260629T085048Z_gpu",
+      "failure": "rocblas_gemm_strided_batched_ex failed with rocblas_status_internal_error during jax.jit(eval_env.reset)",
+      "manifest_sha256": "64d86be39087236a05f26ace9f5675908fba52117ea71a5ec670efeb3d4fc21b",
+      "stderr_sha256": "848c9947998403957d24820a116ae4de4629c0ae467d1b043e52017643d9a1ff",
+      "stdout_sha256": "e5d8da36e65068975d4cb22fd7a53c187ec30170d1a5e73d19907128aed3b7f3"
+    }
+  ],
+  "next_valid_actions": [
+    "Run the pinned CUDA/A100 phase2-b0e workflow when a Colab session is visible.",
+    "Fix the local ROCm evaluator reset issue before attempting local full-throughput B0E training.",
+    "Do not promote any 1/2/4-env smoke checkpoint from this matrix."
+  ]
+}

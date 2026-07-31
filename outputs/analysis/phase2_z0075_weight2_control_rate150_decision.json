@@ -1,0 +1,69 @@
+{
+  "status": "HOLD_FULL_SEED_DISTRIBUTION_REGRESSED",
+  "scope": "offline sim/data curation only; no robot, SSH, deploy, grounded replay, runtime behavior changes, or PPO training",
+  "candidate": {
+    "onnx": "policy/candidates/phase2_z0075_weight2_control_rate150_20260704/candidate.onnx",
+    "onnx_sha256": "a05c1629db07db42c54197f151d97b114ca1995862c403f0ddcd2d8a01c029a9",
+    "student_npz": "policy/candidates/phase2_z0075_weight2_control_rate150_20260704/student.npz",
+    "student_npz_sha256": "a243c38d17d5b55972cdf4a96991d280b973bad65ad19f732d289f76d9e2385c",
+    "manifest": "outputs/analysis/phase2_z0075_iter6_weight2_control_manifest.json",
+    "dataset_id": "084d8e7fd150d37c",
+    "dataset_samples": 50253
+  },
+  "change": "Returned to the iter2 recovery aggregate, added the seed-0 late push-window relabel with lower weight 2.0 instead of 4.0, and kept the weighted iter2 seed-7 pass-control trace.",
+  "fit_metrics": {
+    "mae": 0.009053,
+    "p95_abs_error": 0.030133,
+    "max_abs_error": 0.513354,
+    "target_rate_p95_rad_s": 1.366491,
+    "target_rate_max_rad_s": 2.448786,
+    "onnx_max_abs_error": 2.4e-7
+  },
+  "compact_boundary_screen": {
+    "status": "PASS_COMPACT_SEED0_SEED7_BOUNDARY",
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0075,
+    "command_x": 0.08,
+    "bridge_mode": "fitted",
+    "push_magnitude_range": [0.075, 0.125],
+    "seeds": [0, 7],
+    "pass_count": 2,
+    "fall_count": 0,
+    "track_ratio_mean": 0.3540,
+    "p95_velocity_excess_mean_rad_s": 0.0,
+    "max_velocity_excess_mean_rad_s": 0.0
+  },
+  "full_x008_intermediate_push_gate": {
+    "status": "HOLD_FULL_SEED_DISTRIBUTION_REGRESSED",
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0075,
+    "command_x": 0.08,
+    "bridge_mode": "fitted",
+    "push_magnitude_range": [0.075, 0.125],
+    "seeds": [0, 1, 2, 3, 4, 5, 6, 7],
+    "pass_count": 2,
+    "fall_count": 6,
+    "duration_complete_count": 2,
+    "samples_mean": 452.25,
+    "samples_min": 47,
+    "samples_max": 750,
+    "track_ratio_mean": -0.2312,
+    "mean_local_vx_m_s": -0.0185,
+    "max_p95_velocity_excess_rad_s": 0.0,
+    "max_instantaneous_velocity_excess_rad_s": 0.3926,
+    "max_tracking_p95_rad": 0.2332,
+    "per_seed": [
+      {"seed": 0, "status": "PASS_CANDIDATE_SIM_GATE", "samples": 750, "track_ratio": 0.3257, "max_velocity_excess_rad_s": 0.0},
+      {"seed": 1, "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION", "samples": 494, "track_ratio": -0.1076, "max_velocity_excess_rad_s": 0.0},
+      {"seed": 2, "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION", "samples": 157, "track_ratio": 1.6957, "max_velocity_excess_rad_s": 0.0},
+      {"seed": 3, "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION", "samples": 450, "track_ratio": -0.2733, "max_velocity_excess_rad_s": 0.3926},
+      {"seed": 4, "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION", "samples": 724, "track_ratio": 0.6728, "max_velocity_excess_rad_s": 0.0},
+      {"seed": 5, "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION", "samples": 47, "track_ratio": -3.8964, "max_velocity_excess_rad_s": 0.0},
+      {"seed": 6, "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION", "samples": 246, "track_ratio": -0.6486, "max_velocity_excess_rad_s": 0.0},
+      {"seed": 7, "status": "PASS_CANDIDATE_SIM_GATE", "samples": 750, "track_ratio": 0.3823, "max_velocity_excess_rad_s": 0.0}
+    ]
+  },
+  "decision": "Do not promote. Lower seed-0 weighting solved the compact seed0/seed7 boundary but did not generalize across seeds.",
+  "next_recommendation": "Collect traced failure states for the full-distribution failures, especially seeds 1, 2, 5, and 6, then add live-oracle recovery labels with a seed-diverse trust region. Do not treat another compact-only pass as a new result.",
+  "robot_validation": "blocked"
+}

@@ -8,32 +8,124 @@ The repository and its documentation are part of the robot's working state. Keep
 
 ## Current Next Step
 
-The first evidence and suspended replay phases have shifted the leading root
-cause from "unknown deployed contract mismatch" to "dynamic actuator mismatch."
-The current work is offline:
+The ground-up RDK-X5 runtime has cleared the supported, no-policy hardware
+gates through Gate 4. Policy work remains offline and Gate 5 remains closed.
+
+The completed T1 accelerometer-bias dose response proves that the robot's
+upright `accel_x` mismatch is behaviorally first-order: `+1.6 m/s^2` reduced
+the unmodified baseline's simulated forward velocity by `86.41%`. T2 is held
+because the exact corrected-replay raw JSONL is unavailable. T4 is complete
+and independently audited: all `32/32` baseline cells, cell contracts, raw
+result hashes, aggregates, and gate rows reproduce exactly. The baseline
+finishes all cells without a fall but fails `13` current gate rows. Under the
+preregistered decision rule, a gate the baseline fails cannot remain a minimum
+feasibility boundary unless it is relaxed to baseline evidence; it may instead
+remain explicitly labeled as a stretch goal. T4 makes no automatic gate
+change.
+
+The read-only T5 protection-envelope audit changed the policy decision
+boundary. Feetech documents duration-triggered over-current and overload
+protection, not a one-tick rejection at stall torque/current. When the frozen
+V121, V123, and V128 traces are reclassified using the documented two-second
+rules, all three become complete `16/16` nominal passes. V177 also becomes
+`16/16` as a post-handoff diagnostic.
+
+T6 then tested all four reopened frozen policy pairs against the prospectively
+selected R2 `TORSO_COM_X_NEG` endpoint (`-0.05 m`), which was the first
+configuration failure of the prior winner. The complete `64/64` CPU matrix has
+no robust survivor: V121, V123, and V128 score `0/16`; V177 scores `1/16`.
+All four have negative worst-case moving velocity, while their worst strict
+over-current/overload runs are only `3`–`5` ticks against the corrected
+`100`-tick trip rule. An independent auditor reproduced all `16` manifests,
+`16` evaluations, `64` trace hashes, `64` exact COM readbacks, every aggregate,
+and the final decision with zero issues. The frozen-policy comparison is
+closed.
+
+T7 then found and prospectively tested a concrete mismatch in the older
+response-conditioned campaign. Training generated its response context while
+commanding the frozen V91 universal support target, but the formal V103
+evaluator executed the calibrator ONNX action head instead. T7 ran the actual
+universal-target graph on the exact current composed stack for nominal and
+`±0.05 m` torso-COM, both actuator fits, and two independent repeats:
+`12/12` cells pass 600-tick support, corrected servo protection, action/state
+chaining, exact model readback, and response-signal gates. Repeats are
+bit-exact; signed COM context separation is `0.156809`/`0.156854`, above the
+frozen `0.15` threshold. The independent audit reports zero issues. This earns
+only a zero-training, state-coherent support-to-locomotion handoff screen; no
+hosted training is yet earned.
+
+T8 completed that handoff screen. Both V121 checkpoints, both measured
+actuator fits, and all three moving commands pass: `12/12` moving cells are
+full 600-tick walks with tracking p95 at most `0.151526 rad`, positive
+body-frame velocity, zero saturation/rate excess, corrected servo protection,
+and exact response/recurrent/applied-target state continuity. The four x=0
+cells are stable, stationary, and otherwise green, but fail one frozen
+quantity at scored tick 0. The exact-zero deadband action follows the universal
+support action directly, producing a one-tick six-joint rate-envelope excess
+up to `3.989999 rad/s`; ticks 1–599 have zero excess. T8 therefore holds
+`12/16` and earns no training. A corrected independent audit passes with zero
+issues after preserving and fixing a reporting-only world-X/body-frame error
+that could not change the hold.
+
+T9 then tested the one-variable command-aware startup remedy. At paused/x=0,
+response excitation is bypassed and the unchanged context-ABI V121 graph
+starts at home with immutable zero context, zero recurrent state, zero previous
+action, and the exact applied-target observation. All four new x=0 cells pass
+with exact-zero action, zero rate excess, tracking p95 `0.030258 rad`, and zero
+corrected protection runs. Combined with the immutable audited T8 moving
+cells, the command-aware architecture is `16/16`. The corrected independent
+audit passes with zero issues. T9 earns only the response-conditioned
+continuation CPU software contract; hosted training remains unearned.
+
+Current gate:
 
 ```text
-manual CUDA/Colab candidate run
-  -> import the CUDA artifact bundle locally
-  -> review x=0.0 and x=0.08 candidate sim gates
-  -> only if gates pass, package a candidate ONNX under a new name
-  -> only then request suspended robot validation
+HOLD_GATE_5_PENDING_RESPONSE_CONDITIONED_CONTINUATION_CPU_CONTRACT
 ```
 
-Local CPU pilots validate the training/export/package plumbing but repeatedly
-learn near-standing policies. Local `7900 XTX` ROCm can run tiny host-loop
-closed-loop smoke probes, but it is too slow for full-horizon eval or training.
-Use `tools/print_cuda_colab_cell.py --run-candidate` in a manually
-authenticated CUDA notebook/session for the next candidate attempt.
+Read these first:
+
+```text
+PROJECT_GOAL.md
+outputs/analysis/T1_ACCEL_BIAS_V4_DOSE_RESPONSE_RESULT_20260725.md
+outputs/analysis/T4_BASELINE_ALL_GATES_RESULT_20260725.md
+outputs/analysis/T5_ACTUATOR_PROTECTION_REANALYSIS_RESULT_20260725.md
+outputs/analysis/T6_CORRECTED_ROBUSTNESS_SCREEN_RESULT_20260725.md
+outputs/analysis/T6_CORRECTED_ROBUSTNESS_SCREEN_INDEPENDENT_AUDIT_20260725.md
+outputs/analysis/T7_UNIVERSAL_RESPONSE_SUPPORT_RESULT_20260725.md
+outputs/analysis/T7_UNIVERSAL_RESPONSE_SUPPORT_INDEPENDENT_AUDIT_20260725.md
+outputs/analysis/T8_STATE_COHERENT_HANDOFF_RESULT_20260726.md
+outputs/analysis/T8_STATE_COHERENT_HANDOFF_INDEPENDENT_AUDIT_V2_20260726.md
+outputs/analysis/T8_STATE_COHERENT_HANDOFF_FAILURE_ANALYSIS_20260726.md
+outputs/analysis/T9_COMMAND_AWARE_PREFIX_BYPASS_RESULT_20260726.md
+outputs/analysis/T9_COMMAND_AWARE_PREFIX_BYPASS_INDEPENDENT_AUDIT_V2_20260726.md
+outputs/analysis/WINNER_V177_NOMINAL_BEHAVIOR_RESULT_20260725.md
+```
+
+The next earned step is a separately preregistered CPU software contract for
+one response-conditioned continuation initialized from V121-half. It must
+prove exact restore, default-off source equivalence, the command-aware x=0
+startup branch, trainable use of the frozen 64-D response context, graph-owned
+action/history/applied-target semantics, finite update behavior, and valid
+step-0/step-1,024 ONNX exports. The mechanism continues to infer configuration
+only from runtime-available signals and requires no weighing, calipers, or
+static COM entry. No Colab continuation is authorized unless that complete
+contract prospectively earns exactly one run.
+
+Current candidate:
+
+```text
+NONE_SELECTED_FOR_RDK_OR_GATE_5
+```
 
 Do not tune hardware gains, patch IMU remaps, edit offsets, change action
-scale, change phase timing, overwrite `BEST_WALK_ONNX_2.onnx`, or run grounded
-walking yet.
 
 Primary docs:
 
 - [Project goal](PROJECT_GOAL.md)
+- [Project findings](docs/PROJECT_FINDINGS.md)
 - [Roadmap](ROADMAP.md)
+- [Weight-transfer target plan](docs/WEIGHT_TRANSFER_TARGET_PLAN.md)
 - [Safety rules](docs/SAFETY_RULES.md)
 - [Evidence flow](docs/EVIDENCE_FLOW.md)
 - [Issue backlog](docs/ISSUE_BACKLOG.md)

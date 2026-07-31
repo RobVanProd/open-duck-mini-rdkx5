@@ -1,0 +1,1198 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "hosted_training_authorized": false,
+    "offline_cpu_read_only": true,
+    "policy_or_model_modification": false,
+    "robot_rdkx5_gate5_torque_motion": false
+  },
+  "candidate_order": [
+    "V121",
+    "V123",
+    "V128",
+    "V157",
+    "V162",
+    "V174",
+    "V177"
+  ],
+  "corrected_protection_contract": {
+    "cell_pass": "every joint has fewer than 100 consecutive 50 Hz ticks strictly above 2 A and fewer than 100 consecutive ticks strictly above 80% of 7.4-V stall torque; all non-protection behavior gates remain unchanged",
+    "instantaneous_stall_current_a": 2.5,
+    "instantaneous_stall_role": "reported capability/saturation diagnostic, not a one-tick firmware protection trip",
+    "instantaneous_stall_torque_nm": 1.91229675,
+    "motor_constant_nm_per_a": 0.784532,
+    "overcurrent_comparison": "strictly_greater_than",
+    "overcurrent_threshold_a": 2.0,
+    "overload_comparison": "strictly_greater_than",
+    "overload_fraction_of_stall": 0.8,
+    "overload_threshold_kgf_cm": 15.6,
+    "overload_threshold_nm": 1.5298374000000001,
+    "pass_max_consecutive_ticks": 99,
+    "sample_clock_hz": 50,
+    "stall_torque_kgf_cm_at_7p4v": 19.5,
+    "stall_torque_nm_at_7p4v": 1.91229675,
+    "temperature_gate": "not inferable from simulation; firmware protection and runtime telemetry remain authoritative",
+    "trip_duration_s": 2.0,
+    "trip_ticks": 100
+  },
+  "decision_rule": {
+    "minimum_corrected_passes_to_reopen": 3,
+    "no_threshold_or_candidate_selection_after_results": true,
+    "partial_candidate_rule": "a corrected pass on every completed cell invalidates a stop caused only by the old instantaneous gates, but missing cells remain missing and the candidate is not called a full pass",
+    "previously_rejected_complete_candidates": [
+      "V121",
+      "V123",
+      "V128"
+    ],
+    "trigger": "if at least three previously rejected complete candidates pass all recorded cells after replacing only the instantaneous stall gates with the documented duration protections, classify the V121-V175 campaign as having fought a mis-specified constraint and reopen its closures",
+    "v174_role": "endpoint reference; it does not count as a previously rejected candidate",
+    "v177_role": "post-handoff diagnostic; it cannot change the frozen three-candidate reopen threshold"
+  },
+  "execution_contract": {
+    "all_original_nonprotection_failure_reasons_preserved": true,
+    "force_clipping_reconstructed_from_exact_v124_s0_equation": true,
+    "old_peak_current_and_peak_torque_values_reported": true,
+    "old_peak_values_removed_from_pass_fail": true,
+    "read_only": true,
+    "recompute_from_actuator_force_every_tick": true,
+    "simulation_cells": 0,
+    "trace_hashes_and_row_counts_verified": true,
+    "training_steps": 0
+  },
+  "external_run_manifests": {
+    "V121": {
+      "cell_files": 16,
+      "expected_cells": 16,
+      "files": [
+        {
+          "bytes": 12326,
+          "relative_path": "cells/v121_train_matched_final_p30_all_joint_x0.000_seed167931544.json",
+          "sha256": "6f0fe6328f51cf751378b86486065ff3b2327dbfa0f0a0d263ab5f526adaed6c"
+        },
+        {
+          "bytes": 12489,
+          "relative_path": "cells/v121_train_matched_final_p30_all_joint_x0.074_seed167931544.json",
+          "sha256": "2241b5adab6279010b368b81ed5a04894552ac7ceb060a29d0724f32eb0c823f"
+        },
+        {
+          "bytes": 12498,
+          "relative_path": "cells/v121_train_matched_final_p30_all_joint_x0.077_seed167931544.json",
+          "sha256": "5350e768e65992442b88338404446f532092be6a10f51bbcb56e6a05098e952c"
+        },
+        {
+          "bytes": 12454,
+          "relative_path": "cells/v121_train_matched_final_p30_all_joint_x0.080_seed167931544.json",
+          "sha256": "7df73c31e4b5d58745251012253c3c49e45483bfad6459499dde8d38e70b0e7f"
+        },
+        {
+          "bytes": 12361,
+          "relative_path": "cells/v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.000_seed167931544.json",
+          "sha256": "4df8eae910cc9a34e8cbdf70b89dd3349c57c9a55edac60aec02bf9d6619a1b8"
+        },
+        {
+          "bytes": 12567,
+          "relative_path": "cells/v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.json",
+          "sha256": "f047602df1cf7a1791c5df7d5ad5cb03a925d826303a8777821635b3e07d9059"
+        },
+        {
+          "bytes": 12575,
+          "relative_path": "cells/v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.json",
+          "sha256": "5243c1bb3dd56ea44292892f03f8d812f8d62c2e1ff55cf97e105c7406ceaa41"
+        },
+        {
+          "bytes": 12567,
+          "relative_path": "cells/v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.json",
+          "sha256": "41ed1b2233a395293e855d3d6d18c87a60a034502d33dd6edec1c94d33786238"
+        },
+        {
+          "bytes": 12324,
+          "relative_path": "cells/v121_train_matched_half_p30_all_joint_x0.000_seed167931544.json",
+          "sha256": "6390123201d4b8d229609b7c30dfcf72f975753865c7ab785d7efc1cb0759985"
+        },
+        {
+          "bytes": 12452,
+          "relative_path": "cells/v121_train_matched_half_p30_all_joint_x0.074_seed167931544.json",
+          "sha256": "55f835913f6f15172188dc35449e8c4d9d82078591f4b51bf58211edf92c7c09"
+        },
+        {
+          "bytes": 12441,
+          "relative_path": "cells/v121_train_matched_half_p30_all_joint_x0.077_seed167931544.json",
+          "sha256": "e3730f7ed9465b0b76a28f5e7dc2f7563b8b7843c86cbdaac38bf863208dfd4a"
+        },
+        {
+          "bytes": 12454,
+          "relative_path": "cells/v121_train_matched_half_p30_all_joint_x0.080_seed167931544.json",
+          "sha256": "9385461367af1df55aa1121719167e0087fb0a864194b049f4c0b691e2464ea1"
+        },
+        {
+          "bytes": 12359,
+          "relative_path": "cells/v121_train_matched_half_p31_34_pitch_with_p30_nonpitch_x0.000_seed167931544.json",
+          "sha256": "c2963a4f728fec6fb402895cf8ac7e612c63af7e619eb4ae9cb474a7a26881c6"
+        },
+        {
+          "bytes": 12482,
+          "relative_path": "cells/v121_train_matched_half_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.json",
+          "sha256": "7de59fa9d5846ae495c4e486ddc7ca298905e04143de25e4fbca9b22f743c774"
+        },
+        {
+          "bytes": 12498,
+          "relative_path": "cells/v121_train_matched_half_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.json",
+          "sha256": "fbf49915ca6f112571b32b34cdd236dc64f43dfa5e8603feee2e825cfda8c40b"
+        },
+        {
+          "bytes": 12491,
+          "relative_path": "cells/v121_train_matched_half_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.json",
+          "sha256": "7d46e6af5c22a6ef984999d8c9d14fb839194eae5f4db996103d5c64d3a86b5f"
+        },
+        {
+          "bytes": 8195641,
+          "relative_path": "traces/v121_train_matched_final_p30_all_joint_x0.000_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "f3fa6726897acd2037781f05d99ed25107e4c6f8f60ff639f936e67be2a16e2d"
+        },
+        {
+          "bytes": 10782328,
+          "relative_path": "traces/v121_train_matched_final_p30_all_joint_x0.074_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "43710046f3abae7a84a691f77e2ca02533a8a484097c538768a0f4237d61de3a"
+        },
+        {
+          "bytes": 10787552,
+          "relative_path": "traces/v121_train_matched_final_p30_all_joint_x0.077_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "4eb38694cbe76da3feda06260827b85ddd7497139920e75a9499ca76b508b127"
+        },
+        {
+          "bytes": 10790864,
+          "relative_path": "traces/v121_train_matched_final_p30_all_joint_x0.080_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "3c3fcf5a68d1f7871d025d9364e4df3854c4054b8b33966a5936f0a17303574d"
+        },
+        {
+          "bytes": 8195580,
+          "relative_path": "traces/v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.000_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "b553f9503207db8a11b0a67977385fc0df10c3f5adca3c527d2bd5f1c37e44a4"
+        },
+        {
+          "bytes": 10780892,
+          "relative_path": "traces/v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "ea5267de5e7213e81f0e2fdf9f76fbf6f55557842ac536f45e6d86f8f48ea626"
+        },
+        {
+          "bytes": 10785862,
+          "relative_path": "traces/v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "b2857eeeaed688436f82fbb75cd051d74776f471b5369e4547932ee6e688e323"
+        },
+        {
+          "bytes": 10789529,
+          "relative_path": "traces/v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "f791f1273da5f88d4e31225bba9c418ef40f8f1d7b963371b9a6803d5638aad0"
+        },
+        {
+          "bytes": 8198383,
+          "relative_path": "traces/v121_train_matched_half_p30_all_joint_x0.000_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "17b0a5c3c3db418aee2544076c851ca638055fb76c3a4b497f47b3e306aaeff0"
+        },
+        {
+          "bytes": 10783292,
+          "relative_path": "traces/v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "1abc0536a5d566f597dcca85a32acaa63387dea641cdd2f8785ae22e1368f3d2"
+        },
+        {
+          "bytes": 10785817,
+          "relative_path": "traces/v121_train_matched_half_p30_all_joint_x0.077_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "57f70439a7a51d1c8625e615cfa5a86f0d1d79bafe1791f103cfb6f7b7944a83"
+        },
+        {
+          "bytes": 10787328,
+          "relative_path": "traces/v121_train_matched_half_p30_all_joint_x0.080_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "1c88e7271977f6caf0cf3da90aff156bd21f0735b391b58ab7746cd708ed9b04"
+        },
+        {
+          "bytes": 8198322,
+          "relative_path": "traces/v121_train_matched_half_p31_34_pitch_with_p30_nonpitch_x0.000_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "79d321e4a4dd518b6d05fbb3abcd48ca4b95a184713b6f3c4c6cac48a6d0b654"
+        },
+        {
+          "bytes": 10782435,
+          "relative_path": "traces/v121_train_matched_half_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "0e1e77d1329af21c69a91f8f1a208f1554575c2a7c5d55667623afcde67cb0d1"
+        },
+        {
+          "bytes": 10783480,
+          "relative_path": "traces/v121_train_matched_half_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "d55ef370c738a05df98507d83473a992d9f1b5915c30c57b3f295e23342d81d0"
+        },
+        {
+          "bytes": 10788255,
+          "relative_path": "traces/v121_train_matched_half_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "b5cea58ec0e42c353fe3ef7a81d07c31b833335366538f7392d947ff3188346e"
+        }
+      ],
+      "manifest_sha256": "f4e0bb05d1c1764dc642361060d64df005282af1e2ae24a3aead47b431d17bfe",
+      "role": "previously_rejected_complete_decision_population",
+      "root": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v121-nominal-run-20260724",
+      "trace_files": 16
+    },
+    "V123": {
+      "cell_files": 16,
+      "expected_cells": 16,
+      "files": [
+        {
+          "bytes": 12331,
+          "relative_path": "cells/v123_episode_peak_final_p30_all_joint_x0.000_seed167931544.json",
+          "sha256": "7468f16e0e61c7c434b9ae31eb171a05cdf91603894befd1f5fa9d0f1c715317"
+        },
+        {
+          "bytes": 12498,
+          "relative_path": "cells/v123_episode_peak_final_p30_all_joint_x0.074_seed167931544.json",
+          "sha256": "4c8e826c16746984f47609436a201329c6191d14e39b673bfdc5ad04633d4cca"
+        },
+        {
+          "bytes": 12550,
+          "relative_path": "cells/v123_episode_peak_final_p30_all_joint_x0.077_seed167931544.json",
+          "sha256": "6bd5c23ce0646bd47222e36bda6fcaffe7f3085732da5af9886f02ecaac2d884"
+        },
+        {
+          "bytes": 12541,
+          "relative_path": "cells/v123_episode_peak_final_p30_all_joint_x0.080_seed167931544.json",
+          "sha256": "6d82abef655befd4f46976fd6366b47a1ebba8bbf82422a6626b45c541491240"
+        },
+        {
+          "bytes": 12366,
+          "relative_path": "cells/v123_episode_peak_final_p31_34_pitch_with_p30_nonpitch_x0.000_seed167931544.json",
+          "sha256": "2e550b5e1edf5ea7828a79fcf52bb5506afb51bb6d112e8aa896074ef64ebcde"
+        },
+        {
+          "bytes": 12571,
+          "relative_path": "cells/v123_episode_peak_final_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.json",
+          "sha256": "ce38f6f39c189e1e34cda3b1211d6064a71de24ac48df9d36d7b173207d803ad"
+        },
+        {
+          "bytes": 12585,
+          "relative_path": "cells/v123_episode_peak_final_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.json",
+          "sha256": "b0546aeb0b73c1de20aaa1088851cdfa64c1f4bda3f84c2489d32bfca218efdf"
+        },
+        {
+          "bytes": 12580,
+          "relative_path": "cells/v123_episode_peak_final_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.json",
+          "sha256": "a9f73ad1136f3ea78243e0582cb270a76276e16ea667b29bb8dbef245d41675b"
+        },
+        {
+          "bytes": 12328,
+          "relative_path": "cells/v123_episode_peak_half_p30_all_joint_x0.000_seed167931544.json",
+          "sha256": "abda6074b9e5c04bbba132367442e7bac9a7ae7bcfd190c80934e0b9ea4dc22c"
+        },
+        {
+          "bytes": 12550,
+          "relative_path": "cells/v123_episode_peak_half_p30_all_joint_x0.074_seed167931544.json",
+          "sha256": "2726b796c16fec28e41b707eaa2a80f5a110f8f72d12021f00cf47acda005b6a"
+        },
+        {
+          "bytes": 12542,
+          "relative_path": "cells/v123_episode_peak_half_p30_all_joint_x0.077_seed167931544.json",
+          "sha256": "0a278c94921265a2559a3a65c8eb730e325a39e1128ed37602fc792fbc401015"
+        },
+        {
+          "bytes": 12545,
+          "relative_path": "cells/v123_episode_peak_half_p30_all_joint_x0.080_seed167931544.json",
+          "sha256": "fe52e5ed2708e3f19613ddf7ea489ed558c9ce8460b09f305ed1cc82de027b7c"
+        },
+        {
+          "bytes": 12363,
+          "relative_path": "cells/v123_episode_peak_half_p31_34_pitch_with_p30_nonpitch_x0.000_seed167931544.json",
+          "sha256": "8a2f58f3a285c7d2ef8bff4277b68b3a8fb0e3795b23e9b86aba19630feffdf0"
+        },
+        {
+          "bytes": 12580,
+          "relative_path": "cells/v123_episode_peak_half_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.json",
+          "sha256": "85350ad567309bcd8ca6a43b4eac6683b4abd5a55cbc65eb4e61ff9a0c772fe2"
+        },
+        {
+          "bytes": 12576,
+          "relative_path": "cells/v123_episode_peak_half_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.json",
+          "sha256": "e75c9295c769ca089ab86ac26244a5fbdbe47f20a81d056d6ace9739ca5170bc"
+        },
+        {
+          "bytes": 12574,
+          "relative_path": "cells/v123_episode_peak_half_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.json",
+          "sha256": "a367211833fd21bfaa9d806d3e14356e667c05c3969a5b5109c95374dbba8103"
+        },
+        {
+          "bytes": 8191140,
+          "relative_path": "traces/v123_episode_peak_final_p30_all_joint_x0.000_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "8ec38d5194a420923f99d489d05f61312b5f776f6ebf6c373570b66da9bd6b27"
+        },
+        {
+          "bytes": 10790454,
+          "relative_path": "traces/v123_episode_peak_final_p30_all_joint_x0.074_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "ca567a5110836688557f5f72b0b6255661b2f02a72b602072650e9d49c3099bf"
+        },
+        {
+          "bytes": 10799341,
+          "relative_path": "traces/v123_episode_peak_final_p30_all_joint_x0.077_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "35078175f326bcfc9e1d7c47fa6ae3ac3c615175ae7b20e24af26f01c23d6145"
+        },
+        {
+          "bytes": 10804661,
+          "relative_path": "traces/v123_episode_peak_final_p30_all_joint_x0.080_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "121d9c54f69338d8ab3f9f12a857b1cc6428ae09f49841115ce4993b9f1a5d3e"
+        },
+        {
+          "bytes": 8191079,
+          "relative_path": "traces/v123_episode_peak_final_p31_34_pitch_with_p30_nonpitch_x0.000_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "d14aab90e2f5794bb1790abc4a077f4edf20ae99c320ac0c263b66cca8865d5f"
+        },
+        {
+          "bytes": 10789453,
+          "relative_path": "traces/v123_episode_peak_final_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "d806a5fc50eaea5432042332d4e9f0340d925ce4d980a5d9fcb0f2a0ab1d83dd"
+        },
+        {
+          "bytes": 10798096,
+          "relative_path": "traces/v123_episode_peak_final_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "604f8321bf08b82deb18892fcad1607530bff3ba59fe679ebaac33aa0ae51553"
+        },
+        {
+          "bytes": 10803673,
+          "relative_path": "traces/v123_episode_peak_final_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "9ff75676f6cfe64cf5db48227905f72eb2ae8866474367d5854a54a871d8d41f"
+        },
+        {
+          "bytes": 8193463,
+          "relative_path": "traces/v123_episode_peak_half_p30_all_joint_x0.000_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "4c3b1598219be714efc82b88002e5716f7de6ea796787f6a7bd99a84d2349fa0"
+        },
+        {
+          "bytes": 10786511,
+          "relative_path": "traces/v123_episode_peak_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "840b874787883d6f97c0a6a93aae12973982d6b4e01e7b3bad1b5dd253727d42"
+        },
+        {
+          "bytes": 10791654,
+          "relative_path": "traces/v123_episode_peak_half_p30_all_joint_x0.077_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "cb419e5dfdaedabf6c89c80b366e6b2dad2134debf452715c75ba38d8baee48f"
+        },
+        {
+          "bytes": 10796007,
+          "relative_path": "traces/v123_episode_peak_half_p30_all_joint_x0.080_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "445d79bf02ebceb3cce51987b7f06cf8c676f4d000afa9fdceab067a955def59"
+        },
+        {
+          "bytes": 8193402,
+          "relative_path": "traces/v123_episode_peak_half_p31_34_pitch_with_p30_nonpitch_x0.000_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "86c49d18f6f01fe45b22295284a0e1e59fb8a31f2bf96d457d7d3b7012b8d2b2"
+        },
+        {
+          "bytes": 10786855,
+          "relative_path": "traces/v123_episode_peak_half_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "487cad77dad340f94d7e113738aaa25145a5e47cf41cd2523b2f3080a46a7aa4"
+        },
+        {
+          "bytes": 10793824,
+          "relative_path": "traces/v123_episode_peak_half_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "827de2d2cdeb037a7e2a314c124791806e806573bce1fa4db9b2dc6c765a7b07"
+        },
+        {
+          "bytes": 10799727,
+          "relative_path": "traces/v123_episode_peak_half_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "c1cc392852619ac219b2a5da9b6b0ff62812972d5b6e55ddd97c79f04801f370"
+        }
+      ],
+      "manifest_sha256": "9f867a871e3ba016d6a9324c3f93471e7f4f8939ed4385d4a96f830fbac8b742",
+      "role": "previously_rejected_complete_decision_population",
+      "root": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v123-nominal-run-20260724",
+      "trace_files": 16
+    },
+    "V128": {
+      "cell_files": 16,
+      "expected_cells": 16,
+      "files": [
+        {
+          "bytes": 12333,
+          "relative_path": "cells/v128_constrained_final_p30_all_joint_x0.000_seed167931544.json",
+          "sha256": "731d396356362dfb214bf2f38706dae442632fad32b2596a58dfb7689745464d"
+        },
+        {
+          "bytes": 12466,
+          "relative_path": "cells/v128_constrained_final_p30_all_joint_x0.074_seed167931544.json",
+          "sha256": "bea051f02c01e1f5fd9aeea5ca21f152ddb79910fbe428ddaae77fcf05ae14e2"
+        },
+        {
+          "bytes": 12458,
+          "relative_path": "cells/v128_constrained_final_p30_all_joint_x0.077_seed167931544.json",
+          "sha256": "b76f008cb0d37f7f6abfaec033ef924572ec654793c875b610ba221c8ce1c7a5"
+        },
+        {
+          "bytes": 12458,
+          "relative_path": "cells/v128_constrained_final_p30_all_joint_x0.080_seed167931544.json",
+          "sha256": "1d3aeed8330efb263dc594fa37ad122ddfd6dd15dae4a7c40de1cd675406a3fa"
+        },
+        {
+          "bytes": 12368,
+          "relative_path": "cells/v128_constrained_final_p31_34_pitch_with_p30_nonpitch_x0.000_seed167931544.json",
+          "sha256": "d4bdd4a8aa41d6004d5ae0e3d823e208aa83b2972d9e99dc829ed7debc6d4a14"
+        },
+        {
+          "bytes": 12489,
+          "relative_path": "cells/v128_constrained_final_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.json",
+          "sha256": "11d88161c06a40dc6a24fc56c35f500171de6cf92f452ba48c5ea50cd5d2ab32"
+        },
+        {
+          "bytes": 12496,
+          "relative_path": "cells/v128_constrained_final_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.json",
+          "sha256": "7b7ad081894b46596a10d16b0ea9459fa0f745c9cbf374ddc285d8243087768a"
+        },
+        {
+          "bytes": 12501,
+          "relative_path": "cells/v128_constrained_final_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.json",
+          "sha256": "8a570e8b82252cacdf30f3c925eb1e19097cf36807602e6f39d1bb3bd6576498"
+        },
+        {
+          "bytes": 12330,
+          "relative_path": "cells/v128_constrained_half_p30_all_joint_x0.000_seed167931544.json",
+          "sha256": "f6302d2d8a46196ad3608769b7b27f605aea4d19614c69a70cb3e919b5cd9e7a"
+        },
+        {
+          "bytes": 12532,
+          "relative_path": "cells/v128_constrained_half_p30_all_joint_x0.074_seed167931544.json",
+          "sha256": "dffaa2c93a23af7199944b7bd824ec7ba4e989d09bb6033ceb6e8d39b5df7b05"
+        },
+        {
+          "bytes": 12541,
+          "relative_path": "cells/v128_constrained_half_p30_all_joint_x0.077_seed167931544.json",
+          "sha256": "e3a955bbcdf0f69cddba09116f71212245a3abb3a7cf4ed723ef0431a919a2cd"
+        },
+        {
+          "bytes": 12535,
+          "relative_path": "cells/v128_constrained_half_p30_all_joint_x0.080_seed167931544.json",
+          "sha256": "df00b8828e308c75261f129ece605eb32b27f142ed5e2e481b2a3a35867d3853"
+        },
+        {
+          "bytes": 12365,
+          "relative_path": "cells/v128_constrained_half_p31_34_pitch_with_p30_nonpitch_x0.000_seed167931544.json",
+          "sha256": "4b4c84014c43e020f51a72782500671229caba124471c1f3cc7ab8adcf6d23c0"
+        },
+        {
+          "bytes": 12585,
+          "relative_path": "cells/v128_constrained_half_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.json",
+          "sha256": "21475e7650e95e84ec9d5f874ef82661acd50667fa56eb111b58baebab4f251a"
+        },
+        {
+          "bytes": 12578,
+          "relative_path": "cells/v128_constrained_half_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.json",
+          "sha256": "7a1778e07b4de2ef3932d3dc48581a8dd28cfec1d17acb2befeec1cacaf63b9e"
+        },
+        {
+          "bytes": 12580,
+          "relative_path": "cells/v128_constrained_half_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.json",
+          "sha256": "d66e447bc3b861a186ff468d256983c50410785297a6c141552cec8019184f02"
+        },
+        {
+          "bytes": 8200349,
+          "relative_path": "traces/v128_constrained_final_p30_all_joint_x0.000_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "b785eeb8a191f9486857fddab8baeb450c9344757f1bea2bc79406746f46ba1f"
+        },
+        {
+          "bytes": 10728739,
+          "relative_path": "traces/v128_constrained_final_p30_all_joint_x0.074_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "7fe95f2e92e63cd2e7a5a16411e5fde58b513cf9513095c75e8aa064f2bf8742"
+        },
+        {
+          "bytes": 10730119,
+          "relative_path": "traces/v128_constrained_final_p30_all_joint_x0.077_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "c39154bd3f0efb6db762d77f820af5d00dfa18ec0324a1925c739012086e5a87"
+        },
+        {
+          "bytes": 10728140,
+          "relative_path": "traces/v128_constrained_final_p30_all_joint_x0.080_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "478b989859fb8c25d6a265f3efef5a89641b147bd0f249dfd34632308e087b91"
+        },
+        {
+          "bytes": 8200288,
+          "relative_path": "traces/v128_constrained_final_p31_34_pitch_with_p30_nonpitch_x0.000_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "f185cc6ceb456107210ef6929e10e94d14e996df3e7b58d7d2cd6be7d9a6e281"
+        },
+        {
+          "bytes": 10730852,
+          "relative_path": "traces/v128_constrained_final_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "868019830ce6c9969e80fdd0df64dfd5ed9b762563fb71304f25a614d8dab28a"
+        },
+        {
+          "bytes": 10731753,
+          "relative_path": "traces/v128_constrained_final_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "9929042aa2ce7c55e3858ef561744940003533727e813048ab63748b99cf3c96"
+        },
+        {
+          "bytes": 10728807,
+          "relative_path": "traces/v128_constrained_final_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "5750ad1becef15c9c5c67e17f913a0368ab014fb366246d5f08b4c1bd9649cc8"
+        },
+        {
+          "bytes": 8199855,
+          "relative_path": "traces/v128_constrained_half_p30_all_joint_x0.000_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "f8dc65341af0ce42ca0d2064f63c88179d59ad49479c1bad28a785c5eeefa33a"
+        },
+        {
+          "bytes": 10782939,
+          "relative_path": "traces/v128_constrained_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "80e96bdd19f7396e13cf4c06c98ee0918fb193bfb06d181484818c6e14e75a42"
+        },
+        {
+          "bytes": 10784331,
+          "relative_path": "traces/v128_constrained_half_p30_all_joint_x0.077_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "7560ec78db468bdef6f3c5c5a3365ff59b370172d1d85b330dbe36ea4f4a59a6"
+        },
+        {
+          "bytes": 10780809,
+          "relative_path": "traces/v128_constrained_half_p30_all_joint_x0.080_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "089b7c05b85882640a1230d47aad2d9de0952898643ffc3f76d581b00a7ea141"
+        },
+        {
+          "bytes": 8199794,
+          "relative_path": "traces/v128_constrained_half_p31_34_pitch_with_p30_nonpitch_x0.000_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "bec4b749c3e7e13b2a892e218a6e527c0fd2b1e6a60078f891089d7bfba256db"
+        },
+        {
+          "bytes": 10781813,
+          "relative_path": "traces/v128_constrained_half_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "db1ceefe524e31789a08a9c6ffd9fdbbfeac0c992830ba50042deb4038b63d7f"
+        },
+        {
+          "bytes": 10781800,
+          "relative_path": "traces/v128_constrained_half_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "cdae1d3336291bff3a24a1d3ea7ad073fd9ab407689b51810a002d20932b0e26"
+        },
+        {
+          "bytes": 10781261,
+          "relative_path": "traces/v128_constrained_half_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "04c278f1aa9f6dbbe955ba83a37b846fe7991615aa022f2030d15f406fd91928"
+        }
+      ],
+      "manifest_sha256": "4153f44ad46c19cb17622ad72f2389fbea75fa57a52db8260407d9889892d9d3",
+      "role": "previously_rejected_complete_decision_population",
+      "root": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v128-nominal-behavior-20260724",
+      "trace_files": 16
+    },
+    "V157": {
+      "cell_files": 1,
+      "expected_cells": 16,
+      "files": [
+        {
+          "bytes": 10863,
+          "relative_path": "cells/v155_final_p30_all_joint_x0.077_seed167931544.json",
+          "sha256": "d1d70f993cd943a63bda785e3ce6297a552697c65d5cbd4544cb66de7410ab43"
+        },
+        {
+          "bytes": 10831217,
+          "relative_path": "traces/v155_final_p30_all_joint_x0.077_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "24c9519fcefdb330ecbd0a409faedce4ac6db186823ce59227153b3ea2bcfecd"
+        }
+      ],
+      "manifest_sha256": "c61a7672e2ca3f40750be1d440dff7b56ada5a15d75b654256f242d8aed992f1",
+      "role": "early_stopped_partial_diagnostic",
+      "root": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v157-dual-checkpoint-nominal-20260725",
+      "trace_files": 1
+    },
+    "V162": {
+      "cell_files": 4,
+      "expected_cells": 16,
+      "files": [
+        {
+          "bytes": 10851,
+          "relative_path": "cells/v162_half_p30_all_joint_x0.000_seed167931544.json",
+          "sha256": "22937d9cdf5498c3b0551b62c01960def4f37670bf8c5dbc0073294e6e8f428e"
+        },
+        {
+          "bytes": 10763,
+          "relative_path": "cells/v162_half_p30_all_joint_x0.074_seed167931544.json",
+          "sha256": "3cb64e9035cd4352bf5a825b1daa9b064394114b4827fc02f18604596a6e0a33"
+        },
+        {
+          "bytes": 10764,
+          "relative_path": "cells/v162_half_p30_all_joint_x0.077_seed167931544.json",
+          "sha256": "8ca3abc15b37d34e03475dab40dcd489b2916a596b3582715e9b4168c6a93261"
+        },
+        {
+          "bytes": 10813,
+          "relative_path": "cells/v162_half_p30_all_joint_x0.080_seed167931544.json",
+          "sha256": "b2b3d42ef78d5319cdf0a81808ac88156770ef5b9fa625405fa7a220b699cb4a"
+        },
+        {
+          "bytes": 8243903,
+          "relative_path": "traces/v162_half_p30_all_joint_x0.000_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "bc7f7b57a49d25d0ff34c62502ec87b3a5e643f90d6c59bcce6bb0f504652e46"
+        },
+        {
+          "bytes": 10826769,
+          "relative_path": "traces/v162_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "abf30fa9646a5e31084c03e87eab1fd4dcd0e818ef3a6dce1d426c8beb58c689"
+        },
+        {
+          "bytes": 10830802,
+          "relative_path": "traces/v162_half_p30_all_joint_x0.077_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "3af2beb0d84200239bf70bf2bc1cb538a0ecc393bd2b7691ba186b1dcf721e73"
+        },
+        {
+          "bytes": 10835525,
+          "relative_path": "traces/v162_half_p30_all_joint_x0.080_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "640a6a670e19b60a82ac739ac983808b8414ba8cadc67f79afc652e6830e35c3"
+        }
+      ],
+      "manifest_sha256": "ea94ac12a279b74812c73c7a02f0b3191e7dc1cf39a1460e86c921fa5f58c072",
+      "role": "early_stopped_partial_diagnostic",
+      "root": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v162-uniform-trust-nominal-20260725",
+      "trace_files": 4
+    },
+    "V174": {
+      "cell_files": 6,
+      "expected_cells": 6,
+      "files": [
+        {
+          "bytes": 10743,
+          "relative_path": "cells/v174_p30_all_joint_x0.074_seed167931544.json",
+          "sha256": "6ceaac2c30f103db51d86fcb0e831ae26c4e1772599b83b1e35db1b554a46b82"
+        },
+        {
+          "bytes": 10729,
+          "relative_path": "cells/v174_p30_all_joint_x0.077_seed167931544.json",
+          "sha256": "548026019141b1e81d71b17cc5c8e0f99f9667597fab0a2f75bb2bf3433da7b0"
+        },
+        {
+          "bytes": 10732,
+          "relative_path": "cells/v174_p30_all_joint_x0.080_seed167931544.json",
+          "sha256": "e6832f5abf01ed41797c5c47d7bea02210feed24c56af7ca822abb2b83ffc83f"
+        },
+        {
+          "bytes": 10768,
+          "relative_path": "cells/v174_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.json",
+          "sha256": "3f218ec65f5aba271c2e82cae64e4117533f608b6f4f573f1d564a014f95a4e5"
+        },
+        {
+          "bytes": 10778,
+          "relative_path": "cells/v174_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.json",
+          "sha256": "7c30ae612fc7483e1e2ff2955d69978b7720d72be7300961ae554a454c79065b"
+        },
+        {
+          "bytes": 10765,
+          "relative_path": "cells/v174_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.json",
+          "sha256": "35f53b3f372b9b183da4ff8d68f1750eaa4388aba07aef084dc520ee3995b4fd"
+        },
+        {
+          "bytes": 10828040,
+          "relative_path": "traces/v174_p30_all_joint_x0.074_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "1301403c20b1457fdfcd51d7b75f98715bd70c9321b5bd7017757ddd381847f6"
+        },
+        {
+          "bytes": 10829754,
+          "relative_path": "traces/v174_p30_all_joint_x0.077_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "fe421fe36b9d5872239c7198b5274d5d1b9270f4c85c638198d11b0388e1496b"
+        },
+        {
+          "bytes": 10834328,
+          "relative_path": "traces/v174_p30_all_joint_x0.080_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "2b185bea84241d65dec10c65c66390cc18403c6e6f9ba20192906f41111d18cf"
+        },
+        {
+          "bytes": 10827530,
+          "relative_path": "traces/v174_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "a2eeda18cb57e41f37b0f6c722c54bae4a0e45953c1189e1e266fdb83314f70a"
+        },
+        {
+          "bytes": 10832005,
+          "relative_path": "traces/v174_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "d56c960fd84dd01c0814127f850fcdb159bd648735a94c0ba1522a2d03e78a2f"
+        },
+        {
+          "bytes": 10832965,
+          "relative_path": "traces/v174_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "c1cebafafb3a39a92649c3ccc411466dcdd8ede72f73e9bc2549f52a7eb45115"
+        }
+      ],
+      "manifest_sha256": "005b94d60a024d6e679790d8136647381e13362fe7b138090039e769562acf8e",
+      "role": "v121_to_v174_endpoint_reference",
+      "root": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v174-tangent-nominal-20260725",
+      "trace_files": 6
+    },
+    "V177": {
+      "cell_files": 16,
+      "expected_cells": 16,
+      "files": [
+        {
+          "bytes": 12321,
+          "relative_path": "cells/v176_tangent_final_p30_all_joint_x0.000_seed167931544.json",
+          "sha256": "75ef8176203f6bb30f54c5ae9c0a1436c385a9f271cb125a8b5eac11df857dde"
+        },
+        {
+          "bytes": 12536,
+          "relative_path": "cells/v176_tangent_final_p30_all_joint_x0.074_seed167931544.json",
+          "sha256": "de6379f1e1c78bbf9611e9d2d183c7e2f0cffb2afcf388e125da390500c51b7c"
+        },
+        {
+          "bytes": 12539,
+          "relative_path": "cells/v176_tangent_final_p30_all_joint_x0.077_seed167931544.json",
+          "sha256": "baba21e4500afcc2f4fe896d5abf9ace21c1756b19da2dedae81ea2e8981dcb1"
+        },
+        {
+          "bytes": 12538,
+          "relative_path": "cells/v176_tangent_final_p30_all_joint_x0.080_seed167931544.json",
+          "sha256": "4e7bc15348a683a3f2b2bcd76bd4161b02edcdeb5a7014498aa502efa7937bb6"
+        },
+        {
+          "bytes": 12356,
+          "relative_path": "cells/v176_tangent_final_p31_34_pitch_with_p30_nonpitch_x0.000_seed167931544.json",
+          "sha256": "1129bb23137fd92de2864c79c32e833211e44dc165caa6cdac64499c0abe9b03"
+        },
+        {
+          "bytes": 12568,
+          "relative_path": "cells/v176_tangent_final_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.json",
+          "sha256": "2143a8586523724b5c8b7bd75c33872cc57bb589fc157d01790cbf4df99262ba"
+        },
+        {
+          "bytes": 12571,
+          "relative_path": "cells/v176_tangent_final_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.json",
+          "sha256": "1ef2b08b7f925085e317a405916c47fd23de875e94653ed3ee241d08834175b2"
+        },
+        {
+          "bytes": 12567,
+          "relative_path": "cells/v176_tangent_final_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.json",
+          "sha256": "2c34f86d83ac1cb7c4109a92d8f3837a27c92644745978adb0bfc16d5fdcef58"
+        },
+        {
+          "bytes": 12318,
+          "relative_path": "cells/v176_tangent_half_p30_all_joint_x0.000_seed167931544.json",
+          "sha256": "683c2c219a6f234c8f49cdbdb89e83590867fb9f5d7ade7e4fbe38e81229f244"
+        },
+        {
+          "bytes": 12442,
+          "relative_path": "cells/v176_tangent_half_p30_all_joint_x0.074_seed167931544.json",
+          "sha256": "32725bafd891321c9c1fdb14602a28ea808396b935a295a954c9c4d8a8311dfd"
+        },
+        {
+          "bytes": 12529,
+          "relative_path": "cells/v176_tangent_half_p30_all_joint_x0.077_seed167931544.json",
+          "sha256": "901ceda5ee79c9b2ba779609d1029585261e6adae9136af7a67346242780307d"
+        },
+        {
+          "bytes": 12534,
+          "relative_path": "cells/v176_tangent_half_p30_all_joint_x0.080_seed167931544.json",
+          "sha256": "2296ae16a6780b5e5e6885a63768427cf165e0588d3b5d4fa984de329a1bbbda"
+        },
+        {
+          "bytes": 12353,
+          "relative_path": "cells/v176_tangent_half_p31_34_pitch_with_p30_nonpitch_x0.000_seed167931544.json",
+          "sha256": "48132c163a4bd0277475e53ce13fbec1ff354b58ee9ea6e962351920af15c378"
+        },
+        {
+          "bytes": 12480,
+          "relative_path": "cells/v176_tangent_half_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.json",
+          "sha256": "8ecd20b65e5dd58be08214be061c23d2f25145fa96723dbb9a5b79c9ec090ae2"
+        },
+        {
+          "bytes": 12481,
+          "relative_path": "cells/v176_tangent_half_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.json",
+          "sha256": "6e4cce4c823ad3c1c1dfda6cde4e41a42584408aeda19e3a08a9aa2bf460ddd7"
+        },
+        {
+          "bytes": 12487,
+          "relative_path": "cells/v176_tangent_half_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.json",
+          "sha256": "95bd51552f0dc210e4afd65d44eb8f7af3256c0fad0ee39845b0e7c3ed329a1e"
+        },
+        {
+          "bytes": 8198313,
+          "relative_path": "traces/v176_tangent_final_p30_all_joint_x0.000_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "f5107f359cf45187d686775c1d9fea1715476dcaaf441b490d72d3f05e311137"
+        },
+        {
+          "bytes": 10804396,
+          "relative_path": "traces/v176_tangent_final_p30_all_joint_x0.074_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "d5b2be397ab6ecb8f16b73e30fbff20333a17ea1708399e0622ceb59fed6b21d"
+        },
+        {
+          "bytes": 10808491,
+          "relative_path": "traces/v176_tangent_final_p30_all_joint_x0.077_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "cf41a4d77d8c89836080cc2cd584911c9a1009096ce036cf690cb80f9ebdafc0"
+        },
+        {
+          "bytes": 10810777,
+          "relative_path": "traces/v176_tangent_final_p30_all_joint_x0.080_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "0e208927c4e972fd6cf6f71d6894b8bd5a1f4fa8f38a18fb9d55f44e10374df4"
+        },
+        {
+          "bytes": 8198252,
+          "relative_path": "traces/v176_tangent_final_p31_34_pitch_with_p30_nonpitch_x0.000_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "360b57c15632305fb5734077ceea5813081a07b673f989a022c78dc9742d4cd6"
+        },
+        {
+          "bytes": 10805774,
+          "relative_path": "traces/v176_tangent_final_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "0746c2011ff4b280965701dceacfb09650072aa5391c60457e1aeae89e37513a"
+        },
+        {
+          "bytes": 10807379,
+          "relative_path": "traces/v176_tangent_final_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "f8c93a514bb36ca531c3f81a29aecc8d093c9b199c096a9943617c06ed71e563"
+        },
+        {
+          "bytes": 10807829,
+          "relative_path": "traces/v176_tangent_final_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "a0e5f68ccbd0e746f8bd7201d7a53d902878f9550f30376dc5d05df0799549d9"
+        },
+        {
+          "bytes": 8198212,
+          "relative_path": "traces/v176_tangent_half_p30_all_joint_x0.000_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "fc6f71ac0876884c947a5b154d97b1e6a5f441684115de6697a41e714b63bd5e"
+        },
+        {
+          "bytes": 10797059,
+          "relative_path": "traces/v176_tangent_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "6231356d4eb65f932577e1467bd6677d44657cfe4229f4fbf338f68230fa824a"
+        },
+        {
+          "bytes": 10796739,
+          "relative_path": "traces/v176_tangent_half_p30_all_joint_x0.077_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "55a510a66cbbc408599640e1dde58c474068bdc1b3b81d755d97bbce077fa6e1"
+        },
+        {
+          "bytes": 10801920,
+          "relative_path": "traces/v176_tangent_half_p30_all_joint_x0.080_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "f2520327f1f412241743a6621402311ba89272999d823ec5826c46b09ee5cded"
+        },
+        {
+          "bytes": 8198151,
+          "relative_path": "traces/v176_tangent_half_p31_34_pitch_with_p30_nonpitch_x0.000_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "bb7856a298a67aee0b41d1f7552df6856ccd5711da7e65ddeff3c85bbb535345"
+        },
+        {
+          "bytes": 10793840,
+          "relative_path": "traces/v176_tangent_half_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "a5bd7370b5a64bb688d6d888336b8f2a293c11a6cfa267b798c0e8c98f02d33c"
+        },
+        {
+          "bytes": 10796423,
+          "relative_path": "traces/v176_tangent_half_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "af698947ebd7fafd2effac9fbc926f8e4b973d18e8608630bbbfc6f596c667e6"
+        },
+        {
+          "bytes": 10801446,
+          "relative_path": "traces/v176_tangent_half_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.jsonl",
+          "rows": 600,
+          "sha256": "ec3ab646d22fd1fb294cfb8aa3418add053be4bcdc97cb546361517502dca58d"
+        }
+      ],
+      "manifest_sha256": "35cfc11035f1abac8eb13e3c9dfd7ed7565223136cae80bed0df413a74888928",
+      "role": "post_handoff_current_candidate_diagnostic_only",
+      "root": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v177-nominal-behavior-20260725",
+      "trace_files": 16
+    }
+  },
+  "failed_checks": [],
+  "installed_variant": {
+    "basis": "project hardware owner confirmed the installed servos are the 7.4-V variant; this is a model/variant assertion, not a new live rail-voltage measurement",
+    "live_voltage_measurement_performed": false,
+    "nominal_voltage_v": 7.4,
+    "servo_model": "STS3215 / ST-3215-C001"
+  },
+  "manufacturer_evidence": {
+    "detailed_specification": {
+      "date": "2020-04-10",
+      "edition": "A/0",
+      "facts": {
+        "motor_constant_kgf_cm_per_a": 8.0,
+        "overcurrent": "current greater than 2 A for 2 s disables output",
+        "overload": "blocked above 80% of stall for 2 s enters protection",
+        "overtemperature_c": 70,
+        "stall_current_a_at_7p4v": 2.5,
+        "stall_torque_kgf_cm_at_7p4v": 19.5
+      },
+      "manufacturer": "Shenzhen FEETECH RC Model Co., Ltd.",
+      "model": "STS3215",
+      "url": "https://www.feetechrc.com/Data/feetechrc/upload/file/20200611/6372749961523760249976542.pdf"
+    },
+    "selection_guide": {
+      "facts": {
+        "nominal_performance_voltage_v": 7.4,
+        "voltage_range_v": [
+          6.0,
+          8.4
+        ]
+      },
+      "manufacturer": "Shenzhen FEETECH RC Model Co., Ltd.",
+      "model": "STS3215",
+      "url": "https://www.feetechrc.com/Data/feetechrc/upload/file/20230218/%E4%BA%A7%E5%93%81%E6%89%8B%E5%86%8C20230217.pdf"
+    }
+  },
+  "missing_external_run_roots": [],
+  "missing_repository_inputs": [],
+  "preregistered_contract_sha256": "d42f76b40260a12eb2fc04a6dcde1b55a52a23fc3c199c15f847956958c8b381",
+  "question": "Was the instantaneous peak-torque/current constraint physically mis-specified relative to the STS3215's documented duration-triggered protection, and did it wrongly close at least three complete candidate matrices?",
+  "repository_inputs": {
+    "current_gate_contract": {
+      "bytes": 4926,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\winner_v3_current_gate_application_contract.json",
+      "sha256": "d4140f425d226e959f414338b15374539143bbb8fad3dd6a64a2e0febd8af7ed"
+    },
+    "runner": {
+      "bytes": 22632,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t5_actuator_protection_reanalysis.py",
+      "sha256": "6df7daf877caa5fe0766463f3a964d734418952d8b646602d638654e51530d3a"
+    },
+    "v10_contract": {
+      "bytes": 6006,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\winner_v10_inward_torque_contract_result.json",
+      "sha256": "240f0e736b2e4c232c3caaba7700917c55bf825b5da07f729db51b3c5b6675e5"
+    },
+    "v10_nominal": {
+      "bytes": 29983,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\winner_v10_nominal_behavior_result.json",
+      "sha256": "eae89e89eb4b92c0414ee7e69c1b8e633d3408495216e55bf1d80bb467642690"
+    },
+    "v121_result": {
+      "bytes": 3245,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\winner_v121_nominal_behavior_result.json",
+      "sha256": "8bdefb90032facb4a3f3f7c833e608d2b35dac958ac0fcc2bbbd393ddcbb6047"
+    },
+    "v123_result": {
+      "bytes": 3247,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\winner_v123_nominal_behavior_result.json",
+      "sha256": "015fc6b85c5b3e3742f97c1e082987bc82c65da774e74d22b9a9e3c32907baa0"
+    },
+    "v124_model_closure": {
+      "bytes": 84584,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\winner_v124_predictive_torque_s0_s2_compact_result.json",
+      "sha256": "85f1313fe02a6feb2d4e34a94c07ff755c178c117470fe8e8b92cfe365b1bc29"
+    },
+    "v128_result": {
+      "bytes": 3247,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\winner_v128_nominal_behavior_result.json",
+      "sha256": "c703a5024dee3bcd32fb549e3c561c09d164d1f766c91ebc882fab7173c0e35a"
+    },
+    "v157_result": {
+      "bytes": 29216,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\winner_v157_dual_checkpoint_nominal_result.json",
+      "sha256": "430df5f76cc60f69bfa189a19d6d58e9b856c415c5006ab31ff981adef8fdc9d"
+    },
+    "v162_result": {
+      "bytes": 51807,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\winner_v162_uniform_trust_nominal_result.json",
+      "sha256": "3a9fe947295905df9775496cd394b07d08006b67642b4355acfa5ffe0ce870f6"
+    },
+    "v174_result": {
+      "bytes": 76532,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\winner_v174_tangent_nominal_result.json",
+      "sha256": "ef568b1fd59399926dea459f7e13db792292837cce9cf4fa67ac6dcb2104e4ed"
+    },
+    "v177_result": {
+      "bytes": 3228,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\winner_v177_nominal_behavior_result.json",
+      "sha256": "8e43e5127d06b6bb6c8aeb28a2fae6994dac825b7f2393a1774318bb4cbe8c90"
+    }
+  },
+  "schema_version": "open_duck.t5_actuator_protection_reanalysis_preregistration.v1",
+  "simulator_force_clipping_contract": {
+    "clipped_equation": "clip(unclipped, -3.23, +3.23)",
+    "forcerange_nm": [
+      [
+        -3.23,
+        3.23
+      ],
+      [
+        -3.23,
+        3.23
+      ],
+      [
+        -3.23,
+        3.23
+      ],
+      [
+        -3.23,
+        3.23
+      ],
+      [
+        -3.23,
+        3.23
+      ],
+      [
+        -3.23,
+        3.23
+      ],
+      [
+        -3.23,
+        3.23
+      ],
+      [
+        -3.23,
+        3.23
+      ],
+      [
+        -3.23,
+        3.23
+      ],
+      [
+        -3.23,
+        3.23
+      ],
+      [
+        -3.23,
+        3.23
+      ],
+      [
+        -3.23,
+        3.23
+      ],
+      [
+        -3.23,
+        3.23
+      ],
+      [
+        -3.23,
+        3.23
+      ]
+    ],
+    "kp_nm_per_rad": [
+      17.11,
+      17.11,
+      17.11,
+      17.11,
+      17.11,
+      17.11,
+      17.11,
+      17.11,
+      17.11,
+      17.11,
+      17.11,
+      17.11,
+      17.11,
+      17.11
+    ],
+    "kv_nm_s_per_rad": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "qpos_indices": [
+      7,
+      9,
+      11,
+      13,
+      15,
+      17,
+      18,
+      19,
+      20,
+      21,
+      23,
+      25,
+      27,
+      29
+    ],
+    "qvel_indices": [
+      6,
+      8,
+      10,
+      12,
+      14,
+      16,
+      17,
+      18,
+      19,
+      20,
+      22,
+      24,
+      26,
+      28
+    ],
+    "reconstruction_tolerance_nm": 5e-06,
+    "sim_dt_s": 0.002,
+    "source": "winner-v124 exact S0 model closure",
+    "unclipped_equation": "kp*(applied_target-(qpos_post-0.002*qvel_post))-kv*qvel_post"
+  },
+  "status": "PREREGISTERED_T5_ACTUATOR_PROTECTION_REANALYSIS",
+  "superseded_instantaneous_gate": {
+    "current_a": 2.5,
+    "reason_for_reanalysis": "the manufacturer describes stall operating points and duration-triggered electronic protection; it does not describe a one-tick simulation rejection at stall torque",
+    "torque_nm": 1.91229675,
+    "torque_source": "19.5 kgf.cm stall torque converted by 0.0980665"
+  }
+}

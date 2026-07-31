@@ -1,0 +1,170 @@
+{
+  "authority": {
+    "additional_training_authorized": false,
+    "behavior_evaluation_authorized": false,
+    "gate5_authorized": false,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "torque_or_motion": false,
+    "v121_transform_preregistration_authorized": true
+  },
+  "cause": "The historical V117 artifact derived four normalized deltas with a different float32 operation order. V119 training and its raw ONNX export both use rate * dt / action_scale, yielding one ULP tighter deltas at indices 2,3,4,11.",
+  "checks": {
+    "all_other_v120_checks_pass": true,
+    "both_raw_source_hashes_exact": true,
+    "both_sources_share_exact_train_delta": true,
+    "difference_is_four_one_ulp_tightenings": true,
+    "formal_behavior_cells_zero": true,
+    "hold_and_preregistration_exact": true,
+    "v120_held_only_on_source_train_delta_check": true
+  },
+  "decision": "PREREGISTER_V121_EXACT_TRAIN_DELTA_DEPLOYMENT_TRANSFORM",
+  "execution": {
+    "colab_compute_units": 0,
+    "formal_behavior_cells": 0,
+    "robot_or_rdk_access": 0,
+    "training_steps": 0
+  },
+  "failed_checks": [],
+  "rows": [
+    {
+      "difference": [
+        0.0,
+        0.0,
+        -7.450580596923828e-09,
+        -7.450580596923828e-09,
+        -7.450580596923828e-09,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -7.450580596923828e-09,
+        0.0,
+        0.0
+      ],
+      "differing_indices": [
+        2,
+        3,
+        4,
+        11
+      ],
+      "maximum_absolute_difference": 7.450580596923828e-09,
+      "source_sha256": "2d3cfb686a9c9643d9414a99a10e4db3aee7fc8f63cbc2fd81f107b487cf1311",
+      "step": 1003520,
+      "train_delta_never_looser": true,
+      "train_normalized_action_delta": [
+        0.07999999821186066,
+        0.05999999865889549,
+        0.11788966506719589,
+        0.11440632492303848,
+        0.11181175708770752,
+        0.03999999910593033,
+        0.03999999910593033,
+        0.03999999910593033,
+        0.03999999910593033,
+        0.03999999910593033,
+        0.05999999865889549,
+        0.09999999403953552,
+        0.07999999821186066,
+        0.09772229939699173
+      ],
+      "v117_artifact_normalized_action_delta": [
+        0.07999999821186066,
+        0.05999999865889549,
+        0.11788967251777649,
+        0.11440633237361908,
+        0.11181176453828812,
+        0.03999999910593033,
+        0.03999999910593033,
+        0.03999999910593033,
+        0.03999999910593033,
+        0.03999999910593033,
+        0.05999999865889549,
+        0.10000000149011612,
+        0.07999999821186066,
+        0.09772229939699173
+      ]
+    },
+    {
+      "difference": [
+        0.0,
+        0.0,
+        -7.450580596923828e-09,
+        -7.450580596923828e-09,
+        -7.450580596923828e-09,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -7.450580596923828e-09,
+        0.0,
+        0.0
+      ],
+      "differing_indices": [
+        2,
+        3,
+        4,
+        11
+      ],
+      "maximum_absolute_difference": 7.450580596923828e-09,
+      "source_sha256": "a8f883e8b087e940647fa62e5b79f4e7961db0ecb5bd36fc3bd88411b6e7bdce",
+      "step": 2007040,
+      "train_delta_never_looser": true,
+      "train_normalized_action_delta": [
+        0.07999999821186066,
+        0.05999999865889549,
+        0.11788966506719589,
+        0.11440632492303848,
+        0.11181175708770752,
+        0.03999999910593033,
+        0.03999999910593033,
+        0.03999999910593033,
+        0.03999999910593033,
+        0.03999999910593033,
+        0.05999999865889549,
+        0.09999999403953552,
+        0.07999999821186066,
+        0.09772229939699173
+      ],
+      "v117_artifact_normalized_action_delta": [
+        0.07999999821186066,
+        0.05999999865889549,
+        0.11788967251777649,
+        0.11440633237361908,
+        0.11181176453828812,
+        0.03999999910593033,
+        0.03999999910593033,
+        0.03999999910593033,
+        0.03999999910593033,
+        0.03999999910593033,
+        0.05999999865889549,
+        0.10000000149011612,
+        0.07999999821186066,
+        0.09772229939699173
+      ]
+    }
+  ],
+  "schema_version": "winner_v120.deployment_hold_attribution.v1",
+  "shared_train_delta_canonical_sha256": "d505071b20837baf1303be24e5996f654986ada900c24a7bf40976aafd68d631",
+  "shared_train_normalized_action_delta": [
+    0.07999999821186066,
+    0.05999999865889549,
+    0.11788966506719589,
+    0.11440632492303848,
+    0.11181175708770752,
+    0.03999999910593033,
+    0.03999999910593033,
+    0.03999999910593033,
+    0.03999999910593033,
+    0.03999999910593033,
+    0.05999999865889549,
+    0.09999999403953552,
+    0.07999999821186066,
+    0.09772229939699173
+  ],
+  "status": "PASS_WINNER_V120_DEPLOYMENT_HOLD_ATTRIBUTION"
+}

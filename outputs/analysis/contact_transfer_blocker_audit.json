@@ -1,0 +1,503 @@
+{
+  "thresholds": {
+    "max_double_support_pct": 75.0,
+    "min_single_support_pct": 20.0,
+    "min_each_single_support_pct": 5.0,
+    "max_reference_mismatch_pct": 30.0
+  },
+  "curations": [
+    {
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/target_generator_dynamic_roll_lateral_fix_robust_modes_curation_50.json",
+      "name": "target_generator_dynamic_roll_lateral_fix_robust_modes_curation_50.json",
+      "source_status": "PASS_CURATED_DATASET_SEED_READY",
+      "criteria": {
+        "min_curated_windows": 8,
+        "min_mean_vx": 0.04,
+        "max_vy_abs_p95": 0.12,
+        "max_pitch_abs_p95": 0.35,
+        "min_base_height": 0.145,
+        "max_action_saturation_pct": 1.0,
+        "max_sent_velocity_p95": 2.5,
+        "max_tracking_p95": 0.12,
+        "min_done_margin": 50,
+        "max_contact_dominance_pct": 95.0,
+        "min_source_files": 2,
+        "min_source_mode_pairs": 2
+      },
+      "counts": {
+        "rows": 9,
+        "curated": 9,
+        "review": 0,
+        "rejected": 0,
+        "curated_weight_transfer_pass": 0
+      },
+      "curated_stats": {
+        "mean_vx_m_s": {
+          "min": 0.04007662601652555,
+          "mean": 0.04169000172793555,
+          "p50": 0.041563536170870066,
+          "p95": 0.043603381106629965,
+          "max": 0.04366643846966326
+        },
+        "double_support_pct": {
+          "min": 88.0,
+          "mean": 92.66666666666667,
+          "p50": 94.0,
+          "p95": 94.0,
+          "max": 94.0
+        },
+        "single_support_pct": {
+          "min": 6.0,
+          "mean": 7.333333333333333,
+          "p50": 6.0,
+          "p95": 11.2,
+          "max": 12.0
+        },
+        "min_each_single_support_pct": {
+          "min": 0.0,
+          "mean": 1.7777777777777777,
+          "p50": 2.0,
+          "p95": 5.199999999999999,
+          "max": 6.0
+        },
+        "sent_target_velocity_p95_rad_s": {
+          "min": 0.5021905526518822,
+          "mean": 0.5133478850540187,
+          "p50": 0.5085262469947338,
+          "p95": 0.5296326242387295,
+          "max": 0.5296326242387295
+        }
+      },
+      "best_weight_transfer_rows": [
+        {
+          "tier": "PASS_CURATED_SEED_WINDOW",
+          "source_name": "seed_000.jsonl",
+          "seed": "seed_000",
+          "mode": "primitive_p0p58_hrb0_hra0p048_hrph0p7854_hb0p08_h0p038_kb0p06_k0p12_ab0p04_a0p0076_ph0p37_ld0p24_ls0p65",
+          "ticks": [
+            5,
+            54
+          ],
+          "mean_vx_m_s": 0.042316448946949095,
+          "double_support_pct": 88.0,
+          "single_support_pct": 12.0,
+          "min_each_single_support_pct": 6.0,
+          "contact_transitions": null,
+          "sent_target_velocity_p95_rad_s": 0.5024641752243042,
+          "body_pitch_abs_p95_rad": 0.32938742206108057,
+          "base_height_min_m": 0.14690113067626953,
+          "reasons": []
+        },
+        {
+          "tier": "PASS_CURATED_SEED_WINDOW",
+          "source_name": "seed_000.jsonl",
+          "seed": "seed_000",
+          "mode": "primitive_p0p58_hrb0_hra0p048_hrphm1p05_hb0p08_h0p038_kb0p06_k0p14_ab0p04_a0_ph0p47_ld0p36_ls0p55",
+          "ticks": [
+            5,
+            54
+          ],
+          "mean_vx_m_s": 0.041563536170870066,
+          "double_support_pct": 90.0,
+          "single_support_pct": 10.0,
+          "min_each_single_support_pct": 4.0,
+          "contact_transitions": null,
+          "sent_target_velocity_p95_rad_s": 0.5021905526518822,
+          "body_pitch_abs_p95_rad": 0.2788703744976686,
+          "base_height_min_m": 0.14664290845394135,
+          "reasons": []
+        },
+        {
+          "tier": "PASS_CURATED_SEED_WINDOW",
+          "source_name": "seed_000.jsonl",
+          "seed": "seed_000",
+          "mode": "primitive_p0p52_hrb0_hra0p044_hrphm0p68_hb0p08_h0p042_kb0p06_k0p18_ab0p04_a0_ph0p37_ld0p36_ls0p75",
+          "ticks": [
+            5,
+            54
+          ],
+          "mean_vx_m_s": 0.04007662601652555,
+          "double_support_pct": 92.0,
+          "single_support_pct": 8.0,
+          "min_each_single_support_pct": 2.0,
+          "contact_transitions": null,
+          "sent_target_velocity_p95_rad_s": 0.5296326242387295,
+          "body_pitch_abs_p95_rad": 0.31668254734777,
+          "base_height_min_m": 0.14549794793128967,
+          "reasons": []
+        },
+        {
+          "tier": "PASS_CURATED_SEED_WINDOW",
+          "source_name": "seed_002.jsonl",
+          "seed": "seed_002",
+          "mode": "primitive_p0p58_hrb0_hra0p048_hrphm1p05_hb0p08_h0p038_kb0p06_k0p14_ab0p04_a0_ph0p47_ld0p36_ls0p55",
+          "ticks": [
+            5,
+            54
+          ],
+          "mean_vx_m_s": 0.04366643846966326,
+          "double_support_pct": 94.0,
+          "single_support_pct": 6.0,
+          "min_each_single_support_pct": 0.0,
+          "contact_transitions": null,
+          "sent_target_velocity_p95_rad_s": 0.5021905526518822,
+          "body_pitch_abs_p95_rad": 0.25917172500053204,
+          "base_height_min_m": 0.14749498665332794,
+          "reasons": []
+        },
+        {
+          "tier": "PASS_CURATED_SEED_WINDOW",
+          "source_name": "seed_002.jsonl",
+          "seed": "seed_002",
+          "mode": "primitive_p0p52_hrb0_hra0p044_hrphm0p68_hb0p08_h0p042_kb0p06_k0p18_ab0p04_a0_ph0p37_ld0p36_ls0p75",
+          "ticks": [
+            5,
+            54
+          ],
+          "mean_vx_m_s": 0.043508795062080025,
+          "double_support_pct": 94.0,
+          "single_support_pct": 6.0,
+          "min_each_single_support_pct": 0.0,
+          "contact_transitions": null,
+          "sent_target_velocity_p95_rad_s": 0.5296326242387295,
+          "body_pitch_abs_p95_rad": 0.2782408912278407,
+          "base_height_min_m": 0.1457863301038742,
+          "reasons": []
+        }
+      ]
+    },
+    {
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/target_generator_dynamic_roll_lateral_fix_window_curation_100.json",
+      "name": "target_generator_dynamic_roll_lateral_fix_window_curation_100.json",
+      "source_status": "HOLD_INSUFFICIENT_CURATED_WINDOWS",
+      "criteria": {
+        "min_curated_windows": 4,
+        "min_mean_vx": 0.04,
+        "max_vy_abs_p95": 0.12,
+        "max_pitch_abs_p95": 0.35,
+        "min_base_height": 0.145,
+        "max_action_saturation_pct": 1.0,
+        "max_sent_velocity_p95": 2.5,
+        "max_tracking_p95": 0.12,
+        "min_done_margin": 50,
+        "max_contact_dominance_pct": 95.0,
+        "min_source_files": 2,
+        "min_source_mode_pairs": 2
+      },
+      "counts": {
+        "rows": 121,
+        "curated": 0,
+        "review": 0,
+        "rejected": 121,
+        "curated_weight_transfer_pass": 0
+      },
+      "curated_stats": {
+        "mean_vx_m_s": {
+          "min": null,
+          "mean": null,
+          "p50": null,
+          "p95": null,
+          "max": null
+        },
+        "double_support_pct": {
+          "min": null,
+          "mean": null,
+          "p50": null,
+          "p95": null,
+          "max": null
+        },
+        "single_support_pct": {
+          "min": null,
+          "mean": null,
+          "p50": null,
+          "p95": null,
+          "max": null
+        },
+        "min_each_single_support_pct": {
+          "min": null,
+          "mean": null,
+          "p50": null,
+          "p95": null,
+          "max": null
+        },
+        "sent_target_velocity_p95_rad_s": {
+          "min": null,
+          "mean": null,
+          "p50": null,
+          "p95": null,
+          "max": null
+        }
+      },
+      "best_weight_transfer_rows": [
+        {
+          "tier": "REJECT_DATASET_SEED",
+          "source_name": "seed_000.jsonl",
+          "seed": "seed_000",
+          "mode": "primitive_p0p54_hrb0_hra0p048_hrph0p7854_hb0p08_h0p042_kb0p06_k0p18_ab0p04_a0p0063_ph0p37_ld0p3_ls0p65",
+          "ticks": [
+            0,
+            99
+          ],
+          "mean_vx_m_s": 0.021560003129416146,
+          "double_support_pct": 91.0,
+          "single_support_pct": 9.0,
+          "min_each_single_support_pct": 2.0,
+          "contact_transitions": null,
+          "sent_target_velocity_p95_rad_s": 0.5918830633163452,
+          "body_pitch_abs_p95_rad": 0.33042012972724233,
+          "base_height_min_m": 0.1455146074295044,
+          "reasons": [
+            "low_forward_velocity"
+          ]
+        },
+        {
+          "tier": "REJECT_DATASET_SEED",
+          "source_name": "seed_000.jsonl",
+          "seed": "seed_000",
+          "mode": "primitive_p0p52_hrb0_hra0p044_hrph0p7854_hb0p08_h0p038_kb0p06_k0p18_ab0p04_a0p0076_ph0p34_ld0p24_ls0p55",
+          "ticks": [
+            0,
+            99
+          ],
+          "mean_vx_m_s": 0.021143393342499622,
+          "double_support_pct": 91.0,
+          "single_support_pct": 9.0,
+          "min_each_single_support_pct": 3.0,
+          "contact_transitions": null,
+          "sent_target_velocity_p95_rad_s": 0.5364179611206055,
+          "body_pitch_abs_p95_rad": 0.3083206337932692,
+          "base_height_min_m": 0.14614592492580414,
+          "reasons": [
+            "low_forward_velocity"
+          ]
+        },
+        {
+          "tier": "REJECT_DATASET_SEED",
+          "source_name": "seed_002.jsonl",
+          "seed": "seed_002",
+          "mode": "primitive_p0p52_hrb0_hra0p04_hrphm0p7854_hb0p08_h0p038_kb0p06_k0p12_ab0p04_a0p0057_ph0p47_ld0p3_ls0p75",
+          "ticks": [
+            0,
+            99
+          ],
+          "mean_vx_m_s": 0.02057718237483641,
+          "double_support_pct": 92.0,
+          "single_support_pct": 8.0,
+          "min_each_single_support_pct": 2.0,
+          "contact_transitions": null,
+          "sent_target_velocity_p95_rad_s": 0.4816122353076935,
+          "body_pitch_abs_p95_rad": 0.26409920913165397,
+          "base_height_min_m": 0.1478937417268753,
+          "reasons": [
+            "low_forward_velocity",
+            "high_lateral_velocity"
+          ]
+        },
+        {
+          "tier": "REJECT_DATASET_SEED",
+          "source_name": "seed_000.jsonl",
+          "seed": "seed_000",
+          "mode": "primitive_p0p54_hrb0_hra0p048_hrph0p7854_hb0p08_h0p042_kb0p06_k0p18_ab0p04_a0p0063_ph0p37_ld0p3_ls0p65",
+          "ticks": [
+            5,
+            104
+          ],
+          "mean_vx_m_s": 0.02144949245324824,
+          "double_support_pct": 93.0,
+          "single_support_pct": 7.0,
+          "min_each_single_support_pct": 2.0,
+          "contact_transitions": null,
+          "sent_target_velocity_p95_rad_s": 0.5599796772003174,
+          "body_pitch_abs_p95_rad": 0.33042012972724233,
+          "base_height_min_m": 0.1455146074295044,
+          "reasons": [
+            "low_forward_velocity"
+          ]
+        },
+        {
+          "tier": "REJECT_DATASET_SEED",
+          "source_name": "seed_000.jsonl",
+          "seed": "seed_000",
+          "mode": "primitive_p0p52_hrb0_hra0p044_hrph0p7854_hb0p08_h0p035_kb0p06_k0p14_ab0p04_a0p007_ph0p37_ld0p36_ls0p55",
+          "ticks": [
+            0,
+            99
+          ],
+          "mean_vx_m_s": 0.020812152458238416,
+          "double_support_pct": 93.0,
+          "single_support_pct": 7.0,
+          "min_each_single_support_pct": 1.0,
+          "contact_transitions": null,
+          "sent_target_velocity_p95_rad_s": 0.5223795771598816,
+          "body_pitch_abs_p95_rad": 0.30966838265682506,
+          "base_height_min_m": 0.14622943103313446,
+          "reasons": [
+            "low_forward_velocity"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/target_generator_dynamic_roll_lateral_fix_window_curation_150.json",
+      "name": "target_generator_dynamic_roll_lateral_fix_window_curation_150.json",
+      "source_status": "HOLD_INSUFFICIENT_CURATED_WINDOWS",
+      "criteria": {
+        "min_curated_windows": 4,
+        "min_mean_vx": 0.04,
+        "max_vy_abs_p95": 0.12,
+        "max_pitch_abs_p95": 0.35,
+        "min_base_height": 0.145,
+        "max_action_saturation_pct": 1.0,
+        "max_sent_velocity_p95": 2.5,
+        "max_tracking_p95": 0.12,
+        "min_done_margin": 50,
+        "max_contact_dominance_pct": 95.0,
+        "min_source_files": 2,
+        "min_source_mode_pairs": 2
+      },
+      "counts": {
+        "rows": 0,
+        "curated": 0,
+        "review": 0,
+        "rejected": 0,
+        "curated_weight_transfer_pass": 0
+      },
+      "curated_stats": {
+        "mean_vx_m_s": {
+          "min": null,
+          "mean": null,
+          "p50": null,
+          "p95": null,
+          "max": null
+        },
+        "double_support_pct": {
+          "min": null,
+          "mean": null,
+          "p50": null,
+          "p95": null,
+          "max": null
+        },
+        "single_support_pct": {
+          "min": null,
+          "mean": null,
+          "p50": null,
+          "p95": null,
+          "max": null
+        },
+        "min_each_single_support_pct": {
+          "min": null,
+          "mean": null,
+          "p50": null,
+          "p95": null,
+          "max": null
+        },
+        "sent_target_velocity_p95_rad_s": {
+          "min": null,
+          "mean": null,
+          "p50": null,
+          "p95": null,
+          "max": null
+        }
+      },
+      "best_weight_transfer_rows": []
+    }
+  ],
+  "reference_contact": {
+    "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/reference_contact_compatibility_v20.json",
+    "runs": [
+      {
+        "label": "reference_motion_rollout_v20_traces",
+        "samples": 635,
+        "mismatch_pct": 68.03149606299212,
+        "actual_double_support_pct": 73.85826771653544,
+        "reference_double_support_pct": 35.43307086614173,
+        "actual_single_support_pct": 23.937007874015748,
+        "reference_single_support_pct": 64.56692913385827,
+        "dominant_mismatch_pairs": [
+          {
+            "pair": "01->11",
+            "pct": 25.354330708661415
+          },
+          {
+            "pair": "10->11",
+            "pct": 22.992125984251967
+          },
+          {
+            "pair": "10->01",
+            "pct": 5.826771653543307
+          }
+        ]
+      },
+      {
+        "label": "reference_motion_rollout_v20_projected_traces",
+        "samples": 664,
+        "mismatch_pct": 67.7710843373494,
+        "actual_double_support_pct": 75.90361445783132,
+        "reference_double_support_pct": 35.54216867469879,
+        "actual_single_support_pct": 22.43975903614458,
+        "reference_single_support_pct": 64.45783132530121,
+        "dominant_mismatch_pairs": [
+          {
+            "pair": "10->11",
+            "pct": 25.75301204819277
+          },
+          {
+            "pair": "01->11",
+            "pct": 23.94578313253012
+          },
+          {
+            "pair": "11->10",
+            "pct": 6.174698795180722
+          }
+        ]
+      },
+      {
+        "label": "reference_motion_rollout_v20_projected_phase5_traces",
+        "samples": 653,
+        "mismatch_pct": 67.22817764165391,
+        "actual_double_support_pct": 74.88514548238896,
+        "reference_double_support_pct": 37.519142419601835,
+        "actual_single_support_pct": 23.124042879019907,
+        "reference_single_support_pct": 62.480857580398165,
+        "dominant_mismatch_pairs": [
+          {
+            "pair": "01->11",
+            "pct": 24.655436447166924
+          },
+          {
+            "pair": "10->11",
+            "pct": 23.583460949464012
+          },
+          {
+            "pair": "11->10",
+            "pct": 6.584992343032159
+          }
+        ]
+      },
+      {
+        "label": "reference_motion_rollout_v20_projected_phase19_traces",
+        "samples": 555,
+        "mismatch_pct": 67.56756756756756,
+        "actual_double_support_pct": 74.41441441441441,
+        "reference_double_support_pct": 38.37837837837838,
+        "actual_single_support_pct": 23.603603603603602,
+        "reference_single_support_pct": 61.62162162162162,
+        "dominant_mismatch_pairs": [
+          {
+            "pair": "10->11",
+            "pct": 25.405405405405407
+          },
+          {
+            "pair": "01->11",
+            "pct": 22.162162162162165
+          },
+          {
+            "pair": "11->10",
+            "pct": 6.126126126126126
+          }
+        ]
+      }
+    ]
+  },
+  "status": "HOLD_TARGET_SOURCE_DOUBLE_SUPPORT"
+}

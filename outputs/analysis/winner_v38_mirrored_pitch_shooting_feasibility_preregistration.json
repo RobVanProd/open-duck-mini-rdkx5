@@ -1,0 +1,205 @@
+{
+  "authority": {
+    "pass_authorizes_only": "one separately frozen negative-X mirrored teacher contract",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "runtime_oracle_or_action_wrapper_authorized": false,
+    "training_authorized": false
+  },
+  "decision": "AUTHORIZE_ONE_CPU_ONLY_MIRRORED_PITCH_COM_X_NEG_SCREEN",
+  "evidence_basis": {
+    "one_factor_change_from_v36": "sample three mirrored pitch coordinates instead of six independent ones",
+    "source_mechanism": "Independent left/right proposal memory worsened survival and introduced material roll under a symmetric fore-aft COM perturbation.",
+    "v36_terminal_ticks": [
+      55,
+      52
+    ],
+    "v37_terminal_roll_rad": [
+      -0.07165295763618688,
+      -0.15592441412373131
+    ],
+    "v37_terminal_ticks": [
+      46,
+      37
+    ]
+  },
+  "execution_now": {
+    "locomotion_training_steps": 0,
+    "optimizer_updates": 0,
+    "oracle_support_cells": 0,
+    "robot_or_rdk_access": 0
+  },
+  "interpretation": {
+    "hold": "Close this exact mirrored-pitch shooting mechanism. Do not tune its basis, horizon, population, objective, covariance, or add another action axis.",
+    "pass": "The mirrored pitch subspace is a full-horizon support teacher at the pure negative-X anchor; authorize only a separate negative-X teacher contract."
+  },
+  "pass_rule": {
+    "all_cells_use_nonzero_control": true,
+    "all_plans_use_exact_3d_mirrored_basis": true,
+    "all_selected_actions_graph_bounded": true,
+    "both_plants_pass_full_250_tick_support_gate": true,
+    "closest_result_selection": false
+  },
+  "question": "Can the unchanged cold-start bounded shooting controller hold the symmetric COM_X_NEG anchor when its six pitch-joint search is expressed in the reviewed three-dimensional bilateral mirror basis?",
+  "schema_version": "winner_v38.mirrored_pitch_shooting_feasibility_preregistration.v1",
+  "screen": {
+    "action_block_ticks": 2,
+    "actuator_plants": [
+      "P30_ALL_JOINT",
+      "P31_34_PITCH_WITH_P30_NONPITCH"
+    ],
+    "configuration_ids": [
+      "COM_X_NEG"
+    ],
+    "constraints": "Every expanded candidate and selected action passes through the exact stateful graph absolute/rate boundary and unchanged actuator bridge.",
+    "controlled_action_indices": [
+      2,
+      3,
+      4,
+      11,
+      12,
+      13
+    ],
+    "duration_ticks": 250,
+    "elites": 8,
+    "expected_cells": 2,
+    "horizon_ticks": 8,
+    "initial_std": 0.2,
+    "iterations": 4,
+    "minimum_std": 0.03,
+    "mirror_basis": {
+      "ankle": {
+        "left_index_4": 1,
+        "right_index_13": 1
+      },
+      "hip_pitch_magnitude": {
+        "left_index_2": -1,
+        "right_index_11": 1
+      },
+      "knee": {
+        "left_index_3": 1,
+        "right_index_12": 1
+      }
+    },
+    "objective": "lexicographic(survival_ticks,-maximum_abs_tilt,+minimum_base_z,-final_abs_tilt,-final_gyro,-action_delta_energy,-action_energy)",
+    "population": 64,
+    "proposal_memory": "cold projected previous action on every tick",
+    "root_seed": 120120,
+    "search_dimensions_per_block": 3
+  },
+  "source_manifest_sha256": "d424adc74c0e5ec0ddb90625f573dd25bd30650a4cb0f74a5af63c7d66e69ccd",
+  "source_results": {
+    "winner_v36_result_lf_sha256": "33baafd223756dc533ed96660591ed6fa9a45678e376296e8a6977146a4128e7",
+    "winner_v37_repository_attribution": {
+      "artifact_zip_bytes": 99031,
+      "artifact_zip_sha256": "d9677b8382288ce7f328ef7f8567fd8d36b7707fcac3f4102f7c95680cf30445",
+      "github_artifact_digest": "sha256:d9677b8382288ce7f328ef7f8567fd8d36b7707fcac3f4102f7c95680cf30445",
+      "github_artifact_id": 8520947058,
+      "github_artifact_name": "winner-v37-warm-started-shooting-feasibility-29898430330",
+      "github_run_attempt": 1,
+      "github_run_head_sha": "f8724b44e80beec98897d9a4097b1484227594c8",
+      "github_run_id": 29898430330,
+      "importer_lf_sha256": "3c6e193b7dca1ede047aef10f13634cfbb5ed7ee92ec2a02f2fb5d0d4cb0e826",
+      "preregistration_lf_sha256": "f525c92ee68155217baee5f588e2ddeddc79c763a267e3e6f0ba49e2cf56613d",
+      "raw_result_receipt_sha256": "f83269d1933c0ad51109e507b4101ce3f466248e48454cfe9d92bc289a4edae5",
+      "raw_result_sha256": "44caba6f207d54c76bb97afedebc3b184bddc10e79202dd7664592cb1935b994",
+      "repository": "RobVanProd/open-duck-mini-rdkx5",
+      "runner_lf_sha256": "c4b9c971d2cc65e31555b87b39b81ca0a96bc3248e8cbf64203f212199126bf5",
+      "workflow_lf_sha256": "ed55863d7a21e7d6971d1b1cd025beb09e396f3932d7eabed72f72330265f118"
+    },
+    "winner_v37_result_lf_sha256": "9934b78eb1d4c88ef028b1719f876c7b6bc05af16f44df302b2f426ff5bac17f"
+  },
+  "sources": {
+    "base_gate_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_support_gate.py",
+      "sha256": "18873eee55c77a278fc065de64c0b912803bf29b4440cde7f3adaabe1297baca"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v38_mirrored_pitch_shooting_feasibility_preregistration.py",
+      "sha256": "c81d9c4aa3abfae151d05bc7eff8cf4ec1d7231c393985311423225e1d012439"
+    },
+    "calibrator_design": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_training_preregistration.json",
+      "sha256": "1ec76a587c6fa50b92866c1632a7046ae0c6687ed17b1636b664bf45c2e8ba34"
+    },
+    "canonical_p30_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "cpu_smoke": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "environment_preparation": {
+      "hash_mode": "lf",
+      "path": "tools/prepare_winner_v15_cpu_environment.py",
+      "sha256": "33e54c3a16d5684e2d2520270acf25a28df42dc89e9f302c1ef3bd5f37d867c2"
+    },
+    "preregistration_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v38_mirrored_pitch_shooting_feasibility_preregistration.py",
+      "sha256": "d69e763ffc22a3bada16d778f6d8ef2065d9b63c3e8f298cf1f4bd00ab39c465"
+    },
+    "result_importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v38_mirrored_pitch_shooting_feasibility.py",
+      "sha256": "300e6076807cc40631c313e25719cf467e696c9991c29c579491a3b93bbe2cf7"
+    },
+    "result_importer_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v38_mirrored_pitch_shooting_feasibility_import.py",
+      "sha256": "be74d4245176d2348d76c56b45ae4b4eb3d88840bf4c2ee1c162d229cca65650"
+    },
+    "reviewed_mirror_basis": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v16_support_action_direction.py",
+      "sha256": "1b34b8d26743904e005d844e5f7e07e53f78a555a8a99f0035d3f0a778352c33"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v38_mirrored_pitch_shooting_feasibility.py",
+      "sha256": "25fe019e34669736a2c4a095d2534b24489ec5609cf2d73ff408aabfe749b94a"
+    },
+    "runner_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v38_mirrored_pitch_shooting_feasibility.py",
+      "sha256": "4e3d2d47a63fa2cad686bbd6c48137b03a5b4b47895a3b26cdee053a0ed6aae0"
+    },
+    "runtime_observer": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py",
+      "sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889"
+    },
+    "winner_v36_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v36_support_oracle_shooting_feasibility_result.json",
+      "sha256": "33baafd223756dc533ed96660591ed6fa9a45678e376296e8a6977146a4128e7"
+    },
+    "winner_v36_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v36_support_oracle_shooting_feasibility.py",
+      "sha256": "cbf5ac6b8cb863d581ff699e2acbdb97615e99936ae5a7a0e553ef4caa522580"
+    },
+    "winner_v37_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v37_warm_started_shooting_feasibility_result.json",
+      "sha256": "9934b78eb1d4c88ef028b1719f876c7b6bc05af16f44df302b2f426ff5bac17f"
+    },
+    "workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v38-mirrored-pitch-shooting-feasibility.yml",
+      "sha256": "aa62248eac92e65ac2df878dc605d75b18410ae2f14f6b75f0da0b347f0495e7"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V38_MIRRORED_PITCH_SHOOTING_FEASIBILITY"
+}

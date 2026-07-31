@@ -1,0 +1,104 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "evaluator_correction_only": true,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "torque_or_motion": false,
+    "training_authorized": false
+  },
+  "causal_boundary": {
+    "calibration_prefix_terminated_before_scored_tick_zero": true,
+    "missing_environment_readback_is_expected_for_this_early_return": true,
+    "policy_or_calibration_failure_present": true,
+    "readback_validator_exception_is_separate": true
+  },
+  "checks": {
+    "all_device_platforms_cpu": true,
+    "calibrator_exact": true,
+    "cpu_backend_exact": true,
+    "expected_prefix_error": true,
+    "expected_prefix_status": true,
+    "formal_result_exact": true,
+    "no_environment_readback": true,
+    "no_scored_trace_created": true,
+    "policy_exact": true
+  },
+  "cpu_environment": {
+    "CUDA_VISIBLE_DEVICES": "",
+    "JAX_PLATFORMS": "cpu",
+    "device_platforms": [
+      "cpu"
+    ],
+    "device_strings": [
+      "TFRT_CPU_0"
+    ],
+    "jax_backend": "cpu"
+  },
+  "failed_checks": [],
+  "formal_behavior_cells_executed": 0,
+  "identity": {
+    "command_x_m_s": 0.0,
+    "condition_group": "FIXED_ANCHOR",
+    "condition_id": "COM_X_NEG",
+    "configuration": {
+      "all_link_mass_scale": 1.0,
+      "id": "COM_X_NEG",
+      "optional_configuration_semantics": "none",
+      "torso_com_offset_m": [
+        -0.05,
+        0.0,
+        0.0
+      ],
+      "torso_inertia_tensor_kg_m2": [
+        [
+          0.0034448951258009347,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0029271882823563265,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.001676066591842733
+        ]
+      ],
+      "torso_mass_add_kg": 0.0
+    },
+    "duration_ticks": 600,
+    "plant": "P30_ALL_JOINT",
+    "seed": 167931544,
+    "step": 1003520,
+    "transport": {
+      "additional_action_delay_ticks": 0,
+      "imu_delay_ticks": 0,
+      "native_quantization": false,
+      "sensor_noise_scales": null
+    }
+  },
+  "input_hashes": {
+    "base_preregistration": "c8f986ceb24863f33c1fc99170548d2e255cb6a26737d3f74762f8dcd4485a24",
+    "calibrator": "cb3380ed99b3e9d7e9000904a210227aa397db2a064aa80d8f70e77c8339783b",
+    "formal_result": "f3a0ed34d46b6013c0910afe29fcd9f424729c94b61b8abdb4f416457ad3922b",
+    "policy": "86271b2bec3795df5f801ff640a78c409b69d26ba7c4c591e6329919e408292a",
+    "reference_features": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+  },
+  "observed": {
+    "environment_readback_present": false,
+    "result_keys": [
+      "error",
+      "mode",
+      "policy",
+      "status"
+    ],
+    "scored_trace_created": false,
+    "simulator_error": "calibration prefix terminated early",
+    "simulator_status": "HOLD_RESPONSE_CALIBRATION_PREFIX"
+  },
+  "schema_version": "winner_v106.com_prefix_reproduction.v1",
+  "status": "PASS_WINNER_V106_COM_PREFIX_REPRODUCTION"
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": "ground_up_stage1_recipe_local_search.v1",
+  "status": "FINAL_RESUME_UNFINISHED_CANDIDATE_AFTER_SECOND_COLAB_RUNTIME_LOSS",
+  "completed_candidates_not_rerun": ["S1LR_LO", "S1LR_HI", "S1ENT_LO", "S1ENT_HI", "S1IMIT_LO"],
+  "training_seed": 100,
+  "timesteps": 8028160,
+  "num_evals": 5,
+  "shared": {
+    "discounting": 0.97,
+    "unroll_length": 20,
+    "ground_up_command_curriculum": true,
+    "extra_patches": [
+      "ground_up_reference_velocity_frame_fix.patch",
+      "ground_up_stage1_command_mixture.patch"
+    ]
+  },
+  "center_evidence_reused": "STAGE1MIX20",
+  "candidates": [
+    {"id": "S1IMIT_HI", "learning_rate": 0.0003, "entropy_cost": 0.005, "imitation_scale": 2.0}
+  ],
+  "selection_uses_training_reward": false,
+  "robot_access_authorized": false,
+  "local_gpu_authorized": false
+}

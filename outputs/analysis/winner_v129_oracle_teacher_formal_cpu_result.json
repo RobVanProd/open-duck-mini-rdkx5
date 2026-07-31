@@ -1,0 +1,607 @@
+{
+  "authority": {
+    "full_matrix": false,
+    "gate5": false,
+    "nominal_behavior_evaluation": false,
+    "nominal_behavior_preregistration": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false
+  },
+  "checkpoints": {
+    "0": {
+      "directory_sha256": "bbf773095c3d631a3c060374a11f457c893c73bc0c8eac8623358de055d6eb57",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v129-oracle-teacher-formal-cpu-20260724\\checkpoint_0"
+    },
+    "19": {
+      "directory_sha256": "4314b8e59802ede7470256de7625974f7105d414f54a8242f34ad26b4ae33098",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v129-oracle-teacher-formal-cpu-20260724\\checkpoint_19"
+    },
+    "38": {
+      "directory_sha256": "cfae12269f06fe61ce3df6a61148e272bc55c6faabb14e392e1d093b99370be1",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v129-oracle-teacher-formal-cpu-20260724\\checkpoint_38"
+    }
+  },
+  "checks": {
+    "all_checkpoint_trees_finite": true,
+    "all_export_abis_exact": true,
+    "all_export_inference_contracts_pass": true,
+    "all_metrics_finite": true,
+    "cpu_only": true,
+    "dataset_exact": true,
+    "exactly_38_updates": true,
+    "export_updates_exact": true,
+    "final_corrected_loss_below_step_zero": false,
+    "final_objective_below_step_zero": false,
+    "formal_behavior_cells_zero": true,
+    "half_corrected_loss_below_step_zero": true,
+    "half_objective_below_step_zero": false,
+    "no_hosted_compute": true,
+    "only_adapter_head_changed_final": true,
+    "only_adapter_head_changed_half": true,
+    "step_zero_matches_v121_final": true,
+    "step_zero_unchanged": true
+  },
+  "dataset": {
+    "batch_size": 256,
+    "corrected_rows": 14,
+    "correction_weight": 341.85714285714283,
+    "epochs": 2,
+    "preservation_rows": 4786,
+    "rows": 4800,
+    "trace_manifest": [
+      {
+        "name": "v121_train_matched_final_p30_all_joint_x0.000_seed167931544.jsonl",
+        "rows": 600,
+        "sha256": "43e174e13e5334ba8a55368e7ee4baa8d1fd860c969c5473ec39155f249c58ae"
+      },
+      {
+        "name": "v121_train_matched_final_p30_all_joint_x0.074_seed167931544.jsonl",
+        "rows": 600,
+        "sha256": "58465e3cda79f8ad905855b57a7fa2c3e14a7040b9c48641f5aa5740380cbf91"
+      },
+      {
+        "name": "v121_train_matched_final_p30_all_joint_x0.077_seed167931544.jsonl",
+        "rows": 600,
+        "sha256": "e481202e06a852c4450c4bf9b5d96cf670270a6ef1862b4fc1d849b54f72b79b"
+      },
+      {
+        "name": "v121_train_matched_final_p30_all_joint_x0.080_seed167931544.jsonl",
+        "rows": 600,
+        "sha256": "ab63622d0b6a7c8c78de9fd659eba509aaa641fe3cfde5a297ad19e7da80b0db"
+      },
+      {
+        "name": "v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.000_seed167931544.jsonl",
+        "rows": 600,
+        "sha256": "d8c17da67ccc1e986ae090cd91594214eca0245c1b5755be5cf544f32d7722c9"
+      },
+      {
+        "name": "v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.jsonl",
+        "rows": 600,
+        "sha256": "6c8018287b78aa90d80918e08b4beaabfd350a75d7d3523c9334c1fcb5b77cf8"
+      },
+      {
+        "name": "v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.jsonl",
+        "rows": 600,
+        "sha256": "90233c3e94acf38661cbaf7df49012c81d3f8fc345ea68a2433abab035c0341c"
+      },
+      {
+        "name": "v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.jsonl",
+        "rows": 600,
+        "sha256": "cdf9c14d1a6bec119fb7fb0e4bd52e56c7ab70b874e5a5289582f0d21b98bb99"
+      }
+    ],
+    "updates_per_epoch": 19
+  },
+  "decision": "CLOSE_V129_DISTILLATION_WITHOUT_BEHAVIOR",
+  "exports": {
+    "0": {
+      "deployed": {
+        "bytes": 958446,
+        "graph_io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          }
+        },
+        "inference": {
+          "changed_projection_is_exercised": true,
+          "checks": {
+            "all_outputs_finite": true,
+            "changed_projection_is_exercised": true,
+            "cpu_provider_exact": true,
+            "g3_guard_preserved_in_consistent_chain": true,
+            "moving_rate_delta_enforced": true,
+            "realized_state_feedback_exact": true,
+            "recurrent_hidden_output_bit_exact": true,
+            "zero_action_exact": true,
+            "zero_previous_exact": true
+          },
+          "max_guard_excess_rad": 0.0,
+          "max_hidden_error": 0.0,
+          "max_moving_delta_excess": 2.2351741790771484e-08,
+          "max_state_error": 0.0,
+          "max_zero_action": 0.0,
+          "max_zero_previous": 0.0,
+          "pass": true
+        },
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v129-oracle-teacher-formal-cpu-20260724\\winner_v129_deployed_0.onnx",
+        "sha256": "bc54ea1bf39e617f76771e7416de91db2ccfe0b1bf903de08faaa64a67ce4aab"
+      },
+      "raw_path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v129-oracle-teacher-formal-cpu-20260724\\winner_v129_raw_0.onnx",
+      "raw_sha256": "a8f883e8b087e940647fa62e5b79f4e7961db0ecb5bd36fc3bd88411b6e7bdce"
+    },
+    "19": {
+      "deployed": {
+        "bytes": 958446,
+        "graph_io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          }
+        },
+        "inference": {
+          "changed_projection_is_exercised": true,
+          "checks": {
+            "all_outputs_finite": true,
+            "changed_projection_is_exercised": true,
+            "cpu_provider_exact": true,
+            "g3_guard_preserved_in_consistent_chain": true,
+            "moving_rate_delta_enforced": true,
+            "realized_state_feedback_exact": true,
+            "recurrent_hidden_output_bit_exact": true,
+            "zero_action_exact": true,
+            "zero_previous_exact": true
+          },
+          "max_guard_excess_rad": 0.0,
+          "max_hidden_error": 0.0,
+          "max_moving_delta_excess": 2.2351741790771484e-08,
+          "max_state_error": 0.0,
+          "max_zero_action": 0.0,
+          "max_zero_previous": 0.0,
+          "pass": true
+        },
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v129-oracle-teacher-formal-cpu-20260724\\winner_v129_deployed_19.onnx",
+        "sha256": "b3d03f1098ca06bd46873f29fa03f68a85cb890de9c3c48109d5ab72b4409f0e"
+      },
+      "raw_path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v129-oracle-teacher-formal-cpu-20260724\\winner_v129_raw_19.onnx",
+      "raw_sha256": "baf67972933e063544f2526570a580f1c6d4f16e36e05df66431b089b98c47e4"
+    },
+    "38": {
+      "deployed": {
+        "bytes": 958446,
+        "graph_io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          }
+        },
+        "inference": {
+          "changed_projection_is_exercised": true,
+          "checks": {
+            "all_outputs_finite": true,
+            "changed_projection_is_exercised": true,
+            "cpu_provider_exact": true,
+            "g3_guard_preserved_in_consistent_chain": true,
+            "moving_rate_delta_enforced": true,
+            "realized_state_feedback_exact": true,
+            "recurrent_hidden_output_bit_exact": true,
+            "zero_action_exact": true,
+            "zero_previous_exact": true
+          },
+          "max_guard_excess_rad": 0.0,
+          "max_hidden_error": 0.0,
+          "max_moving_delta_excess": 2.2351741790771484e-08,
+          "max_state_error": 0.0,
+          "max_zero_action": 0.0,
+          "max_zero_previous": 0.0,
+          "pass": true
+        },
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v129-oracle-teacher-formal-cpu-20260724\\winner_v129_deployed_38.onnx",
+        "sha256": "5f310c2ca4a07bd89df0326392ff1cda04de590ca5b8c3f3afb7f062d32c12a1"
+      },
+      "raw_path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v129-oracle-teacher-formal-cpu-20260724\\winner_v129_raw_38.onnx",
+      "raw_sha256": "22513e18829bb3c13a004874a36543250658797680a9480a16d4539e160c768a"
+    }
+  },
+  "failed_checks": [
+    "final_corrected_loss_below_step_zero",
+    "final_objective_below_step_zero",
+    "half_objective_below_step_zero"
+  ],
+  "input_hashes": {
+    "cpu_result": "865aacdcb5d990ec84b1c5bae44776d6889cf141282e0d3189aea1cef32eb79a",
+    "cpu_template": "217a1551c4cc778e4b957636a40ca6e01eafa51efeaef905eb73e9debc7c26e5",
+    "formal_runner": "6f7b5b0e0c45af68f502152541aa343719428771e348565ecff329d34a951e58",
+    "source_checkpoint": "c1d9b8574c941e2279294de14aca1cb57d4736bdc63635b5aaf1e205fa7f86c1",
+    "training_module": "2ecdae3fbe9c50cf10833651fa2dae9af7326d8af728cf1c7cc0630323a57a98",
+    "v121_final_deployed": "bc54ea1bf39e617f76771e7416de91db2ccfe0b1bf903de08faaa64a67ce4aab"
+  },
+  "schema_version": "winner_v129.oracle_teacher_formal_cpu_result.v1",
+  "status": "HOLD_WINNER_V129_ORACLE_TEACHER_FORMAL_CPU_DISTILLATION",
+  "step_zero_v121_final_max_abs_error": 0.0,
+  "training": {
+    "changed_leaves": {
+      "0": [],
+      "19": [
+        "1/params/adapter_location/bias",
+        "1/params/adapter_location/kernel"
+      ],
+      "38": [
+        "1/params/adapter_location/bias",
+        "1/params/adapter_location/kernel"
+      ]
+    },
+    "learning_rate": 0.0003,
+    "metrics": {
+      "0": {
+        "action_linf": 0.04929376021027565,
+        "corrected_action_mse": 3.644976095529273e-05,
+        "hidden_linf": 3.5762786865234375e-07,
+        "hidden_mse": 1.0091465168548519e-16,
+        "objective": 1.8274546164320782e-05,
+        "preservation_action_mse": 9.933342681733848e-08,
+        "weighted_action_mse": 1.8274546164320782e-05
+      },
+      "19": {
+        "action_linf": 0.04929376021027565,
+        "corrected_action_mse": 3.558247772161849e-05,
+        "hidden_linf": 3.5762786865234375e-07,
+        "hidden_mse": 1.0091465168548519e-16,
+        "objective": 1.925607466546353e-05,
+        "preservation_action_mse": 2.9296729735506233e-06,
+        "weighted_action_mse": 1.925607466546353e-05
+      },
+      "38": {
+        "action_linf": 0.04929376021027565,
+        "corrected_action_mse": 3.970727993873879e-05,
+        "hidden_linf": 3.5762786865234375e-07,
+        "hidden_mse": 1.0091465168548519e-16,
+        "objective": 2.157785820600111e-05,
+        "preservation_action_mse": 3.4484332900319714e-06,
+        "weighted_action_mse": 2.157785820600111e-05
+      }
+    },
+    "optimizer": "Adam",
+    "rows": [
+      {
+        "action_loss": 4.358336624932235e-08,
+        "epoch": 1,
+        "hidden_loss": 2.6709074879625698e-15,
+        "loss": 4.358336980203603e-08,
+        "update": 1
+      },
+      {
+        "action_loss": 4.5220312472338264e-07,
+        "epoch": 1,
+        "hidden_loss": 2.6261331146124707e-15,
+        "loss": 4.5220312472338264e-07,
+        "update": 2
+      },
+      {
+        "action_loss": 6.523862248286605e-05,
+        "epoch": 1,
+        "hidden_loss": 2.629921045952592e-15,
+        "loss": 6.523862248286605e-05,
+        "update": 3
+      },
+      {
+        "action_loss": 4.799286443812889e-07,
+        "epoch": 1,
+        "hidden_loss": 2.6227733584271865e-15,
+        "loss": 4.799286443812889e-07,
+        "update": 4
+      },
+      {
+        "action_loss": 2.7347316063242033e-05,
+        "epoch": 1,
+        "hidden_loss": 2.6322332341403593e-15,
+        "loss": 2.7347316063242033e-05,
+        "update": 5
+      },
+      {
+        "action_loss": 1.8733981050900184e-06,
+        "epoch": 1,
+        "hidden_loss": 2.5993581913915254e-15,
+        "loss": 1.8733981050900184e-06,
+        "update": 6
+      },
+      {
+        "action_loss": 1.9364749732631026e-06,
+        "epoch": 1,
+        "hidden_loss": 2.6025260946142565e-15,
+        "loss": 1.9364749732631026e-06,
+        "update": 7
+      },
+      {
+        "action_loss": 1.555702056066366e-06,
+        "epoch": 1,
+        "hidden_loss": 2.6126671965752586e-15,
+        "loss": 1.555702056066366e-06,
+        "update": 8
+      },
+      {
+        "action_loss": 2.5343166271341033e-05,
+        "epoch": 1,
+        "hidden_loss": 2.585587341493302e-15,
+        "loss": 2.5343166271341033e-05,
+        "update": 9
+      },
+      {
+        "action_loss": 1.8438826145938947e-06,
+        "epoch": 1,
+        "hidden_loss": 2.577852871893686e-15,
+        "loss": 1.8438826145938947e-06,
+        "update": 10
+      },
+      {
+        "action_loss": 2.055273398582358e-05,
+        "epoch": 1,
+        "hidden_loss": 2.6845057548977903e-15,
+        "loss": 2.055273398582358e-05,
+        "update": 11
+      },
+      {
+        "action_loss": 2.105638714056113e-06,
+        "epoch": 1,
+        "hidden_loss": 2.5521210697472844e-15,
+        "loss": 2.105638714056113e-06,
+        "update": 12
+      },
+      {
+        "action_loss": 2.4735802526265616e-06,
+        "epoch": 1,
+        "hidden_loss": 2.565704725364165e-15,
+        "loss": 2.4735802526265616e-06,
+        "update": 13
+      },
+      {
+        "action_loss": 2.0898924049106427e-05,
+        "epoch": 1,
+        "hidden_loss": 2.590653233792593e-15,
+        "loss": 2.0898924049106427e-05,
+        "update": 14
+      },
+      {
+        "action_loss": 3.793918494920945e-06,
+        "epoch": 1,
+        "hidden_loss": 2.623558769727528e-15,
+        "loss": 3.793918494920945e-06,
+        "update": 15
+      },
+      {
+        "action_loss": 1.7318743630312383e-06,
+        "epoch": 1,
+        "hidden_loss": 2.645042066368739e-15,
+        "loss": 1.7318743630312383e-06,
+        "update": 16
+      },
+      {
+        "action_loss": 0.0001029595296131447,
+        "epoch": 1,
+        "hidden_loss": 2.606360189250003e-15,
+        "loss": 0.0001029595296131447,
+        "update": 17
+      },
+      {
+        "action_loss": 5.105556738271844e-06,
+        "epoch": 1,
+        "hidden_loss": 2.6199696793717748e-15,
+        "loss": 5.105556738271844e-06,
+        "update": 18
+      },
+      {
+        "action_loss": 4.8228416744677816e-06,
+        "epoch": 1,
+        "hidden_loss": 2.2832624361351656e-15,
+        "loss": 4.8228416744677816e-06,
+        "update": 19
+      },
+      {
+        "action_loss": 2.8232805107109016e-06,
+        "epoch": 2,
+        "hidden_loss": 2.6709074879625698e-15,
+        "loss": 2.8232805107109016e-06,
+        "update": 20
+      },
+      {
+        "action_loss": 3.0040719138924032e-06,
+        "epoch": 2,
+        "hidden_loss": 2.6261331146124707e-15,
+        "loss": 3.0040719138924032e-06,
+        "update": 21
+      },
+      {
+        "action_loss": 6.687830318696797e-05,
+        "epoch": 2,
+        "hidden_loss": 2.629921045952592e-15,
+        "loss": 6.687830318696797e-05,
+        "update": 22
+      },
+      {
+        "action_loss": 4.831870683119632e-06,
+        "epoch": 2,
+        "hidden_loss": 2.6227733584271865e-15,
+        "loss": 4.831870683119632e-06,
+        "update": 23
+      },
+      {
+        "action_loss": 2.9542305128416047e-05,
+        "epoch": 2,
+        "hidden_loss": 2.6322332341403593e-15,
+        "loss": 2.9542305128416047e-05,
+        "update": 24
+      },
+      {
+        "action_loss": 2.7400119506637566e-06,
+        "epoch": 2,
+        "hidden_loss": 2.5993581913915254e-15,
+        "loss": 2.7400119506637566e-06,
+        "update": 25
+      },
+      {
+        "action_loss": 3.4628180856088875e-06,
+        "epoch": 2,
+        "hidden_loss": 2.6025260946142565e-15,
+        "loss": 3.4628180856088875e-06,
+        "update": 26
+      },
+      {
+        "action_loss": 3.1517408842773875e-06,
+        "epoch": 2,
+        "hidden_loss": 2.6126671965752586e-15,
+        "loss": 3.1517408842773875e-06,
+        "update": 27
+      },
+      {
+        "action_loss": 2.184117511205841e-05,
+        "epoch": 2,
+        "hidden_loss": 2.585587341493302e-15,
+        "loss": 2.184117511205841e-05,
+        "update": 28
+      },
+      {
+        "action_loss": 3.875746642734157e-06,
+        "epoch": 2,
+        "hidden_loss": 2.577852871893686e-15,
+        "loss": 3.875746642734157e-06,
+        "update": 29
+      },
+      {
+        "action_loss": 9.727269571158104e-06,
+        "epoch": 2,
+        "hidden_loss": 2.6845057548977903e-15,
+        "loss": 9.727269571158104e-06,
+        "update": 30
+      },
+      {
+        "action_loss": 3.750103587663034e-06,
+        "epoch": 2,
+        "hidden_loss": 2.5521210697472844e-15,
+        "loss": 3.750103587663034e-06,
+        "update": 31
+      },
+      {
+        "action_loss": 4.445021204446675e-06,
+        "epoch": 2,
+        "hidden_loss": 2.565704725364165e-15,
+        "loss": 4.445021204446675e-06,
+        "update": 32
+      },
+      {
+        "action_loss": 2.079440491797868e-05,
+        "epoch": 2,
+        "hidden_loss": 2.590653233792593e-15,
+        "loss": 2.079440491797868e-05,
+        "update": 33
+      },
+      {
+        "action_loss": 3.4052134196826955e-06,
+        "epoch": 2,
+        "hidden_loss": 2.623558769727528e-15,
+        "loss": 3.4052134196826955e-06,
+        "update": 34
+      },
+      {
+        "action_loss": 4.3074974200862925e-06,
+        "epoch": 2,
+        "hidden_loss": 2.645042066368739e-15,
+        "loss": 4.3074974200862925e-06,
+        "update": 35
+      },
+      {
+        "action_loss": 0.00010673122596926987,
+        "epoch": 2,
+        "hidden_loss": 2.606360189250003e-15,
+        "loss": 0.00010673122596926987,
+        "update": 36
+      },
+      {
+        "action_loss": 6.480426236521453e-06,
+        "epoch": 2,
+        "hidden_loss": 2.6199696793717748e-15,
+        "loss": 6.480426236521453e-06,
+        "update": 37
+      },
+      {
+        "action_loss": 8.641407475806773e-06,
+        "epoch": 2,
+        "hidden_loss": 2.2832624361351656e-15,
+        "loss": 8.641407475806773e-06,
+        "update": 38
+      }
+    ],
+    "updates": 38
+  }
+}

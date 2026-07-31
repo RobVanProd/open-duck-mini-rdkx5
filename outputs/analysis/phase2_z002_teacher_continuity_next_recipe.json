@@ -1,0 +1,108 @@
+{
+  "acceptance": [
+    "Compact x=0.08 fitted-bridge sweep passes with track ratio >= 0.25 and tracking p95 <= 0.20.",
+    "Compact x=0.0 fitted-bridge sweep remains passing.",
+    "Full z=0.002 x=0.08 and x=0.0 post-training seed gates pass before use as a terrain parent.",
+    "No robot validation is authorized by this recipe."
+  ],
+  "behavior_prior_mlp": {
+    "path": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz",
+    "present": true,
+    "sha256": "312f1ef0ba758af5fdeae900ce0a34dab659fe348a9f389988ddaaaa15659497"
+  },
+  "commands": {
+    "post_training_decision": {
+      "argv": [
+        "python3",
+        "tools/report_phase2_z002_tracking_margin_post_training_gates.py",
+        "<candidate_name>_post_training_seed_gates.json",
+        "--output-md",
+        "outputs/analysis/PHASE2_Z002_TEACHER_CONTINUITY_POST_TRAINING_GATE_DECISION.md",
+        "--output-json",
+        "outputs/analysis/phase2_z002_teacher_continuity_post_training_gate_decision.json"
+      ],
+      "shell": "python3 \\\n    tools/report_phase2_z002_tracking_margin_post_training_gates.py \\\n    '<candidate_name>_post_training_seed_gates.json' \\\n    --output-md \\\n    outputs/analysis/PHASE2_Z002_TEACHER_CONTINUITY_POST_TRAINING_GATE_DECISION.md \\\n    --output-json \\\n    outputs/analysis/phase2_z002_teacher_continuity_post_training_gate_decision.json"
+    },
+    "preferred_colab_gpu": {
+      "argv": [
+        "python3",
+        "tools/run_colab_cli_cuda_workflow.py",
+        "--workflow",
+        "phase2-z002-teacher-continuity",
+        "--session",
+        "open-duck-l4",
+        "--candidate-name",
+        "phase2_z002_teacher_continuity_cuda",
+        "--candidate-checkpoint-sweep",
+        "--candidate-checkpoint-sweep-commands",
+        "0.0,0.08",
+        "--candidate-checkpoint-sweep-duration",
+        "1.0",
+        "--candidate-checkpoint-sweep-jax-platform",
+        "cpu",
+        "--candidate-timeout-s",
+        "10800",
+        "--run"
+      ],
+      "shell": "python3 \\\n    tools/run_colab_cli_cuda_workflow.py \\\n    --workflow \\\n    phase2-z002-teacher-continuity \\\n    --session \\\n    open-duck-l4 \\\n    --candidate-name \\\n    phase2_z002_teacher_continuity_cuda \\\n    --candidate-checkpoint-sweep \\\n    --candidate-checkpoint-sweep-commands \\\n    0.0,0.08 \\\n    --candidate-checkpoint-sweep-duration \\\n    1.0 \\\n    --candidate-checkpoint-sweep-jax-platform \\\n    cpu \\\n    --candidate-timeout-s \\\n    10800 \\\n    --run"
+    }
+  },
+  "deploy_performed": false,
+  "diagnosis_status": "HOLD_Z002_SCALAR_TRACKING_MARGIN_NOT_PROMOTED",
+  "evidence": {
+    "a100_tracking_margin_result": {
+      "excerpt": "# Phase 2 z=0.002 Tracking-Margin A100 Result\n\nstatus: `HOLD_Z002_TRACKING_MARGIN_A100_NOT_PROMOTED`\ngenerated_at: `2026-06-30T02:50:00Z`\n\nThis was an offline Colab A100 run. It did not SSH, deploy, touch the robot,\nrun grounded replay, or change runtime behavior.\n\n## Scope\n\n- workflow: `phase2-z002-tracking-margin`\n- session: `open-duck-l4`\n- hardware: `A100`\n- jax/jaxlib: `0.7.2`\n- warm start: `stage_c0_terrain_z002_preserve_from_a2_gpu/2026_06_28_064431_245760`\n- corrected bridge: `outputs/analysis/actuator_response_fit_corrected_knee.json`\n- terrain: `rough_terrain_backlash`, heightfield z scale `0.002`\n- training timesteps: `122880`\n- envs: `64`\n- pushes during training: disabled\n\n## Training\n\nTraining completed and exported three ONNX checkpoints.\n\n| step | reward | onnx sha256 |\n|---:|---:|---|\n| `40960` | `37.8014` | `83b31d874ca6078953d4decb23909121e5914150229c3bdc2b406ced9208d510` |\n| `81920` | `40.2106` | `ea01c7a9ae36d807d8ef5e5620213792bbb0a0b0adb4114f9753d238cc07e6bc` |\n| `122880` | `40.9820` | `34ec5a7d533321e4430a180e8378bbbec45cb0c8aa28f19add7420b521333180` |\n\nThe local partial artifact is extractable and contains the training summary and\nexported ONNX files:\n\n```text\noutputs/analysis/colab_cli/open-duck-l4-phase2-z002-tracking-margin-20260630T014242Z/open_duck_colab_cli_phase2-z002-tracking-margin_20260630T014331Z_artifacts.tar.gz.partial\n```\n\n## Compact Checkpoint Sweep\n\nThe compact sweep completed for commands `x=0.0` and `x=0.08`, duration `1s`,\nwith the corrected fitted bridge.\n\n| checkpoint | x=0.0 | x=0.08 | track ratio | mean vx | max tracking p95 | max pitch vel p95 |\n|---|---|---|---:|---:|---:|---:|\n| `40960` | `PASS_CANDIDATE_SIM_GATE` | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | `0.2129` | `0.0170` | `0.2177` | `1.5267` |\n| `81920` | `PASS_CANDIDATE_SIM_GATE` | `HOLD_CANDIDATE_TRACKING` | `0.2939` | `0.0235` | `0.2184` | `1.4996` |\n| `122880` | `PASS_CANDIDATE_SIM_GATE` | `HOLD_CANDIDATE_TRACKING` | `0.2832` | `0.0227` | `0.2158` | `1.5373` |\n\nAll checkpoints stayed below the corrected measured velocity envelope and had\nzero action saturation in the compact sweep. None passed the strict x=0.08\ntracking gate (`tracking p95 <= 0.20`), so none is promotable.\n\n## Full Seed Gate\n\nThe workflow selected the `81920` checkpoint as the best available but not\npromoted checkpoint and started the full `x=0.08`, 8-seed, 15s seed gate.\n\nThe Colab session disappeared before the full seed gate completed. Captured\nremote log evidence shows:\n\n- seed `0` completed with `HOLD_CANDIDATE_TRACKING`\n- seed `1` started\n- the session was then no longer available through the Colab CLI\n\nBecause the full seed gate did not complete, this run cannot be used as a\npromoted Phase 2 candidate.\n\n## Decision\n\nDo not promote this run.\n\nThe z=0.002 tracking-margin recipe preserved low target velocity and meaningful\nforward motion, but did not recover enough tracking margin. The best checkpoint\nstill held around `0.216-0.218 rad` tracking p95 versus the `0.20 rad` gate.\n\nNext aligned work should use the evidence already named in the sweep\ninterpretation: add a teacher-action or trust-region continuity mechanism around\nthe moving z=0.002 policy, rather than another small scalar reward tweak.\n\nRobot validation remains blocked.\n",
+      "path": "outputs/analysis/PHASE2_Z002_TRACKING_MARGIN_A100_RESULT.md",
+      "present": true,
+      "sha256": "0e25c5c79626b324b4a8edfbe74db1e946ff876e873c0bd40638357b05604b12"
+    }
+  },
+  "falsifier": "If teacher continuity still holds above 0.20 rad tracking p95 while preserving motion, stop z=0.002 PPO reward/continuity tweaks and inspect the evaluator/teacher-action target manifold before spending another A100 run.",
+  "key_recipe_settings": {
+    "action_rate_scale": -0.035,
+    "actuator_bridge_velocity_limit_range_rad_s": [
+      2.0,
+      3.25
+    ],
+    "actuator_tracking_scale": -0.005,
+    "behavior_prior_huber_delta": 0.08,
+    "behavior_prior_scale": -0.18,
+    "command_progress_required_ratio": 0.55,
+    "command_progress_scale": 3.5,
+    "command_progress_shortfall_scale": -10.0,
+    "forward_progress_scale": 4.5,
+    "num_timesteps": 122880,
+    "ppo_clipping_epsilon": 0.015,
+    "ppo_learning_rate": 2e-06,
+    "ppo_max_grad_norm": 0.08,
+    "push_enable": false,
+    "restore_policy_kl_scale": 7.5,
+    "target_rate_scale": -0.01,
+    "terrain_hfield_z_scale": 0.002,
+    "workflow": "phase2-z002-teacher-continuity"
+  },
+  "recipe_intent": [
+    "Warm-start from the same z=0.002 C0 245760 moving parent, not from scratch.",
+    "Keep terrain at z=0.002 and no pushes; this is parent recovery before terrain escalation.",
+    "Use a teacher-action behavior-prior MLP plus stronger restore-policy KL as a trust region around the moving gait.",
+    "Relax the scalar target-rate penalty relative to tracking-margin so the policy does not recover tracking by freezing.",
+    "Reject any checkpoint that passes smoke but fails the canonical compact x=0/x=0.08 corrected-bridge sweep."
+  ],
+  "restore_checkpoint": {
+    "directory_sha256_tar_stream": "638a6c46b402622c41d91a334c192274d174439761bd6a189de21b5442012991",
+    "path": "outputs/phase2_domain_randomization/stage_c0_terrain_z002_preserve_from_a2_gpu/smoke_20260628T103743Z_gpu/2026_06_28_064431_245760",
+    "present": true
+  },
+  "robot_touched": false,
+  "root_cause_summary": [
+    "The A100 scalar tracking-margin run completed training but no checkpoint passed the compact x=0.08 tracking threshold.",
+    "The best compact checkpoint retained motion at x=0.08: track ratio 0.2939, mean vx 0.0235 m/s, max tracking p95 0.2184 rad.",
+    "All compact checkpoints stayed below the corrected velocity envelope, so the hold is tracking margin rather than actuator over-speed.",
+    "The prior recipe's falsifier fired: do not run another scalar reward tweak that may buy tracking by reducing motion."
+  ],
+  "ssh_used": false,
+  "stage": "stage_z002_teacher_continuity",
+  "status": "PASS_Z002_TEACHER_CONTINUITY_RECIPE_READY",
+  "supersedes_recipe": "phase2-z002-tracking-margin",
+  "training_started": false
+}

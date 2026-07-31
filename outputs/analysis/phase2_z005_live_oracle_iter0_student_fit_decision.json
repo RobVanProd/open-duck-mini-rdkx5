@@ -1,0 +1,63 @@
+{
+  "status": "HOLD_ITER0_SOURCE_NEEDS_STRENGTHENING",
+  "offline_only": true,
+  "robot_tests": false,
+  "ssh": false,
+  "deploy": false,
+  "grounded_replay": false,
+  "ppo_training": false,
+  "runtime_behavior_changes": false,
+  "corrected_bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+  "aggregate_manifest": "outputs/analysis/phase2_z005_live_oracle_terrain_support_iter0_aggregate_manifest.json",
+  "aggregate_dataset_id": "3f68992af82062f7",
+  "aggregate_samples": 12806,
+  "task": "rough_terrain_backlash",
+  "terrain_hfield_z_scale": 0.005,
+  "command_x": 0.08,
+  "students": {
+    "phase_modulated_feed_forward": {
+      "onnx": "outputs/analysis/phase2_z005_live_oracle_iter0_phase_mod_bc_candidate/candidate.onnx",
+      "onnx_sha256": "2fb9e4c791970dae3dc3069aa5fc037bb51b4fbc9e91d8938c44e80d1bf1e3ef",
+      "fit_status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+      "p95_action_error": 0.01883,
+      "target_rate_p95_rad_s": 1.783167,
+      "gate_status": "HOLD_ITER0_PHASE_MOD_STUDENT_NOT_PROMOTABLE",
+      "pass_seeds": 1,
+      "falls": 1,
+      "duration_complete": 7,
+      "mean_track_ratio": -0.1398,
+      "mean_vx_m_s": -0.0112,
+      "failure": "seed5 support collapse; surviving seeds under-progress"
+    },
+    "recurrent_h96": {
+      "onnx": "outputs/analysis/phase2_z005_live_oracle_iter0_recurrent_h96_candidate/candidate.onnx",
+      "onnx_sha256": "cadf7e0a2c47691d230a062755aaff7d8f7dbfc5d2b9fac341838a00c5dd2363",
+      "fit_status": "PASS_RECURRENT_BC_FIT_SMOKE",
+      "p95_action_error": 0.044005,
+      "target_rate_p95_rad_s": 1.717053,
+      "target_rate_max_rad_s": 3.890466,
+      "gate_status": "HOLD_ITER0_RECURRENT_CLOSED_LOOP_UNSTABLE",
+      "pass_seeds": 0,
+      "falls": 8,
+      "duration_complete": 0,
+      "mean_track_ratio": -1.2363,
+      "mean_vx_m_s": -0.0989,
+      "max_pitch_vel_p95_rad_s": 5.24,
+      "failure": "closed-loop overdrive and early falls"
+    }
+  },
+  "seed5_relabel_check": {
+    "samples": 56,
+    "mean_local_vx_m_s": -0.2654,
+    "min_base_height_m": 0.0677,
+    "max_body_pitch_rad": 1.4489,
+    "double_support_pct": 91.1,
+    "single_support_pct": 7.1,
+    "relabel_action_delta_p95": 0.161,
+    "relabel_action_delta_max": 0.2628,
+    "local_max_action_delta_p95_check": 0.2455,
+    "interpretation": "failed, double-support-dominated backward support state; current oracle labels are not strong recovery labels"
+  },
+  "decision": "Do not promote either ONNX and do not continue supervised architecture tweaks on this aggregate.",
+  "recommended_next": "Strengthen or rebuild the corrected z=0.005 support/recovery source before live-oracle DAgger iteration 1."
+}

@@ -1,0 +1,48 @@
+{
+  "status": "PASS_TERRAIN_SUPPORT_SOURCE_PLAN_READY",
+  "robot_touched": false,
+  "ssh_used": false,
+  "deploy_performed": false,
+  "grounded_replay": false,
+  "training_started": false,
+  "source_boundary": {
+    "pass_z": 0.0024,
+    "first_fail_z": 0.00255,
+    "failed_z": [0.00255, 0.0027, 0.003, 0.0035, 0.005]
+  },
+  "diagnosis": "Current Phase A2 gain099 candidate has almost no terrain-height margin beyond z=0.0024; z=0.00255+ rollouts are failure probes, not positive labels.",
+  "next_authorized_branch": {
+    "name": "terrain_support_source_generation",
+    "warm_start": "Phase A2 / gain099 lineage",
+    "terrain_hfield_z_scale_candidates": [0.00245, 0.0025],
+    "task": "rough_terrain_backlash",
+    "fit_json": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+    "push_enabled": false,
+    "commands": [0.0, 0.08],
+    "first_seed_gate": 5
+  },
+  "source_acceptance_gate": {
+    "x0": {
+      "duration_complete_required": true,
+      "mean_vx_min_m_s": -0.02,
+      "base_height_min_m": 0.12,
+      "corrected_velocity_excess_required": 0.0
+    },
+    "x008": {
+      "duration_complete_required": true,
+      "mean_vx_positive_required": true,
+      "corrected_velocity_excess_required": 0.0,
+      "max_tracking_p95_rad": 0.2
+    },
+    "durations_s": [2.0, 15.0]
+  },
+  "closed_moves": [
+    "use_z00255_plus_failing_traces_as_positive_labels",
+    "fixed_bc_on_failed_recovery_datasets",
+    "dagger_against_z0024_source_without_stronger_source",
+    "direct_z005_training_escalation",
+    "push_perturbations_before_no_push_support_passes",
+    "robot_validation"
+  ],
+  "goal_complete": false
+}

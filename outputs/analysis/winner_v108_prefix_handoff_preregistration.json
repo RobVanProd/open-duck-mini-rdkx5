@@ -1,0 +1,137 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "formal_behavior_cells_authorized": 4,
+    "gate5_authorized": false,
+    "hosted_training_authorized": false,
+    "prefix_handoff_diagnostic_authorized": true,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "torque_or_motion": false
+  },
+  "causal_question": "Does the byte-frozen repaired source policy pass the exact V107 nominal matrix when the sole removed treatment is the 250-tick calibration plus 250-tick home-return physical prefix?",
+  "checks": {
+    "base_preregistration_exact": true,
+    "expanded_initial_exact": true,
+    "protected_source_exact": true,
+    "reference_exact": true,
+    "v101_contract_exact": true,
+    "v107_result_exact": true,
+    "zero_adapter_graph_equivalence_exact": true
+  },
+  "decision_rule": {
+    "all_four_source_no_prefix_cells_pass": "Select CALIBRATION_PREFIX_PHYSICAL_STATE_HANDOFF as the preoptimizer defect because graph action/state equivalence is exact.",
+    "any_source_no_prefix_cell_fails": "Select BASELINE_SEED_OR_EVALUATOR_MISMATCH and stop before changing the calibration prefix.",
+    "no_checkpoint_selection": true,
+    "no_reward_or_closest_ranking": true,
+    "no_training_until_result": true
+  },
+  "failed_checks": [],
+  "frozen_comparator": {
+    "checkpoint": "EXPANDED_INITIAL",
+    "only_treatment_difference": "V107 applies the 250 calibration plus 250 home-return physical prefix; V108 does not.",
+    "result": "outputs\\analysis\\winner_v107_stage_boundary_result.json",
+    "result_sha256": "3f9bd6f9173131dbb17e9eef570831df5a67fc291bee094fe76b61772f8e6f6a",
+    "same_commands_seed_plant_configuration_transport_and_duration": true
+  },
+  "graph_equivalence": {
+    "cases": 256,
+    "exact": true,
+    "maximum_context_action_effect": 0.0,
+    "maximum_hidden_action_effect": 0.0,
+    "maximum_source_to_expanded_action_error": 0.0,
+    "maximum_source_to_expanded_previous_action_error": 0.0
+  },
+  "input_hashes": {
+    "base_preregistration": "c8f986ceb24863f33c1fc99170548d2e255cb6a26737d3f74762f8dcd4485a24",
+    "reference_features": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212",
+    "v101_cpu_contract": "4f44c2ff9de0ee715b09c1c95048bedb0a43f3334eaa70970dac8c08d6e047d0",
+    "v107_result": "3f9bd6f9173131dbb17e9eef570831df5a67fc291bee094fe76b61772f8e6f6a"
+  },
+  "matrix": {
+    "cells": 4,
+    "rows": [
+      {
+        "arm": "PROTECTED_SOURCE_NO_PREFIX",
+        "calibration_ticks": 0,
+        "command_x_m_s": 0.0,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de",
+        "seed": 167931544,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "arm": "PROTECTED_SOURCE_NO_PREFIX",
+        "calibration_ticks": 0,
+        "command_x_m_s": 0.074,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de",
+        "seed": 167931544,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "arm": "PROTECTED_SOURCE_NO_PREFIX",
+        "calibration_ticks": 0,
+        "command_x_m_s": 0.077,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de",
+        "seed": 167931544,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "arm": "PROTECTED_SOURCE_NO_PREFIX",
+        "calibration_ticks": 0,
+        "command_x_m_s": 0.08,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de",
+        "seed": 167931544,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      }
+    ],
+    "sha256": "3d32af63e21da7453685ac582b95e405ec96e6268fb8ece02f1f8acf6d6e49d0"
+  },
+  "policies": {
+    "expanded_initial": {
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v105-v103-formal-extract-20260723\\winner_v102_response_conditioned_curriculum\\stage1_domain_25_percent\\2026_07_23_143437_0.onnx",
+      "sha256": "0076e743edb67bc8139d6c70ed6ee2973945c483640180b9de90da190a5a038e"
+    },
+    "protected_source": {
+      "path": "artifacts\\runtime_handoff\\rdkx5_native_20260719\\policies\\T2_EQUAL_512000.onnx",
+      "sha256": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de"
+    }
+  },
+  "schema_version": "winner_v108.prefix_handoff_preregistration.v1",
+  "status": "PREREGISTERED_WINNER_V108_PREFIX_HANDOFF_DIAGNOSTIC"
+}

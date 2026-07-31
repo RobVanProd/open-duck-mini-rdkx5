@@ -1,0 +1,245 @@
+diff --git a/playground/common/winner_v127_constrained_ppo_train.py b/playground/common/winner_v127_constrained_ppo_train.py
+--- a/playground/common/winner_v127_constrained_ppo_train.py
++++ b/playground/common/winner_v127_constrained_ppo_train.py
+@@ -44,6 +44,7 @@ import optax
+ 
+ from playground.common import winner_v127_constrained_ppo_losses as ppo_losses
+ from playground.common import winner_v171_gradient_geometry as v171_geometry
++from playground.common import winner_v173_lexicographic_tangent as v173_tangent
+ 
+ InferenceParams = Tuple[running_statistics.NestedMeanStd, Params]
+ Metrics = types.Metrics
+@@ -74,6 +75,14 @@ class TrainingState:
+   v171_projection_active: jax.Array
+   v171_cost_descent_derivative: jax.Array
+   v172_geometry_batch_cost: jax.Array
++  v173_cost_seen: jax.Array
++  v173_reward_only_updates: jax.Array
++  v173_cost_first_updates: jax.Array
++  v173_tangent_updates: jax.Array
++  v173_projection_active_updates: jax.Array
++  v173_zero_direction_updates: jax.Array
++  v173_min_tangent_retention: jax.Array
++  v173_max_constrained_derivative_excess: jax.Array
+ 
+ 
+ def _unpmap(v):
+@@ -573,6 +582,8 @@ def train(
+       data: types.Transition,
+       normalizer_params: running_statistics.RunningStatisticsState,
++      batch_cost: jax.Array,
++      cost_seen_before: jax.Array,
+   ):
+     optimizer_state, params, key, dual_lambda = carry
+     key, key_loss = jax.random.split(key)
+@@ -591,6 +602,15 @@ def train(
+     for name, value in geometry.items():
+       metrics[f'winner_v171_{name}'] = value
++    actor_direction, direction_metrics = v173_tangent.select_actor_direction(
++        reward_actor_grads.policy,
++        cost_actor_grads.policy,
++        batch_cost=batch_cost,
++        cost_seen_before=cost_seen_before,
++        max_grad_norm=max_grad_norm,
++    )
++    for name, value in direction_metrics.items():
++      metrics[f'winner_v173_{name}'] = value
+ 
+     if lr_is_adaptive_kl:
+       kl_mean = metrics['kl_mean']
+@@ -606,9 +626,19 @@ def train(
+       lr = jnp.array(learning_rate)
+     metrics['learning_rate'] = lr
+ 
+-    # apply gradients
+-    params_update, optimizer_state = optimizer.update(grads, optimizer_state)
++    # The critics retain the frozen Adam update.  The actor receives the
++    # certified Euclidean direction directly, so Adam cannot rotate it out of
++    # the cost-nonincreasing half-space.
++    zero_policy_gradient = jax.tree_util.tree_map(jnp.zeros_like, grads.policy)
++    critic_grads = grads.replace(policy=zero_policy_gradient)
++    params_update, optimizer_state = optimizer.update(
++        critic_grads, optimizer_state
++    )
++    actor_update = jax.tree_util.tree_map(
++        lambda direction: lr * direction, actor_direction
++    )
++    params_update = params_update.replace(policy=actor_update)
+     params = optax.apply_updates(params, params_update)
+ 
+     return (optimizer_state, params, key, dual_lambda), metrics
+@@ -619,6 +649,8 @@ def train(
+       data: types.Transition,
+       normalizer_params: running_statistics.RunningStatisticsState,
++      batch_cost: jax.Array,
++      cost_seen_before: jax.Array,
+   ):
+     optimizer_state, params, key, dual_lambda = carry
+     key, key_perm, key_grad = jax.random.split(key, 3)
+@@ -643,7 +675,12 @@ def train(
+ 
+     shuffled_data = jax.tree_util.tree_map(convert_data, data)
+     (optimizer_state, params, _, _), metrics = jax.lax.scan(
+-        functools.partial(minibatch_step, normalizer_params=normalizer_params),
++        functools.partial(
++            minibatch_step,
++            normalizer_params=normalizer_params,
++            batch_cost=batch_cost,
++            cost_seen_before=cost_seen_before,
++        ),
+         (optimizer_state, params, key_grad, dual_lambda),
+         shuffled_data,
+         length=num_minibatches,
+@@ -701,21 +738,10 @@ def train(
+     ]
+     batch_cost = jnp.mean(jnp.sum(dense_cost, axis=1))
+     batch_cost = jax.lax.pmean(batch_cost, axis_name=_PMAP_AXIS_NAME)
+-    (
+-        dual_lambda,
+-        dual_eta,
+-        dual_initial_cost,
+-        dual_initialized,
+-    ) = winner_v127_dual_update(
+-        training_state.dual_lambda,
+-        training_state.dual_eta,
+-        training_state.dual_initial_cost,
+-        training_state.dual_initialized,
+-        batch_cost,
+-        dual_quarter_iterations,
+-    )
++    dual_lambda = jnp.asarray(0.0, dtype=batch_cost.dtype)
++    dual_eta = jnp.asarray(0.0, dtype=batch_cost.dtype)
++    dual_initial_cost = jnp.asarray(0.0, dtype=batch_cost.dtype)
++    dual_initialized = jnp.asarray(False)
+ 
+     if bootstrap_on_timeout:  # bootstrap reward on timeout
+       time_out = data.extras['state_extras']['time_out']
+@@ -745,7 +771,12 @@ def train(
+ 
+     (optimizer_state, params, _, _), metrics = jax.lax.scan(
+         functools.partial(
+-            sgd_step, data=data, normalizer_params=normalizer_params
++            sgd_step,
++            data=data,
++            normalizer_params=normalizer_params,
++            batch_cost=batch_cost,
++            cost_seen_before=training_state.v173_cost_seen,
+         ),
+         (
+             training_state.optimizer_state,
+@@ -797,6 +828,31 @@ def train(
+             'cost_descent_derivative',
+         )
+     }
++    reward_only_updates = jnp.sum(
++        metrics['winner_v173_reward_only_branch']
++    )
++    cost_first_updates = jnp.sum(
++        metrics['winner_v173_cost_first_branch']
++    )
++    tangent_updates = jnp.sum(metrics['winner_v173_tangent_branch'])
++    projection_updates = jnp.sum(
++        metrics['winner_v173_projection_active']
++    )
++    zero_direction_updates = jnp.sum(
++        metrics['winner_v173_clipped_direction_norm'] == 0.0
++    )
++    tangent_retention = jnp.min(
++        jnp.where(
++            metrics['winner_v173_tangent_branch'] > 0.0,
++            metrics['winner_v173_tangent_reward_retention'],
++            1.0,
++        )
++    )
++    constrained_derivative_excess = jnp.max(
++        jnp.where(
++            jnp.logical_or(
++                metrics['winner_v173_cost_first_branch'] > 0.0,
++                metrics['winner_v173_tangent_branch'] > 0.0,
++            ),
++            jnp.maximum(metrics['winner_v173_selected_cost_derivative'], 0.0),
++            0.0,
++        )
++    )
+     new_training_state = TrainingState(
+         optimizer_state=optimizer_state,
+         params=params,
+@@ -827,6 +908,28 @@ def train(
+             batch_cost,
+             training_state.v172_geometry_batch_cost,
+         ),
++        v173_cost_seen=jnp.logical_or(
++            training_state.v173_cost_seen,
++            batch_cost > 0.0,
++        ),
++        v173_reward_only_updates=(
++            training_state.v173_reward_only_updates + reward_only_updates
++        ),
++        v173_cost_first_updates=(
++            training_state.v173_cost_first_updates + cost_first_updates
++        ),
++        v173_tangent_updates=(
++            training_state.v173_tangent_updates + tangent_updates
++        ),
++        v173_projection_active_updates=(
++            training_state.v173_projection_active_updates
++            + projection_updates
++        ),
++        v173_zero_direction_updates=(
++            training_state.v173_zero_direction_updates
++            + zero_direction_updates
++        ),
++        v173_min_tangent_retention=jnp.minimum(
++            training_state.v173_min_tangent_retention, tangent_retention
++        ),
++        v173_max_constrained_derivative_excess=jnp.maximum(
++            training_state.v173_max_constrained_derivative_excess,
++            constrained_derivative_excess,
++        ),
+     )
+     metrics['winner_v127_batch_episode_cost'] = batch_cost
+     metrics['winner_v127_dual_eta'] = dual_eta
+@@ -911,6 +1014,14 @@ def train(
+       v171_projection_active=jnp.asarray(0.0, dtype=jnp.float32),
+       v171_cost_descent_derivative=jnp.asarray(0.0, dtype=jnp.float32),
+       v172_geometry_batch_cost=jnp.asarray(0.0, dtype=jnp.float32),
++      v173_cost_seen=jnp.asarray(False),
++      v173_reward_only_updates=jnp.asarray(0.0, dtype=jnp.float32),
++      v173_cost_first_updates=jnp.asarray(0.0, dtype=jnp.float32),
++      v173_tangent_updates=jnp.asarray(0.0, dtype=jnp.float32),
++      v173_projection_active_updates=jnp.asarray(0.0, dtype=jnp.float32),
++      v173_zero_direction_updates=jnp.asarray(0.0, dtype=jnp.float32),
++      v173_min_tangent_retention=jnp.asarray(1.0, dtype=jnp.float32),
++      v173_max_constrained_derivative_excess=jnp.asarray(0.0, dtype=jnp.float32),
+   )
+ 
+   if restore_checkpoint_path is not None:
+@@ -1022,6 +1133,14 @@ def train(
+           'v171_projection_active': float(_unpmap(training_state.v171_projection_active)),
+           'v171_cost_descent_derivative': float(_unpmap(training_state.v171_cost_descent_derivative)),
+           'v172_geometry_batch_cost': float(_unpmap(training_state.v172_geometry_batch_cost)),
++          'v173_cost_seen': bool(_unpmap(training_state.v173_cost_seen)),
++          'v173_reward_only_updates': float(_unpmap(training_state.v173_reward_only_updates)),
++          'v173_cost_first_updates': float(_unpmap(training_state.v173_cost_first_updates)),
++          'v173_tangent_updates': float(_unpmap(training_state.v173_tangent_updates)),
++          'v173_projection_active_updates': float(_unpmap(training_state.v173_projection_active_updates)),
++          'v173_zero_direction_updates': float(_unpmap(training_state.v173_zero_direction_updates)),
++          'v173_min_tangent_retention': float(_unpmap(training_state.v173_min_tangent_retention)),
++          'v173_max_constrained_derivative_excess': float(_unpmap(training_state.v173_max_constrained_derivative_excess)),
+       },
+   )
+ 
+@@ -1079,6 +1198,14 @@ def train(
+             'v171_projection_active': float(_unpmap(training_state.v171_projection_active)),
+             'v171_cost_descent_derivative': float(_unpmap(training_state.v171_cost_descent_derivative)),
+             'v172_geometry_batch_cost': float(_unpmap(training_state.v172_geometry_batch_cost)),
++            'v173_cost_seen': bool(_unpmap(training_state.v173_cost_seen)),
++            'v173_reward_only_updates': float(_unpmap(training_state.v173_reward_only_updates)),
++            'v173_cost_first_updates': float(_unpmap(training_state.v173_cost_first_updates)),
++            'v173_tangent_updates': float(_unpmap(training_state.v173_tangent_updates)),
++            'v173_projection_active_updates': float(_unpmap(training_state.v173_projection_active_updates)),
++            'v173_zero_direction_updates': float(_unpmap(training_state.v173_zero_direction_updates)),
++            'v173_min_tangent_retention': float(_unpmap(training_state.v173_min_tangent_retention)),
++            'v173_max_constrained_derivative_excess': float(_unpmap(training_state.v173_max_constrained_derivative_excess)),
+         },
+     )

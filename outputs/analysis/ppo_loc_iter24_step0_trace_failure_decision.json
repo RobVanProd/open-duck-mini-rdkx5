@@ -1,0 +1,88 @@
+{
+  "status": "HOLD_PPO_LOC_STEP0_CLOSED_LOOP_INSTABILITY",
+  "scope": "offline_trace_failure_diagnostic",
+  "policy": "outputs/analysis/ppo_loc_iter24_live_oracle_seed2_active_rate150_step0.onnx",
+  "bc_npz": "outputs/analysis/ppo_loc_iter24_live_oracle_seed2_active_rate150_candidate/candidate_mlp.npz",
+  "manifest": "outputs/analysis/live_oracle_dagger_phase_student/iter_024_history_context_resetsettle10_seed2_active/live_oracle_dagger_aggregate_manifest.json",
+  "corrected_bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+  "trace_sweep": "outputs/analysis/ppo_loc_iter24_live_oracle_seed2_active_rate150_step0_trace_seed0_1_6_7.json",
+  "trace_sweep_config": {
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0075,
+    "reset_mode": "home-support",
+    "reset_settle_ticks": 10,
+    "bridge_mode": "fitted",
+    "command_x": 0.08,
+    "push_enabled": true,
+    "push_interval_s": [1.0, 1.5],
+    "push_magnitude": [0.075, 0.125],
+    "trace_full_obs": true
+  },
+  "seed_results": [
+    {
+      "seed": 0,
+      "gate_status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 638,
+      "track_ratio": 0.019020704456717826,
+      "mean_vx_m_s": 0.0015216563565374262,
+      "base_height_min_m": 0.078816257417202,
+      "p95_velocity_excess_rad_s": 0.0,
+      "max_velocity_excess_rad_s": 0.0,
+      "single_support_pct": 24.45141065830721,
+      "double_support_pct": 75.39184952978056,
+      "analysis_status": "HOLD_SEED_FAILURE_CLOSED_LOOP_INSTABILITY",
+      "nearest_distance_p95": 0.23063845861206927,
+      "nearest_action_l1_p95": 0.021777777719195108
+    },
+    {
+      "seed": 1,
+      "gate_status": "PASS_CANDIDATE_SIM_GATE",
+      "samples": 750,
+      "track_ratio": 0.3428339185068277,
+      "mean_vx_m_s": 0.027426713480546216,
+      "base_height_min_m": 0.15834498405456543,
+      "p95_velocity_excess_rad_s": 0.0,
+      "max_velocity_excess_rad_s": 0.0,
+      "single_support_pct": 25.466666666666665,
+      "double_support_pct": 74.53333333333333,
+      "analysis_status": "HOLD_SEED_FAILURE_CLOSED_LOOP_INSTABILITY",
+      "nearest_distance_p95": 0.2266571070523369,
+      "nearest_action_l1_p95": 0.0208789513545872
+    },
+    {
+      "seed": 6,
+      "gate_status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 212,
+      "track_ratio": -0.7917806410265291,
+      "mean_vx_m_s": -0.06334245128212233,
+      "base_height_min_m": 0.0723818764090538,
+      "p95_velocity_excess_rad_s": 0.0,
+      "max_velocity_excess_rad_s": 0.0,
+      "single_support_pct": 13.679245283018867,
+      "double_support_pct": 86.32075471698113,
+      "analysis_status": "HOLD_SEED_FAILURE_CLOSED_LOOP_INSTABILITY",
+      "nearest_distance_p95": 0.3356696694682808,
+      "nearest_action_l1_p95": 0.027115175581752707
+    },
+    {
+      "seed": 7,
+      "gate_status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 577,
+      "track_ratio": 0.6773970682185666,
+      "mean_vx_m_s": 0.05419176545748533,
+      "base_height_min_m": 0.0032952988985925913,
+      "p95_velocity_excess_rad_s": 0.0,
+      "max_velocity_excess_rad_s": 0.0,
+      "single_support_pct": 23.050259965337954,
+      "double_support_pct": 76.25649913344887,
+      "analysis_status": "HOLD_SEED_FAILURE_CLOSED_LOOP_INSTABILITY",
+      "nearest_distance_p95": 0.22283916478346197,
+      "nearest_action_l1_p95": 0.024722232649296894
+    }
+  ],
+  "thresholds": {
+    "ood_distance_p95": 2.0,
+    "action_l1_p95": 0.12
+  },
+  "decision": "Do not launch long PPO/domain-randomization training from this step-0 checkpoint as-is. The regression is a closed-loop stability/representation failure on well-covered states, not an OOD or local action-fit failure."
+}

@@ -100,6 +100,24 @@ Do not overwrite this file.
 
 No new deployable candidate policy is active as of this update.
 
+June 22 CUDA candidates:
+
+- `open_duck_mini_actuator_bridge_cli_20260622T202101Z`
+  (`sha256=e444d47f14846721ee1c71a4f15ed3da62b7abc07b7f2e8ecc9d122a818b125a`)
+  is not deployable. It trained on Colab L4 to step `307200`, then held in sim:
+  `x=0.0` fell/terminated and `x=0.08` had low forward progress.
+- `open_duck_mini_actuator_bridge_cli_20260622T205753Z`
+  (`sha256=bdfb5655a07bbff564e58ac8ff0f6b398fa36fcd8380c98c0c0194364ff2cd83`)
+  is not deployable. It trained on Colab L4 to step `614400` with yaw tracking
+  disabled, then held in local CPU gates: `x=0.0` fell/terminated and `x=0.08`
+  had near-zero/negative forward progress.
+
+The checkpoint scan for the second CUDA candidate found that the step-0 export
+passed `x=0.0`, but every trained checkpoint from `153600` onward failed
+`x=0.0`. Exported sample actions saturated after the first checkpoint, so the
+next training recipe needs an action-magnitude penalty in addition to
+action-rate and target-rate penalties.
+
 Review-only candidate preserved in git:
 
 ```text
@@ -247,7 +265,8 @@ python3 tools/package_candidate_policy.py <candidate.onnx> \
   --candidate-name <candidate> \
   --training-manifest <run_dir>/smoke_manifest.final.json \
   --contract-audit outputs/analysis/<candidate>_contract.md \
-  --actuator-bridge-eval outputs/analysis/<candidate>_actuator_bridge_eval.md \
+  --candidate-gate-x0 outputs/analysis/<candidate>_candidate_gate_x0.md \
+  --candidate-gate-x008 outputs/analysis/<candidate>_candidate_gate_x008.md \
   --output-md outputs/analysis/<candidate>_policy_package.md \
   --output-json outputs/analysis/<candidate>_policy_metadata.json
 ```
@@ -302,3 +321,36 @@ on 2026-06-22.
 - Do not tune hardware gains, offsets, IMU remaps, action scale, or phase
   timing as part of candidate policy work.
 - Do not treat local ROCm/MJX failure as robot evidence.
+
+## Pre-Robot Physical Pose Gate
+
+Do not treat future robot walking behavior as policy evidence until the physical
+home/start pose is re-checked against the sim/runtime specification.
+
+Canonical procedure: [PHYSICAL_START_POSE_CALIBRATION_GATE.md](PHYSICAL_START_POSE_CALIBRATION_GATE.md).
+
+The software evidence is only partial:
+
+```text
+runtime home pose == sim home keyframe
+live duck_config offsets were captured
+home_pose_log_test had small compensated tracking errors
+```
+
+That does not prove the physical joint geometry is still calibrated to spec.
+The historical `left_knee` offset (`-1.4880 rad`) was corrected to `0.0371 rad`
+on 2026-06-27 and validated by a post-correction snapshot plus supported
+low-speed tracking. The old value is not live. This remains a hard gate because
+the current full physical pose has not been freshly verified, not because the
+historical offset remains configured.
+
+Before any next robot validation:
+
+```text
+1. Support the robot and command home pose.
+2. Compare real hip pitch, knee, ankle, and foot geometry to the documented
+   home/start pose.
+3. Re-run/audit soft offsets if any joint is off.
+4. Capture a new duck_config snapshot if offsets change.
+5. Re-run home_pose_log_test after any offset change.
+```

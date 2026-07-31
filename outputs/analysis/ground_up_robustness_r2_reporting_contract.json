@@ -1,0 +1,34 @@
+{
+  "schema_version": "ground_up_robustness_r2_reporting_contract.v1",
+  "status": "PASS_ROBUSTNESS_R2_REPORTING_CONTRACT",
+  "cause": "the first condition-1 evaluation output recorded the requested override but omitted per-run model readback",
+  "change_scope": "serialization only: copy insertion_point.dynamics_override into each campaign run",
+  "evaluate_tool_sha256": "b05f49e0692237aa6aff924d9fa41fe9ce06b46d806187597022ac52eb2a4d3a",
+  "cpu_smoke_sha256": "8b4f0e7271cc83242da0f1538cb2a89e519365ca2f4d3a53b30c54b6ad88bfa2",
+  "checks": {
+    "requested_override_recorded": true,
+    "per_run_readback_enabled": true,
+    "per_run_readback_key_exact": true,
+    "per_run_readback_value_exact": true,
+    "per_run_readback_after_exact": true,
+    "per_run_changed_indices_exact": true,
+    "cpu_only": true
+  },
+  "smoke": {
+    "override": {"floor_friction": 0.5},
+    "readback_key": "floor_friction",
+    "readback_before": 1.0,
+    "readback_after": 0.5,
+    "changed_indices": [[0, 0]]
+  },
+  "decision": "INVALIDATE_UNAGGREGATED_FIRST_CONDITION_OUTPUTS_AND_RERUN_IDENTICAL_16_CELLS_WITH_READBACK",
+  "authority": {
+    "rerun_condition_1_identically": true,
+    "change_behavior_parameters": false,
+    "run_condition_2_or_later": false,
+    "training": false,
+    "colab": false,
+    "local_gpu": false,
+    "rdk_or_robot": false
+  }
+}

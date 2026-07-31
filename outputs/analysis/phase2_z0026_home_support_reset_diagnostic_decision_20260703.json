@@ -1,0 +1,52 @@
+{
+  "status": "HOLD_Z0026_HOME_SUPPORT_LOW_PROGRESS",
+  "date": "2026-07-03",
+  "scope": "offline_evaluator_diagnostic_only",
+  "robot_tests": false,
+  "ssh": false,
+  "deploy": false,
+  "grounded_replay": false,
+  "reset_mode_added": "home-support",
+  "reset_mode_default": "playground",
+  "parent_policy": "outputs/analysis/colab_cli_downloads/extracted/open_duck_colab_cli_phase2-z002-teacher-continuity_20260701T223519Z/open_duck_colab_cli_phase2-z002-teacher-continuity_20260701T223519Z/open_duck_training_phase2_z002_teacher_continuity_cli/smoke_20260701T223737Z_gpu/2026_07_01_224518_81920.onnx",
+  "task": "rough_terrain_backlash",
+  "terrain_hfield_z_scale": 0.0026,
+  "x008_short": {
+    "artifact_md": "outputs/analysis/PHASE2_Z0026_TC81920_HOME_SUPPORT_X008_SHORT.md",
+    "artifact_json": "outputs/analysis/phase2_z0026_tc81920_home_support_x008_short.json",
+    "duration_s": 2.0,
+    "seeds": "0-7",
+    "reset_mode": "home-support",
+    "falls": 0,
+    "duration_complete": 8,
+    "status": "HOLD_CANDIDATE_TRACKING",
+    "mean_vx_m_s": 0.0248,
+    "track_ratio": 0.3099,
+    "max_pitch_vel_p95_rad_s": 1.7518,
+    "p95_vel_excess": 0.0,
+    "max_tracking_p95_rad": 0.2054,
+    "single_support_pct": 8.0,
+    "double_support_pct": 92.0
+  },
+  "x000_short": {
+    "artifact_md": "outputs/analysis/PHASE2_Z0026_TC81920_HOME_SUPPORT_X000_SHORT.md",
+    "artifact_json": "outputs/analysis/phase2_z0026_tc81920_home_support_x000_short.json",
+    "duration_s": 2.0,
+    "seeds": "0-7",
+    "reset_mode": "home-support",
+    "falls": 0,
+    "duration_complete": 8,
+    "status": "PASS_CANDIDATE_SIM_GATE",
+    "mean_vx_m_s": 0.0051,
+    "max_pitch_vel_p95_rad_s": 1.0279,
+    "p95_vel_excess": 0.0,
+    "max_tracking_p95_rad": 0.0959,
+    "double_support_pct": 100.0
+  },
+  "decision": "Broad randomized reset caused the seed-5 fall; home-support reset removes the fall, but the parent remains low-progress/double-support dominant at x=0.08 and is not promoted.",
+  "next": [
+    "make reset contract explicit before future gates",
+    "use grounded-home/support reset for normal walking gate if it matches the real robot start protocol",
+    "treat unsupported-start recovery as a separate robustness gate, not the default walking gate"
+  ]
+}

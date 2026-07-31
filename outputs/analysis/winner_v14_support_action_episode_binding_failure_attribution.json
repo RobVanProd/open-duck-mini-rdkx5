@@ -1,0 +1,31 @@
+{
+  "authority": {
+    "authorizes_only": "one fresh one-line-binding-corrected preregistration",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "decision": "CORRECT_ONLY_REVIEWED_EPISODE_TYPE_BINDING_AND_FRESHLY_PREREGISTER",
+  "execution": {
+    "completed_main_cells": 0,
+    "completed_repeat_cells": 0,
+    "locomotion_steps": 0,
+    "optimizer_updates": 0,
+    "result_json_created": false,
+    "robot_or_rdk_access": 0
+  },
+  "failure": {
+    "cause": "The adapter referenced base.Episode, while the reviewed evaluator constructs smoke.Episode from run_winner_v12_calibrator_cpu_smoke.",
+    "correction": "replace only base.Episode with base.smoke.Episode",
+    "exception": "AttributeError: module 'run_winner_v12_calibrator_support_gate' has no attribute 'Episode'"
+  },
+  "repository_attribution": {
+    "artifact_count": 0,
+    "failed_step": "Run exactly one frozen support-action diagnostic",
+    "github_run_attempt": 1,
+    "github_run_head_sha": "872cd436bfe1735de75a551bb1def5758db72f41",
+    "github_run_id": 29833729219,
+    "repository": "RobVanProd/open-duck-mini-rdkx5"
+  },
+  "schema_version": "winner_v14.support_action_episode_binding_failure_attribution.v1",
+  "status": "INVALID_WINNER_V14_SUPPORT_ACTION_DIAGNOSTIC_EPISODE_BINDING"
+}

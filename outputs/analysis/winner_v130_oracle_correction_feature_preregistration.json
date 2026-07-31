@@ -1,0 +1,51 @@
+{
+  "advancement_thresholds": {
+    "each_cross_plant_corrected_mse_vs_zero": "< 1.0x",
+    "each_cross_plant_preservation_vs_corrected_baseline": "<= 0.01x",
+    "state_corrected_mse_vs_zero": "<= 0.25x",
+    "state_preservation_mse_vs_corrected_baseline": "<= 0.01x",
+    "state_vs_hidden_total_error": "<= 0.25x"
+  },
+  "authority": {
+    "behavior_evaluation": false,
+    "full_matrix": false,
+    "gate5": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "read_only_cpu_audit": true,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "checks": {
+    "all_input_hashes_exact": true,
+    "no_training_or_behavior": true,
+    "probe_is_read_only": true,
+    "robot_surface_absent": true,
+    "thresholds_frozen_before_fit": true,
+    "v129_head_only_formulation_closed": true
+  },
+  "decision_rule": {
+    "all_thresholds_pass": "authorize one CPU contract for a zero-initialized linear observation-state correction residual; no formal training",
+    "any_threshold_fails": "do not train that residual; record the representational hold and return to gait-level mechanism selection"
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "audit_runner": "e872728eeb6832aa8ba0450b45b29aa724ccfade40e8129b5c56454ba40f8001",
+    "cpu_template": "217a1551c4cc778e4b957636a40ca6e01eafa51efeaef905eb73e9debc7c26e5",
+    "source_checkpoint": "c1d9b8574c941e2279294de14aca1cb57d4736bdc63635b5aaf1e205fa7f86c1",
+    "v129_formal_result": "2b083d958ee29b3fd0cee90c73de610ed73a1b9ccd23a2a6b360242d95a5e909"
+  },
+  "probes": {
+    "cross_plant": [
+      "train P30 / test P31-34",
+      "train P31-34 / test P30"
+    ],
+    "current_head": "linear readout over h_out[64]",
+    "deployable_state": "linear readout over normalized obs[115] + h_in[64]",
+    "fit": "float64 unregularized class-balanced least squares; correction weight 4786/14",
+    "observation": "linear readout over normalized obs[115]"
+  },
+  "question": "Did V129 fail because the frozen 64-D recurrent output is not a linearly localizable correction representation, while the already deployable normalized observation plus h_in is?",
+  "schema_version": "winner_v130.oracle_correction_feature_preregistration.v1",
+  "status": "PREREGISTERED_WINNER_V130_ORACLE_CORRECTION_FEATURE_AUDIT"
+}

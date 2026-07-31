@@ -1,0 +1,110 @@
+{
+  "analysis": {
+    "minimum_sustained_samples": 50,
+    "missing_channel_values": "report as unavailable; never fill with zero, home, or a simulated value",
+    "report_rows": 101,
+    "sort": "descending absolute_z_max; uncovered rows last",
+    "stale_samples": "reject",
+    "statistics": [
+      "signed_z_p50",
+      "absolute_z_p50",
+      "absolute_z_p95",
+      "absolute_z_max",
+      "sample_count",
+      "source_count"
+    ],
+    "sustained_definition": "at least 50 consecutive valid 50-Hz-equivalent samples with abs(z)>0.5 within one source",
+    "threshold_absolute_z": 0.5
+  },
+  "authority": {
+    "hosted_compute": false,
+    "offline_cpu_only": true,
+    "policy_modification": false,
+    "robot_or_rdk_access": false,
+    "training_steps": 0
+  },
+  "decision_rule": {
+    "complete_answer": "requires every channel to have at least one sustained-window-sized sequence of direct complete-policy-observation evidence",
+    "contract_violation": "flag every channel/source pair satisfying the frozen sustained definition",
+    "incomplete_coverage": "publish the measured rows and HOLD the claim that obs[3] is the only violation",
+    "selection_weight": 0
+  },
+  "expected_sha256": {
+    "auto_config_sha256": "b08327a9fd04db8e4971c3ecafd6450ae9416d58fa852890e176951b0250bc38",
+    "corrected_contract_sha256": "298753fb30c658321161df50f668ad7ab25121a1958c4b7bbdb1c543caf06bff",
+    "gate3_sensor_sha256": {
+      "both_contacts": "121b0cdea9903e3d5268bdba537e8119a1418af34c72794fa94cf1ebfbee6ff8",
+      "left_contact": "3215514fc67034d70e4508881aebbe3eb92e5aef08206dbc8e24b4fe4d49e15a",
+      "left_tilt": "f10051fddcc1d2fdeed9ad7a1dffc07f1a83d0787d2613ac79508f0f8549b1e1",
+      "no_contacts": "3e184171d1aca748af1051864e7ece88f911c2e06fe595db6cbe87d0ba4543f2",
+      "nose_back": "adf2ce54c17c80c51bd444b34919a376d243a63a998b59ea5658733c5549b498",
+      "nose_forward": "0a4b20e63668413c3c0387d4abef1993e089e60bcbc0668b20b4ba1083010ac3",
+      "right_contact": "3f8b1c6e97434ba1d3c6354946968bee46625bf81efabaa0808390b40cab5968",
+      "right_tilt": "e437b0d7d3bbce26fcd4de929435f2d5bfd528ad09a3d84a01a0e15aba663d95",
+      "upright": "77861e4321f240364aea5c6f5eef83be8d31f6de2b5a8d837fb2dc222c56cd81"
+    },
+    "golden_sha256": "91a95e798b83fccc79452ca3857cda7f08b98f495967de0384a9d570d067ff87",
+    "policy_sha256": "3c606f9381a1710cc8fecdb7442787dcbfce3ee9bc02a6f1224774ab2b3a1067"
+  },
+  "failed_checks": [],
+  "hash_checks": {
+    "auto_config": true,
+    "corrected_contract": true,
+    "gate3": true,
+    "golden": true,
+    "policy": true
+  },
+  "input_paths": {
+    "auto_config": "D:\\open-duck-archive-20260725\\real-robot-data\\duck-auto-config-2529a83096d04812b0d5491303b2e42a\\trace.jsonl",
+    "corrected_contract": "D:\\open-duck-archive-20260725\\real-robot-data\\open-duck-gate3-source-1792d9c\\artifacts\\contracts\\legacy-contract-snapshot.json",
+    "gate3_both_contacts": "D:\\open-duck-archive-20260725\\real-robot-data\\open-duck-gate3-review-hrmv5w64\\both_contacts\\sensor.jsonl",
+    "gate3_left_contact": "D:\\open-duck-archive-20260725\\real-robot-data\\open-duck-gate3-review-hrmv5w64\\left_contact\\sensor.jsonl",
+    "gate3_left_tilt": "D:\\open-duck-archive-20260725\\real-robot-data\\open-duck-gate3-review-hrmv5w64\\left_tilt\\sensor.jsonl",
+    "gate3_no_contacts": "D:\\open-duck-archive-20260725\\real-robot-data\\open-duck-gate3-review-hrmv5w64\\no_contacts\\sensor.jsonl",
+    "gate3_nose_back": "D:\\open-duck-archive-20260725\\real-robot-data\\open-duck-gate3-review-hrmv5w64\\nose_back\\sensor.jsonl",
+    "gate3_nose_forward": "D:\\open-duck-archive-20260725\\real-robot-data\\open-duck-gate3-review-hrmv5w64\\nose_forward\\sensor.jsonl",
+    "gate3_right_contact": "D:\\open-duck-archive-20260725\\real-robot-data\\open-duck-gate3-review-hrmv5w64\\right_contact\\sensor.jsonl",
+    "gate3_right_tilt": "D:\\open-duck-archive-20260725\\real-robot-data\\open-duck-gate3-review-hrmv5w64\\right_tilt\\sensor.jsonl",
+    "gate3_upright": "D:\\open-duck-archive-20260725\\real-robot-data\\open-duck-gate3-review-hrmv5w64\\upright\\sensor.jsonl",
+    "golden": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\legacy_runtime_golden_vector_20260621.json",
+    "policy": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\policy\\BEST_WALK_ONNX_2.onnx"
+  },
+  "input_sha256": {
+    "auto_config": "b08327a9fd04db8e4971c3ecafd6450ae9416d58fa852890e176951b0250bc38",
+    "corrected_contract": "298753fb30c658321161df50f668ad7ab25121a1958c4b7bbdb1c543caf06bff",
+    "gate3_both_contacts": "121b0cdea9903e3d5268bdba537e8119a1418af34c72794fa94cf1ebfbee6ff8",
+    "gate3_left_contact": "3215514fc67034d70e4508881aebbe3eb92e5aef08206dbc8e24b4fe4d49e15a",
+    "gate3_left_tilt": "f10051fddcc1d2fdeed9ad7a1dffc07f1a83d0787d2613ac79508f0f8549b1e1",
+    "gate3_no_contacts": "3e184171d1aca748af1051864e7ece88f911c2e06fe595db6cbe87d0ba4543f2",
+    "gate3_nose_back": "adf2ce54c17c80c51bd444b34919a376d243a63a998b59ea5658733c5549b498",
+    "gate3_nose_forward": "0a4b20e63668413c3c0387d4abef1993e089e60bcbc0668b20b4ba1083010ac3",
+    "gate3_right_contact": "3f8b1c6e97434ba1d3c6354946968bee46625bf81efabaa0808390b40cab5968",
+    "gate3_right_tilt": "e437b0d7d3bbce26fcd4de929435f2d5bfd528ad09a3d84a01a0e15aba663d95",
+    "gate3_upright": "77861e4321f240364aea5c6f5eef83be8d31f6de2b5a8d837fb2dc222c56cd81",
+    "golden": "91a95e798b83fccc79452ca3857cda7f08b98f495967de0384a9d570d067ff87",
+    "policy": "3c606f9381a1710cc8fecdb7442787dcbfce3ee9bc02a6f1224774ab2b3a1067"
+  },
+  "known_capture_gap": {
+    "effect": "T2 cannot execute and T3 cannot claim full replay coverage unless the raw file is recovered and separately hash-frozen",
+    "expected_corrected_replay": "outputs/first_evidence/20260627T221019Z_corrected_dynamic_replay/suspended_policy_replay_x008_corrected_knee.jsonl",
+    "raw_file_available": false
+  },
+  "missing_inputs": [],
+  "normalizer_contract": {
+    "equation": "z=(raw_observation-mean)*reciprocal_std",
+    "mean_initializer": "mlp_13_1/sub/ReadVariableOp:0",
+    "observation_dimension": 101,
+    "policy_input_name": "obs",
+    "python_normalization_before_inference": false,
+    "reciprocal_std_initializer": "ConstantFolding/mlp_13_1/truediv_recip:0"
+  },
+  "preregistered_contract_sha256": "525dcf6629fa999843a786c6390628279ff58119fa0f4dd50868a3e2d7b3ca4a",
+  "schema_version": "open_duck.t3_observation_zscore_preregistration.v1",
+  "source_semantics": {
+    "auto_config": "direct gyro, acceleration, actual joint position, target, and contact components plus timestamp-derived joint velocity; these are component observations, not fabricated complete policy observations",
+    "corrected_contract": "one complete 101-D corrected-knee observation extracted from the second suspended replay",
+    "gate3": "direct gyro, acceleration, and contact channels only; no unrecorded policy fields may be synthesized",
+    "golden": "two complete 101-D observations from the preserved suspended runtime capture"
+  },
+  "status": "PREREGISTERED_T3_OBSERVATION_ZSCORE_AUDIT"
+}

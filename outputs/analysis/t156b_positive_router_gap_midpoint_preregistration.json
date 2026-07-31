@@ -1,0 +1,106 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "gate5": false,
+    "one_cpu_intercept_transform": true,
+    "positive_endpoint_preregistration": false,
+    "rdkx5_or_robot": false,
+    "training": false
+  },
+  "boundary_rule": {
+    "boundary": "(maximum_nonpositive + minimum_positive) / 2",
+    "direction": "unchanged T156 unit positive-centroid minus nonpositive-centroid direction",
+    "intercept": "-boundary cast once to float32",
+    "maximum_nonpositive": "maximum raw projection over four frozen nominal/negative contexts",
+    "minimum_positive": "minimum raw projection over two frozen +COM contexts",
+    "required_full_labels": "all six exact",
+    "required_leave_one_fit_out_labels": "all six exact",
+    "scalar_search": false
+  },
+  "checks": {
+    "frozen_inputs_present": true,
+    "no_calibration_behavior_training_colab_or_robot": true,
+    "source_graphs_and_references_present": true,
+    "strict_projected_class_gap_observed": true,
+    "t135b_basis_green": true,
+    "t156_hold_is_classifier_only": true,
+    "two_positive_contexts_hash_exact": true
+  },
+  "decision_rule": {
+    "fail_decision": "CLOSE_CALIBRATION_CONTEXT_POSITIVE_ROUTER",
+    "pass_decision": "EARN_T157_POSITIVE_COM_ENDPOINT_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "calibration_prefixes": 0,
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 6796,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t156b_positive_router_gap_midpoint_preregistration.py",
+      "sha256": "29d51edc188d8a77887e9c0ce5e8922f2eb765500e331a1a6dc0a79b1734becd"
+    },
+    "runner": {
+      "bytes": 13330,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t156b_positive_router_gap_midpoint.py",
+      "sha256": "5d383804a86a174e39194c6bc0893477ad0b0ae073844d69eb441b95b755253d"
+    },
+    "t135b_result": {
+      "bytes": 14765,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t135b_interrupted_calibration_context_router_recovery_result.json",
+      "sha256": "b01f711e751490fab17d327eebf770473636285dfbc97102478dc5328dfcd540"
+    },
+    "t156_result": {
+      "bytes": 20763,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t156_three_way_positive_router_result.json",
+      "sha256": "1cdff585ee5a6d92ce873a9bb6c438e518743e4e614f12337bb78556a2635f35"
+    },
+    "test": {
+      "bytes": 1757,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t156b_positive_router_gap_midpoint.py",
+      "sha256": "f2b3e6caa7b7863067d8f7e73de485d5d5b4bba9942976db115c1f5d46254f7d"
+    }
+  },
+  "graph_contract": {
+    "abi": "unchanged",
+    "all_nodes": "byte exact",
+    "all_selected_source_outputs": "bit exact",
+    "checkpoints": [
+      1003520,
+      2007040
+    ],
+    "only_initializer_allowed_to_change": "positive_router_intercept"
+  },
+  "positive_references": {
+    "1003520": {
+      "bytes": 975228,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t156_three_way_positive_router_v1\\1003520\\positive_always_on_reference.onnx",
+      "sha256": "c10b5dcba6fb410549d992bf28d6980ebfe68c4e4d35ec80a9c833a1f8fc5d9f"
+    },
+    "2007040": {
+      "bytes": 975228,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t156_three_way_positive_router_v1\\2007040\\positive_always_on_reference.onnx",
+      "sha256": "1a0b20a40ab9e116355581373ec2966cc03f8d6e77012ad75ee80390459afc41"
+    }
+  },
+  "preregistered_contract_sha256": "17192f06f9a5688d191101be907a160486157de5556ed3a029ed3aa07067d811",
+  "question": "Does the unique midpoint of T156's strict projected class gap separate positive COM while changing only the router intercept?",
+  "schema_version": "open_duck.t156b_positive_router_gap_midpoint_preregistration.v1",
+  "source_graphs": {
+    "1003520": {
+      "bytes": 980016,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t156_three_way_positive_router_v1\\1003520\\three_way_positive_router.onnx",
+      "sha256": "6b3b20fed8e0073b55c9b5675819283328fcaae05a292619a5aa2fe3a008ac00"
+    },
+    "2007040": {
+      "bytes": 980016,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t156_three_way_positive_router_v1\\2007040\\three_way_positive_router.onnx",
+      "sha256": "c445ed018a9fad9727faf91a1bd76ee67a1c4f71e4d2079836c4d203b23cf6e9"
+    }
+  },
+  "status": "PREREGISTERED_T156B_POSITIVE_ROUTER_GAP_MIDPOINT"
+}

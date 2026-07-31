@@ -1,0 +1,78 @@
+{
+  "status": "HOLD_B0F_LOW_FORWARD_PROGRESS",
+  "scope": "offline sim/training only",
+  "robot_touched": false,
+  "ssh_performed": false,
+  "deploy_performed": false,
+  "grounded_replay": false,
+  "runtime_behavior_changed": false,
+  "workflow": {
+    "session": "open-duck-a100",
+    "launch_mode": "colab exec",
+    "run_dir": "outputs/analysis/colab_cli/open-duck-a100-phase2-b0f-20260629T114139Z",
+    "remote_workflow": "open_duck_colab_cli_phase2-b0f_20260629T114157Z",
+    "training_returncode": 0,
+    "training_elapsed_s": 738.859153579,
+    "wrapper_return_issue": "colab exec did not return after complete artifact bundle was available; session was stopped after downloading evidence"
+  },
+  "artifact_bundle": {
+    "path": "outputs/analysis/colab_cli/open-duck-a100-phase2-b0f-20260629T114139Z/open_duck_colab_cli_phase2-b0f_20260629T114157Z_artifacts.latest.tar.gz",
+    "sha256": "37135fae56902879f719b4824be79d09faa793eb3887170307d4cb8f02295b38",
+    "size_human": "4.4M"
+  },
+  "onnx_exports": [
+    {
+      "step": 40960,
+      "sha256": "19d95393c538e04d09c0904126e43ac80af56470ec95e4c705eef32634670673"
+    },
+    {
+      "step": 81920,
+      "sha256": "178b8cba9a8386975db2207089a869ffe5a3b236e9a334518faeacead31b00b0"
+    },
+    {
+      "step": 122880,
+      "sha256": "bbb6f6b73d34951928c89700c99eab94f8bca2ba68e56f645c5d351c721d484b"
+    }
+  ],
+  "checkpoint_sweep": [
+    {
+      "step": 40960,
+      "status": "HOLD_PARTIAL_CANDIDATE_CHECKPOINT",
+      "promote": false,
+      "positive_command_tracking_ratio_mean": 0.2372229874599725,
+      "max_pitch_tracking_p95_rad": 0.22135233879089344,
+      "max_pitch_sent_target_velocity_p95_rad_s": 1.5806609392166138,
+      "max_action_saturation_pct": 0.0
+    },
+    {
+      "step": 81920,
+      "status": "HOLD_PARTIAL_CANDIDATE_CHECKPOINT",
+      "promote": false,
+      "positive_command_tracking_ratio_mean": 0.22154912137193603,
+      "max_pitch_tracking_p95_rad": 0.2196073830127715,
+      "max_pitch_sent_target_velocity_p95_rad_s": 1.5725201368331907,
+      "max_action_saturation_pct": 0.0
+    },
+    {
+      "step": 122880,
+      "status": "HOLD_PARTIAL_CANDIDATE_CHECKPOINT",
+      "promote": false,
+      "positive_command_tracking_ratio_mean": 0.24107710098905957,
+      "max_pitch_tracking_p95_rad": 0.2188965559005736,
+      "max_pitch_sent_target_velocity_p95_rad_s": 1.5705925226211548,
+      "max_action_saturation_pct": 0.0
+    }
+  ],
+  "selected_checkpoint": {
+    "step": 122880,
+    "sha256": "bbb6f6b73d34951928c89700c99eab94f8bca2ba68e56f645c5d351c721d484b",
+    "selection_reason": "best_available_but_not_promoted",
+    "selection_status": "HOLD_PARTIAL_CANDIDATE_CHECKPOINT",
+    "failure_reasons": [
+      "command 0.08: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "command 0.08: track ratio 0.2411 < 0.2500",
+      "command 0.08: mean vx 0.0193 < 0.0200"
+    ]
+  },
+  "decision": "Do not promote B0F. Robot validation remains blocked."
+}

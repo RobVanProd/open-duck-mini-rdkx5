@@ -1,0 +1,42 @@
+{
+  "authority": {
+    "hosted_or_colab": false,
+    "optimizer_or_simulator_authorized_now": false,
+    "rdkx5_or_robot": false,
+    "retry_authorized_now": false,
+    "robot_clearance": false,
+    "torque_or_motion": false
+  },
+  "causal_attribution": {
+    "asset_exists_under_composed_playground": true,
+    "asset_exists_under_policy_repository_cwd": false,
+    "calibration_math_implicated": false,
+    "cause": "the preflight checker instantiated Playground while cwd remained the policy repository, but PolyReferenceMotion resolves its frozen data path relative to the composed Playground root",
+    "checkpoint_or_onnx_implicated": false,
+    "policy_math_implicated": false
+  },
+  "decision": "AUTHORIZE_PATH_BINDING_CORRECTION_PREREGISTRATION_ONLY",
+  "observed_failure": {
+    "exception": "FileNotFoundError",
+    "failure_stage": "manual reset checker environment construction",
+    "first_reset_completed": false,
+    "missing_relative_path": "playground/open_duck_mini_v2/data/polynomial_coefficients.pkl",
+    "optimizer_steps": 0,
+    "ppo_subprocess_started": false,
+    "simulator_locomotion_steps": 0
+  },
+  "preregistration_sha256": "dc986066f92560d86201e79d6f34ae5b6e18fc5f8f60ea0d2fb394cea09dec95",
+  "prospective_correction": {
+    "change": "bind cwd to the exact composed Playground root only while constructing and executing the manual reset preflight",
+    "network_source_changed": false,
+    "new_run_requires_new_preregistration": true,
+    "threshold_changed": false,
+    "training_hyperparameters_changed": false
+  },
+  "recovered_preflight_artifacts": {
+    "expanded_checkpoint_directory_sha256": "58a51ee0894628b15186fbed4ab17289b6a786d425377a3c1b39c8754a08f0e5",
+    "step_zero_onnx_sha256": "0076e743edb67bc8139d6c70ed6ee2973945c483640180b9de90da190a5a038e"
+  },
+  "schema_version": "winner_v98.preoptimizer_failure_attribution.v1",
+  "status": "HOLD_WINNER_V98_PREOPTIMIZER_PATH_BINDING"
+}

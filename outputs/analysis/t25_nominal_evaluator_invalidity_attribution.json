@@ -1,0 +1,56 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "colab_authorized": false,
+    "gate5_authorized": false,
+    "one_evaluator_only_matrix_recovery_may_be_preregistered": true,
+    "rdkx5_or_robot": false,
+    "training_authorized": false
+  },
+  "causal_attribution": {
+    "deployment_graph_requires_input": "calibration_context[1,64]",
+    "gate_or_matrix_change": false,
+    "graph_input_semantics": "diagnostic_noop",
+    "old_evaluator_feed": [
+      "obs",
+      "h_in",
+      "previous_action"
+    ],
+    "policy_or_simulator_change": false,
+    "required_recovery_feed": {
+      "calibration_context": "float32_zeros[1,64]"
+    }
+  },
+  "checks": {
+    "all_16_cells_have_same_pretrace_input_error": true,
+    "context_input_proven_diagnostic_noop": true,
+    "first_matrix_invalid_not_policy_hold": true,
+    "no_trace_or_behavior_sample_exists": true,
+    "original_matrix_preregistered_green": true,
+    "policies_matrix_gate_and_seeds_unchanged": true,
+    "policy_hashes_and_cpu_environment_valid": true,
+    "robot_or_rdk_access_zero": true,
+    "training_or_colab_zero": true,
+    "zero_context_cpu_contract_green": true
+  },
+  "decision": "PREREGISTER_ONE_T25B_EVALUATOR_ONLY_RECOVERY",
+  "failed_checks": [],
+  "first_execution": {
+    "cells_attempted": 16,
+    "checkpoint_selected": false,
+    "classification": "invalid_pretrace_evaluator_contract",
+    "error": "Required inputs (['calibration_context']) are missing from input feed (['obs', 'h_in', 'previous_action']).",
+    "formal_policy_decision_weight": 0,
+    "policy_rejected": false,
+    "trace_rows": 0,
+    "valid_behavior_cells": 0
+  },
+  "input_hashes": {
+    "invalid_result": "26b254837f507579865bc53391757081d8ac0a4ccf1f5d22e83ae47623ede3d4",
+    "preregistration": "ac41bea2aeb21a3838da7f09257d2ccd89d397081362a4e40c384d9eb0b48f79",
+    "t24_transform": "accb2027b05b1d861f34d7844a81626eac5706887bef306a7f8858dc379604a1",
+    "zero_context_contract": "82be88ef844f8f7271125f566c89d2e4d6b140630e0c75a11678074efda95028"
+  },
+  "schema_version": "open_duck.t25_evaluator_invalidity.v1",
+  "status": "PASS_T25_NOMINAL_EVALUATOR_INVALIDITY_ATTRIBUTION"
+}

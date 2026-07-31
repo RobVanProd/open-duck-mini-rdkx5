@@ -1,0 +1,139 @@
+{
+  "authority": {
+    "authorizes_only": "one separately preregistered CPU-only sign-consistent combination diagnostic",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "causal_interpretation": "No constant single-axis offset passes, so that mechanism class is closed. However, the same hip-negative, knee-positive, and ankle-positive sign outlives both baseline and its opposite in every one of 24 paired cells, while each opposite sign shortens baseline in all 24. This selects the complete nonempty subset screen of that sign vector as a causal interaction diagnostic; it does not promote the closest failing single axis.",
+  "decision": "CLOSE_SINGLE_AXIS_CONSTANT_OFFSET_PREREGISTER_SIGN_CONSISTENT_COMBINATION_DIAGNOSTIC",
+  "direction_evidence": {
+    "ANKLE_POS": {
+      "compared_cells": 24,
+      "desired_minus_baseline_tick_range": [
+        8,
+        219
+      ],
+      "desired_minus_opposite_tick_range": [
+        14,
+        228
+      ],
+      "desired_outlives_baseline_cells": 24,
+      "desired_outlives_opposite_cells": 24,
+      "opposite": "ANKLE_NEG",
+      "opposite_minus_baseline_tick_range": [
+        -36,
+        -6
+      ],
+      "opposite_shortens_baseline_cells": 24
+    },
+    "HIP_MAG_NEG": {
+      "compared_cells": 24,
+      "desired_minus_baseline_tick_range": [
+        3,
+        36
+      ],
+      "desired_minus_opposite_tick_range": [
+        8,
+        50
+      ],
+      "desired_outlives_baseline_cells": 24,
+      "desired_outlives_opposite_cells": 24,
+      "opposite": "HIP_MAG_POS",
+      "opposite_minus_baseline_tick_range": [
+        -29,
+        -4
+      ],
+      "opposite_shortens_baseline_cells": 24
+    },
+    "KNEE_POS": {
+      "compared_cells": 24,
+      "desired_minus_baseline_tick_range": [
+        6,
+        205
+      ],
+      "desired_minus_opposite_tick_range": [
+        12,
+        225
+      ],
+      "desired_outlives_baseline_cells": 24,
+      "desired_outlives_opposite_cells": 24,
+      "opposite": "KNEE_NEG",
+      "opposite_minus_baseline_tick_range": [
+        -36,
+        -5
+      ],
+      "opposite_shortens_baseline_cells": 24
+    }
+  },
+  "execution": {
+    "new_diagnostic_cells": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "next_screen": {
+    "cells_per_checkpoint_intervention": 12,
+    "checkpoints": [
+      "half",
+      "final"
+    ],
+    "interventions": [
+      "BASELINE",
+      "HIP_MAG_NEG",
+      "KNEE_POS",
+      "ANKLE_POS",
+      "HIP_NEG_KNEE_POS",
+      "HIP_NEG_ANKLE_POS",
+      "KNEE_POS_ANKLE_POS",
+      "HIP_NEG_KNEE_POS_ANKLE_POS"
+    ],
+    "offset_per_active_axis_rad": 0.03,
+    "optimizer_updates": 0,
+    "selection": "full 12-cell pass at both checkpoints; then fewest active axes, minimum action deviation, and frozen order",
+    "total_cells": 192
+  },
+  "schema_version": "winner_v16.support_action_direction_hold_attribution.v1",
+  "single_axis_result": {
+    "ANKLE_NEG": {
+      "final_failure_count": 12,
+      "half_failure_count": 12,
+      "passes_both_checkpoints": false
+    },
+    "ANKLE_POS": {
+      "final_failure_count": 6,
+      "half_failure_count": 8,
+      "passes_both_checkpoints": false
+    },
+    "BASELINE": {
+      "final_failure_count": 12,
+      "half_failure_count": 12,
+      "passes_both_checkpoints": false
+    },
+    "HIP_MAG_NEG": {
+      "final_failure_count": 12,
+      "half_failure_count": 12,
+      "passes_both_checkpoints": false
+    },
+    "HIP_MAG_POS": {
+      "final_failure_count": 12,
+      "half_failure_count": 12,
+      "passes_both_checkpoints": false
+    },
+    "KNEE_NEG": {
+      "final_failure_count": 12,
+      "half_failure_count": 12,
+      "passes_both_checkpoints": false
+    },
+    "KNEE_POS": {
+      "final_failure_count": 10,
+      "half_failure_count": 10,
+      "passes_both_checkpoints": false
+    }
+  },
+  "source": {
+    "artifact_zip_sha256": "8dd1680be74b59b49b98aba7836be42ffd553a12dba7432371256a552228b5ec",
+    "github_artifact_id": 8501889475,
+    "github_run_id": 29847108867,
+    "result_sha256": "203e1d08833b67c52c0e315703821f728d55dc7ac5476b450026710f8ee43203"
+  },
+  "status": "PASS_WINNER_V16_SUPPORT_ACTION_DIRECTION_HOLD_ATTRIBUTION"
+}

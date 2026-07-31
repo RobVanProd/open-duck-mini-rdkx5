@@ -1,0 +1,81 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "deployment_audit": false,
+    "execute_one_saved_artifact_recovery": true,
+    "gate5": false,
+    "hosted_preregistration": false,
+    "hosted_training": false,
+    "optimizer": false,
+    "policy_promotion": false,
+    "rdkx5_or_robot": false
+  },
+  "decision_rule": {
+    "fail": "CLOSE_T185_IN_EPISODE_SINGLE_SUPPORT_PREFIX_AND_RETURN_TO_MECHANISM_SELECTION",
+    "no_optimizer_retry": true,
+    "pass": "EARN_T186_IN_EPISODE_SINGLE_SUPPORT_HOSTED_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "saved_event_files": 0,
+    "simulator_transitions": 0
+  },
+  "preregistered_contract_sha256": "66f61a55c96d8b8f51954427e47d1307e774dd40fd3cda3b3b0cda9d47d51614",
+  "question": "Does the frozen T185C event artifact satisfy the intended prefix-exposure and same-episode-resume metric contract when read using the metric namespaces actually emitted by the training driver?",
+  "recovery_contract": {
+    "event_artifact_immutable": true,
+    "new_behavior_evaluation": false,
+    "new_model_inference": false,
+    "new_optimizer_execution": false,
+    "new_simulator_execution": false,
+    "only_change": "replace the nonexistent positive prefix-active readback with positive accumulated support metrics plus an exact zero terminal prefix-active state and positive resumed original reward",
+    "scientific_contract_change": false
+  },
+  "saved_artifact_contract": {
+    "all_other_t185c_checks_must_remain_true": true,
+    "incorrect_tag_must_be_absent": "eval/episode_reward/t185/prefix_active",
+    "same_episode_reward_rule": "exactly two finite values and every value > 0",
+    "same_episode_reward_tag": "eval/episode_t185/original_reward",
+    "support_tag_rule": "exactly two finite values per tag and every value > 0",
+    "support_tags": [
+      "eval/episode_reward/t185_single_support_balance",
+      "eval/episode_reward/t185_left_support_match",
+      "eval/episode_reward/t185_right_support_match"
+    ],
+    "terminal_prefix_rule": "exactly two finite values and every value == 0",
+    "terminal_prefix_tag": "eval/episode_t185/prefix_active"
+  },
+  "schema_version": "open_duck.t185d_metric_readback_recovery_preregistration.v1",
+  "sources": {
+    "builder": {
+      "bytes": 6344,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t185d_metric_readback_recovery_preregistration.py",
+      "sha256": "1027f8a2596e19ef0f51e8edb255c38ac53406cdf605483684aa7f1b72568b5b"
+    },
+    "event_file": {
+      "bytes": 6127,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t185c_in_episode_single_support_cpu_v3\\smoke\\events.out.tfevents.1785397007.WinLSD",
+      "sha256": "020d610a2162ffe56eb3e4c37e42a9e72aff15a3b0a1abcf8a25a2a85a752847"
+    },
+    "runner": {
+      "bytes": 6825,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t185d_metric_readback_recovery.py",
+      "sha256": "d22ccb9c8ddb1f74717c2612cf340bdeeb84a2d8263e17c6cfa9fc98a90f14b3"
+    },
+    "t185c_attribution": {
+      "bytes": 3305,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t185c_metric_readback_attribution_20260730.json",
+      "sha256": "a7aeef58a76381107f1ea3c7709cf5fa0d6109c6692278a7f57b2196bc41a6f2"
+    },
+    "t185c_result": {
+      "bytes": 13617,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t185c_in_episode_single_support_cpu_result.json",
+      "sha256": "d39f25a0b8fa4ad4883ccd4bc3f324eac35c3ca9caad7c32805268fde9e5f994"
+    }
+  },
+  "status": "PREREGISTERED_T185D_METRIC_READBACK_RECOVERY"
+}

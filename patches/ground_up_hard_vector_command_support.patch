@@ -1,0 +1,171 @@
+diff --git a/playground/common/runner.py b/playground/common/runner.py
+index 1a06928..fbdf555 100644
+--- a/playground/common/runner.py
++++ b/playground/common/runner.py
+@@ -106,6 +106,13 @@ class BaseRunner(ABC):
+                 self.obs_size,
+                 onnx_export_path,
+                 self.ppo_params.network_factory.policy_hidden_layer_sizes,
++                action_velocity_limits_rad_s=(
++                    self.env_config.ground_up_action_velocity_limits_rad_s
++                    if self.args.ground_up_hard_vector_command_support
++                    else None
++                ),
++                control_dt=float(self.env.dt),
++                action_scale=float(self.env_config.action_scale),
+             )
+         else:
+             export_onnx(
+diff --git a/playground/open_duck_mini_v2/joystick.py b/playground/open_duck_mini_v2/joystick.py
+index e80cab8..c76b6b2 100644
+--- a/playground/open_duck_mini_v2/joystick.py
++++ b/playground/open_duck_mini_v2/joystick.py
+@@ -107,6 +107,12 @@ def default_config() -> config_dict.ConfigDict:
+         ground_up_zero_command_probability=0.5,
+         nominal_reference_bootstrap=False,
+         nominal_reference_command_x=0.074,
++        ground_up_hard_vector_command_support=False,
++        ground_up_command_support_range=[0.074, 0.080],
++        ground_up_action_velocity_limits_rad_s=[
++            5.24, 5.24, 1.50, 1.50, 1.75, 5.24, 5.24,
++            5.24, 5.24, 5.24, 5.24, 1.25, 1.00, 1.25,
++        ],
+         reference_start_phase=0,
+         ground_up_signed_progress_objective=False,
+     )
+@@ -452,14 +458,24 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+         if USE_MOTOR_SPEED_LIMITS:
+             prev_motor_targets = state.info["motor_targets"]
+
++            velocity_limits = jp.where(
++                self._config.ground_up_hard_vector_command_support,
++                jp.asarray(self._config.ground_up_action_velocity_limits_rad_s),
++                jp.full(self._actuators, self._config.max_motor_velocity),
++            )
++
+             motor_targets = jp.clip(
+                 motor_targets,
+                 prev_motor_targets
+-                - self._config.max_motor_velocity * self.dt,  # control dt
++                - velocity_limits * self.dt,  # control dt
+                 prev_motor_targets
+-                + self._config.max_motor_velocity * self.dt,  # control dt
++                + velocity_limits * self.dt,  # control dt
+             )
+
++        applied_action = (
++            motor_targets - self._default_actuator
++        ) / self._config.action_scale
++
+         # motor_targets.at[5:9].set(state.info["command"][3:])  # head joints
+         data = mjx_env.step(self.mjx_model, state.data, motor_targets, self.n_substeps)
+
+@@ -478,11 +494,10 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+         p_fz = p_f[..., -1]
+         state.info["swing_peak"] = jp.maximum(state.info["swing_peak"], p_fz)
+
+-        obs = self._get_obs(data, state.info, contact)
+         done = self._get_termination(data)
+
+         rewards = self._get_reward(
+-            data, action, state.info, state.metrics, done, first_contact, contact
++            data, applied_action, state.info, state.metrics, done, first_contact, contact
+         )
+         # FIXME
+         rewards = {
+@@ -495,7 +510,7 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+         state.info["push_step"] += 1
+         state.info["last_last_last_act"] = state.info["last_last_act"]
+         state.info["last_last_act"] = state.info["last_act"]
+-        state.info["last_act"] = action  # was
++        state.info["last_act"] = applied_action
+         # state.info["last_act"] = motor_targets  # became
+         state.info["rng"], cmd_rng = jax.random.split(state.info["rng"])
+         state.info["command"] = jp.where(
+@@ -508,6 +523,13 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+             0,
+             state.info["step"],
+         )
++        if USE_IMITATION_REWARD:
++            state.info["current_reference_motion"] = self.PRM.get_reference_motion(
++                state.info["command"][0],
++                state.info["command"][1],
++                state.info["command"][2],
++                state.info["imitation_i"],
++            )
+         state.info["feet_air_time"] *= ~contact
+         state.info["last_contact"] = contact
+         state.info["swing_peak"] *= ~contact
+@@ -520,6 +542,9 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+                     state.metrics[f"cost/{k}"] = -v
+         state.metrics["swing_peak"] = jp.mean(state.info["swing_peak"])
+
++        # The next observation must describe the transition actually applied,
++        # including its bounded action and any newly sampled command/reference.
++        obs = self._get_obs(data, state.info, contact)
+         done = done.astype(reward.dtype)
+         state = state.replace(data=data, obs=obs, reward=reward, done=done)
+         return state
+@@ -776,8 +801,17 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+         )
+
+         if self._config.nominal_reference_bootstrap:
++            forward = jp.where(
++                self._config.ground_up_hard_vector_command_support,
++                jax.random.uniform(
++                    rng1,
++                    minval=self._config.ground_up_command_support_range[0],
++                    maxval=self._config.ground_up_command_support_range[1],
++                ),
++                self._config.nominal_reference_command_x,
++            )
+             return jp.array(
+-                [self._config.nominal_reference_command_x, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
++                [forward, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+             )
+
+         if self._config.ground_up_command_curriculum:
+diff --git a/playground/open_duck_mini_v2/runner.py b/playground/open_duck_mini_v2/runner.py
+index ddd895e..78c042b 100644
+--- a/playground/open_duck_mini_v2/runner.py
++++ b/playground/open_duck_mini_v2/runner.py
+@@ -29,6 +29,25 @@ class OpenDuckMiniV2Runner(BaseRunner):
+         self.env_config.ground_up_command_curriculum = args.ground_up_command_curriculum
+         self.env_config.nominal_reference_bootstrap = args.nominal_reference_bootstrap
+         self.env_config.nominal_reference_command_x = args.nominal_reference_command_x
++        self.env_config.ground_up_hard_vector_command_support = (
++            args.ground_up_hard_vector_command_support
++        )
++        self.env_config.ground_up_command_support_range = [
++            args.ground_up_command_support_min_x,
++            args.ground_up_command_support_max_x,
++        ]
++        if not (
++            args.ground_up_command_support_min_x
++            < args.ground_up_command_support_max_x
++        ):
++            raise ValueError("ground-up command support requires min_x < max_x")
++        limits = [
++            float(value)
++            for value in args.ground_up_action_velocity_limits_rad_s.split(",")
++        ]
++        if len(limits) != 14 or any(value <= 0.0 for value in limits):
++            raise ValueError("ground-up action velocity limits must be 14 positive values")
++        self.env_config.ground_up_action_velocity_limits_rad_s = limits
+         self.env_config.reference_start_phase = args.reference_start_phase
+         self.env_config.ground_up_signed_progress_objective = (
+             args.ground_up_signed_progress_objective
+@@ -85,6 +104,13 @@ def main() -> None:
+     parser.add_argument("--ground_up_command_curriculum", action="store_true")
+     parser.add_argument("--nominal_reference_bootstrap", action="store_true")
+     parser.add_argument("--nominal_reference_command_x", type=float, default=0.074)
++    parser.add_argument("--ground_up_hard_vector_command_support", action="store_true")
++    parser.add_argument("--ground_up_command_support_min_x", type=float, default=0.074)
++    parser.add_argument("--ground_up_command_support_max_x", type=float, default=0.080)
++    parser.add_argument(
++        "--ground_up_action_velocity_limits_rad_s",
++        default="5.24,5.24,1.50,1.50,1.75,5.24,5.24,5.24,5.24,5.24,5.24,1.25,1.00,1.25",
++    )
+     parser.add_argument("--reference_start_phase", type=int, default=0)
+     parser.add_argument("--ground_up_signed_progress_objective", action="store_true")
+     parser.add_argument(

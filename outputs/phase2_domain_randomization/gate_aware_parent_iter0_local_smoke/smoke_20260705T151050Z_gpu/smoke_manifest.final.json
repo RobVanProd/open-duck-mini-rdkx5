@@ -1,0 +1,542 @@
+{
+  "actuator_bridge_enabled": true,
+  "actuator_tracking_scale": -0.015,
+  "behavior_prior": {
+    "enabled": false,
+    "huber_delta": 0.05,
+    "mlp_npz": null,
+    "scale": -0.05
+  },
+  "command": [
+    "../envs/open-duck-playground/bin/python",
+    "../Open_Duck_Playground/playground/open_duck_mini_v2/runner.py",
+    "--task",
+    "rough_terrain_backlash",
+    "--env",
+    "joystick",
+    "--output_dir",
+    "/home/lsd/robots/open-duck-mini-rdkx5/outputs/phase2_domain_randomization/gate_aware_parent_iter0_local_smoke/smoke_20260705T151050Z_gpu",
+    "--export_min_step",
+    "1",
+    "--num_timesteps",
+    "40960",
+    "--ppo_num_envs",
+    "16",
+    "--ppo_num_evals",
+    "4",
+    "--ppo_episode_length",
+    "750",
+    "--ppo_unroll_length",
+    "20",
+    "--ppo_batch_size",
+    "128",
+    "--ppo_num_minibatches",
+    "1",
+    "--ppo_num_updates_per_batch",
+    "2",
+    "--target_rate_scale",
+    "-0.015",
+    "--actuator_tracking_scale",
+    "-0.015",
+    "--restore_checkpoint_path",
+    "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_command_gated_zero0020_live_oracle_iter2_ppo_loc_step0_checkpoint",
+    "--restore_policy_kl_scale",
+    "8",
+    "--tracking_lin_vel_scale",
+    "2.5",
+    "--tracking_sigma",
+    "0.015",
+    "--forward_progress_scale",
+    "2",
+    "--command_progress_scale",
+    "1.2",
+    "--command_progress_shortfall_scale",
+    "-2",
+    "--command_progress_required_ratio",
+    "0.35",
+    "--command_progress_warmup_steps",
+    "30",
+    "--command_progress_failure_min_ratio",
+    "0.12",
+    "--command_progress_failure_warmup_steps",
+    "80",
+    "--target_rate_huber_delta",
+    "0.08",
+    "--actuator_tracking_huber_delta",
+    "0.04",
+    "--action_rate_scale",
+    "-0.07",
+    "--action_magnitude_scale",
+    "-0.004",
+    "--base_height_scale",
+    "-0.6",
+    "--forward_pitch_scale",
+    "-0.5",
+    "--forward_pitch_rate_scale",
+    "-0.1",
+    "--imitation_scale",
+    "0",
+    "--lin_vel_x_min",
+    "0.06",
+    "--lin_vel_x_max",
+    "0.1",
+    "--lin_vel_y_min",
+    "0",
+    "--lin_vel_y_max",
+    "0",
+    "--ang_vel_yaw_min",
+    "0",
+    "--ang_vel_yaw_max",
+    "0",
+    "--command_resample_steps",
+    "600",
+    "--zero_command_probability",
+    "0.15",
+    "--push_interval_min_s",
+    "1",
+    "--push_interval_max_s",
+    "1.5",
+    "--push_magnitude_min",
+    "0.075",
+    "--push_magnitude_max",
+    "0.125",
+    "--push_enable",
+    "--command_progress_failure_enable",
+    "--enable_actuator_bridge",
+    "--actuator_bridge_delay_min_ticks",
+    "3",
+    "--actuator_bridge_delay_max_ticks",
+    "8",
+    "--actuator_bridge_tau_min_s",
+    "0.06",
+    "--actuator_bridge_tau_max_s",
+    "0.14",
+    "--actuator_bridge_velocity_limit_min_rad_s",
+    "2.5",
+    "--actuator_bridge_velocity_limit_max_rad_s",
+    "4.7",
+    "--actuator_bridge_per_joint_variation",
+    "0.15"
+  ],
+  "command_shell": "env -u HSA_OVERRIDE_GFX_VERSION JAX_PLATFORM_NAME=gpu JAX_PLATFORMS=rocm XLA_FLAGS=--xla_gpu_enable_command_buffer= XLA_PYTHON_CLIENT_PREALLOCATE=false XLA_PYTHON_CLIENT_MEM_FRACTION=0.6 ../envs/open-duck-playground/bin/python ../Open_Duck_Playground/playground/open_duck_mini_v2/runner.py --task rough_terrain_backlash --env joystick --output_dir /home/lsd/robots/open-duck-mini-rdkx5/outputs/phase2_domain_randomization/gate_aware_parent_iter0_local_smoke/smoke_20260705T151050Z_gpu --export_min_step 1 --num_timesteps 40960 --ppo_num_envs 16 --ppo_num_evals 4 --ppo_episode_length 750 --ppo_unroll_length 20 --ppo_batch_size 128 --ppo_num_minibatches 1 --ppo_num_updates_per_batch 2 --target_rate_scale -0.015 --actuator_tracking_scale -0.015 --restore_checkpoint_path /home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_command_gated_zero0020_live_oracle_iter2_ppo_loc_step0_checkpoint --restore_policy_kl_scale 8 --tracking_lin_vel_scale 2.5 --tracking_sigma 0.015 --forward_progress_scale 2 --command_progress_scale 1.2 --command_progress_shortfall_scale -2 --command_progress_required_ratio 0.35 --command_progress_warmup_steps 30 --command_progress_failure_min_ratio 0.12 --command_progress_failure_warmup_steps 80 --target_rate_huber_delta 0.08 --actuator_tracking_huber_delta 0.04 --action_rate_scale -0.07 --action_magnitude_scale -0.004 --base_height_scale -0.6 --forward_pitch_scale -0.5 --forward_pitch_rate_scale -0.1 --imitation_scale 0 --lin_vel_x_min 0.06 --lin_vel_x_max 0.1 --lin_vel_y_min 0 --lin_vel_y_max 0 --ang_vel_yaw_min 0 --ang_vel_yaw_max 0 --command_resample_steps 600 --zero_command_probability 0.15 --push_interval_min_s 1 --push_interval_max_s 1.5 --push_magnitude_min 0.075 --push_magnitude_max 0.125 --push_enable --command_progress_failure_enable --enable_actuator_bridge --actuator_bridge_delay_min_ticks 3 --actuator_bridge_delay_max_ticks 8 --actuator_bridge_tau_min_s 0.06 --actuator_bridge_tau_max_s 0.14 --actuator_bridge_velocity_limit_min_rad_s 2.5 --actuator_bridge_velocity_limit_max_rad_s 4.7 --actuator_bridge_per_joint_variation 0.15",
+  "deploy_performed": false,
+  "elapsed_s": 480.02478016199893,
+  "env_python_configured": "../envs/open-duck-playground/bin/python",
+  "env_python_resolved": "/home/lsd/.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/bin/python3.12",
+  "export_min_step": 1,
+  "jax_platform_env": {
+    "JAX_PLATFORMS": "rocm",
+    "JAX_PLATFORM_NAME": "gpu"
+  },
+  "local_rocm_safe_env": true,
+  "output_dir": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/phase2_domain_randomization/gate_aware_parent_iter0_local_smoke/smoke_20260705T151050Z_gpu",
+  "output_files": [
+    {
+      "mtime": 1783264520.99801,
+      "path": "2026_07_05_111520_15360/_CHECKPOINT_METADATA",
+      "size_bytes": 258
+    },
+    {
+      "mtime": 1783264520.989997,
+      "path": "2026_07_05_111520_15360/_METADATA",
+      "size_bytes": 6948
+    },
+    {
+      "mtime": 1783264520.9610462,
+      "path": "2026_07_05_111520_15360/_sharding",
+      "size_bytes": 2708
+    },
+    {
+      "mtime": 1783264520.968225,
+      "path": "2026_07_05_111520_15360/array_metadatas/process_0",
+      "size_bytes": 3243
+    },
+    {
+      "mtime": 1783264520.991945,
+      "path": "2026_07_05_111520_15360/d/5fd70f2e27b1d4a5c9450f9cd55a79c8",
+      "size_bytes": 6938
+    },
+    {
+      "mtime": 1783264520.994311,
+      "path": "2026_07_05_111520_15360/manifest.ocdbt",
+      "size_bytes": 115
+    },
+    {
+      "mtime": 1783264520.9649448,
+      "path": "2026_07_05_111520_15360/ocdbt.process_0/d/443b7b7435bfa3fc709ce9ae58f6d5eb",
+      "size_bytes": 189
+    },
+    {
+      "mtime": 1783264520.9809449,
+      "path": "2026_07_05_111520_15360/ocdbt.process_0/d/461562ba595745eecf2e38881944b666",
+      "size_bytes": 1817215
+    },
+    {
+      "mtime": 1783264520.970945,
+      "path": "2026_07_05_111520_15360/ocdbt.process_0/d/dbe76cbb92f2851faa2755601bcec132",
+      "size_bytes": 483
+    },
+    {
+      "mtime": 1783264520.976945,
+      "path": "2026_07_05_111520_15360/ocdbt.process_0/d/eb17e6d9b08118f2943099de043b9213",
+      "size_bytes": 1357
+    },
+    {
+      "mtime": 1783264520.9844878,
+      "path": "2026_07_05_111520_15360/ocdbt.process_0/manifest.ocdbt",
+      "size_bytes": 244
+    },
+    {
+      "mtime": 1783264521.2669473,
+      "path": "2026_07_05_111520_15360.onnx",
+      "size_bytes": 883946
+    },
+    {
+      "mtime": 1783264662.5664773,
+      "path": "2026_07_05_111742_30720/_CHECKPOINT_METADATA",
+      "size_bytes": 258
+    },
+    {
+      "mtime": 1783264662.5595424,
+      "path": "2026_07_05_111742_30720/_METADATA",
+      "size_bytes": 6948
+    },
+    {
+      "mtime": 1783264662.533843,
+      "path": "2026_07_05_111742_30720/_sharding",
+      "size_bytes": 2708
+    },
+    {
+      "mtime": 1783264662.5364614,
+      "path": "2026_07_05_111742_30720/array_metadatas/process_0",
+      "size_bytes": 3243
+    },
+    {
+      "mtime": 1783264662.5610328,
+      "path": "2026_07_05_111742_30720/d/57a1afdb2ca49c4b9ba09991bc3050b7",
+      "size_bytes": 7264
+    },
+    {
+      "mtime": 1783264662.5631268,
+      "path": "2026_07_05_111742_30720/manifest.ocdbt",
+      "size_bytes": 115
+    },
+    {
+      "mtime": 1783264662.5370326,
+      "path": "2026_07_05_111742_30720/ocdbt.process_0/d/454b613885302d7dfab262d507d14cb5",
+      "size_bytes": 189
+    },
+    {
+      "mtime": 1783264662.5420327,
+      "path": "2026_07_05_111742_30720/ocdbt.process_0/d/5749bedb88e56e948cebec83e674f067",
+      "size_bytes": 483
+    },
+    {
+      "mtime": 1783264662.5510328,
+      "path": "2026_07_05_111742_30720/ocdbt.process_0/d/96aa0592756b291785b666ddc584a47f",
+      "size_bytes": 1817885
+    },
+    {
+      "mtime": 1783264662.5460327,
+      "path": "2026_07_05_111742_30720/ocdbt.process_0/d/b992c49f8190e88f007b413b96c7728d",
+      "size_bytes": 1365
+    },
+    {
+      "mtime": 1783264662.5536945,
+      "path": "2026_07_05_111742_30720/ocdbt.process_0/manifest.ocdbt",
+      "size_bytes": 240
+    },
+    {
+      "mtime": 1783264662.7385445,
+      "path": "2026_07_05_111742_30720.onnx",
+      "size_bytes": 884094
+    },
+    {
+      "mtime": 1783264700.3971481,
+      "path": "2026_07_05_111820_46080/_CHECKPOINT_METADATA",
+      "size_bytes": 258
+    },
+    {
+      "mtime": 1783264700.3904202,
+      "path": "2026_07_05_111820_46080/_METADATA",
+      "size_bytes": 6948
+    },
+    {
+      "mtime": 1783264700.3695219,
+      "path": "2026_07_05_111820_46080/_sharding",
+      "size_bytes": 2708
+    },
+    {
+      "mtime": 1783264700.3658378,
+      "path": "2026_07_05_111820_46080/array_metadatas/process_0",
+      "size_bytes": 3243
+    },
+    {
+      "mtime": 1783264700.3913233,
+      "path": "2026_07_05_111820_46080/d/67cf579c846c59e7363f0fca5fc5b4e3",
+      "size_bytes": 7284
+    },
+    {
+      "mtime": 1783264700.3936288,
+      "path": "2026_07_05_111820_46080/manifest.ocdbt",
+      "size_bytes": 115
+    },
+    {
+      "mtime": 1783264700.3703232,
+      "path": "2026_07_05_111820_46080/ocdbt.process_0/d/04610c37eb3b992631dc9f4aa3acff7b",
+      "size_bytes": 483
+    },
+    {
+      "mtime": 1783264700.3643231,
+      "path": "2026_07_05_111820_46080/ocdbt.process_0/d/16abfb1731b580facc447e121ee4b580",
+      "size_bytes": 189
+    },
+    {
+      "mtime": 1783264700.3773234,
+      "path": "2026_07_05_111820_46080/ocdbt.process_0/d/8019f827e65634a22d50adcb0200be5d",
+      "size_bytes": 1367
+    },
+    {
+      "mtime": 1783264700.3813233,
+      "path": "2026_07_05_111820_46080/ocdbt.process_0/d/d9cbba99cdedea20209d2f996931abfe",
+      "size_bytes": 1818385
+    },
+    {
+      "mtime": 1783264700.385273,
+      "path": "2026_07_05_111820_46080/ocdbt.process_0/manifest.ocdbt",
+      "size_bytes": 246
+    },
+    {
+      "mtime": 1783264700.4983242,
+      "path": "2026_07_05_111820_46080.onnx",
+      "size_bytes": 884094
+    },
+    {
+      "mtime": 1783264720.76848,
+      "path": "events.out.tfevents.1783264252.LSD",
+      "size_bytes": 28428
+    },
+    {
+      "mtime": 1780435318.7593744,
+      "path": "scene_rough_terrain_backlash.xml.original",
+      "size_bytes": 1812
+    },
+    {
+      "mtime": 1783264700.518958,
+      "path": "smoke_manifest.live.json",
+      "size_bytes": 23756
+    },
+    {
+      "mtime": 1783264250.4947565,
+      "path": "smoke_manifest.start.json",
+      "size_bytes": 12259
+    },
+    {
+      "mtime": 1783264525.5249798,
+      "path": "stderr.txt",
+      "size_bytes": 5091
+    },
+    {
+      "mtime": 1783264720.0374744,
+      "path": "stdout.txt",
+      "size_bytes": 6358
+    }
+  ],
+  "platform": "gpu",
+  "playground_path": "/home/lsd/robots/Open_Duck_Playground",
+  "ppo_overrides": {
+    "clipping_epsilon": null,
+    "desired_kl": null,
+    "entropy_cost": null,
+    "learning_rate": null,
+    "learning_rate_schedule": null,
+    "learning_rate_schedule_max_lr": null,
+    "learning_rate_schedule_min_lr": null,
+    "max_grad_norm": null,
+    "restore_policy_kl_scale": 8.0
+  },
+  "purpose": "offline actuator bridge PPO smoke; not a deployable policy",
+  "push_recovery_actuator_tracking": {
+    "huber_delta": null,
+    "joint_indices": null,
+    "scale": null,
+    "window_steps": null
+  },
+  "reference_motion_override": {
+    "enabled": false
+  },
+  "restore_checkpoint_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_command_gated_zero0020_live_oracle_iter2_ppo_loc_step0_checkpoint",
+  "returncode": 0,
+  "robot_touched": false,
+  "soft_prior": {
+    "config_json": null,
+    "enabled": false,
+    "huber_delta": 0.05,
+    "phase_source": "imitation_i",
+    "scale": -0.05
+  },
+  "status": "PASS_SMOKE_RUN",
+  "stderr_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/phase2_domain_randomization/gate_aware_parent_iter0_local_smoke/smoke_20260705T151050Z_gpu/stderr.txt",
+  "stderr_tail": "WARNING: All log messages before absl::InitializeLog() is called are written to STDERR\nI0000 00:00:1783264251.754148 1688976 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.\nI0000 00:00:1783264251.754506 1688976 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.\nWARNING: All log messages before absl::InitializeLog() is called are written to STDERR\nI0000 00:00:1783264252.471686 1688976 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.\nI0000 00:00:1783264252.471904 1688976 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.\nE0000 00:00:1783264252.920680 1688976 cuda_platform.cc:52] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: UNKNOWN ERROR (303)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n",
+  "stdout_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/phase2_domain_randomization/gate_aware_parent_iter0_local_smoke/smoke_20260705T151050Z_gpu/stdout.txt",
+  "stdout_tail": "Failed to import warp: No module named 'warp'\nFailed to import mujoco_warp: No module named 'warp'\nxml: /home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_rough_terrain_backlash.xml\nactuators: ['left_hip_yaw', 'left_hip_roll', 'left_hip_pitch', 'left_knee', 'left_ankle', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_roll', 'right_hip_pitch', 'right_knee', 'right_ankle']\njoints: ['floating_base', 'left_hip_yaw', 'left_hip_yaw_backlash', 'left_hip_roll', 'left_hip_roll_backlash', 'left_hip_pitch', 'left_hip_pitch_backlash', 'left_knee', 'left_knee_backlash', 'left_ankle', 'left_ankle_backlash', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_yaw_backlash', 'right_hip_roll', 'right_hip_roll_backlash', 'right_hip_pitch', 'right_hip_pitch_backlash', 'right_knee', 'right_knee_backlash', 'right_ankle', 'right_ankle_backlash']\nbacklash joints: ['left_hip_yaw_backlash', 'left_hip_roll_backlash', 'left_hip_pitch_backlash', 'left_knee_backlash', 'left_ankle_backlash', 'right_hip_yaw_backlash', 'right_hip_roll_backlash', 'right_hip_pitch_backlash', 'right_knee_backlash', 'right_ankle_backlash']\nactuator joints ids: [1, 3, 5, 7, 9, 11, 12, 13, 14, 15, 17, 19, 21, 23]\nactuator joints dict: {'left_hip_yaw': 1, 'left_hip_roll': 3, 'left_hip_pitch': 5, 'left_knee': 7, 'left_ankle': 9, 'neck_pitch': 11, 'head_pitch': 12, 'head_yaw': 13, 'head_roll': 14, 'right_hip_yaw': 15, 'right_hip_roll': 17, 'right_hip_pitch': 19, 'right_knee': 21, 'right_ankle': 23}\nfloating qpos addr: 0 qvel addr: 0\n[Poly ref data] Processing ...\n[Poly ref data] Done processing\nxml: /home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_rough_terrain_backlash.xml\nactuators: ['left_hip_yaw', 'left_hip_roll', 'left_hip_pitch', 'left_knee', 'left_ankle', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_roll', 'right_hip_pitch', 'right_knee', 'right_ankle']\njoints: ['floating_base', 'left_hip_yaw', 'left_hip_yaw_backlash', 'left_hip_roll', 'left_hip_roll_backlash', 'left_hip_pitch', 'left_hip_pitch_backlash', 'left_knee', 'left_knee_backlash', 'left_ankle', 'left_ankle_backlash', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_yaw_backlash', 'right_hip_roll', 'right_hip_roll_backlash', 'right_hip_pitch', 'right_hip_pitch_backlash', 'right_knee', 'right_knee_backlash', 'right_ankle', 'right_ankle_backlash']\nbacklash joints: ['left_hip_yaw_backlash', 'left_hip_roll_backlash', 'left_hip_pitch_backlash', 'left_knee_backlash', 'left_ankle_backlash', 'right_hip_yaw_backlash', 'right_hip_roll_backlash', 'right_hip_pitch_backlash', 'right_knee_backlash', 'right_ankle_backlash']\nactuator joints ids: [1, 3, 5, 7, 9, 11, 12, 13, 14, 15, 17, 19, 21, 23]\nactuator joints dict: {'left_hip_yaw': 1, 'left_hip_roll': 3, 'left_hip_pitch': 5, 'left_knee': 7, 'left_ankle': 9, 'neck_pitch': 11, 'head_pitch': 12, 'head_yaw': 13, 'head_roll': 14, 'right_hip_yaw': 15, 'right_hip_roll': 17, 'right_hip_pitch': 19, 'right_knee': 21, 'right_ankle': 23}\nfloating qpos addr: 0 qvel addr: 0\n[Poly ref data] Processing ...\n[Poly ref data] Done processing\nObservation size: 101\nPPO params: {'action_repeat': 1, 'batch_size': 128, 'clipping_epsilon': 0.2, 'discounting': 0.97, 'entropy_cost': 0.005, 'episode_length': 750, 'learning_rate': 0.0003, 'max_grad_norm': 1.0, 'normalize_observations': True, 'num_envs': 16, 'num_evals': 4, 'num_minibatches': 1, 'num_resets_per_eval': 1, 'num_timesteps': 40960, 'num_updates_per_batch': 2, 'reward_scaling': 1.0, 'unroll_length': 20}\nEnabled restore-policy KL loss: scale=8.0 restore_checkpoint_path=/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_command_gated_zero0020_live_oracle_iter2_ppo_loc_step0_checkpoint\n-----------\nSTEP: 0 reward: 41.33296203613281 reward_std: 63.23432540893555\n-----------\nSkipping checkpoint/export at step 0; export_min_step=1\nSaving checkpoint (step: 15360): /home/lsd/robots/open-duck-mini-rdkx5/outputs/phase2_domain_randomization/gate_aware_parent_iter0_local_smoke/smoke_20260705T151050Z_gpu/2026_07_05_111520_15360\n === EXPORT ONNX === \n(101,) (101,)\n(101,) (101,)\n(1, 14)\nTransferring Dense layer hidden_0, kernel shape (101, 512), bias shape (512,)\nTransferring Dense layer hidden_1, kernel shape (512, 256), bias shape (256,)\nTransferring Dense layer hidden_2, kernel shape (256, 128), bias shape (128,)\nTransferring Dense layer hidden_3, kernel shape (128, 28), bias shape (28,)\nWeights transferred successfully.\n(101,) (101,)\nTensorflow prediction: [-1.  1. -1.  1.  1.  1.  1. -1.  1.  1.  1.  1. -1.  1.]\n(101,) (101,)\n-----------\nSTEP: 15360 reward: 55.37488555908203 reward_std: 81.78614807128906\n-----------\nSaving checkpoint (step: 30720): /home/lsd/robots/open-duck-mini-rdkx5/outputs/phase2_domain_randomization/gate_aware_parent_iter0_local_smoke/smoke_20260705T151050Z_gpu/2026_07_05_111742_30720\n === EXPORT ONNX === \n(101,) (101,)\n(101,) (101,)\n(1, 14)\nTransferring Dense layer hidden_0, kernel shape (101, 512), bias shape (512,)\nTransferring Dense layer hidden_1, kernel shape (512, 256), bias shape (256,)\nTransferring Dense layer hidden_2, kernel shape (256, 128), bias shape (128,)\nTransferring Dense layer hidden_3, kernel shape (128, 28), bias shape (28,)\nWeights transferred successfully.\n(101,) (101,)\nTensorflow prediction: [-1.  1. -1.  1. -1.  1. -1. -1.  1.  1.  1.  1. -1.  1.]\n(101,) (101,)\n-----------\nSTEP: 30720 reward: 55.25867462158203 reward_std: 78.8246078491211\n-----------\nSaving checkpoint (step: 46080): /home/lsd/robots/open-duck-mini-rdkx5/outputs/phase2_domain_randomization/gate_aware_parent_iter0_local_smoke/smoke_20260705T151050Z_gpu/2026_07_05_111820_46080\n === EXPORT ONNX === \n(101,) (101,)\n(101,) (101,)\n(1, 14)\nTransferring Dense layer hidden_0, kernel shape (101, 512), bias shape (512,)\nTransferring Dense layer hidden_1, kernel shape (512, 256), bias shape (256,)\nTransferring Dense layer hidden_2, kernel shape (256, 128), bias shape (128,)\nTransferring Dense layer hidden_3, kernel shape (128, 28), bias shape (28,)\nWeights transferred successfully.\n(101,) (101,)\nTensorflow prediction: [-1.  1.  1.  1. -1. -1. -1.  1.  1.  1.  1. -1. -1.  1.]\n(101,) (101,)\n-----------\nSTEP: 46080 reward: 65.19496154785156 reward_std: 88.77788543701172\n-----------\n",
+  "subprocess_env": {
+    "set": {
+      "JAX_PLATFORMS": "rocm",
+      "JAX_PLATFORM_NAME": "gpu",
+      "XLA_FLAGS": "--xla_gpu_enable_command_buffer=",
+      "XLA_PYTHON_CLIENT_MEM_FRACTION": "0.6",
+      "XLA_PYTHON_CLIENT_PREALLOCATE": "false"
+    },
+    "unset": [
+      "HSA_OVERRIDE_GFX_VERSION"
+    ]
+  },
+  "summary": {
+    "checkpoint_lines": [
+      "Enabled restore-policy KL loss: scale=8.0 restore_checkpoint_path=/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_command_gated_zero0020_live_oracle_iter2_ppo_loc_step0_checkpoint",
+      "Skipping checkpoint/export at step 0; export_min_step=1",
+      "Saving checkpoint (step: 15360): /home/lsd/robots/open-duck-mini-rdkx5/outputs/phase2_domain_randomization/gate_aware_parent_iter0_local_smoke/smoke_20260705T151050Z_gpu/2026_07_05_111520_15360",
+      "Saving checkpoint (step: 30720): /home/lsd/robots/open-duck-mini-rdkx5/outputs/phase2_domain_randomization/gate_aware_parent_iter0_local_smoke/smoke_20260705T151050Z_gpu/2026_07_05_111742_30720",
+      "Saving checkpoint (step: 46080): /home/lsd/robots/open-duck-mini-rdkx5/outputs/phase2_domain_randomization/gate_aware_parent_iter0_local_smoke/smoke_20260705T151050Z_gpu/2026_07_05_111820_46080"
+    ],
+    "export_lines": [],
+    "step_lines": [
+      "STEP: 0 reward: 41.33296203613281 reward_std: 63.23432540893555",
+      "STEP: 15360 reward: 55.37488555908203 reward_std: 81.78614807128906",
+      "STEP: 30720 reward: 55.25867462158203 reward_std: 78.8246078491211",
+      "STEP: 46080 reward: 65.19496154785156 reward_std: 88.77788543701172"
+    ]
+  },
+  "target_rate_scale": -0.015,
+  "terrain_hfield_override": {
+    "backup": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/phase2_domain_randomization/gate_aware_parent_iter0_local_smoke/smoke_20260705T151050Z_gpu/scene_rough_terrain_backlash.xml.original",
+    "backup_sha256": "879768817f5ae5d2c01b5494f855686bb10d1ec444a404efeced8f5766574ffc",
+    "destination": "../Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_rough_terrain_backlash.xml",
+    "destination_sha256_after": "1d57275c9b96185d6cba94faf7fa9e81beb4f56b2eca453add98db714f30c4b2",
+    "destination_sha256_before": "879768817f5ae5d2c01b5494f855686bb10d1ec444a404efeced8f5766574ffc",
+    "destination_sha256_restored": "879768817f5ae5d2c01b5494f855686bb10d1ec444a404efeced8f5766574ffc",
+    "enabled": true,
+    "restored": true,
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0075
+  },
+  "timeout_s": 7200,
+  "timestamp": "20260705T151050Z",
+  "training_recipe_overrides": {
+    "action_magnitude_huber_delta": null,
+    "action_magnitude_scale": -0.004,
+    "action_rate_huber_delta": null,
+    "action_rate_scale": -0.07,
+    "actuator_tracking_huber_delta": 0.04,
+    "alive_scale": null,
+    "ang_vel_yaw_max": 0.0,
+    "ang_vel_yaw_min": 0.0,
+    "base_height_scale": -0.6,
+    "command_progress_failure_enable": true,
+    "command_progress_failure_min_ratio": 0.12,
+    "command_progress_failure_scale": null,
+    "command_progress_failure_warmup_steps": 80,
+    "command_progress_required_ratio": 0.35,
+    "command_progress_scale": 1.2,
+    "command_progress_shortfall_huber_delta": null,
+    "command_progress_shortfall_scale": -2.0,
+    "command_progress_warmup_steps": 30,
+    "command_resample_steps": 600,
+    "dr_actuator_gain_scale_max": null,
+    "dr_actuator_gain_scale_min": null,
+    "dr_armature_scale_max": null,
+    "dr_armature_scale_min": null,
+    "dr_com_jitter_m": null,
+    "dr_friction_max": null,
+    "dr_friction_min": null,
+    "dr_frictionloss_scale_max": null,
+    "dr_frictionloss_scale_min": null,
+    "dr_leg_geometry_jitter_scale": null,
+    "dr_mass_scale_max": null,
+    "dr_mass_scale_min": null,
+    "dr_qpos_jitter_rad": null,
+    "dr_torso_mass_delta_max": null,
+    "dr_torso_mass_delta_min": null,
+    "forward_contact_support_asymmetry_weight": null,
+    "forward_contact_support_no_contact_weight": null,
+    "forward_contact_support_scale": null,
+    "forward_contact_transition_min_progress_ratio": null,
+    "forward_contact_transition_scale": null,
+    "forward_double_support_dwell_grace_steps": null,
+    "forward_double_support_dwell_scale": null,
+    "forward_double_support_scale": null,
+    "forward_overshoot_allowed_ratio": null,
+    "forward_overshoot_huber_delta": null,
+    "forward_overshoot_scale": null,
+    "forward_phase_single_support_scale": null,
+    "forward_phase_single_support_stance_no_contact_weight": null,
+    "forward_phase_single_support_swing_contact_weight": null,
+    "forward_phase_swing_lift_huber_delta": null,
+    "forward_phase_swing_lift_scale": null,
+    "forward_phase_swing_lift_target_m": null,
+    "forward_pitch_huber_delta": null,
+    "forward_pitch_rate_huber_delta": null,
+    "forward_pitch_rate_scale": -0.1,
+    "forward_pitch_scale": -0.5,
+    "forward_progress_deadband": null,
+    "forward_progress_scale": 2.0,
+    "forward_shortfall_huber_delta": null,
+    "forward_shortfall_required_ratio": null,
+    "forward_shortfall_scale": null,
+    "forward_single_support_scale": null,
+    "forward_swing_advance_huber_delta": null,
+    "forward_swing_advance_scale": null,
+    "forward_swing_advance_target_m": null,
+    "forward_swing_balance_grace_steps": null,
+    "forward_swing_balance_scale": null,
+    "forward_swing_clearance_huber_delta": null,
+    "forward_swing_clearance_scale": null,
+    "forward_swing_clearance_target_m": null,
+    "forward_swing_phase_advance_ticks": null,
+    "forward_swing_target_rate_limit_huber_delta": null,
+    "forward_swing_target_rate_limit_joint_indices": null,
+    "forward_swing_target_rate_limit_scale": null,
+    "forward_swing_target_rate_limit_values": null,
+    "forward_wrong_direction_allowed_reverse_ratio": null,
+    "forward_wrong_direction_huber_delta": null,
+    "forward_wrong_direction_scale": null,
+    "head_range_factor": null,
+    "imitation_scale": 0.0,
+    "lin_vel_x_max": 0.1,
+    "lin_vel_x_min": 0.06,
+    "lin_vel_y_max": 0.0,
+    "lin_vel_y_min": 0.0,
+    "noise_accelerometer": null,
+    "noise_ankle_pos": null,
+    "noise_gravity": null,
+    "noise_gyro": null,
+    "noise_hip_pos": null,
+    "noise_joint_vel": null,
+    "noise_knee_pos": null,
+    "noise_level": null,
+    "orientation_scale": null,
+    "push_enable": true,
+    "push_interval_max_s": 1.5,
+    "push_interval_min_s": 1.0,
+    "push_magnitude_max": 0.125,
+    "push_magnitude_min": 0.075,
+    "push_recovery_actuator_tracking_huber_delta": null,
+    "push_recovery_actuator_tracking_scale": null,
+    "push_recovery_tracking_joint_indices": null,
+    "push_recovery_tracking_window_steps": null,
+    "reset_actuator_qpos_multiplier_max": null,
+    "reset_actuator_qpos_multiplier_min": null,
+    "reset_base_qvel_jitter": null,
+    "reset_base_xy_jitter_m": null,
+    "reset_yaw_jitter_rad": null,
+    "reward_clip_max": null,
+    "reward_clip_min": null,
+    "stand_still_scale": null,
+    "target_rate_huber_delta": 0.08,
+    "tracking_ang_vel_scale": null,
+    "tracking_lin_vel_scale": 2.5,
+    "tracking_sigma": 0.015,
+    "zero_command_probability": 0.15
+  }
+}

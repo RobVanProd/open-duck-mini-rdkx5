@@ -1,0 +1,83 @@
+{
+  "authority": {
+    "authorizes_only": "one separately frozen two-update CPU mechanics contract",
+    "joint_recurrent_training_authorized": false,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "causal_interpretation": {
+    "classification": "ZERO_ACTION_HEAD_CHAIN_RULE_GATE",
+    "reason": "At the common source, action = tanh(hidden @ zero + zero), so the action loss has no derivative path into hidden on the first update. The first update makes both action-head leaves nonzero; the second is the earliest preregisterable update that can test recurrent gradients.",
+    "source_action_head_exact_zero": true,
+    "update_1_action_head_deltas_nonzero": {
+      "action_bias": 9.999934263760224e-05,
+      "action_weight": 9.999934263760224e-05
+    },
+    "update_1_action_head_gradients_nonzero": {
+      "action_bias": 1.3344776630401611,
+      "action_weight": 0.9146648645401001
+    },
+    "update_1_recurrent_deltas_exact_zero": {
+      "hidden_bias": 0.0,
+      "hidden_weight": 0.0,
+      "obs_weight": 0.0,
+      "previous_action_weight": 0.0
+    },
+    "update_1_recurrent_gradients_exact_zero": {
+      "hidden_bias": 0.0,
+      "hidden_weight": 0.0,
+      "obs_weight": 0.0,
+      "previous_action_weight": 0.0
+    }
+  },
+  "decision": "PREREGISTER_EXACT_TWO_UPDATE_JOINT_RECURRENT_CPU_CONTRACT",
+  "execution": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "new_optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "next_contract": {
+    "both_updates_required": [
+      "sampled-tick hidden replay max abs error <= 1e-6",
+      "exact Winner-v15 rollout/reward/action/mask semantics",
+      "auxiliary predictor leaves bit-exact frozen",
+      "snapshot readback and 115/14/64 ONNX contract exact"
+    ],
+    "optimizer_updates": 2,
+    "optimizer_updates_authorized_now": 0,
+    "selection_if_update_2_recurrent_gradient_is_zero": "close existing recurrent-core joint training without further warmup",
+    "update_1_required": {
+      "action_head_deltas": "all finite and nonzero",
+      "action_head_gradients": "all finite and nonzero",
+      "recurrent_deltas": "all exact zero",
+      "recurrent_gradients": "all exact zero"
+    },
+    "update_2_required": {
+      "all_nine_deltas_from_update_1": "finite and nonzero",
+      "all_nine_gradients": "finite and nonzero"
+    }
+  },
+  "not_selected": [
+    "relaxing the nonzero-gradient requirement",
+    "changing the 1e-6 sampled-tick replay threshold",
+    "more than two proof updates",
+    "any 100-update training arm",
+    "flat-transport kernel",
+    "post-policy wrapper"
+  ],
+  "replay_metric_correction": {
+    "cause": "the differentiable scan continues through zero-padded post-terminal slots while the cached rollout leaves those excluded slots at zero",
+    "correct_population": "valid_mask == 1 sampled ticks only",
+    "observed_unmasked_max_abs_error": 0.34119200706481934,
+    "threshold": 1e-06,
+    "threshold_change": false,
+    "training_loss_change": false
+  },
+  "schema_version": "winner_v20.joint_recurrent_support_cpu_hold_attribution.v1",
+  "sources": {
+    "result_lf_sha256": "9fa34aacc6281dfd70c6608ba8f383df85436837c63a6f397ded2e1e3d15dfce",
+    "zero_action_initializer_lf_sha256": "cfff280a1c592043d7e1849c68a3c99b05574814180506e6608f17877a5dbb90"
+  },
+  "status": "PASS_WINNER_V20_JOINT_RECURRENT_SUPPORT_CPU_HOLD_ATTRIBUTION"
+}

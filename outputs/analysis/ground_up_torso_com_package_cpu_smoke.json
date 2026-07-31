@@ -1,0 +1,475 @@
+{
+  "asset_hashes": {
+    "GROUND_UP_TRACKING_TAIL_artifacts.tar.gz": "ae4c631a6ce1c0b36c3231113740acc6c1b8a463c0911ce7cad30b8f8d8ca60f",
+    "ground_up_applied_target_observation.patch": "bdcac27115fcbe855079f5365ac046e863a9b302ff16f560d12a26cd492f2821",
+    "ground_up_hard_vector_command_support.patch": "900e65beaa4aa714ec352a527bf3f1a85888c0c76dab8d4cbef2352fa4986875",
+    "ground_up_measured_actuator_bridge.patch": "133531963abea46cd0394526a2fa88b018fc21ca68c365863304e3e96d6ca0df",
+    "ground_up_nominal_reference_bootstrap.patch": "0d89b85815eb570115ec5f35d677aba68299f977b3e36c60b10dfa869533ebba",
+    "ground_up_projected_reference_feature_table.npz": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212",
+    "ground_up_recipe_search.patch": "3f5d892f5ce531207de6c86b18c9f5dbea83bc131a3fc2e5085851c2e4e3e5f8",
+    "ground_up_reference_conditioned.patch": "4138ecddb9ffc0df468a2780522c1732bc4b0e1a0865d181da1112d1c16902fb",
+    "ground_up_reference_residual_actor.patch": "57bcf2394fa47745e9c26c6933e58a06c3799aba35e7000762befc5fac2f7d3b",
+    "ground_up_search_runner.patch": "6a176589b766de65ac2746c66f3387bfca5384d6ce4adf3703c752d8103a5e55",
+    "ground_up_signed_progress_objective.patch": "13ddc699d3a005416a5790152b4a9d4f442216cfec4a991f93be65bde85ffa5b",
+    "ground_up_stage1_mechanism_stack.patch": "cf5155dfd54a4699865b9823e8bf090f9f54b0e53df5583eb448e315d60053dc",
+    "ground_up_torso_com_randomization.patch": "524ff95a3d7018925e1ab958dfe067067e09f0cd718176c7cc46bb6b078d8e3a",
+    "ground_up_tracking_tail_exceedance.patch": "9f716243e0c4ef487ef4227ef0cb9f389ed43c0456435987ac0846e1b629811e",
+    "reference_residual_ppo_networks.py": "546f375fa3c2f34158f49f1ac07cdc5ff6dc41d1a94322f4334bd48835911630"
+  },
+  "authority": {
+    "condition_8_or_later": false,
+    "launch_preregistered_hosted_search": true,
+    "local_gpu": false,
+    "maximum_colab_compute_units": 8.0,
+    "rdk_or_robot": false
+  },
+  "checkpoint": {
+    "changed_final_leaf_count": 25,
+    "changed_policy_leaf_count": 10,
+    "checks": {
+      "all_checkpoint_leaves_finite": true,
+      "at_least_one_policy_leaf_changed": true,
+      "step_zero_exactly_matches_protected_source": true
+    },
+    "final_directory_sha256": "7c3d3ffbdaa63030171025cb4c0153499018d75f916cd775682aa42e2744bd87",
+    "leaf_count": 27,
+    "max_policy_leaf_delta": 0.010726049542427063,
+    "max_source_to_step_zero_error": 0.0,
+    "policy_leaf_count": 10,
+    "source_directory_sha256": "5c664034dc9de31e24b969fe4646c4b0b7480037796776137d27571fa9b4c4bd",
+    "step_zero_directory_sha256": "b37a86f1b736d0d1276e60fb69d1f473683c593dec26f9592b0b794858dbb44a"
+  },
+  "checks": {
+    "all_actor_leaves_changed": true,
+    "all_checkpoint_leaves_finite": true,
+    "all_metrics_finite": true,
+    "all_training_commands_preserve_recipe_and_target_only_com": true,
+    "all_uploaded_asset_hashes_exact": true,
+    "at_least_one_policy_leaf_changed": true,
+    "atomic_partial_artifact_snapshot_rebuilds_exact": true,
+    "checkpoint_remap_passed": true,
+    "contains_step_zero_and_1024": true,
+    "cpu_only": true,
+    "final_onnx_actions_finite": true,
+    "final_onnx_conservative_eight_tick_bound_excess_at_most_1e_6": true,
+    "final_onnx_interface_exact": true,
+    "final_onnx_state_output_exact": true,
+    "fresh_composed_sources_match_contract": true,
+    "hosted_export_rounding_exact": true,
+    "hosted_wall_ceiling_fixed": true,
+    "metrics_present": true,
+    "preregistration_status_exact": true,
+    "randomizer_contract_passed": true,
+    "source_archive_and_member_exact": true,
+    "step_zero_exactly_matches_protected_source": true,
+    "step_zero_onnx_actions_finite": true,
+    "step_zero_onnx_conservative_eight_tick_bound_excess_at_most_1e_6": true,
+    "step_zero_onnx_interface_exact": true,
+    "step_zero_onnx_state_output_exact": true,
+    "tail_metric_finite_nonzero_at_zero_and_1024": true,
+    "three_arms_and_stage_schedules_exact": true,
+    "uniform_com_spread_proven_nonzero": true
+  },
+  "composed_hashes": {
+    "randomize_py": "c6e7a48f714a2267b3b19d75ffc9ce3938350aabceb3eda61727a3c48f2d6dd8",
+    "runner_py": "6fa221ba369a030a4f560c06751108e095b53225ae1c70f9beab4cd021e46aae"
+  },
+  "execution": {
+    "colab": false,
+    "jax_backend": "cpu",
+    "jax_devices": [
+      "TFRT_CPU_0"
+    ],
+    "local_gpu": false,
+    "rdk_or_robot": false
+  },
+  "failed_checks": [],
+  "failed_preinit_invocation": {
+    "reason": "runner launched outside composed checkout; relative reference-motion asset was not found before environment construction",
+    "updated_policy": false
+  },
+  "final_onnx": {
+    "checks": {
+      "actions_finite": true,
+      "conservative_eight_tick_bound_excess_at_most_1e_6": true,
+      "interface_exact": true,
+      "state_output_exact": true
+    },
+    "max_bound_excess": 2.9802322387695312e-08,
+    "max_state_error": 0.0,
+    "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/ground_up_torso_com_cpu_smoke/2026_07_14_180739_1024.onnx",
+    "sha256": "6ab506253099bf5daeedaa893fa886b56e3a0911cb8ac6f87d8d1b7036b6d943"
+  },
+  "metrics": {
+    "checks": {
+      "all_metrics_finite": true,
+      "contains_step_zero_and_1024": true,
+      "metrics_present": true
+    },
+    "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/ground_up_torso_com_cpu_smoke/events.out.tfevents.1784066748.LSD",
+    "scalars": {
+      "eval/avg_episode_length": [
+        {
+          "step": 0,
+          "value": 370.046875
+        },
+        {
+          "step": 1024,
+          "value": 371.5546875
+        }
+      ],
+      "eval/episode_cost/action_rate": [
+        {
+          "step": 0,
+          "value": 97.04165649414062
+        },
+        {
+          "step": 1024,
+          "value": 120.04426574707031
+        }
+      ],
+      "eval/episode_cost/action_rate_std": [
+        {
+          "step": 0,
+          "value": 68.06536102294922
+        },
+        {
+          "step": 1024,
+          "value": 82.82291412353516
+        }
+      ],
+      "eval/episode_cost/stand_still": [
+        {
+          "step": 0,
+          "value": 0.0
+        },
+        {
+          "step": 1024,
+          "value": 0.0
+        }
+      ],
+      "eval/episode_cost/stand_still_std": [
+        {
+          "step": 0,
+          "value": 0.0
+        },
+        {
+          "step": 1024,
+          "value": 0.0
+        }
+      ],
+      "eval/episode_cost/torques": [
+        {
+          "step": 0,
+          "value": 2.8256278038024902
+        },
+        {
+          "step": 1024,
+          "value": 3.0710091590881348
+        }
+      ],
+      "eval/episode_cost/torques_std": [
+        {
+          "step": 0,
+          "value": 2.076289653778076
+        },
+        {
+          "step": 1024,
+          "value": 2.1599526405334473
+        }
+      ],
+      "eval/episode_cost/tracking_tail_exceedance": [
+        {
+          "step": 0,
+          "value": 5.485888481140137
+        },
+        {
+          "step": 1024,
+          "value": 0.5363869667053223
+        }
+      ],
+      "eval/episode_cost/tracking_tail_exceedance_std": [
+        {
+          "step": 0,
+          "value": 6.986661434173584
+        },
+        {
+          "step": 1024,
+          "value": 1.0186101198196411
+        }
+      ],
+      "eval/episode_reward": [
+        {
+          "step": 0,
+          "value": 194.13021850585938
+        },
+        {
+          "step": 1024,
+          "value": 176.95018005371094
+        }
+      ],
+      "eval/episode_reward/alive": [
+        {
+          "step": 0,
+          "value": 7400.9375
+        },
+        {
+          "step": 1024,
+          "value": 7431.09375
+        }
+      ],
+      "eval/episode_reward/alive_std": [
+        {
+          "step": 0,
+          "value": 5328.42431640625
+        },
+        {
+          "step": 1024,
+          "value": 5166.85546875
+        }
+      ],
+      "eval/episode_reward/imitation": [
+        {
+          "step": 0,
+          "value": 819.9462890625
+        },
+        {
+          "step": 1024,
+          "value": 590.6436767578125
+        }
+      ],
+      "eval/episode_reward/imitation_std": [
+        {
+          "step": 0,
+          "value": 673.525634765625
+        },
+        {
+          "step": 1024,
+          "value": 490.0069580078125
+        }
+      ],
+      "eval/episode_reward/tracking_ang_vel": [
+        {
+          "step": 0,
+          "value": 774.2742919921875
+        },
+        {
+          "step": 1024,
+          "value": 266.362548828125
+        }
+      ],
+      "eval/episode_reward/tracking_ang_vel_std": [
+        {
+          "step": 0,
+          "value": 657.2608032226562
+        },
+        {
+          "step": 1024,
+          "value": 188.89663696289062
+        }
+      ],
+      "eval/episode_reward/tracking_lin_vel": [
+        {
+          "step": 0,
+          "value": 816.7059326171875
+        },
+        {
+          "step": 1024,
+          "value": 683.0606079101562
+        }
+      ],
+      "eval/episode_reward/tracking_lin_vel_std": [
+        {
+          "step": 0,
+          "value": 714.2099609375
+        },
+        {
+          "step": 1024,
+          "value": 589.52685546875
+        }
+      ],
+      "eval/episode_reward_std": [
+        {
+          "step": 0,
+          "value": 145.48138427734375
+        },
+        {
+          "step": 1024,
+          "value": 126.71569061279297
+        }
+      ],
+      "eval/episode_swing_peak": [
+        {
+          "step": 0,
+          "value": 2.518465518951416
+        },
+        {
+          "step": 1024,
+          "value": 2.205714225769043
+        }
+      ],
+      "eval/episode_swing_peak_std": [
+        {
+          "step": 0,
+          "value": 1.833069086074829
+        },
+        {
+          "step": 1024,
+          "value": 1.5021730661392212
+        }
+      ],
+      "eval/epoch_eval_time": [
+        {
+          "step": 0,
+          "value": 72.64656066894531
+        },
+        {
+          "step": 1024,
+          "value": 73.03028869628906
+        }
+      ],
+      "eval/sps": [
+        {
+          "step": 0,
+          "value": 1057.1732177734375
+        },
+        {
+          "step": 1024,
+          "value": 1051.618408203125
+        }
+      ],
+      "eval/std_episode_length": [
+        {
+          "step": 0,
+          "value": 266.42120361328125
+        },
+        {
+          "step": 1024,
+          "value": 258.3427429199219
+        }
+      ],
+      "eval/walltime": [
+        {
+          "step": 0,
+          "value": 72.64656066894531
+        },
+        {
+          "step": 1024,
+          "value": 145.67684936523438
+        }
+      ],
+      "training/entropy_loss": [
+        {
+          "step": 1024,
+          "value": 0.02781800739467144
+        }
+      ],
+      "training/kl_mean": [
+        {
+          "step": 1024,
+          "value": 0.00013998476788401604
+        }
+      ],
+      "training/learning_rate": [
+        {
+          "step": 1024,
+          "value": 0.00030000004335306585
+        }
+      ],
+      "training/policy_dist_max_loc": [
+        {
+          "step": 1024,
+          "value": 1.3670371770858765
+        }
+      ],
+      "training/policy_dist_max_std": [
+        {
+          "step": 1024,
+          "value": 0.7232797145843506
+        }
+      ],
+      "training/policy_dist_mean_loc": [
+        {
+          "step": 1024,
+          "value": -0.0455886572599411
+        }
+      ],
+      "training/policy_dist_mean_std": [
+        {
+          "step": 1024,
+          "value": 0.26580339670181274
+        }
+      ],
+      "training/policy_dist_min_loc": [
+        {
+          "step": 1024,
+          "value": -1.4372203350067139
+        }
+      ],
+      "training/policy_dist_min_std": [
+        {
+          "step": 1024,
+          "value": 0.06751862168312073
+        }
+      ],
+      "training/policy_loss": [
+        {
+          "step": 1024,
+          "value": 2.3949542082846165e-07
+        }
+      ],
+      "training/sps": [
+        {
+          "step": 1024,
+          "value": 69.8266830444336
+        }
+      ],
+      "training/total_loss": [
+        {
+          "step": 1024,
+          "value": 0.23384657502174377
+        }
+      ],
+      "training/v_loss": [
+        {
+          "step": 1024,
+          "value": 0.2060282975435257
+        }
+      ],
+      "training/walltime": [
+        {
+          "step": 1024,
+          "value": 14.664881706237793
+        }
+      ]
+    },
+    "sha256": "24a3ff0e224ecc6092c8610c5ea4c16a52492a3e0cbb7b143cb54e05de9adf99"
+  },
+  "schema_version": "ground_up_torso_com_package_cpu_smoke.v1",
+  "status": "PASS_GROUND_UP_TORSO_COM_PACKAGE_AND_CPU_SMOKE",
+  "step_zero_onnx": {
+    "checks": {
+      "actions_finite": true,
+      "conservative_eight_tick_bound_excess_at_most_1e_6": true,
+      "interface_exact": true,
+      "state_output_exact": true
+    },
+    "max_bound_excess": 2.9802322387695312e-08,
+    "max_state_error": 0.0,
+    "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/ground_up_torso_com_cpu_smoke/2026_07_14_180720_0.onnx",
+    "sha256": "533495452253fadb5ec6d619d3c89859014c64b3e9cb154cac780cf42d734fbe"
+  },
+  "tail_metric": {
+    "tag": "eval/episode_cost/tracking_tail_exceedance",
+    "values": [
+      {
+        "step": 0,
+        "value": 5.485888481140137
+      },
+      {
+        "step": 1024,
+        "value": 0.5363869667053223
+      }
+    ]
+  }
+}

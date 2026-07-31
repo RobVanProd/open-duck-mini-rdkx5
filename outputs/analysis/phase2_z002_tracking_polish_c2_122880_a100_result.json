@@ -1,0 +1,77 @@
+{
+  "status": "HOLD_NO_TRACKING_IMPROVEMENT",
+  "generated_at": "2026-06-30T11:15:00Z",
+  "workflow": "phase2-z002-tracking-margin",
+  "session": "open-duck-a100-phase2c",
+  "hardware": "Colab A100",
+  "jax_version": "0.7.2",
+  "jaxlib_version": "0.7.2",
+  "restore_checkpoint": "outputs/phase2_domain_randomization/stage_z002_tracking_margin_c2_a100/smoke_20260630T102226Z_gpu/2026_06_30_103539_122880",
+  "target_rate_scale": -0.025,
+  "actuator_tracking_scale": -0.012,
+  "training_elapsed_s": 763.1406671119998,
+  "robot_touched": false,
+  "onnx_hashes": {
+    "40960": "a0efa9b767afb3c3ec3ab79657dbcac8a227dced17a53f1efa549af87a372d2a",
+    "81920": "9cc6f900640adaa7867acace3e11986e9fa713e43cc4cca916db53c6d6520916",
+    "122880": "a56008dd0aaa68739721c0194f734eb75bf2cdf6b91e4eeccf7f93cab5220416"
+  },
+  "compact_sweep": [
+    {
+      "step": 40960,
+      "command_x": 0.0,
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "max_pitch_vel_p95": 1.1534,
+      "max_tracking_p95": 0.1943,
+      "track_ratio": null,
+      "mean_local_vx": 0.0056
+    },
+    {
+      "step": 40960,
+      "command_x": 0.08,
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "max_pitch_vel_p95": 1.5661,
+      "max_tracking_p95": 0.2155,
+      "track_ratio": 0.2171,
+      "mean_local_vx": 0.0174
+    },
+    {
+      "step": 81920,
+      "command_x": 0.0,
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "max_pitch_vel_p95": 1.1532,
+      "max_tracking_p95": 0.1944,
+      "track_ratio": null,
+      "mean_local_vx": 0.0052
+    },
+    {
+      "step": 81920,
+      "command_x": 0.08,
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "max_pitch_vel_p95": 1.5042,
+      "max_tracking_p95": 0.218,
+      "track_ratio": 0.3067,
+      "mean_local_vx": 0.0245
+    },
+    {
+      "step": 122880,
+      "command_x": 0.0,
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "max_pitch_vel_p95": 1.0621,
+      "max_tracking_p95": 0.1946,
+      "track_ratio": null,
+      "mean_local_vx": 0.0065
+    },
+    {
+      "step": 122880,
+      "command_x": 0.08,
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "max_pitch_vel_p95": 1.5605,
+      "max_tracking_p95": 0.2158,
+      "track_ratio": 0.2132,
+      "mean_local_vx": 0.0171
+    }
+  ],
+  "best_restore_anchor": "outputs/phase2_domain_randomization/stage_z002_tracking_margin_c2_a100/smoke_20260630T102226Z_gpu/2026_06_30_103539_122880",
+  "next": "Do not keep tuning small scalar tracking penalties. Test a continuity or teacher-action mechanism that preserves the moving gait while reducing corrected-bridge tracking error."
+}

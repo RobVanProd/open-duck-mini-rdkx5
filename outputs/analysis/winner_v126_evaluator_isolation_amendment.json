@@ -1,0 +1,34 @@
+{
+  "authority": {
+    "formal_behavior_cells": 0,
+    "hosted_or_colab": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "checks": {
+    "formal_runner_hashes_isolated_evaluator": true,
+    "formal_runner_imports_isolated_evaluator": true,
+    "isolated_evaluator_matches_behavior_preregistration": true,
+    "isolated_evaluator_matches_sparse_contract": true,
+    "shared_evaluator_restored_exactly": true
+  },
+  "classification": "path-only isolation; no V126 algorithm change",
+  "created_utc": "2026-07-24",
+  "expected_sha256": {
+    "shared_evaluator": "66f2969d3acb324d21694771b8579a20662b9068b84020cb708667f99fa70504",
+    "v126_evaluator": "5d3baac76bed70bb4cb5d81212b61a60b47d961b5bbc0d9675d71044c7d7ff52"
+  },
+  "failed_checks": [],
+  "formal_screen_rule": "The 16-cell runner must import and hash tools/closed_loop_sim_eval_v126.py. No earlier evidence is reclassified and no behavior cell is consumed by this amendment.",
+  "git_head_before_amendment": "767fdafb2e01ace0d74f63a9c1e866313a049213",
+  "observed_sha256": {
+    "behavior_prereg_frozen_evaluator": "5d3baac76bed70bb4cb5d81212b61a60b47d961b5bbc0d9675d71044c7d7ff52",
+    "shared_evaluator": "66f2969d3acb324d21694771b8579a20662b9068b84020cb708667f99fa70504",
+    "sparse_contract_frozen_evaluator": "5d3baac76bed70bb4cb5d81212b61a60b47d961b5bbc0d9675d71044c7d7ff52",
+    "v126_evaluator": "5d3baac76bed70bb4cb5d81212b61a60b47d961b5bbc0d9675d71044c7d7ff52"
+  },
+  "reason": "V126 must not modify the shared closed-loop evaluator because historical evidence freezes that file. The exact V126 bytes already CPU-contracted are moved to a V126-only module; the shared evaluator is restored byte-for-byte to HEAD.",
+  "schema": "open-duck/winner-v126-evaluator-isolation-amendment/v1",
+  "status": "PASS_WINNER_V126_EVALUATOR_ISOLATION_AMENDMENT"
+}

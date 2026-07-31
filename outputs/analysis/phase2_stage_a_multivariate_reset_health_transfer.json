@@ -1,0 +1,272 @@
+{
+  "status": "FAIL_MULTIVARIATE_TRANSFER_ROUTE_CLOSED",
+  "preregistration": "outputs/analysis/PHASE2_STAGE_A_MULTIVARIATE_RESET_HEALTH_PREREGISTRATION.md",
+  "inputs": {
+    "discovery_sweep": "outputs/analysis/phase2_stage_a_reset_neighborhood_expansion_seed8_23.json",
+    "heldout_sweep": "outputs/analysis/phase2_stage_a_early_warning_heldout_seed24_39.json",
+    "discovery_warning": "outputs/analysis/phase2_stage_a_teacher_correction_early_warning_seed8_23.json",
+    "heldout_warning": "outputs/analysis/phase2_stage_a_teacher_correction_early_warning_heldout_seed24_39.json",
+    "normalization_npz": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz"
+  },
+  "directions": [
+    {
+      "train_block": "discovery",
+      "test_block": "heldout",
+      "train_samples": 16,
+      "train_failures": 5,
+      "test_samples": 16,
+      "test_failures": 2,
+      "roc_auc": {
+        "disagreement": 1.0,
+        "reset": 0.75,
+        "combined": 1.0
+      },
+      "per_seed": [
+        {
+          "seed": 24,
+          "failure": false,
+          "disagreement": 0.07031819919217129,
+          "reset_risk": 0.007500054189730321,
+          "combined_score": 0.21001891939577086
+        },
+        {
+          "seed": 25,
+          "failure": false,
+          "disagreement": 0.05972589604613352,
+          "reset_risk": -1.7491063911419227,
+          "combined_score": -1.4219612239575623
+        },
+        {
+          "seed": 26,
+          "failure": false,
+          "disagreement": 0.06990828136606576,
+          "reset_risk": -1.5255954822032334,
+          "combined_score": -0.9474991507804303
+        },
+        {
+          "seed": 27,
+          "failure": false,
+          "disagreement": 0.06562194608187027,
+          "reset_risk": -1.2056654942541882,
+          "combined_score": -0.8379778235901502
+        },
+        {
+          "seed": 28,
+          "failure": false,
+          "disagreement": 0.07856522979750664,
+          "reset_risk": -0.7570083250157147,
+          "combined_score": -0.1119637088041582
+        },
+        {
+          "seed": 29,
+          "failure": false,
+          "disagreement": 0.06888049256773535,
+          "reset_risk": -2.0549904519588758,
+          "combined_score": -1.3739677888162145
+        },
+        {
+          "seed": 30,
+          "failure": false,
+          "disagreement": 0.06432423471728567,
+          "reset_risk": -0.26567225321582866,
+          "combined_score": -0.1750456968274135
+        },
+        {
+          "seed": 31,
+          "failure": false,
+          "disagreement": 0.06318121405195631,
+          "reset_risk": -1.412815149968257,
+          "combined_score": -1.0664182488309004
+        },
+        {
+          "seed": 32,
+          "failure": false,
+          "disagreement": 0.0706646861510999,
+          "reset_risk": -1.4547652318556712,
+          "combined_score": -0.8717491387626727
+        },
+        {
+          "seed": 33,
+          "failure": false,
+          "disagreement": 0.06981263152814447,
+          "reset_risk": -0.3544026434167513,
+          "combined_score": -0.07557089972271461
+        },
+        {
+          "seed": 34,
+          "failure": false,
+          "disagreement": 0.07225102959152983,
+          "reset_risk": -0.01068633007406583,
+          "combined_score": 0.25480685307823625
+        },
+        {
+          "seed": 35,
+          "failure": false,
+          "disagreement": 0.07434081057970553,
+          "reset_risk": 0.0739749393811826,
+          "combined_score": 0.38115631534677297
+        },
+        {
+          "seed": 36,
+          "failure": true,
+          "disagreement": 0.12406865556692848,
+          "reset_risk": -0.9951417250518695,
+          "combined_score": 1.0843833543791537
+        },
+        {
+          "seed": 37,
+          "failure": true,
+          "disagreement": 0.09675033497611134,
+          "reset_risk": 0.6065256938461978,
+          "combined_score": 1.4557181853606198
+        },
+        {
+          "seed": 38,
+          "failure": false,
+          "disagreement": 0.050887757411155955,
+          "reset_risk": -0.8281953279143476,
+          "combined_score": -1.001006029293855
+        },
+        {
+          "seed": 39,
+          "failure": false,
+          "disagreement": 0.06810157124843783,
+          "reset_risk": -1.4406459430920675,
+          "combined_score": -0.9386097866270309
+        }
+      ]
+    },
+    {
+      "train_block": "heldout",
+      "test_block": "discovery",
+      "train_samples": 16,
+      "train_failures": 2,
+      "test_samples": 16,
+      "test_failures": 5,
+      "roc_auc": {
+        "disagreement": 0.9090909090909091,
+        "reset": 0.7636363636363637,
+        "combined": 0.8181818181818182
+      },
+      "per_seed": [
+        {
+          "seed": 8,
+          "failure": false,
+          "disagreement": 0.05630879289740807,
+          "reset_risk": -2.792857146598895,
+          "combined_score": -0.7786476791136314
+        },
+        {
+          "seed": 9,
+          "failure": true,
+          "disagreement": 0.08613890974063539,
+          "reset_risk": -2.628654448144788,
+          "combined_score": 0.2536103605546638
+        },
+        {
+          "seed": 10,
+          "failure": false,
+          "disagreement": 0.07934440659041586,
+          "reset_risk": -3.1295446138466163,
+          "combined_score": -0.28741378285952934
+        },
+        {
+          "seed": 11,
+          "failure": false,
+          "disagreement": 0.08145350652004404,
+          "reset_risk": -2.0498110708260593,
+          "combined_score": 0.49053354943173266
+        },
+        {
+          "seed": 12,
+          "failure": true,
+          "disagreement": 0.08268087705738786,
+          "reset_risk": -2.736148278908435,
+          "combined_score": 0.07556378568035774
+        },
+        {
+          "seed": 13,
+          "failure": false,
+          "disagreement": 0.12347770558442736,
+          "reset_risk": 1.3767083328019227,
+          "combined_score": 4.053593394765138
+        },
+        {
+          "seed": 14,
+          "failure": true,
+          "disagreement": 0.0831989539202908,
+          "reset_risk": 0.7480426406421485,
+          "combined_score": 2.391179169625152
+        },
+        {
+          "seed": 15,
+          "failure": false,
+          "disagreement": 0.06947436793250987,
+          "reset_risk": -2.024727949204855,
+          "combined_score": 0.1360762976664587
+        },
+        {
+          "seed": 16,
+          "failure": false,
+          "disagreement": 0.06935716661601485,
+          "reset_risk": -2.8463871177088236,
+          "combined_score": -0.40984954059657835
+        },
+        {
+          "seed": 17,
+          "failure": false,
+          "disagreement": 0.06894578650112639,
+          "reset_risk": -2.6578778621270285,
+          "combined_score": -0.2981742968436751
+        },
+        {
+          "seed": 18,
+          "failure": false,
+          "disagreement": 0.06415942063046833,
+          "reset_risk": -3.3572752988332097,
+          "combined_score": -0.908018387329496
+        },
+        {
+          "seed": 19,
+          "failure": true,
+          "disagreement": 0.0869289672816906,
+          "reset_risk": -0.024506393193754583,
+          "combined_score": 1.9968201622093105
+        },
+        {
+          "seed": 20,
+          "failure": true,
+          "disagreement": 0.10177757999876118,
+          "reset_risk": -0.21423588960321593,
+          "combined_score": 2.331482606937124
+        },
+        {
+          "seed": 21,
+          "failure": false,
+          "disagreement": 0.06009554096213168,
+          "reset_risk": -3.4938331185538845,
+          "combined_score": -1.1240112286406914
+        },
+        {
+          "seed": 22,
+          "failure": false,
+          "disagreement": 0.06019416938661223,
+          "reset_risk": -2.632507344527628,
+          "combined_score": -0.5524806187643931
+        },
+        {
+          "seed": 23,
+          "failure": false,
+          "disagreement": 0.08226422658547218,
+          "reset_risk": -1.3354929526687658,
+          "combined_score": 0.9870935092797823
+        }
+      ]
+    }
+  ],
+  "pass_rule": "combined ROC AUC strictly exceeds disagreement ROC AUC in both directions",
+  "passed": false,
+  "decision": "Close this nearest-neighbor/equal-weight multivariate route; do not tune it post hoc.",
+  "runtime_gate_authorized": false,
+  "offline_only": true
+}

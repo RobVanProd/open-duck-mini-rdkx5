@@ -1,0 +1,169 @@
+{
+  "authority": {
+    "pass_authorizes_only": "a separate frozen two-update predictor-preserving CPU proof",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "training_executed": false
+  },
+  "checks": {
+    "action_boundary_exact": true,
+    "all_losses_gradients_and_metrics_finite": true,
+    "combined_all_12_gradients_nonzero": true,
+    "combined_gradient_is_exact_sum_at_most_1e_6": false,
+    "episode_receipts_exact": true,
+    "exact_80_episode_population": true,
+    "formal_support_locomotion_robot_zero": true,
+    "gradient_balance_scale_finite_positive": true,
+    "optimizer_updates_zero": true,
+    "parameters_bit_exact_unchanged": true,
+    "ppo_gradient_partition_exact": true,
+    "predictor_gradient_partition_exact": true,
+    "reward_formula_exact_and_nonzero": true,
+    "sampled_hidden_replay_at_most_1e_6": true,
+    "source_stage1_snapshot_exact": true,
+    "stored_successor_mask_exact": true,
+    "winner_v15_rollout_bit_exact": true
+  },
+  "decision": "DO_NOT_UPDATE_OR_TRAIN_WINNER_V21",
+  "environment": {
+    "jax_devices": [
+      "TFRT_CPU_0"
+    ],
+    "software_versions": {
+      "jax": "0.7.2",
+      "jaxlib": "0.7.2",
+      "mujoco": "3.9.0",
+      "numpy": "2.0.2",
+      "onnx": "1.22.0",
+      "onnxruntime": "1.27.0",
+      "python": "3.12.13"
+    }
+  },
+  "execution": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [
+    "combined_gradient_is_exact_sum_at_most_1e_6"
+  ],
+  "objective": {
+    "balance": {
+      "ppo_action_head_gradient_rms": 0.2069233077113677,
+      "predictor_head_gradient_rms": 2465242278.990687,
+      "predictor_scale": 8.393629541414427e-11
+    },
+    "combined_gradient_max_abs": {
+      "action_bias": 1.3344776630401611,
+      "action_weight": 0.9146648645401001,
+      "auxiliary_action_weight": 0.0010316235711798072,
+      "auxiliary_bias": 3.370854139328003,
+      "auxiliary_hidden_weight": 2.325603485107422,
+      "hidden_bias": 0.4944193661212921,
+      "hidden_weight": 0.33998653292655945,
+      "obs_weight": 4.875764846801758,
+      "previous_action_weight": 0.00014732812996953726,
+      "training_only_log_std": 0.01571536622941494,
+      "training_only_value_bias": 14.056812286376953,
+      "training_only_value_weight": 9.699370384216309
+    },
+    "combined_gradient_max_abs_error_from_sum": 1.430511474609375e-06,
+    "combined_loss": 456.7684326171875,
+    "ppo_gradient_max_abs": {
+      "action_bias": 1.3344776630401611,
+      "action_weight": 0.9146648645401001,
+      "auxiliary_action_weight": 0.0,
+      "auxiliary_bias": 0.0,
+      "auxiliary_hidden_weight": 0.0,
+      "hidden_bias": 0.0,
+      "hidden_weight": 0.0,
+      "obs_weight": 0.0,
+      "previous_action_weight": 0.0,
+      "training_only_log_std": 0.01571536622941494,
+      "training_only_value_bias": 14.056812286376953,
+      "training_only_value_weight": 9.699370384216309
+    },
+    "ppo_loss": 453.4029541015625,
+    "predictor_gradient_max_abs": {
+      "action_bias": 0.0,
+      "action_weight": 0.0,
+      "auxiliary_action_weight": 12290557.0,
+      "auxiliary_bias": 40159674368.0,
+      "auxiliary_hidden_weight": 27706769408.0,
+      "hidden_bias": 5890412544.0,
+      "hidden_weight": 4050531072.0,
+      "obs_weight": 58088873984.0,
+      "previous_action_weight": 1755237.625,
+      "training_only_log_std": 0.0,
+      "training_only_value_bias": 0.0,
+      "training_only_value_weight": 0.0
+    },
+    "predictor_loss": 40095510528.0,
+    "trainable_leaves": [
+      "obs_weight",
+      "previous_action_weight",
+      "hidden_weight",
+      "hidden_bias",
+      "action_weight",
+      "action_bias",
+      "training_only_log_std",
+      "training_only_value_weight",
+      "training_only_value_bias",
+      "auxiliary_hidden_weight",
+      "auxiliary_action_weight",
+      "auxiliary_bias"
+    ]
+  },
+  "repository_attribution": {
+    "artifact_zip_bytes": 2334,
+    "artifact_zip_sha256": "ccbe26e22e7731c5b2612334c6ca250bae4fcd23f07ae18049ca17a95bb6a24d",
+    "contract_lf_sha256": "42daca248961734e7ed02e6af378fca275ad518dbfb89972722f8cf948649ce9",
+    "github_artifact_digest": "sha256:ccbe26e22e7731c5b2612334c6ca250bae4fcd23f07ae18049ca17a95bb6a24d",
+    "github_artifact_id": 8507635279,
+    "github_artifact_name": "winner-v21-predictor-preserving-cpu-29861734584",
+    "github_run_attempt": 1,
+    "github_run_head_sha": "4bade42e7ca3871aff5e60c5974ac62bb74b48f4",
+    "github_run_id": 29861734584,
+    "importer_lf_sha256": "2b751802248d216b4b0b29ef2eecac2fed67ef03a3ec6d6d66be632248ecce72",
+    "raw_result_receipt_sha256": "12ef28928b9b1b009fbb18d6309870601fb11d43bdee0dc0e0ae4b9829891cc2",
+    "raw_result_sha256": "cda336956cda23ed7ffe4a36a0842b7043e310c5c2e3086e60570b4a3a728aa4",
+    "repository": "RobVanProd/open-duck-mini-rdkx5",
+    "runner_lf_sha256": "6631e52ce7ab62c147e5abace5bcf8818a51dd9f7a44d03cc3cd3223379d4790",
+    "workflow_lf_sha256": "be0510fc52e54a7f2393ca097d2e7f81d39823b16b6e402eda13eaf63aaa2633"
+  },
+  "rollout": {
+    "action_boundary_exact": true,
+    "episode_receipts_sha256": "95cc50c6401b5e44904702922783ae9f2d7dfaf680f0769ee3be4dcedb1a18e7",
+    "reward": {
+      "all_penalties_in_unit_interval": true,
+      "all_rewards_nonnegative": true,
+      "nonzero_penalty_count": 5911,
+      "only_zero_or_settled_bonus": true,
+      "penalty_formula_bit_exact": true,
+      "penalty_max": 0.9979662299156189,
+      "penalty_min": 0.0,
+      "reward_formula_bit_exact": true,
+      "reward_max_without_terminal_bonus": 1.0,
+      "reward_min": 0.0020337700843811035,
+      "settled_bonus_count": 36,
+      "valid_transition_count": 18243
+    },
+    "sampled_count": 18251,
+    "sampled_hidden_replay_max_abs_error": 2.980232238769531e-07,
+    "stored_successor_transition_count": 18171,
+    "valid_transition_count": 18243,
+    "winner_v15_transition_exact": true
+  },
+  "schema_version": "winner_v21.predictor_preserving_joint_cpu_result.v1",
+  "source_snapshot": {
+    "bytes": 189027,
+    "sha256": "8c1392c738eddfb098e61c1a6ae2f863eda883e1eba6ac546aef695da6f163af"
+  },
+  "sources": {
+    "attribution_lf_sha256": "9ae4505cc99bdc58638ab17f803a8e03e148d2d0165cd6d09f13cc7880d80d28",
+    "contract_lf_sha256": "42daca248961734e7ed02e6af378fca275ad518dbfb89972722f8cf948649ce9",
+    "runner_lf_sha256": "6631e52ce7ab62c147e5abace5bcf8818a51dd9f7a44d03cc3cd3223379d4790"
+  },
+  "status": "HOLD_WINNER_V21_PREDICTOR_PRESERVING_JOINT_CPU_CONTRACT"
+}

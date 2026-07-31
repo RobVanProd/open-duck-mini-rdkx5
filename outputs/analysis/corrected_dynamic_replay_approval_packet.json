@@ -1,0 +1,29 @@
+{
+  "action_scale": 0.25,
+  "command_x": 0.08,
+  "duck_config_sha256": "131a7b8fce1107b14f4727562f44f9e17324caf7fc22512ad7115911f050991b",
+  "duration_s": 15.0,
+  "grounded_replay_allowed": false,
+  "left_knee_offset_rad": 0.0371,
+  "max_motor_velocity_rad_s": 5.24,
+  "prior_gate": "PASS_SINE_ONLY_TRACKING_DYNAMIC_REFIT_PENDING",
+  "proposed_test": "suspended_policy_replay",
+  "remote_command": [
+    "cd /home/sunrise/project/Open_Duck_Mini_Runtime-2_RDK_X5/scripts",
+    "/home/sunrise/duck_env/bin/python sim2real_diagnostics.py suspended_policy_replay --telemetry-path /home/sunrise/duck_logs/<timestamp>_corrected_dynamic_replay/suspended_policy_replay_x008_corrected_knee.jsonl --onnx_model_path /home/sunrise/BEST_WALK_ONNX_2.onnx --duration 15 --command-x 0.08 --action_scale 0.25 --max_motor_velocity 5.24 --telemetry-every-n 1 --i-understand-this-moves-the-robot"
+  ],
+  "requires_explicit_approval": true,
+  "requires_operator_present": true,
+  "result": "outputs/analysis/CORRECTED_DYNAMIC_REPLAY_RESULT.md",
+  "right_knee_offset_rad": 0.0798,
+  "robot_condition": "supported_on_stand_or_suspended",
+  "status": "COMPLETED_HOLD_DYNAMIC_TRACKING_STILL_BLOCKS_WALKING",
+  "stop_conditions": [
+    "unexpected motion",
+    "visible twitch",
+    "bus bursts",
+    "large tracking error",
+    "operator concern"
+  ],
+  "tuning_allowed": false
+}

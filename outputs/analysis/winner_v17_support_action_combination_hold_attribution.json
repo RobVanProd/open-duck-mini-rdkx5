@@ -1,0 +1,121 @@
+{
+  "authority": {
+    "authorizes_only": "one separately preregistered CPU-only IMU ankle-feedback diagnostic",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "causal_interpretation": "The fixed 0.03-rad-per-active-axis offset subset is closed. The ankle sign is still causally directional, but its required magnitude must depend on the observed falling state rather than remain continuously asserted.",
+  "decision": "CLOSE_FIXED_003_RAD_OFFSET_SUBSET_PREREGISTER_ONE_SIDED_IMU_ANKLE_FEEDBACK_DIAGNOSTIC",
+  "execution": {
+    "new_diagnostic_cells": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failure_counts_half_final": {
+    "ANKLE_POS": [
+      8,
+      6
+    ],
+    "BASELINE": [
+      12,
+      12
+    ],
+    "HIP_MAG_NEG": [
+      12,
+      12
+    ],
+    "HIP_NEG_ANKLE_POS": [
+      12,
+      12
+    ],
+    "HIP_NEG_KNEE_POS": [
+      12,
+      12
+    ],
+    "HIP_NEG_KNEE_POS_ANKLE_POS": [
+      12,
+      12
+    ],
+    "KNEE_POS": [
+      10,
+      10
+    ],
+    "KNEE_POS_ANKLE_POS": [
+      8,
+      7
+    ]
+  },
+  "interaction_evidence": {
+    "hip_containing_combinations": {
+      "all_half_final_failures": [
+        12,
+        12
+      ],
+      "ids": [
+        "HIP_NEG_ANKLE_POS",
+        "HIP_NEG_KNEE_POS",
+        "HIP_NEG_KNEE_POS_ANKLE_POS"
+      ],
+      "interpretation": "Every hip-containing fixed subset loses the ankle benefit."
+    },
+    "positive_ankle": {
+      "half_final_failures": [
+        8,
+        6
+      ],
+      "interpretation": "The unanimously selected ankle sign retains the only persistent survival benefit, but a constant offset does not pass."
+    },
+    "positive_knee_plus_ankle": {
+      "delta_from_ankle": [
+        0,
+        1
+      ],
+      "half_final_failures": [
+        8,
+        7
+      ],
+      "interpretation": "Adding the knee does not improve persistence."
+    }
+  },
+  "next_screen": {
+    "cells_per_checkpoint_intervention": 12,
+    "checkpoints": [
+      "half",
+      "final"
+    ],
+    "interventions": [
+      "BASELINE",
+      "CONSTANT_ANKLE_POS",
+      "TILT_BACKWARD",
+      "TILT_OPPOSITE",
+      "RATE_BACKWARD",
+      "RATE_OPPOSITE",
+      "TILT_RATE_BACKWARD"
+    ],
+    "maximum_target_offset_rad": 0.03,
+    "mechanism": "one-sided deployable IMU-proxy modulation of ANKLE_POS",
+    "observation_inputs": {
+      "accelerometer_pitch_proxy": {
+        "index": 3,
+        "source": "accelerometer x"
+      },
+      "gyro_pitch_rate": {
+        "index": 1,
+        "source": "gyro y"
+      }
+    },
+    "optimizer_updates": 0,
+    "rate_reference_rad_s": 1.75,
+    "selection": "all 12 cells pass at both checkpoints; no closest failure",
+    "tilt_boundary_rad": 0.35,
+    "total_cells": 168
+  },
+  "schema_version": "winner_v17.support_action_combination_hold_attribution.v1",
+  "source": {
+    "artifact_zip_sha256": "1aea84365f2198ca00b19e8a7ed2c08088f317f5407cb366da6042d6bd1ca57f",
+    "github_artifact_id": 8502313017,
+    "github_run_id": 29848345372,
+    "raw_result_sha256": "3207c32c67ddc5e592e23c2b12c5e7823dda40f5105798b4b5f1e9ad52fc8e11"
+  },
+  "status": "PASS_WINNER_V17_SUPPORT_ACTION_COMBINATION_HOLD_ATTRIBUTION"
+}

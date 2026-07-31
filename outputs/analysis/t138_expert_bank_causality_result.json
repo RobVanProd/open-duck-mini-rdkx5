@@ -1,0 +1,96 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "expert_bank_transform_preregistration": true,
+    "gate5": false,
+    "rdkx5_or_robot": false,
+    "training": false
+  },
+  "behavior_evidence": {
+    "expert_off_nominal_green": 14,
+    "t100c_negative_green": 9,
+    "t100c_nominal_green": 16,
+    "t129_nominal_green": 15,
+    "t132_failures": [
+      {
+        "checkpoint_id": "T129_NEGATIVE_ONLY_EXPERT_HALF",
+        "command_x_m_s": 0.08,
+        "fit_id": "p30",
+        "rows": 234,
+        "trace_sha256": "58dff3400a918a82daab3e91d29cef506fe7ab56d109c96b816f3ed3b5f22fd2"
+      }
+    ],
+    "t137_failures": [
+      {
+        "checkpoint_id": "T136_STATIC_ROUTER_HALF",
+        "command_x_m_s": 0.08,
+        "fit_id": "p30",
+        "rows": 502,
+        "trace_sha256": "ccd45d25753236d8d0cde484f4c3840135b8ef675b05633e7868e7bd1ec48ec4"
+      },
+      {
+        "checkpoint_id": "T136_STATIC_ROUTER_FINAL",
+        "command_x_m_s": 0.08,
+        "fit_id": "p30",
+        "rows": 502,
+        "trace_sha256": "ccd45d25753236d8d0cde484f4c3840135b8ef675b05633e7868e7bd1ec48ec4"
+      }
+    ]
+  },
+  "checks": {
+    "always_off_expert_worsens_both_checkpoints_identically": true,
+    "both_checkpoint_pairs_differ_only_in_expert_parameters": true,
+    "formal_behavior_cells_zero": true,
+    "negative_trained_expert_nearly_preserves_nominal": true,
+    "optimizer_colab_robot_zero": true,
+    "original_expert_negative_endpoint_incomplete": true,
+    "original_expert_nominal_persistence_green": true,
+    "static_context_separation_already_green": true
+  },
+  "classification": "CALIBRATION_MUST_SELECT_EXPERT_BANK_DYNAMIC_GATE_MUST_REMAIN",
+  "decision": "EARN_T139_CONTEXT_SELECTED_EXPERT_BANK_TRANSFORM_PREREGISTRATION_ONLY",
+  "execution": {
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "onnx_pairs_compared": 2,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "graph_diffs": {
+    "1003520": {
+      "dynamic_gate_consumer_index": 37,
+      "expert_node_index": 36,
+      "expert_precedes_dynamic_gate": true,
+      "initializer_count": 55,
+      "initializer_differences": [
+        "negative_adapter_bias",
+        "negative_adapter_weight"
+      ],
+      "initializer_names_exact": true,
+      "node_count": 91,
+      "node_differences": [],
+      "node_inventory_exact": true,
+      "only_negative_expert_parameters_differ": true
+    },
+    "2007040": {
+      "dynamic_gate_consumer_index": 37,
+      "expert_node_index": 36,
+      "expert_precedes_dynamic_gate": true,
+      "initializer_count": 55,
+      "initializer_differences": [
+        "negative_adapter_bias",
+        "negative_adapter_weight"
+      ],
+      "initializer_names_exact": true,
+      "node_count": 91,
+      "node_differences": [],
+      "node_inventory_exact": true,
+      "only_negative_expert_parameters_differ": true
+    }
+  },
+  "preregistered_contract_sha256": "750a00acd659f12da1674ceec8ddb481ce1a9e2c5902dc0b831c9e2945421b5f",
+  "result_sha256": "ced49c59a51ce2a4840a317fbcb8664997dd4a69ef570b691ac718075567b017",
+  "schema_version": "open_duck.t138_expert_bank_causality_result.v1",
+  "status": "PASS_T138_EXPERT_BANK_CAUSALITY_AUDIT"
+}

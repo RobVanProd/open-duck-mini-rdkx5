@@ -1,0 +1,401 @@
+# Phase-1 In-Envelope Motion Lead
+
+This note records the current strongest training lead.
+
+## Finding
+
+`movement_bootstrap_v5` did not produce a deployable final policy, but its
+phase-1 checkpoint produced meaningful forward motion at `command_x=0.08` while
+remaining inside the measured actuator target-velocity envelope.
+
+Preserved candidate:
+
+```text
+policy/candidates/movement_bootstrap_v5_phase1_in_envelope_unstable_20260623/candidate.onnx
+sha256: dcaa47993f65f4eedf980a78255d723409873b9b65e6a7d3d1002beeea7a3b48
+```
+
+Key evidence:
+
+```text
+outputs/analysis/PHASE1_X008_FAILURE_TRACE.md
+outputs/analysis/phase1_x008_failure_trace.json
+outputs/analysis/movement_bootstrap_v5_a100_phase1_command_curve_cpu/COMMAND_FEASIBILITY_CURVE.md
+```
+
+## Metrics
+
+At `command_x=0.08` with the fitted actuator bridge:
+
+```text
+samples: 80
+termination: fall_or_nan at tick 79 / 1.58 s
+mean local forward velocity: 0.1892 m/s
+pitch-chain p95 target velocity max: 1.9529 rad/s
+velocity envelope: 2.25-3.75 rad/s
+action saturation: 0%
+body pitch abs p95: 1.1841 rad
+body pitch abs max: 1.4642 rad
+base height min: 0.0434 m
+contact events: 13
+```
+
+Interpretation:
+
+The failure is not an above-envelope actuator-rate failure and not action
+saturation. It is an unstable forward-motion rollout that pitches over within
+about 1.6 seconds. That makes this a stabilization/contact-timing problem, not
+proof that in-envelope forward motion is impossible.
+
+## Why Later V5 Phases Failed
+
+The phase checkpoint audit showed:
+
+```text
+phase 1 x=0.08: below envelope, moving, unstable
+phase 2 x=0.08: above envelope, moving, unstable
+final x=0.08: below envelope, stable standstill
+```
+
+So the phase transition destroyed the useful behavior in two different ways:
+
+- first by drifting back above the actuator envelope,
+- then by consolidating into standstill.
+
+## V6 Design Target
+
+`movement_bootstrap_v6` should recover and stabilize the phase-1 behavior.
+
+Design constraints:
+
+- keep the `2.5-3.75 rad/s` fitted envelope active in every phase,
+- do not expand the command range after phase 1,
+- add stability pressure gradually,
+- use lower PPO learning rate / clip during consolidation,
+- do not count a stable standstill as success,
+- do not request robot validation until `x=0.0` and `x=0.08` sim gates pass.
+
+Open mechanism gap:
+
+A true action-level trust-region or behavior-cloning anchor against the phase-1
+policy is not implemented yet. V6 approximates continuity with checkpoint
+continuation, small PPO update sizes, and conservative stability rewards. If V6
+again loses phase-1 motion, the next offline task should implement a real
+teacher-policy/action-anchor mechanism rather than another generic curriculum.
+
+## V6 Result
+
+`movement_bootstrap_v6` completed offline A100 training, but it did not recover
+the phase-1 moving gait.
+
+Final candidate gates:
+
+```text
+x=0.0:  HOLD_CANDIDATE_FALL_OR_TERMINATION, 78 samples, mean local vx 0.1935 m/s
+x=0.08: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS, duration complete, mean local vx 0.0009 m/s
+```
+
+Phase checkpoint curves also stayed in standstill:
+
+```text
+phase 1 x=0.06: mean local vx 0.0004 m/s, max pitch p95 target velocity 0.1254 rad/s
+phase 1 x=0.08: mean local vx 0.0009 m/s, max pitch p95 target velocity 0.1077 rad/s
+phase 2 x=0.06: mean local vx 0.0005 m/s, max pitch p95 target velocity 0.1741 rad/s
+phase 2 x=0.08: mean local vx 0.0010 m/s, max pitch p95 target velocity 0.1390 rad/s
+```
+
+Interpretation:
+
+V6 kept the measured actuator envelope active, but the stricter envelope from
+phase 1 over-constrained the search and collapsed directly into standstill. The
+next useful offline task is to preserve a training checkpoint for the moving
+phase-1 behavior and add a real teacher-policy/action-anchor or trust-region
+continuity mechanism. Another generic stability/reward recipe is unlikely to
+answer the actual continuity problem.
+
+## Trainable Recovery Checkpoint
+
+A one-phase A100 rerun of `movement_bootstrap_v5` recovered a trainable phase-1
+checkpoint:
+
+```text
+policy/candidates/movement_bootstrap_v5_phase1_trainable_recovery_20260623/
+candidate sha256: 0b7d9c3b24ac047a0a7d5e2e2c15f8e03280a2e30389d4c102dd44a733ce03e5
+checkpoint: checkpoint_2026_06_23_205634_368640/
+```
+
+This recovered candidate is still not deployable:
+
+```text
+x=0.0:  HOLD_CANDIDATE_FALL_OR_TERMINATION
+x=0.08: HOLD_CANDIDATE_FALL_OR_TERMINATION
+```
+
+But at `x=0.08` with the fitted bridge it again shows in-envelope forward
+motion:
+
+```text
+samples: 52
+mean local vx: 0.2989 m/s
+track ratio: 3.7362
+max pitch-chain p95 target velocity: 1.7912 rad/s
+action saturation: 0%
+```
+
+Use this checkpoint as the continuation anchor for the next stabilization
+experiment. Do not use it for robot validation.
+
+## V7 Checkpoint-Anchored Result
+
+`movement_bootstrap_v7` used the trainable recovery checkpoint as its initial
+restore point. It did not produce a deployable policy, but it did improve the
+failure shape:
+
+```text
+x=0.0:  duration complete, HOLD_CANDIDATE_TRACKING, max pitch tracking p95 0.0860 rad
+x=0.08: fitted bridge fall after 60 samples, mean local vx 0.2640 m/s
+```
+
+The `x=0.08` fitted rollout was still inside the measured target-velocity
+envelope:
+
+```text
+max pitch-chain p95 target velocity: 2.2663 rad/s
+action saturation: 0%
+```
+
+Preserved candidate:
+
+```text
+policy/candidates/movement_bootstrap_v7_checkpoint_anchor_20260623/
+```
+
+The next question is no longer whether in-envelope forward motion exists. It is
+why the in-envelope gait falls under fitted actuator dynamics, especially around
+pitch/body stability and contact timing.
+
+The `x=0.08` fitted-rollout onset analysis is preserved in:
+
+```text
+outputs/analysis/V7_X008_ONSET_ANALYSIS.md
+```
+
+The forward-speed overshoot begins before the large pitch collapse:
+
+```text
+local_vx > 0.08 m/s: tick 3 / 0.06s
+body_pitch_abs > 0.25 rad: tick 15 / 0.30s
+terminal local_vx: 1.3183 m/s
+```
+
+Use v7 as the next continuation anchor only with explicit pressure against
+velocity overshoot and pitch/pitch-rate growth under forward command. Do not
+spend the next recipe on more actuator-envelope tightening.
+
+## V8 Overshoot-Stabilized Result
+
+`movement_bootstrap_v8` started from the v7 anchored checkpoint and added
+forward-overshoot, pitch, and pitch-rate costs under the fitted actuator bridge.
+It is preserved here:
+
+```text
+policy/candidates/movement_bootstrap_v8_overshoot_stabilized_standstill_20260623/
+outputs/analysis/MOVEMENT_BOOTSTRAP_V8_A100_SUMMARY.md
+```
+
+V8 confirms that the v7 lunge is controllable: the `x=0.08` rollout completed
+the full duration without falling, with `0%` action saturation and pitch/base
+height inside the candidate limits. It also shows the current stabilizers were
+too strong:
+
+```text
+x=0.08 fitted mean local vx: 0.0015 m/s
+x=0.08 fitted command tracking ratio: 0.0190
+max pitch-chain p95 target velocity: 0.2760 rad/s
+```
+
+This preserves the lead while sharpening the next problem. The target is no
+longer "prove in-envelope motion exists" or "stop the lunge" in isolation. The
+next recipe must keep V8's no-lunge behavior while making nonzero command
+tracking materially above standstill.
+
+`movement_bootstrap_v9` is the next planned test of that middle ground:
+
+```text
+outputs/analysis/MOVEMENT_BOOTSTRAP_V9_PLAN.md
+```
+
+It starts from the V7 moving anchor again, keeps the fitted actuator envelope
+active, and uses lighter overshoot/pitch damping than V8 with stronger
+command-window progress pressure.
+
+V9 completed and is preserved here:
+
+```text
+policy/candidates/movement_bootstrap_v9_progress_balanced_standstill_20260623/
+outputs/analysis/MOVEMENT_BOOTSTRAP_V9_A100_SUMMARY.md
+```
+
+It did not recover the moving gait. At `x=0.08`, the fitted rollout completed
+the full duration but produced only `0.0017 m/s` mean local forward velocity
+and a command tracking ratio of `0.0206`. This keeps the phase-1/V7 moving
+policies as the key lead and points the next work toward checkpoint selection or
+explicit teacher-action continuity, not more small reward-weight tuning.
+
+## V9 Short-Sweep And Full-Duration Recheck
+
+A later one-second checkpoint sweep showed V9 sitting between V7's overdrive
+and V8's standstill:
+
+```text
+V7 1s x=0.08 track ratio: 1.8356
+V8 1s x=0.08 track ratio: 0.2539
+V9 1s x=0.08 track ratio: 0.9129
+```
+
+That made V9 the right checkpoint to recheck, but not a deployable result. The
+one-second horizon ends at about `50` samples, while earlier moving candidates
+failed around `60-80` samples.
+
+The full-duration CPU recheck is preserved in:
+
+```text
+outputs/analysis/MOVEMENT_BOOTSTRAP_V9_FULL_DURATION_RECHECK.md
+```
+
+It found two `x=0.08` fitted-bridge failure cases:
+
+```text
+seed 0: fall_or_nan after 73 samples, track ratio 2.7707,
+        body pitch p95 1.2604 rad, max pitch target velocity p95 2.3669 rad/s
+
+seed 1: fall_or_nan after 32 samples, track ratio 0.2314,
+        base height min 0.0672 m, max pitch target velocity p95 1.7712 rad/s
+```
+
+Both runs stayed under the candidate target-velocity threshold and had `0%`
+action saturation. The exact failure shape is rollout-sensitive, but the
+decision is not: V9 is not stable through the normal `x=0.08` gate and remains
+blocked from robot validation.
+
+The next recipe should target the fall window directly: preserve early
+in-envelope forward motion with a teacher/trust-region term while penalizing
+forward-speed overshoot, pitch growth, pitch-rate growth, and base-height
+collapse. Another target-velocity-envelope tweak is unlikely to address the
+remaining failure.
+
+## V7 / V9 Multi-Seed Baseline
+
+The single-seed and two-seed results were not enough to grade stabilization, so
+V7 and V9 were both run across seeds `0-7` at `x=0.08` with the fitted bridge.
+
+Evidence:
+
+```text
+outputs/analysis/V7_V9_MULTI_SEED_STABILITY_BASELINE.md
+```
+
+Result:
+
+```text
+V7: 5/8 falls, 3/8 standstill completions, mean samples 311.75
+V9: 5/8 falls, 3/8 standstill completions, mean samples 312.00
+```
+
+V9 did not improve the stability distribution versus V7. Both policies show
+the same failure surfaces:
+
+```text
+lunge / pitch-over
+early base-height or contact-support collapse
+reverse/negative local velocity failure
+duration-complete standstill
+```
+
+This changes the V10 gate. V10 should not be judged against one cherry-picked
+seed. It should be judged by distribution shift across the same seed set:
+
+```text
+fewer falls
+later fall samples
+fewer standstill completions
+useful forward tracking on more seeds
+lower pitch on lunge seeds
+better base height / support on collapse seeds
+```
+
+The follow-up onset comparison is preserved in:
+
+```text
+outputs/analysis/v9_four_surface_trace_recheck_x008_fitted/V9_FOUR_SURFACE_ONSET_COMPARISON.md
+```
+
+It shows the V9 regimes branch almost immediately by contact/support state and
+velocity sign. This is not one common lunge with late variations; it is a
+behavior-fragmentation problem:
+
+```text
+lunge
+reverse velocity
+contact/base-height collapse
+standstill
+```
+
+The V10 plan is preserved in:
+
+```text
+outputs/analysis/MOVEMENT_BOOTSTRAP_V10_PLAN.md
+```
+
+One more phase-1-lineage attempt is reasonable only if it explicitly targets
+cross-seed behavioral consistency. If V10 does not improve the multi-seed
+distribution, treat this anchor lineage as exhausted and switch bootstrap
+strategy.
+
+## V10 Training Recipe Prepared
+
+V10 is now an executable staged recipe, not only a plan:
+
+```text
+recipe: movement_bootstrap_v10
+plan: outputs/analysis/MOVEMENT_BOOTSTRAP_V10_TRAINING_PLAN.md
+json: outputs/analysis/movement_bootstrap_v10_training_plan.json
+starting checkpoint:
+  policy/candidates/movement_bootstrap_v7_checkpoint_anchor_20260623/checkpoint_2026_06_23_213846_184320
+```
+
+The recipe keeps the fitted actuator envelope active in every phase:
+
+```text
+delay: 3-6 ticks
+tau: 0.06-0.14 s
+velocity limit: 2.5-3.75 rad/s
+command_x: 0.04-0.08
+zero_command_probability: 0.0
+```
+
+Two default-off Playground reward hooks were added for the V10 failure surfaces:
+
+```text
+forward_wrong_direction: penalizes reverse motion under positive command
+forward_contact_support: penalizes no-contact support collapse, with only a
+                         tiny one-sided-contact weight
+Playground dependency: RobVanProd/Open_Duck_Playground
+                       codex/forward-progress-reward @ f7b817d
+```
+
+A tiny CPU smoke run with these hooks passed, so the new config path is viable.
+This was not candidate training and produced no deployable policy.
+
+V10 must be judged against the established eight-seed V7/V9 baseline, not one
+rollout:
+
+```text
+baseline to beat: 5/8 falls, 3/8 standstill completions, mean ~312 samples
+target: fewer falls, fewer standstill seeds, later failures, useful forward
+        tracking on more seeds
+```
+
+If V10 lands back at roughly the same distribution with the same four failure
+surfaces, stop this V7/V9 anchor lineage and switch to a structurally different
+bootstrap. Robot validation remains blocked.

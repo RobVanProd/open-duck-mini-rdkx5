@@ -1,0 +1,112 @@
+{
+  "schema_version": "ground_up_torso_com_remediation_search_preregistration.v1",
+  "status": "PREREGISTERED_CPU_PACKAGE_CONTRACT_REQUIRED",
+  "causal_evidence": {
+    "failed_r2_result": {
+      "path": "outputs/analysis/ground_up_robustness_r2_TORSO_COM_X_NEG_result.json",
+      "sha256": "5232ff8f67fca65d1409dae64f74c0c28aa0a5e97a92631d3b78f0bd339271b4",
+      "decision": "STOP_R2_AT_FIRST_FAILED_CONDITION"
+    },
+    "randomizer_contract": {
+      "path": "outputs/analysis/ground_up_torso_com_randomizer_contract.json",
+      "sha256": "9992ca699e25c05ff04b5534504f012e2e54388336636a0d351f024250a262da",
+      "status": "PASS_GROUND_UP_TORSO_COM_RANDOMIZER_CONTRACT"
+    },
+    "root_cause": "training torso randomization targeted massless body 1 instead of trunk_assembly body 2"
+  },
+  "source": {
+    "archive": "outputs/analysis/GROUND_UP_TRACKING_TAIL_artifacts.tar.gz",
+    "archive_sha256": "ae4c631a6ce1c0b36c3231113740acc6c1b8a463c0911ce7cad30b8f8d8ca60f",
+    "checkpoint_member": "ground_up_tracking_tail_outputs/T2_EQUAL/2026_07_14_190425_1024000",
+    "raw_onnx_sha256": "2f059550a82e129bff3d58a2b9249cf1d5c1ea75dc18200f1e158928f67e38a6"
+  },
+  "randomizer_patch": {
+    "path": "patches/ground_up_torso_com_randomization.patch",
+    "sha256": "524ff95a3d7018925e1ab958dfe067067e09f0cd718176c7cc46bb6b078d8e3a"
+  },
+  "common_training": {
+    "seed": 100,
+    "policy_architecture": "reference_residual",
+    "critic_observation": "privileged_state",
+    "reference_start_phase": 0,
+    "command_x_support": [0.074, 0.08],
+    "num_envs": 256,
+    "episode_length": 600,
+    "unroll_length": 20,
+    "batch_size": 256,
+    "num_minibatches": 4,
+    "updates_per_batch": 4,
+    "learning_rate": 0.0003,
+    "discounting": 0.97,
+    "entropy_cost": 0.005,
+    "tracking_tail_scale": -6572.254964031055,
+    "tracking_tail_threshold_rad": 0.2,
+    "left_ankle_velocity_limit_rad_s": 1.5,
+    "nominal_reference_bootstrap_controls_preserved": true,
+    "unrelated_domain_randomization": false,
+    "noise": false,
+    "pushes": false,
+    "terrain": false
+  },
+  "arms": [
+    {
+      "name": "U05_DIRECT",
+      "stages": [
+        {"distribution": "uniform", "min_x_m": -0.05, "max_x_m": 0.05, "requested_steps": 2000000}
+      ],
+      "full_range_checkpoint_steps": [1003520, 2007040]
+    },
+    {
+      "name": "A05_DIRECT",
+      "stages": [
+        {"distribution": "anchors", "anchors_x_m": [-0.05, 0.0, 0.05], "requested_steps": 2000000}
+      ],
+      "full_range_checkpoint_steps": [1003520, 2007040]
+    },
+    {
+      "name": "U_CURRICULUM",
+      "stages": [
+        {"distribution": "uniform", "min_x_m": -0.01, "max_x_m": 0.01, "requested_steps": 500000},
+        {"distribution": "uniform", "min_x_m": -0.03, "max_x_m": 0.03, "requested_steps": 500000},
+        {"distribution": "uniform", "min_x_m": -0.05, "max_x_m": 0.05, "requested_steps": 1000000}
+      ],
+      "full_range_checkpoint_steps_within_final_stage": [512000, 1024000]
+    }
+  ],
+  "hosted_budget": {
+    "maximum_colab_compute_units": 8.0,
+    "sequential_arms": true,
+    "setup_failures_count": true
+  },
+  "evaluation": {
+    "postprocess_chain": [
+      "actual_position_guard_exact_boundary",
+      "command_deadband_x0",
+      "left_ankle_conservative_envelope_1.50_rad_s"
+    ],
+    "fits": [
+      "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "outputs/analysis/fixed_target_p31_34_actuator_fit_20260712.json"
+    ],
+    "commands_x": [0.0, 0.074, 0.077, 0.08],
+    "seed": 167931544,
+    "duration_ticks": 600,
+    "conditions": ["NOMINAL_R1", "TORSO_COM_X_NEG", "TORSO_COM_X_POS"],
+    "requires_two_full_range_checkpoints_all_cells": true,
+    "selection_uses_training_reward": false
+  },
+  "selection_order": [
+    "minimum_worst_endpoint_tracking_p95",
+    "maximum_minimum_endpoint_mean_vx",
+    "minimum_worst_nominal_tracking_p95",
+    "U_CURRICULUM_then_A05_DIRECT_then_U05_DIRECT"
+  ],
+  "failure_rule": "close_exact_targeted_com_formulation_without_closest_promotion",
+  "authority": {
+    "build_and_run_cpu_package_contract": true,
+    "hosted_training_before_contract_pass": false,
+    "local_gpu": false,
+    "condition_8_or_later": false,
+    "rdk_or_robot": false
+  }
+}

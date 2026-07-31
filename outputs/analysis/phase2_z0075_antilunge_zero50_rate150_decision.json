@@ -1,0 +1,76 @@
+{
+  "status": "HOLD_ANTILUNGE_REGRESSED_SEED7",
+  "scope": "offline sim/data curation only; no robot, SSH, deploy, grounded replay, runtime behavior changes, or PPO training",
+  "candidate": {
+    "onnx": "policy/candidates/phase2_z0075_antilunge_zero50_rate150_20260704/candidate.onnx",
+    "onnx_sha256": "abced43cfaaa2a05f2b6576819dae0950b6a72f946d336a7f541ad0ab8c49b7c",
+    "student_npz": "policy/candidates/phase2_z0075_antilunge_zero50_rate150_20260704/student.npz",
+    "student_npz_sha256": "ff97e0b81f50628327bfad0627636e3eea24caedcee42dc5cdba2a7bd589a492",
+    "manifest": "outputs/analysis/phase2_z0075_iter5_antilunge_zero50_manifest.json",
+    "dataset_id": "45f8a46ea0430e64",
+    "dataset_samples": 50273
+  },
+  "change": "Added a zero-action teacher relabel of the iter4 seed-0 lunge trace and weighted the immediate pre-fall anti-lunge tail window on top of the iter4 control-preserving recovery manifest.",
+  "fit_metrics": {
+    "mae": 0.009158274321735254,
+    "p95_abs_error": 0.029937914575160124,
+    "max_abs_error": 0.3793411612510681,
+    "target_rate_p95_rad_s": 1.3630014657974243,
+    "target_rate_max_rad_s": 2.3472602367401123,
+    "onnx_max_abs_error": 2.980232238769531e-7,
+    "sample_weight_max": 8.0
+  },
+  "compact_boundary_screen": {
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0075,
+    "command_x": 0.08,
+    "bridge_mode": "fitted",
+    "push_magnitude_range": [0.075, 0.125],
+    "push_interval_s": [1.0, 1.5],
+    "seeds": [0, 7],
+    "results": [
+      {
+        "seed": 0,
+        "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "samples": 205,
+        "termination": "fall_or_nan",
+        "track_ratio": 1.479408799107371,
+        "mean_local_vx_m_s": 0.11835270392858968,
+        "body_pitch_p95_rad": 0.726821263909882,
+        "base_height_min_m": -0.0017801392823457718,
+        "p95_velocity_excess_rad_s": 0.0,
+        "max_velocity_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.20007977485656742,
+        "push_success_rate": 0.6666666666666666
+      },
+      {
+        "seed": 7,
+        "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "samples": 621,
+        "termination": "fall_or_nan",
+        "track_ratio": 0.6987434915096447,
+        "mean_local_vx_m_s": 0.05589947932077157,
+        "body_pitch_p95_rad": 0.27696161721199564,
+        "base_height_min_m": -0.0033532720990478992,
+        "p95_velocity_excess_rad_s": 0.0,
+        "max_velocity_excess_rad_s": 2.739999294281006,
+        "max_tracking_p95_rad": 0.18810725212097168,
+        "push_success_rate": 0.875
+      }
+    ],
+    "aggregate": {
+      "runs": 2,
+      "falls": 2,
+      "duration_complete": 0,
+      "samples_mean": 413.0,
+      "track_ratio_mean": 1.0890761453085078,
+      "mean_local_vx_m_s": 0.08712609162468063,
+      "p95_velocity_excess_mean_rad_s": 0.0,
+      "max_velocity_excess_mean_rad_s": 1.369999647140503,
+      "push_success_mean": 0.7708333333333333
+    }
+  },
+  "decision": "Do not promote. The anti-lunge zero50 labels delayed seed-0 failure relative to iter4, but seed 0 still fell at sample 205 and seed 7 regressed from the iter4 full-duration pass to a sample-621 fall.",
+  "next_recommendation": "Return to the iter2 boundary as the best compact starting point and target seed-0 late push-window pitch/base-height recovery without broad zero-action damping or loss of the seed-7 pass-control behavior.",
+  "robot_validation": "blocked"
+}

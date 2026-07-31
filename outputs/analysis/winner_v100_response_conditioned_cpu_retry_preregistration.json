@@ -1,0 +1,300 @@
+{
+  "authority": {
+    "additional_retry_authorized": false,
+    "checkpoint_selection_authorized": false,
+    "deployment_authorized": false,
+    "formal_cpu_retry_authorized": true,
+    "gate5_authorized": false,
+    "hosted_or_colab_training_authorized_now": false,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "result_authorizes": "only preparation of a separate hosted curriculum preregistration if all checks pass",
+    "robot_clearance": false
+  },
+  "composed_playground_files": {
+    "WINNER_V98_COMPOSED_SOURCE.diff": "94e3cab9c73d1f4e3cfd7f4315cf056588234a702ee352475f90053ed473ccd3",
+    "WINNER_V98_COMPOSED_SOURCE_MANIFEST.json": "932b1994b058e1f319e30737b4d563e70c12f0d9746a0fc1c91c72a51a9a051b",
+    "playground/common/randomize.py": "c6e7a48f714a2267b3b19d75ffc9ce3938350aabceb3eda61727a3c48f2d6dd8",
+    "playground/common/runner.py": "82ea4d60b96147a352c9f3d362b8198e7b03f335c0bf9cf1da858b10edbcaa66",
+    "playground/common/winner_v3_variable_configuration.py": "daab44325e6dd98b8b4054fc5c5fe7391ca9e358e7aca97999ef1a2441285ab7",
+    "playground/common/winner_v98_response_calibration_wrapper.py": "04339bf7bbe16f2721ce92bbe62c458e70c1c8a5e9bdfe02424478ebc066a7ba",
+    "playground/common/winner_v98_response_conditioned_export.py": "83c8667828a51bdb379091fbf657725410bae5e0d655273f63cf47bdc913f28c",
+    "playground/common/winner_v98_response_conditioned_ppo_networks.py": "767b0d4dc7d72d6c126eca9ed1f0497ca38214a9e2caa57c8a1e6b5cea3ad17a",
+    "playground/open_duck_mini_v2/joystick.py": "262fda69c1bbb758ae52329f90911477cd52d7a43289095cf46fca4f3cdf3843",
+    "playground/open_duck_mini_v2/runner.py": "cc9953f66f98278c937bcf071d61941dc6b16c474443c98cb176a327ffa8415b"
+  },
+  "composed_playground_manifest_sha256": "932b1994b058e1f319e30737b4d563e70c12f0d9746a0fc1c91c72a51a9a051b",
+  "correction": {
+    "actor_equations_changed": false,
+    "behavior_gate_changed": false,
+    "boundary_check": "verify protected initializers and ordered rate->actual-centered-guard->deadband graph producers; apply final-rate telemetry only to coherent golden/behavior traces",
+    "calibrator_equations_changed": false,
+    "checkpoint_container": "store the expanded actor as checkpoint-native dict so Orbax round-trip structure and numeric leaves can both be exact",
+    "graph_parity": "expose and compare the exact final bounded action before its PPO tanh-location representation; separately report the <=1.1e-5 exact-saturation mode delta",
+    "training_hyperparameters_changed": false
+  },
+  "cpu_smoke": {
+    "batch_size": 4,
+    "discounting": 0.97,
+    "entropy_cost": 0.005,
+    "episode_length": 600,
+    "golden_ticks": 1200,
+    "jax_onnx_final_cases": 256,
+    "jax_onnx_initial_cases": 64,
+    "learning_rate": 0.0003,
+    "num_envs": 4,
+    "num_evals": 2,
+    "num_minibatches": 1,
+    "num_updates_per_batch": 2,
+    "seed": 100,
+    "timesteps": 1024,
+    "unroll_length": 8,
+    "winner_v3_deviation_scale": 0.25
+  },
+  "decision": "AUTHORIZE_ONE_CONTRACT_CORRECTED_1024_STEP_CPU_SMOKE_ONLY",
+  "execution_now": {
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_locomotion_steps": 0
+  },
+  "external_binaries": {
+    "calibrator_onnx": {
+      "external_role": "Winner-v22 final normalized response encoder",
+      "sha256": "cb3380ed99b3e9d7e9000904a210227aa397db2a064aa80d8f70e77c8339783b"
+    },
+    "source_checkpoint": {
+      "external_role": "extracted archive member ground_up_tracking_tail_outputs/T2_EQUAL/2026_07_14_190026_512000",
+      "hash_mode": "recursive-posix-relative-path-and-bytes",
+      "sha256": "311ce59807ad872795dd95e4a30c626f11d3d80f1b3f78c5b2b997639da4d67e"
+    }
+  },
+  "frozen_contract": {
+    "adapter_max_normalized": 0.25,
+    "adapter_seed": 60721,
+    "calibration_context_policy_inputs": [
+      "deployable obs[115]",
+      "previous_action[14]",
+      "recurrent hidden[64]"
+    ],
+    "calibration_prefix_in_ppo_buffer": false,
+    "calibration_ticks": 250,
+    "calibrator_sha256": "cb3380ed99b3e9d7e9000904a210227aa397db2a064aa80d8f70e77c8339783b",
+    "flat_transport_feature_enabled": false,
+    "home_return_ticks": 250,
+    "locomotion_phase_reset": [
+      1.0,
+      0.0
+    ],
+    "policy_abi": {
+      "inputs": {
+        "calibration_context": [
+          1,
+          64
+        ],
+        "h_in": [
+          1,
+          64
+        ],
+        "obs": [
+          1,
+          115
+        ],
+        "previous_action": [
+          1,
+          14
+        ]
+      },
+      "outputs": {
+        "continuous_actions": [
+          1,
+          14
+        ],
+        "h_out": [
+          1,
+          64
+        ],
+        "previous_action_out": [
+          1,
+          14
+        ]
+      }
+    },
+    "protected_actor_trainable": false,
+    "protected_normalizer_trainable": false,
+    "protected_policy_sha256": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de",
+    "true_mass_com_inertia_labels_available_to_policy": false
+  },
+  "future_hosted_curriculum_not_authorized_now": {
+    "advancement": "requires a separate hash-frozen package/preregistration and the unchanged full variable-configuration behavior gate; no closest checkpoint",
+    "ppo": {
+      "batch_size": 256,
+      "discounting": 0.97,
+      "entropy_cost": 0.005,
+      "episode_length": 600,
+      "learning_rate": 0.0003,
+      "num_envs": 256,
+      "num_minibatches": 4,
+      "num_updates_per_batch": 4,
+      "seed": 100,
+      "unroll_length": 20
+    },
+    "sequence": [
+      {
+        "deviation_scale": 0.25,
+        "timesteps": 245760
+      },
+      {
+        "deviation_scale": 0.5,
+        "timesteps": 245760
+      },
+      {
+        "deviation_scale": 1.0,
+        "exports": [
+          1003520,
+          2007040
+        ],
+        "timesteps": 2007040
+      }
+    ]
+  },
+  "hypothesis": "A 250-tick deployable response calibration can condition a trainable recurrent adapter around the exact selected 512K actor, while the protected actor and its normalization remain bit-exact and graph-authoritative bounds remain the final action boundary.",
+  "pass_rule": [
+    "all source, binary, environment, and corrected composed-source hashes match",
+    "the selected 512K source checkpoint restores on CPU and expands through a bit-exact numeric and container-structure Orbax round trip",
+    "the step-zero graph reproduces all 1,200 frozen x=0/x=.08 golden ticks within 1e-6, retains exact x=0 zero action, and has <=1e-6 coherent-trace final-rate excess",
+    "the exported graph retains exact protected initializers and the frozen rate-stage then actual-centered-guard then deadband hierarchy",
+    "the exact pre-location bounded action and hidden state agree between JAX and ONNX within 1e-6; any PPO-mode delta above 1e-6 must occur only at exact graph saturation and remain <=1.1e-5",
+    "reset runs exactly 250 calibration ticks plus 250 home-return ticks outside PPO transitions, resets phase to [1,0], and produces one finite immutable 64-D context",
+    "one 1,024-step CPU PPO smoke keeps every protected leaf exact while adapter state, context, and action families each update",
+    "step-zero and step-1,024 ONNX graphs expose the exact stateful ABI and preserve exact x=0 deadband"
+  ],
+  "repository_binaries": {
+    "archive": {
+      "path": "outputs/analysis/GROUND_UP_TRACKING_TAIL_artifacts.tar.gz",
+      "sha256": "ae4c631a6ce1c0b36c3231113740acc6c1b8a463c0911ce7cad30b8f8d8ca60f"
+    },
+    "domain": {
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "c8f986ceb24863f33c1fc99170548d2e255cb6a26737d3f74762f8dcd4485a24"
+    },
+    "golden_x0": {
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/golden/T2_EQUAL_512000_x0.000.npz",
+      "sha256": "aa84f0cbd4e885f9dcc36c553c43e17030f32d0304dff2a7bf06f1f41c4cbe2e"
+    },
+    "golden_x008": {
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/golden/T2_EQUAL_512000_x0.080.npz",
+      "sha256": "0cfd9e99bf499028b5b7f285fa1964f65248795592cf9d072c4bc5aa1a56fb1c"
+    },
+    "policy": {
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/policies/T2_EQUAL_512000.onnx",
+      "sha256": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de"
+    },
+    "reference": {
+      "path": "outputs/analysis/ground_up_projected_reference_feature_table.npz",
+      "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+    },
+    "v97_result": {
+      "path": "outputs/analysis/winner_v97_mechanics_numeric_correction_result.json",
+      "sha256": "f163eb084f58b3e663d176d13d93b3481633bf09216d8b5dd10ddd0a27c13d58"
+    }
+  },
+  "retry_of": {
+    "optimizer_steps": 0,
+    "ppo_locomotion_steps": 0,
+    "ppo_subprocess_started": false,
+    "v99_failure_attribution_sha256": "d4e64864e38872299b5f721700a8d8090a6483e849b3a66e34654df6a1c038f0",
+    "v99_preregistration_sha256": "f847c533020f0d9b8643bbbadad5dae0ab34f38c1ae206867967e2a4c4ee8ea0"
+  },
+  "schema_version": "winner_v100.response_conditioned_cpu_retry_preregistration.v1",
+  "software_versions": {
+    "brax": "0.14.2",
+    "flax": "0.11.2",
+    "jax": "0.7.2",
+    "jaxlib": "0.7.2",
+    "mujoco": "3.9.0",
+    "mujoco-mjx": "3.9.0",
+    "numpy": "2.0.2",
+    "onnx": "1.22.0",
+    "onnxruntime": "1.27.0",
+    "optax": "0.2.5",
+    "orbax-checkpoint": "0.11.25",
+    "playground": "0.0.3"
+  },
+  "source_manifest_sha256": "205315d8022882794c9da5a00ba4adcab743784a53adef56d3792a2ccb680d95",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v98_response_conditioned_training_preregistration.py",
+      "sha256": "db4e846e96bbd356c9d296c39084951790a2ae2b73fa384586b91b4e89e78b8f"
+    },
+    "calibration_wrapper": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v98_response_calibration_wrapper.py",
+      "sha256": "04339bf7bbe16f2721ce92bbe62c458e70c1c8a5e9bdfe02424478ebc066a7ba"
+    },
+    "composer": {
+      "hash_mode": "lf",
+      "path": "tools/compose_winner_v98_playground.py",
+      "sha256": "75765fbd043c0d73b1078a3270b4d5d43cbf972748fe9d4576b9f249c4affa52"
+    },
+    "exporter": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v98_response_conditioned_export.py",
+      "sha256": "83c8667828a51bdb379091fbf657725410bae5e0d655273f63cf47bdc913f28c"
+    },
+    "failure_attribution_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v98_preoptimizer_failure_attribution.py",
+      "sha256": "48aed62e5496207a601a4d4c4d25294a27bd1a3479f38fdf55881b23d3554c93"
+    },
+    "integration_patch": {
+      "hash_mode": "lf",
+      "path": "patches/ground_up_response_conditioned_locomotion.patch",
+      "sha256": "ed0a064dabbb133a0f1a89ab9568fe28f6a5cc4d728070a490d949448edd57eb"
+    },
+    "network": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v98_response_conditioned_ppo_networks.py",
+      "sha256": "767b0d4dc7d72d6c126eca9ed1f0497ca38214a9e2caa57c8a1e6b5cea3ad17a"
+    },
+    "retry_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v99_response_conditioned_cpu_retry_preregistration.py",
+      "sha256": "7f7687eb04fc9b089235fb2d61887d08684716e1fa8b4f16ec74d94a2ec12989"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v98_response_conditioned_cpu_contract.py",
+      "sha256": "ecf6b03881b7c9c3cd3d9d317f8f280c85eb615056c909d2bf64ca22037d130c"
+    },
+    "v100_retry_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v100_response_conditioned_cpu_retry_preregistration.py",
+      "sha256": "1d97a81eba175e0be8ac390c2d9d5638197bf122b235f814f1c6b9240117d0d9"
+    },
+    "v6_network": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v6_dynamic_calibration_networks.py",
+      "sha256": "cfff280a1c592043d7e1849c68a3c99b05574814180506e6608f17877a5dbb90"
+    },
+    "v96_network": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v96_response_conditioned_networks.py",
+      "sha256": "b0f964340c627a199edb3be6ca89dbc6be59cdb86fa536af3d5f9f7f0e9cfe83"
+    },
+    "v99_contract_attribution_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v99_preoptimizer_contract_attribution.py",
+      "sha256": "3c0397a77cdd7c149adb462c35c97c47034514371001d7f017ef43da35a2f9a8"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V100_RESPONSE_CONDITIONED_CPU_RETRY",
+  "thresholds": {
+    "adapter_state_context_action_update_strictly_above": 0.0,
+    "coherent_golden_final_rate_excess_at_most": 1e-06,
+    "exact_pre_location_action_and_hidden_jax_onnx_max_abs_at_most": 1e-06,
+    "ppo_mode_exact_saturation_representation_max_abs_at_most": 1.1e-05,
+    "protected_parameter_update_exactly": 0.0,
+    "wall_seconds_at_most": 3600.0,
+    "zero_update_selected_and_golden_max_abs_at_most": 1e-06
+  }
+}

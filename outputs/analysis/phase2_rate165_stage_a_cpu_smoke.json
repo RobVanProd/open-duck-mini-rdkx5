@@ -1,0 +1,49 @@
+{
+  "status": "PASS_SMOKE_RUN",
+  "purpose": "tiny local CPU path check for Phase 2 Stage A rate165 warm-start; not a promoted candidate",
+  "robot_touched": false,
+  "platform": "cpu",
+  "task": "flat_terrain_backlash",
+  "env": "joystick",
+  "requested_timesteps": 1024,
+  "step_reached": 2048,
+  "elapsed_s": 90.01096588300425,
+  "returncode": 0,
+  "restore_checkpoint_path": "outputs/analysis/phase2_rate165_ppo_loc_warmstart_step0_checkpoint",
+  "behavior_prior_mlp_npz": "outputs/analysis/phase2_rate165_ppo_loc_warmstart_candidate/candidate_mlp.npz",
+  "behavior_prior_scale": -0.08,
+  "restore_policy_kl_scale": 0.05,
+  "actuator_bridge": {
+    "enabled": true,
+    "delay_min_ticks": 3,
+    "delay_max_ticks": 4,
+    "tau_min_s": 0.06,
+    "tau_max_s": 0.1,
+    "velocity_limit_min_rad_s": 2.0,
+    "velocity_limit_max_rad_s": 3.25,
+    "per_joint_variation": 0.05
+  },
+  "domain_randomization": {
+    "friction": [0.7, 1.0],
+    "frictionloss_scale": [0.97, 1.03],
+    "armature_scale": [1.0, 1.03],
+    "mass_scale": [0.97, 1.03],
+    "torso_mass_delta": [-0.03, 0.03],
+    "com_jitter_m": 0.015,
+    "qpos_jitter_rad": 0.01,
+    "actuator_gain_scale": [0.97, 1.03],
+    "leg_geometry_jitter_scale": 0.005,
+    "pushes_enabled": false
+  },
+  "reward_tail": {
+    "reward": 14.428409576416016,
+    "reward_std": 2.028057813644409
+  },
+  "artifacts": {
+    "raw_output_dir": "outputs/phase2_domain_randomization/stage_a_rate165_local_cpu_smoke/smoke_20260703T113837Z_cpu",
+    "raw_final_manifest": "outputs/phase2_domain_randomization/stage_a_rate165_local_cpu_smoke/smoke_20260703T113837Z_cpu/smoke_manifest.final.json",
+    "exported_smoke_onnx": "outputs/phase2_domain_randomization/stage_a_rate165_local_cpu_smoke/smoke_20260703T113837Z_cpu/2026_07_03_073931_2048.onnx",
+    "exported_smoke_onnx_sha256": "4a034ce3f82d91e681baab823be8e9b69d64f9ed448db6c449e73b3c79362408"
+  },
+  "next_step": "run full Stage A narrow flat/no-push DR on GPU, then gate exported checkpoints before advancing curriculum"
+}

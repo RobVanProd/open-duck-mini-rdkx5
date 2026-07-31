@@ -1,0 +1,106 @@
+{
+  "acceptance": [
+    "z=0.002 x=0.08 no-push passes compact sweep with track ratio >= 0.25 and tracking p95 <= 0.20.",
+    "z=0.002 x=0.0 no-push remains passing in the compact sweep.",
+    "Full post-training z=0.002 seed gates pass before this policy can be used as a parent for terrain escalation.",
+    "No robot validation is authorized by this recipe."
+  ],
+  "commands": {
+    "post_training_decision": {
+      "argv": [
+        "python3",
+        "tools/report_phase2_z002_tracking_margin_post_training_gates.py",
+        "<candidate_name>_post_training_seed_gates.json",
+        "--output-md",
+        "outputs/analysis/PHASE2_Z002_TRACKING_MARGIN_POST_TRAINING_GATE_DECISION.md",
+        "--output-json",
+        "outputs/analysis/phase2_z002_tracking_margin_post_training_gate_decision.json"
+      ],
+      "shell": "python3 \\\n    tools/report_phase2_z002_tracking_margin_post_training_gates.py \\\n    '<candidate_name>_post_training_seed_gates.json' \\\n    --output-md \\\n    outputs/analysis/PHASE2_Z002_TRACKING_MARGIN_POST_TRAINING_GATE_DECISION.md \\\n    --output-json \\\n    outputs/analysis/phase2_z002_tracking_margin_post_training_gate_decision.json"
+    },
+    "preferred_colab_gpu": {
+      "argv": [
+        "python3",
+        "tools/run_colab_cli_cuda_workflow.py",
+        "--workflow",
+        "phase2-z002-tracking-margin",
+        "--session",
+        "open-duck-l4",
+        "--candidate-name",
+        "phase2_z002_tracking_margin_cuda",
+        "--candidate-checkpoint-sweep",
+        "--candidate-checkpoint-sweep-commands",
+        "0.0,0.08",
+        "--candidate-checkpoint-sweep-duration",
+        "1.0",
+        "--candidate-checkpoint-sweep-jax-platform",
+        "cpu",
+        "--candidate-timeout-s",
+        "10800",
+        "--run"
+      ],
+      "shell": "python3 \\\n    tools/run_colab_cli_cuda_workflow.py \\\n    --workflow \\\n    phase2-z002-tracking-margin \\\n    --session \\\n    open-duck-l4 \\\n    --candidate-name \\\n    phase2_z002_tracking_margin_cuda \\\n    --candidate-checkpoint-sweep \\\n    --candidate-checkpoint-sweep-commands \\\n    0.0,0.08 \\\n    --candidate-checkpoint-sweep-duration \\\n    1.0 \\\n    --candidate-checkpoint-sweep-jax-platform \\\n    cpu \\\n    --candidate-timeout-s \\\n    10800 \\\n    --run"
+    }
+  },
+  "deploy_performed": false,
+  "diagnosis_status": "HOLD_Z0035_UNDER_MOVING",
+  "evidence": {
+    "comparison_decision": {
+      "excerpt": "# Phase 2 z0.002 vs z0.0035 Compact Sweep Decision\n\nStatus: `HOLD_TERRAIN_HEIGHT_LOSSES_FORWARD_PROGRESS`\n\n## Scope\n\nOffline sim only. No robot, SSH, deploy, grounded replay, or runtime behavior change was\nperformed.\n\nThis comparison re-ran selected z0.002 terrain policies through the same compact\npost-training sweep used for the z0.0035 motion-floor run:\n\n```text\ncommands: 0.0, 0.08\nduration: 1.0 s\nbridge: corrected fitted actuator bridge\nplatform: CPU closed-loop eval\nvelocity envelope: 2.0-3.25 rad/s\nmin promote vx: 0.020 m/s\nmin promote ratio: 0.25\n```\n\nThe purpose was to separate two possibilities after the z0.0035 hold:\n\n1. the compact post-training sweep is stricter than earlier z0.002 screens, or\n2. increasing terrain from z0.002 to z0.0035 is eroding forward motion.\n\n## z0.002 Reference Sweep\n\nArtifact:\n\n```text\noutputs/analysis/phase2_z002_reference_compact_sweep/\n```\n\n| policy | x=0.0 | x=0.08 | x=0.08 track ratio | x=0.08 mean vx | max pitch vel p95 | max tracking p95 |\n|---|---|---|---:|---:|---:|---:|\n| `phase2_stage_a2_gain099_20260628_candidate` | `PASS_CANDIDATE_SIM_GATE` | `HOLD_CANDIDATE_TRACKING` | 0.2504 | 0.0200 | 1.5581 | 0.2194 |\n| `stage_c0_terrain_z002_preserve_from_a2_gpu/245760` | `PASS_CANDIDATE_SIM_GATE` | `HOLD_CANDIDATE_TRACKING` | 0.3087 | 0.0247 | 1.4865 | 0.2188 |\n| `stage_c2_terrain_z002_targetrate_from_c1_gpu/163840` | `PASS_CANDIDATE_SIM_GATE` | `HOLD_CANDIDATE_TRACKING` | 0.2981 | 0.0238 | 1.4829 | 0.2201 |\n| `stage_c7_terrain_z002_gate_selected_from_c3_gpu/35120` | `PASS_CANDIDATE_SIM_GATE` | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | 0.1491 | 0.0119 | 1.3611 | 0.2079 |\n\nThe z0.002 C0/C2 policies still produce meaningful x=0.08 motion under the compact sweep,\nbut hold on the strict tracking threshold.\n\n## z0.0035 Motion-Floor Sweep\n\nArtifact:\n\n```text\noutputs/analysis/phase2_z0035_motion_floor_local_sweep/\n```\n\n| checkpoint | x=0.0 | x=0.08 | x=0.08 track ratio | x=0.08 mean vx | max pitch vel p95 | max tracking p95 |\n|---|---|---|---:|---:|---:|---:|\n| `40960` | `PASS_CANDIDATE_SIM_GATE` | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | 0.1615 | 0.0129 | 1.4383 | 0.2129 |\n| `81920` | `PASS_CANDIDATE_SIM_GATE` | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | 0.1613 | 0.0129 | 1.4444 | 0.2140 |\n| `122880` | `PASS_CANDIDATE_SIM_GATE` | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | 0.1671 | 0.0134 | 1.4431 | 0.2132 |\n\n## Interpretation\n\nThe compact sweep is strict, but it does not explain the z0.0035 hold by itself:\n\n- z0.002 C0/C2 retain x=0.08 motion: track ratio `0.298-0.309`, mean vx `0.0238-0.0247 m/s`.\n- z0.0035 drops to low forward progress: track ratio `0.161-0.167`, mean vx `0.0129-0.0134 m/s`.\n- Both are below the corrected measured velocity envelope.\n- Neither failure is caused by action saturation or velocity excess.\n\nThe terrain-height increase from z0.002 to z0.0035 is eroding forward motion before it\ncreates an over-envelope actuator problem. The z0.0035 motion-floor run is therefore not a\ngood parent for further terrain escalation.\n\n## Decision\n\nDo not escalate to z0.005 from the z0.0035 motion-floor recipe.\n\nThe next aligned training move is to return to the z0.002 moving parent, preferably C0 or\nC2, and recover the strict tracking margin without sacrificing the measured forward motion.\nAfter that, reintroduce terrain height in a smaller ramp than z0.002 -> z0.0035, or use a\ncurriculum that starts from the moving z0.002 checkpoint and only advances when both motion\nand tracking pass the compact sweep.\n\nRobot validation remains blocked.\n",
+      "path": "docs/PHASE2_Z002_VS_Z0035_COMPACT_SWEEP_DECISION.md",
+      "present": true,
+      "sha256_not_recorded": true
+    },
+    "z0035_result": {
+      "excerpt": "# Phase 2 z0.0035 Motion-Floor Result\n\nStatus: `HOLD_LOW_FORWARD_PROGRESS`\n\nThis run tested an intermediate terrain rung between the passing z0.002 roughness path and\nthe previously held z0.005 path. It was warm-started from the Phase 2 A2 checkpoint and used\nthe corrected actuator bridge.\n\n## Training Run\n\n- workflow: `phase2-z0035-motion-floor`\n- Colab session: `open-duck-l4`\n- remote run: `open_duck_colab_cli_phase2-z0035-motion-floor_20260629T225040Z`\n- task: `rough_terrain_backlash`\n- terrain heightfield z scale: `0.0035`\n- timesteps: `122880`\n- PPO envs: `64`\n- actuator bridge: enabled\n- bridge delay: `3` ticks\n- bridge velocity range: `2.0-3.25 rad/s`\n- restore checkpoint: `stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232221_491520`\n- latest ONNX: `2026_06_29_230919_122880.onnx`\n- latest ONNX sha256: `88cc2044e9de7a3b4a6f0af81124ddc3444d3911dd1a6570708a3e44720834dd`\n- training return code: `0`\n- elapsed: `925.9 s`\n\nTraining completed cleanly. The remote Colab checkpoint sweep hung, so the exported ONNX\ncheckpoints were imported locally from the partial artifact bundle and swept on local CPU.\n\n## Compact Checkpoint Sweep\n\nLocal sweep:\n\n```text\n../envs/open-duck-playground/bin/python tools/sweep_candidate_checkpoints.py \\\n  --policies <40960.onnx> <81920.onnx> <122880.onnx> \\\n  --fit-json outputs/analysis/actuator_response_fit_corrected_knee.json \\\n  --playground-path ../Open_Duck_Playground \\\n  --env-python ../envs/open-duck-playground/bin/python \\\n  --commands 0.0,0.08 \\\n  --duration 1 \\\n  --bridge-mode fitted \\\n  --mode-name fitted \\\n  --jax-platform cpu \\\n  --closed-loop-timeout-s 600 \\\n  --output-dir outputs/analysis/phase2_z0035_motion_floor_local_sweep \\\n  --run\n```\n\n| checkpoint | x=0.0 | x=0.08 | x=0.08 track ratio | x=0.08 mean vx | max pitch vel p95 | max tracking p95 |\n|---|---|---|---:|---:|---:|---:|\n| `40960` | `PASS_CANDIDATE_SIM_GATE` | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | 0.1615 | 0.0129 | 1.4383 | 0.2129 |\n| `81920` | `PASS_CANDIDATE_SIM_GATE` | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | 0.1613 | 0.0129 | 1.4444 | 0.2140 |\n| `122880` | `PASS_CANDIDATE_SIM_GATE` | `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS` | 0.1671 | 0.0134 | 1.4431 | 0.2132 |\n\nAll checkpoints stayed below the corrected measured envelope and completed the compact\nduration. None met the configured motion criteria.\n\n## Decision\n\nDo not promote this run. The z0.0035 motion-floor recipe preserves standing behavior and\nkeeps target velocity conservative, but it under-moves at x=0.08. The failure mode is not\nover-envelope actuation; it is insufficient commanded forward progress under the roughness\nrung.\n\nPer the staged terrain plan, do not escalate terrain height further from this recipe. The\nnext useful step is to re-check the z0.002 moving policy under the same post-training gate\npath and compare whether the motion loss appears between z0.002 and z0.0035, or whether the\npost-training gate path is stricter than the earlier z0.002 decision path.\n\nRobot validation remains blocked.\n",
+      "path": "docs/PHASE2_Z0035_MOTION_FLOOR_RESULT.md",
+      "present": true,
+      "sha256_not_recorded": true
+    }
+  },
+  "falsifier": "If tracking improves only by reducing x=0.08 track ratio below 0.25, stop scalar tracking-margin training and switch to a teacher-action or trust-region continuity mechanism around the moving z=0.002 policy.",
+  "key_recipe_settings": {
+    "action_rate_scale": -0.04,
+    "actuator_bridge_velocity_limit_range_rad_s": [
+      2.0,
+      3.25
+    ],
+    "actuator_tracking_scale": -0.005,
+    "command_progress_required_ratio": 0.55,
+    "command_progress_scale": 3.5,
+    "command_progress_shortfall_scale": -10.0,
+    "forward_progress_scale": 4.5,
+    "num_timesteps": 122880,
+    "ppo_clipping_epsilon": 0.015,
+    "ppo_learning_rate": 2e-06,
+    "ppo_max_grad_norm": 0.08,
+    "push_enable": false,
+    "restore_policy_kl_scale": 6.0,
+    "target_rate_scale": -0.02,
+    "terrain_hfield_z_scale": 0.002,
+    "workflow": "phase2-z002-tracking-margin"
+  },
+  "recipe_intent": [
+    "Warm-start from the z=0.002 C0 245760 checkpoint, not from scratch.",
+    "Keep terrain at z=0.002 and no pushes; this rung is about tracking margin, not harder terrain.",
+    "Use a very small PPO update with strong restore-policy KL to avoid eroding the moving gait.",
+    "Apply a mild target-rate penalty and light motion-floor terms while keeping forward progress pressure active.",
+    "Reject any policy that fixes tracking by freezing or drifting at x=0.08."
+  ],
+  "restore_checkpoint": {
+    "path": "outputs/phase2_domain_randomization/stage_c0_terrain_z002_preserve_from_a2_gpu/smoke_20260628T103743Z_gpu/2026_06_28_064431_245760",
+    "present": true
+  },
+  "robot_touched": false,
+  "root_cause_summary": [
+    "The z=0.002 C0/C2 policies still move at x=0.08 under the compact corrected-bridge sweep, with track ratio about 0.30.",
+    "The z=0.002 policies miss the strict tracking gate at about 0.219 rad, so they need tracking margin recovery.",
+    "The z=0.0035 motion-floor run drops to track ratio about 0.16, so terrain height escalation is eroding forward progress before causing any velocity-envelope excess.",
+    "The next run should recover z=0.002 tracking margin from the moving C0 parent before trying a higher terrain height again."
+  ],
+  "ssh_used": false,
+  "stage": "stage_z002_tracking_margin",
+  "status": "PASS_Z002_TRACKING_MARGIN_RECIPE_READY",
+  "supersedes_recipe": "phase2-z0035-motion-floor",
+  "training_started": false
+}

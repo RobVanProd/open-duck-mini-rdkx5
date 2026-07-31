@@ -1,0 +1,92 @@
+{
+  "status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+  "manifest": "outputs/analysis/ppo_swish_command_conditioned_manifest.json",
+  "samples": 12342,
+  "hidden_sizes": [
+    512,
+    256,
+    128
+  ],
+  "activation": "swish",
+  "saved_npz": "outputs/analysis/ppo_loc_swish_command_conditioned_candidate/candidate_mlp.npz",
+  "exported_onnx": "outputs/analysis/ppo_loc_swish_command_conditioned_candidate/candidate.onnx",
+  "train_metrics": {
+    "samples": 12342,
+    "mae": 0.010749015059249486,
+    "rmse": 0.017740417767688383,
+    "p50_abs_error": 0.00707207015399639,
+    "p95_abs_error": 0.032330500312328966,
+    "p99_abs_error": 0.06965014016021442,
+    "max_abs_error": 0.3062856213607357,
+    "pred_action_saturation_pct": 0.0
+  },
+  "target_rate": {
+    "pair_count": 12310,
+    "p50_rad_s": 0.3094171161533047,
+    "p95_rad_s": 1.9567454531809636,
+    "p99_rad_s": 3.4321695422495377,
+    "max_rad_s": 4.501909294838372
+  },
+  "loss_rows": [
+    {
+      "step": 1,
+      "loss": 0.15484118461608887
+    },
+    {
+      "step": 500,
+      "loss": 0.0006657335325144231
+    },
+    {
+      "step": 1000,
+      "loss": 0.0005702864145860076
+    },
+    {
+      "step": 1500,
+      "loss": 0.00048440988757647574
+    },
+    {
+      "step": 2000,
+      "loss": 0.00046695838682353497
+    },
+    {
+      "step": 2500,
+      "loss": 0.00040673991315998137
+    },
+    {
+      "step": 3000,
+      "loss": 0.00045483894064091146
+    },
+    {
+      "step": 3500,
+      "loss": 0.00035342294722795486
+    },
+    {
+      "step": 4000,
+      "loss": 0.00029942201217636466
+    },
+    {
+      "step": 4500,
+      "loss": 0.00034700363175943494
+    },
+    {
+      "step": 5000,
+      "loss": 0.00032621456193737686
+    }
+  ],
+  "onnx_verify": {
+    "path": "outputs/analysis/ppo_loc_swish_command_conditioned_candidate/candidate.onnx",
+    "samples_checked": 64,
+    "max_abs_error": 2.950324231969226e-07,
+    "p95_abs_error": 1.0429385616364311e-07
+  },
+  "config": {
+    "steps": 5000,
+    "batch_size": 512,
+    "learning_rate": 0.001,
+    "target_rate_scale": 0.1,
+    "target_rate_limit_rad_s": 3.75,
+    "action_scale_rad": 0.25,
+    "dt_s": 0.02,
+    "seed": 0
+  }
+}

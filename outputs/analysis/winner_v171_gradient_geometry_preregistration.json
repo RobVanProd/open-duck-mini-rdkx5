@@ -1,0 +1,83 @@
+{
+  "authority": {
+    "candidate_selection": false,
+    "gate5": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "robustness_matrix": false,
+    "torque_or_motion": false,
+    "training": false,
+    "two_one_iteration_cpu_smokes": true,
+    "v172_cpu_contract_design": false
+  },
+  "causal_reconciliation": {
+    "closed_neighbor": "V163-V165 closed parameter backtracking of the same V127 proposal direction and trainable state",
+    "new_evidence": "V170 proved a complete torque-safe gait survives the first R2 condition within a maximum 0.02235485-rad oracle action correction and with zero empty intersections",
+    "new_question": "do the actual frozen-batch reward and dense-cost actor gradients admit a nontrivial reward direction whose first-order cost derivative is nonpositive by construction?",
+    "proposal_not_repeated": "the requested dense-cost, separate-critic, derived-dual PPO-Lagrangian is exactly V127; V128 permanently closed it after opposite half/final safety outcomes"
+  },
+  "checks": {
+    "audit_source_is_v127_plus_observation_only_patch": true,
+    "control_source_is_exact_v127": true,
+    "cpu_only_no_hosted_compute_or_hardware": true,
+    "one_iteration_is_32_environment_steps": true,
+    "retention_floor_exactly_one_over_v127_cpu_iterations": true,
+    "source_checkpoint_hash_exact": true,
+    "v121_half_deployed_hash_exact": true,
+    "v127_cpu_contract_green": true,
+    "v127_hosted_continuation_closed_by_persistence": true,
+    "v163_v165_feasibility_backtracking_family_closed": true,
+    "v170_exact_oracle_first_r2_green": true
+  },
+  "decision_rule": {
+    "float32_directional_tolerance": "64*eps32*max(1,abs(pre_derivative),reward_norm*cost_norm)",
+    "green": "earn only V172's lexicographic tangent-update CPU implementation contract",
+    "hold": "close the lexicographic tangent optimizer geometry; no alternate batch, retention threshold, norm, or projection",
+    "pass_requires": [
+      "reward and cost actor gradients finite and nonzero",
+      "exact projection rule and first-order cost derivative <= tolerance",
+      "projected reward direction retains at least 1/32 of its norm",
+      "cost descent derivative equals -||g_C||^2 and is negative",
+      "instrumented V127 update is bit-exact to the uninstrumented control",
+      "step-0 and step-32 deployment contracts remain green"
+    ],
+    "retention_floor": 0.03125,
+    "retention_floor_derivation": "V127's frozen CPU proposal aggregates 32 iterations and V163 preregistered 1/32 as one average-iteration nontrivial displacement"
+  },
+  "external_paths": {
+    "audit_playground": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v171-gradient-geometry-playground-20260725",
+    "control_playground": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v127-constrained-playground-v3-20260724",
+    "source_checkpoint": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v119-extracted-20260724\\winner_v119_transition_continuation\\training\\2026_07_24_193907_1003520",
+    "v121_half_deployed": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v127-constrained-cpu-contract-20260724\\v127_deployed_0.onnx"
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "audit_manifest": "b3d302baf40cb9d8272c2c905a7f08d0907c7e6c43e9b864c4015d7310b7d332",
+    "builder": "13b0a7ddde54b48a7567b13d803d3019525e3646b1b0b5bda7ebecfdf2e2c4f0",
+    "composer": "6ecc5a459918c74182b59baf05423e6b647951df141ab09711c233b67f8e4ec8",
+    "control_manifest": "3514416307e1f12e72feb4228f50a42ae02ca91b86d9dbc339448cf1b2ac6564",
+    "geometry_helper": "dfbadab3ef4021c71c27c358135bed87307c04f53310fdf9093f6436e00008c3",
+    "patch": "0b91514bb775f5d399387bd8c5a4b9d6217a6732fa1007b7b555527babc9d159",
+    "runner": "2cbbf504192bcd6d4ce5af5035e94bcf9b457d75fcd77bdd838d2ecb622f3460",
+    "source_checkpoint": "29b6d1d707784cc49050ab4b5513c06b020ebf7cf02dba3bee304a74477348f8",
+    "v121_half_deployed": "bee1d65fa0acd08f7ab5b8a10fe66ea64b9f933d06bbd47c6def168f7e06830f",
+    "v127_cpu_preregistration": "a77c677816714a0517c70f84c56d8c6a2b731ae135696c11b15ff51caf24bc34",
+    "v127_cpu_result": "cd728eb3cf2900f038c4134e3f603106238e960046b3482d4cd2b695b5a76ed4",
+    "v127_hosted_result": "c703a5024dee3bcd32fb549e3c561c09d164d1f766c91ebc882fab7173c0e35a",
+    "v163_v165_addendum": "6eb4f078feae7e6b26da86b54ddfb57cfbde296341ddc31a4c502e72e0acf753",
+    "v170_result": "8f3d4103c9b74b7a1ec80e360861ecaadc97f71daaf23fa6d99b2ad46318f40b"
+  },
+  "method": {
+    "audit": "the identical V127 iteration plus pure observation of separate reward+entropy and conservative cost actor gradients",
+    "control": "one exact V127 iteration from V121-half, 32 environment steps, selection weight zero",
+    "cost_descent": "d_C = -g_C",
+    "deployment_graph_changed": false,
+    "halfspace": "g_C dot d <= 0",
+    "optimizer_changed_in_this_audit": false,
+    "projection": "d = d_R - max(0,g_C dot d_R)/||g_C||^2 * g_C",
+    "reward_direction": "d_R = -g_R"
+  },
+  "schema_version": "winner_v171.gradient_geometry_preregistration.v1",
+  "status": "PREREGISTERED_WINNER_V171_GRADIENT_GEOMETRY_AUDIT",
+  "stop_rule": "No behavior cells or hosted run execute in V171. Failure is decisive for this geometry; success authorizes implementation and a new CPU contract only."
+}

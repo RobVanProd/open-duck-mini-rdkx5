@@ -1,0 +1,167 @@
+{
+  "authority": {
+    "pass_authorizes_only": "a separate support-controller training preregistration",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "checks": {
+    "action_boundary_exact": true,
+    "all_stage2_gradients_nonzero": true,
+    "all_stage2_leaves_changed": true,
+    "all_values_finite": true,
+    "exact_80_episode_population": true,
+    "one_adam_update_exact": true,
+    "onnx_abi_exact": true,
+    "onnx_jax_chain_at_most_1e_7": true,
+    "onnx_previous_action_chain_exact": true,
+    "onnx_training_only_tensors_absent": true,
+    "snapshot_readback_exact": true,
+    "source_snapshot_hash_and_bytes_exact": true,
+    "source_snapshot_stage1_update_100_exact": true,
+    "source_stage1_result_passed": true,
+    "stage1_tree_bit_exact_frozen": true,
+    "stage2_masks_exact": true,
+    "valid_transition_count_nonzero": true
+  },
+  "decision": "AUTHORIZE_SUPPORT_CONTROLLER_TRAINING_PREREGISTRATION_ONLY",
+  "execution": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "robot_or_rdk_access": 0,
+    "stage2_optimizer_updates": 1
+  },
+  "failed_checks": [],
+  "proof": {
+    "action_boundary": {
+      "attempted_samples": 18251,
+      "jax_expected_sha256": "a88af62b00d7e230fb8e1806504983994f8156372edb4e0822285b8782e523ab",
+      "maximum_numpy_jax_error": 0.0,
+      "maximum_realized_numpy_error": 0.0,
+      "numpy_equals_jax_bit_exact": true,
+      "numpy_expected_sha256": "a88af62b00d7e230fb8e1806504983994f8156372edb4e0822285b8782e523ab",
+      "previous_action_sha256": "332dce956141be0783ae6d26ef8854e6fc72e94da79c29145f5e2c332a87729e",
+      "raw_sha256": "a061d805bdf5fc69cd7d09b494ca2db463963ed088f1d3839e8b70125b3092fc",
+      "realized_action_sha256": "a88af62b00d7e230fb8e1806504983994f8156372edb4e0822285b8782e523ab",
+      "realized_equals_numpy_bit_exact": true
+    },
+    "episode_receipts_sha256": "95cc50c6401b5e44904702922783ae9f2d7dfaf680f0769ee3be4dcedb1a18e7",
+    "gradient_max_abs": {
+      "action_bias": 1.3409183025360107,
+      "action_weight": 0.919160783290863,
+      "training_only_log_std": 0.01591234654188156,
+      "training_only_value_bias": 14.111574172973633,
+      "training_only_value_weight": 9.737126350402832
+    },
+    "graph_contract": {
+      "abi_exact": true,
+      "all_chain_outputs_finite": true,
+      "all_initializers_finite": true,
+      "bytes": 54896,
+      "chain_ticks": 250,
+      "forbidden_training_or_privileged_tokens": [],
+      "initializer_count": 9,
+      "inputs": [
+        {
+          "name": "obs",
+          "shape": [
+            1,
+            115
+          ]
+        },
+        {
+          "name": "previous_action",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "name": "h_in",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "jax_onnx_at_most_1e_7": true,
+      "jax_onnx_max_abs_error": 1.4551915228366852e-11,
+      "outputs": [
+        {
+          "name": "calibration_actions",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "name": "previous_action_out",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "name": "h_out",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "path": "/tmp/winner-v13-support-controller-cpu-work/winner_v13_support_controller_one_update.onnx",
+      "previous_action_out_equals_action_bit_exact": true,
+      "sha256": "2d4103cd3672dfbf065ecb5c0cc25052c369d83ef36ddb139bff76f509ae9420",
+      "training_only_tensors_absent": true
+    },
+    "loss": 454.4087219238281,
+    "loss_metrics": {
+      "entropy": -37.28169631958008,
+      "policy_loss": -2.6753671278356705e-08,
+      "ratio_max": 1.0,
+      "ratio_min": 1.0,
+      "value_loss": 908.7428588867188
+    },
+    "sampled_count": 18251,
+    "snapshot": {
+      "array_count": 26,
+      "bit_exact_readback": true,
+      "bytes": 76476,
+      "path": "/tmp/winner-v13-support-controller-cpu-work/winner_v13_support_controller_update_001.npz",
+      "sha256": "567b1f3e6499d5e29dad50d5ccc47e7e91e906c93465d31cf080ae464347190a"
+    },
+    "source_snapshot_bytes": 189027,
+    "source_snapshot_sha256": "8c1392c738eddfb098e61c1a6ae2f863eda883e1eba6ac546aef695da6f163af",
+    "stage2_leaf_max_abs_delta": {
+      "action_bias": 9.999933536164463e-05,
+      "action_weight": 9.999934263760224e-05,
+      "training_only_log_std": 0.00010013580322265625,
+      "training_only_value_bias": 9.999933536164463e-05,
+      "training_only_value_weight": 9.999934263760224e-05
+    },
+    "valid_transition_count": 18243
+  },
+  "repository_attribution": {
+    "artifact_zip_bytes": 123714,
+    "artifact_zip_sha256": "27968d3dba7f316cf6eaf03c625dc808d030d080e2ac7a555bf549cc8bbaaa59",
+    "contract_lf_sha256": "bd65e479453641be1ddef0686712c129f1f90ff15ff09d66dd5cd6187888c941",
+    "github_artifact_digest": "sha256:27968d3dba7f316cf6eaf03c625dc808d030d080e2ac7a555bf549cc8bbaaa59",
+    "github_artifact_id": 8492842757,
+    "github_artifact_name": "winner-v13-support-controller-cpu-29824703022",
+    "github_run_attempt": 1,
+    "github_run_head_sha": "a921f00e73a09a41758545726f05fb43836195ce",
+    "github_run_id": 29824703022,
+    "importer_lf_sha256": "105f0df4dbec29d9b9afcba2e34cf4291afdd0e5ddd0a133c189e56e53046b83",
+    "raw_result_receipt_sha256": "0441f66fdad635c05df29b038492a6376f32c52933d814e7c13c5495f4a5a804",
+    "raw_result_sha256": "bcbea6f74cdc598fff3d18dca5aae6eb758419f3db149b8ff9528f022d8897f9",
+    "repository": "RobVanProd/open-duck-mini-rdkx5",
+    "runner_lf_sha256": "969c65c34f6f878a8399dc3d7120efdb0edb62c42ca28d0e055156bad0fa0c90",
+    "workflow_lf_sha256": "45ee02a230bb225b264969a9461cd78dc9e7dbed208b2a30421bd837f9740735"
+  },
+  "schema_version": "winner_v13.support_controller_cpu_result.v1",
+  "sources": {
+    "contract_lf_sha256": "bd65e479453641be1ddef0686712c129f1f90ff15ff09d66dd5cd6187888c941",
+    "runner_lf_sha256": "969c65c34f6f878a8399dc3d7120efdb0edb62c42ca28d0e055156bad0fa0c90",
+    "stage1_result_lf_sha256": "45e12b9993ce5c8f9811af7350ed3198f9376d0d4ea9b25de8b1aee608a5bcc7"
+  },
+  "status": "PASS_WINNER_V13_SUPPORT_CONTROLLER_CPU_CONTRACT"
+}

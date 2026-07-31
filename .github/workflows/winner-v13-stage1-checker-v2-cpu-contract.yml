@@ -1,0 +1,81 @@
+name: Winner v13 Stage-1 checker-v2 CPU contract
+
+on:
+  push:
+    branches:
+      - codex/winner-v4-response-contract
+    paths:
+      - outputs/analysis/winner_v13_stage1_checker_v2_cpu_contract.json
+      - outputs/analysis/WINNER_V13_STAGE1_CHECKER_V2_CPU_CONTRACT_20260721.md
+
+permissions:
+  contents: read
+
+concurrency:
+  group: winner-v13-stage1-checker-v2-cpu-contract
+  cancel-in-progress: false
+
+jobs:
+  cpu-contract:
+    name: Zero-cell same-input checker proof
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Reject workflow reruns
+        run: test "${{ github.run_attempt }}" = "1"
+
+      - name: Checkout frozen checker contract
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up exact Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12.13"
+
+      - name: Install exact CPU environment
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            "jax[cpu]==0.7.2" \
+            "jaxlib==0.7.2" \
+            "numpy==2.0.2" \
+            "onnx==1.22.0" \
+            "onnxruntime==1.27.0" \
+            "pytest==8.4.2"
+
+      - name: Verify frozen checker package
+        run: |
+          python -m pytest -q \
+            tests/test_winner_v13_stage1_checker_v2_cpu_contract.py
+
+      - name: Run zero-cell same-input checker proof
+        run: |
+          python tools/run_winner_v13_stage1_checker_v2_cpu_contract.py \
+            --work-root /tmp/winner-v13-stage1-checker-v2-work \
+            --output /tmp/winner-v13-stage1-checker-v2-result.json \
+            --offline-cpu-only \
+            --zero-cell-checker-contract-authorized
+
+      - name: Hash checker result
+        if: always()
+        run: |
+          if test -f /tmp/winner-v13-stage1-checker-v2-result.json; then
+            sha256sum /tmp/winner-v13-stage1-checker-v2-result.json \
+              | tee /tmp/winner-v13-stage1-checker-v2-result.sha256
+          fi
+
+      - name: Upload only checker evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: winner-v13-stage1-checker-v2-cpu-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 14
+          compression-level: 6
+          path: |
+            /tmp/winner-v13-stage1-checker-v2-result.json
+            /tmp/winner-v13-stage1-checker-v2-result.sha256
+            /tmp/winner-v13-stage1-checker-v2-work/winner_v13_stage1_checker_v2_zero_cell.onnx

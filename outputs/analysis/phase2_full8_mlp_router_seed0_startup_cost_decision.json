@@ -1,0 +1,78 @@
+{
+  "status": "HOLD_FULL8_MLP_ROUTER_SEED0_FIX_REGRESSES_SEED5",
+  "no_robot_tests": true,
+  "no_ssh": true,
+  "no_deploy": true,
+  "no_grounded_replay": true,
+  "runtime_behavior_changed": false,
+  "gate_npz": "outputs/analysis/phase2_full8_mlp_router_gate_seed0_startup_cost/gate_mlp.npz",
+  "gate_npz_sha256": "e663f806af55dde33295b169a445551515d8435da82b623738523fb2904f4861",
+  "candidate": "outputs/analysis/phase2_full8_mlp_router_seed0_startup_cost_candidate/candidate.onnx",
+  "candidate_sha256": "b4a7e338eae789803ad132459df9e1b1b98c36172bed5845f8bbeff10fcaab36",
+  "onnx_verify": "outputs/analysis/phase2_full8_mlp_router_seed0_startup_cost_candidate/onnx_verify.json",
+  "onnx_verify_sha256": "36c30e1c85b261da294d2ae1329f9bd37e271c2bb61540fae0049b4cfa96c574",
+  "separability": {
+    "status": "PASS_MLP_ROUTER_SEPARABLE",
+    "test_balanced_accuracy_pct": 87.14,
+    "test_positive_selected_pct": 76.67,
+    "test_negative_false_selected_pct": 2.38,
+    "extra_negative_first_ticks": 80,
+    "extra_negative_weight": 50.0
+  },
+  "closed_loop_screen": {
+    "policy_label": "full8_mlp_router_seed0_startup_cost",
+    "command_x": 0.08,
+    "task": "rough_terrain_backlash",
+    "bridge_mode": "fitted",
+    "terrain_hfield_z_scale": 0.0075,
+    "reset_mode": "home-support",
+    "eval_push_enable": true,
+    "seeds": [
+      {
+        "seed": 0,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "samples": 750,
+        "mean_local_vx_m_s": 0.02977095740805574,
+        "track_ratio": 0.37213696760069676,
+        "body_pitch_p95_rad": 0.18866949634856367,
+        "base_height_min_m": 0.15810194611549377,
+        "max_pitch_vel_p95_rad_s": 1.6014546155929565,
+        "max_pitch_vel_limit_excess_rad_s": 0.0,
+        "max_pitch_vel_max_limit_excess_rad_s": 0.0
+      },
+      {
+        "seed": 5,
+        "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "samples": 158,
+        "mean_local_vx_m_s": 0.12981324028547947,
+        "track_ratio": 1.6226655035684934,
+        "body_pitch_p95_rad": 0.8236707022417008,
+        "base_height_min_m": 0.014948488213121891,
+        "max_pitch_vel_p95_rad_s": 1.600010097026825,
+        "max_pitch_vel_limit_excess_rad_s": 0.0,
+        "max_pitch_vel_max_limit_excess_rad_s": 0.0
+      },
+      {
+        "seed": 7,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "samples": 750,
+        "mean_local_vx_m_s": 0.02750028187209197,
+        "track_ratio": 0.3437535234011496,
+        "body_pitch_p95_rad": 0.1894999335227119,
+        "base_height_min_m": 0.15810194611549377,
+        "max_pitch_vel_p95_rad_s": 1.5883725881576538,
+        "max_pitch_vel_limit_excess_rad_s": 0.0,
+        "max_pitch_vel_max_limit_excess_rad_s": 0.0
+      }
+    ],
+    "passes": 2,
+    "runs": 3,
+    "falls": 1,
+    "mean_track_ratio": 0.7795,
+    "mean_vx_m_s": 0.0624,
+    "p95_velocity_excess_rad_s": 0.0,
+    "max_velocity_excess_rad_s": 0.0
+  },
+  "decision": "The seed-0 startup correction fixed the previous seed-0 regression but shifted the closed-loop failure to seed 5. Do not promote this candidate or begin domain-randomization training from it.",
+  "recommended_next": "Build a multi-constraint closed-loop-aware router objective that preserves seed-0 startup as branch A while preserving seed-5 startup/trajectory as branch B, then hard-screen the composed ONNX before promotion."
+}

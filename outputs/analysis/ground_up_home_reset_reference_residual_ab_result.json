@@ -1,0 +1,17 @@
+{
+  "schema_version": "ground_up_home_reset_reference_residual_ab_result.v1",
+  "status": "NOMINAL_GAIT_FOUND_NO_HARDWARE_READY_WINNER",
+  "reset_mode": "home-support",
+  "training_authorized": false,
+  "robot_clearance": false,
+  "x0074": {
+    "A0_3M": {"source_sha256": "f8d8f6158a0912970997195570ab9af6ea2c9a175cb69370857b763d9e85f898", "passes": 2, "required": 2, "body_forward_progress_m": 0.05005663893185556, "mean_body_vx_m_s": 0.04634873975171811, "contact_transitions": [8, 7]},
+    "A0_4M": {"source_sha256": "28485134ec7955226aaaa2683c62d3455d4c8e51e663a185cb5a7578c3e5a87e", "passes": 2, "required": 2, "body_forward_progress_m": 0.043586768800159915, "mean_body_vx_m_s": 0.04035811925940733, "contact_transitions": [10, 7]},
+    "A1_3M": {"source_sha256": "3dfabedb6ef110c6ed6f0014a9d79e02690638007988db64b9bec56c06c77701", "passes": 2, "required": 2, "body_forward_progress_m": 0.055993106834357605, "mean_body_vx_m_s": 0.05184546929107186, "contact_transitions": [4, 5]},
+    "A1_4M": {"source_sha256": "49b6c949572a79db015b5c064f1c5ffe64c8bee6e60ac18a3d34b36f26c87a4f", "passes": 2, "required": 2, "body_forward_progress_m": 0.06910228196531534, "mean_body_vx_m_s": 0.06398359441232902, "command_ratio": 0.864643167734176, "contact_transitions": [2, 3], "max_action_saturation_pct": 0.0, "max_rate_excess_rad_s": 4.239999294281006, "pitch_tracking_p95_rad": 0.3574021100997925, "candidate_gate": "HOLD_CANDIDATE_TRACKING"}
+  },
+  "x008": {"passes": 0, "runs": 8, "failure": "OUT_OF_DISTRIBUTION_COMMAND_NORMALIZATION_AND_ACTION_SATURATION"},
+  "normalizer_evidence": {"command_x_mean": 0.07400000095367432, "command_x_std": 9.999999974752427e-7, "x008_normalized_shift_approx": 6000.0},
+  "decision": {"prior_no_nominal_gait_claim_superseded": true, "full_winner": false, "next_diagnostic": "A1_4M measured per-joint action-rate projection at x=0.074", "future_training_requirements": ["nondegenerate_command_distribution", "measured_per_joint_action_rate_projection_inside_training"]},
+  "execution": {"local_cpu_only": true, "colab_access": false, "gpu_access": false, "rdk_x5_access": false, "robot_access": false}
+}

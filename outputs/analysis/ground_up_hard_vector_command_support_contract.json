@@ -1,0 +1,187 @@
+{
+  "all_checks": {
+    "aggressive_first_tick_hits_each_bound": true,
+    "all_finite": true,
+    "all_within_frozen_support": true,
+    "eight_tick_chain_respects_every_joint_bound": true,
+    "export_self_check_passed": true,
+    "first_tick_reference_is_bounded_from_home_zero": true,
+    "home_motor_target_exact": true,
+    "info_history_is_realized_action": true,
+    "invalid_dynamics_rejected": true,
+    "nondegenerate_std": true,
+    "other_command_axes_zero": true,
+    "per_joint_target_delta_bounded": true,
+    "returned_observation_has_realized_targets": true,
+    "returned_observation_is_realized_action": true,
+    "reward_and_state_finite": true,
+    "sampled_reset_command_in_support": true,
+    "state_output_equals_applied_action": true,
+    "stateful_interface_exact": true,
+    "zero_applied_action_history": true,
+    "zero_reset_velocity": true
+  },
+  "artifacts": {
+    "network_source": {
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/patches/reference_residual_hard_vector_ppo_networks.py",
+      "sha256": "546f375fa3c2f34158f49f1ac07cdc5ff6dc41d1a94322f4334bd48835911630"
+    },
+    "runner_patch": {
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/patches/ground_up_hard_vector_command_support.patch",
+        "sha256": "900e65beaa4aa714ec352a527bf3f1a85888c0c76dab8d4cbef2352fa4986875"
+    }
+  },
+  "environment": {
+    "action_scale": 0.25,
+    "checks": {
+      "aggressive_first_tick_hits_each_bound": true,
+      "all_finite": true,
+      "all_within_frozen_support": true,
+      "home_motor_target_exact": true,
+      "info_history_is_realized_action": true,
+      "nondegenerate_std": true,
+      "other_command_axes_zero": true,
+      "per_joint_target_delta_bounded": true,
+      "returned_observation_has_realized_targets": true,
+      "returned_observation_is_realized_action": true,
+      "reward_and_state_finite": true,
+      "sampled_reset_command_in_support": true,
+      "zero_applied_action_history": true,
+      "zero_reset_velocity": true
+    },
+    "command_x": {
+      "count": 4096,
+      "max": 0.07999972999095917,
+      "mean": 0.07698756456375122,
+      "min": 0.07400134205818176,
+      "std": 0.0017442511161789298
+    },
+    "control_dt": 0.02,
+    "max_target_delta_rad": [
+      0.10479999333620071,
+      0.10479999333620071,
+      0.029999999329447746,
+      0.029999999329447746,
+      0.03500000014901161,
+      0.10479999333620071,
+      0.10479999333620071,
+      0.10479999333620071,
+      0.10479999333620071,
+      0.10479999333620071,
+      0.10479999333620071,
+      0.02499999850988388,
+      0.019999999552965164,
+      0.02499999850988388
+    ],
+    "measured_first_applied_action": [
+      0.41919997334480286,
+      0.41919994354248047,
+      0.11999988555908203,
+      0.11999988555908203,
+      0.1400001049041748,
+      0.41919997334480286,
+      0.41919997334480286,
+      0.41919997334480286,
+      0.41919997334480286,
+      0.41919997334480286,
+      0.41919997334480286,
+      0.09999990463256836,
+      0.07999992370605469,
+      0.09999990463256836
+    ],
+    "measured_first_target_delta_rad": [
+      0.10479998993873596,
+      0.10479998898506165,
+      0.029999976158142094,
+      0.030000001907348528,
+      0.035000046730041534,
+      0.10479999333620071,
+      0.10479999333620071,
+      0.10479999333620071,
+      0.10479999333620071,
+      0.10479999470710755,
+      0.10479999572038651,
+      0.024999966621398917,
+      0.019999929428100582,
+      0.024999972343444865
+    ],
+    "velocity_limits_rad_s": [
+      5.239999771118164,
+      5.239999771118164,
+      1.5,
+      1.5,
+      1.75,
+      5.239999771118164,
+      5.239999771118164,
+      5.239999771118164,
+      5.239999771118164,
+      5.239999771118164,
+      5.239999771118164,
+      1.25,
+      1.0,
+      1.25
+    ]
+  },
+  "execution": {
+    "colab_access": false,
+    "jax_backend": "cpu",
+    "jax_devices": [
+      "TFRT_CPU_0"
+    ],
+    "local_gpu_access": false,
+    "rdk_access": false,
+    "robot_access": false
+  },
+  "interpretation": "This proves the CPU software transition and stateful export contract only. It is not training evidence, policy qualification, or robot clearance.",
+  "onnx": {
+    "checks": {
+      "eight_tick_chain_respects_every_joint_bound": true,
+      "export_self_check_passed": true,
+      "first_tick_reference_is_bounded_from_home_zero": true,
+      "invalid_dynamics_rejected": true,
+      "state_output_equals_applied_action": true,
+      "stateful_interface_exact": true
+    },
+    "export_self_check": {
+      "max_action_delta": [
+        0.41919997334480286,
+        0.41919997334480286,
+        0.11999999731779099,
+        0.11999999731779099,
+        0.14000000059604645,
+        0.41919997334480286,
+        0.41919997334480286,
+        0.41919997334480286,
+        0.41919997334480286,
+        0.41919997334480286,
+        0.41919997334480286,
+        0.09999999403953552,
+        0.07999999821186066,
+        0.09999999403953552
+      ],
+      "max_action_error": 2.9802322387695312e-08,
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_hard_vector_command_support_step0.onnx",
+      "stateful_hard_vector": true
+    },
+    "graph_name": "open_duck_reference_residual_hard_vector_final_action",
+    "inputs": [
+      "obs",
+      "previous_action"
+    ],
+    "max_chain_bound_excess": 0.0,
+    "max_first_reference_error": 1.4901161193847656e-08,
+    "max_state_output_error": 0.0,
+    "outputs": [
+      "continuous_actions",
+      "previous_action_out"
+    ],
+    "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_hard_vector_command_support_step0.onnx",
+    "sha256": "5bd19996c8ed9626fe4b6e2b13128d5fbde259b2b247488014119b0e20b7eb72"
+  },
+  "pinned_playground": {
+    "commit": "b9be205ac64488c23504ca42e5ec790337adeec3",
+    "root": "/tmp/ground_up_hard_vector_contract_321018"
+  },
+  "schema_version": "ground_up_hard_vector_command_support_contract.v1",
+  "status": "PASS_CPU_HARD_VECTOR_COMMAND_SUPPORT_CONTRACT"
+}

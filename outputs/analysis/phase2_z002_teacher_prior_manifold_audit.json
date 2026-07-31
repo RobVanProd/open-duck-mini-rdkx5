@@ -1,0 +1,100 @@
+{
+  "status": "HOLD_TEACHER_PRIOR_NOT_ROBUST",
+  "generated_at": "2026-06-30T06:20:00Z",
+  "teacher_policy": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate.onnx",
+  "teacher_npz": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz",
+  "command_x": 0.08,
+  "duration_s": 3.0,
+  "bridge_mode": "fitted",
+  "seeds": [0, 1, 2, 3, 4, 5, 6, 7],
+  "per_seed": [
+    {
+      "seed": 0,
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "samples": 150,
+      "mean_local_vx": 0.0209,
+      "track_ratio": 0.2617,
+      "max_tracking_p95": 0.1946,
+      "max_pitch_vel_p95": 1.6881
+    },
+    {
+      "seed": 1,
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 33,
+      "mean_local_vx": 0.0172,
+      "track_ratio": 0.2156,
+      "max_tracking_p95": 0.2753,
+      "max_pitch_vel_p95": 1.2187
+    },
+    {
+      "seed": 2,
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "samples": 150,
+      "mean_local_vx": 0.0076,
+      "track_ratio": 0.0953,
+      "max_tracking_p95": 0.1157,
+      "max_pitch_vel_p95": 0.9884
+    },
+    {
+      "seed": 3,
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "samples": 150,
+      "mean_local_vx": -0.0092,
+      "track_ratio": -0.1145,
+      "max_tracking_p95": 0.1158,
+      "max_pitch_vel_p95": 0.9090
+    },
+    {
+      "seed": 4,
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "samples": 150,
+      "mean_local_vx": 0.0238,
+      "track_ratio": 0.2970,
+      "max_tracking_p95": 0.1763,
+      "max_pitch_vel_p95": 1.5844
+    },
+    {
+      "seed": 5,
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "samples": 150,
+      "mean_local_vx": 0.0294,
+      "track_ratio": 0.3681,
+      "max_tracking_p95": 0.1874,
+      "max_pitch_vel_p95": 1.6658
+    },
+    {
+      "seed": 6,
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "samples": 150,
+      "mean_local_vx": 0.0096,
+      "track_ratio": 0.1202,
+      "max_tracking_p95": 0.1747,
+      "max_pitch_vel_p95": 1.6134
+    },
+    {
+      "seed": 7,
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 34,
+      "mean_local_vx": 0.0133,
+      "track_ratio": 0.1660,
+      "max_tracking_p95": 0.3041,
+      "max_pitch_vel_p95": 1.6187
+    }
+  ],
+  "distribution": {
+    "runs": 8,
+    "falls": 2,
+    "duration_complete": 6,
+    "track_ratio_mean": 0.1762,
+    "vx_mean_m_s": 0.0141,
+    "max_vel_excess_mean": 0.0,
+    "single_support_mean_pct": 29.6845,
+    "double_support_mean_pct": 67.8605
+  },
+  "decision": "Do not answer the teacher-continuity hold by simply increasing the same behavior-prior MLP scale. Build or query a stronger source-VX/live-oracle teacher manifold first.",
+  "robot_tests_run": false,
+  "ssh_run": false,
+  "deploy_run": false,
+  "runtime_behavior_changed": false,
+  "candidate_promoted": false
+}

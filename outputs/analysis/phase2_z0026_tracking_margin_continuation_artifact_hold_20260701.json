@@ -1,0 +1,37 @@
+{
+  "recorded_at": "2026-07-01T23:58:00Z",
+  "status": "HOLD_COLAB_ARTIFACT_UNRECOVERED",
+  "session": "open-duck-a100-phase2-z0026-tc2",
+  "workflow": "phase2-z002-teacher-continuity",
+  "restore_checkpoint_remote": "/content/phase2_restore_tc_81920/2026_07_01_224518_81920",
+  "restore_checkpoint_local_tar": {
+    "path": "outputs/analysis/colab_cli_downloads/phase2_z0026_teacher_continuity_81920_restore.tar.gz",
+    "sha256": "032ff4e448ab832a74a0872e3edc92e0f505d6035ddaecf381410d89fcca9263"
+  },
+  "recipe_overrides": {
+    "terrain_hfield_z_scale": 0.0026,
+    "num_timesteps": 40960,
+    "actuator_tracking_scale": -0.0075,
+    "forward_progress_scale": 4.8,
+    "command_progress_scale": 3.8,
+    "command_progress_shortfall_scale": -11,
+    "artifact_checkpoint_mode": "all"
+  },
+  "exec_log": "outputs/analysis/colab_cli/open-duck-a100-phase2-z0026-tc2-phase2-z002-teacher-continuity-20260701T232551Z/exec_remote.log",
+  "transcript_selected_policy": "/content/open_duck_training_phase2_z002_teacher_continuity_cli/smoke_20260701T232622Z_gpu/2026_07_01_233827_122880.onnx",
+  "transcript_selection_status": "HOLD_PARTIAL_CANDIDATE_CHECKPOINT",
+  "artifact_bundle_remote": "/content/open_duck_colab_cli_phase2-z002-teacher-continuity_20260701T232618Z_artifacts.tar.gz",
+  "artifact_recovered": false,
+  "authoritative_for_promotion": false,
+  "authoritative_for_recipe_selection": false,
+  "interpretation": [
+    "Training and compact sweep appear to have returned successfully in the exec transcript.",
+    "The artifact bundle, sweep JSON, checkpoint directories, ONNX files, and training summary were not recovered.",
+    "This is a Colab transport/artifact hold, not a model result."
+  ],
+  "next_recommendation": "Repeat continuation only with artifact capture that does not depend on the session surviving after command return; use the preserved 81920 checkpoint as the trustworthy restore point.",
+  "robot_touched": false,
+  "ssh_performed": false,
+  "deploy_performed": false,
+  "grounded_replay_performed": false
+}

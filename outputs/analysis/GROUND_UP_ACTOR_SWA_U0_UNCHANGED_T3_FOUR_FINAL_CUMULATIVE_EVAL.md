@@ -1,0 +1,24 @@
+# Ground-Up Policy Evaluation
+
+status: `PASS_GAIT_EMERGENCE_CHECKPOINT`
+execution: `CPU_ONLY`
+
+## Aggregate
+
+- runs: `6`
+- moving_runs: `6`
+- zero_command_runs: `0`
+- moving_emergence_pass: `True`
+- zero_command_finite_recorded: `True`
+- checkpoint_emergence_pass: `True`
+
+## Runs
+
+| command x | seed | evaluator | emergence | termination | dx m | transitions | reasons |
+|---:|---:|---|---|---|---:|---:|---|
+| 0.074 | 100 | `HOLD_CANDIDATE_TRACKING` | `True` | `duration_complete` | 1.1378425684408284 | 154 | none |
+| 0.074 | 101 | `HOLD_CANDIDATE_TRACKING` | `True` | `duration_complete` | 1.1378425684408284 | 154 | none |
+| 0.077 | 100 | `HOLD_CANDIDATE_TRACKING` | `True` | `duration_complete` | 1.1644559783255681 | 161 | none |
+| 0.077 | 101 | `HOLD_CANDIDATE_TRACKING` | `True` | `duration_complete` | 1.1644559783255681 | 161 | none |
+| 0.08 | 100 | `PASS_CANDIDATE_SIM_GATE` | `True` | `duration_complete` | 1.2361681682080963 | 153 | none |
+| 0.08 | 101 | `PASS_CANDIDATE_SIM_GATE` | `True` | `duration_complete` | 1.2361681682080963 | 153 | none |

@@ -1,0 +1,57 @@
+{
+  "attribution": {
+    "attempt_decision_weight": 0,
+    "changed_python_files": [
+      "playground/open_duck_mini_v2/runner.py"
+    ],
+    "correction": "when and only when winner_t19_support_trainthrough is true, the inherited Winner-v3 selector validates T19's frozen rate vector; all other branches retain their old selector",
+    "failure_class": "PRE_ENVIRONMENT_RATE_SELECTOR_CONFLICT",
+    "hosted_compute_units": 0,
+    "old_v3_rule": "winner_v119_train_transition_match selects V121's derived rate vector before the later T19 validator requires T19's full measured rate vector",
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_behavior_cells": 0
+  },
+  "attribution_sha256": "87856b0155b814cdd5ad1add9241b0925456dfb06cb4118c490826b4b09a16ad",
+  "checks": {
+    "correction_changes_only_open_duck_runner": true,
+    "event_writer_contains_header_only": true,
+    "failure_is_exact_rate_selector": true,
+    "failure_precedes_environment_construction": true,
+    "formal_result_was_not_written": true,
+    "no_checkpoint_or_onnx_was_written": true,
+    "old_selector_contains_both_incompatible_validators": true,
+    "optimizer_and_behavior_weight_zero": true
+  },
+  "decision": "PREREGISTER_T20_RATE_SELECTOR_RECOVERY",
+  "failed_checks": [],
+  "inputs": {
+    "header_only_event": {
+      "bytes": 40,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t20_support_trainthrough_one_update_v1\\smoke\\events.out.tfevents.1785100828.WinLSD",
+      "sha256": "b4f3d07ba91525ce8bf9328f647bc295ccd8b280f9631c9cc9d094f4119fee2e"
+    },
+    "preregistration": {
+      "bytes": 14068,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t20_support_trainthrough_one_update_preregistration.json",
+      "sha256": "90be9dbd6af8a5a01f92bf0bfb0303e4f4b17c24bacb1bec94694fbf4b9f4108"
+    },
+    "training_log": {
+      "bytes": 683,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t20_support_trainthrough_one_update_v1\\training.log",
+      "sha256": "94beb266dd9459ea75ea24df5af63d5b929b2f7a23920891c63421cbe2d1e779"
+    },
+    "v3_runner": {
+      "bytes": 18540,
+      "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v3\\playground\\open_duck_mini_v2\\runner.py",
+      "sha256": "babe047a217da913b61792397ebf575116c96065cc1b68af871ab19b770a0f40"
+    },
+    "v4_manifest": {
+      "bytes": 5190,
+      "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v4\\T19_COMPOSED_SOURCE_MANIFEST.json",
+      "sha256": "661dc52671da94d6b48e6115ef99273f18bcd30104ddd5b725333bb28ef2456d"
+    }
+  },
+  "schema_version": "open_duck.t20_preoptimizer_rate_selector_attribution.v1",
+  "status": "PASS_T20_PREOPTIMIZER_RATE_SELECTOR_ATTRIBUTION"
+}

@@ -1,0 +1,74 @@
+{
+  "authority": {
+    "pass_authorizes_only": "a fresh corrected Stage-1 v2 preregistration",
+    "robot_clearance": false
+  },
+  "correction": {
+    "action_semantics": "A zero action head produces exact zero only when previous_action permits it; otherwise the frozen slew projection returns a bounded step toward zero.",
+    "cases": 256,
+    "comparison": "ONNX and JAX receive the identical observation, externally realized previous_action, and h_in on every independent case",
+    "learning_rate_for_fresh_run": 0.0001,
+    "maximum_error": 1e-07,
+    "seed": 131314,
+    "serialization": "all comparison checks are converted to native bool"
+  },
+  "decision": "AUTHORIZE_ONE_ZERO_CELL_CHECKER_PROOF_ONLY",
+  "execution_now": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0,
+    "simulation_cells": 0
+  },
+  "pass_rule": "All same-input action/state checks, standard deployable graph checks, and the correct learning-rate assertion must pass.",
+  "schema_version": "winner_v13.stage1_checker_v2_cpu_contract.v2",
+  "source_manifest_sha256": "31fe2eb1dc1d4261679fadc4f6419b6af1b9a6f6d9e6e7b9d9e1a6bc0548df24",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v13_stage1_checker_v2_cpu_contract.py",
+      "sha256": "e04e34f01d24f20126ad4b5e9c74cbeb98c55bdd563016cfffffc8317242ba6b"
+    },
+    "invalid_attribution": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v13_normalized_response_stage1_invalid_attribution.json",
+      "sha256": "62fbbab025d9d700e066752c8ae3b7ae8a72985100e0794cb39eb20d875a1a17"
+    },
+    "network": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_decomposed_backend_networks.py",
+      "sha256": "f463223a33f80baf81b2604e0df22c647660f2752a7ca60b8c75a3441460d015"
+    },
+    "onnx_checker": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v13_stage1_checker_v2_cpu_contract.py",
+      "sha256": "bef895b67706d2e6327c4b282dd486d15a94c193e6d921ec91a9fa80b4e76013"
+    },
+    "serialization_failure_attribution": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v13_stage1_checker_v2_cpu_serialization_failure_attribution.json",
+      "sha256": "1356640d78ef176371deb95f7d09dac1d2abb8309b2d71ff77dfd41bc73722ea"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v13_stage1_checker_v2_cpu_contract.py",
+      "sha256": "ff52f85fabfbcb1d6e0dabcde95367ce1c85866732c907ab7dc58f31e407709d"
+    },
+    "v13_primitives": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v13_normalized_calibrator_training.py",
+      "sha256": "b57ae2823cff90bfd8d78317adb1dfe9607bcae069a4d985863144b4e12ec3ca"
+    },
+    "workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v13-stage1-checker-v2-cpu-contract.yml",
+      "sha256": "6967fb4cb2fdf2469ca4f75fd8a514d185bfb3feedfe6d91affd976b1491ecae"
+    }
+  },
+  "status": "FROZEN_WINNER_V13_STAGE1_CHECKER_V2_CPU_CONTRACT"
+}

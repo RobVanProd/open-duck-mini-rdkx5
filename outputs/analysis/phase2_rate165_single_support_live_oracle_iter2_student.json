@@ -1,0 +1,114 @@
+{
+  "activation": "swish",
+  "config": {
+    "batch_size": 1024,
+    "learning_rate": 0.0007,
+    "seed": 16502,
+    "steps": 6000,
+    "target_rate_limit_rad_s": 1.65,
+    "target_rate_scale": 0.1
+  },
+  "context_hidden_sizes": [
+    64
+  ],
+  "context_indices": [
+    6,
+    97,
+    98,
+    99,
+    100
+  ],
+  "exported_onnx": "outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_student/candidate.onnx",
+  "loss_rows": [
+    {
+      "loss": 0.24003615975379944,
+      "step": 1
+    },
+    {
+      "loss": 0.0003818804689217359,
+      "step": 500
+    },
+    {
+      "loss": 0.00030539039289578795,
+      "step": 1000
+    },
+    {
+      "loss": 0.0002096479875035584,
+      "step": 1500
+    },
+    {
+      "loss": 0.00018685338727664202,
+      "step": 2000
+    },
+    {
+      "loss": 0.00015182213974185288,
+      "step": 2500
+    },
+    {
+      "loss": 0.00018705417460296303,
+      "step": 3000
+    },
+    {
+      "loss": 0.0002050080947810784,
+      "step": 3500
+    },
+    {
+      "loss": 0.00012753310147672892,
+      "step": 4000
+    },
+    {
+      "loss": 0.00014697042934130877,
+      "step": 4500
+    },
+    {
+      "loss": 0.0001895691966637969,
+      "step": 5000
+    },
+    {
+      "loss": 0.00015749872545711696,
+      "step": 5500
+    },
+    {
+      "loss": 0.00012115157005609944,
+      "step": 6000
+    }
+  ],
+  "manifest": "outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_plan/live_oracle_dagger_aggregate_manifest.json",
+  "modulation_scale": 0.5,
+  "onnx_verify": {
+    "max_abs_error": 2.682209014892578e-07,
+    "p95_abs_error": 1.341104507446289e-07,
+    "path": "outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_student/candidate.onnx",
+    "samples_checked": 64
+  },
+  "sample_weight": {
+    "max": 5.0,
+    "p50": 3.0,
+    "p95": 5.0,
+    "weighted_samples": 84460.0
+  },
+  "samples": 28500,
+  "saved_npz": "outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_student/candidate_mlp.npz",
+  "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+  "target_rate": {
+    "max_rad_s": 1.893847107887268,
+    "p50_rad_s": 0.22354423999786377,
+    "p95_rad_s": 1.4254708290100098,
+    "p99_rad_s": 1.630920171737671,
+    "pair_count": 28462
+  },
+  "train_metrics": {
+    "mae": 0.00775496410950454,
+    "max_abs_error": 0.3128934428774748,
+    "p50_abs_error": 0.00552256777882576,
+    "p95_abs_error": 0.021781116724014282,
+    "p99_abs_error": 0.03856169432401657,
+    "pred_action_saturation_pct": 0.0,
+    "rmse": 0.012437607075935843,
+    "samples": 28500
+  },
+  "trunk_hidden_sizes": [
+    512,
+    256
+  ]
+}

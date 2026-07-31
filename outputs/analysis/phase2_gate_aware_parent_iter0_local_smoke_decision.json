@@ -1,0 +1,90 @@
+{
+  "status": "HOLD_GATE_AWARE_PARENT_REWARDED_FREEZE",
+  "robot_touched": false,
+  "ssh": false,
+  "deploy": false,
+  "grounded_replay": false,
+  "training_smoke": {
+    "output_dir": "outputs/phase2_domain_randomization/gate_aware_parent_iter0_local_smoke/smoke_20260705T151050Z_gpu",
+    "manifest": "outputs/phase2_domain_randomization/gate_aware_parent_iter0_local_smoke/smoke_20260705T151050Z_gpu/smoke_manifest.final.json",
+    "manifest_sha256": "3b6f81a60f9b268c7ecb0931127f9eb7aa45dfb5041a99a7b2e383e887d032d0",
+    "status": "PASS_SMOKE_RUN",
+    "elapsed_s": 480.0,
+    "restore_checkpoint": "outputs/analysis/phase2_command_gated_zero0020_live_oracle_iter2_ppo_loc_step0_checkpoint",
+    "restore_onnx": "outputs/analysis/phase2_command_gated_zero0020_live_oracle_iter2_ppo_loc_step0.onnx",
+    "restore_onnx_sha256": "d7af39a6255f7303a742b07ac87333c503534c73bd5b16766fa2ad3f4ae1e28f",
+    "restore_policy_kl_scale": 8.0,
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0075,
+    "push_magnitude_min": 0.075,
+    "push_magnitude_max": 0.125,
+    "exports": [
+      {
+        "step": 15360,
+        "path": "outputs/phase2_domain_randomization/gate_aware_parent_iter0_local_smoke/smoke_20260705T151050Z_gpu/2026_07_05_111520_15360.onnx",
+        "sha256": "8179d5686d3dc242c3a05f4d47747c62ab1e60256009605a1e65e0b6053acfc2"
+      },
+      {
+        "step": 30720,
+        "path": "outputs/phase2_domain_randomization/gate_aware_parent_iter0_local_smoke/smoke_20260705T151050Z_gpu/2026_07_05_111742_30720.onnx",
+        "sha256": "9d246a73b1542e669e38b69094dbce6f1b998ae0ac1493f3dd09d6cdc3a5e84d"
+      },
+      {
+        "step": 46080,
+        "path": "outputs/phase2_domain_randomization/gate_aware_parent_iter0_local_smoke/smoke_20260705T151050Z_gpu/2026_07_05_111820_46080.onnx",
+        "sha256": "a1fc8cc37925e469c1a9a85ca9e301343979065bbf3735678d7e0d3fc726cf0a"
+      }
+    ]
+  },
+  "x008_gate": {
+    "markdown": "outputs/analysis/PHASE2_GATE_AWARE_PARENT_ITER0_LOCAL_SMOKE_X008_GATE.md",
+    "json": "outputs/analysis/phase2_gate_aware_parent_iter0_local_smoke_x008_gate.json",
+    "json_sha256": "219d5fcc8bacf34a668813099e9e8d291e9d223498b2a00509f3ddf1849d7bc4",
+    "command_x": 0.08,
+    "task": "rough_terrain_backlash",
+    "bridge_mode": "fitted",
+    "duration_s": 15.0,
+    "seeds": [0, 1, 2, 6, 7],
+    "terrain_hfield_z_scale": 0.0075,
+    "push_enabled": true,
+    "policies": {
+      "iter0_15360": {
+        "pass_count": 0,
+        "runs": 5,
+        "fall_count": 0,
+        "mean_vx_m_s": 0.0015,
+        "mean_track_ratio": 0.0186,
+        "p95_velocity_excess_rad_s": 0.0,
+        "max_velocity_excess_rad_s": 0.1717,
+        "single_support_pct": 0.0,
+        "double_support_pct": 100.0
+      },
+      "iter0_30720": {
+        "pass_count": 0,
+        "runs": 5,
+        "fall_count": 0,
+        "mean_vx_m_s": 0.0015,
+        "mean_track_ratio": 0.0193,
+        "p95_velocity_excess_rad_s": 0.0,
+        "max_velocity_excess_rad_s": 0.0,
+        "single_support_pct": 0.0,
+        "double_support_pct": 100.0
+      },
+      "iter0_46080": {
+        "pass_count": 0,
+        "runs": 5,
+        "fall_count": 0,
+        "mean_vx_m_s": 0.0016,
+        "mean_track_ratio": 0.0194,
+        "p95_velocity_excess_rad_s": 0.0,
+        "max_velocity_excess_rad_s": 0.0,
+        "single_support_pct": 0.0,
+        "double_support_pct": 100.0
+      }
+    }
+  },
+  "step0_baseline_pass_count": 3,
+  "iter0_best_pass_count": 0,
+  "stop_condition_hit": true,
+  "decision": "Do not launch long Phase 2 domain randomization from these exports. Change the behavior-preservation objective or trainable structure before the next on-policy parent attempt."
+}

@@ -1,0 +1,97 @@
+{
+  "status": "HOLD_LOW_FORWARD_PROGRESS",
+  "recorded_at_utc": "2026-07-01T21:22:37Z",
+  "session": "open-duck-a100-phase2-z0026",
+  "workflow": "phase2-z0025-boundary",
+  "terrain_hfield_z_scale": 0.0026,
+  "candidate_name": "phase2_z0026_seed5_support_cuda",
+  "training_backend": "A100/CUDA",
+  "jax_version": "0.7.2",
+  "jaxlib_version": "0.7.2",
+  "task": "rough_terrain_backlash",
+  "fit_json": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+  "bridge_velocity_limit_train_range_rad_s": [2.0, 3.25],
+  "timesteps": 122880,
+  "checkpoints": [
+    {
+      "step": 40960,
+      "command_x": 0.0,
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "samples": 50,
+      "max_pitch_vel_p95": 1.0842,
+      "envelope": "BELOW_MEASURED_ENVELOPE",
+      "max_tracking_p95": 0.1919,
+      "track_ratio": null,
+      "mean_local_vx": 0.0066
+    },
+    {
+      "step": 40960,
+      "command_x": 0.08,
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "samples": 50,
+      "max_pitch_vel_p95": 1.4217,
+      "envelope": "BELOW_MEASURED_ENVELOPE",
+      "max_tracking_p95": 0.2165,
+      "track_ratio": 0.1663,
+      "mean_local_vx": 0.0133
+    },
+    {
+      "step": 81920,
+      "command_x": 0.0,
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "samples": 50,
+      "max_pitch_vel_p95": 1.0965,
+      "envelope": "BELOW_MEASURED_ENVELOPE",
+      "max_tracking_p95": 0.1923,
+      "track_ratio": null,
+      "mean_local_vx": 0.0058
+    },
+    {
+      "step": 81920,
+      "command_x": 0.08,
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "samples": 50,
+      "max_pitch_vel_p95": 1.4156,
+      "envelope": "BELOW_MEASURED_ENVELOPE",
+      "max_tracking_p95": 0.2123,
+      "track_ratio": 0.1644,
+      "mean_local_vx": 0.0132
+    },
+    {
+      "step": 122880,
+      "command_x": 0.0,
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "samples": 50,
+      "max_pitch_vel_p95": 1.0371,
+      "envelope": "BELOW_MEASURED_ENVELOPE",
+      "max_tracking_p95": 0.1926,
+      "track_ratio": null,
+      "mean_local_vx": 0.0065
+    },
+    {
+      "step": 122880,
+      "command_x": 0.08,
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "samples": 50,
+      "max_pitch_vel_p95": 1.429,
+      "envelope": "BELOW_MEASURED_ENVELOPE",
+      "max_tracking_p95": 0.2144,
+      "track_ratio": 0.1736,
+      "mean_local_vx": 0.0139
+    }
+  ],
+  "selected_checkpoint": {
+    "step": 122880,
+    "remote_path": "/content/open_duck_training_phase2_z0025_boundary_cli/smoke_20260701T201848Z_gpu/2026_07_01_203039_122880.onnx",
+    "decision": "best_available_but_not_promoted",
+    "status": "HOLD_PARTIAL_CANDIDATE_CHECKPOINT"
+  },
+  "full_seed_gate": {
+    "started": true,
+    "completed": false,
+    "reason": "colab_session_pruned_during_seed_0_start",
+    "claimed_result": null
+  },
+  "decision": "reject_promotion",
+  "recommended_next": "preserve z=0.0025 motion while adding a continuity/teacher-action or targeted seed-5 support mechanism for the z=0.0026 transition"
+}

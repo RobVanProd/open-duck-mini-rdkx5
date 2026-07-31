@@ -1,0 +1,243 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "deployment_authorized": false,
+    "formal_support_gate_authorized": false,
+    "gate5_authorized": false,
+    "pass_authorizes_only": "preregistration of the unchanged persistence gate for counts 605 and 655",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "training_authorized": true
+  },
+  "decision": "AUTHORIZE_ONE_80_UPDATE_BACKTRACKED_ADAM_ARM_ONLY",
+  "execution_now": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "frozen_training": {
+    "acceptance_rule": "first strict same-batch persistent-teacher loss descent",
+    "continuation_optimizer_updates": 80,
+    "environments_per_update": 80,
+    "final_optimizer_count": 655,
+    "fractions_largest_first": [
+      1.0,
+      0.5,
+      0.25,
+      0.125,
+      0.0625
+    ],
+    "learning_rate": 0.0001,
+    "optimizer_moments": "advance exactly once per accepted update",
+    "persistent_checkpoints": {
+      "final": 655,
+      "half": 605
+    },
+    "persistent_snapshots": true,
+    "source_completed_updates": 575,
+    "source_optimizer_count": 575,
+    "ticks_per_environment": 250,
+    "training_root_seed": 120120
+  },
+  "objective": {
+    "attention_or_flat_transport_added": false,
+    "coefficient_or_length_search": false,
+    "monitor_only_excluded_from_update": [
+      "PPO",
+      "normalized predictor",
+      "prefix right-pitch anchor",
+      "first-tick teacher"
+    ],
+    "persistent_teacher": {
+      "action_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "candidate": "deterministic graph-authoritative bounded recurrent mean",
+      "configuration_ids": [
+        "COM_X_NEG",
+        "COM_CORNER_00",
+        "COM_CORNER_01",
+        "COM_CORNER_02",
+        "COM_CORNER_03",
+        "OPTIONAL_AGGREGATE_HEAVY_AFT",
+        "DISCOVERY_02",
+        "DISCOVERY_03",
+        "DISCOVERY_06",
+        "DISCOVERY_09",
+        "DISCOVERY_10"
+      ],
+      "configuration_plant_rows": 22,
+      "heldout_ids_excluded": [
+        "HELDOUT_04",
+        "HELDOUT_07",
+        "HELDOUT_09",
+        "HELDOUT_15"
+      ],
+      "loss": "full-14D mask mean squared error",
+      "scale": 136.35153198242188,
+      "target": "stop-gradient graph-bounded static target relative to realized previous action"
+    },
+    "update_gradient": "full_action_persistent_teacher_only"
+  },
+  "post_training_selection": {
+    "authorized_now": false,
+    "checkpoint_rule": "both count-605 and count-655 endpoints must pass the unchanged persistence gate; training loss or accepted fractions cannot select"
+  },
+  "schema_version": "winner_v68.backtracked_adam_continuation_preregistration.v1",
+  "source_checkpoint": {
+    "completed_updates": 575,
+    "graph": {
+      "bytes": 54896,
+      "completed_updates": 575,
+      "contract": {
+        "abi_exact": true,
+        "all_chain_outputs_finite": true,
+        "all_initializers_finite": true,
+        "bytes": 54896,
+        "chain_ticks": 250,
+        "forbidden_training_or_privileged_tokens": [],
+        "initializer_count": 9,
+        "inputs": [
+          {
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "jax_onnx_at_most_1e_7": true,
+        "jax_onnx_max_abs_error": 2.9103830456733704e-11,
+        "outputs": [
+          {
+            "name": "calibration_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v67b-backtracked-adam-step\\graphs\\winner_v67_backtracked_adam_update_575.onnx",
+        "previous_action_out_equals_action_bit_exact": true,
+        "sha256": "a21a1c07a8148b5ad5fbaa1da1217ea6a19c1228f6088f4ab9864142b71e331e",
+        "training_only_tensors_absent": true
+      },
+      "label": "proof",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v67b-backtracked-adam-step\\graphs\\winner_v67_backtracked_adam_update_575.onnx",
+      "sha256": "a21a1c07a8148b5ad5fbaa1da1217ea6a19c1228f6088f4ab9864142b71e331e",
+      "v46_forbidden_tokens_present": []
+    },
+    "optimizer_count": 575,
+    "snapshot": {
+      "bytes": 194690,
+      "completed_updates": 575,
+      "metadata_payload_sha256": "fccb69c2ee34ff3bb7c2a74e7c6d7586ee8b891259087460c31c92fab2324be7",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v67b-backtracked-adam-step\\snapshots\\snapshot_backtracked_adam_update_575.npz",
+      "sha256": "c234bacde983728234d2b2a85cba5418263dc1adf383d9eb6dd59d48ff26654b",
+      "state_payload_sha256": "332ffe0f1a2dfb84c14f8734b9fd6dd2606fb0f37dc1bd8b3f3dc02582d90465"
+    }
+  },
+  "source_manifest_sha256": "2ec797a8ad94a1cdf58b5b897cb1194551c18d5301fdfc56b1d28e2361ac7cf4",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v68_backtracked_adam_continuation.py",
+      "sha256": "e22293df98078c7a45f954f62ff00699e1a59fc98c7502096981cf1379d9ca80"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v68_backtracked_adam_continuation.py",
+      "sha256": "7ff41d58acee31d900e49c231b773a4078e7a37aa2414903b4082e693b4c36fd"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v68_backtracked_adam_continuation.py",
+      "sha256": "e85ab2288e68220e076d71536f9fdf9358cffc730212fb6aeccabe7b5de7d8aa"
+    },
+    "v65_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v65_isolated_persistent_teacher_training.py",
+      "sha256": "f104f14d5a7798148b36edd92c626d8bd588919d36de439a57e418f6f72586ba"
+    },
+    "v65b_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v65b_preregistration_path_correction.py",
+      "sha256": "ee304f0d6e95c87531fa0fd62ee90b86baa3af2007d82b1580181c1e190a8ac4"
+    },
+    "v67_correction": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v67b_source_decision_correction.json",
+      "sha256": "093e81532cf2ffe6b342fd625657586453d27685b7e74c70da05daf992167017"
+    },
+    "v67_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v67_backtracked_adam_step_result.json",
+      "sha256": "824e2bb846421468afa145a5614c773ddad8b85cbe9a189535ea2273ad6934a3"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V68_BACKTRACKED_ADAM_CONTINUATION",
+  "stop_rules": [
+    "stop if the exact count-575 snapshot, graph, Adam state, or teacher differs",
+    "stop if any rollout, transition, teacher mask, or monitor contract differs",
+    "stop if no frozen backtracking fraction strictly descends on an update",
+    "stop on any snapshot or endpoint ONNX round-trip mismatch",
+    "do not inspect support behavior or select a checkpoint in this workflow"
+  ],
+  "teacher_checkpoint": {
+    "completed_updates": 100,
+    "optimizer_count": 100,
+    "snapshot": {
+      "bytes": 194808,
+      "completed_updates": 100,
+      "optimizer_count": 100,
+      "path": null,
+      "sha256": "ddc8c4b905bb9acac2d7d48c3e9c1f0c0ca0173a1ba21f375740b051bc48c806"
+    }
+  },
+  "transformation": {
+    "base": "Winner-v65b isolated-teacher continuation runner",
+    "transformed_source_sha256": "aa57604f289bea210a027884da1afa7c83d7f1c95bcd399a471f5e3f0926fcd4"
+  }
+}

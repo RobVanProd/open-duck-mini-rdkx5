@@ -1,0 +1,239 @@
+{
+  "commands_x": [
+    0.0,
+    0.08
+  ],
+  "compute_units": {
+    "calibration_max": 3,
+    "consumed": 27,
+    "finalist_training_max": 38,
+    "hard_total": 94,
+    "heldout_eval_max": 12,
+    "interruption_reserve": 6,
+    "search_max": 35,
+    "recipe_search_within_search_max": 15,
+    "mechanism_search_min_if_recipe_uses_full_cap": 20
+  },
+  "contract": {
+    "action_scale_rad": 0.25,
+    "action_shape": [
+      1,
+      14
+    ],
+    "control_hz": 50,
+    "observation_shape": [
+      1,
+      101
+    ],
+    "pitch_chain_indices": [
+      2,
+      3,
+      4,
+      11,
+      12,
+      13
+    ],
+    "pitch_chain_velocity_limits_rad_s": [
+      1.5,
+      1.5,
+      1.75,
+      1.25,
+      1.0,
+      1.25
+    ]
+  },
+  "families": [
+    "upstream_control",
+    "reference_conditioned_final_action",
+    "phase_moe_final_action",
+    "recurrent_final_action",
+    "imitation_decay",
+    "symmetric_critic_ablation"
+  ],
+  "dependency_contract": {
+    "jax": "0.8.2",
+    "jaxlib": "0.8.2",
+    "mujoco": "3.9.0",
+    "playground": "0.0.5"
+  },
+  "hardware_authorized": false,
+  "local_gpu_authorized": false,
+  "pre_family_contract_repairs": [
+    {
+      "artifact_sha256": "a4917562e1c87334e33e3b60b2fc2ffd7ba60c98573bb9c9f5d572585781d177",
+      "completed_timesteps": 4014080,
+      "conservative_ledger_charge": 6,
+      "id": "FRAMEFIX4",
+      "patch_sha256": "b52cb6c5269cadd74a15d9b551bd5616130800fcd54298e00e15e07c6580dde9",
+      "result": "PARTIAL_EFFECT_HARD_GATE_FAIL",
+      "training_seconds": 1064.2445586420001
+    },
+    {
+      "artifact_sha256": "9c54c49e85dd8b5667a26e45da1e23c71322ffd450a398aa33d69fb99ff3a934",
+      "completed_timesteps": 4014080,
+      "conservative_ledger_charge": 6,
+      "id": "STAGE1MIX4",
+      "patch_sha256": "17912ed37aceb430977daa2eead8ca24da7b20a03b220417d609bab368a0c6a3",
+      "result": "PASS_FINITE_SCAFFOLD_HOLD_GAIT_NOT_EMERGED",
+      "training_seconds": 1133.1868700240002
+    }
+  ],
+  "objective": "more robust than BEST_WALK_ONNX_2 under measured RDK-X5 constraints",
+  "rungs": {
+    "broad": {
+      "derived_after_calibration": true,
+      "timesteps": null
+    },
+    "calibration": {
+      "derived_after_steps_per_unit_measurement": true,
+      "timesteps": null
+    },
+    "final": {
+      "derived_after_calibration": true,
+      "timesteps": null
+    },
+    "medium": {
+      "derived_after_calibration": true,
+      "timesteps": null
+    }
+  },
+  "recipe_search": {
+    "canonical": {
+      "discounting": 0.97,
+      "entropy_cost": 0.005,
+      "imitation_scale": 1.0,
+      "learning_rate": 0.0003,
+      "policy_hidden_layer_sizes": [512, 256, 128],
+      "ppo_clipping_epsilon": 0.2,
+      "ppo_num_updates_per_batch": 4,
+      "ppo_unroll_length": 20
+    },
+    "candidates": [
+      {"id": "R00", "change": "canonical", "value": null},
+      {"id": "R01", "change": "learning_rate", "value": 0.0001},
+      {"id": "R02", "change": "learning_rate", "value": 0.001},
+      {"id": "R03", "change": "discounting", "value": 0.99},
+      {"id": "R04", "change": "entropy_cost", "value": 0.001},
+      {"id": "R05", "change": "entropy_cost", "value": 0.01},
+      {"id": "R06", "change": "ppo_unroll_length", "value": 10},
+      {"id": "R07", "change": "ppo_unroll_length", "value": 40},
+      {"id": "R08", "change": "imitation_scale", "value": 0.5},
+      {"id": "R09", "change": "imitation_scale", "value": 2.0}
+    ],
+    "medium_promotions": {
+      "canonical_protected": true,
+      "max_noncanonical": 3,
+      "max_recipes_to_family_search": 2,
+      "ties_retain_canonical": true
+    },
+    "preregistration": "outputs/analysis/GROUND_UP_PPO_RECIPE_SEARCH_PREREGISTRATION_20260712.md",
+    "selection_uses_training_reward": false,
+    "runs": [
+      {
+        "artifact_sha256": "15d8483ffd0a2f3e630558b48c4d1ef938d42934805da0c138b99a0a4bd41773",
+        "completed_timesteps": 2007040,
+        "conservative_ledger_charge": 3,
+        "exact_colab_compute_units_exposed_by_cli": false,
+        "id": "R00",
+        "result": "HOLD_GAIT_NOT_EMERGED_AT_2M",
+        "training_seconds": 888.8235634069999
+      },
+      {
+        "artifact_sha256": "32121ae4a7a44bdfab84d3ad03ff395caeb75f3c6aff80d1847be1df1a5f1318",
+        "completed_timesteps": 4014080,
+        "conservative_ledger_charge": 6,
+        "exact_colab_compute_units_exposed_by_cli": false,
+        "id": "R00W4",
+        "result": "HOLD_GAIT_NOT_EMERGED_AT_4M",
+        "training_seconds": 1057.4838027350002
+      }
+    ],
+    "status": "NO_RECIPE_WINNER_WITHIN_BUDGET"
+  },
+  "schema_version": "ground_up_reference_policy_search.v1",
+  "seed_splits": {
+    "development": [
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      115
+    ],
+    "final_held_out": [
+      1000,
+      1001,
+      1002,
+      1003,
+      1004,
+      1005,
+      1006,
+      1007,
+      1008,
+      1009,
+      1010,
+      1011,
+      1012,
+      1013,
+      1014,
+      1015,
+      1016,
+      1017,
+      1018,
+      1019,
+      1020,
+      1021,
+      1022,
+      1023,
+      1024,
+      1025,
+      1026,
+      1027,
+      1028,
+      1029,
+      1030,
+      1031
+    ],
+    "search_validation": [
+      200,
+      201,
+      202,
+      203,
+      204,
+      205,
+      206,
+      207,
+      208,
+      209,
+      210,
+      211,
+      212,
+      213,
+      214,
+      215
+    ]
+  },
+  "sources": {
+    "actuator_fit": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+    "baseline": {
+      "path": "policy/BEST_WALK_ONNX_2.onnx",
+      "sha256": "3c606f9381a1710cc8fecdb7442787dcbfce3ee9bc02a6f1224774ab2b3a1067"
+    },
+    "playground_control_commit": "b9be205ac64488c23504ca42e5ec790337adeec3",
+    "reference": {
+      "path": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/data/polynomial_coefficients.pkl",
+      "sha256": "5850c0610ed89e2860e7047f9ee27d8412462e1199752952c3c2a0efd2cb7a25"
+    }
+  },
+  "status": "SHORT_HORIZON_SEARCH_CLOSED_STAGE1_SCAFFOLD_SELECTED_FOR_LONGER_EMERGENCE_RUN"
+}

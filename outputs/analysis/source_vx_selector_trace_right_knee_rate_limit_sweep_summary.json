@@ -1,0 +1,145 @@
+{
+  "status": "HOLD_RIGHT_KNEE_RATE_LIMIT_CURATION_NOT_ROBOT_READY",
+  "rows": [
+    {
+      "limit": "uncurated",
+      "rate_limit_status": "NA",
+      "changed_ticks": 0,
+      "changed_contact_counts": {},
+      "dataset_id": "original",
+      "manifest_status": "NA",
+      "smoke_status": "PASS_BC_FIT_SMOKE_FORWARD_REPLAY",
+      "smoke_duration_complete": 8,
+      "smoke_moving": 8,
+      "smoke_failed_seeds": [],
+      "smoke_mean_track_ratio": 0.5832948772030292,
+      "smoke_mean_vx": 0.04666359017624234,
+      "smoke_sent_p95_max": 2.2134057246148586,
+      "smoke_tracking_p95_max": 0.1843242645263672,
+      "strict_status": "HOLD_EXACT_BLEND_ONNX_RIGHT_KNEE_RATE_TRACKING",
+      "strict_duration_complete": 8,
+      "strict_moving": 8,
+      "strict_mean_track_ratio": 0.5767764224460051,
+      "strict_max_sent_p95": 5.1118,
+      "strict_max_tracking_p95": 0.28
+    },
+    {
+      "limit": "4.7",
+      "rate_limit_status": "PASS_BC_TRACE_ACTION_RATE_LIMIT_READY",
+      "changed_ticks": 408,
+      "changed_contact_counts": {
+        "10": 199,
+        "11": 209
+      },
+      "dataset_id": "80c1b243ae91154e",
+      "manifest_status": "PASS_BC_TRACE_MANIFEST_READY",
+      "smoke_status": "PASS_BC_FIT_SMOKE_FORWARD_REPLAY",
+      "smoke_duration_complete": 8,
+      "smoke_moving": 8,
+      "smoke_failed_seeds": [],
+      "smoke_mean_track_ratio": 0.5922234264941607,
+      "smoke_mean_vx": 0.04737787411953286,
+      "smoke_sent_p95_max": 2.2246673703193673,
+      "smoke_tracking_p95_max": 0.18405332863330842,
+      "strict_status": "not_run",
+      "strict_duration_complete": null,
+      "strict_moving": null,
+      "strict_mean_track_ratio": null,
+      "strict_max_sent_p95": null,
+      "strict_max_tracking_p95": null
+    },
+    {
+      "limit": "4.3",
+      "rate_limit_status": "PASS_BC_TRACE_ACTION_RATE_LIMIT_READY",
+      "changed_ticks": 493,
+      "changed_contact_counts": {
+        "10": 216,
+        "11": 277
+      },
+      "dataset_id": "301851591b7988f1",
+      "manifest_status": "PASS_BC_TRACE_MANIFEST_READY",
+      "smoke_status": "PASS_BC_FIT_SMOKE_FORWARD_REPLAY",
+      "smoke_duration_complete": 8,
+      "smoke_moving": 8,
+      "smoke_failed_seeds": [],
+      "smoke_mean_track_ratio": 0.5926840063875716,
+      "smoke_mean_vx": 0.047414720511005724,
+      "smoke_sent_p95_max": 2.2216436173766856,
+      "smoke_tracking_p95_max": 0.184470796585083,
+      "strict_status": "HOLD_STRICT_EVAL_TARGET_VELOCITY_GATE",
+      "strict_duration_complete": 8,
+      "strict_moving": 8,
+      "strict_mean_track_ratio": 0.5992103356411349,
+      "strict_max_sent_p95": 4.299414753913879,
+      "strict_max_tracking_p95": 0.27725042104721065
+    },
+    {
+      "limit": "4.0",
+      "rate_limit_status": "PASS_BC_TRACE_ACTION_RATE_LIMIT_READY",
+      "changed_ticks": 642,
+      "changed_contact_counts": {
+        "00": 1,
+        "01": 6,
+        "10": 277,
+        "11": 358
+      },
+      "dataset_id": "18356a4d75aabe60",
+      "manifest_status": "PASS_BC_TRACE_MANIFEST_READY",
+      "smoke_status": "HOLD_BC_REPLAY_TERMINATED",
+      "smoke_duration_complete": 7,
+      "smoke_moving": 7,
+      "smoke_failed_seeds": [
+        "seed_005"
+      ],
+      "smoke_mean_track_ratio": 0.1789038290876988,
+      "smoke_mean_vx": 0.014312306327015904,
+      "smoke_sent_p95_max": 2.2235739557072525,
+      "smoke_tracking_p95_max": 0.18412060737609867,
+      "strict_status": "not_run",
+      "strict_duration_complete": null,
+      "strict_moving": null,
+      "strict_mean_track_ratio": null,
+      "strict_max_sent_p95": null,
+      "strict_max_tracking_p95": null
+    },
+    {
+      "limit": "3.75",
+      "rate_limit_status": "PASS_BC_TRACE_ACTION_RATE_LIMIT_READY",
+      "changed_ticks": 739,
+      "changed_contact_counts": {
+        "00": 1,
+        "01": 6,
+        "10": 351,
+        "11": 381
+      },
+      "dataset_id": "d00ca78f667676e1",
+      "manifest_status": "PASS_BC_TRACE_MANIFEST_READY",
+      "smoke_status": "HOLD_BC_REPLAY_TERMINATED",
+      "smoke_duration_complete": 7,
+      "smoke_moving": 7,
+      "smoke_failed_seeds": [
+        "seed_005"
+      ],
+      "smoke_mean_track_ratio": 0.20907929471901507,
+      "smoke_mean_vx": 0.016726343577521206,
+      "smoke_sent_p95_max": 2.2047235444188127,
+      "smoke_tracking_p95_max": 0.18241750597953799,
+      "strict_status": "not_run",
+      "strict_duration_complete": null,
+      "strict_moving": null,
+      "strict_mean_track_ratio": null,
+      "strict_max_sent_p95": null,
+      "strict_max_tracking_p95": null
+    }
+  ],
+  "interpretation": [
+    "The teacher/source selector traces contain right-knee action discontinuities; offline curation can limit those action deltas before BC export.",
+    "Hard limits at 4.0 and 3.75 rad/s break the smoke replay, primarily by terminating seed 5; they are too aggressive for this trace family.",
+    "Softer right-knee caps at 4.7 and 4.3 rad/s preserve 8/8 smoke forward replay.",
+    "The strongest passing cap, 4.3 rad/s, still fails the strict ONNX multi-seed fitted-backlash gate: all seeds move and complete, but right_knee remains both the fastest and worst-tracking pitch-chain joint, with p95 sent velocity around 4.20-4.30 rad/s and p95 tracking around 0.27 rad.",
+    "Compared with the uncurated strict ONNX summary, 4.3 reduces max pitch-chain sent-target p95 from about 5.11 to 4.30 rad/s while preserving forward motion, but it does not reach the conservative 2.5 rad/s gate or the 3.75 rad/s fitted-envelope check.",
+    "This confirms right-knee discontinuities are a real source issue, but simple one-joint rate curation is not sufficient to produce a robot-ready policy.",
+    "No robot motion, SSH, deploy, runtime behavior change, or training was performed."
+  ],
+  "recommended_next": "re-curate the teacher/source data with a dynamics-aware method instead of hard one-joint action clipping; inspect right-knee phase/contact discontinuities and consider source-window rejection or multi-joint smoothing before another ONNX export."
+}

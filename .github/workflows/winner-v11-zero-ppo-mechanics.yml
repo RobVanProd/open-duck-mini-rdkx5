@@ -1,0 +1,169 @@
+name: Winner v11 zero-PPO CPU mechanics
+
+on:
+  push:
+    branches:
+      - codex/winner-v4-response-contract
+    paths:
+      - .github/workflows/winner-v11-zero-ppo-mechanics.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: winner-v11-zero-ppo-mechanics
+  cancel-in-progress: false
+
+jobs:
+  mechanics:
+    name: One frozen zero-PPO mechanics run
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout frozen policy contract
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install pinned CPU mechanics environment
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            "jax[cpu]==0.7.2" \
+            "jaxlib==0.7.2" \
+            "numpy==2.0.2" \
+            "onnx==1.22.0" \
+            "onnxruntime==1.27.0"
+
+      - name: Compose only the frozen XML source tree
+        run: |
+          git clone --quiet https://github.com/RobVanProd/Open_Duck_Playground.git \
+            /tmp/playground-source
+          python tools/compose_winner_v7_playground.py \
+            --source-repository /tmp/playground-source \
+            --output-root /tmp/pg115-v11-mechanics
+          python - <<'PY'
+          from pathlib import Path
+
+          root = Path("/tmp/pg115-v11-mechanics")
+          for name in (
+              "playground/common/phase_moe_networks.py",
+              "playground/common/recurrent_ppo_networks.py",
+              "playground/common/rewards.py",
+              "playground/common/runner.py",
+              "playground/open_duck_mini_v2/custom_rewards.py",
+              "playground/open_duck_mini_v2/joystick.py",
+              "playground/open_duck_mini_v2/runner.py",
+              "playground/open_duck_mini_v2/xmls/open_duck_mini_v2_backlash.xml",
+              "playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml",
+          ):
+              path = root / name
+              data = path.read_bytes().replace(b"\r\n", b"\n")
+              path.write_bytes(data.replace(b"\n", b"\r\n"))
+          PY
+
+      - name: Reconstruct reviewed Windows-origin evidence bytes
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          for name in (
+              "outputs/analysis/winner_v6b_numeric_hold_attribution.json",
+              "outputs/analysis/winner_v8_numeric_hold_attribution.json",
+              "outputs/analysis/winner_v9_stored_bound_contract_result.json",
+              "outputs/analysis/winner_v9_nominal_behavior_result.json",
+              "outputs/analysis/winner_v9_numeric_torque_hold_attribution.json",
+              "outputs/analysis/winner_v10_inward_torque_contract_result.json",
+              "outputs/analysis/winner_v10_nominal_behavior_result.json",
+              "outputs/analysis/winner_v10_r2_condition1_result.json",
+              "outputs/analysis/winner_v10_r2_condition2_result.json",
+              "outputs/analysis/winner_v10_r2_condition3_result.json",
+              "outputs/analysis/winner_v10_r2_condition4_result.json",
+              "outputs/analysis/winner_v10_r2_condition5_result.json",
+              "outputs/analysis/winner_v10_r2_condition6_result.json",
+              "outputs/analysis/ground_up_robustness_r2_matrix_preregistration.json",
+              "outputs/analysis/ground_up_robustness_r2_evaluator_contract.json",
+              "outputs/analysis/ground_up_robustness_r2_reporting_contract.json",
+              "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+              "outputs/analysis/fixed_target_p31_34_actuator_fit_20260712.json",
+              "tools/evaluate_ground_up_policy.py",
+              "tools/closed_loop_sim_eval.py",
+              "tools/actuator_bridge_model.py",
+              "tools/aggregate_ground_up_robustness_r1.py",
+          ):
+              path = Path(name)
+              data = path.read_bytes().replace(b"\r\n", b"\n")
+              path.write_bytes(data.replace(b"\n", b"\r\n"))
+          PY
+
+      - name: Reconstruct exact Winner-v10 protected policies
+        run: |
+          python tools/run_winner_v7_inward_projection_contract.py \
+            --work-root /tmp/winner-v7 \
+            --output /tmp/winner-v7-contract.json
+          python tools/run_winner_v9_stored_bound_contract.py \
+            --source-half /tmp/winner-v7/winner_v7_half_inward_projection.onnx \
+            --source-final /tmp/winner-v7/winner_v7_final_inward_projection.onnx \
+            --model-xml /tmp/pg115-v11-mechanics/playground/open_duck_mini_v2/xmls/open_duck_mini_v2_backlash.xml \
+            --scene-xml /tmp/pg115-v11-mechanics/playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml \
+            --work-root /tmp/winner-v9 \
+            --output /tmp/winner-v9-contract.json
+          python - <<'PY'
+          from hashlib import sha256
+          from pathlib import Path
+
+          path = Path("/tmp/winner-v9/xmls/open_duck_mini_v2_backlash.xml")
+          data = path.read_bytes().replace(b"\r\n", b"\n")
+          path.write_bytes(data.replace(b"\n", b"\r\n"))
+          expected = "2132e477d2504faf08af4c5250952bd8b17611fb496ab15f30afc0371f327f9c"
+          observed = sha256(path.read_bytes()).hexdigest()
+          if observed != expected:
+              raise SystemExit(f"winner-v9 XML reconstruction mismatch: {observed}")
+          PY
+          python tools/run_winner_v10_inward_torque_contract.py \
+            --source-half /tmp/winner-v9/winner_v9_half_stored_bound.onnx \
+            --source-final /tmp/winner-v9/winner_v9_final_stored_bound.onnx \
+            --source-model-xml /tmp/winner-v9/xmls/open_duck_mini_v2_backlash.xml \
+            --source-scene-xml /tmp/winner-v9/xmls/scene_flat_terrain_backlash.xml \
+            --work-root /tmp/winner-v10 \
+            --output /tmp/winner-v10-contract.json
+
+      - name: Run the one frozen Winner-v11 CPU mechanics contract
+        run: |
+          python tools/check_winner_v11_zero_ppo_cpu_mechanics.py \
+            --policy-half /tmp/winner-v10/winner_v10_half_inward_torque.onnx \
+            --policy-final /tmp/winner-v10/winner_v10_final_inward_torque.onnx \
+            --work-root "${GITHUB_WORKSPACE}/.winner-v11-work" \
+            --output /tmp/winner-v11-zero-ppo-mechanics-result.json
+
+      - name: Hash raw evidence
+        if: always()
+        run: |
+          if test -f /tmp/winner-v11-zero-ppo-mechanics-result.json; then
+            sha256sum /tmp/winner-v11-zero-ppo-mechanics-result.json \
+              | tee /tmp/winner-v11-zero-ppo-mechanics-result.sha256
+          fi
+          if test -f /tmp/winner-v10-contract.json; then
+            sha256sum /tmp/winner-v10-contract.json \
+              | tee /tmp/winner-v10-contract.sha256
+          fi
+
+      - name: Upload raw mechanics evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: winner-v11-zero-ppo-mechanics-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 14
+          path: |
+            /tmp/winner-v10-contract.json
+            /tmp/winner-v10-contract.sha256
+            /tmp/winner-v11-zero-ppo-mechanics-result.json
+            /tmp/winner-v11-zero-ppo-mechanics-result.sha256
+            .winner-v11-work

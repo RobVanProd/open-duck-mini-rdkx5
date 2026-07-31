@@ -1,0 +1,132 @@
+{
+  "authority": {
+    "behavior_training_gpu_colab": false,
+    "robot_clearance": false,
+    "runtime_robot_torque_motion_gate5": false,
+    "zero_behavior_cpu_contract": true
+  },
+  "causal_hypothesis": "The two closed single-factor routes show that neither the overpowered XML ceiling nor the incomplete rate vector is sufficient alone. A distinct interaction applies both already-frozen physical constraints before any training and asks only whether the software/graph contract is exact.",
+  "expected_abi": {
+    "inputs": [
+      {
+        "dtype": "float32",
+        "name": "obs",
+        "shape": [
+          1,
+          115
+        ]
+      },
+      {
+        "dtype": "float32",
+        "name": "previous_action",
+        "shape": [
+          1,
+          14
+        ]
+      }
+    ],
+    "outputs": [
+      {
+        "dtype": "float32",
+        "name": "continuous_actions",
+        "shape": [
+          1,
+          14
+        ]
+      },
+      {
+        "dtype": "float32",
+        "name": "previous_action_out",
+        "shape": [
+          1,
+          14
+        ]
+      }
+    ]
+  },
+  "frozen_inputs": {
+    "current_contract": {
+      "path": "outputs/analysis/winner_v3_current_gate_application_contract.json",
+      "sha256": "17e841450a2dde66182c3d41a06abf8d14366011f811bcde20adb1f1c8f68ddb"
+    },
+    "force_attribution": {
+      "path": "outputs/analysis/winner_v7_actuator_force_limit_attribution.json",
+      "sha256": "f9cd5547111c0c63a11a9a85fb54142b5b0a6ef440ce9f9ff80dc56f6deb5382"
+    },
+    "full_vector_attribution": {
+      "path": "outputs/analysis/winner_v7_full_measured_vector_attribution.json",
+      "sha256": "3059dd4c01c3201ee81fb89139c8870cd5b8ab19660d5554926d3d352665f1b4"
+    },
+    "measured_envelope": {
+      "path": "outputs/analysis/winner_v5_automatic_support_recovery_preregistration.json",
+      "sha256": "0e9e1d78444ce2f9d5e3d8c14d4f5805369e39ac645ad5b097b0cf7c4d3a2276"
+    },
+    "model_xml_sha256": "eac956590161407d74af5f1883613cf491b85486f6a432abbe220c3b47b69002",
+    "runner_sha256": "03041344ad7f56677752c60857c9ffb8138612121d94b43113c127da4cb7da7c",
+    "scene_xml_sha256": "65324e27a3a84e2e42d1073bfc636f9cdbf6bef7b1f20c1b5a886b8fd58fcc71",
+    "source_final": {
+      "filename": "winner_v7_final_inward_projection.onnx",
+      "sha256": "3fd56c98162502b5ec430a4c383128df5996bd69cde7c079c1c5f5344103eb0c"
+    },
+    "source_half": {
+      "filename": "winner_v7_half_inward_projection.onnx",
+      "sha256": "456c6f804a81f04a8e9f4b7423c63c6f870623b92ba7a876b1172046b7f0fdbb"
+    }
+  },
+  "no_retry_or_tuning": "A failed contract closes this exact two-factor transform. Do not change limits, margins, graph source, XML source, seeds, cases, ticks, tolerance, or ABI.",
+  "pass_authorizes_only": "write and review a separate sequential nominal behavior/current/torque preregistration",
+  "pass_rule": [
+    "all frozen hashes and both 115+14 stateful ABIs exact",
+    "only max_action_delta and v7_safe_max_action_delta change and every node is exact",
+    "all 8192 arbitrary CPU cases and both 256-tick moving chains obey the full measured vector with zero tolerance",
+    "both 256-tick x=0 chains emit exact-zero action and state",
+    "only the active XML force range changes; all 14 actuators inherit +/-1.91229675 N.m and the scene is byte-exact",
+    "no simulator behavior, training, reward selection, GPU, runtime, or robot work runs"
+  ],
+  "schema_version": "open_duck_mini.winner_v8_physical_envelope_contract_preregistration.v1",
+  "source_commit": "5f8d0d6",
+  "status": "FROZEN_WINNER_V8_PHYSICAL_ENVELOPE_CONTRACT",
+  "transform": {
+    "changed_graph_initializers_only": [
+      "max_action_delta",
+      "v7_safe_max_action_delta"
+    ],
+    "full_measured_rate_limits_rad_s": [
+      1.0,
+      0.75,
+      1.5,
+      1.5,
+      1.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.75,
+      1.25,
+      1.0,
+      1.25
+    ],
+    "joint_order": [
+      "left_hip_yaw",
+      "left_hip_roll",
+      "left_hip_pitch",
+      "left_knee",
+      "left_ankle",
+      "neck_pitch",
+      "head_pitch",
+      "head_yaw",
+      "head_roll",
+      "right_hip_yaw",
+      "right_hip_roll",
+      "right_hip_pitch",
+      "right_knee",
+      "right_ankle"
+    ],
+    "max_action_delta_equation": "float32(rate_rad_s * 0.02 / 0.25)",
+    "physical_force_limit_nm": 1.91229675,
+    "physical_limit_equation": "min(1.91229675 N.m stall torque, 2.5 A * 0.784532 N.m/A)",
+    "safe_delta_equation": "max_action_delta - 4*float32_epsilon",
+    "xml_change": "only the active inherited sts3215 position forcerange; scene unchanged"
+  }
+}

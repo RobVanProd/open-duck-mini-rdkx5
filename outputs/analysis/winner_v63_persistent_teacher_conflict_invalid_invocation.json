@@ -1,0 +1,32 @@
+{
+  "authority": {
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "training_authorized": false
+  },
+  "failure": {
+    "counterfactual_in_memory_adam_steps": 0,
+    "exception": "ValueError: Winner-v63 snapshot boundary changed",
+    "formal_support_cells": 0,
+    "locomotion_training_steps": 0,
+    "optimizer_updates": 0,
+    "phase": "source snapshot boundary validation before rollout construction",
+    "result_json_written": false,
+    "robot_or_rdk_access": 0,
+    "rollout_episode_slots": 0,
+    "scheduled_rollout_ticks": 0
+  },
+  "root_cause": {
+    "exact_training_snapshot_stage": "integrated_first_tick_teacher_joint_stage2",
+    "gate_loader_behavior": "validates the exact training snapshot, then adapts predictor coordinates and rewrites metadata.stage to stage2 for reviewed support-gate execution",
+    "rejected_stage": "stage2",
+    "required_correction": "load the immutable NPZ with winner_v22_normalized_predictor_v2.load_snapshot and validate it with the existing Winner-v61 exact integrated-stage validator",
+    "semantic_objective_or_evidence_change": false
+  },
+  "schema_version": "winner_v63.persistent_teacher_conflict_invalid_invocation.v1",
+  "source": {
+    "commit": "9e5e5520",
+    "preregistration_sha256": "c60abbd0a7e8a0ffd2bf26adb377868da09c154e88abcc8e83b1ac73294fbc07"
+  },
+  "status": "INVALID_WINNER_V63_PERSISTENT_TEACHER_CONFLICT_INVOCATION"
+}

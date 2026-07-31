@@ -1,0 +1,117 @@
+{
+  "authority": {
+    "attention_or_flat_transport_selected": false,
+    "checkpoint_selection_authorized": false,
+    "deployment_authorized": false,
+    "gate5_authorized": false,
+    "pass_authorizes_only": "the single one-step proof named by classification",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "support_gate_authorized": false
+  },
+  "decision": "AUTHORIZE_ONE_ZERO_UPDATE_COUNT602_ATTRIBUTION_ONLY",
+  "diagnostic": {
+    "adam_fractions": [
+      1.0,
+      0.5,
+      0.25,
+      0.125,
+      0.0625,
+      0.03125,
+      0.015625,
+      0.0078125,
+      0.00390625,
+      0.001953125,
+      0.0009765625
+    ],
+    "attempted_optimizer_count": 602,
+    "coefficient_or_checkpoint_selection": false,
+    "environments": 80,
+    "negative_gradient_fractions": [
+      1.0,
+      0.5,
+      0.25,
+      0.125,
+      0.0625
+    ],
+    "original_grid_length": 5,
+    "rollout_update_index": 601,
+    "source_optimizer_count": 601,
+    "ticks_per_environment": 250
+  },
+  "execution_now": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "schema_version": "winner_v69.count602_direction_attribution_preregistration.v1",
+  "source_checkpoint": {
+    "completed_updates": 601,
+    "optimizer_count": 601,
+    "snapshot": {
+      "bytes": 195247,
+      "completed_updates": 601,
+      "metadata_payload_sha256": "2db6787c9d94b73543ba2c47aaa2826bd4b370e0db7d86f6c441614e7eb63d59",
+      "path": "D:/CodexArtifacts/open-duck-mini-rdkx5/winner-v68-backtracked-adam-continuation/snapshots/snapshot_backtracked_adam_update_601.npz",
+      "sha256": "3e3725f1ae5220569422c9ed7a7e7f33fd8799f2e2d90bef66f1493607ac4078",
+      "state_payload_sha256": "f42894aa89339f1a3bb7dc37e441ebf5844c7e3778df985e3bb7ba3b9aceabd8"
+    }
+  },
+  "source_manifest_sha256": "4a1acaab8427a72d2ce174891d84eec5ae98aa310034aee617ac276226d52374",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v69_count602_direction_attribution.py",
+      "sha256": "009c168017ada0b0a73842288d1d1f634754c867703965b1c00f85b8470f2d80"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v69_count602_direction_attribution.py",
+      "sha256": "8934f2580516a2596b395b7e20f36bbb4a22163244176bddf565b98a221922b3"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v69_count602_direction_attribution.py",
+      "sha256": "126ea3c622d5ead0f61883501a342d3754977ba51d0f0c76e9e6d126dec695c9"
+    },
+    "v66_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v66_failed_step_attribution.py",
+      "sha256": "5803b7f812780847d67de3399bb14e6617e57f2a6369ae50d061e8ff4223f44d"
+    },
+    "v68_contract": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v68_backtracked_adam_continuation_preregistration.json",
+      "sha256": "7daf7a8b5ccc04b41ea5c7f03635161ec2cde93ccaf7d55df4cf7538a215356f"
+    },
+    "v68_stopped_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v68_backtracked_adam_continuation_result.json",
+      "sha256": "0621f43f97f82814a6c15212a7ba72bf01da79edac99f25a8ded549ee985ba2f"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V69_COUNT602_DIRECTION_ATTRIBUTION",
+  "stop_rules": [
+    "stop if the immutable count-601 snapshot or V68 stop result differs",
+    "stop unless the original five-fraction grid exhaustion reproduces",
+    "do not persist either counterfactual parameter or optimizer proposal",
+    "do not evaluate support behavior or select a checkpoint"
+  ],
+  "teacher_checkpoint": {
+    "completed_updates": 100,
+    "optimizer_count": 100,
+    "snapshot": {
+      "bytes": 194808,
+      "completed_updates": 100,
+      "optimizer_count": 100,
+      "path": null,
+      "sha256": "ddc8c4b905bb9acac2d7d48c3e9c1f0c0ca0173a1ba21f375740b051bc48c806"
+    }
+  },
+  "transformation": {
+    "base": "Winner-v66 failed-step attribution runner",
+    "transformed_source_sha256": "5a13578bc2b7e6f9ab6f7a4229935cee4a4d6bd7e71d6a3cd65afc379bc5bae2",
+    "zero_update_early_return": true
+  }
+}

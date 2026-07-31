@@ -1,0 +1,132 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "deployment_authorized": false,
+    "formal_cpu_diagnostic_authorized": true,
+    "gate5_authorized": false,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "result_authorizes": "one separately preregistered universal-action observer CPU contract only if every pass condition is met",
+    "robot_clearance": false,
+    "training_authorized_now": false
+  },
+  "decision": "AUTHORIZE_ONE_FROZEN_HELDOUT_READOUT_FEASIBILITY_TEST_ONLY",
+  "execution_now": {
+    "least_squares_fits": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0,
+    "snapshot_or_onnx_writes": 0,
+    "source_trace_cells": 0
+  },
+  "pass_rule": "all 112 source trace cells retain support; the one frozen fitted float32 readout is finite; and on the untouched 16-configuration heldout set its normalized MSE is strictly below both the frozen Winner-v22 predictor and the frozen constant comparator separately for each actuator plant",
+  "readout": {
+    "feature_dimension": 79,
+    "feature_order": [
+      "h_out[0:64]",
+      "realized_action[0:14]",
+      "bias"
+    ],
+    "flat_transport_feature_enabled": false,
+    "hyperparameter_or_feature_search": false,
+    "normalization": "exact frozen Winner-v22 target_mean and target_std",
+    "policy_action_parameters_changed": false,
+    "recurrent_parameters_changed": false,
+    "regularization": null,
+    "solver": "numpy.linalg.lstsq float64 rcond=None minimum-norm",
+    "stored_coefficient_dtype": "float32",
+    "target": "next_observation[AUXILIARY_INDICES]",
+    "target_dimension": 50
+  },
+  "schema_version": "winner_v93.universal_response_readout_preregistration.v1",
+  "source": {
+    "observer_label": "winner_v22_final",
+    "observer_update": 100,
+    "onnx_sha256": "cb3380ed99b3e9d7e9000904a210227aa397db2a064aa80d8f70e77c8339783b",
+    "snapshot_sha256": "ddc8c4b905bb9acac2d7d48c3e9c1f0c0ca0173a1ba21f375740b051bc48c806",
+    "universal_target": {
+      "application": "full 14-D replacement before the unchanged graph-authoritative absolute/rate boundary at every tick",
+      "candidate_index": 536,
+      "expanded_raw_action": [
+        0.0,
+        0.0,
+        -0.5,
+        0.25,
+        0.25,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.5,
+        0.25,
+        0.25
+      ],
+      "expanded_raw_action_sha256": "b4b91073dd01f8f554023a5ac06b4aa358398aafe2dfddb885cacbef25dfce29",
+      "mirrored_coordinates": [
+        0.5,
+        0.25,
+        0.25
+      ],
+      "v90_result_sha256": "4c97d2ac41ca5d6000359217d25c8e8d17702fb4f329f70015bd5b1b1128f775"
+    },
+    "v92_result_sha256": "3f706f1a36b66f7cd5d1a78d693162bdfa47dcf02fa18bb5556c6936494ae652"
+  },
+  "source_manifest_sha256": "291a9dc8011ae40583689c397b435747bf3b12edd8583cd306c18c518e05bf50",
+  "sources": {
+    "base_gate": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_support_gate.py",
+      "sha256": "18873eee55c77a278fc065de64c0b912803bf29b4440cde7f3adaabe1297baca"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v93_universal_response_readout_preregistration.py",
+      "sha256": "63caf45bed81f884d9d0da532b765ff1965c9abb84808ba781c9052fd6bccc3d"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v93_universal_response_readout.py",
+      "sha256": "a9a35a67e6661339c5ab95206f83ed0c5c4b2643faa993c58947b1e0bb9803dd"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v93_universal_response_readout.py",
+      "sha256": "a8bf77b235088adcb9b3b0581f6fa44529895788cb30a3111bdb6ee7725f350f"
+    },
+    "v22_gate": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v22_normalized_predictor_support_gate.py",
+      "sha256": "0a217b355f43b304187f02bc3025feb3d4aa26fb7b9fae7d0c395667ce501cd3"
+    },
+    "v22_training_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v22_normalized_predictor_training_result.json",
+      "sha256": "10bae5bb32f32cc90e222eb1d6644d97e2a0253baa6ad1a37fe06fde48cf11c1"
+    },
+    "v92_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v92_universal_target_response_observer_result.json",
+      "sha256": "123338d92fff6f8c01c67becde23b52f9bedf3b1763e1959bc297e6b94c49237"
+    },
+    "v92_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v92_universal_target_response_observer.py",
+      "sha256": "ff482915172c100bb879ced71d1c45b9e830013736e52a9905efa147375720c1"
+    }
+  },
+  "split": {
+    "actuator_plants": 2,
+    "fit_configuration_groups": [
+      "fixed_anchors",
+      "discovery_samples"
+    ],
+    "fit_configurations": 40,
+    "fit_transitions": 19920,
+    "heldout_configuration_group": "heldout_samples",
+    "heldout_configurations": 16,
+    "heldout_data_used_during_fit_or_selection": false,
+    "heldout_transitions": 7968,
+    "ticks_per_cell": 250
+  },
+  "status": "PREREGISTERED_WINNER_V93_UNIVERSAL_RESPONSE_READOUT"
+}

@@ -1,0 +1,48 @@
+{
+  "status": "PASS_BLEND_ONNX_POLICIES",
+  "base": {
+    "path": "outputs/analysis/colab_cli/open-duck-behavior-prior-a100-candidate-only-20260627T102348Z/extracted/open_duck_colab_cli_candidate-only_20260627T102437Z/open_duck_training_runs_cli/smoke_20260627T102504Z_gpu/2026_06_27_102952_0.onnx",
+    "sha256": "5b381bad97323c545f70222950c99e46f92a859c5efd897c7b146b633297318d"
+  },
+  "target": {
+    "path": "outputs/analysis/colab_cli/open-duck-behavior-prior-a100-candidate-only-20260627T102348Z/extracted/open_duck_colab_cli_candidate-only_20260627T102437Z/open_duck_training_runs_cli/smoke_20260627T102504Z_gpu/2026_06_27_103207_40960.onnx",
+    "sha256": "0a8359c826449e14ddd887e5136e2650ab02a92a8de280f92c1a9e7be532464a"
+  },
+  "outputs": [
+    {
+      "alpha": 0.05,
+      "path": "outputs/analysis/actuator_tracking_behavior_prior_weight_blends/blend_alpha_0p0500.onnx",
+      "sha256": "69f2accdcab9a4c639d1f5b79d027a60061d23c61df621ff83fbf7dff179f144",
+      "size_bytes": 883946
+    },
+    {
+      "alpha": 0.1,
+      "path": "outputs/analysis/actuator_tracking_behavior_prior_weight_blends/blend_alpha_0p1000.onnx",
+      "sha256": "7bbdba20cfa3433ca38919c0657e79857878a6a5ec0d79f299a3f1b472df779d",
+      "size_bytes": 883946
+    },
+    {
+      "alpha": 0.2,
+      "path": "outputs/analysis/actuator_tracking_behavior_prior_weight_blends/blend_alpha_0p2000.onnx",
+      "sha256": "aa8bef94e2f8048614d52bf9532f099523d57e6b158d420421f121917574e7e7",
+      "size_bytes": 883946
+    },
+    {
+      "alpha": 0.35,
+      "path": "outputs/analysis/actuator_tracking_behavior_prior_weight_blends/blend_alpha_0p3500.onnx",
+      "sha256": "c723b5e69e758b963a9ff6c76e1ac608447be2b2a048be2e025e465cd3e4960c",
+      "size_bytes": 883946
+    },
+    {
+      "alpha": 0.5,
+      "path": "outputs/analysis/actuator_tracking_behavior_prior_weight_blends/blend_alpha_0p5000.onnx",
+      "sha256": "731a75f96480bc1d44f02b12b5666db05b3049cb36f390491aafbbb6e42b66a8",
+      "size_bytes": 883946
+    }
+  ],
+  "notes": [
+    "alpha=0 is exactly the base policy; alpha=1 is exactly the target policy.",
+    "Initializers were blended by order after shape compatibility checks because TensorFlow export prefixes differed.",
+    "These ONNX files are offline evaluation artifacts, not robot candidates."
+  ]
+}

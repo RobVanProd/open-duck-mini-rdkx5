@@ -1,0 +1,62 @@
+{
+  "authority": {
+    "colab": false,
+    "deployment": false,
+    "gate5": false,
+    "rdkx5_or_robot": false,
+    "t43_retry": false,
+    "t44_corrected_factorial_preregistration": true,
+    "t44_execution": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "checks": {
+    "evaluation_absent": true,
+    "formal_result_absent": true,
+    "frozen_worker_authorized_only_x0p077": true,
+    "only_first_variant_directory_created": true,
+    "policy_decision_weight_zero": true,
+    "preregistration_requested_x0p080": true,
+    "robot_or_rdk_absent": true,
+    "trace_absent": true,
+    "worker_rejected_changed_formal_commands": true
+  },
+  "classification": {
+    "cause": "frozen_causal_worker_formal_command_x0p077_mismatched_preregistered_x0p080",
+    "formal_behavior_cells": 0,
+    "policy_decision_weight": 0,
+    "policy_failure": false,
+    "policy_pass": false,
+    "t43_retry": false
+  },
+  "correction": {
+    "execute_all_three_cells": true,
+    "new_experiment_id": "T44",
+    "new_worker_only_change": "set evaluate_t27_t23_robustness_condition.FORMAL_COMMANDS to (0.08,)",
+    "reuse_policy_outcomes": false,
+    "reuse_t43_variant_assets_exact": true
+  },
+  "decision": "CLOSE_T43_ZERO_WEIGHT_NO_RETRY_EARN_T44_CORRECTED_X008_FACTORIAL_PREREGISTRATION",
+  "evidence": {
+    "expected_evaluation_exists": false,
+    "expected_trace_exists": false,
+    "preregistration": {
+      "bytes": 12929,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t43_forward_actor_block_factorial_preregistration.json",
+      "sha256": "7cc5af79092f78ee80edfe367f7a6c3b253020f9b7571b0e20dd36f262782732"
+    },
+    "worker": {
+      "bytes": 281,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\evaluate_t30_t28_margin_causal_cell.py",
+      "sha256": "38062df2326131c5fe30e6391100f6d98a49a68198eb053600e6def53a7dcecc"
+    },
+    "worker_stdout": {
+      "bytes": 483,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t43_forward_actor_block_factorial_run_v1\\HALF_WITH_FINAL_BASE\\stdout.log",
+      "sha256": "3fd528b65a30737d7f14149c8a4ea0fc22e42396d7599745b663b1da509dda43"
+    }
+  },
+  "failed_checks": [],
+  "schema_version": "open_duck.t43_worker_contract_invalidation.v1",
+  "status": "PASS_T43_ZERO_CELL_WORKER_CONTRACT_INVALIDATION"
+}

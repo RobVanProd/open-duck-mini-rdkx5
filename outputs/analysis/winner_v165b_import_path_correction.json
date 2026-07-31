@@ -1,0 +1,44 @@
+{
+  "authority": {
+    "gate5": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "rerun_original_v165_once_through_wrapper": true,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "checks": {
+    "failure_before_result": true,
+    "failure_before_run_root": true,
+    "mechanism_matrix_alpha_and_stop_rule_unchanged": true,
+    "original_preregistration_green": true,
+    "original_runner_unchanged_from_preregistration": true,
+    "state_module_unchanged_from_preregistration": true,
+    "wrapper_only_adds_repository_root_before_original_main": true
+  },
+  "correction": {
+    "alpha_change": false,
+    "block_change": false,
+    "change": "prepend repository root to sys.path, then call the unchanged V165 runner main",
+    "matrix_change": false,
+    "mechanism_change": false,
+    "stop_rule_change": false
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "builder": "7552ebe61fc37c8d34c4c59eac4d86aa59e99b15f95902656727f8211d3fd05d",
+    "original_preregistration": "d4c890bb07f65b0156288f634b4e8546bf2e8c51b36b38422bbe7a6fce15c312",
+    "original_runner": "80541ae0e58738fe344e3e1511ad81d18f3d5cbc55a14b2f0a050998a0210c38",
+    "state_module": "9b17cf82039b0aba4be2db7e528bdff308b3dcd3d5bb8e22df3c525407c6b081",
+    "wrapper": "051c31218dd4b9c8a0e92866b8beebf367c43d691d2eeb8944fda27351ec96a8"
+  },
+  "observed_failure": {
+    "behavior_cells_executed": 0,
+    "exception": "ModuleNotFoundError: No module named 'training'",
+    "new_training": false,
+    "result_written": false,
+    "stage": "module import before state restore/export/simulator"
+  },
+  "schema_version": "winner_v165b.import_path_correction.v1",
+  "status": "PASS_WINNER_V165B_IMPORT_PATH_CORRECTION"
+}

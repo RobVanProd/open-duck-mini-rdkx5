@@ -1,0 +1,120 @@
+{
+  "authority": {
+    "colab": false,
+    "gate5": false,
+    "one_read_only_leaf_factorial": true,
+    "rdkx5_or_robot": false,
+    "simulator": false,
+    "training": false
+  },
+  "checks": {
+    "final_p31_all_green": true,
+    "graphs_exact": true,
+    "half_p31_has_one_failure": true,
+    "inputs_present": true,
+    "no_simulator_optimizer_colab_or_robot": true,
+    "t121_exact_actor_scope": true,
+    "t122_transform_green": true,
+    "t123_exact_15_of_16_hold": true,
+    "traces_exact": true
+  },
+  "decision_rule": {
+    "expert_dominant": "EARN_EXPERT_FIRST_CPU_SCREEN_ONLY",
+    "interaction_dominant": "EARN_NOMINAL_CONTINUITY_CONSTRAINED_CPU_SCREEN_ONLY",
+    "no_behavior_selection": true,
+    "no_hosted_training": true,
+    "router_dominant": "EARN_ROUTER_FIRST_CPU_SCREEN_ONLY"
+  },
+  "factorial": {
+    "classification": "largest RMS continuous-action component over the frozen critical window",
+    "critical_window": {
+      "defined_before_execution": true,
+      "last_ticks": 40,
+      "trace": "half_failed"
+    },
+    "decomposition": "router=FH-HH; expert=HF-HH; interaction=FF-FH-HF+HH",
+    "observed_outputs": [
+      "continuous_actions",
+      "soft_negative_com_weight",
+      "negative_adapter_location",
+      "conditional_adapter_location"
+    ],
+    "swapped_initializers": {
+      "expert": [
+        "negative_adapter_weight",
+        "negative_adapter_bias"
+      ],
+      "router": [
+        "hidden_gate_coefficient",
+        "hidden_gate_intercept"
+      ]
+    },
+    "variants": {
+      "FF": "final router + final expert",
+      "FH": "final router + half expert",
+      "HF": "half router + final expert",
+      "HH": "half router + half expert"
+    }
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 8634,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t124_t120_leaf_factorial_preregistration.py",
+      "sha256": "b8aae736695387e06bf3a382b54b991da393e761058264a9ca892cab25967832"
+    },
+    "runner": {
+      "bytes": 13173,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t124_t120_leaf_factorial.py",
+      "sha256": "2b99e3c7b5c9cd0b84583cc3af404d0f90b87a1854343d65e065c5dbc26273da"
+    },
+    "t121_result": {
+      "bytes": 10090,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t121_t120_recovered_training_validation.json",
+      "sha256": "d115ce0fd9ab33cc40ba88e53c2d3fad9c04161b8ca225e47f4b31897bdb3c4d"
+    },
+    "t122_result": {
+      "bytes": 39940,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t122_t120_postexport_result.json",
+      "sha256": "a755bd55ab52960f4e4acd9c0e87a3840a1fbcd7e79146f0eff2fea3f12cb498"
+    },
+    "t123_result": {
+      "bytes": 120165,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t123_t120_nominal_result.json",
+      "sha256": "b668f9643efad44dbd6dad13b3cba60a7d984e60a969545fd3573f2363b6a078"
+    },
+    "test": {
+      "bytes": 1085,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t124_t120_leaf_factorial.py",
+      "sha256": "58c77b6f0a9f556e31cead2fc609fe6e453a771ade639acae6b26da3555538ba"
+    }
+  },
+  "graphs": {
+    "final": {
+      "bytes": 963793,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t122_t120_deployments_v1\\2007040\\pre_margin\\context_abi.onnx",
+      "sha256": "5b3f38ad80a874556be4f3b1e091ce2718cb44e9419cac5ecd8d8b8c62a9d6a3"
+    },
+    "half": {
+      "bytes": 963793,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t122_t120_deployments_v1\\1003520\\pre_margin\\context_abi.onnx",
+      "sha256": "c7658bc1e7520e1e1f455a81e6bb92f836a42d248276b3a66d236d0c5bc9e58b"
+    }
+  },
+  "preregistered_contract_sha256": "5438c7051ee075d374b844a472b71b950a7973d65d94e2d319d4598465d6dcce",
+  "question": "Did the router, the negative-COM expert, or their multiplicative interaction dominate T120's half-to-final repair of the sole nominal failure?",
+  "schema_version": "open_duck.t124_t120_leaf_factorial_preregistration.v1",
+  "status": "PREREGISTERED_T124_T120_LEAF_FACTORIAL",
+  "traces": {
+    "final_passed": {
+      "bytes": 10772844,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t123_t120_nominal_v1\\02_FLOOR_FRICTION_HI\\T120_JOINT_SOFT_ROUTER_FINAL\\p31_34\\traces\\x0.080_seed167931544_action_margin.jsonl",
+      "sha256": "bb005540c79d09892471206cbaebea27e0222293688f7eaa2f3aeea7bde59737"
+    },
+    "half_failed": {
+      "bytes": 5312397,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t123_t120_nominal_v1\\02_FLOOR_FRICTION_HI\\T120_JOINT_SOFT_ROUTER_HALF\\p31_34\\traces\\x0.080_seed167931544_action_margin.jsonl",
+      "sha256": "07313b2b38c2269206cc506e8979d67ceaed962f4505f2831f927f2d31a766fb"
+    }
+  }
+}

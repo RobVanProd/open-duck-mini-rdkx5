@@ -1,0 +1,69 @@
+{
+  "candidate": {
+    "high_command_policy": "outputs/analysis/phase2_seed5_neighbor_recovery_contactphase_bc_student/candidate.onnx",
+    "low_command_policy": "policy/candidates/phase2_stage_a2_gain099_20260628/candidate.onnx",
+    "onnx": "outputs/analysis/phase2_seed5_neighbor_recovery_stagea2_command_gated_candidate/candidate.onnx",
+    "promoted_onnx": "policy/candidates/phase2_stagea2_seed5_recovery_command_gated_20260628/candidate.onnx",
+    "sha256": "d0cec0b9dcc666416f0ecc8383a51367529273013d912b26399339e2c4b1c3e6",
+    "threshold_abs_command_x": 0.02,
+    "verify_json": "outputs/analysis/phase2_seed5_neighbor_recovery_stagea2_command_gated_verify.json"
+  },
+  "decision": "PASS_ROUGH_TERRAIN_NO_PUSH_HOLD_GENTLE_PUSH_ENVELOPE",
+  "gates": {
+    "rough_z002_no_push_x0": {
+      "artifact_json": "outputs/analysis/phase2_seed5_neighbor_recovery_stagea2_command_gated_x0_rough_z002_8seed_gate_cpu.json",
+      "duration_complete": 8,
+      "falls": 0,
+      "max_pitch_velocity_p95_rad_s": 0.9803935885429387,
+      "max_tracking_p95_rad": 0.1056189477443695,
+      "max_velocity_excess_rad_s": 0.0,
+      "mean_vx_m_s": 0.0023740697882295193,
+      "runs": 8,
+      "status": "PASS_CANDIDATE_SIM_GATE"
+    },
+    "rough_z002_no_push_x008": {
+      "artifact_json": "outputs/analysis/phase2_seed5_neighbor_recovery_stagea2_command_gated_x008_rough_z002_8seed_gate_cpu.json",
+      "duration_complete": 8,
+      "falls": 0,
+      "max_pitch_velocity_p95_rad_s": 2.4109217524528503,
+      "max_tracking_p95_rad": 0.19840868711471563,
+      "max_velocity_excess_rad_s": 0.0,
+      "mean_track_ratio": 0.41502586141591563,
+      "mean_vx_m_s": 0.03320206891327325,
+      "min_swing_peak_lift_m": 0.010819010436534882,
+      "min_swing_rel_x_range_p95_m": 0.0032489169389009476,
+      "runs": 8,
+      "status": "PASS_CANDIDATE_SIM_GATE"
+    },
+    "rough_z002_push_x0": {
+      "artifact_json": "outputs/analysis/phase2_seed5_neighbor_recovery_stagea2_command_gated_x0_rough_z002_gentle_push_8seed_gate_cpu.json",
+      "duration_complete": 8,
+      "falls": 0,
+      "max_pitch_velocity_p95_rad_s": 0.9803935885429387,
+      "max_tracking_p95_rad": 0.1056189477443695,
+      "max_velocity_excess_rad_s": 0.0,
+      "mean_push_success_rate": 0.90625,
+      "mean_vx_m_s": 0.0023400985796720305,
+      "runs": 8,
+      "status": "PASS_CANDIDATE_SIM_GATE"
+    },
+    "rough_z002_push_x008": {
+      "artifact_json": "outputs/analysis/phase2_seed5_neighbor_recovery_stagea2_command_gated_x008_rough_z002_gentle_push_8seed_gate_cpu.json",
+      "duration_complete": 8,
+      "falls": 0,
+      "max_pitch_velocity_p95_rad_s": 2.4391525983810425,
+      "max_tracking_p95_rad": 0.19643142819404602,
+      "max_velocity_excess_rad_s": 0.02119097113609314,
+      "mean_push_success_rate": 0.90625,
+      "mean_track_ratio": 0.42643306376937745,
+      "mean_vx_m_s": 0.0341146451015502,
+      "runs": 8,
+      "status": "HOLD_CANDIDATE_TARGET_VELOCITY"
+    }
+  },
+  "notes": [
+    "No robot tests, SSH, deployment, runtime behavior change, or grounded replay were performed.",
+    "The rough-terrain no-push gate passes at x=0.08 and x=0.0.",
+    "The gentle-push moving gate is stable but has one small corrected-envelope excess and is not promotable."
+  ]
+}

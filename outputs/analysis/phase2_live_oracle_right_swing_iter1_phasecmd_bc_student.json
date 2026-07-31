@@ -1,0 +1,144 @@
+{
+  "activation": "swish",
+  "config": {
+    "batch_size": 512,
+    "learning_rate": 0.001,
+    "seed": 47,
+    "steps": 10000,
+    "target_rate_limit_rad_s": 3.75,
+    "target_rate_scale": 0.1
+  },
+  "context_hidden_sizes": [
+    64
+  ],
+  "context_indices": [
+    6,
+    99,
+    100
+  ],
+  "exported_onnx": "outputs/analysis/phase2_live_oracle_right_swing_iter1_phasecmd_bc_student/candidate.onnx",
+  "loss_rows": [
+    {
+      "loss": 0.16916422545909882,
+      "step": 1
+    },
+    {
+      "loss": 0.0004532947205007076,
+      "step": 500
+    },
+    {
+      "loss": 0.00042755037429742515,
+      "step": 1000
+    },
+    {
+      "loss": 0.0003742610279005021,
+      "step": 1500
+    },
+    {
+      "loss": 0.00024276835029013455,
+      "step": 2000
+    },
+    {
+      "loss": 0.00023405865067616105,
+      "step": 2500
+    },
+    {
+      "loss": 0.00017957660020329058,
+      "step": 3000
+    },
+    {
+      "loss": 0.0001544406113680452,
+      "step": 3500
+    },
+    {
+      "loss": 0.0001789024827303365,
+      "step": 4000
+    },
+    {
+      "loss": 0.00017394455790054053,
+      "step": 4500
+    },
+    {
+      "loss": 0.00020902234246023,
+      "step": 5000
+    },
+    {
+      "loss": 0.00014377766638062894,
+      "step": 5500
+    },
+    {
+      "loss": 0.00016545955440960824,
+      "step": 6000
+    },
+    {
+      "loss": 0.00013278673577588052,
+      "step": 6500
+    },
+    {
+      "loss": 0.00010880111949518323,
+      "step": 7000
+    },
+    {
+      "loss": 0.00013689319894183427,
+      "step": 7500
+    },
+    {
+      "loss": 9.855936514213681e-05,
+      "step": 8000
+    },
+    {
+      "loss": 0.00011897952208528295,
+      "step": 8500
+    },
+    {
+      "loss": 8.829843136481941e-05,
+      "step": 9000
+    },
+    {
+      "loss": 7.863896462367848e-05,
+      "step": 9500
+    },
+    {
+      "loss": 0.00010282675793860108,
+      "step": 10000
+    }
+  ],
+  "manifest": "outputs/analysis/phase2_live_oracle_right_swing_iter1/live_oracle_dagger_aggregate_manifest.json",
+  "modulation_scale": 0.75,
+  "onnx_verify": {
+    "max_abs_error": 3.5762786865234375e-07,
+    "p95_abs_error": 1.7881393432617188e-07,
+    "path": "outputs/analysis/phase2_live_oracle_right_swing_iter1_phasecmd_bc_student/candidate.onnx",
+    "samples_checked": 64
+  },
+  "sample_weight": {
+    "max": 6.0,
+    "p50": 4.0,
+    "p95": 5.0,
+    "weighted_samples": 10591.0
+  },
+  "samples": 3250,
+  "saved_npz": "outputs/analysis/phase2_live_oracle_right_swing_iter1_phasecmd_bc_student/candidate_mlp.npz",
+  "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+  "target_rate": {
+    "max_rad_s": 3.924862861633301,
+    "p50_rad_s": 0.15602919459342957,
+    "p95_rad_s": 1.4976946413516998,
+    "p99_rad_s": 2.2831213283538827,
+    "pair_count": 3237
+  },
+  "train_metrics": {
+    "mae": 0.0068945110594937796,
+    "max_abs_error": 0.40369805693626404,
+    "p50_abs_error": 0.004838353768935932,
+    "p95_abs_error": 0.018921360286122117,
+    "p99_abs_error": 0.03384978074333585,
+    "pred_action_saturation_pct": 0.0,
+    "rmse": 0.011933349184108327,
+    "samples": 3250
+  },
+  "trunk_hidden_sizes": [
+    512,
+    256
+  ]
+}

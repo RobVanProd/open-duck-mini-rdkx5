@@ -1,0 +1,100 @@
+{
+  "attribution": {
+    "cause": "T20 passed the full measured physical rate vector through the policy/export source boundary. The frozen T18 composition keeps V121's trained rate vector at that source boundary and uses the full measured vector only after the support homeomorphism.",
+    "correction": "restore the source vector for actor export and both V121 source projections; retain the full vector only for T19's external physical projection",
+    "external_normalized_action_delta": [
+      0.07999999821186066,
+      0.05999999865889549,
+      0.11999999731779099,
+      0.11999999731779099,
+      0.11999999731779099,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.05999999865889549,
+      0.09999999403953552,
+      0.07999999821186066,
+      0.09999999403953552
+    ],
+    "hosted_compute_units": 0,
+    "maximum_normalized_delta_difference": 0.008188240230083466,
+    "new_optimizer_steps_authorized": 0,
+    "raw_graph_different_initializers": [
+      "max_action_delta"
+    ],
+    "robot_or_rdk_access": 0,
+    "source_normalized_action_delta": [
+      0.07999999821186066,
+      0.05999999865889549,
+      0.11788966506719589,
+      0.11440632492303848,
+      0.11181175708770752,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.05999999865889549,
+      0.09999999403953552,
+      0.07999999821186066,
+      0.09772229939699173
+    ],
+    "t20_training_selection_weight": 0
+  },
+  "attribution_sha256": "d34eda4773e4fa8e162ffdf7c2b2a8ee9abf08dd9fdf8d59035d9656a29923ec",
+  "checks": {
+    "context_adapter_itself_is_exact": true,
+    "formal_hold_is_exact_four_export_checks": true,
+    "frozen_v121_raw_uses_trained_source_delta": true,
+    "no_hosted_or_robot_execution": true,
+    "only_raw_initializer_difference_is_rate_delta": true,
+    "restore_update_and_cpu_checks_green": true,
+    "source_and_external_deltas_are_distinct": true,
+    "step_zero_raw_graph_structure_exact": true,
+    "t20_raw_uses_external_full_delta": true,
+    "v121_deployment_adds_missing_source_hierarchy": true
+  },
+  "decision": "PREREGISTER_T21_TWO_RATE_SEPARATION",
+  "failed_checks": [],
+  "inputs": {
+    "frozen_v121_deployed": {
+      "bytes": 958446,
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v121-deployment-policies-20260724\\V121_DEPLOYMENT_1003520.onnx",
+      "sha256": "d4f280e8ebb4accd5c5c983bbf83042ec0162647efb446f0f6c8bffda42bc17a"
+    },
+    "frozen_v121_raw": {
+      "bytes": 954952,
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v119-extracted-20260724\\winner_v119_transition_continuation\\training\\2026_07_24_193907_1003520.onnx",
+      "sha256": "2d3cfb686a9c9643d9414a99a10e4db3aee7fc8f63cbc2fd81f107b487cf1311"
+    },
+    "t18_result": {
+      "bytes": 278351,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t18_rate_coherent_support_result.json",
+      "sha256": "bdf78ef2e0ae2c87db589f506ca5ee0c61edc555dc50d5a7633cee8235559feb"
+    },
+    "t20_result": {
+      "bytes": 25884,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t20_support_trainthrough_one_update_recovery_result.json",
+      "sha256": "0c9d2a13119bd404d0e455bda7513fd834509661442cb37a9211fb18ed8dba2a"
+    },
+    "t20_step_zero_raw": {
+      "bytes": 954952,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t20_support_trainthrough_one_update_v2\\smoke\\2026_07_26_173310_0.onnx",
+      "sha256": "48438ba7a35ab03a449551188ac4a1fc883327eaae90c7338e48c68b174bc59a"
+    },
+    "v121_contract": {
+      "bytes": 7974,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\winner_v121_deployment_transform_contract.json",
+      "sha256": "4bd5eab5343cd8401db1789773fa3cc345727d903cb31222e0ea9870f0e9e640"
+    },
+    "v121_preregistration": {
+      "bytes": 4548,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\winner_v121_deployment_transform_preregistration.json",
+      "sha256": "6681b83263c0c79b841cdbb65411fde047dd6700bea3dd40793b977e0457738f"
+    }
+  },
+  "schema_version": "open_duck.t20_two_rate_attribution.v1",
+  "status": "PASS_T20_TWO_RATE_MISMATCH_ATTRIBUTION"
+}

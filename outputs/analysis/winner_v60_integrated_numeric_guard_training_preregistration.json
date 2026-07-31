@@ -1,0 +1,563 @@
+{
+  "authority": {
+    "formal_support_gate_authorized": false,
+    "pass_authorizes_only": "a separately preregistered unchanged half/final support gate",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "training_authorized": true
+  },
+  "causal_hypothesis": "V59 proves the Winner-v58 stop was bounded eager-versus-scan float32 drift with zero PPO-loss effect. Re-running the unchanged integrated objective from count 454 with the preregistered 2e-6 numeric guard can produce a complete, auditable 100-update half/final record.",
+  "decision": "AUTHORIZE_ONE_100_UPDATE_INTEGRATED_FIRST_TICK_TEACHER_ARM_ONLY",
+  "execution_now": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "frozen_training": {
+    "coefficient_or_length_search": false,
+    "continuation_optimizer_updates": 100,
+    "duration_source": "inherit the exact Winner-v46 100-update half/final persistence design",
+    "environments_per_update": 80,
+    "final_optimizer_count": 554,
+    "first_tick_teacher_scale": 136.35153198242188,
+    "full_action_teacher_scale": 136.35153198242188,
+    "hidden_replay_numeric_guard": {
+      "coefficient_or_threshold_search": false,
+      "metric": "sampled_hidden_replay_max_abs_error",
+      "selected_threshold": 2e-06,
+      "selection_basis": "next power-of-two bound above the V59 measured maximum",
+      "source_legacy_threshold": 1e-06,
+      "v59_measured_maximum": 1.125037670135498e-06,
+      "v59_result_sha256": "2bc025115d2c2d4eba2aca7e8d0670b2c9e6f90fc2d96507d38034cbc946c39b"
+    },
+    "learning_rate": 0.0001,
+    "persistent_checkpoints": {
+      "final": 554,
+      "half": 504
+    },
+    "persistent_snapshots": "atomic digest-protected readback after every update",
+    "predictor_scale": 380.9135437011719,
+    "prefix_anchor_scale": 197.3112030029297,
+    "scheduled_episode_slots": 2000000,
+    "source_completed_updates": 454,
+    "source_optimizer_count": 454,
+    "ticks_per_environment": 250,
+    "training_root_seed": 120120
+  },
+  "numeric_guard_evidence": {
+    "bytes": 20730,
+    "path": "outputs/analysis/winner_v59_hidden_replay_numeric_attribution_result.json",
+    "sha256": "2bc025115d2c2d4eba2aca7e8d0670b2c9e6f90fc2d96507d38034cbc946c39b"
+  },
+  "objective": {
+    "combined_gradient": "existing Winner-v46 gradient with the pitch teacher replaced by the full-14D teacher gradient",
+    "first_tick_teacher": {
+      "action_replacement": false,
+      "actor_input_added": false,
+      "coefficient_search": false,
+      "configuration_ids": [
+        "COM_X_NEG",
+        "COM_CORNER_00",
+        "COM_CORNER_01",
+        "COM_CORNER_02",
+        "COM_CORNER_03",
+        "OPTIONAL_AGGREGATE_HEAVY_AFT",
+        "DISCOVERY_02",
+        "DISCOVERY_03",
+        "DISCOVERY_06",
+        "DISCOVERY_09",
+        "DISCOVERY_10"
+      ],
+      "flat_transport_or_attention_added": false,
+      "heldout_ids_excluded": [
+        "HELDOUT_04",
+        "HELDOUT_07",
+        "HELDOUT_09",
+        "HELDOUT_15"
+      ],
+      "native_quantized_rows": 22,
+      "raw_rows": 22,
+      "scale": 136.35153198242188,
+      "selected_elements": 616
+    },
+    "full_action_static_target_teacher": {
+      "action_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "action_replacement": false,
+      "actor_input_added": false,
+      "candidate": "deterministic graph-authoritative bounded recurrent mean",
+      "configuration_ids": [
+        "COM_X_NEG",
+        "COM_CORNER_00",
+        "COM_CORNER_01",
+        "COM_CORNER_02",
+        "COM_CORNER_03",
+        "OPTIONAL_AGGREGATE_HEAVY_AFT",
+        "DISCOVERY_02",
+        "DISCOVERY_03",
+        "DISCOVERY_06",
+        "DISCOVERY_09",
+        "DISCOVERY_10"
+      ],
+      "configuration_plant_rows": 22,
+      "heldout_ids_excluded": [
+        "HELDOUT_04",
+        "HELDOUT_07",
+        "HELDOUT_09",
+        "HELDOUT_15"
+      ],
+      "loss": "full-14D mask mean squared error",
+      "scale": 136.35153198242188,
+      "table": "exact imported Winner-v42 selected shared two-plant targets",
+      "target": "stop-gradient graph-bounded static target relative to realized previous action"
+    },
+    "ppo": "unchanged Winner-v46 recurrent PPO objective and failure transition shaping",
+    "predictor": "unchanged normalized successor predictor at scale 380.9135437011719",
+    "prefix_anchor": "unchanged prefix right-pitch anchor at scale 197.3112030029297"
+  },
+  "post_training_selection": {
+    "checkpoint_selection_during_training": false,
+    "closest_or_reward_selection_forbidden": true,
+    "half_and_final_both_required_for_future_support_gate": true
+  },
+  "schema_version": "winner_v60.integrated_first_tick_training_preregistration.v1",
+  "source_checkpoint": {
+    "completed_updates": 454,
+    "graph": {
+      "bytes": 54896,
+      "contract": {
+        "abi_exact": true,
+        "all_chain_outputs_finite": true,
+        "all_initializers_finite": true,
+        "bytes": 54896,
+        "chain_ticks": 44,
+        "forbidden_training_or_privileged_tokens": [],
+        "initializer_count": 9,
+        "inputs": [
+          {
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "jax_onnx_at_most_1e_7": true,
+        "jax_onnx_max_abs_error": 8.731149137020111e-11,
+        "outputs": [
+          {
+            "name": "calibration_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v57-first-tick-teacher-one-update\\winner_v57_first_tick_teacher_update_454.onnx",
+        "previous_action_out_equals_action_bit_exact": true,
+        "sha256": "3fdbac1f1868e157f6e67061ff9e7fea81623ca936a3e1bc5e4a8f4827d64c8e",
+        "training_only_tensors_absent": true
+      },
+      "forbidden_tokens_present": [],
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v57-first-tick-teacher-one-update\\winner_v57_first_tick_teacher_update_454.onnx",
+      "sha256": "3fdbac1f1868e157f6e67061ff9e7fea81623ca936a3e1bc5e4a8f4827d64c8e"
+    },
+    "optimizer_count": 454,
+    "snapshot": {
+      "bytes": 194810,
+      "completed_updates": 454,
+      "metadata_payload_sha256": "4d35216e055c83a6fc698d16586a5862ff1742a66ca3e52962cd6839b63710cc",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v57-first-tick-teacher-one-update\\winner_v57_first_tick_teacher_update_454.npz",
+      "sha256": "e111b81e8e82cae50832d8518b673a78953f74902563bc10a449ee2609e4f3c0",
+      "state_payload_sha256": "5fd96a1ae56b88377c686c1ce8d9839e9dcda8f8c85adff98a91c6a5cfa66c91"
+    }
+  },
+  "source_manifest_sha256": "138748cd21fd275baab0b0ca23ea06ba28bd7b1237517fad940e2d9a213a49e7",
+  "sources": {
+    "base_gate_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_support_gate.py",
+      "sha256": "18873eee55c77a278fc065de64c0b912803bf29b4440cde7f3adaabe1297baca"
+    },
+    "base_training": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_calibrator_training.py",
+      "sha256": "f5736a357d73baedae2bba1d15254dd688bddf3761eb731d757a971783c77227"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v46_static_target_teacher_training_preregistration.py",
+      "sha256": "05afacc366d5d4ba1c1b89826466ef2da04a266fc21462bf9b6141e31435113c"
+    },
+    "calibrator_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_training_preregistration.json",
+      "sha256": "1ec76a587c6fa50b92866c1632a7046ae0c6687ed17b1636b664bf45c2e8ba34"
+    },
+    "canonical_p30_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "cpu_smoke": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "environment_builder": {
+      "hash_mode": "lf",
+      "path": "tools/prepare_winner_v15_cpu_environment.py",
+      "sha256": "33e54c3a16d5684e2d2520270acf25a28df42dc89e9f302c1ef3bd5f37d867c2"
+    },
+    "full_training_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_preregistration.json",
+      "sha256": "99500648d6683097a13f894b0949bf4b5494e5653f36878710817bd0952f71dd"
+    },
+    "full_training_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_full_calibrator_training.py",
+      "sha256": "8cd2c9267f356adba1127f8fb837138bbe6e39b5c3326300eeed9fdd5b524610"
+    },
+    "gradient_composition": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v22_normalized_predictor_v2.py",
+      "sha256": "2f67394c0fc7f5cec14370d38a6a860a9c7bb2ce409e8578466b278c7c8c5b2a"
+    },
+    "importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v46_static_target_teacher_training.py",
+      "sha256": "fb0715a4be7a8ffb14b1d24c997e6f7000a82be6d5b87473227b8989811690a1"
+    },
+    "importer_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v46_static_target_teacher_training_import.py",
+      "sha256": "ab475589db0937960ca99054d383eae959f82959b2481e0d71c7e8573539be2b"
+    },
+    "joint_support": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v21_predictor_preserving_joint_support.py",
+      "sha256": "2d274c6c7c63fa2de5e3a7114ac047df1346189e66ec7bf8d83221e2f93aef0a"
+    },
+    "network_export": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_decomposed_backend_networks.py",
+      "sha256": "f463223a33f80baf81b2604e0df22c647660f2752a7ca60b8c75a3441460d015"
+    },
+    "normalized_predictor": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v22_normalized_predictor.py",
+      "sha256": "cc8e0249033af7264ed7e6c6e3faa51e8dcef1471e0d2fdda5a89091e810ad17"
+    },
+    "pitch_margin": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v15_pitch_margin_support.py",
+      "sha256": "b2dfecf77971596e2c67a7185b1a9c1acea2d49ecbb04eaf846666239b3326e8"
+    },
+    "prefix_anchor": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v29_prefix_right_pitch_anchor.py",
+      "sha256": "7c01b3db8c359464d122fc4f915df02eb9833720ef65837a99c5838dd42db36f"
+    },
+    "preregistration_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v46_static_target_teacher_training_preregistration.py",
+      "sha256": "adb2f4991931b06c21b7a200191b3b0592540e84706c2e50908b14a7f118e804"
+    },
+    "recurrent_support": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v20_joint_recurrent_support.py",
+      "sha256": "276f0008049be9e28cbfc7cb430a5fec6c0a092c02e605f08f3ea95e2df942c7"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v46_static_target_teacher_training.py",
+      "sha256": "c2bfaec2298c8b97489278112d932c11fc5392fc3250da99ec3fc1379062c0d2"
+    },
+    "runner_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v46_static_target_teacher_training.py",
+      "sha256": "486c59946bd236abcd2e18ce5b71b46b1c1e7a9096c192b400d92740e068ad12"
+    },
+    "runtime_observer": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py",
+      "sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889"
+    },
+    "snapshot_mechanics": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v21_predictor_preserving_joint_support_v2.py",
+      "sha256": "6613a52d099646c4603808e58088360166abefe9f504c5fafb8604266419bd20"
+    },
+    "static_target_teacher": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v43_static_target_teacher.py",
+      "sha256": "214df40f1b2033d190c4f601280679f7105267ddb8dbcd7a2fb0f6c3929242a3"
+    },
+    "transition": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v24_symmetric_support_failure.py",
+      "sha256": "98a149c6630a4a22837a98328989b572e9ace8a7fa889777b7b91d253abede9f"
+    },
+    "transition_v2": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v24_symmetric_support_failure_v2.py",
+      "sha256": "50be218d889ff37c5c8b59f75caf385db94f5b984a9894d0921adf369910fcb3"
+    },
+    "transition_v3": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v24_symmetric_support_failure_v3.py",
+      "sha256": "337f93832a93c74425564b1ddf7c274426a2de0544b51a1c5de83922b287d787"
+    },
+    "v22_gate_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v22_normalized_predictor_support_gate.py",
+      "sha256": "0a217b355f43b304187f02bc3025feb3d4aa26fb7b9fae7d0c395667ce501cd3"
+    },
+    "v22_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v22_normalized_predictor_training_result.json",
+      "sha256": "10bae5bb32f32cc90e222eb1d6644d97e2a0253baa6ad1a37fe06fde48cf11c1"
+    },
+    "v24_contract_common": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v24_symmetric_failure_cpu_contract.py",
+      "sha256": "dfecb9453c49a472c03e5d2d9c0f94da85a80c5619af7f89b8ff005e329ca263"
+    },
+    "v42_teacher_table": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v42_static_target_teacher_table_result.json",
+      "sha256": "c465d9b3951941715ee0bb588a0ba24a9c4b15d7a2c99430340bcaea43964469"
+    },
+    "v44_teacher_batch": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v44_static_target_teacher_source_gradient_contract.py",
+      "sha256": "051c12663666f870c642aac3874c77c5f2cc5137d28838685894e5694f7ca5ce"
+    },
+    "v45_contract": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v45_static_target_teacher_one_update_cpu_contract.json",
+      "sha256": "c414f99c0fb8ad03b65d8321898c72d280d12fb47ae25425a442a121b9dac3ec"
+    },
+    "v45_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v45_static_target_teacher_one_update_cpu_result.json",
+      "sha256": "50130622742e2a3777a462ddad8df8bbc7fd3ba366a931810912659efaf48a9d"
+    },
+    "v46_base_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v46_static_target_teacher_training.py",
+      "sha256": "c2bfaec2298c8b97489278112d932c11fc5392fc3250da99ec3fc1379062c0d2"
+    },
+    "v52_transform_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v52_full_action_teacher_training_preregistration.py",
+      "sha256": "fc74db85c9f599c840e22ebf4ab54a546c8ff4bcf8b2c81dcad6f00667130e37"
+    },
+    "v56_mechanism": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v56_first_tick_teacher_mapping.py",
+      "sha256": "7ab0b28e5dd0fa228252c82faf7bf4d9cef921427916dde6017accaf518ae009"
+    },
+    "v57_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v57_first_tick_teacher_one_update_result.json",
+      "sha256": "5fe0b0226b2b11d1afad2a3af66fe4e65369c1137667302fb5031105b42210a4"
+    },
+    "v58_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v58_integrated_first_tick_training_preregistration.py",
+      "sha256": "5cb81ca8d1ea155da2f9ff4afea9870c20edc77e1fb4c76f041344d91240b1b3"
+    },
+    "v58_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v58_integrated_first_tick_training.py",
+      "sha256": "5e95715c54edf455c8efc90783d17b731abe63c7b05d060ddea93b8c54c03ff9"
+    },
+    "v58_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v58_integrated_first_tick_training.py",
+      "sha256": "732694c10c743effdac56c0115bb513b62cb20e7d738791b793397927bdc67a9"
+    },
+    "v58_transform_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v58_integrated_first_tick_training_preregistration.py",
+      "sha256": "5cb81ca8d1ea155da2f9ff4afea9870c20edc77e1fb4c76f041344d91240b1b3"
+    },
+    "v59_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v59_hidden_replay_numeric_attribution_preregistration.json",
+      "sha256": "2b6047e2f43ac123d4eaf90da601a632f87afb62a49fa80f3ee4b27c982b8597"
+    },
+    "v59_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v59_hidden_replay_numeric_attribution_result.json",
+      "sha256": "35480a277f3b98c80eaaf2383e221c84556b215dd9112495c658eaff1c8ff09d"
+    },
+    "v60_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v60_integrated_numeric_guard_training_preregistration.py",
+      "sha256": "02fbd0912b1a0bc215cbaca8625ce48f16a6241b6b1b5e573257e743251bef3b"
+    },
+    "v60_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v60_integrated_numeric_guard_training.py",
+      "sha256": "9ff256c872e412c92a049476a1aff2ecf5224fb788c80f2244a2f26b19481f54"
+    },
+    "v60_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v60_integrated_numeric_guard_training.py",
+      "sha256": "2fa9dfbf9466356536a8d86ee72b0d89bd19f521bc2cd9866bb7a682ebcebff9"
+    },
+    "winner_v46_frozen_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v46_static_target_teacher_training.py",
+      "sha256": "c2bfaec2298c8b97489278112d932c11fc5392fc3250da99ec3fc1379062c0d2"
+    },
+    "winner_v49_teacher": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v49_full_action_static_target_teacher.py",
+      "sha256": "cc51950e90ba221763304250a11500251d1df1b58586cb5da24f4d1621b67b26"
+    },
+    "winner_v50_full_teacher": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v50_full_action_teacher_source_gradient_contract.py",
+      "sha256": "0c235e882922867f8b8998bdb902d170b964641503b574f289a5e30f68ab4a42"
+    },
+    "winner_v51b_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v51b_full_action_teacher_one_update_cpu_result.json",
+      "sha256": "d21c25ef2433c85e7fb658c8eaf03f80d7369eddeedab8e75ba323c30e18a5e9"
+    },
+    "winner_v52_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v52_full_action_teacher_training_preregistration.py",
+      "sha256": "fc74db85c9f599c840e22ebf4ab54a546c8ff4bcf8b2c81dcad6f00667130e37"
+    },
+    "winner_v52_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v52_full_action_teacher_training.py",
+      "sha256": "0ad2c9a4ad724815dfcd369efaa65b74762a7e2885bf5a57e311057b99a0f03a"
+    },
+    "winner_v52_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v52_full_action_teacher_training.py",
+      "sha256": "9fb1b78e62c0313b5801d54d5ed09cf82243e6325baae44a8895054782e10732"
+    },
+    "workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v46-static-target-teacher-training.yml",
+      "sha256": "5609f250f35aedf4e456df30b7c8d6d4fafdc8bbc676f55bcc49acb4dff803b2"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V60_INTEGRATED_FIRST_TICK_TEACHER_TRAINING",
+  "stop_rules": {
+    "no_retry_or_coefficient_search": true,
+    "stop_on_first_tick_gradient_locality_change": true,
+    "stop_on_hidden_replay_above_2e_6": true,
+    "stop_on_nonfinite": true,
+    "stop_on_source_mask_boundary_or_restore_mismatch": true
+  },
+  "teacher_checkpoint": {
+    "completed_updates": 100,
+    "optimizer_count": 100,
+    "snapshot": {
+      "bytes": 194808,
+      "completed_updates": 100,
+      "metadata_payload_sha256": "9c6adf74ec64d10e3d0ee21d9b502f1bb4b9a4b02fcc946e2fdfbacc16e967e5",
+      "path": "/tmp/winner-v22-normalized-predictor-training-work/snapshots/snapshot_normalized_predictor_update_100.npz",
+      "sha256": "ddc8c4b905bb9acac2d7d48c3e9c1f0c0ca0173a1ba21f375740b051bc48c806",
+      "state_payload_sha256": "6743dfe113fef16a7a40caa77457a9e29ccd5c28696f8c70ce6a1793d27faea7"
+    }
+  },
+  "transformation": {
+    "base_v58_transformed_source_sha256": "cfcad90cd56e3740dde62cddd124fe3fe6f19a5fbc96072ab98c7d89dd4920c6",
+    "replacement_groups": 7,
+    "replacements": [
+      {
+        "new_sha256": "1c0e534b7af77abf6d31b3de0dbdf454a07bd8f69e60f8ff6b0a0921be4b0198",
+        "old_sha256": "21d31c6fbca2bd90dd94db9dc3d0e1f4ef622bec26a8eb644fe4f5681a306949",
+        "replacement_count": 4
+      },
+      {
+        "new_sha256": "909607f533b247b614558b20f50a9658a462be13301f94f99cd63332aa2e3f95",
+        "old_sha256": "2073d236f722081a6e7261154981eeef8ab47308b15519c23e9d89dbc56b8610",
+        "replacement_count": 31
+      },
+      {
+        "new_sha256": "78263b6804b39a2e9f1a4b03fb07af0a09766614ed3ed46eb17760b2007a34c6",
+        "old_sha256": "af3cb6c8eaae48e61f48859b8d3e3d294d9b380701161ad91e7ec669b79b2ef9",
+        "replacement_count": 4
+      },
+      {
+        "new_sha256": "e29e3ffc5c1084a1c2382fbe95fdc167d5d175a6d8323e80b3749312f9aa03d5",
+        "old_sha256": "7ab9661bdb336da5a1c15c4b597813565f005114bb74406270e5bc2b2d65fd6a",
+        "replacement_count": 1
+      },
+      {
+        "new_sha256": "d1b68c58d1f20ef51a12b6c2433fcce4130b2d91bd752ef6dc5cdd61bbd52440",
+        "old_sha256": "8cbf1a0e19398e01d126094f04f771ea07f1ddc29456a80ef11d754f39c81339",
+        "replacement_count": 1
+      },
+      {
+        "new_sha256": "4315438fdc49ea11cb4f7fd295383a30ba4c12f0e4089b454e987ee94dd249f0",
+        "old_sha256": "efffe27d2a79da73fe282680daabf5be1e6b69b835a962a7918fb5c6fb4242cb",
+        "replacement_count": 1
+      },
+      {
+        "new_sha256": "52e2d12734dee819ab19a517a296a90a75d065bf0cb48d268e53bd4a96a13d58",
+        "old_sha256": "0b784799720953dcb1bec6d0f94e841ab6713633696465e8ed14832883f43e77",
+        "replacement_count": 1
+      }
+    ],
+    "transformed_source_sha256": "508d1f0a557e54d72b6d07ed0646372ffc77589e12d313250d70741b4361a039"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "status": "HOLD_PPO_SHAPE_TRACKING_GATE",
+  "artifact": "outputs/analysis/PPO_SHAPE_BC_WARMSTART_CANDIDATE.md",
+  "ppo_policy_hidden_layer_sizes": [512, 256, 128],
+  "ppo_value_hidden_layer_sizes": [512, 256, 128],
+  "manifest": {
+    "path": "outputs/analysis/source_vx_selector_trace_dagger3_manifest.json",
+    "dataset_id": "80ea809b021b6b9a",
+    "entries": 25,
+    "samples": 9268
+  },
+  "candidate": {
+    "onnx": "outputs/analysis/source_vx_selector_trace_dagger3_mlp512_256_128_rate_reg_candidate/candidate.onnx",
+    "npz": "outputs/analysis/source_vx_selector_trace_dagger3_mlp512_256_128_rate_reg_candidate/candidate_mlp.npz",
+    "hidden_sizes": [512, 256, 128],
+    "npz_shapes": {
+      "norm": [2, 101],
+      "w0": [101, 512],
+      "b0": [512],
+      "w1": [512, 256],
+      "b1": [256],
+      "w2": [256, 128],
+      "b2": [128],
+      "w3": [128, 14],
+      "b3": [14]
+    }
+  },
+  "bc_smoke": {
+    "artifact": "outputs/analysis/SOURCE_VX_SELECTOR_TRACE_DAGGER3_MLP512_256_128_RATE_REG_ONNX_FITTED_BRIDGE_BC_GATE_X008_10S.md",
+    "json": "outputs/analysis/source_vx_selector_trace_dagger3_mlp512_256_128_rate_reg_onnx_fitted_bridge_bc_gate_x008_10s.json",
+    "status": "PASS_BC_FIT_SMOKE_FORWARD_REPLAY",
+    "runs": 8,
+    "falls": 0,
+    "duration_complete": 8,
+    "sent_velocity_p95_range_rad_s": [2.1929, 2.2436],
+    "tracking_p95_range_rad": [0.1828, 0.1866]
+  },
+  "standard_gate": {
+    "artifact": "outputs/analysis/DEPLOYABLE_SOURCE_VX_DAGGER3_PPO_SHAPE_VALIDATION_FITTED_BACKLASH.md",
+    "json": "outputs/analysis/deployable_source_vx_dagger3_ppo_shape_validation_fitted_backlash.json",
+    "task": "flat_terrain_backlash",
+    "command_x": 0.08,
+    "bridge_mode": "fitted",
+    "duration_s": 10.0,
+    "seeds": [0, 1, 2, 3, 4, 5, 6, 7],
+    "runs": 8,
+    "falls": 0,
+    "duration_complete": 8,
+    "mean_vx_m_s": 0.039627748099005204,
+    "mean_track_ratio": 0.49534685123756506,
+    "sent_velocity_p95_range_rad_s": [3.7841784954071045, 3.8409042358398438],
+    "tracking_p95_range_rad": [0.25704456567764283, 0.2684479534626007],
+    "result": "HOLD_CANDIDATE_TRACKING"
+  },
+  "comparison_to_dagger3_128_rate_reg": {
+    "dagger3_128_rate_reg_mean_vx_m_s": 0.04204261113756956,
+    "dagger3_128_rate_reg_mean_track_ratio": 0.5255326392196196,
+    "dagger3_128_rate_reg_sent_velocity_p95_range_rad_s": [3.712133765220642, 3.8487520813941956],
+    "dagger3_128_rate_reg_tracking_p95_range_rad": [0.2623116254806519, 0.2766607165336609],
+    "ppo_shape_mean_vx_m_s": 0.039627748099005204,
+    "ppo_shape_mean_track_ratio": 0.49534685123756506,
+    "ppo_shape_sent_velocity_p95_range_rad_s": [3.7841784954071045, 3.8409042358398438],
+    "ppo_shape_tracking_p95_range_rad": [0.25704456567764283, 0.2684479534626007]
+  },
+  "next_plan": "PLAN_PPO_WARMSTART_PLUMBING_WITH_PPO_SHAPE_BC",
+  "stop_rules": [
+    "no robot validation",
+    "no deployment",
+    "no stress gate",
+    "no PPO training until step-0 warm-start fidelity passes",
+    "resolve smoke-vs-standard evaluator discrepancy before trusting step-0 fidelity"
+  ]
+}

@@ -1,0 +1,151 @@
+{
+  "authority": {
+    "one_update_authorized": false,
+    "pass_authorizes_only": "one separately preregistered source-gradient CPU contract",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "training_authorized": false
+  },
+  "decision": "AUTHORIZE_ONE_ZERO_UPDATE_FULL_ACTION_TEACHER_CPU_PROOF_ONLY",
+  "execution_now": {
+    "deployable_graph_exports": 0,
+    "locomotion_training_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_behavior_ticks": 0,
+    "synthetic_teacher_rows": 0
+  },
+  "pass_checks": [
+    "bind the exact Winner-v48c causal result and Winner-v42 table",
+    "construct exactly 30 two-plant x 250-tick labels and 105000 selected elements",
+    "match Winner-v43 raw and bounded targets bit-exactly",
+    "prove all 14 valid elements are selected and target/previous paths are stopped",
+    "prove finite nonzero teacher gradients on every action index",
+    "prove full-scale divided by 14 is float32 bit-exact to old scale divided by 6",
+    "prove pitch-only candidate gradients retain the old scaled pitch gradient",
+    "prove the disabled combined loss and gradients are bit-exact to baseline",
+    "execute no optimizer, simulator, locomotion, export, or hardware work"
+  ],
+  "question": "Can the exact Winner-v42 target supervise all 14 actions while preserving the old six-pitch per-element weight exactly and adding the eight causally required non-pitch zero targets?",
+  "schema_version": "winner_v49.full_action_teacher_abi_cpu_contract.v1",
+  "source_evidence": {
+    "full_teacher_support_pass_count": 32,
+    "pitch_nonpitch_interaction_pairs": 3,
+    "pitch_output_causal_pairs": 25,
+    "winner_v42_result_lf_sha256": "c465d9b3951941715ee0bb588a0ba24a9c4b15d7a2c99430340bcaea43964469",
+    "winner_v48c_result_lf_sha256": "2b48971a02aa837cb4a9185280a70d304228f11aef7cd26759a58b2aabf6d8d9"
+  },
+  "source_manifest_sha256": "cab0bb5a4fb810ecce25724e803ff6e00f4cf45aa71e638c72e035096516d372",
+  "sources": {
+    "action_boundary": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_calibrator_training.py",
+      "sha256": "f5736a357d73baedae2bba1d15254dd688bddf3761eb731d757a971783c77227"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v49_full_action_teacher_abi_cpu_contract.py",
+      "sha256": "66801c7f14afb4ba6cc3d86723d6f8728695d9e882d7038cc4cbf1b8ab7fb99a"
+    },
+    "pitch_teacher": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v43_static_target_teacher.py",
+      "sha256": "214df40f1b2033d190c4f601280679f7105267ddb8dbcd7a2fb0f6c3929242a3"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v49_full_action_teacher_abi_cpu_contract.py",
+      "sha256": "7c68b03403cd0c5e56978edbaa0e3b44f3b07317f555b4d57e750d28a1d96690"
+    },
+    "runner_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v49_full_action_teacher_abi_cpu_contract.py",
+      "sha256": "4f79c5594a086e9c09b0ddefd2c8ca7dbf7dc5efede4a1a91b7de4797555b5fe"
+    },
+    "teacher": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v49_full_action_static_target_teacher.py",
+      "sha256": "cc51950e90ba221763304250a11500251d1df1b58586cb5da24f4d1621b67b26"
+    },
+    "teacher_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v49_full_action_static_target_teacher.py",
+      "sha256": "604f2365f28de0f2d9d1ebd2de1e9ef2db4edb614e998653ac30bd86c786fc32"
+    },
+    "winner_v42_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v42_static_target_teacher_table_result.json",
+      "sha256": "c465d9b3951941715ee0bb588a0ba24a9c4b15d7a2c99430340bcaea43964469"
+    },
+    "winner_v48c_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v48c_causal_population_scope_result.json",
+      "sha256": "2b48971a02aa837cb4a9185280a70d304228f11aef7cd26759a58b2aabf6d8d9"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V49_FULL_ACTION_TEACHER_ABI_CPU_CONTRACT",
+  "teacher_abi": {
+    "actor_inputs_or_deployable_onnx_abi_change": false,
+    "configuration_ids": [
+      "COM_X_NEG",
+      "COM_CORNER_00",
+      "COM_CORNER_01",
+      "COM_CORNER_02",
+      "COM_CORNER_03",
+      "OPTIONAL_AGGREGATE_HEAVY_AFT",
+      "DISCOVERY_02",
+      "DISCOVERY_03",
+      "DISCOVERY_06",
+      "DISCOVERY_09",
+      "DISCOVERY_10",
+      "HELDOUT_04",
+      "HELDOUT_07",
+      "HELDOUT_09",
+      "HELDOUT_15"
+    ],
+    "configuration_occurrences": "exactly two, one per actuator plant",
+    "default_off": "baseline loss and gradients bit-exact",
+    "duration_ticks": 250,
+    "full_action_teacher_scale": 136.35153198242188,
+    "loss": "mean squared candidate-minus-stopped-bounded-target on all valid action elements",
+    "nonpitch_action_indices": [
+      0,
+      1,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "old_pitch_teacher_scale": 58.436370849609375,
+    "pitch_action_indices": [
+      2,
+      3,
+      4,
+      11,
+      12,
+      13
+    ],
+    "privileged_configuration_use": "training-label lookup only",
+    "raw_and_bounded_targets": "bit-exact to Winner-v43",
+    "scale_rule": "old_scale * 14 / 6, making float32 scale/14 bit-exact to old_scale/6",
+    "supervised_action_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "supervised_elements": 105000
+  }
+}

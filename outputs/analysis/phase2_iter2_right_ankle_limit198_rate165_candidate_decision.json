@@ -1,0 +1,61 @@
+{
+  "status": "PASS_OFFLINE_CORRECTED_BRIDGE_CANDIDATE_READY",
+  "scope": {
+    "offline_only": true,
+    "robot_tests": false,
+    "ssh": false,
+    "deploy": false,
+    "grounded_replay": false,
+    "ppo_training": false,
+    "domain_randomization_training": false,
+    "runtime_behavior_changes": false
+  },
+  "candidate": {
+    "candidate_dir": "policy/candidates/phase2_iter2_right_ankle_limit198_rate165_20260703",
+    "candidate_onnx": "policy/candidates/phase2_iter2_right_ankle_limit198_rate165_20260703/candidate.onnx",
+    "candidate_npz": "policy/candidates/phase2_iter2_right_ankle_limit198_rate165_20260703/candidate_mlp.npz",
+    "candidate_onnx_sha256": "eacc7c69e517b7cef32daeedeb6b110cd766e129183b071a7254f6fa0af5c1e2",
+    "candidate_npz_sha256": "053accd4d916c6ec0286ff1a4eadea3b285af4c8381b27689f39b10fcfbaa5ec"
+  },
+  "lineage": {
+    "base_manifest": "outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_plan/live_oracle_dagger_aggregate_manifest.json",
+    "trace_limit_json": "outputs/analysis/phase2_iter2_right_ankle_limit198_trace_limit.json",
+    "manifest_json": "outputs/analysis/phase2_iter2_right_ankle_limit198_manifest.json",
+    "fit_json": "outputs/analysis/phase2_iter2_right_ankle_limit198_rate165_student.json"
+  },
+  "x008_gate": {
+    "artifact_md": "outputs/analysis/PHASE2_ITER2_RIGHT_ANKLE_LIMIT198_RATE165_STUDENT_X008_GATE.md",
+    "artifact_json": "outputs/analysis/phase2_iter2_right_ankle_limit198_rate165_student_x008_gate.json",
+    "status": "PASS_CANDIDATE_SIM_GATE",
+    "runs": 8,
+    "falls": 0,
+    "duration_complete": 8,
+    "mean_local_vx_m_s": 0.026153822287917137,
+    "track_ratio": 0.3269227785989642,
+    "single_support_pct": 25.2,
+    "double_support_pct": 74.8,
+    "max_pitch_vel_p95_rad_s": 1.7501713275909424,
+    "p95_velocity_excess_rad_s": 0.0,
+    "max_velocity_excess_rad_s": 0.0,
+    "max_tracking_p95_rad": 0.18915102481842038
+  },
+  "x0_gate": {
+    "artifact_md": "outputs/analysis/PHASE2_ITER2_RIGHT_ANKLE_LIMIT198_RATE165_STUDENT_X0_GATE.md",
+    "artifact_json": "outputs/analysis/phase2_iter2_right_ankle_limit198_rate165_student_x0_gate.json",
+    "status": "PASS_CANDIDATE_SIM_GATE",
+    "runs": 8,
+    "falls": 0,
+    "duration_complete": 8,
+    "mean_local_vx_m_s": 0.00005393375148503376,
+    "single_support_pct": 0.0,
+    "double_support_pct": 100.0,
+    "max_pitch_vel_p95_rad_s": 0.05613151252269745,
+    "p95_velocity_excess_rad_s": 0.0,
+    "max_velocity_excess_rad_s": 0.0,
+    "max_tracking_p95_rad": 0.03204449750483037
+  },
+  "decision": {
+    "promote": true,
+    "next_action": "Use this as the current offline corrected-bridge Phase 2 baseline, then resume staged domain-randomization robustness while preserving the right-ankle max-spike guard."
+  }
+}

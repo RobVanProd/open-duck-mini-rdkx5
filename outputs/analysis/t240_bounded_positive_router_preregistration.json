@@ -1,0 +1,105 @@
+{
+  "authority": {
+    "behavior": false,
+    "execute_saved_context_audit": true,
+    "gate5": false,
+    "hosted": false,
+    "robot_or_rdk": false,
+    "router_transform_preregistration": false,
+    "training": false
+  },
+  "checks": {
+    "forty_contexts_and_two_exact_graphs": true,
+    "read_only_no_simulator_optimizer_hosted_robot": true,
+    "t238_proves_ordered_false_positive": true,
+    "t239_closes_one_sided_linear_family": true
+  },
+  "classifier": {
+    "combined_upper_bound": "float32 midpoint between maximum X-positive score and minimum lower-bound false-positive score over all forty contexts",
+    "cross_fit_test": "derive on p30/test all twenty p31_34 contexts, then reverse",
+    "lower_bound": "existing score >= float32(0)",
+    "no_scalar_search": true,
+    "score": "float32(calibration_context @ positive_router_coefficient + positive_router_intercept)",
+    "selection": "lower_bound AND score <= upper_bound",
+    "training_fit_upper_bound": "float32 midpoint between the X-positive score and the minimum non-X-positive score that passes the lower bound"
+  },
+  "decision_rule": {
+    "fail_decision": "RETURN_TO_CONTEXT_GEOMETRY_SELECTION_WITHOUT_BOUNDED_ROUTER",
+    "no_behavior_or_training_authorized": true,
+    "pass_decision": "EARN_T241_BOUNDED_POSITIVE_ROUTER_TRANSFORM_PREREGISTRATION_ONLY",
+    "pass_if": {
+      "both_cross_fit_classifiers": "20/20",
+      "both_graph_router_parameters_bit_exact": true,
+      "combined_classifier": "40/40",
+      "combined_false_positives": 0,
+      "combined_true_positives": 2,
+      "positive_lower_and_upper_margins": "strictly positive"
+    }
+  },
+  "execution_now": {
+    "behavior_cells": 0,
+    "context_rows": 0,
+    "hosted_sessions": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_steps": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 6610,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t240_bounded_positive_router_preregistration.py",
+      "sha256": "bafce84d0ea1ffb778a77c1610878843060b82a701b561b0ad080bb4292c6413"
+    },
+    "runner": {
+      "bytes": 10109,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t240_bounded_positive_router.py",
+      "sha256": "a0346b3a6525ccca6e037dfacf2b543cc74aecc36aec51841bd0d26c350b19ee"
+    },
+    "t167_contexts": {
+      "bytes": 128322,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t167_calibration_context_separability_result.json",
+      "sha256": "0d55e78a96317bff9bb1363a65a1de48beaa61217609a768e148b63a59827e35"
+    },
+    "t234b_graphs": {
+      "bytes": 99512,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t234b_abi_helper_recovery_result.json",
+      "sha256": "e0edaf063b40f60418fbd99771c618ca12bf0af571b69c487abadb3f8b3b900f"
+    },
+    "t238_result": {
+      "bytes": 31851,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t238_home_offset_route_autopsy_result.json",
+      "sha256": "d46d99e6d46aca116a1eeb03b5cceb5802200c03da7a87d2f57619c391d51bc0"
+    },
+    "t239_result": {
+      "bytes": 25908,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t239_x_positive_router_separability_result.json",
+      "sha256": "604c04cf62132cd641fa856220672768cb2c3650690372fce09f320d8d36d7fc"
+    },
+    "test": {
+      "bytes": 1563,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t240_bounded_positive_router.py",
+      "sha256": "d181955b4fdeca4ee5b554aa2acf015afce2394743d47294b934668b064407d1"
+    }
+  },
+  "graphs": [
+    {
+      "bytes": 988264,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t234b_abi_helper_recovery_v1\\graphs\\1003520\\exact_low_command_final_head.onnx",
+      "role": "half",
+      "sha256": "c34cdba0c1e1c1310f16926161ed3b1cefe89e79ea88636ed2b4d5feb535b370",
+      "step": 1003520
+    },
+    {
+      "bytes": 988264,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t234b_abi_helper_recovery_v1\\graphs\\2007040\\exact_low_command_final_head.onnx",
+      "role": "final",
+      "sha256": "b19b81262aba747871058238c92f0f4bd57ffaa16b8e70ab007c8c9849c02e51",
+      "step": 2007040
+    }
+  ],
+  "preregistered_contract_sha256": "daa2ccb164698f3558b5135ef35e4eae5ba8f03ce1450147733268ac0e137978",
+  "question": "Does the existing positive-router score contain a cross-fit bounded interval that preserves TORSO_COM_X_POS while excluding the higher-scoring HOME_JOINT_OFFSET_NEG false positive?",
+  "schema_version": "open_duck.t240_bounded_positive_router_preregistration.v1",
+  "status": "PREREGISTERED_T240_BOUNDED_POSITIVE_ROUTER"
+}

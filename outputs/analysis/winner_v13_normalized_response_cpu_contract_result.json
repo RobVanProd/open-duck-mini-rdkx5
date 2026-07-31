@@ -1,0 +1,140 @@
+{
+  "authority": {
+    "pass_authorizes_only": "a separate normalized-response Stage-1 preregistration",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "checks": {
+    "action_head_bit_exact": true,
+    "all_stage1_gradients_nonzero": true,
+    "contact_targets_exactly_one": true,
+    "contact_targets_normalize_to_exact_zero": true,
+    "exact_80_episode_training_population": true,
+    "exported_action_exact_zero": true,
+    "normalized_initial_loss_below_raw_initial_loss": true,
+    "one_adam_update_exact": true,
+    "one_update_reduces_same_batch_normalized_loss": true,
+    "onnx_abi_exact": true,
+    "onnx_jax_error_at_most_1e_7": true,
+    "onnx_previous_action_chain_exact": true,
+    "onnx_training_only_tensors_absent": true,
+    "valid_transition_count_nonzero": true,
+    "zero_contact_prediction_has_exact_zero_error": true
+  },
+  "decision": "AUTHORIZE_NORMALIZED_RESPONSE_STAGE1_PREREGISTRATION_ONLY",
+  "execution": {
+    "cpu_contract_optimizer_updates": 1,
+    "formal_support_cells": 0,
+    "full_training_updates": 0,
+    "locomotion_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "graph_contract": {
+    "abi_exact": true,
+    "all_chain_outputs_finite": true,
+    "all_initializers_finite": true,
+    "bytes": 54896,
+    "chain_ticks": 256,
+    "forbidden_training_or_privileged_tokens": [],
+    "initializer_count": 9,
+    "inputs": [
+      {
+        "name": "obs",
+        "shape": [
+          1,
+          115
+        ]
+      },
+      {
+        "name": "previous_action",
+        "shape": [
+          1,
+          14
+        ]
+      },
+      {
+        "name": "h_in",
+        "shape": [
+          1,
+          64
+        ]
+      }
+    ],
+    "jax_onnx_at_most_1e_7": true,
+    "jax_onnx_max_abs_error": 8.731149137020111e-11,
+    "outputs": [
+      {
+        "name": "calibration_actions",
+        "shape": [
+          1,
+          14
+        ]
+      },
+      {
+        "name": "previous_action_out",
+        "shape": [
+          1,
+          14
+        ]
+      },
+      {
+        "name": "h_out",
+        "shape": [
+          1,
+          64
+        ]
+      }
+    ],
+    "path": "/tmp/winner-v13-normalized-response-cpu-work/winner_v13_normalized_response_zero_cell.onnx",
+    "previous_action_out_equals_action_bit_exact": true,
+    "sha256": "cc564314a347257da114c5db81a24a592ea8fb12629b1b20632f7064a9483952",
+    "training_only_tensors_absent": true
+  },
+  "objective_evidence": {
+    "all_values_finite": true,
+    "contact_contract": {
+      "all_targets_exactly_one": true,
+      "normalized_targets_exactly_zero": true,
+      "target_mean": [
+        1.0,
+        1.0
+      ],
+      "target_std": [
+        9.999999974752427e-07,
+        9.999999974752427e-07
+      ],
+      "zero_prediction_error_exactly_zero": true
+    },
+    "v12_raw_coordinate_initial_loss": 40890163200.0,
+    "v12_to_v13_initial_loss_ratio": 42382544896.0,
+    "v13_normalized_coordinate_initial_loss": 0.9647877812385559,
+    "v13_normalized_coordinate_post_update_loss": 0.9642285108566284
+  },
+  "repository_attribution": {
+    "artifact_zip_bytes": 49051,
+    "artifact_zip_sha256": "c28766ffa8a2e43205301fc13a604214046b80200f6aeba0700206f025894bbe",
+    "contract_lf_sha256": "bafe30101a5e825602742bb94d7e12e23b3b084c172285e55c3d4e6a4fac8867",
+    "contract_path": "outputs/analysis/winner_v13_normalized_response_cpu_contract.json",
+    "github_artifact_digest": "sha256:c28766ffa8a2e43205301fc13a604214046b80200f6aeba0700206f025894bbe",
+    "github_artifact_id": 8490421077,
+    "github_artifact_name": "winner-v13-normalized-response-cpu-contract-29818644996",
+    "github_run_attempt": 1,
+    "github_run_head_sha": "5a8a8f4d424710cf32956eed33365b475627350a",
+    "github_run_id": 29818644996,
+    "graph_artifact_sha256": "cc564314a347257da114c5db81a24a592ea8fb12629b1b20632f7064a9483952",
+    "importer_lf_sha256": "581085b0332ecfa5e82bcf3db1ac4678f5f860e74064dc389e395697e2ae8993",
+    "raw_result_receipt_sha256": "1bf3a01b8a2d31862c806d5e346d4538ece214a50cd971a96a0a90a4754f565f",
+    "raw_result_sha256": "92c15c46eb03d70c0354563ea36db66058923e667f50e9c515f3f60aa2f4f2bc",
+    "repository": "RobVanProd/open-duck-mini-rdkx5",
+    "runner_lf_sha256": "54c4d55071eecbaae23975b9d06e035f37c9d450d6733a453eb24774471d6137",
+    "workflow_lf_sha256": "c32206f210eb3e502318fb793f6e5db476c6c7d045b7fce7d251d17bc6c006f6"
+  },
+  "schema_version": "winner_v13.normalized_response_cpu_contract_result.v1",
+  "sources": {
+    "contract_lf_sha256": "bafe30101a5e825602742bb94d7e12e23b3b084c172285e55c3d4e6a4fac8867",
+    "runner_lf_sha256": "54c4d55071eecbaae23975b9d06e035f37c9d450d6733a453eb24774471d6137",
+    "v13_primitives_lf_sha256": "b57ae2823cff90bfd8d78317adb1dfe9607bcae069a4d985863144b4e12ec3ca"
+  },
+  "status": "PASS_WINNER_V13_NORMALIZED_RESPONSE_CPU_CONTRACT"
+}

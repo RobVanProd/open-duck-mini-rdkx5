@@ -1,0 +1,212 @@
+{
+  "authority": {
+    "checkpoint_selection": false,
+    "cpu_only": true,
+    "deployment": false,
+    "gate5": false,
+    "hosted_or_colab_compute": false,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": false
+  },
+  "candidate": {
+    "calibrator": {
+      "bytes": 55573,
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v96-response-conditioned-mechanics\\winner_v96_universal_calibrator.onnx",
+      "sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576"
+    },
+    "checkpoints": [
+      {
+        "checkpoint_id": "V121_TRAIN_MATCHED_HALF",
+        "policy": {
+          "bytes": 958485,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t8_state_coherent_handoff_assets_v2\\policies\\V121_DEPLOYMENT_1003520_T8_CONTEXT_ABI.onnx",
+          "sha256": "8749ba91e98c18b8c2d123bae3558154bc7221cc8b58c1a8ad6c9adc39d8ae4a"
+        }
+      },
+      {
+        "checkpoint_id": "V121_TRAIN_MATCHED_FINAL",
+        "policy": {
+          "bytes": 958485,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t8_state_coherent_handoff_assets_v2\\policies\\V121_DEPLOYMENT_2007040_T8_CONTEXT_ABI.onnx",
+          "sha256": "76aed96802919921ad8cce378752f684c03aa1fc529a874268bc250334327d44"
+        }
+      }
+    ],
+    "executed_prefix_actions_changed": false,
+    "fits": {
+      "p30": {
+        "bytes": 18664,
+        "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p30_actuator_fit_20260712.json",
+        "sha256": "a58db8ffc505d2bb64cba7f5618d0e2c65904fc9f9ac37b560a1231e090f5f4f"
+      },
+      "p31_34": {
+        "bytes": 18788,
+        "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p31_34_actuator_fit_20260712.json",
+        "sha256": "2740513f6bdeb4ad3cc5dd6dc1709319389a593fd153c1ce5abae03b66131a57"
+      }
+    },
+    "locomotion_action_used_during_prefix": false,
+    "new_policy_inputs": false,
+    "new_policy_outputs": false,
+    "policy_weights_changed": false,
+    "reference": {
+      "bytes": 259604,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+      "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+    }
+  },
+  "causal_basis": {
+    "material_difference": "T13 adds no context-to-action weights. It chains the frozen V121 actor's own existing h_out over the real calibration observations and realized previous actions while ignoring its shadow action, then supplies that semantically aligned state as the first locomotion h_in.",
+    "phase_check": "A read-only T12 tick-zero comparison found the calibrated physical pose already closest to reference phase zero, so phase reassignment is not selected.",
+    "t10_t11_closure": "The added response-context adapter family was closed after its learned context changed the final action on only 9/2048 coherent states and 1/128 causal sequences.",
+    "t12_result": "The exact response prefix plus ordinary zero-initialized V121 recurrence passed only 5/12 negative-COM cells. All handoff, rate, tracking, and COM readback checks were exact; the remaining failure was closed-loop falls.",
+    "untried_path": "T8/T12 explicitly required locomotion hidden state to be zero. Repository response-prefix paths use calibrator h_out as a separate context; none transfers a shadow-updated V121 recurrent state at locomotion handoff."
+  },
+  "decision_rule": {
+    "fail": "Close existing-recurrent shadow handoff. Do not train it, tune a hidden scale, remap coordinates, or run behavior.",
+    "no_threshold_changes_after_outcome": true,
+    "partial_results_selection_weight": 0,
+    "pass": "Authorize only a separately preregistered T14 12-cell negative-COM behavior screen using this exact handoff."
+  },
+  "execution_now": {
+    "hosted_or_colab_compute": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "scored_behavior_cells": 0,
+    "simulator_prefix_cells": 0
+  },
+  "matrix": {
+    "calibration_ticks": 250,
+    "checkpoints": 2,
+    "commands_x_m_s": [
+      0.074
+    ],
+    "fits": [
+      "p30",
+      "p31_34"
+    ],
+    "scored_behavior_cells": 0,
+    "scored_locomotion_ticks": 1,
+    "seed": 167931544,
+    "simulator_prefix_cells": 4,
+    "torso_com_offset_m": [
+      -0.05,
+      0.0,
+      0.0
+    ]
+  },
+  "pass_rule": {
+    "all_bounds_and_rate_checks_green": true,
+    "all_com_readbacks_exact": true,
+    "all_four_cells_complete_on_cpu": true,
+    "all_prefix_actions_ignored_and_250_shadow_steps_exact": true,
+    "all_shadow_hidden_states_finite_nonzero_and_exact_at_handoff": true,
+    "all_tick_zero_graph_replays_bit_exact": true,
+    "all_x0_counterfactual_actions_and_state_outputs_exact_zero": true,
+    "minimum_cross_plant_hidden_linf": 1e-07,
+    "minimum_same_observation_cross_plant_final_action_linf": 1e-06,
+    "minimum_shadow_vs_zero_final_action_linf": 1e-06
+  },
+  "playground": {
+    "control_commit": "b9be205ac64488c23504ca42e5ec790337adeec3",
+    "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-v175",
+    "required_file_sha256": {
+      "playground/common/phase_moe_networks.py": "6480f59f4039884be6743828ffed1c31f76896830b2b38689cad038200283cb7",
+      "playground/common/recurrent_ppo_networks.py": "a501000c6f959276514ba56f935d027b05b171a9ea62bb6a2bc1ecdd2fe8cb4e",
+      "playground/common/reference_residual_ppo_networks.py": "eeb1b758f32bb8a7e53cf59b269bed7f97126cf37ccc4d11090a5f8312b380e6",
+      "playground/common/rewards.py": "9c327866f2632265f14ef81318046f887aafa64384a06efa6cb264e144bbb1d3",
+      "playground/common/runner.py": "27fb16f56eb3dbbeea09b4395dd6073d88092d16dd2bc21265767922204b4546",
+      "playground/open_duck_mini_v2/custom_rewards.py": "16fdf5ed409f9abcfa6f68465c4351081c0c255a6683c09aee110c557890cd0c",
+      "playground/open_duck_mini_v2/joystick.py": "5bbdfcf77dc36fcc2b02751fa7234b89c38fea53e35fbf09b37084102d9033d3",
+      "playground/open_duck_mini_v2/runner.py": "3c04098dcac6b4e22011645a70f6276e57da55dacfc5c6a82e68f1c3c7312457",
+      "playground/open_duck_mini_v2/xmls/open_duck_mini_v2_backlash.xml": "11e922dc9524716e9f54b2fd8be54133fa65efbc61de96ddc846d991de1c9d38",
+      "playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml": "33af97247d6a876cf47c9e37185cb71bd09f6793bc0f62d90cbe2a91caa3ba63"
+    }
+  },
+  "preregistered_contract_sha256": "c3220901cd8f63858e6d4232c1320289d9992bfec1371632463027d444bfc622",
+  "question": "Can the already-trained V121 recurrent state observe the exact 250-tick response prefix in shadow mode and carry a finite, plant-sensitive, action-visible h_in across the state-coherent handoff, without changing weights or executed prefix actions?",
+  "schema_version": "open_duck.t13_shadow_hidden_preregistration.v1",
+  "shadow_contract": {
+    "calibrator_action_remains_executed": true,
+    "handoff": {
+      "applied_target": "preserved physical observer state",
+      "calibration_context": "final frozen calibrator h_out",
+      "h_in": "final shadow V121 h_out",
+      "phase": [
+        1.0,
+        0.0
+      ],
+      "previous_action": "final executed calibrator action"
+    },
+    "locomotion_policy_action_during_prefix_is_ignored": true,
+    "locomotion_shadow_inputs": [
+      "exact 115-D zero-command calibration observation",
+      "realized prior calibrator action",
+      "chained V121 h_out",
+      "zero diagnostic calibration_context because the T8 context branch is exact zero-weight"
+    ]
+  },
+  "sources": {
+    "adapter": {
+      "bytes": 11987,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\t13_shadow_hidden_eval_adapter.py",
+      "sha256": "98b02bb684b8895d781c96aa3134b2e3409a89eaec36c6d614fc379e884143e2"
+    },
+    "builder": {
+      "bytes": 10214,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t13_shadow_hidden_preregistration.py",
+      "sha256": "cebc0b69d2d96133f6b7468a3b40df2ff3faf5d7466477c10ce29bcec27d0c67"
+    },
+    "closed_loop_source": {
+      "bytes": 153794,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\closed_loop_sim_eval.py",
+      "sha256": "352ea320936c83801fa47f76e35faea36a68f1d7f45c11b1869292e1955f4114"
+    },
+    "independent_auditor": {
+      "bytes": 10719,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\audit_t13_shadow_hidden_contract.py",
+      "sha256": "150fcef84d8e8a08b44c4840a32fc8a2af7790b351bb3f56be76bfc31bc01b73"
+    },
+    "runner": {
+      "bytes": 17658,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t13_shadow_hidden_contract.py",
+      "sha256": "7e2dac80767f411a90d4fd1eb1d39355c1e12d0fa8e5c5d75c6fb3dcaca8d865"
+    },
+    "t10_result": {
+      "bytes": 13035,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t10_response_conditioned_continuation_cpu_result.json",
+      "sha256": "4e850284db9f187581ba0cb07abf0c8f04b03b61a4e9e7243de99dd266e97701"
+    },
+    "t11_result": {
+      "bytes": 2924,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t11_context_action_observability_result.json",
+      "sha256": "183081034f1ba6eeb365aefa3081123ac07520bc52e30e3698331abebeba7d13"
+    },
+    "t12_independent_audit": {
+      "bytes": 689,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t12_response_prefix_com_independent_audit.json",
+      "sha256": "6bde8964613d33e722bf39b13369ce59373935055f4ccf5a5a701d1966ac4ee5"
+    },
+    "t12_result": {
+      "bytes": 101869,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t12_response_prefix_com_result.json",
+      "sha256": "b8f3c72771807de92068da7ade14bb4c23c400ea1cbbaff598101512e59b3351"
+    },
+    "t8_adapter": {
+      "bytes": 13299,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\t8_state_coherent_eval_adapter.py",
+      "sha256": "13396bb1df49bba50556b67dd51cf5542be777b034d0c9235a8d2926dcdf8719"
+    },
+    "tests": {
+      "bytes": 2394,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t13_shadow_hidden_contract.py",
+      "sha256": "bb096e38952b67840d9874b3b49788834ac7706a9bef9d44e1eb49090e30cd16"
+    },
+    "worker": {
+      "bytes": 5797,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\evaluate_t13_shadow_hidden_contract.py",
+      "sha256": "bbf48342bf1453a1b60d72daf8296313302c12fd8056fba261a8f21383b3412b"
+    }
+  },
+  "status": "PREREGISTERED_T13_SHADOW_HIDDEN_CPU_CONTRACT"
+}

@@ -1,0 +1,65 @@
+{
+  "status": "HOLD_LOW_FORWARD_PROGRESS",
+  "generated_at": "2026-06-30T09:35:00Z",
+  "scope": {
+    "robot_tests": false,
+    "ssh": false,
+    "deploy": false,
+    "grounded_replay": false,
+    "runtime_behavior_changed": false
+  },
+  "colab": {
+    "session": "open-duck-a100-phase2b",
+    "workflow": "phase2-z005-motion-floor",
+    "candidate_name": "phase2_z005_motion_floor_a100"
+  },
+  "training_run": {
+    "returncode": 0,
+    "elapsed_s": 799.22,
+    "latest_step": 122880,
+    "latest_onnx_sha256": "7a030ee89d417af49faa0eb76ef5cd6796a520eff017751afb4a7f3c971ef655",
+    "actionable_stderr_warnings": 0
+  },
+  "compact_sweep": {
+    "fit_json": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+    "bridge_mode": "fitted",
+    "commands": [0.0, 0.08],
+    "duration_s": 1.0,
+    "jax_platform": "cpu",
+    "velocity_envelope_rad_s": [2.0, 3.25],
+    "checkpoints": [
+      {
+        "step": 40960,
+        "sha256": "978ab751856ad49d522cce2e8ab6710719736d7be9d3159611bcb731a60ede60",
+        "x0_status": "PASS_CANDIDATE_SIM_GATE",
+        "x008_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "max_pitch_vel_p95_rad_s": 1.4239,
+        "max_tracking_p95_rad": 0.2130,
+        "x008_track_ratio": 0.1610,
+        "x008_mean_local_vx_m_s": 0.0129
+      },
+      {
+        "step": 81920,
+        "sha256": "80729460130feafa73ab7c16be27bac7e09ce678654a908bc09e0e35ec332081",
+        "x0_status": "PASS_CANDIDATE_SIM_GATE",
+        "x008_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "max_pitch_vel_p95_rad_s": 1.4045,
+        "max_tracking_p95_rad": 0.2112,
+        "x008_track_ratio": 0.1680,
+        "x008_mean_local_vx_m_s": 0.0134
+      },
+      {
+        "step": 122880,
+        "sha256": "7a030ee89d417af49faa0eb76ef5cd6796a520eff017751afb4a7f3c971ef655",
+        "x0_status": "PASS_CANDIDATE_SIM_GATE",
+        "x008_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "max_pitch_vel_p95_rad_s": 1.4028,
+        "max_tracking_p95_rad": 0.2116,
+        "x008_track_ratio": 0.1993,
+        "x008_mean_local_vx_m_s": 0.0159
+      }
+    ]
+  },
+  "interpretation": "Motion-floor reward changes improved training reward but did not restore meaningful forward motion on z=0.005 terrain.",
+  "next_direction": "Do not promote. Stop small scalar z=0.005 reward variants; use an intermediate z=0.0035 terrain rung or direct teacher-action/live-oracle continuity."
+}

@@ -1,0 +1,83 @@
+{
+  "schema_version": "ground_up_robustness_r2_matrix_preregistration.v1",
+  "status": "PREREGISTERED_CONTRACT_REQUIRED_CPU_ONLY",
+  "causal_basis": {
+    "ladder": "outputs/analysis/ground_up_offline_robustness_ladder_preregistration.json",
+    "r1_repair_result": "outputs/analysis/ground_up_dual_fit_conservative_envelope_repair_result.json",
+    "r1_repair_result_sha256": "062406673935671cc54d62803a8740dd2dac6f14d9d957f16d13cd3b33b07f71",
+    "r1_repair_status": "PASS_DUAL_FIT_CONSERVATIVE_ENVELOPE_REPAIR",
+    "declared_range_source": "/tmp/ground_up_applied_target_state_contract_20260714/playground/common/randomize.py",
+    "declared_range_source_sha256": "db03f9ed29b28e92ad4d8a9aa6a64b8ed6de523cace5c5374c1dd7ecefd1fdf9"
+  },
+  "policies": [
+    {
+      "step": 512000,
+      "path": "outputs/analysis/ground_up_dual_fit_conservative_envelope_repair_policies/T2_EQUAL_512000.onnx",
+      "sha256": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de"
+    },
+    {
+      "step": 1024000,
+      "path": "outputs/analysis/ground_up_dual_fit_conservative_envelope_repair_policies/T2_EQUAL_1024000.onnx",
+      "sha256": "0dfc24bde5d839e4d346dd8c08d9a7d0222a3847764ec6738bfc7f8d947f4ece"
+    }
+  ],
+  "fits": [
+    "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+    "outputs/analysis/fixed_target_p31_34_actuator_fit_20260712.json"
+  ],
+  "commands_x": [0.0, 0.074, 0.077, 0.08],
+  "seeds": [167931544],
+  "duration_ticks": 600,
+  "conditions_in_strict_order": [
+    {"id": "FLOOR_FRICTION_LO", "override": {"floor_friction": 0.5}},
+    {"id": "FLOOR_FRICTION_HI", "override": {"floor_friction": 1.0}},
+    {"id": "JOINT_FRICTIONLOSS_LO", "override": {"joint_frictionloss_scale": 0.9}},
+    {"id": "JOINT_FRICTIONLOSS_HI", "override": {"joint_frictionloss_scale": 1.1}},
+    {"id": "ARMATURE_LO", "override": {"armature_scale": 1.0}},
+    {"id": "ARMATURE_HI", "override": {"armature_scale": 1.05}},
+    {"id": "TORSO_COM_X_NEG", "override": {"torso_com_offset_m": [-0.05, 0.0, 0.0]}},
+    {"id": "TORSO_COM_X_POS", "override": {"torso_com_offset_m": [0.05, 0.0, 0.0]}},
+    {"id": "TORSO_COM_Y_NEG", "override": {"torso_com_offset_m": [0.0, -0.05, 0.0]}},
+    {"id": "TORSO_COM_Y_POS", "override": {"torso_com_offset_m": [0.0, 0.05, 0.0]}},
+    {"id": "TORSO_COM_Z_NEG", "override": {"torso_com_offset_m": [0.0, 0.0, -0.05]}},
+    {"id": "TORSO_COM_Z_POS", "override": {"torso_com_offset_m": [0.0, 0.0, 0.05]}},
+    {"id": "ALL_LINK_MASS_LO", "override": {"all_link_mass_scale": 0.9}},
+    {"id": "ALL_LINK_MASS_HI", "override": {"all_link_mass_scale": 1.1}},
+    {"id": "TORSO_MASS_NEG", "override": {"torso_mass_add_kg": -0.1}},
+    {"id": "TORSO_MASS_POS", "override": {"torso_mass_add_kg": 0.1}},
+    {"id": "HOME_JOINT_OFFSET_NEG", "override": {"joint_qpos0_offset_rad": -0.03}},
+    {"id": "HOME_JOINT_OFFSET_POS", "override": {"joint_qpos0_offset_rad": 0.03}},
+    {"id": "KP_LO", "override": {"kp_scale": 0.9}},
+    {"id": "KP_HI", "override": {"kp_scale": 1.1}}
+  ],
+  "matrix": {
+    "cells_per_condition": 16,
+    "maximum_cells": 320,
+    "strictly_sequential_conditions": true,
+    "stop_at_first_failed_condition": true
+  },
+  "gates": {
+    "x0": "unchanged 600-tick x=0 gate",
+    "moving": "unchanged 600-tick nominal gait, tracking, saturation, and measured-envelope gate",
+    "both_checkpoints_both_fits": true,
+    "training_reward_selection": false
+  },
+  "contract_requirements": [
+    "exactly one supported dynamics axis per condition",
+    "every condition value exactly matches the declared endpoint",
+    "model readback proves only the intended MJX field and indices changed",
+    "joint_qpos0 offsets also reach the deterministic home-support reset state",
+    "default-off behavior reproduces the existing repaired R1 policy evaluation",
+    "CPU-only JAX and ONNX execution",
+    "result records the exact override and readback"
+  ],
+  "authority": {
+    "build_and_run_contract": true,
+    "run_r2_behavior_after_contract_pass": true,
+    "run_r3_or_later": false,
+    "training": false,
+    "colab": false,
+    "local_gpu": false,
+    "rdk_or_robot": false
+  }
+}

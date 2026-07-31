@@ -1,0 +1,179 @@
+{
+  "authority": {
+    "pass_authorizes_only": "one separately frozen full-configuration CPU warm-started oracle screen",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "runtime_oracle_or_action_wrapper_authorized": false,
+    "training_authorized": false
+  },
+  "decision": "AUTHORIZE_ONE_CPU_ONLY_WARM_STARTED_COM_X_NEG_SCREEN",
+  "evidence_basis": {
+    "one_factor_change": "proposal mean carries the shifted prior winning plan",
+    "source_mechanism": "V36 resets its CEM mean to the single previous action on every tick, discarding the remainder of the just-selected eight-tick plan.",
+    "v36_failure_check": "roll_pitch only",
+    "v36_support_passes": 0,
+    "v36_terminal_ticks": [
+      55,
+      52
+    ]
+  },
+  "execution_now": {
+    "locomotion_training_steps": 0,
+    "optimizer_updates": 0,
+    "oracle_support_cells": 0,
+    "robot_or_rdk_access": 0
+  },
+  "interpretation": {
+    "hold": "Close this exact stateful proposal mechanism. Do not tune V36/V37's horizon, population, pitch-joint set, objective, covariance, or warm-start transform.",
+    "pass": "Stateful proposal continuity is sufficient at the anchor; authorize only a separate 30-cell full-configuration warm-started feasibility preregistration."
+  },
+  "pass_rule": {
+    "all_cells_exercise_nontrivial_warm_mean": true,
+    "all_cells_use_nonzero_control": true,
+    "all_first_actions_match_v36": true,
+    "all_later_ticks_use_warm_start": true,
+    "all_selected_actions_graph_bounded": true,
+    "both_plants_pass_full_250_tick_support_gate": true,
+    "closest_result_selection": false
+  },
+  "question": "Does preserving the prior winning plan as the next CEM proposal mean repair V36's cold-start planning discontinuity without changing its controller authority, compute, objective, horizon, action set, or physical gate?",
+  "schema_version": "winner_v37.warm_started_shooting_feasibility_preregistration.v1",
+  "screen": {
+    "action_block_ticks": 2,
+    "actuator_plants": [
+      "P30_ALL_JOINT",
+      "P31_34_PITCH_WITH_P30_NONPITCH"
+    ],
+    "configuration_ids": [
+      "COM_X_NEG"
+    ],
+    "constraints": "Every candidate and selected action passes through the exact stateful graph absolute/rate boundary and the unchanged P30 or P31/34 actuator bridge.",
+    "controlled_action_indices": [
+      2,
+      3,
+      4,
+      11,
+      12,
+      13
+    ],
+    "duration_ticks": 250,
+    "elites": 8,
+    "expected_cells": 2,
+    "horizon_ticks": 8,
+    "initial_std": 0.2,
+    "iterations": 4,
+    "minimum_std": 0.03,
+    "objective": "lexicographic(survival_ticks,-maximum_abs_tilt,+minimum_base_z,-final_abs_tilt,-final_gyro,-action_delta_energy,-action_energy)",
+    "population": 64,
+    "proposal_memory": {
+      "covariance": "reset every tick to the unchanged 0.20 initial standard deviation",
+      "first_tick": "exact Winner-v36 cold mean",
+      "later_ticks": "shift prior winning raw eight-tick plan left by one tick, repeat its terminal action, then average adjacent pairs into four two-tick blocks"
+    },
+    "root_seed": 120120
+  },
+  "source_manifest_sha256": "b7c44a720176e7851d33ecb8b4acdf98a9ffea2f94000881976d75ecca27aa18",
+  "source_result": {
+    "repository_attribution": {
+      "artifact_zip_bytes": 107560,
+      "artifact_zip_sha256": "43f09ee5725b7d1fb4709f3924acba5b4146d7dff687a4181c26c833fd9ac907",
+      "github_artifact_digest": "sha256:43f09ee5725b7d1fb4709f3924acba5b4146d7dff687a4181c26c833fd9ac907",
+      "github_artifact_id": 8520553782,
+      "github_artifact_name": "winner-v36-support-oracle-shooting-feasibility-29897378894",
+      "github_run_attempt": 1,
+      "github_run_head_sha": "d5f71c5051358acf2de6a5b008b68d4ebe291dc6",
+      "github_run_id": 29897378894,
+      "importer_lf_sha256": "15ecf79a9f84cc59f945b447366261cc993636ca530d08c5cc59083a2594a892",
+      "preregistration_lf_sha256": "b383abc41e584c5e1fcac673cfc22254c03e999405b2ef68f02221a7d77340c2",
+      "raw_result_receipt_sha256": "25159aeb581bf37f65e46406bed7132eb48964480244f84900ea913867c767c3",
+      "raw_result_sha256": "ecf5e626d40a83bc769b833ff15859fc802d360e34b123aab1992d033f7d0032",
+      "repository": "RobVanProd/open-duck-mini-rdkx5",
+      "runner_lf_sha256": "cbf5ac6b8cb863d581ff699e2acbdb97615e99936ae5a7a0e553ef4caa522580",
+      "workflow_lf_sha256": "943ad61f9517d375e7a64371c28d93034ce2cdbf93f0824a76c1ba32a7efe1fb"
+    },
+    "winner_v36_result_lf_sha256": "33baafd223756dc533ed96660591ed6fa9a45678e376296e8a6977146a4128e7"
+  },
+  "sources": {
+    "base_gate_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_support_gate.py",
+      "sha256": "18873eee55c77a278fc065de64c0b912803bf29b4440cde7f3adaabe1297baca"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v37_warm_started_shooting_feasibility_preregistration.py",
+      "sha256": "033409818e59e783c8147f60780596b0b733936779e4908d5d43c234fc1f1fdd"
+    },
+    "calibrator_design": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_training_preregistration.json",
+      "sha256": "1ec76a587c6fa50b92866c1632a7046ae0c6687ed17b1636b664bf45c2e8ba34"
+    },
+    "canonical_p30_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "cpu_smoke": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "environment_preparation": {
+      "hash_mode": "lf",
+      "path": "tools/prepare_winner_v15_cpu_environment.py",
+      "sha256": "33e54c3a16d5684e2d2520270acf25a28df42dc89e9f302c1ef3bd5f37d867c2"
+    },
+    "preregistration_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v37_warm_started_shooting_feasibility_preregistration.py",
+      "sha256": "61958c0025dc9f6074e3b322bce7a6062a05df9ebce34175aad78bf378f11489"
+    },
+    "result_importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v37_warm_started_shooting_feasibility.py",
+      "sha256": "3c6e193b7dca1ede047aef10f13634cfbb5ed7ee92ec2a02f2fb5d0d4cb0e826"
+    },
+    "result_importer_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v37_warm_started_shooting_feasibility_import.py",
+      "sha256": "7d0a7fcbc249e104ce596ac9d9c28594792c02d74e9129d716b362b3c270ee2b"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v37_warm_started_shooting_feasibility.py",
+      "sha256": "c4b9c971d2cc65e31555b87b39b81ca0a96bc3248e8cbf64203f212199126bf5"
+    },
+    "runner_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v37_warm_started_shooting_feasibility.py",
+      "sha256": "f71e679ae4a0f80b53ac1a78ffe2541dca5f20ef4e46132a241235c71f1b8c89"
+    },
+    "runtime_observer": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py",
+      "sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889"
+    },
+    "winner_v36_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v36_support_oracle_shooting_feasibility_result.json",
+      "sha256": "33baafd223756dc533ed96660591ed6fa9a45678e376296e8a6977146a4128e7"
+    },
+    "winner_v36_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v36_support_oracle_shooting_feasibility.py",
+      "sha256": "cbf5ac6b8cb863d581ff699e2acbdb97615e99936ae5a7a0e553ef4caa522580"
+    },
+    "workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v37-warm-started-shooting-feasibility.yml",
+      "sha256": "ed55863d7a21e7d6971d1b1cd025beb09e396f3932d7eabed72f72330265f118"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V37_WARM_STARTED_SHOOTING_FEASIBILITY"
+}

@@ -1,0 +1,63 @@
+{
+  "authority": {
+    "behavior": false,
+    "gate5": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false,
+    "v145_cpu_preregistration": true
+  },
+  "causal_result": {
+    "all_actual_events_labeled": true,
+    "peak_event": {
+      "actual_force_nm": 1.920832633972168,
+      "joint": 13,
+      "projected_force_nm": -1.9122962951660156,
+      "source_action_delta": 0.002124011516571045,
+      "source_empty_joint_indices": [],
+      "source_projected_joint_indices": [
+        8,
+        10,
+        13
+      ],
+      "source_tick": 394,
+      "tick": 397
+    },
+    "torque_events": 1,
+    "trajectory_bit_exact": true
+  },
+  "checks": {
+    "all_causal_checks_green": true,
+    "extra_failures_are_shadow_prediction_bookkeeping_only": true,
+    "input_hashes_exact": true,
+    "no_rerun_training_or_behavior": true,
+    "original_hold_only_reporting_check": true,
+    "physical_failure_is_torque_only": true,
+    "preregistered_shadow_does_not_apply": true,
+    "single_event_has_safe_nonempty_precursor_label": true,
+    "trajectory_reproduction_bit_exact": true
+  },
+  "decision": "EARN_ONE_V145_ON_POLICY_DAGGER_CPU_PREREGISTRATION",
+  "failed_checks": [],
+  "input_hashes": {
+    "preregistration": "f9a501840d5a82c0df86614fb57faabbf96f68b069b980621d7dbd71106643eb",
+    "result": "fee8bde0006f9b5501e7d6fd1b9a8e11e131d7002315d6ae38019a6440ac01d7"
+  },
+  "reporting_correction": {
+    "data_or_threshold_change": false,
+    "physical_failure_reasons": [
+      "torque_peak_at_most_1p91229675_nm"
+    ],
+    "reason": "the generic applied-oracle audit expects projected-force predictions to equal realized force; shadow mode deliberately commits the unprojected policy action, so those prediction/residual flags are expected and cannot classify the source policy's physical gate",
+    "rerun": false,
+    "shadow_only_diagnostic_failures": [
+      "oracle_only_empty_or_prehistory_residuals",
+      "oracle_prediction_exact",
+      "oracle_zero_nonempty_residual_violations",
+      "oracle_zero_prediction_mismatches"
+    ]
+  },
+  "schema_version": "winner_v144.shadow_reporting_correction.v1",
+  "status": "PASS_WINNER_V144_SHADOW_ORACLE_REPORTING_CORRECTION"
+}

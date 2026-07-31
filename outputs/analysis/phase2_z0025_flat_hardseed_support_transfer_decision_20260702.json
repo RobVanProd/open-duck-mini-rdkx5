@@ -1,0 +1,44 @@
+{
+  "status": "HOLD_FLAT_HARDSEED_SUPPORT_DOES_NOT_TRANSFER",
+  "date": "2026-07-02",
+  "offline_only": true,
+  "robot_tests": false,
+  "ssh": false,
+  "deploy": false,
+  "grounded_replay": false,
+  "training": false,
+  "candidate": {
+    "path": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_candidate/candidate.onnx",
+    "sha256": "dde8d20b464ad1e748cb620ce45fd0651d8e36a3ad35ba553aa64eed5229dd6d"
+  },
+  "bridge": {
+    "path": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+    "sha256": "3661543d0745073b561eb4fa2ae8f9616368ee8b72cb397f8b953dada532c8c0"
+  },
+  "test": {
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0025,
+    "bridge_mode": "fitted",
+    "jax_platform": "cpu",
+    "command_x": 0.0,
+    "seed": 5,
+    "duration_s": 2.0,
+    "source_md": "outputs/analysis/PHASE2_Z0025_FLAT_HARDSEED_SUPPORT_TRANSFER_X0_SEED5.md",
+    "source_json": "outputs/analysis/phase2_z0025_flat_hardseed_support_transfer_x0_seed5.json"
+  },
+  "result": {
+    "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+    "samples": 59,
+    "termination": "fall_or_nan",
+    "mean_local_vx_m_s": -0.2489703619710596,
+    "base_height_min_m": 0.06472276151180267,
+    "body_pitch_p95_rad": 0.07044838616401312,
+    "max_pitch_vel_p95_rad_s": 1.578335165977478,
+    "max_pitch_vel_limit_excess_rad_s": 0.0,
+    "max_tracking_p95_rad": 0.20978332161903387,
+    "single_support_pct": 6.779661016949152,
+    "double_support_pct": 88.13559322033898
+  },
+  "decision": "Do not use the older flat-terrain hard-seed recovery candidate as the support source for the current rough z=0.0025 seed-5 repair.",
+  "next_recommendation": "Generate or identify a zero-command support source in the current rough-terrain corrected-bridge reset distribution."
+}

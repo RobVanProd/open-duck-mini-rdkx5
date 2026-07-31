@@ -1,0 +1,398 @@
+{
+  "config": {
+    "policies": [
+      "outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_231931_163840.onnx",
+      "outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232137_327680.onnx",
+      "outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232221_491520.onnx"
+    ],
+    "policy_labels": [
+      "a2_164k",
+      "a2_328k",
+      "a2_492k"
+    ],
+    "seeds": [
+      0
+    ],
+    "command_x": 0.08,
+    "task": "flat_terrain_backlash",
+    "duration_s": 5.0,
+    "bridge_mode": "fitted",
+    "reward_overrides_json": null,
+    "reward_overrides_phase": null,
+    "policy_obs_input_name": null,
+    "policy_action_output_name": null,
+    "policy_state_input_names": null,
+    "policy_state_output_names": null,
+    "jax_platform": "cpu",
+    "run": true,
+    "trace_seeds": [],
+    "trace_full_obs": false
+  },
+  "results": [
+    {
+      "policy": "outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_231931_163840.onnx",
+      "policy_label": "a2_164k",
+      "seed": 0,
+      "output_dir": "outputs/analysis/candidate_seed_sweep/a2_164k/seed_000",
+      "command": [
+        "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python",
+        "/home/lsd/robots/open-duck-mini-rdkx5/tools/eval_policy_with_actuator_bridge.py",
+        "--mode",
+        "closed-loop-sim",
+        "--eval-role",
+        "candidate",
+        "--policy",
+        "outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_231931_163840.onnx",
+        "--fit-json",
+        "outputs/analysis/actuator_response_fit_corrected_knee.json",
+        "--playground-path",
+        "../Open_Duck_Playground",
+        "--env-python",
+        "../envs/open-duck-playground/bin/python",
+        "--command-x",
+        "0.08",
+        "--task",
+        "flat_terrain_backlash",
+        "--duration",
+        "5.0",
+        "--seed",
+        "0",
+        "--bridge-mode",
+        "fitted",
+        "--jax-platform",
+        "cpu",
+        "--sim-preflight-timeout-s",
+        "600",
+        "--closed-loop-timeout-s",
+        "1800",
+        "--output-dir",
+        "outputs/analysis/candidate_seed_sweep/a2_164k/seed_000"
+      ],
+      "command_shell": "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python /home/lsd/robots/open-duck-mini-rdkx5/tools/eval_policy_with_actuator_bridge.py --mode closed-loop-sim --eval-role candidate --policy outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_231931_163840.onnx --fit-json outputs/analysis/actuator_response_fit_corrected_knee.json --playground-path ../Open_Duck_Playground --env-python ../envs/open-duck-playground/bin/python --command-x 0.08 --task flat_terrain_backlash --duration 5.0 --seed 0 --bridge-mode fitted --jax-platform cpu --sim-preflight-timeout-s 600 --closed-loop-timeout-s 1800 --output-dir outputs/analysis/candidate_seed_sweep/a2_164k/seed_000",
+      "returncode": 0,
+      "stdout_tail": "outputs/analysis/candidate_seed_sweep/a2_164k/seed_000/SIM_ACTUATOR_BRIDGE_EVAL.md\noutputs/analysis/candidate_seed_sweep/a2_164k/seed_000/sim_actuator_bridge_eval.json\noutputs/analysis/candidate_seed_sweep/a2_164k/seed_000/CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md\noutputs/analysis/candidate_seed_sweep/a2_164k/seed_000/closed_loop_actuator_bridge_eval.json\n",
+      "result_json": "outputs/analysis/candidate_seed_sweep/a2_164k/seed_000/closed_loop_actuator_bridge_eval.json",
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "summary": {
+        "overall_status": "HOLD_CANDIDATE_TRACKING",
+        "candidate_gate_status": "HOLD_CANDIDATE_TRACKING",
+        "samples": 250,
+        "termination_reason": "duration_complete",
+        "elapsed_s": 4.98,
+        "mean_local_vx_m_s": 0.03003992803375877,
+        "track_ratio": 0.37549910042198464,
+        "body_pitch_p95_rad": 0.10890255474667657,
+        "base_height_min_m": 0.1520145982503891,
+        "max_pitch_vel_p95_rad_s": 1.790611445903778,
+        "max_pitch_vel_limit_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.20270871520042424,
+        "action_saturation_pct": 0.0
+      }
+    },
+    {
+      "policy": "outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232137_327680.onnx",
+      "policy_label": "a2_328k",
+      "seed": 0,
+      "output_dir": "outputs/analysis/candidate_seed_sweep/a2_328k/seed_000",
+      "command": [
+        "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python",
+        "/home/lsd/robots/open-duck-mini-rdkx5/tools/eval_policy_with_actuator_bridge.py",
+        "--mode",
+        "closed-loop-sim",
+        "--eval-role",
+        "candidate",
+        "--policy",
+        "outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232137_327680.onnx",
+        "--fit-json",
+        "outputs/analysis/actuator_response_fit_corrected_knee.json",
+        "--playground-path",
+        "../Open_Duck_Playground",
+        "--env-python",
+        "../envs/open-duck-playground/bin/python",
+        "--command-x",
+        "0.08",
+        "--task",
+        "flat_terrain_backlash",
+        "--duration",
+        "5.0",
+        "--seed",
+        "0",
+        "--bridge-mode",
+        "fitted",
+        "--jax-platform",
+        "cpu",
+        "--sim-preflight-timeout-s",
+        "600",
+        "--closed-loop-timeout-s",
+        "1800",
+        "--output-dir",
+        "outputs/analysis/candidate_seed_sweep/a2_328k/seed_000"
+      ],
+      "command_shell": "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python /home/lsd/robots/open-duck-mini-rdkx5/tools/eval_policy_with_actuator_bridge.py --mode closed-loop-sim --eval-role candidate --policy outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232137_327680.onnx --fit-json outputs/analysis/actuator_response_fit_corrected_knee.json --playground-path ../Open_Duck_Playground --env-python ../envs/open-duck-playground/bin/python --command-x 0.08 --task flat_terrain_backlash --duration 5.0 --seed 0 --bridge-mode fitted --jax-platform cpu --sim-preflight-timeout-s 600 --closed-loop-timeout-s 1800 --output-dir outputs/analysis/candidate_seed_sweep/a2_328k/seed_000",
+      "returncode": 0,
+      "stdout_tail": "outputs/analysis/candidate_seed_sweep/a2_328k/seed_000/SIM_ACTUATOR_BRIDGE_EVAL.md\noutputs/analysis/candidate_seed_sweep/a2_328k/seed_000/sim_actuator_bridge_eval.json\noutputs/analysis/candidate_seed_sweep/a2_328k/seed_000/CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md\noutputs/analysis/candidate_seed_sweep/a2_328k/seed_000/closed_loop_actuator_bridge_eval.json\n",
+      "result_json": "outputs/analysis/candidate_seed_sweep/a2_328k/seed_000/closed_loop_actuator_bridge_eval.json",
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "summary": {
+        "overall_status": "PASS_CANDIDATE_SIM_GATE",
+        "candidate_gate_status": "PASS_CANDIDATE_SIM_GATE",
+        "samples": 250,
+        "termination_reason": "duration_complete",
+        "elapsed_s": 4.98,
+        "mean_local_vx_m_s": 0.02163566569777322,
+        "track_ratio": 0.27044582122216526,
+        "body_pitch_p95_rad": 0.09146594630064227,
+        "base_height_min_m": 0.15201638638973236,
+        "max_pitch_vel_p95_rad_s": 1.7200636863708498,
+        "max_pitch_vel_limit_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.19241896271705627,
+        "action_saturation_pct": 0.0
+      }
+    },
+    {
+      "policy": "outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232221_491520.onnx",
+      "policy_label": "a2_492k",
+      "seed": 0,
+      "output_dir": "outputs/analysis/candidate_seed_sweep/a2_492k/seed_000",
+      "command": [
+        "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python",
+        "/home/lsd/robots/open-duck-mini-rdkx5/tools/eval_policy_with_actuator_bridge.py",
+        "--mode",
+        "closed-loop-sim",
+        "--eval-role",
+        "candidate",
+        "--policy",
+        "outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232221_491520.onnx",
+        "--fit-json",
+        "outputs/analysis/actuator_response_fit_corrected_knee.json",
+        "--playground-path",
+        "../Open_Duck_Playground",
+        "--env-python",
+        "../envs/open-duck-playground/bin/python",
+        "--command-x",
+        "0.08",
+        "--task",
+        "flat_terrain_backlash",
+        "--duration",
+        "5.0",
+        "--seed",
+        "0",
+        "--bridge-mode",
+        "fitted",
+        "--jax-platform",
+        "cpu",
+        "--sim-preflight-timeout-s",
+        "600",
+        "--closed-loop-timeout-s",
+        "1800",
+        "--output-dir",
+        "outputs/analysis/candidate_seed_sweep/a2_492k/seed_000"
+      ],
+      "command_shell": "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python /home/lsd/robots/open-duck-mini-rdkx5/tools/eval_policy_with_actuator_bridge.py --mode closed-loop-sim --eval-role candidate --policy outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232221_491520.onnx --fit-json outputs/analysis/actuator_response_fit_corrected_knee.json --playground-path ../Open_Duck_Playground --env-python ../envs/open-duck-playground/bin/python --command-x 0.08 --task flat_terrain_backlash --duration 5.0 --seed 0 --bridge-mode fitted --jax-platform cpu --sim-preflight-timeout-s 600 --closed-loop-timeout-s 1800 --output-dir outputs/analysis/candidate_seed_sweep/a2_492k/seed_000",
+      "returncode": 0,
+      "stdout_tail": "outputs/analysis/candidate_seed_sweep/a2_492k/seed_000/SIM_ACTUATOR_BRIDGE_EVAL.md\noutputs/analysis/candidate_seed_sweep/a2_492k/seed_000/sim_actuator_bridge_eval.json\noutputs/analysis/candidate_seed_sweep/a2_492k/seed_000/CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md\noutputs/analysis/candidate_seed_sweep/a2_492k/seed_000/closed_loop_actuator_bridge_eval.json\n",
+      "result_json": "outputs/analysis/candidate_seed_sweep/a2_492k/seed_000/closed_loop_actuator_bridge_eval.json",
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "summary": {
+        "overall_status": "PASS_CANDIDATE_SIM_GATE",
+        "candidate_gate_status": "PASS_CANDIDATE_SIM_GATE",
+        "samples": 250,
+        "termination_reason": "duration_complete",
+        "elapsed_s": 4.98,
+        "mean_local_vx_m_s": 0.0217807077888865,
+        "track_ratio": 0.27225884736108125,
+        "body_pitch_p95_rad": 0.09105128680543861,
+        "base_height_min_m": 0.15201377868652344,
+        "max_pitch_vel_p95_rad_s": 1.5751048922538762,
+        "max_pitch_vel_limit_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.1820400893688202,
+        "action_saturation_pct": 0.0
+      }
+    }
+  ],
+  "aggregate": {
+    "a2_164k": {
+      "runs": 1,
+      "fall_count": 0,
+      "duration_complete_count": 1,
+      "samples": {
+        "min": 250.0,
+        "mean": 250.0,
+        "p50": 250.0,
+        "p95": 250.0,
+        "max": 250.0
+      },
+      "track_ratio": {
+        "min": 0.37549910042198464,
+        "mean": 0.37549910042198464,
+        "p50": 0.37549910042198464,
+        "p95": 0.37549910042198464,
+        "max": 0.37549910042198464
+      },
+      "mean_local_vx_m_s": {
+        "min": 0.03003992803375877,
+        "mean": 0.03003992803375877,
+        "p50": 0.03003992803375877,
+        "p95": 0.03003992803375877,
+        "max": 0.03003992803375877
+      },
+      "body_pitch_p95_rad": {
+        "min": 0.10890255474667657,
+        "mean": 0.10890255474667657,
+        "p50": 0.10890255474667657,
+        "p95": 0.10890255474667657,
+        "max": 0.10890255474667657
+      },
+      "base_height_min_m": {
+        "min": 0.1520145982503891,
+        "mean": 0.1520145982503891,
+        "p50": 0.1520145982503891,
+        "p95": 0.1520145982503891,
+        "max": 0.1520145982503891
+      },
+      "max_pitch_vel_p95_rad_s": {
+        "min": 1.790611445903778,
+        "mean": 1.790611445903778,
+        "p50": 1.790611445903778,
+        "p95": 1.790611445903778,
+        "max": 1.790611445903778
+      },
+      "max_pitch_vel_limit_excess_rad_s": {
+        "min": 0.0,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "max_tracking_p95_rad": {
+        "min": 0.20270871520042424,
+        "mean": 0.20270871520042424,
+        "p50": 0.20270871520042424,
+        "p95": 0.20270871520042424,
+        "max": 0.20270871520042424
+      }
+    },
+    "a2_328k": {
+      "runs": 1,
+      "fall_count": 0,
+      "duration_complete_count": 1,
+      "samples": {
+        "min": 250.0,
+        "mean": 250.0,
+        "p50": 250.0,
+        "p95": 250.0,
+        "max": 250.0
+      },
+      "track_ratio": {
+        "min": 0.27044582122216526,
+        "mean": 0.27044582122216526,
+        "p50": 0.27044582122216526,
+        "p95": 0.27044582122216526,
+        "max": 0.27044582122216526
+      },
+      "mean_local_vx_m_s": {
+        "min": 0.02163566569777322,
+        "mean": 0.02163566569777322,
+        "p50": 0.02163566569777322,
+        "p95": 0.02163566569777322,
+        "max": 0.02163566569777322
+      },
+      "body_pitch_p95_rad": {
+        "min": 0.09146594630064227,
+        "mean": 0.09146594630064227,
+        "p50": 0.09146594630064227,
+        "p95": 0.09146594630064227,
+        "max": 0.09146594630064227
+      },
+      "base_height_min_m": {
+        "min": 0.15201638638973236,
+        "mean": 0.15201638638973236,
+        "p50": 0.15201638638973236,
+        "p95": 0.15201638638973236,
+        "max": 0.15201638638973236
+      },
+      "max_pitch_vel_p95_rad_s": {
+        "min": 1.7200636863708498,
+        "mean": 1.7200636863708498,
+        "p50": 1.7200636863708498,
+        "p95": 1.7200636863708498,
+        "max": 1.7200636863708498
+      },
+      "max_pitch_vel_limit_excess_rad_s": {
+        "min": 0.0,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "max_tracking_p95_rad": {
+        "min": 0.19241896271705627,
+        "mean": 0.19241896271705627,
+        "p50": 0.19241896271705627,
+        "p95": 0.19241896271705627,
+        "max": 0.19241896271705627
+      }
+    },
+    "a2_492k": {
+      "runs": 1,
+      "fall_count": 0,
+      "duration_complete_count": 1,
+      "samples": {
+        "min": 250.0,
+        "mean": 250.0,
+        "p50": 250.0,
+        "p95": 250.0,
+        "max": 250.0
+      },
+      "track_ratio": {
+        "min": 0.27225884736108125,
+        "mean": 0.27225884736108125,
+        "p50": 0.27225884736108125,
+        "p95": 0.27225884736108125,
+        "max": 0.27225884736108125
+      },
+      "mean_local_vx_m_s": {
+        "min": 0.0217807077888865,
+        "mean": 0.0217807077888865,
+        "p50": 0.0217807077888865,
+        "p95": 0.0217807077888865,
+        "max": 0.0217807077888865
+      },
+      "body_pitch_p95_rad": {
+        "min": 0.09105128680543861,
+        "mean": 0.09105128680543861,
+        "p50": 0.09105128680543861,
+        "p95": 0.09105128680543861,
+        "max": 0.09105128680543861
+      },
+      "base_height_min_m": {
+        "min": 0.15201377868652344,
+        "mean": 0.15201377868652344,
+        "p50": 0.15201377868652344,
+        "p95": 0.15201377868652344,
+        "max": 0.15201377868652344
+      },
+      "max_pitch_vel_p95_rad_s": {
+        "min": 1.5751048922538762,
+        "mean": 1.5751048922538762,
+        "p50": 1.5751048922538762,
+        "p95": 1.5751048922538762,
+        "max": 1.5751048922538762
+      },
+      "max_pitch_vel_limit_excess_rad_s": {
+        "min": 0.0,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "max_tracking_p95_rad": {
+        "min": 0.1820400893688202,
+        "mean": 0.1820400893688202,
+        "p50": 0.1820400893688202,
+        "p95": 0.1820400893688202,
+        "max": 0.1820400893688202
+      }
+    }
+  }
+}

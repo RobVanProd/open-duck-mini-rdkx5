@@ -1,0 +1,107 @@
+{
+  "assets": {
+    "final_graph": {
+      "bytes": 960260,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t119_joint_soft_router_cpu_v1\\smoke\\2026_07_29_032127_1024.onnx",
+      "sha256": "89a6da45955cccac8983818da721e8f217f3da7fc289cbfbe7c735146adba3b6"
+    },
+    "initial_graph": {
+      "bytes": 960260,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t119_joint_soft_router_cpu_v1\\smoke\\2026_07_29_032032_0.onnx",
+      "sha256": "1a2443367996b13fdc72c39430f92b42b3df08db96df76dce0bb18e16bb65c62"
+    },
+    "t97_preregistration": {
+      "bytes": 16616,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t97_hidden_gate_preregistration.json",
+      "sha256": "df47922ab4eb79c1d547987319cc9644c03abce30703cbdc5c36dc38019a8252"
+    }
+  },
+  "authority": {
+    "behavior_evaluation": false,
+    "execute_read_only_recovery": true,
+    "gate5": false,
+    "hosted_preregistration": false,
+    "hosted_training": false,
+    "policy_promotion": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "all_structural_training_checks_pass": true,
+    "frozen_graphs_present": true,
+    "no_new_optimizer_simulator_hosted_or_robot_execution": true,
+    "original_contract_held_only_auxiliary_random_binding": true,
+    "primary_trace_populations_pass": true,
+    "router_changed_on_auxiliary_population": true
+  },
+  "decision_rule": {
+    "cannot_modify_original_t119_result": true,
+    "fail_decision": "CONFIRM_CLOSE_JOINT_SOFT_ROUTER_TRAINTHROUGH",
+    "pass": "At least 90% of synthetic rows are outside the per-feature frozen trace envelope; at least 90% of initial raw-action elements are tanh-saturated; the learned router and pre-tanh anchored location both change on at least one of those same rows; and the already frozen nominal/negative trace checks remain green.",
+    "pass_decision": "RECOVER_T119_CPU_CONTRACT_AND_EARN_T120_HOSTED_PREREGISTRATION_ONLY"
+  },
+  "failed_checks": [],
+  "preregistered_contract_sha256": "c806eee781ccef0565f3b2b5ba3ca5689d3fd3770b9688a5f2ceba9375a79baa",
+  "question": "Did the auxiliary synthetic check miss a real learned route because unconstrained random observations drive the tanh policy outside the frozen trace support and into saturation?",
+  "repository_commit": "4e64ecc326af6a29f4d9075ea3a6eab21886efdc",
+  "schema_version": "open_duck.t119b_random_binding_recovery_preregistration.v1",
+  "scope": {
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "immutable_t119_training": true,
+    "new_graph_outputs_only": [
+      "anchored_location",
+      "raw_continuous_actions",
+      "soft_negative_com_weight"
+    ],
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "same_256_random_feeds": true,
+    "simulator_steps": 0,
+    "trace_population": "same_frozen_72_rows"
+  },
+  "sources": {
+    "builder": {
+      "bytes": 7693,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t119b_random_binding_recovery_preregistration.py",
+      "sha256": "e482d540f59fa169b09182e3d7585d81cf993ab824ff36c87ff7d788ac26a3cc"
+    },
+    "runner": {
+      "bytes": 10816,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t119b_random_binding_recovery.py",
+      "sha256": "a52bf8809df3b4cef16377957f4cd5bb3629363db465d123342403079b3bcc5c"
+    },
+    "t119_preregistration": {
+      "bytes": 13283,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t119_joint_soft_router_cpu_preregistration.json",
+      "sha256": "5576bdcd40b738b4bba076fbe933b6fd635d76d6505b4235c63e853973551379"
+    },
+    "t119_result": {
+      "bytes": 11817,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t119_joint_soft_router_cpu_result.json",
+      "sha256": "a058d34e8d85870a7dd6a7900a983ba4696e51bef5015b290f1820c2b4e64001"
+    },
+    "test": {
+      "bytes": 1702,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t119b_random_binding_recovery.py",
+      "sha256": "158fe5d279caedd251f503428b79dcbb0220b54be21f341da243b801fc38c474"
+    }
+  },
+  "status": "PREREGISTERED_T119B_READ_ONLY_BINDING_RECOVERY",
+  "thresholds": {
+    "minimum_anchored_location_delta": 1e-07,
+    "minimum_initial_raw_saturated_element_fraction": 0.9,
+    "minimum_jointly_changed_random_rows": 1,
+    "minimum_out_of_trace_support_random_row_fraction": 0.9,
+    "minimum_router_weight_delta": 1e-07,
+    "raw_saturation_abs": 0.999999
+  }
+}

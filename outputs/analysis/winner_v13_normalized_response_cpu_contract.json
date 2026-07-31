@@ -1,0 +1,139 @@
+{
+  "authority": {
+    "pass_authorizes_only": "a separate normalized-response Stage-1 preregistration",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "decision": "AUTHORIZE_ONE_ZERO_CELL_CPU_UPDATE_ONLY",
+  "evidence_selected_change": {
+    "contact_mechanism": "For obs[97:99], raw target=mean=1 and std=float32(1e-6), so the normalized target is exact zero and zero prediction has exact zero error.",
+    "only_objective_change": "The auxiliary head predicts normalized response coordinates directly; the recurrent state equation, deployable action head, 115/14/64 ABI, action bounds, observation fields, and simulator remain unchanged.",
+    "support_controller_deferred": "Twenty formal failures also failed under zero action. No Stage-2 controller is trained until this representation contract passes.",
+    "why_not_drop_contacts_only": "The frozen diagnostic found 48-D learned MSE 58-59 versus constant 0.17, so the correction must repair the whole coordinate system rather than merely omit the two dominant fields."
+  },
+  "execution_now": {
+    "cpu_contract_optimizer_updates": 0,
+    "formal_support_cells": 0,
+    "full_training_updates": 0,
+    "locomotion_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "frozen_cpu_proof": {
+    "forbidden": [
+      "full Stage-1 training",
+      "Stage-2 support training",
+      "heldout or formal support evaluation",
+      "locomotion training",
+      "checkpoint selection",
+      "robot or RDK access"
+    ],
+    "optimizer_updates": 1,
+    "population": "the exact 40 training configurations x 2 hidden plants",
+    "required_checks": [
+      "exact_80_episode_training_population",
+      "valid_transition_count_nonzero",
+      "contact_targets_exactly_one",
+      "contact_targets_normalize_to_exact_zero",
+      "zero_contact_prediction_has_exact_zero_error",
+      "normalized_initial_loss_below_raw_initial_loss",
+      "one_update_reduces_same_batch_normalized_loss",
+      "all_stage1_gradients_nonzero",
+      "one_adam_update_exact",
+      "action_head_bit_exact",
+      "exported_action_exact_zero",
+      "onnx_abi_exact",
+      "onnx_training_only_tensors_absent",
+      "onnx_jax_error_at_most_1e_7",
+      "onnx_previous_action_chain_exact"
+    ],
+    "rollout_seed": 120120,
+    "seed": 60720,
+    "ticks": 250
+  },
+  "pass_rule": "Every required check must pass. A pass authorizes only a separate normalized-response Stage-1 training preregistration.",
+  "schema_version": "winner_v13.normalized_response_cpu_contract.v1",
+  "source_manifest_sha256": "d8de22454227f91e70c9d7c0d29d671bd44862ec61b1499679c7c2e3edf5c7d5",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v13_normalized_response_cpu_contract.py",
+      "sha256": "1aec424693e2958f146a4b41d0bd39aa08ea797d2a50a25b96e3519503073be1"
+    },
+    "calibrator_design": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_training_preregistration.json",
+      "sha256": "1ec76a587c6fa50b92866c1632a7046ae0c6687ed17b1636b664bf45c2e8ba34"
+    },
+    "canonical_p30_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "cpu_smoke": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "deployable_network": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_decomposed_backend_networks.py",
+      "sha256": "f463223a33f80baf81b2604e0df22c647660f2752a7ca60b8c75a3441460d015"
+    },
+    "formal_support_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_support_gate_result.json",
+      "sha256": "ef0d80e8a91bc9abfe7b7e37fe6fcde5d9c48d12b6080b660a81b497655a35e1"
+    },
+    "full_training_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_preregistration.json",
+      "sha256": "99500648d6683097a13f894b0949bf4b5494e5653f36878710817bd0952f71dd"
+    },
+    "full_training_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_full_calibrator_training.py",
+      "sha256": "8cd2c9267f356adba1127f8fb837138bbe6e39b5c3326300eeed9fdd5b524610"
+    },
+    "hold_diagnostic_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_hold_diagnostic_result.json",
+      "sha256": "8d46128191c56aec09280e4a5bddc9435c152d916d627fa4785f622ee462e261"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v13_normalized_response_cpu_contract.py",
+      "sha256": "54c4d55071eecbaae23975b9d06e035f37c9d450d6733a453eb24774471d6137"
+    },
+    "runtime_observer": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py",
+      "sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v13_normalized_response_cpu_contract.py",
+      "sha256": "07582198feb24a3f7785ebc8af767d5b18e71c994aca4f71f5ffe2635a7cd1ae"
+    },
+    "v12_training_primitives": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_calibrator_training.py",
+      "sha256": "f5736a357d73baedae2bba1d15254dd688bddf3761eb731d757a971783c77227"
+    },
+    "v13_training_primitives": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v13_normalized_calibrator_training.py",
+      "sha256": "b57ae2823cff90bfd8d78317adb1dfe9607bcae069a4d985863144b4e12ec3ca"
+    },
+    "variable_configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v13-normalized-response-cpu-contract.yml",
+      "sha256": "c32206f210eb3e502318fb793f6e5db476c6c7d045b7fce7d251d17bc6c006f6"
+    }
+  },
+  "status": "FROZEN_WINNER_V13_NORMALIZED_RESPONSE_CPU_CONTRACT"
+}

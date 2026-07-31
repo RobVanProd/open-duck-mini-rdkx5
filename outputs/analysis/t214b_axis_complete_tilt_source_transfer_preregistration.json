@@ -1,0 +1,651 @@
+{
+  "analysis": {
+    "all_passing_exceedance_rows": 0,
+    "box_score": "max(roll_risk / roll_envelope, pitch_risk / pitch_envelope)",
+    "candidate_cost": "square(max(0, box_score - 1))",
+    "per_failure_rule": {
+      "maximum_strictly_above_box": true,
+      "minimum_exceedance_rows": 4,
+      "minimum_lead_ticks": 4
+    },
+    "pitch_envelope": "nextafter(maximum pitch risk over every row of all 33 passing traces, +infinity)",
+    "pitch_risk": "abs(body_pitch_rad + 0.08 * body_pitch_rate_rad_s)",
+    "prediction_horizon_s": 0.08,
+    "required_dominant_axes_across_failures": [
+      "pitch",
+      "roll"
+    ],
+    "roll_envelope": "nextafter(maximum roll risk over every row of all 33 passing traces, +infinity)",
+    "roll_risk": "abs(body_roll_rad + 0.08 * body_roll_rate_rad_s)",
+    "selection_weight": 0,
+    "threshold_or_horizon_search": false
+  },
+  "authority": {
+    "behavior": false,
+    "colab": false,
+    "cpu_contract_preregistration": false,
+    "execute_source_transfer_audit": true,
+    "full_r2": false,
+    "gate5": false,
+    "robot_or_rdk": false,
+    "training": false
+  },
+  "checks": {
+    "all_trace_files_present": true,
+    "failure_population_exact": true,
+    "prior_single_support_curricula_are_closed": true,
+    "roll_source_transfer_was_green": true,
+    "t210_failure_is_support_then_pitch_roll_collapse": true,
+    "thirty_six_traces_thirty_three_passes_three_failures": true,
+    "zero_simulator_optimizer_onnx_behavior_hosted_or_robot_now": true
+  },
+  "decision_rule": {
+    "all_failures_separable_and_both_axes_required": "EARN_T215B_AXIS_COMPLETE_TILT_DUAL_CPU_CONTRACT_PREREGISTRATION_ONLY",
+    "no_optimizer_or_behavior": true,
+    "otherwise": "RETURN_TO_MECHANISM_SELECTION_WITHOUT_TILT_BOX"
+  },
+  "execution_now": {
+    "behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "onnx_inferences": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "saved_trace_rows": 0,
+    "simulator_transitions": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 9286,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t214b_axis_complete_tilt_source_transfer_preregistration.py",
+      "sha256": "663e330f37406e730b7c31124057a4bbda65347caafd1e652f58d6197a854784"
+    },
+    "runner": {
+      "bytes": 12127,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t214b_axis_complete_tilt_source_transfer.py",
+      "sha256": "291487d8be7c00321fb8ee4f964098c5ba13a556ee4639c715688a2acfc3565c"
+    },
+    "t190b_result": {
+      "bytes": 120465,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t190b_interrupted_execution_recovery_result.json",
+      "sha256": "d7163fe9c84f85167402b8a2219f977507ce5a47d3e76d42ee4347ff4b3e2c3e"
+    },
+    "t198_result": {
+      "bytes": 120210,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t198_t194_targeted_y_negative_result.json",
+      "sha256": "8ae8315f9fd8dea263d30bac2f58b2cb4164a1e766e6c9fbba4a9e18d5ca1512"
+    },
+    "t199_result": {
+      "bytes": 27531,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t199_t194_support_credit_autopsy_result.json",
+      "sha256": "f156ea1dbdc4a4a31c4063e1bc7746e19a2a45c950e6e171e1cc1ef17cbee220"
+    },
+    "t201b_preregistration": {
+      "bytes": 15389,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t201b_roll_risk_source_transfer_preregistration.json",
+      "sha256": "1114365d0d3cf9e754c70c44890b1362d67e92981d5e8fb82860513da52a0e8f"
+    },
+    "t201b_result": {
+      "bytes": 8836,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t201b_roll_risk_source_transfer_result.json",
+      "sha256": "92aa503a2ad30eae6f3ef118cfe58597b53f21c41910c172854231c19b79cb25"
+    },
+    "t213b_preregistration": {
+      "bytes": 11778,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t213b_support_continuity_autopsy_preregistration.json",
+      "sha256": "956e6c2e6c5d4784a9f251179e296b352e7f5790dd10406b7fe054d28c19b3b9"
+    },
+    "t213b_result": {
+      "bytes": 13677,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t213b_support_continuity_autopsy_result.json",
+      "sha256": "8193bad2ea5957e201883f5ca227e4de2506f3f8ba3f19b85330420e42cb4311"
+    },
+    "t59_result": {
+      "bytes": 120119,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t59_t56_nominal_matrix_result.json",
+      "sha256": "10be653d2b044ca01aa499b7083c59f5a592b1c0d65667ac656336238613f36a"
+    },
+    "test": {
+      "bytes": 2072,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t214b_axis_complete_tilt_source_transfer.py",
+      "sha256": "702d1026b0170684c56aee469c1e45ef56b0c083afcb7be7e0ce729af511cf8c"
+    }
+  },
+  "preregistered_contract_sha256": "30780fc1b8074dd14c1728e41cda26094f9c8410d392134c71206e6d90e7d95e",
+  "prior_art_ruling": {
+    "mechanical_distinction": "axis-complete predictive tilt invariant prevents the observed roll-to-pitch failure-mode substitution",
+    "repeat_single_support_curriculum": false,
+    "t186_same_episode_support_prefix": "closed_at_15_of_16",
+    "t194_dynamic_reference_contact": "closed_at_15_of_16",
+    "t56_dynamic_single_support": "closed_at_10_of_16"
+  },
+  "question": "Does one componentwise predicted roll/pitch safety box, with axis thresholds derived from every row of all 33 historical passes, detect all three known T170/T194/T210 falls early without reopening the closed single-support curricula?",
+  "schema_version": "open_duck.t214b_axis_complete_tilt_source_transfer_preregistration.v1",
+  "status": "PREREGISTERED_T214B_AXIS_COMPLETE_TILT_SOURCE_TRANSFER",
+  "traces": [
+    {
+      "cell_green": true,
+      "checkpoint_id": "T194_COMPOSED_HALF",
+      "command_x_m_s": 0.0,
+      "family": "t194",
+      "fit_id": "p30",
+      "samples": 600,
+      "step": 1003520,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 8242721,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t198_t194_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T194_COMPOSED_HALF\\p30\\traces\\x0.000_seed167931544_t194_composed.jsonl",
+        "sha256": "7979eaae70507aa24635eda274d815375cd3bf96a39593023abb56e9b318a9a0"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T194_COMPOSED_HALF",
+      "command_x_m_s": 0.074,
+      "family": "t194",
+      "fit_id": "p30",
+      "samples": 600,
+      "step": 1003520,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10771569,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t198_t194_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T194_COMPOSED_HALF\\p30\\traces\\x0.074_seed167931544_t194_composed.jsonl",
+        "sha256": "1ea2007e78a47445318a5e672ed56b64080b8602c22181cc89263f11bc3f7235"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T194_COMPOSED_HALF",
+      "command_x_m_s": 0.077,
+      "family": "t194",
+      "fit_id": "p30",
+      "samples": 600,
+      "step": 1003520,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10773305,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t198_t194_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T194_COMPOSED_HALF\\p30\\traces\\x0.077_seed167931544_t194_composed.jsonl",
+        "sha256": "557281b8ace6f07c57141a36d63b4d15cd0c92cc560cc61d29b10e384dbf4832"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T194_COMPOSED_HALF",
+      "command_x_m_s": 0.08,
+      "family": "t194",
+      "fit_id": "p30",
+      "samples": 600,
+      "step": 1003520,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10771648,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t198_t194_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T194_COMPOSED_HALF\\p30\\traces\\x0.080_seed167931544_t194_composed.jsonl",
+        "sha256": "e420f2ebe04ac5416add1f41815153a4ba6fa37dbe84006944d744b36c74c100"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T194_COMPOSED_HALF",
+      "command_x_m_s": 0.0,
+      "family": "t194",
+      "fit_id": "p31_34",
+      "samples": 600,
+      "step": 1003520,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 8238405,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t198_t194_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T194_COMPOSED_HALF\\p31_34\\traces\\x0.000_seed167931544_t194_composed.jsonl",
+        "sha256": "4ae4ac171d92c2410f3d4f25dc5f5e5d6d1bdd42136c584625eda36dda8a3b84"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T194_COMPOSED_HALF",
+      "command_x_m_s": 0.074,
+      "family": "t194",
+      "fit_id": "p31_34",
+      "samples": 600,
+      "step": 1003520,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10772347,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t198_t194_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T194_COMPOSED_HALF\\p31_34\\traces\\x0.074_seed167931544_t194_composed.jsonl",
+        "sha256": "5fa729546f743a62a6192a3b4c89784e1074488795e8ade81a7559c613b48b97"
+      }
+    },
+    {
+      "cell_green": false,
+      "checkpoint_id": "T194_COMPOSED_HALF",
+      "command_x_m_s": 0.077,
+      "family": "t194",
+      "fit_id": "p31_34",
+      "samples": 308,
+      "step": 1003520,
+      "termination_reason": "fall_or_nan",
+      "trace": {
+        "bytes": 5525283,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t198_t194_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T194_COMPOSED_HALF\\p31_34\\traces\\x0.077_seed167931544_t194_composed.jsonl",
+        "sha256": "abd6f38ba12e6ba6de339f986880c8d57dc5c1040183b1b43f37c9a41fefd8d1"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T194_COMPOSED_HALF",
+      "command_x_m_s": 0.08,
+      "family": "t194",
+      "fit_id": "p31_34",
+      "samples": 600,
+      "step": 1003520,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10770427,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t198_t194_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T194_COMPOSED_HALF\\p31_34\\traces\\x0.080_seed167931544_t194_composed.jsonl",
+        "sha256": "faf270fdd90cb9dcf0267987a734731c5a7321940f1b8743f77e1fced2d2e322"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T194_COMPOSED_FINAL",
+      "command_x_m_s": 0.0,
+      "family": "t194",
+      "fit_id": "p30",
+      "samples": 600,
+      "step": 2007040,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 8242721,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t198_t194_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T194_COMPOSED_FINAL\\p30\\traces\\x0.000_seed167931544_t194_composed.jsonl",
+        "sha256": "7979eaae70507aa24635eda274d815375cd3bf96a39593023abb56e9b318a9a0"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T194_COMPOSED_FINAL",
+      "command_x_m_s": 0.074,
+      "family": "t194",
+      "fit_id": "p30",
+      "samples": 600,
+      "step": 2007040,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10770103,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t198_t194_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T194_COMPOSED_FINAL\\p30\\traces\\x0.074_seed167931544_t194_composed.jsonl",
+        "sha256": "71ad4e745a96c4dcabf4dd42373251356979e8fc717b4b38427a10a4e4338167"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T194_COMPOSED_FINAL",
+      "command_x_m_s": 0.077,
+      "family": "t194",
+      "fit_id": "p30",
+      "samples": 600,
+      "step": 2007040,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10773820,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t198_t194_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T194_COMPOSED_FINAL\\p30\\traces\\x0.077_seed167931544_t194_composed.jsonl",
+        "sha256": "9fb48e11e5514b1329f2203b24d80172960b0c3dca1894bad23d02fae626af2c"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T194_COMPOSED_FINAL",
+      "command_x_m_s": 0.08,
+      "family": "t194",
+      "fit_id": "p30",
+      "samples": 600,
+      "step": 2007040,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10773709,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t198_t194_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T194_COMPOSED_FINAL\\p30\\traces\\x0.080_seed167931544_t194_composed.jsonl",
+        "sha256": "346972fb6ebb0d20bccb15888dbec76fe849672c3ca5b8e87e3c7fbe5648af0b"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T194_COMPOSED_FINAL",
+      "command_x_m_s": 0.0,
+      "family": "t194",
+      "fit_id": "p31_34",
+      "samples": 600,
+      "step": 2007040,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 8238405,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t198_t194_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T194_COMPOSED_FINAL\\p31_34\\traces\\x0.000_seed167931544_t194_composed.jsonl",
+        "sha256": "4ae4ac171d92c2410f3d4f25dc5f5e5d6d1bdd42136c584625eda36dda8a3b84"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T194_COMPOSED_FINAL",
+      "command_x_m_s": 0.074,
+      "family": "t194",
+      "fit_id": "p31_34",
+      "samples": 600,
+      "step": 2007040,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10770344,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t198_t194_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T194_COMPOSED_FINAL\\p31_34\\traces\\x0.074_seed167931544_t194_composed.jsonl",
+        "sha256": "211d1b83bb3d2330e132237b33c6e3fd7c65b8785c60623412003794c4492d92"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T194_COMPOSED_FINAL",
+      "command_x_m_s": 0.077,
+      "family": "t194",
+      "fit_id": "p31_34",
+      "samples": 600,
+      "step": 2007040,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10773973,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t198_t194_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T194_COMPOSED_FINAL\\p31_34\\traces\\x0.077_seed167931544_t194_composed.jsonl",
+        "sha256": "0e5b7145f0d423fdc66182a9391236b27e76e0e36a061b1bad7f71cefcf63c42"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T194_COMPOSED_FINAL",
+      "command_x_m_s": 0.08,
+      "family": "t194",
+      "fit_id": "p31_34",
+      "samples": 600,
+      "step": 2007040,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10771620,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t198_t194_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T194_COMPOSED_FINAL\\p31_34\\traces\\x0.080_seed167931544_t194_composed.jsonl",
+        "sha256": "6805c87935304f4e20d38d2ebf50d2011f6c3a93a1219eef2c508bf878992cb4"
+      }
+    },
+    {
+      "cell_green": false,
+      "checkpoint_id": "T170_COMPOSED_FINAL",
+      "command_x_m_s": 0.08,
+      "family": "t170",
+      "fit_id": "p30",
+      "samples": 281,
+      "step": 2007040,
+      "termination_reason": "fall_or_nan",
+      "trace": {
+        "bytes": 5043668,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t173_t170_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T170_COMPOSED_FINAL\\p30\\traces\\x0.080_seed167931544_t170_composed.jsonl",
+        "sha256": "20b9bf61d0d9156cebb3d19575ad840b1a90f5aea89e300e17bd250e3c2ed0fc"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T170_COMPOSED_HALF",
+      "command_x_m_s": 0.08,
+      "family": "t170",
+      "fit_id": "p30",
+      "samples": 600,
+      "step": 1003520,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10773658,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t173_t170_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T170_COMPOSED_HALF\\p30\\traces\\x0.080_seed167931544_t170_composed.jsonl",
+        "sha256": "85217980eae217d704bbe46df6aa9d931af4a516e5b671c3f99047c6c85f924b"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T170_COMPOSED_FINAL",
+      "command_x_m_s": 0.08,
+      "family": "t170",
+      "fit_id": "p31_34",
+      "samples": 600,
+      "step": 2007040,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10772659,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t173_t170_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T170_COMPOSED_FINAL\\p31_34\\traces\\x0.080_seed167931544_t170_composed.jsonl",
+        "sha256": "651d45f707fb92043884f346bb1a7fcdf4baae270a7cabe3236bfd3800104141"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T170_COMPOSED_FINAL",
+      "command_x_m_s": 0.077,
+      "family": "t170",
+      "fit_id": "p30",
+      "samples": 600,
+      "step": 2007040,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10769166,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t173_t170_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T170_COMPOSED_FINAL\\p30\\traces\\x0.077_seed167931544_t170_composed.jsonl",
+        "sha256": "49bcb6ab266a83a37e9afdb54efd81f6e4a5823e5281f4a980ba06fb85dc5cc2"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T210_COMPOSED_HALF",
+      "command_x_m_s": 0.0,
+      "family": "t210",
+      "fit_id": "p30",
+      "samples": 600,
+      "step": 1003520,
+      "trace": {
+        "bytes": 8243229,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t213_t210_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T210_COMPOSED_HALF\\p30\\traces\\x0.000_seed167931544_t210_composed.jsonl",
+        "sha256": "3726011123e52c910bb28602dca2e2ef6449ff45222d046237b94812f5fa35c2"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T210_COMPOSED_HALF",
+      "command_x_m_s": 0.074,
+      "family": "t210",
+      "fit_id": "p30",
+      "samples": 600,
+      "step": 1003520,
+      "trace": {
+        "bytes": 10766506,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t213_t210_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T210_COMPOSED_HALF\\p30\\traces\\x0.074_seed167931544_t210_composed.jsonl",
+        "sha256": "2438a87d80c6ff309c00496d6065f64813f43e694f45b94ff6253255b0a767b1"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T210_COMPOSED_HALF",
+      "command_x_m_s": 0.077,
+      "family": "t210",
+      "fit_id": "p30",
+      "samples": 600,
+      "step": 1003520,
+      "trace": {
+        "bytes": 10768986,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t213_t210_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T210_COMPOSED_HALF\\p30\\traces\\x0.077_seed167931544_t210_composed.jsonl",
+        "sha256": "b9593feac3cb68008235aa87af0c9144a720bec345ec98bb709b5a23b0024ef0"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T210_COMPOSED_HALF",
+      "command_x_m_s": 0.08,
+      "family": "t210",
+      "fit_id": "p30",
+      "samples": 600,
+      "step": 1003520,
+      "trace": {
+        "bytes": 10767271,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t213_t210_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T210_COMPOSED_HALF\\p30\\traces\\x0.080_seed167931544_t210_composed.jsonl",
+        "sha256": "7ba83436a1419fa680f655bad8ee6c56f7fe9d9a4ee3e6a411c2026e61270492"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T210_COMPOSED_HALF",
+      "command_x_m_s": 0.0,
+      "family": "t210",
+      "fit_id": "p31_34",
+      "samples": 600,
+      "step": 1003520,
+      "trace": {
+        "bytes": 8242978,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t213_t210_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T210_COMPOSED_HALF\\p31_34\\traces\\x0.000_seed167931544_t210_composed.jsonl",
+        "sha256": "7819369e0f6300ed8834bfa8f690843fefc61155cfa149374a76fbdcfb2a0861"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T210_COMPOSED_HALF",
+      "command_x_m_s": 0.074,
+      "family": "t210",
+      "fit_id": "p31_34",
+      "samples": 600,
+      "step": 1003520,
+      "trace": {
+        "bytes": 10767300,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t213_t210_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T210_COMPOSED_HALF\\p31_34\\traces\\x0.074_seed167931544_t210_composed.jsonl",
+        "sha256": "65fa79c6a0b9578ee5f3ae3fdbad4d0a284fd6ac778ef6ea686ed4916202a4a4"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T210_COMPOSED_HALF",
+      "command_x_m_s": 0.077,
+      "family": "t210",
+      "fit_id": "p31_34",
+      "samples": 600,
+      "step": 1003520,
+      "trace": {
+        "bytes": 10770375,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t213_t210_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T210_COMPOSED_HALF\\p31_34\\traces\\x0.077_seed167931544_t210_composed.jsonl",
+        "sha256": "482123b89d21046067a18404f100b194da68eb6d362e670ec2afbccd84ef0a36"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T210_COMPOSED_HALF",
+      "command_x_m_s": 0.08,
+      "family": "t210",
+      "fit_id": "p31_34",
+      "samples": 600,
+      "step": 1003520,
+      "trace": {
+        "bytes": 10768925,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t213_t210_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T210_COMPOSED_HALF\\p31_34\\traces\\x0.080_seed167931544_t210_composed.jsonl",
+        "sha256": "79bd9bb45efd544c877a55ab7c61a6b41cec95afd400d27dfd15a100b7e32b3b"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T210_COMPOSED_FINAL",
+      "command_x_m_s": 0.0,
+      "family": "t210",
+      "fit_id": "p30",
+      "samples": 600,
+      "step": 2007040,
+      "trace": {
+        "bytes": 8243229,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t213_t210_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T210_COMPOSED_FINAL\\p30\\traces\\x0.000_seed167931544_t210_composed.jsonl",
+        "sha256": "3726011123e52c910bb28602dca2e2ef6449ff45222d046237b94812f5fa35c2"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T210_COMPOSED_FINAL",
+      "command_x_m_s": 0.074,
+      "family": "t210",
+      "fit_id": "p30",
+      "samples": 600,
+      "step": 2007040,
+      "trace": {
+        "bytes": 10767331,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t213_t210_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T210_COMPOSED_FINAL\\p30\\traces\\x0.074_seed167931544_t210_composed.jsonl",
+        "sha256": "c8ba813a03ee4640d2f88f716ff393826e06e90da978cdd402b2dde219534ce5"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T210_COMPOSED_FINAL",
+      "command_x_m_s": 0.077,
+      "family": "t210",
+      "fit_id": "p30",
+      "samples": 600,
+      "step": 2007040,
+      "trace": {
+        "bytes": 10769417,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t213_t210_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T210_COMPOSED_FINAL\\p30\\traces\\x0.077_seed167931544_t210_composed.jsonl",
+        "sha256": "3008402d892e6620cbc1f0e790d634cc174aa7eb238ad4b004fcc4a48a02a348"
+      }
+    },
+    {
+      "cell_green": false,
+      "checkpoint_id": "T210_COMPOSED_FINAL",
+      "command_x_m_s": 0.08,
+      "family": "t210",
+      "fit_id": "p30",
+      "samples": 318,
+      "step": 2007040,
+      "trace": {
+        "bytes": 5705088,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t213_t210_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T210_COMPOSED_FINAL\\p30\\traces\\x0.080_seed167931544_t210_composed.jsonl",
+        "sha256": "5cd26bd336c6115900864eed43859e5e8c9440f9837f2ee461cb329a9180fceb"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T210_COMPOSED_FINAL",
+      "command_x_m_s": 0.0,
+      "family": "t210",
+      "fit_id": "p31_34",
+      "samples": 600,
+      "step": 2007040,
+      "trace": {
+        "bytes": 8242978,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t213_t210_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T210_COMPOSED_FINAL\\p31_34\\traces\\x0.000_seed167931544_t210_composed.jsonl",
+        "sha256": "7819369e0f6300ed8834bfa8f690843fefc61155cfa149374a76fbdcfb2a0861"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T210_COMPOSED_FINAL",
+      "command_x_m_s": 0.074,
+      "family": "t210",
+      "fit_id": "p31_34",
+      "samples": 600,
+      "step": 2007040,
+      "trace": {
+        "bytes": 10768296,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t213_t210_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T210_COMPOSED_FINAL\\p31_34\\traces\\x0.074_seed167931544_t210_composed.jsonl",
+        "sha256": "1741e8bb9662d22a6c485a9e596a793e3893275c1323e775310978283753b473"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T210_COMPOSED_FINAL",
+      "command_x_m_s": 0.077,
+      "family": "t210",
+      "fit_id": "p31_34",
+      "samples": 600,
+      "step": 2007040,
+      "trace": {
+        "bytes": 10768884,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t213_t210_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T210_COMPOSED_FINAL\\p31_34\\traces\\x0.077_seed167931544_t210_composed.jsonl",
+        "sha256": "02fff5bcc88d78825d0f831e66fa2e5cee4e0ee0406b39ca078fb0b07a1e31af"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T210_COMPOSED_FINAL",
+      "command_x_m_s": 0.08,
+      "family": "t210",
+      "fit_id": "p31_34",
+      "samples": 600,
+      "step": 2007040,
+      "trace": {
+        "bytes": 10770349,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t213_t210_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T210_COMPOSED_FINAL\\p31_34\\traces\\x0.080_seed167931544_t210_composed.jsonl",
+        "sha256": "0937784bbe2976f88b4e7d60e8a50525c8780dda4b51a2671ff844a7336f3bfc"
+      }
+    }
+  ]
+}

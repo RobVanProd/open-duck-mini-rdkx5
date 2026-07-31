@@ -1,0 +1,158 @@
+diff --git a/playground/common/runner.py b/playground/common/runner.py
+index 11d8db2..314bbae 100644
+--- a/playground/common/runner.py
++++ b/playground/common/runner.py
+@@ -5,6 +5,7 @@ Inspired from https://github.com/kscalelabs/mujoco_playground/blob/master/playgr
+ from pathlib import Path
+ from abc import ABC
+ import argparse
++import json
+ import functools
+ from datetime import datetime
+ from flax.training import orbax_utils
+@@ -151,6 +152,24 @@ class BaseRunner(ABC):
+                 output_path=onnx_export_path
+             )
+ 
++    def constrained_state_fn(self, current_step, cost_value_params, dual_state):
++        """Save V127's training-only cost critic and derived dual state."""
++        orbax_checkpointer = ocp.PyTreeCheckpointer()
++        save_args = orbax_utils.save_args_from_target(cost_value_params)
++        d = datetime.now().strftime("%Y_%m_%d_%H%M%S")
++        path = f"{self.output_dir}/{d}_{current_step}_v127_cost_value"
++        orbax_checkpointer.save(
++            path, cost_value_params, force=True, save_args=save_args
++        )
++        metadata = {
++            "step": int(current_step),
++            **dual_state,
++        }
++        metadata_path = (
++            self.output_dir / f"{d}_{current_step}_v127_aux.json"
++        )
++        metadata_path.write_text(
++            json.dumps(metadata, indent=2, sort_keys=True) + "\n"
++        )
++
+     def train(self) -> None:
+         self.ppo_params = locomotion_params.brax_ppo_config(
+             "BerkeleyHumanoidJoystickFlatTerrain"
+@@ -236,14 +255,23 @@ class BaseRunner(ABC):
+         self.ppo_training_params["num_timesteps"] = self.num_timesteps
+         print(f"PPO params: {self.ppo_training_params}")
+ 
++        train_module = ppo
++        train_kwargs = {}
++        if self.args.winner_v127_constrained_cost:
++            from playground.common import winner_v127_constrained_ppo_train
++
++            train_module = winner_v127_constrained_ppo_train
++            train_kwargs = {
++                "winner_v127_constrained_cost": True,
++                "constrained_state_fn": self.constrained_state_fn,
++            }
+         train_fn = functools.partial(
+-            ppo.train,
++            train_module.train,
+             **self.ppo_training_params,
++            **train_kwargs,
+             network_factory=network_factory,
+             randomization_fn=self.randomizer,
+             progress_fn=self.progress_callback,
+diff --git a/playground/open_duck_mini_v2/joystick.py b/playground/open_duck_mini_v2/joystick.py
+index 44a9f2d..a680fa0 100644
+--- a/playground/open_duck_mini_v2/joystick.py
++++ b/playground/open_duck_mini_v2/joystick.py
+@@ -124,6 +124,15 @@ def ground_up_linear_peak_torque_exceedance_cost(
+     return jp.mean(excess)
+ 
+ 
++def winner_v127_dense_torque_exceedance_cost(
++    actuator_force_nm: jax.Array,
++    threshold_nm: float,
++) -> jax.Array:
++    """Raw all-joint torque exceedance, kept outside the reward clip."""
++    excess = jp.maximum(jp.abs(actuator_force_nm) - threshold_nm, 0.0)
++    return jp.sum(excess)
++
++
+ def default_config() -> config_dict.ConfigDict:
+     return config_dict.create(
+         ctrl_dt=0.02,
+@@ -180,6 +189,7 @@ def default_config() -> config_dict.ConfigDict:
+         ground_up_signed_progress_objective=False,
+         winner_v3_variable_configuration=False,
+         winner_v3_deviation_scale=0.0,
++        winner_v127_constrained_cost=False,
+         winner_v119_train_transition_match=False,
+     )
+ 
+@@ -455,6 +465,10 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+             ),
+             "policy_hidden": jp.zeros(self._config.recurrent_hidden_dim),
+         }
++        if self._config.winner_v127_constrained_cost:
++            info[
++                "winner_v127_dense_torque_exceedance_cost"
++            ] = jp.zeros(())
+         if winner_v3_contract is not None:
+             info.update(
+                 {
+@@ -479,6 +493,10 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+                 else:
+                     metrics[f"cost/{k}"] = jp.zeros(())
+         metrics["swing_peak"] = jp.zeros(())
++        if self._config.winner_v127_constrained_cost:
++            metrics[
++                "cost/winner_v127_dense_torque_exceedance"
++            ] = jp.zeros(())
+ 
+         contact = jp.array(
+             [
+@@ -681,6 +699,15 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+         state.info["swing_peak"] = jp.maximum(state.info["swing_peak"], p_fz)
+ 
+         done = self._get_termination(data)
++        if self._config.winner_v127_constrained_cost:
++            dense_torque_cost = winner_v127_dense_torque_exceedance_cost(
++                data.actuator_force,
++                self._config.ground_up_peak_torque_threshold_nm,
++            )
++            state.info[
++                "winner_v127_dense_torque_exceedance_cost"
++            ] = dense_torque_cost
++            state.metrics[
++                "cost/winner_v127_dense_torque_exceedance"
++            ] = dense_torque_cost
+ 
+         rewards = self._get_reward(
+             data, applied_action, state.info, state.metrics, done, first_contact, contact
+diff --git a/playground/open_duck_mini_v2/runner.py b/playground/open_duck_mini_v2/runner.py
+index f92cdda..fe4983b 100644
+--- a/playground/open_duck_mini_v2/runner.py
++++ b/playground/open_duck_mini_v2/runner.py
+@@ -97,6 +97,15 @@ class OpenDuckMiniV2Runner(BaseRunner):
+         self.env_config.winner_v119_train_transition_match = (
+             args.winner_v119_train_transition_match
+         )
++        self.env_config.winner_v127_constrained_cost = (
++            args.winner_v127_constrained_cost
++        )
++        if args.winner_v127_constrained_cost and (
++            args.ground_up_peak_torque_exceedance_scale != 0.0
++            or args.ground_up_linear_peak_torque_exceedance_scale != 0.0
++        ):
++            raise ValueError(
++                "winner-v127 cost must remain outside the clipped reward"
++            )
+         if args.nominal_reference_bootstrap:
+             self.env_config.noise_config.level = 0.0
+             self.env_config.noise_config.action_min_delay = 0
+@@ -313,6 +322,7 @@ def main() -> None:
+     parser.add_argument("--ground_up_signed_progress_objective", action="store_true")
+     parser.add_argument("--winner_v3_variable_configuration", action="store_true")
+     parser.add_argument("--winner_v119_train_transition_match", action="store_true")
++    parser.add_argument("--winner_v127_constrained_cost", action="store_true")
+     parser.add_argument(
+         "--winner_v3_deviation_scale",
+         type=float,

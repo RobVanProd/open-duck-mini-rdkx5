@@ -1,0 +1,441 @@
+{
+  "authority": {
+    "hosted_compute": false,
+    "offline_cpu_only": true,
+    "policy_modification": false,
+    "robot_or_rdk_access": false,
+    "training_steps": 0
+  },
+  "conditions": [
+    {
+      "bridge_mode": "vanilla",
+      "command_x_m_s": 0.0,
+      "condition": "x0.000_vanilla",
+      "mode_name": "vanilla"
+    },
+    {
+      "bridge_mode": "fitted",
+      "command_x_m_s": 0.0,
+      "condition": "x0.000_fitted",
+      "mode_name": "fitted"
+    },
+    {
+      "bridge_mode": "vanilla",
+      "command_x_m_s": 0.08,
+      "condition": "x0.080_vanilla",
+      "mode_name": "vanilla"
+    },
+    {
+      "bridge_mode": "fitted",
+      "command_x_m_s": 0.08,
+      "condition": "x0.080_fitted",
+      "mode_name": "fitted"
+    }
+  ],
+  "decision_rule": {
+    "automatic_gate_changes": false,
+    "failed_baseline_gate": "must be relaxed to the measured baseline value or explicitly relabelled as a stretch goal rather than a feasibility boundary",
+    "selection_weight": 0,
+    "table_scope": "all four conditions and every documented/coded criterion; not only the first evaluator failure reason"
+  },
+  "execution_contract": {
+    "method": "each cell invokes tools/run_candidate_seed_sweep.py with one explicit seed; results are aggregated only after all 32 exact cell contracts exist",
+    "partial_matrix_decision_weight": 0,
+    "result_requires_all_cells": true,
+    "resume": "a cell may be reused only when its canonical contract and raw seed-sweep JSON hash match"
+  },
+  "expected_sha256": {
+    "fit": "40d2aefbdaeac986fc856aade8170f2a9d72831613a7a30873bfff0846e4f1bb",
+    "policy": "3c606f9381a1710cc8fecdb7442787dcbfce3ee9bc02a6f1224774ab2b3a1067"
+  },
+  "failed_checks": [],
+  "frozen_configuration": {
+    "bridge_modes": [
+      "vanilla",
+      "fitted"
+    ],
+    "cell_count": 32,
+    "commands_x_m_s": [
+      0.0,
+      0.08
+    ],
+    "duration_s": 15.0,
+    "eval_role": "candidate",
+    "mjcf_or_gate_modification": false,
+    "policy": "BEST_WALK_ONNX_2.onnx",
+    "policy_action_gain": 1.0,
+    "policy_or_normalizer_modification": false,
+    "reset_mode": "playground",
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "task": "flat_terrain_backlash",
+    "ticks_per_cell": 750
+  },
+  "gate_contract": {
+    "coded_candidate_gate": [
+      {
+        "metric": "max_action_saturation_pct",
+        "operator": "lte",
+        "threshold": 1.0
+      },
+      {
+        "metric": "max_pitch_tracking_p95_rad",
+        "operator": "lte",
+        "threshold": 0.2
+      },
+      {
+        "metric": "max_p95_velocity_limit_excess_rad_s",
+        "operator": "lte",
+        "threshold": 0.0
+      },
+      {
+        "metric": "max_instant_velocity_limit_excess_rad_s",
+        "operator": "lte",
+        "threshold": 0.0
+      },
+      {
+        "metric": "max_abs_body_pitch_p95_rad",
+        "operator": "lte",
+        "threshold": 0.25
+      },
+      {
+        "metric": "min_base_height_m",
+        "operator": "gte",
+        "threshold": 0.12
+      },
+      {
+        "metric": "min_reward_mean",
+        "operator": "gte",
+        "threshold": 0.3
+      },
+      {
+        "applies_if_abs_command_gte": 0.02,
+        "metric": "min_seed_track_ratio",
+        "operator": "gte",
+        "threshold": 0.25
+      }
+    ],
+    "coded_vs_documented_discrepancy": "the documented x=0.08 promotion boundary uses mean track ratio >=0.50, while classify_candidate_gate uses minimum per-mode ratio >=0.25; both are reported without choosing between them after seeing results",
+    "documented_promotion_x008": [
+      {
+        "metric": "duration_complete_count",
+        "operator": "eq",
+        "threshold": 8
+      },
+      {
+        "metric": "fall_count",
+        "operator": "eq",
+        "threshold": 0
+      },
+      {
+        "metric": "mean_track_ratio",
+        "operator": "gte",
+        "threshold": 0.5
+      },
+      {
+        "metric": "max_pitch_tracking_p95_rad",
+        "operator": "lte",
+        "threshold": 0.2
+      },
+      {
+        "metric": "max_p95_velocity_limit_excess_rad_s",
+        "operator": "lte",
+        "threshold": 0.0
+      }
+    ],
+    "documented_semantic_x000": [
+      {
+        "metric": "duration_complete_count",
+        "operator": "eq",
+        "threshold": 8
+      },
+      {
+        "metric": "fall_count",
+        "operator": "eq",
+        "threshold": 0
+      },
+      {
+        "metric": "mean_abs_vx_m_s",
+        "operator": "lte",
+        "threshold": 0.005
+      },
+      {
+        "metric": "max_p95_velocity_limit_excess_rad_s",
+        "operator": "lte",
+        "threshold": 0.0
+      }
+    ],
+    "velocity_limits_source": "corrected-knee fit, per pitch-chain joint"
+  },
+  "input_paths": {
+    "corrected_bridge_x008": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\corrected_bridge_best_walk_reroll_x008.json",
+    "eval_driver": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\eval_policy_with_actuator_bridge.py",
+    "evaluator": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\closed_loop_sim_eval.py",
+    "fit": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\actuator_response_fit_corrected_knee.json",
+    "gate_source": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\docs\\EVALUATOR_RECONCILIATION.md",
+    "policy": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\policy\\BEST_WALK_ONNX_2.onnx",
+    "published_vanilla_x008": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\published_policy_propulsion_x008_straight_audit.json",
+    "seed_sweep": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_candidate_seed_sweep.py",
+    "step0_source": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\docs\\DUCK_STATUS.md",
+    "t4_runner": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t4_baseline_all_gates.py"
+  },
+  "input_sha256": {
+    "corrected_bridge_x008": "9710a8781688c787eee3b11d10f08195f7e335de7784a27eca4d2c96cb83d17c",
+    "eval_driver": "d7ac1228d3ebac532db1c0d25ef87f1a2b73ef35bc28f9e30dbfe25eae759912",
+    "evaluator": "352ea320936c83801fa47f76e35faea36a68f1d7f45c11b1869292e1955f4114",
+    "fit": "40d2aefbdaeac986fc856aade8170f2a9d72831613a7a30873bfff0846e4f1bb",
+    "gate_source": "2ce4fe5e812f640e7e902e94fee49b3a1ea574c07727e7b18fe0c43bd9cd21a6",
+    "policy": "3c606f9381a1710cc8fecdb7442787dcbfce3ee9bc02a6f1224774ab2b3a1067",
+    "published_vanilla_x008": "4f1cf26a1ff7354ea70bbe2c6ffc8e355781990de5607ab03db2d17674450e86",
+    "seed_sweep": "d7066a6ffe5c51936d8365d0d32fccb9ab3f4b9904dcf5d61471d66760847a1e",
+    "step0_source": "4c50146f431d018ee84ec6e0d0c4ca820ab8eccd901b76cbefcd7539cb75fa72",
+    "t4_runner": "5a4d5e57dcc5e3d8ead1ad4a393720f42fc0b151d4169dfe5f710ecd7e9653ce"
+  },
+  "matrix": [
+    {
+      "bridge_mode": "vanilla",
+      "command_x_m_s": 0.0,
+      "condition": "x0.000_vanilla",
+      "mode_name": "vanilla",
+      "seed": 0
+    },
+    {
+      "bridge_mode": "vanilla",
+      "command_x_m_s": 0.0,
+      "condition": "x0.000_vanilla",
+      "mode_name": "vanilla",
+      "seed": 1
+    },
+    {
+      "bridge_mode": "vanilla",
+      "command_x_m_s": 0.0,
+      "condition": "x0.000_vanilla",
+      "mode_name": "vanilla",
+      "seed": 2
+    },
+    {
+      "bridge_mode": "vanilla",
+      "command_x_m_s": 0.0,
+      "condition": "x0.000_vanilla",
+      "mode_name": "vanilla",
+      "seed": 3
+    },
+    {
+      "bridge_mode": "vanilla",
+      "command_x_m_s": 0.0,
+      "condition": "x0.000_vanilla",
+      "mode_name": "vanilla",
+      "seed": 4
+    },
+    {
+      "bridge_mode": "vanilla",
+      "command_x_m_s": 0.0,
+      "condition": "x0.000_vanilla",
+      "mode_name": "vanilla",
+      "seed": 5
+    },
+    {
+      "bridge_mode": "vanilla",
+      "command_x_m_s": 0.0,
+      "condition": "x0.000_vanilla",
+      "mode_name": "vanilla",
+      "seed": 6
+    },
+    {
+      "bridge_mode": "vanilla",
+      "command_x_m_s": 0.0,
+      "condition": "x0.000_vanilla",
+      "mode_name": "vanilla",
+      "seed": 7
+    },
+    {
+      "bridge_mode": "fitted",
+      "command_x_m_s": 0.0,
+      "condition": "x0.000_fitted",
+      "mode_name": "fitted",
+      "seed": 0
+    },
+    {
+      "bridge_mode": "fitted",
+      "command_x_m_s": 0.0,
+      "condition": "x0.000_fitted",
+      "mode_name": "fitted",
+      "seed": 1
+    },
+    {
+      "bridge_mode": "fitted",
+      "command_x_m_s": 0.0,
+      "condition": "x0.000_fitted",
+      "mode_name": "fitted",
+      "seed": 2
+    },
+    {
+      "bridge_mode": "fitted",
+      "command_x_m_s": 0.0,
+      "condition": "x0.000_fitted",
+      "mode_name": "fitted",
+      "seed": 3
+    },
+    {
+      "bridge_mode": "fitted",
+      "command_x_m_s": 0.0,
+      "condition": "x0.000_fitted",
+      "mode_name": "fitted",
+      "seed": 4
+    },
+    {
+      "bridge_mode": "fitted",
+      "command_x_m_s": 0.0,
+      "condition": "x0.000_fitted",
+      "mode_name": "fitted",
+      "seed": 5
+    },
+    {
+      "bridge_mode": "fitted",
+      "command_x_m_s": 0.0,
+      "condition": "x0.000_fitted",
+      "mode_name": "fitted",
+      "seed": 6
+    },
+    {
+      "bridge_mode": "fitted",
+      "command_x_m_s": 0.0,
+      "condition": "x0.000_fitted",
+      "mode_name": "fitted",
+      "seed": 7
+    },
+    {
+      "bridge_mode": "vanilla",
+      "command_x_m_s": 0.08,
+      "condition": "x0.080_vanilla",
+      "mode_name": "vanilla",
+      "seed": 0
+    },
+    {
+      "bridge_mode": "vanilla",
+      "command_x_m_s": 0.08,
+      "condition": "x0.080_vanilla",
+      "mode_name": "vanilla",
+      "seed": 1
+    },
+    {
+      "bridge_mode": "vanilla",
+      "command_x_m_s": 0.08,
+      "condition": "x0.080_vanilla",
+      "mode_name": "vanilla",
+      "seed": 2
+    },
+    {
+      "bridge_mode": "vanilla",
+      "command_x_m_s": 0.08,
+      "condition": "x0.080_vanilla",
+      "mode_name": "vanilla",
+      "seed": 3
+    },
+    {
+      "bridge_mode": "vanilla",
+      "command_x_m_s": 0.08,
+      "condition": "x0.080_vanilla",
+      "mode_name": "vanilla",
+      "seed": 4
+    },
+    {
+      "bridge_mode": "vanilla",
+      "command_x_m_s": 0.08,
+      "condition": "x0.080_vanilla",
+      "mode_name": "vanilla",
+      "seed": 5
+    },
+    {
+      "bridge_mode": "vanilla",
+      "command_x_m_s": 0.08,
+      "condition": "x0.080_vanilla",
+      "mode_name": "vanilla",
+      "seed": 6
+    },
+    {
+      "bridge_mode": "vanilla",
+      "command_x_m_s": 0.08,
+      "condition": "x0.080_vanilla",
+      "mode_name": "vanilla",
+      "seed": 7
+    },
+    {
+      "bridge_mode": "fitted",
+      "command_x_m_s": 0.08,
+      "condition": "x0.080_fitted",
+      "mode_name": "fitted",
+      "seed": 0
+    },
+    {
+      "bridge_mode": "fitted",
+      "command_x_m_s": 0.08,
+      "condition": "x0.080_fitted",
+      "mode_name": "fitted",
+      "seed": 1
+    },
+    {
+      "bridge_mode": "fitted",
+      "command_x_m_s": 0.08,
+      "condition": "x0.080_fitted",
+      "mode_name": "fitted",
+      "seed": 2
+    },
+    {
+      "bridge_mode": "fitted",
+      "command_x_m_s": 0.08,
+      "condition": "x0.080_fitted",
+      "mode_name": "fitted",
+      "seed": 3
+    },
+    {
+      "bridge_mode": "fitted",
+      "command_x_m_s": 0.08,
+      "condition": "x0.080_fitted",
+      "mode_name": "fitted",
+      "seed": 4
+    },
+    {
+      "bridge_mode": "fitted",
+      "command_x_m_s": 0.08,
+      "condition": "x0.080_fitted",
+      "mode_name": "fitted",
+      "seed": 5
+    },
+    {
+      "bridge_mode": "fitted",
+      "command_x_m_s": 0.08,
+      "condition": "x0.080_fitted",
+      "mode_name": "fitted",
+      "seed": 6
+    },
+    {
+      "bridge_mode": "fitted",
+      "command_x_m_s": 0.08,
+      "condition": "x0.080_fitted",
+      "mode_name": "fitted",
+      "seed": 7
+    }
+  ],
+  "matrix_sha256": "ad908822121cbf38ed281dc413e0c72f387820bafe53f64936f16a04084d91ad",
+  "missing_inputs": [],
+  "playground": {
+    "commit": "b9be205ac64488c23504ca42e5ec790337adeec3",
+    "expected_commit": "b9be205ac64488c23504ca42e5ec790337adeec3",
+    "path": "D:\\CodexProjects\\Open_Duck_Playground-upstream-b9be205",
+    "porcelain_status": ""
+  },
+  "preregistered_contract_sha256": "6de06d134e2478ccb50ca7ed6ebb2c29edabdd1239d9337c96aeaa60c7665a93",
+  "question": "Does BEST_WALK_ONNX_2 pass every canonical feasibility gate used to reject later candidate policies?",
+  "required_context_note": "DUCK_STATUS records that a step-0 random-initialization export passed x=0.0 while every trained checkpoint from step 153600 onward failed it; this is reported verbatim as an objective diagnostic, not used to alter the numeric result",
+  "schema_version": "open_duck.t4_baseline_all_gates_preregistration.v1",
+  "status": "PREREGISTERED_T4_BASELINE_ALL_GATES"
+}

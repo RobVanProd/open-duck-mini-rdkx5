@@ -1,0 +1,101 @@
+{
+  "authority": {
+    "colab": false,
+    "gate5": false,
+    "one_read_only_audit": true,
+    "rdkx5_or_robot": false,
+    "t128_cpu_preregistration": false,
+    "training": false
+  },
+  "checks": {
+    "all_inputs_present": true,
+    "no_simulator_optimizer_colab_or_robot": true
+  },
+  "classification_rule": {
+    "otherwise": "HOLD_FOR_MECHANISM_REVIEW",
+    "select_negative_only": "all frozen facts match; T113 and T120 each trained the expert through eight endpoint strata; no frozen result tested an exact negative-only expert continuation"
+  },
+  "decision_rule": {
+    "fail_decision": "HOLD_FOR_MECHANISM_REVIEW",
+    "no_hosted_training": true,
+    "pass_decision": "EARN_T128_NEGATIVE_ONLY_LINEAR_EXPERT_CPU_PREREGISTRATION_ONLY"
+  },
+  "failed_checks": [],
+  "frozen_facts": {
+    "endpoint_strata": 8,
+    "exact_negative_fraction": 0.125,
+    "hidden_signal_classification": "COM_SIGNAL_PRESENT_AND_USED_CONTROL_LAW_INADEQUATE",
+    "t113_negative_green_cells": 5,
+    "t124_nominal_repair": "EXPERT_DOMINANT",
+    "t126_negative_green_cells": 4,
+    "t67_negative_green_cells": 6,
+    "t67_nominal_green_cells": 16,
+    "t78_negative_green_cells": 4
+  },
+  "inputs": {
+    "builder": {
+      "bytes": 6049,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t127_negative_expert_interference_preregistration.py",
+      "sha256": "0f2734ff50d4fba56b939a5df01fef94539b867be12feaa832132093ff56c975"
+    },
+    "runner": {
+      "bytes": 7557,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t127_negative_expert_interference.py",
+      "sha256": "719d4d3bbc96f5babc9bcee7ecea776a7d2d65d3ac005f85bfe35d63db38d1fe"
+    },
+    "t113_negative": {
+      "bytes": 120831,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t117_t113_negative_endpoint_result.json",
+      "sha256": "1c64aaa6634ab58e720de8e3cc637e10af8d305da222e8386595882c3f3d5443"
+    },
+    "t113_preregistration": {
+      "bytes": 26525,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t113_always_on_trainthrough_hosted_preregistration.json",
+      "sha256": "6b9016fb7944959846f03b9fa9e438353591528c998b1586f021636627c5d17e"
+    },
+    "t120_preregistration": {
+      "bytes": 26930,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t120_joint_soft_router_hosted_preregistration.json",
+      "sha256": "3689bf8a4b5ce3caef53e780f03df87c734065fbefe5e3b5678515df7d0f430f"
+    },
+    "t124_factorial": {
+      "bytes": 16371,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t124_t120_leaf_factorial_result.json",
+      "sha256": "4d957ab42b73356dc65743d9d990ce1440a12dd9f56643f35e4a0f282f5b9e99"
+    },
+    "t126_negative": {
+      "bytes": 120872,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t126_expert_first_negative_result.json",
+      "sha256": "225c6f3d64fda21bdbd44884af448817a3562d247d749da3b5612980e3f6ca57"
+    },
+    "t67_negative": {
+      "bytes": 123348,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t70_t67_condition7_result.json",
+      "sha256": "ed137273a1920a3707d0e93d73b38a765ed7f5d865c614baf45af0060c94545d"
+    },
+    "t67_nominal": {
+      "bytes": 123351,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t69_t67_nominal_matrix_result.json",
+      "sha256": "298bd675e4401d9e3942e27f6d78c7b9f2b9e45bf4644bf60b807bf103a0cf4d"
+    },
+    "t71_hidden_causality": {
+      "bytes": 53268,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t71_t67_com_hidden_causal_result.json",
+      "sha256": "06b9f4678a63c96b40dcccd9f9e59ec30c35a78b337446e1ba74c7dc83a43d50"
+    },
+    "t78_negative": {
+      "bytes": 124559,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t92_raw_t78_com_attribution_result.json",
+      "sha256": "99caa1fb2936b2698950da4563390c8196b9d4ed9d482aa0bf4e472a22235ea4"
+    },
+    "test": {
+      "bytes": 1000,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t127_negative_expert_interference.py",
+      "sha256": "915c0dfd7781401d7c2f6426cb9b563bf923612ad454f3c102cc107a8073effb"
+    }
+  },
+  "preregistered_contract_sha256": "c63d3511aa7a060e98b3349a2ca4718c540cda60e25eae52b896c70044838a99",
+  "question": "Did every prior negative-COM correction train under mixed endpoint gradients, leaving exact negative-only expert training as the smallest untested mechanism before increasing network capacity?",
+  "schema_version": "open_duck.t127_negative_expert_interference_preregistration.v1",
+  "status": "PREREGISTERED_T127_NEGATIVE_EXPERT_INTERFERENCE_AUDIT"
+}

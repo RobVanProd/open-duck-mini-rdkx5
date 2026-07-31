@@ -1,0 +1,65 @@
+{
+  "timestamp_utc": "2026-07-02T04:18:00Z",
+  "branch": "codex/live-oracle-dagger-phase-student",
+  "head_before_report": "114d0a1834a9cabc7d2e22f491d7f6001574f334",
+  "gate_result": "HOLD_A100_RUNNER_START_NO_SENTINEL",
+  "robot_touched": false,
+  "attempts": [
+    {
+      "name": "exec_medium",
+      "session": "open-duck-a100-startup",
+      "mode": "colab_exec",
+      "deps": "reused",
+      "shape": {"num_envs": 8, "num_timesteps": 20480, "episode_length": 256, "batch_size": 64},
+      "result": "TRAIN_AND_1S_SWEEP_RETURNED_0_BUT_ARTIFACT_NOT_RECOVERED",
+      "artifact_status": "missing_after_session_file_api_loss"
+    },
+    {
+      "name": "poll_medium_skip_deps_fresh",
+      "session": "open-duck-a100-poll",
+      "mode": "detached_poll",
+      "deps": "skipped_on_fresh_runtime",
+      "shape": {"num_envs": 8, "num_timesteps": 20480, "episode_length": 256, "batch_size": 64},
+      "result": "HOLD_SMOKE_RUN",
+      "failure": "ModuleNotFoundError: No module named 'playground'"
+    },
+    {
+      "name": "poll_medium_deps",
+      "session": "open-duck-a100-poll",
+      "mode": "detached_poll",
+      "deps": "installed",
+      "shape": {"num_envs": 8, "num_timesteps": 20480, "episode_length": 256, "batch_size": 64},
+      "result": "HOLD_REMOTE_NO_SENTINEL",
+      "last_runner_line": "Skipping checkpoint/export at step 0; export_min_step=1"
+    },
+    {
+      "name": "poll_medium_warm",
+      "session": "open-duck-a100-poll",
+      "mode": "detached_poll",
+      "deps": "reused",
+      "shape": {"num_envs": 8, "num_timesteps": 20480, "episode_length": 256, "batch_size": 64},
+      "result": "HOLD_REMOTE_NO_SENTINEL",
+      "last_runner_line": "Skipping checkpoint/export at step 0; export_min_step=1"
+    },
+    {
+      "name": "poll_small_warm",
+      "session": "open-duck-a100-poll",
+      "mode": "detached_poll",
+      "deps": "reused",
+      "shape": {"num_envs": 4, "num_timesteps": 8192, "episode_length": 128, "batch_size": 32},
+      "result": "HOLD_REMOTE_NO_SENTINEL",
+      "last_runner_line": "Skipping checkpoint/export at step 0; export_min_step=1"
+    }
+  ],
+  "common_valid_stack": {
+    "jax": "0.7.2",
+    "jaxlib": "0.7.2",
+    "backend": "gpu",
+    "device": "CudaDevice(id=0)",
+    "has_device_put_replicated": true,
+    "mujoco_contract_audit": "completed"
+  },
+  "common_stderr_signal": "RuntimeWarning: overflow encountered in cast",
+  "promotion_status": "no_candidate_recovered",
+  "next_recommendation": "run a feature-toggle runner-start isolation matrix before launching longer A100 Phase 2 jobs"
+}

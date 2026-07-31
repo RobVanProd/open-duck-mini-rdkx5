@@ -1,0 +1,92 @@
+{
+  "authority": {
+    "behavior": false,
+    "colab": false,
+    "composition_preregistration": true,
+    "gate5": false,
+    "robot_or_rdk": false,
+    "training": false
+  },
+  "checks": {
+    "all_leaf_deltas_finite": true,
+    "both_cost_trees_finite": true,
+    "cost_tree_structure_exact": true,
+    "cpu_only": true,
+    "maximum_delta_within_one_float32_epsilon": true,
+    "preregistered_tolerance_exact": true,
+    "t211_exact_single_hold_preserved": true,
+    "zero_optimizer_simulator_onnx_behavior_hosted_or_robot": true
+  },
+  "comparison": {
+    "absolute_tolerance": 1.1920928955078125e-07,
+    "cpu_cost_zero": {
+      "directory_sha256": "58723f6ce4ea362eafe92bc68f61c9d93d4553b10079ab08a6fd736e95160312",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t209_dual_roll_cost_cpu_contract_v1\\smoke\\2026_07_30_103408_0_v127_cost_value",
+      "sha256": "58723f6ce4ea362eafe92bc68f61c9d93d4553b10079ab08a6fd736e95160312"
+    },
+    "hosted_cost_zero": {
+      "directory_sha256": "e789038f90c08865eba0b01c66ae3a5790acf1d4d7cf9a1e2285cb9aa198508c",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t210_colab_recovery_20260730\\t210_dual_roll_cost_continuation\\training\\2026_07_30_150331_0_v127_cost_value",
+      "sha256": "e789038f90c08865eba0b01c66ae3a5790acf1d4d7cf9a1e2285cb9aa198508c"
+    },
+    "leaf_count": 8,
+    "maximum_absolute_leaf_delta": 1.4901161193847656e-08,
+    "maximum_over_tolerance": 0.125,
+    "nonzero_leaf_count": 2,
+    "nonzero_leaf_deltas": {
+      "params/hidden_1/kernel": 7.450580596923828e-09,
+      "params/hidden_3/kernel": 1.4901161193847656e-08
+    }
+  },
+  "decision": "RECOVER_T211_AND_EARN_T212_T210_POSTEXPORT_COMPOSITION_PREREGISTRATION_ONLY",
+  "execution": {
+    "behavior_cells": 0,
+    "checkpoint_restores": 2,
+    "hosted_compute_units": 0,
+    "onnx_inferences": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_transitions": 0
+  },
+  "failed_checks": [],
+  "preregistered_contract_sha256": "cb273b385ae1c8391d2843f3086874b79d9ba0953aceeba1f0c72562c459d554",
+  "recovered_t211": {
+    "original_result_sha256": "cad5ec3cfc02705f69f6c43dda83c1b09f58f64a3142e3f86ca988addcdf2776",
+    "recovered_check": true,
+    "status": "PASS_T211_T210_RECOVERED_TRAINING_VALIDATION",
+    "substantive_checks": {
+      "all_exact_export_sets_present": true,
+      "all_onnx_contracts_pass": true,
+      "all_policy_and_cost_trees_finite": true,
+      "archive_hash_matches_result_and_receipt": true,
+      "aux_states_match_hosted_result": true,
+      "both_exports_only_update_head_and_reward_critic": true,
+      "both_exports_update_cost_critic": true,
+      "cost_hashes_match_hosted_result": true,
+      "cpu_only_validation": true,
+      "dual_initial_state_exact": true,
+      "dual_initialized_from_derived_cost_and_monotone": true,
+      "eval_metrics_finite_at_all_exports": true,
+      "formal_behavior_cells_zero": true,
+      "hosted_artifact_passed_pending_cpu_validation": true,
+      "launch_receipt_complete": true,
+      "onnx_hashes_match_hosted_result": true,
+      "package_and_launch_contracts_green": true,
+      "policy_hashes_match_hosted_result": true,
+      "preregistration_hash_matches_hosted": true,
+      "result_hash_matches_receipt": true,
+      "roll_cost_channel_exercised": true,
+      "source_and_cpu_templates_frozen": true,
+      "step_zero_policy_tree_source_bit_exact": true,
+      "step_zero_raw_onnx_byte_exact": true,
+      "t204_and_t208_authorities_exact": true,
+      "t209_and_t98_readbacks_exact": true,
+      "t209_cpu_authority_exact": true,
+      "t210_preregistration_green": true,
+      "training_metrics_finite_at_both_exports": true
+    }
+  },
+  "result_sha256": "e83858eaa7b2d0c5459a8fe19794149f989852e7bab188f40d995ab45dde61ae",
+  "schema_version": "open_duck.t211b_cost_init_backend_recovery_result.v1",
+  "status": "PASS_T211B_COST_INIT_BACKEND_RECOVERY"
+}

@@ -1,0 +1,96 @@
+{
+  "activation": "swish",
+  "config": {
+    "batch_size": 512,
+    "learning_rate": 0.001,
+    "seed": 17,
+    "steps": 4000,
+    "target_rate_limit_rad_s": 1.5,
+    "target_rate_scale": 1.0
+  },
+  "context_hidden_sizes": [
+    32
+  ],
+  "context_indices": [
+    6,
+    99,
+    100
+  ],
+  "exported_onnx": "policy/candidates/phase2_z0075_intermediate_push_live_oracle_iter0_phase_modulated_rate150_20260704/candidate.onnx",
+  "loss_rows": [
+    {
+      "loss": 0.9036925435066223,
+      "step": 1
+    },
+    {
+      "loss": 0.002174422377720475,
+      "step": 500
+    },
+    {
+      "loss": 0.0010009817779064178,
+      "step": 1000
+    },
+    {
+      "loss": 0.0009088332881219685,
+      "step": 1500
+    },
+    {
+      "loss": 0.001286929938942194,
+      "step": 2000
+    },
+    {
+      "loss": 0.001265864004381001,
+      "step": 2500
+    },
+    {
+      "loss": 0.00038054512697272,
+      "step": 3000
+    },
+    {
+      "loss": 0.0004521382215898484,
+      "step": 3500
+    },
+    {
+      "loss": 0.0004178644740022719,
+      "step": 4000
+    }
+  ],
+  "manifest": "outputs/analysis/phase2_z0075_intermediate_push_live_oracle_iter0_curated/live_oracle_dagger_curated_aggregate_manifest.json",
+  "modulation_scale": 0.5,
+  "onnx_verify": {
+    "max_abs_error": 2.086162567138672e-07,
+    "p95_abs_error": 1.1920928955078125e-07,
+    "path": "policy/candidates/phase2_z0075_intermediate_push_live_oracle_iter0_phase_modulated_rate150_20260704/candidate.onnx",
+    "samples_checked": 64
+  },
+  "sample_weight": {
+    "max": 5.0,
+    "p50": 3.0,
+    "p95": 5.0,
+    "weighted_samples": 121683.0
+  },
+  "samples": 42501,
+  "saved_npz": "policy/candidates/phase2_z0075_intermediate_push_live_oracle_iter0_phase_modulated_rate150_20260704/student.npz",
+  "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+  "target_rate": {
+    "max_rad_s": 3.626033067703247,
+    "p50_rad_s": 0.1707531064748764,
+    "p95_rad_s": 1.3073265552520752,
+    "p99_rad_s": 1.4896206855773926,
+    "pair_count": 42444
+  },
+  "train_metrics": {
+    "mae": 0.011686249309158136,
+    "max_abs_error": 1.2758100032806396,
+    "p50_abs_error": 0.006823272726842355,
+    "p95_abs_error": 0.03758854569760194,
+    "p99_abs_error": 0.0654991631457284,
+    "pred_action_saturation_pct": 0.0,
+    "rmse": 0.019980400944407332,
+    "samples": 42501
+  },
+  "trunk_hidden_sizes": [
+    128,
+    128
+  ]
+}

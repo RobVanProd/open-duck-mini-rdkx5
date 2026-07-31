@@ -1,0 +1,399 @@
+{
+  "authority": {
+    "adapter_core_head_factorial_preregistration": true,
+    "colab": false,
+    "factorial_execution": false,
+    "gate5": false,
+    "policy_promotion": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "checks": {
+    "all_five_matched_controls_green_full_duration": true,
+    "endpoint_difference_exactly_adapter": true,
+    "endpoint_graphs_exact": true,
+    "exactly_one_failed_cell": true,
+    "failure_identity_exact": true,
+    "failure_is_late_forward_pitch_collapse": true,
+    "failure_non_duration_quality_green": true,
+    "no_new_behavior_or_training": true,
+    "robot_or_rdk_zero": true,
+    "t46_stopped_at_condition_four": true
+  },
+  "decision": "EARN_T48_FINAL_ADAPTER_CORE_HEAD_FACTORIAL_PREREGISTRATION",
+  "endpoint_attribution": {
+    "differing_initializers": [
+      "adapter_bias",
+      "adapter_hidden_bias",
+      "adapter_hidden_weight",
+      "adapter_obs_weight",
+      "adapter_weight"
+    ],
+    "final_policy": {
+      "bytes": 965047,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t36_t32_actor_block_factorial_v1\\NORMALIZER_HALF\\action_margin.onnx",
+      "sha256": "c74b37423508f707ad4e906e324e14a5b7900856e900837fe40054f159f35086"
+    },
+    "half_policy": {
+      "bytes": 965047,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t43_forward_actor_block_factorial_v1\\HALF_WITH_FINAL_BASE\\action_margin.onnx",
+      "sha256": "628e7f67bb12f47f84e3d0926b16f0677857023513d94a1ab7a8cf5001eaa736"
+    },
+    "half_vs_final_same_cell_action_drift": {
+      "common_ticks": 494,
+      "raw_action_max_abs": 0.8927736878395081,
+      "raw_action_rms_all": 0.11191554528957218,
+      "raw_action_rms_first_400": 0.09227945244416164,
+      "raw_action_rms_last_64": 0.16700618963018418
+    },
+    "output_head": [
+      "adapter_bias",
+      "adapter_weight"
+    ],
+    "recurrent_core": [
+      "adapter_hidden_bias",
+      "adapter_hidden_weight",
+      "adapter_obs_weight"
+    ]
+  },
+  "execution": {
+    "hosted_compute_units": 0,
+    "new_behavior_cells": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "failure": {
+    "cell": {
+      "behavior": {
+        "action_saturation_pct": 0.0,
+        "body_pitch_p95_rad": 0.26760399985526345,
+        "command_x_m_s": 0.077,
+        "core_checks": {
+          "bilateral_transitions": true,
+          "body_pitch": false,
+          "duration": false,
+          "emergence": false,
+          "finite_mean_vx": true,
+          "height": false,
+          "minimum_track_ratio": true,
+          "positive_velocity": true,
+          "samples": false,
+          "saturation": true
+        },
+        "core_pass": false,
+        "emergence_pass": false,
+        "evaluator_candidate_gate_status_diagnostic": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "instant_rate_excess_rad_s": 0.0,
+        "left_contact_transitions": 52,
+        "mean_local_vx_m_s": 0.08404256942562253,
+        "minimum_base_height_m": -0.018717413768172264,
+        "p95_rate_excess_rad_s": 0.0,
+        "pitch_tracking_p95_rad": 0.16188575625419618,
+        "replacement_quality_checks": {
+          "instant_rate": true,
+          "p95_rate": true,
+          "tracking": true,
+          "zero_saturation": true
+        },
+        "replacement_quality_pass": true,
+        "right_contact_transitions": 34,
+        "samples": 494,
+        "termination_reason": "fall_or_nan",
+        "track_ratio": 1.0914619405925006
+      },
+      "cell_green": false,
+      "command_x_m_s": 0.077,
+      "handoff": {
+        "all_checks_pass": true,
+        "calibration_final_action": [
+          0.0,
+          0.0,
+          -0.5,
+          0.25,
+          0.25,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.5,
+          0.25,
+          0.25
+        ],
+        "checks": {
+          "applied_target_observer_preserved": true,
+          "applied_target_slot_continuity": true,
+          "calibration_ticks_exact": true,
+          "calibrator_sha_exact": true,
+          "context_finite": true,
+          "context_immutable": true,
+          "context_shape": true,
+          "first_hidden_zero": true,
+          "first_previous_action_matches_calibration": true,
+          "full_observation_traced": true,
+          "graph_authoritative_no_host_delta": true,
+          "handoff_state_preserved": true,
+          "phase_reset_exact": true,
+          "policy_hidden_zero": true,
+          "previous_action_preserved": true,
+          "recurrent_state_chains_exact": true,
+          "response_enabled": true,
+          "zero_home_return_ticks": true
+        },
+        "context_sha256": "6a9ca2f87b95d6dc32a2a4cd80416af4d59a49daa8196c012666b7901bb3dfbe",
+        "observer_bridge_applied_target_rad": [
+          0.0020000000949949026,
+          0.05299999937415123,
+          -0.7549999952316284,
+          1.4305000305175781,
+          -0.7214999794960022,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          -0.003000000026077032,
+          -0.06499999761581421,
+          0.7599999904632568,
+          1.441499948501587,
+          -0.7335000038146973
+        ],
+        "response_audit": {
+          "applied_target_observation_matches_bridge": true,
+          "calibration_final_action": [
+            0.0,
+            0.0,
+            -0.5,
+            0.25,
+            0.25,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.5,
+            0.25,
+            0.25
+          ],
+          "calibration_ticks": 250,
+          "calibrator_abi": {
+            "input_names": [
+              "obs",
+              "previous_action",
+              "h_in"
+            ],
+            "output_names": [
+              "calibration_actions",
+              "previous_action_out",
+              "h_out"
+            ]
+          },
+          "calibrator_sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576",
+          "context_finite": true,
+          "context_sha256": "6a9ca2f87b95d6dc32a2a4cd80416af4d59a49daa8196c012666b7901bb3dfbe",
+          "context_shape": [
+            1,
+            64
+          ],
+          "enabled": true,
+          "handoff_state_preserved": true,
+          "home_return_ticks": 0,
+          "locomotion_applied_target_observation_rad": [
+            0.0020000000949949026,
+            0.05299999937415123,
+            -0.7549999952316284,
+            1.4305000305175781,
+            -0.7214999794960022,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            -0.003000000026077032,
+            -0.06499999761581421,
+            0.7599999904632568,
+            1.441499948501587,
+            -0.7335000038146973
+          ],
+          "locomotion_hidden_exact_zero": true,
+          "locomotion_phase_reset": [
+            1.0,
+            0.0
+          ],
+          "locomotion_previous_action_exact_zero": false,
+          "locomotion_previous_action_matches_calibration": true,
+          "observer_bridge_applied_target_rad": [
+            0.0020000000949949026,
+            0.05299999937415123,
+            -0.7549999952316284,
+            1.4305000305175781,
+            -0.7214999794960022,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            -0.003000000026077032,
+            -0.06499999761581421,
+            0.7599999904632568,
+            1.4414999485015867,
+            -0.7335000038146973
+          ]
+        }
+      },
+      "override_readback_exact": true,
+      "protection": {
+        "duration_protection_pass": true,
+        "maximum_full_measured_vector_excess_rad_s": 0.0,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t46_uniform_final_base_r2_remainder_v1\\04_JOINT_FRICTIONLOSS_HI\\T45_UNIFORM_FINAL_BASE_FINAL\\p30\\traces\\x0.077_seed167931544_action_margin.jsonl",
+        "rows": 494,
+        "sha256": "e35a369da28bd24453aa87cba504b1b17f59025a00dbb13de3a6418f88c32251",
+        "simulator_force_limit_hit_ticks_diagnostic": 0,
+        "ticks_contiguous_from_zero": true,
+        "worst_peak_current_a_diagnostic": 3.1791664216854065,
+        "worst_peak_torque_nm_diagnostic": 2.4941577911376953,
+        "worst_strict_overcurrent_run_ticks": 12,
+        "worst_strict_overload_run_ticks": 12
+      },
+      "trace_valid": false
+    },
+    "checkpoint_id": "T45_UNIFORM_FINAL_BASE_FINAL",
+    "command_x_m_s": 0.077,
+    "condition_id": "JOINT_FRICTIONLOSS_HI",
+    "fit_id": "p30",
+    "trace": {
+      "bytes": 8881395,
+      "first_abs_pitch_over_0p25_tick": 467,
+      "first_abs_pitch_over_0p5_tick": 479,
+      "first_base_height_below_0p12_tick": 486,
+      "first_no_foot_contact_tick": 479,
+      "last_base_height_m": -0.018717413768172264,
+      "last_body_pitch_rad": 1.2892776121140366,
+      "last_body_roll_rad": -2.0559952495738383,
+      "last_tick": 493,
+      "maximum_abs_actuator_force_nm": 2.4941577911376953,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t46_uniform_final_base_r2_remainder_v1\\04_JOINT_FRICTIONLOSS_HI\\T45_UNIFORM_FINAL_BASE_FINAL\\p30\\traces\\x0.077_seed167931544_action_margin.jsonl",
+      "rows": 494,
+      "sha256": "e35a369da28bd24453aa87cba504b1b17f59025a00dbb13de3a6418f88c32251",
+      "ticks_any_actuator_over_gate_torque": 42,
+      "ticks_contiguous_from_zero": true
+    }
+  },
+  "finding": "T46's only failure is an isolated late forward-pitch collapse of the final recurrent-adapter endpoint under P30, x=.077, and joint friction 1.1. All matched controls pass. Since the T45 endpoints differ only in the adapter recurrent core and output head, a zero-training two-block factorial is the smallest earned causal screen.",
+  "matched_controls": {
+    "half_endpoint_same_fit_command": {
+      "cell_green": true,
+      "samples": 600,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10783930,
+        "first_abs_pitch_over_0p25_tick": null,
+        "first_abs_pitch_over_0p5_tick": null,
+        "first_base_height_below_0p12_tick": null,
+        "first_no_foot_contact_tick": null,
+        "last_base_height_m": 0.16301701962947845,
+        "last_body_pitch_rad": -0.010078414236929734,
+        "last_body_roll_rad": 0.05195960087531777,
+        "last_tick": 599,
+        "maximum_abs_actuator_force_nm": 2.4737586975097656,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t46_uniform_final_base_r2_remainder_v1\\04_JOINT_FRICTIONLOSS_HI\\T45_UNIFORM_FINAL_BASE_HALF\\p30\\traces\\x0.077_seed167931544_action_margin.jsonl",
+        "rows": 600,
+        "sha256": "0bf83999e27ea93f21147b8b248975ea0af38ba0994fb15249ae43ffc0d13dac",
+        "ticks_any_actuator_over_gate_torque": 56,
+        "ticks_contiguous_from_zero": true
+      }
+    },
+    "nominal_same_endpoint_fit_command": {
+      "cell_green": true,
+      "samples": 600,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10787434,
+        "first_abs_pitch_over_0p25_tick": null,
+        "first_abs_pitch_over_0p5_tick": null,
+        "first_base_height_below_0p12_tick": null,
+        "first_no_foot_contact_tick": null,
+        "last_base_height_m": 0.16037343442440033,
+        "last_body_pitch_rad": 0.0775454085127355,
+        "last_body_roll_rad": 0.04874813616334765,
+        "last_tick": 599,
+        "maximum_abs_actuator_force_nm": 2.4526920318603516,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t45_uniform_final_base_qualification_v1\\01_FLOOR_FRICTION_LO\\T45_UNIFORM_FINAL_BASE_FINAL\\p30\\traces\\x0.077_seed167931544_action_margin.jsonl",
+        "rows": 600,
+        "sha256": "8b525503fefc0c3b4787eb74b39743bf1715989b40838e663a68b7efc65134bb",
+        "ticks_any_actuator_over_gate_torque": 46,
+        "ticks_contiguous_from_zero": true
+      }
+    },
+    "same_endpoint_higher_command": {
+      "cell_green": true,
+      "samples": 600,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10785790,
+        "first_abs_pitch_over_0p25_tick": null,
+        "first_abs_pitch_over_0p5_tick": null,
+        "first_base_height_below_0p12_tick": null,
+        "first_no_foot_contact_tick": null,
+        "last_base_height_m": 0.16159436106681824,
+        "last_body_pitch_rad": 0.05821093313688751,
+        "last_body_roll_rad": 0.03917306169571123,
+        "last_tick": 599,
+        "maximum_abs_actuator_force_nm": 2.5167179107666016,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t46_uniform_final_base_r2_remainder_v1\\04_JOINT_FRICTIONLOSS_HI\\T45_UNIFORM_FINAL_BASE_FINAL\\p30\\traces\\x0.080_seed167931544_action_margin.jsonl",
+        "rows": 600,
+        "sha256": "fee8df35c70d0c4b2ab75946e456a41c90cc421f247078f7dda5380855d16677",
+        "ticks_any_actuator_over_gate_torque": 54,
+        "ticks_contiguous_from_zero": true
+      }
+    },
+    "same_endpoint_lower_command": {
+      "cell_green": true,
+      "samples": 600,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10787430,
+        "first_abs_pitch_over_0p25_tick": null,
+        "first_abs_pitch_over_0p5_tick": null,
+        "first_base_height_below_0p12_tick": null,
+        "first_no_foot_contact_tick": null,
+        "last_base_height_m": 0.163705974817276,
+        "last_body_pitch_rad": 0.061000174983274515,
+        "last_body_roll_rad": 0.009328591547666692,
+        "last_tick": 599,
+        "maximum_abs_actuator_force_nm": 2.3857955932617188,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t46_uniform_final_base_r2_remainder_v1\\04_JOINT_FRICTIONLOSS_HI\\T45_UNIFORM_FINAL_BASE_FINAL\\p30\\traces\\x0.074_seed167931544_action_margin.jsonl",
+        "rows": 600,
+        "sha256": "5b7109a3a11b40b28c265c4e062b61f9d1005e61fef577b0ebf397f724f0c3f4",
+        "ticks_any_actuator_over_gate_torque": 48,
+        "ticks_contiguous_from_zero": true
+      }
+    },
+    "same_endpoint_other_fit": {
+      "cell_green": true,
+      "samples": 600,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10785540,
+        "first_abs_pitch_over_0p25_tick": null,
+        "first_abs_pitch_over_0p5_tick": null,
+        "first_base_height_below_0p12_tick": null,
+        "first_no_foot_contact_tick": null,
+        "last_base_height_m": 0.16211789846420288,
+        "last_body_pitch_rad": 0.04087163309361449,
+        "last_body_roll_rad": 0.05667769879542879,
+        "last_tick": 599,
+        "maximum_abs_actuator_force_nm": 2.4163684844970703,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t46_uniform_final_base_r2_remainder_v1\\04_JOINT_FRICTIONLOSS_HI\\T45_UNIFORM_FINAL_BASE_FINAL\\p31_34\\traces\\x0.077_seed167931544_action_margin.jsonl",
+        "rows": 600,
+        "sha256": "888512dd3579e80190cf2d793a967feb29eaea1db6b6ff047e337e4735be2bc1",
+        "ticks_any_actuator_over_gate_torque": 44,
+        "ticks_contiguous_from_zero": true
+      }
+    }
+  },
+  "result_sha256": "7ad5837b48de500f2226d259393cbf8138ef81d5653b1368701563e519b8083e",
+  "schema_version": "open_duck.t47_t46_condition4_failure_attribution.v1",
+  "status": "PASS_T47_T46_CONDITION4_FAILURE_ATTRIBUTION"
+}

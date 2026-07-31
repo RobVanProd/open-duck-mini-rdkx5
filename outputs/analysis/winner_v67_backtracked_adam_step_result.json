@@ -1,0 +1,222 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "continuation_authorized_now": false,
+    "deployment_authorized": false,
+    "gate5_authorized": false,
+    "pass_authorizes_only": "preregistration of a bounded deterministic backtracked-Adam continuation",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "support_gate_authorized": false
+  },
+  "checks": {
+    "all_parameters_optimizer_losses_metrics_finite": true,
+    "all_six_policy_leaves_changed": true,
+    "first_strict_descent_fraction_exactly_one_quarter": true,
+    "formal_support_continuation_robot_zero": true,
+    "full_step_non_descent_reproduced": true,
+    "largest_first_fraction_order_exact": true,
+    "onnx_abi_exact": true,
+    "onnx_jax_chain_at_most_1e_7": true,
+    "onnx_previous_action_chain_exact": true,
+    "onnx_training_only_tensors_absent": true,
+    "optimizer_count_574_to_575_exact": true,
+    "same_batch_loss_strictly_decreases": true,
+    "snapshot_readback_exact": true,
+    "v66_attribution_and_count_574_source_exact": true
+  },
+  "decision": "PREREGISTER_BOUNDED_DETERMINISTIC_BACKTRACKED_ADAM_CONTINUATION_ONLY",
+  "execution": {
+    "continuation_optimizer_updates": 0,
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "optimizer_updates": 1,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "graph": {
+    "bytes": 54896,
+    "completed_updates": 575,
+    "contract": {
+      "abi_exact": true,
+      "all_chain_outputs_finite": true,
+      "all_initializers_finite": true,
+      "bytes": 54896,
+      "chain_ticks": 250,
+      "forbidden_training_or_privileged_tokens": [],
+      "initializer_count": 9,
+      "inputs": [
+        {
+          "name": "obs",
+          "shape": [
+            1,
+            115
+          ]
+        },
+        {
+          "name": "previous_action",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "name": "h_in",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "jax_onnx_at_most_1e_7": true,
+      "jax_onnx_max_abs_error": 2.9103830456733704e-11,
+      "outputs": [
+        {
+          "name": "calibration_actions",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "name": "previous_action_out",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "name": "h_out",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v67b-backtracked-adam-step\\graphs\\winner_v67_backtracked_adam_update_575.onnx",
+      "previous_action_out_equals_action_bit_exact": true,
+      "sha256": "a21a1c07a8148b5ad5fbaa1da1217ea6a19c1228f6088f4ab9864142b71e331e",
+      "training_only_tensors_absent": true
+    },
+    "label": "proof",
+    "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v67b-backtracked-adam-step\\graphs\\winner_v67_backtracked_adam_update_575.onnx",
+    "sha256": "a21a1c07a8148b5ad5fbaa1da1217ea6a19c1228f6088f4ab9864142b71e331e",
+    "v46_forbidden_tokens_present": []
+  },
+  "optimization": {
+    "accepted_fraction": 0.25,
+    "accepted_loss": 0.0033518008422106504,
+    "accepted_loss_delta": -3.585591912269592e-08,
+    "backtracking_rows": [
+      {
+        "fraction": 1.0,
+        "loss": 0.003352187341079116,
+        "loss_delta": 3.5064294934272766e-07,
+        "maximum_selected_action_delta": 0.22764042019844055
+      },
+      {
+        "fraction": 0.5,
+        "loss": 0.003351846244186163,
+        "loss_delta": 9.546056389808655e-09,
+        "maximum_selected_action_delta": 0.2283143699169159
+      },
+      {
+        "fraction": 0.25,
+        "loss": 0.0033518008422106504,
+        "loss_delta": -3.585591912269592e-08,
+        "maximum_selected_action_delta": 0.22865131497383118
+      },
+      {
+        "fraction": 0.125,
+        "loss": 0.0033518101554363966,
+        "loss_delta": -2.6542693376541138e-08,
+        "maximum_selected_action_delta": 0.22881975769996643
+      },
+      {
+        "fraction": 0.0625,
+        "loss": 0.0033518201671540737,
+        "loss_delta": -1.6530975699424744e-08,
+        "maximum_selected_action_delta": 0.22890400886535645
+      }
+    ],
+    "full_step_loss": 0.003352187341079116,
+    "leaf_max_abs_delta": {
+      "action_bias": 7.201451808214188e-06,
+      "action_weight": 1.1027790606021881e-05,
+      "auxiliary_action_weight": 5.4836273193359375e-06,
+      "auxiliary_bias": 3.858935087919235e-06,
+      "auxiliary_hidden_weight": 5.986541509628296e-06,
+      "hidden_bias": 2.168118953704834e-06,
+      "hidden_weight": 4.827976226806641e-06,
+      "obs_weight": 5.155801773071289e-06,
+      "previous_action_weight": 4.86522912979126e-06,
+      "training_only_log_std": 1.430511474609375e-06,
+      "training_only_value_bias": 2.909451723098755e-06,
+      "training_only_value_weight": 4.172325134277344e-06
+    },
+    "loss_before": 0.003351836698129773,
+    "optimizer_count_after": 575,
+    "optimizer_count_before": 574
+  },
+  "schema_version": "winner_v67.backtracked_adam_step_result.v1",
+  "snapshot": {
+    "bytes": 194690,
+    "completed_updates": 575,
+    "metadata_payload_sha256": "fccb69c2ee34ff3bb7c2a74e7c6d7586ee8b891259087460c31c92fab2324be7",
+    "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v67b-backtracked-adam-step\\snapshots\\snapshot_backtracked_adam_update_575.npz",
+    "sha256": "c234bacde983728234d2b2a85cba5418263dc1adf383d9eb6dd59d48ff26654b",
+    "state_payload_sha256": "332ffe0f1a2dfb84c14f8734b9fd6dd2606fb0f37dc1bd8b3f3dc02582d90465"
+  },
+  "source": {
+    "episode_receipts_sha256": "b710d368e3e3e47eb01e890e4df4fd44b5e555acce636b8a27b5656dd2146ad5",
+    "optimizer_count": 574,
+    "rollout_update_index": 574,
+    "snapshot": {
+      "bytes": 195249,
+      "completed_updates": 574,
+      "metadata_payload_sha256": "0ec20c98e955b5ffc33160aba6b52072b6d17da2df3e70422d5d8d94dde30744",
+      "path": "D:/CodexArtifacts/open-duck-mini-rdkx5/winner-v65b-isolated-persistent-teacher-training/snapshots/snapshot_isolated_persistent_teacher_update_574.npz",
+      "sha256": "e255988ee27bbb3fb6b7842c01da69a68941e3127eb7ed0c7d707236da33ebce",
+      "state_payload_sha256": "36e0f3d54900290c29e79544d212bd4e0be816744debc9508eade9e7e49a1842"
+    }
+  },
+  "source_manifest_sha256": "f1d4ad60445819a7a12bc665c6faca2749bf7520722d0d9e92416123108f3e6e",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v67_backtracked_adam_step.py",
+      "sha256": "f0a9c8d4f92ef4baffce40b723fc2fbae9911ebb4a3ffc2a538b68254dd3f958"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v67_backtracked_adam_step.py",
+      "sha256": "ca55b66b7e3952e57fba654fb3a636d7a177fd456121c97d711db725a2d1bd3b"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v67_backtracked_adam_step.py",
+      "sha256": "7326aa51e44e4857f74321d01f75911b331f73db8a34b517dde7e2785cdb7b16"
+    },
+    "v65b_stopped_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v65b_isolated_persistent_teacher_training_result.json",
+      "sha256": "2659432178c331b68dfd15961bff72e50d1289674ce8c24102e9d2a5ccb3ed86"
+    },
+    "v66_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v66_failed_step_attribution.py",
+      "sha256": "5803b7f812780847d67de3399bb14e6617e57f2a6369ae50d061e8ff4223f44d"
+    },
+    "v66_contract": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v66_failed_step_attribution_preregistration.json",
+      "sha256": "159211e64f631b9f00cb3d74551ca69bd0801ced2539b0c49105719662a54630"
+    },
+    "v66_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v66_failed_step_attribution_result.json",
+      "sha256": "849b9cb2b57462ee40b7f95bddcc27c3599789012c84f891f00492f93948e6b3"
+    }
+  },
+  "status": "PASS_WINNER_V67_BACKTRACKED_ADAM_STEP"
+}

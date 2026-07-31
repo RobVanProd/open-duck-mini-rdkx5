@@ -1,0 +1,37 @@
+{
+  "recommendation": "The next recovery dataset should cover each populated failure mode, not only the compact seed0/seed7 pair. If reverse pitch-back and forward lunge both appear, use seed-diverse live-oracle relabels plus pass-control traces; do not add a single scalar damping or progress term and call it distributional.",
+  "seeds": [
+    {
+      "final_base_height_m": -0.005771102383732796,
+      "final_pitch_rad": 1.326888136640415,
+      "final_vx_m_s": 1.509602665901184,
+      "max_velocity_excess_rad_s": 0.0,
+      "mode": "FORWARD_LUNGE_PITCHOVER",
+      "p95_velocity_excess_rad_s": 0.0,
+      "policy_name": "command_gated_zero0020",
+      "reasons": [
+        "forward_lunge_velocity",
+        "pitch_forward",
+        "low_base_height"
+      ],
+      "samples": 158,
+      "seed": 5,
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "trace_path": "outputs/analysis/phase2_command_gated_zero0020_seed5_failure_trace/command_gated_zero0020/seed_005/trace.jsonl",
+      "track_ratio": 1.70828782306038
+    }
+  ],
+  "status": "PASS_SEED_FAILURE_MODE_REPORT_READY",
+  "summary": {
+    "mode_counts": {
+      "FORWARD_LUNGE_PITCHOVER": 1
+    },
+    "seeds": 1,
+    "status_counts": {
+      "HOLD_CANDIDATE_FALL_OR_TERMINATION": 1
+    }
+  },
+  "sweep_json": "outputs/analysis/phase2_command_gated_zero0020_seed5_failure_trace.json",
+  "trace_root": "outputs/analysis/phase2_command_gated_zero0020_seed5_failure_trace",
+  "velocity_excess_tolerance": 0.1
+}

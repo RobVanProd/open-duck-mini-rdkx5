@@ -1,0 +1,217 @@
+{
+  "all_or_nothing": true,
+  "authority": {
+    "colab_hosted_gpu_or_igpu": false,
+    "gate5_deployment_or_robot_clearance": false,
+    "one_exact_local_cpu_v6b_run": true,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "runtime_v2_implementation": false,
+    "training_or_ppo": false
+  },
+  "bound_populations": {
+    "default_off_identity": {
+      "population": "66 arbitrary finite ABI tensors per protected checkpoint",
+      "rule": "action and previous-action state byte-for-byte protected identity; no adapter projection"
+    },
+    "enabled_adapter_stress": {
+      "population": "256 arbitrary finite tensors for each deliberately nonzero-head graph",
+      "rule": "absolute [-1,1] and protected winner-v2 per-joint delta projection"
+    },
+    "protected_physical_chain": {
+      "dependent_fields": "obs joint position, applied target, and three action-history slots derive from prior confirmed output; no independent random pairing",
+      "population": "32 chained ticks per checkpoint using the unchanged seeds",
+      "rule": "protected/expanded bit identity, finite output, and full final-action bounds"
+    }
+  },
+  "decision": "AUTHORIZE_ONE_EXACT_CPU_ONLY_V6B_ZERO_PPO_CONTRACT_RUN",
+  "expected_abi": {
+    "calibrator": {
+      "inputs": [
+        {
+          "dtype": "float32",
+          "name": "obs",
+          "shape": [
+            1,
+            115
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "previous_action",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "h_in",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "dtype": "float32",
+          "name": "calibration_actions",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "previous_action_out",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "h_out",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ]
+    },
+    "locomotion": {
+      "inputs": [
+        {
+          "dtype": "float32",
+          "name": "obs",
+          "shape": [
+            1,
+            115
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "previous_action",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "h_in",
+          "shape": [
+            1,
+            64
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "calibration_context",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "dtype": "float32",
+          "name": "continuous_actions",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "previous_action_out",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "h_out",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ]
+    }
+  },
+  "input_hashes": {
+    "base_checker": "191f326129240c573e93ddcc2de56c93020589fb701cb4a311ce9742f86b77ef",
+    "failed_v6_result": "5a99f94a4a4d0f3ffcf23e3d27a5d4c833b318b5cc8f677d6b851e3f619fe5c9",
+    "hold_attribution": "d318f2c0ef1931f30574f71e8f7f1bffd971bf16815f152c1213bc9dc4e2a3b3",
+    "importer": "63533d09ba08038414f146bff319b2991a6b904996229c5fb2f089f6d2bcd8c3",
+    "network_source": "cfff280a1c592043d7e1849c68a3c99b05574814180506e6608f17877a5dbb90",
+    "protected_final": "0dfc24bde5d839e4d346dd8c08d9a7d0222a3847764ec6738bfc7f8d947f4ece",
+    "protected_half": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de",
+    "runtime_review_receipt": "b38f105375df9752c60a81893fb4ff4dc44922e63ac2853f7e5fea5857b44b99",
+    "v6b_checker": "585ccea84aad5dcafd314d98bb39cc37c32496f850d7c5d08bba2dc716827c3b"
+  },
+  "no_retry_or_tuning": "A failed v6b formal run closes winner-v6 dynamic calibration. Do not change seeds, weights, populations, tolerance, checkpoint, ABI, or pass rule.",
+  "not_a_retry": {
+    "failed_v6_result_remains_held": true,
+    "failed_v6_result_sha256": "5a99f94a4a4d0f3ffcf23e3d27a5d4c833b318b5cc8f677d6b851e3f619fe5c9",
+    "new_name": "winner-v6b-bound-population-split",
+    "only_change": "separate default-off identity, enabled-adapter stress bounds, and protected physically chained full-action assertions"
+  },
+  "numeric_tolerance": 1e-07,
+  "pass_authorizes_only": "write and review a separate calibrator-training preregistration; no optimizer step",
+  "pass_rule": [
+    "all hashes, ABIs, CPU-only assertions, and unchanged initialization checks pass",
+    "all 66 step-zero actions are exact zero and recurrent response state evolves with finite auxiliary gradient",
+    "the 250-tick calibration and both 32-tick JAX/ONNX handoff chains agree within 1e-7",
+    "all nine invalid handoffs fail closed",
+    "both default-off protected checkpoint identities are bit exact for all arbitrary-input cases",
+    "both deliberately enabled stress graphs obey their graph-owned action projections",
+    "both physically chained protected populations obey the complete final-action contract",
+    "no true configuration label enters either graph or auxiliary target"
+  ],
+  "protected_checkpoints": {
+    "final": {
+      "path": "outputs/analysis/ground_up_dual_fit_conservative_envelope_repair_policies/T2_EQUAL_1024000.onnx",
+      "role": "unchanged protected persistent G1/T2 final checkpoint",
+      "sha256": "0dfc24bde5d839e4d346dd8c08d9a7d0222a3847764ec6738bfc7f8d947f4ece"
+    },
+    "half": {
+      "path": "outputs/analysis/ground_up_dual_fit_conservative_envelope_repair_policies/T2_EQUAL_512000.onnx",
+      "role": "unchanged protected persistent G1/T2 half checkpoint",
+      "sha256": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de"
+    }
+  },
+  "runtime_review": {
+    "receipt_path": "outputs/analysis/winner_v6_bound_semantics_review_receipt.json",
+    "receipt_sha256": "b38f105375df9752c60a81893fb4ff4dc44922e63ac2853f7e5fea5857b44b99",
+    "runtime_artifact_sha256": "5505308efc146146c3609fc7594eb4dfa4d27ad67d9336673cb38fc6692b895f",
+    "runtime_commit": "13c28c5c1230be638983f491fdfb97aa24ae6076"
+  },
+  "schema_version": "winner_v6b.zero_ppo_cpu_software_contract_preregistration.v1",
+  "status": "PREREGISTERED_NOT_RUN",
+  "unchanged_from_failed_v6": {
+    "calibration_ticks": 250,
+    "calibrator_seed": 60720,
+    "invalid_handoff_case_count": 9,
+    "locomotion_adapter_seed": 60721,
+    "locomotion_ticks_per_checkpoint": 32,
+    "network_source_and_weights": true,
+    "numeric_tolerance": 1e-07,
+    "physical_chain_seeds": [
+      60742,
+      60752
+    ],
+    "protected_identity_cases_per_checkpoint": 66,
+    "protected_identity_seeds": [
+      60740,
+      60750
+    ],
+    "step_zero_cases": 66,
+    "stress_cases_per_graph": 256,
+    "stress_input_seed": 60731,
+    "stress_parameter_seed": 60730
+  }
+}

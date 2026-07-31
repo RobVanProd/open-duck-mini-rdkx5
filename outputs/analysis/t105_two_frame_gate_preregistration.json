@@ -1,0 +1,494 @@
+{
+  "authority": {
+    "behavior": false,
+    "colab": false,
+    "deployment": false,
+    "gate5": false,
+    "graph_transform": false,
+    "one_cpu_trace_falsifier": true,
+    "rdkx5_or_robot": false,
+    "training": false
+  },
+  "candidate": {
+    "current_score": "dot((h_out - mean) / scale, coefficient) + intercept",
+    "new_input_or_output": false,
+    "new_state": false,
+    "previous_score": "dot((h_in - mean) / scale, coefficient) + intercept",
+    "scalar_search": false,
+    "threshold_derivation": "For each training population, derive the finite interval of thresholds satisfying <=5% nominal false-active and <=5% negative-COM false-inactive under score>=threshold; choose the interval midpoint.",
+    "two_frame_score": "0.5 * (current_score + previous_score)",
+    "validation": "leave one matched nominal/negative-COM trajectory pair out; derive threshold on the other eleven pairs; evaluate only the held-out pair; aggregate all twelve folds"
+  },
+  "checks": {
+    "all_repository_inputs_present": true,
+    "all_trace_receipts_exact": true,
+    "each_pair_has_nominal_and_negative_com": true,
+    "exactly_twelve_paired_groups": true,
+    "exactly_twenty_four_moving_traces": true,
+    "gate_asset_exact": true,
+    "no_graph_transform_behavior_training_colab_or_robot": true,
+    "t104_exactly_selects_gate_stabilization": true
+  },
+  "decision_rule": {
+    "fail_decision": "CLOSE_TWO_FRAME_STATELESS_GATE_STABILIZATION",
+    "no_behavior_or_training": true,
+    "pass": "The full-population threshold interval is nonempty; all twelve held-out folds have a nonempty training interval; aggregate held-out nominal false-active and negative-COM false-inactive fractions are each <=0.05; no failing negative-COM trace exceeds four post-warmup transitions; and h_in is the exact prior h_out.",
+    "pass_decision": "EARN_T106_TWO_FRAME_GATE_GRAPH_TRANSFORM_PREREGISTRATION_ONLY",
+    "training_selection_weight": 0
+  },
+  "execution_now": {
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_steps": 0,
+    "trace_rows": 0
+  },
+  "failed_checks": [],
+  "gate_asset": {
+    "bytes": 8085,
+    "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t98_hidden_gate_asset.json",
+    "sha256": "11381bb2208d1eb40f826b069c68983fdab348277e46c63ffc1ddd46b579b6e3"
+  },
+  "population": {
+    "group_key": [
+      "checkpoint_id",
+      "fit_id",
+      "command_x_m_s"
+    ],
+    "labels": {
+      "com_x_negative": 1,
+      "nominal": -1
+    },
+    "moving_traces": 24,
+    "paired_groups": 12,
+    "warmup_ticks": 32
+  },
+  "preregistered_contract_sha256": "e71ead2c3d40d2655151cce33d1db85b4057d4fa9e5b8bb040548977b5b2a6cd",
+  "question": "Can an ABI-preserving equal two-frame hidden score, using h_in and h_out, make the negative-configuration gate stable without a tuned smoothing coefficient?",
+  "repository_inputs": {
+    "builder": {
+      "bytes": 9471,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t105_two_frame_gate_preregistration.py",
+      "sha256": "7497081f82994dc0644b3df5d180c1e36ace6e07b72f86c5364a3bdb40880a18"
+    },
+    "hidden_gate_asset": {
+      "bytes": 8085,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t98_hidden_gate_asset.json",
+      "sha256": "11381bb2208d1eb40f826b069c68983fdab348277e46c63ffc1ddd46b579b6e3"
+    },
+    "runner": {
+      "bytes": 16296,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t105_two_frame_gate_falsifier.py",
+      "sha256": "fa579df5b2636a606063483c4687bb4c037bdf394f97299bf471df2ebc651eae"
+    },
+    "t104_preregistration": {
+      "bytes": 26201,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t104_t100c_gate_dynamics_preregistration.json",
+      "sha256": "6fb2cb6479634099665f9b5e4a0b490ef30ba6c1817c97eb83fbb5fe1b9c69e2"
+    },
+    "t104_result": {
+      "bytes": 79379,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t104_t100c_gate_dynamics_result.json",
+      "sha256": "54a7c3cb784a4182f2915723b12d9a94650e9bac491b2afed0de658ee5fb0622"
+    },
+    "test": {
+      "bytes": 1625,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t105_two_frame_gate.py",
+      "sha256": "28295ee46e53457506bac1e470768c7ffbff30689b3d78847fd85036561adb7b"
+    }
+  },
+  "schema_version": "open_duck.t105_two_frame_gate_preregistration.v1",
+  "status": "PREREGISTERED_T105_TWO_FRAME_GATE_FALSIFIER",
+  "thresholds": {
+    "all_twelve_folds_must_have_feasible_threshold": true,
+    "maximum_expected_class_error_fraction": 0.05,
+    "maximum_h_in_previous_h_out_error": 1e-06,
+    "maximum_post_warmup_transitions_per_failing_trace": 4
+  },
+  "traces": [
+    {
+      "behavior_samples": 600,
+      "cell_green": true,
+      "checkpoint_id": "T100C_HIDDEN_EXPERT_HALF",
+      "command_x_m_s": 0.074,
+      "condition_id": "FLOOR_FRICTION_HI",
+      "fit_id": "p30",
+      "population": "nominal",
+      "step": 1003520,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10768231,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t102_t100c_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T100C_HIDDEN_EXPERT_HALF\\p30\\traces\\x0.074_seed167931544_action_margin.jsonl",
+        "sha256": "c906e42d35ae0ce2b1bf3955e4a39218cdc4d1cb5a9eafb47a6a270f40916101"
+      }
+    },
+    {
+      "behavior_samples": 600,
+      "cell_green": true,
+      "checkpoint_id": "T100C_HIDDEN_EXPERT_HALF",
+      "command_x_m_s": 0.077,
+      "condition_id": "FLOOR_FRICTION_HI",
+      "fit_id": "p30",
+      "population": "nominal",
+      "step": 1003520,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10771378,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t102_t100c_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T100C_HIDDEN_EXPERT_HALF\\p30\\traces\\x0.077_seed167931544_action_margin.jsonl",
+        "sha256": "917230272aff9278c2430c22cfa0dbfbeca638d974b2045fa8756a734f32741f"
+      }
+    },
+    {
+      "behavior_samples": 600,
+      "cell_green": true,
+      "checkpoint_id": "T100C_HIDDEN_EXPERT_HALF",
+      "command_x_m_s": 0.08,
+      "condition_id": "FLOOR_FRICTION_HI",
+      "fit_id": "p30",
+      "population": "nominal",
+      "step": 1003520,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10769407,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t102_t100c_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T100C_HIDDEN_EXPERT_HALF\\p30\\traces\\x0.080_seed167931544_action_margin.jsonl",
+        "sha256": "b7366e3df72527b382b57fada69f54d67264c57f48f051ff86abb815c1b4006b"
+      }
+    },
+    {
+      "behavior_samples": 600,
+      "cell_green": true,
+      "checkpoint_id": "T100C_HIDDEN_EXPERT_HALF",
+      "command_x_m_s": 0.074,
+      "condition_id": "FLOOR_FRICTION_HI",
+      "fit_id": "p31_34",
+      "population": "nominal",
+      "step": 1003520,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10770942,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t102_t100c_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T100C_HIDDEN_EXPERT_HALF\\p31_34\\traces\\x0.074_seed167931544_action_margin.jsonl",
+        "sha256": "a3916bd493693ea4398408c43fb065b2764dc5ae7829a61c31a64c159384ebee"
+      }
+    },
+    {
+      "behavior_samples": 600,
+      "cell_green": true,
+      "checkpoint_id": "T100C_HIDDEN_EXPERT_HALF",
+      "command_x_m_s": 0.077,
+      "condition_id": "FLOOR_FRICTION_HI",
+      "fit_id": "p31_34",
+      "population": "nominal",
+      "step": 1003520,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10770416,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t102_t100c_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T100C_HIDDEN_EXPERT_HALF\\p31_34\\traces\\x0.077_seed167931544_action_margin.jsonl",
+        "sha256": "dcafd786b49955fa5f5bc9dc4773c0dea248618d12794a7b178883ef469cf51b"
+      }
+    },
+    {
+      "behavior_samples": 600,
+      "cell_green": true,
+      "checkpoint_id": "T100C_HIDDEN_EXPERT_HALF",
+      "command_x_m_s": 0.08,
+      "condition_id": "FLOOR_FRICTION_HI",
+      "fit_id": "p31_34",
+      "population": "nominal",
+      "step": 1003520,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10768983,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t102_t100c_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T100C_HIDDEN_EXPERT_HALF\\p31_34\\traces\\x0.080_seed167931544_action_margin.jsonl",
+        "sha256": "bc513f27aa90ec710b0424117a4783096e3472f214f08d7aa51f6d3407120509"
+      }
+    },
+    {
+      "behavior_samples": 600,
+      "cell_green": true,
+      "checkpoint_id": "T100C_HIDDEN_EXPERT_FINAL",
+      "command_x_m_s": 0.074,
+      "condition_id": "FLOOR_FRICTION_HI",
+      "fit_id": "p30",
+      "population": "nominal",
+      "step": 2007040,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10770811,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t102_t100c_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T100C_HIDDEN_EXPERT_FINAL\\p30\\traces\\x0.074_seed167931544_action_margin.jsonl",
+        "sha256": "afe5168c2c276f4b0c798f5c049df55a00955b304155364a1a51586d85c56636"
+      }
+    },
+    {
+      "behavior_samples": 600,
+      "cell_green": true,
+      "checkpoint_id": "T100C_HIDDEN_EXPERT_FINAL",
+      "command_x_m_s": 0.077,
+      "condition_id": "FLOOR_FRICTION_HI",
+      "fit_id": "p30",
+      "population": "nominal",
+      "step": 2007040,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10769838,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t102_t100c_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T100C_HIDDEN_EXPERT_FINAL\\p30\\traces\\x0.077_seed167931544_action_margin.jsonl",
+        "sha256": "794f4e71fee363279d90ca7e5865c1a2c18f0e9e30c5fe7ce90c5b117382726a"
+      }
+    },
+    {
+      "behavior_samples": 600,
+      "cell_green": true,
+      "checkpoint_id": "T100C_HIDDEN_EXPERT_FINAL",
+      "command_x_m_s": 0.08,
+      "condition_id": "FLOOR_FRICTION_HI",
+      "fit_id": "p30",
+      "population": "nominal",
+      "step": 2007040,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10773137,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t102_t100c_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T100C_HIDDEN_EXPERT_FINAL\\p30\\traces\\x0.080_seed167931544_action_margin.jsonl",
+        "sha256": "cb5d2d6da9045e063afa90e843c905cb52282aa6fc492de0bd71706f35018d5d"
+      }
+    },
+    {
+      "behavior_samples": 600,
+      "cell_green": true,
+      "checkpoint_id": "T100C_HIDDEN_EXPERT_FINAL",
+      "command_x_m_s": 0.074,
+      "condition_id": "FLOOR_FRICTION_HI",
+      "fit_id": "p31_34",
+      "population": "nominal",
+      "step": 2007040,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10769520,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t102_t100c_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T100C_HIDDEN_EXPERT_FINAL\\p31_34\\traces\\x0.074_seed167931544_action_margin.jsonl",
+        "sha256": "4267c8dd9b1cdf3cdcd076551851e76083f3e75e770725c85f51f67035637611"
+      }
+    },
+    {
+      "behavior_samples": 600,
+      "cell_green": true,
+      "checkpoint_id": "T100C_HIDDEN_EXPERT_FINAL",
+      "command_x_m_s": 0.077,
+      "condition_id": "FLOOR_FRICTION_HI",
+      "fit_id": "p31_34",
+      "population": "nominal",
+      "step": 2007040,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10770994,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t102_t100c_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T100C_HIDDEN_EXPERT_FINAL\\p31_34\\traces\\x0.077_seed167931544_action_margin.jsonl",
+        "sha256": "1b00625cc14eb6bb0c09cc992e687680a3f47fe2c9471844769e683e15b72327"
+      }
+    },
+    {
+      "behavior_samples": 600,
+      "cell_green": true,
+      "checkpoint_id": "T100C_HIDDEN_EXPERT_FINAL",
+      "command_x_m_s": 0.08,
+      "condition_id": "FLOOR_FRICTION_HI",
+      "fit_id": "p31_34",
+      "population": "nominal",
+      "step": 2007040,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10770489,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t102_t100c_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T100C_HIDDEN_EXPERT_FINAL\\p31_34\\traces\\x0.080_seed167931544_action_margin.jsonl",
+        "sha256": "bf26ba3dc2201a3bef8bc4b49e1df6f0a243f88ac34ddb10764ed5f0c5867dfb"
+      }
+    },
+    {
+      "behavior_samples": 600,
+      "cell_green": true,
+      "checkpoint_id": "T100C_HIDDEN_EXPERT_HALF",
+      "command_x_m_s": 0.074,
+      "condition_id": "TORSO_COM_X_NEG",
+      "fit_id": "p30",
+      "population": "com_x_negative",
+      "step": 1003520,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10762968,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t103_t100c_negative_endpoint_v1\\07_TORSO_COM_X_NEG\\T100C_HIDDEN_EXPERT_HALF\\p30\\traces\\x0.074_seed167931544_action_margin.jsonl",
+        "sha256": "5b84a8385ba6867ebf0b4e78418e4490e940bba4a45793f5e6ff37c4d891aa0b"
+      }
+    },
+    {
+      "behavior_samples": 417,
+      "cell_green": false,
+      "checkpoint_id": "T100C_HIDDEN_EXPERT_HALF",
+      "command_x_m_s": 0.077,
+      "condition_id": "TORSO_COM_X_NEG",
+      "fit_id": "p30",
+      "population": "com_x_negative",
+      "step": 1003520,
+      "termination_reason": "fall_or_nan",
+      "trace": {
+        "bytes": 7481624,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t103_t100c_negative_endpoint_v1\\07_TORSO_COM_X_NEG\\T100C_HIDDEN_EXPERT_HALF\\p30\\traces\\x0.077_seed167931544_action_margin.jsonl",
+        "sha256": "65720e65e49b06d45085142c25788177cb8bbf2ef9d122a644cf31018d8c2a55"
+      }
+    },
+    {
+      "behavior_samples": 600,
+      "cell_green": true,
+      "checkpoint_id": "T100C_HIDDEN_EXPERT_HALF",
+      "command_x_m_s": 0.08,
+      "condition_id": "TORSO_COM_X_NEG",
+      "fit_id": "p30",
+      "population": "com_x_negative",
+      "step": 1003520,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10770696,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t103_t100c_negative_endpoint_v1\\07_TORSO_COM_X_NEG\\T100C_HIDDEN_EXPERT_HALF\\p30\\traces\\x0.080_seed167931544_action_margin.jsonl",
+        "sha256": "0ea29fdccbcd3c3f7346346af03e2def9ae488bcce608c75e1deacf4fd18f8df"
+      }
+    },
+    {
+      "behavior_samples": 99,
+      "cell_green": false,
+      "checkpoint_id": "T100C_HIDDEN_EXPERT_HALF",
+      "command_x_m_s": 0.074,
+      "condition_id": "TORSO_COM_X_NEG",
+      "fit_id": "p31_34",
+      "population": "com_x_negative",
+      "step": 1003520,
+      "termination_reason": "fall_or_nan",
+      "trace": {
+        "bytes": 1772965,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t103_t100c_negative_endpoint_v1\\07_TORSO_COM_X_NEG\\T100C_HIDDEN_EXPERT_HALF\\p31_34\\traces\\x0.074_seed167931544_action_margin.jsonl",
+        "sha256": "e30382e7642aba5724f32fa2a3757b5184d39b45934bcda30cf688e7b936163b"
+      }
+    },
+    {
+      "behavior_samples": 600,
+      "cell_green": true,
+      "checkpoint_id": "T100C_HIDDEN_EXPERT_HALF",
+      "command_x_m_s": 0.077,
+      "condition_id": "TORSO_COM_X_NEG",
+      "fit_id": "p31_34",
+      "population": "com_x_negative",
+      "step": 1003520,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10765264,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t103_t100c_negative_endpoint_v1\\07_TORSO_COM_X_NEG\\T100C_HIDDEN_EXPERT_HALF\\p31_34\\traces\\x0.077_seed167931544_action_margin.jsonl",
+        "sha256": "efb5bc0ab35633eab3c26a2b69aeb3fbac8b78fe058f240c53389796469f2b07"
+      }
+    },
+    {
+      "behavior_samples": 600,
+      "cell_green": true,
+      "checkpoint_id": "T100C_HIDDEN_EXPERT_HALF",
+      "command_x_m_s": 0.08,
+      "condition_id": "TORSO_COM_X_NEG",
+      "fit_id": "p31_34",
+      "population": "com_x_negative",
+      "step": 1003520,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10769000,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t103_t100c_negative_endpoint_v1\\07_TORSO_COM_X_NEG\\T100C_HIDDEN_EXPERT_HALF\\p31_34\\traces\\x0.080_seed167931544_action_margin.jsonl",
+        "sha256": "4e8a60f7ce062e153fecab53554fa63539a3cd6919b732170aec5fd1a315952a"
+      }
+    },
+    {
+      "behavior_samples": 69,
+      "cell_green": false,
+      "checkpoint_id": "T100C_HIDDEN_EXPERT_FINAL",
+      "command_x_m_s": 0.074,
+      "condition_id": "TORSO_COM_X_NEG",
+      "fit_id": "p30",
+      "population": "com_x_negative",
+      "step": 2007040,
+      "termination_reason": "fall_or_nan",
+      "trace": {
+        "bytes": 1233804,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t103_t100c_negative_endpoint_v1\\07_TORSO_COM_X_NEG\\T100C_HIDDEN_EXPERT_FINAL\\p30\\traces\\x0.074_seed167931544_action_margin.jsonl",
+        "sha256": "b8cd7e3e2561cf9a8c9a9d1b581929dedd565b2a047b2d6ba8fa24fd0a73c867"
+      }
+    },
+    {
+      "behavior_samples": 600,
+      "cell_green": true,
+      "checkpoint_id": "T100C_HIDDEN_EXPERT_FINAL",
+      "command_x_m_s": 0.077,
+      "condition_id": "TORSO_COM_X_NEG",
+      "fit_id": "p30",
+      "population": "com_x_negative",
+      "step": 2007040,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10765417,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t103_t100c_negative_endpoint_v1\\07_TORSO_COM_X_NEG\\T100C_HIDDEN_EXPERT_FINAL\\p30\\traces\\x0.077_seed167931544_action_margin.jsonl",
+        "sha256": "e512196bcef2be657598a106d6810b6e5c8bd329550f904e1bea0e62859b4d95"
+      }
+    },
+    {
+      "behavior_samples": 80,
+      "cell_green": false,
+      "checkpoint_id": "T100C_HIDDEN_EXPERT_FINAL",
+      "command_x_m_s": 0.08,
+      "condition_id": "TORSO_COM_X_NEG",
+      "fit_id": "p30",
+      "population": "com_x_negative",
+      "step": 2007040,
+      "termination_reason": "fall_or_nan",
+      "trace": {
+        "bytes": 1431187,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t103_t100c_negative_endpoint_v1\\07_TORSO_COM_X_NEG\\T100C_HIDDEN_EXPERT_FINAL\\p30\\traces\\x0.080_seed167931544_action_margin.jsonl",
+        "sha256": "cde5a5f222b26659ad3710da1229bf987e86ebc371f5844b14e2900531330061"
+      }
+    },
+    {
+      "behavior_samples": 66,
+      "cell_green": false,
+      "checkpoint_id": "T100C_HIDDEN_EXPERT_FINAL",
+      "command_x_m_s": 0.074,
+      "condition_id": "TORSO_COM_X_NEG",
+      "fit_id": "p31_34",
+      "population": "com_x_negative",
+      "step": 2007040,
+      "termination_reason": "fall_or_nan",
+      "trace": {
+        "bytes": 1179104,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t103_t100c_negative_endpoint_v1\\07_TORSO_COM_X_NEG\\T100C_HIDDEN_EXPERT_FINAL\\p31_34\\traces\\x0.074_seed167931544_action_margin.jsonl",
+        "sha256": "3e7fd5b5e51cad12b54b5774105f2651a98a61267049bb619946574253cacbfd"
+      }
+    },
+    {
+      "behavior_samples": 68,
+      "cell_green": false,
+      "checkpoint_id": "T100C_HIDDEN_EXPERT_FINAL",
+      "command_x_m_s": 0.077,
+      "condition_id": "TORSO_COM_X_NEG",
+      "fit_id": "p31_34",
+      "population": "com_x_negative",
+      "step": 2007040,
+      "termination_reason": "fall_or_nan",
+      "trace": {
+        "bytes": 1215325,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t103_t100c_negative_endpoint_v1\\07_TORSO_COM_X_NEG\\T100C_HIDDEN_EXPERT_FINAL\\p31_34\\traces\\x0.077_seed167931544_action_margin.jsonl",
+        "sha256": "9ec2646106e92f8067ab576be8da168c4e39b219f221e234b363eaf62ea30443"
+      }
+    },
+    {
+      "behavior_samples": 77,
+      "cell_green": false,
+      "checkpoint_id": "T100C_HIDDEN_EXPERT_FINAL",
+      "command_x_m_s": 0.08,
+      "condition_id": "TORSO_COM_X_NEG",
+      "fit_id": "p31_34",
+      "population": "com_x_negative",
+      "step": 2007040,
+      "termination_reason": "fall_or_nan",
+      "trace": {
+        "bytes": 1377045,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t103_t100c_negative_endpoint_v1\\07_TORSO_COM_X_NEG\\T100C_HIDDEN_EXPERT_FINAL\\p31_34\\traces\\x0.080_seed167931544_action_margin.jsonl",
+        "sha256": "6a9d61dcfd895fcef10076b2b7898dd43ed4dc7c14d47818bbdfd6708eaebf07"
+      }
+    }
+  ]
+}

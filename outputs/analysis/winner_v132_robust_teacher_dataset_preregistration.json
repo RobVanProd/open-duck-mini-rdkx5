@@ -1,0 +1,51 @@
+{
+  "advancement_thresholds": {
+    "corrected_ratio_to_zero_predictor": "<=0.25",
+    "each_cross_fit_corrected_ratio": "<1.0",
+    "each_cross_fit_preservation_ratio": "<=0.01",
+    "preservation_ratio_to_corrected_baseline": "<=0.01",
+    "state_only_total_error_vs_hidden": "<=0.25"
+  },
+  "authority": {
+    "behavior_evaluation": false,
+    "full_matrix": false,
+    "gate5": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "read_only_cpu_audit": true,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "checks": {
+    "all_input_hashes_exact": true,
+    "read_only_no_training": true,
+    "robot_surface_absent": true,
+    "same_thresholds_as_v130_frozen_before_fit": true,
+    "v131_teacher_green": true
+  },
+  "dataset": {
+    "class_weight": "preservation_rows/corrected_rows, derived after the explicit row census",
+    "rows": 4800,
+    "source_policy": "V121_TRAIN_MATCHED_FINAL",
+    "target": "two-fit oracle final action minus base action on explicitly projected rows; exact zero elsewhere",
+    "traces": 8
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "audit_runner": "a21e4dc8a567563530278be180887b818d790b2a6eb74227029c2e3692a73caf",
+    "cpu_template": "217a1551c4cc778e4b957636a40ca6e01eafa51efeaef905eb73e9debc7c26e5",
+    "source_checkpoint": "c1d9b8574c941e2279294de14aca1cb57d4736bdc63635b5aaf1e205fa7f86c1",
+    "v131_behavior_result": "ab1535e11287f191e8ee6b4be5c020c44726c6263465c7cb760892387b07c9ea"
+  },
+  "question": "Does replacing fit-specific V126 labels with V131 common-safe labels make a static deployable correction readout both localizable and cross-fit preserving?",
+  "representations": {
+    "current_hidden": "h_out[64]",
+    "fit": "float64 unregularized class-balanced least squares",
+    "normalized_obs": "source-normalized obs[115]",
+    "state": "source-normalized obs[115] + h_in[64]"
+  },
+  "schema_version": "winner_v132.robust_teacher_dataset_preregistration.v1",
+  "selection": "prefer the existing hidden representation if it passes every threshold; otherwise allow state only if it passes every threshold plus the fourfold total-error rule",
+  "status": "PREREGISTERED_WINNER_V132_ROBUST_TEACHER_DATASET_AUDIT",
+  "stop_rule": "if neither representation passes, do not train a static linear residual from this dataset"
+}

@@ -1,0 +1,724 @@
+{
+  "files": {
+    "checkpoint_dirs": [
+      "/content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260711T234701Z_gpu/2026_07_11_235724_81920",
+      "/content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260711T234701Z_gpu/2026_07_12_000047_163840",
+      "/content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260711T234701Z_gpu/2026_07_12_000115_245760"
+    ],
+    "event_files": [
+      "/content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260711T234701Z_gpu/events.out.tfevents.1783813673.da93f7c96059"
+    ],
+    "manifests": [
+      "/content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260711T234701Z_gpu/smoke_manifest.final.json",
+      "/content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260711T234701Z_gpu/smoke_manifest.live.json",
+      "/content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260711T234701Z_gpu/smoke_manifest.start.json"
+    ],
+    "stderr": "/content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260711T234701Z_gpu/stderr.txt",
+    "stdout": "/content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260711T234701Z_gpu/stdout.txt"
+  },
+  "generated_at": "2026-07-12T00:02:01Z",
+  "latest_onnx": {
+    "name": "2026_07_12_000115_245760.onnx",
+    "path": "/content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260711T234701Z_gpu/2026_07_12_000115_245760.onnx",
+    "sha256": "4f835e675fb706736007cb1ed87f2d4c9907b400742a0c1143cfe9c0d0414e21",
+    "size_bytes": 884094,
+    "step": 245760
+  },
+  "manifest": {
+    "actuator_bridge_enabled": true,
+    "actuator_tracking_scale": -0.04,
+    "behavior_prior": {
+      "enabled": true,
+      "huber_delta": 0.05,
+      "joint_weights": "0.25,0.5,1,2,2,0.25,0.25,0.25,0.25,0.25,0.5,1,2,2",
+      "mlp_npz": "/content/open-duck-mini-rdkx5/outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz",
+      "scale": -0.6,
+      "temporal_rate_limit_joint_indices": "2,3,4,11,12,13",
+      "temporal_rate_limit_rad_s": 2.0
+    },
+    "command": [
+      "/usr/bin/python3",
+      "/content/Open_Duck_Playground/playground/open_duck_mini_v2/runner.py",
+      "--task",
+      "flat_terrain_backlash",
+      "--env",
+      "joystick",
+      "--output_dir",
+      "/content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260711T234701Z_gpu",
+      "--export_min_step",
+      "1",
+      "--num_timesteps",
+      "163840",
+      "--ppo_num_envs",
+      "64",
+      "--ppo_num_evals",
+      "4",
+      "--ppo_episode_length",
+      "750",
+      "--ppo_unroll_length",
+      "20",
+      "--ppo_batch_size",
+      "512",
+      "--ppo_num_minibatches",
+      "4",
+      "--ppo_num_updates_per_batch",
+      "2",
+      "--target_rate_scale",
+      "0",
+      "--actuator_tracking_scale",
+      "-0.04",
+      "--restore_checkpoint_path",
+      "/content/open-duck-mini-rdkx5/outputs/analysis/ppo_bc_command_conditioned_rate175_step0_checkpoint",
+      "--ppo_learning_rate",
+      "0.000006",
+      "--ppo_entropy_cost",
+      "0.001",
+      "--ppo_clipping_epsilon",
+      "0.025",
+      "--ppo_max_grad_norm",
+      "0.12",
+      "--restore_policy_kl_scale",
+      "4",
+      "--joint_target_tracking_scale",
+      "-0.007914891239",
+      "--joint_target_tracking_huber_delta",
+      "0.03",
+      "--joint_target_tracking_joint_indices",
+      "2,3,4,11,12,13",
+      "--tracking_lin_vel_scale",
+      "3",
+      "--tracking_sigma",
+      "0.01",
+      "--forward_progress_scale",
+      "2.5",
+      "--command_progress_scale",
+      "1.5",
+      "--command_progress_shortfall_scale",
+      "-4",
+      "--command_progress_required_ratio",
+      "0.45",
+      "--command_progress_warmup_steps",
+      "30",
+      "--action_rate_huber_delta",
+      "0.05",
+      "--actuator_tracking_huber_delta",
+      "0.03",
+      "--action_rate_scale",
+      "-0.08",
+      "--action_magnitude_scale",
+      "-0.005",
+      "--base_height_scale",
+      "-0.8",
+      "--forward_pitch_scale",
+      "-0.4",
+      "--forward_pitch_rate_scale",
+      "-0.08",
+      "--alive_scale",
+      "2",
+      "--imitation_scale",
+      "0",
+      "--lin_vel_x_min",
+      "0.06",
+      "--lin_vel_x_max",
+      "0.1",
+      "--lin_vel_y_min",
+      "0",
+      "--lin_vel_y_max",
+      "0",
+      "--ang_vel_yaw_min",
+      "0",
+      "--ang_vel_yaw_max",
+      "0",
+      "--command_resample_steps",
+      "600",
+      "--zero_command_probability",
+      "0.15",
+      "--dr_friction_min",
+      "0.98",
+      "--dr_friction_max",
+      "1.02",
+      "--dr_frictionloss_scale_min",
+      "0.995",
+      "--dr_frictionloss_scale_max",
+      "1.005",
+      "--dr_armature_scale_min",
+      "1",
+      "--dr_armature_scale_max",
+      "1.005",
+      "--dr_com_jitter_m",
+      "0.002",
+      "--dr_mass_scale_min",
+      "0.99",
+      "--dr_mass_scale_max",
+      "1.01",
+      "--dr_torso_mass_delta_min",
+      "-0.005",
+      "--dr_torso_mass_delta_max",
+      "0.005",
+      "--dr_qpos_jitter_rad",
+      "0.002",
+      "--dr_actuator_gain_scale_min",
+      "0.99",
+      "--dr_actuator_gain_scale_max",
+      "1.01",
+      "--dr_leg_geometry_jitter_scale",
+      "0.002",
+      "--push_interval_min_s",
+      "1",
+      "--push_interval_max_s",
+      "1.5",
+      "--push_magnitude_min",
+      "0.075",
+      "--push_magnitude_max",
+      "0.125",
+      "--noise_level",
+      "0.5",
+      "--noise_hip_pos",
+      "0.0075",
+      "--noise_knee_pos",
+      "0.0075",
+      "--noise_ankle_pos",
+      "0.0075",
+      "--noise_joint_vel",
+      "0.75",
+      "--noise_gravity",
+      "0.04",
+      "--noise_gyro",
+      "0.04",
+      "--noise_accelerometer",
+      "0.02",
+      "--no-push_enable",
+      "--enable_behavior_prior",
+      "--behavior_prior_mlp_npz",
+      "/content/open-duck-mini-rdkx5/outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz",
+      "--behavior_prior_scale",
+      "-0.6",
+      "--behavior_prior_huber_delta",
+      "0.05",
+      "--behavior_prior_joint_weights",
+      "0.25,0.5,1,2,2,0.25,0.25,0.25,0.25,0.25,0.5,1,2,2",
+      "--behavior_prior_temporal_rate_limit_rad_s",
+      "2",
+      "--behavior_prior_temporal_rate_limit_joint_indices",
+      "2,3,4,11,12,13",
+      "--enable_actuator_bridge",
+      "--actuator_bridge_delay_min_ticks",
+      "3",
+      "--actuator_bridge_delay_max_ticks",
+      "3",
+      "--actuator_bridge_tau_min_s",
+      "0.06",
+      "--actuator_bridge_tau_max_s",
+      "0.1",
+      "--actuator_bridge_velocity_limit_min_rad_s",
+      "2",
+      "--actuator_bridge_velocity_limit_max_rad_s",
+      "3.25",
+      "--actuator_bridge_per_joint_variation",
+      "0.05"
+    ],
+    "command_shell": "env JAX_PLATFORM_NAME=gpu JAX_PLATFORMS=cuda XLA_PYTHON_CLIENT_PREALLOCATE=false XLA_PYTHON_CLIENT_MEM_FRACTION=0.5 /usr/bin/python3 /content/Open_Duck_Playground/playground/open_duck_mini_v2/runner.py --task flat_terrain_backlash --env joystick --output_dir /content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260711T234701Z_gpu --export_min_step 1 --num_timesteps 163840 --ppo_num_envs 64 --ppo_num_evals 4 --ppo_episode_length 750 --ppo_unroll_length 20 --ppo_batch_size 512 --ppo_num_minibatches 4 --ppo_num_updates_per_batch 2 --target_rate_scale 0 --actuator_tracking_scale -0.04 --restore_checkpoint_path /content/open-duck-mini-rdkx5/outputs/analysis/ppo_bc_command_conditioned_rate175_step0_checkpoint --ppo_learning_rate 0.000006 --ppo_entropy_cost 0.001 --ppo_clipping_epsilon 0.025 --ppo_max_grad_norm 0.12 --restore_policy_kl_scale 4 --joint_target_tracking_scale -0.007914891239 --joint_target_tracking_huber_delta 0.03 --joint_target_tracking_joint_indices 2,3,4,11,12,13 --tracking_lin_vel_scale 3 --tracking_sigma 0.01 --forward_progress_scale 2.5 --command_progress_scale 1.5 --command_progress_shortfall_scale -4 --command_progress_required_ratio 0.45 --command_progress_warmup_steps 30 --action_rate_huber_delta 0.05 --actuator_tracking_huber_delta 0.03 --action_rate_scale -0.08 --action_magnitude_scale -0.005 --base_height_scale -0.8 --forward_pitch_scale -0.4 --forward_pitch_rate_scale -0.08 --alive_scale 2 --imitation_scale 0 --lin_vel_x_min 0.06 --lin_vel_x_max 0.1 --lin_vel_y_min 0 --lin_vel_y_max 0 --ang_vel_yaw_min 0 --ang_vel_yaw_max 0 --command_resample_steps 600 --zero_command_probability 0.15 --dr_friction_min 0.98 --dr_friction_max 1.02 --dr_frictionloss_scale_min 0.995 --dr_frictionloss_scale_max 1.005 --dr_armature_scale_min 1 --dr_armature_scale_max 1.005 --dr_com_jitter_m 0.002 --dr_mass_scale_min 0.99 --dr_mass_scale_max 1.01 --dr_torso_mass_delta_min -0.005 --dr_torso_mass_delta_max 0.005 --dr_qpos_jitter_rad 0.002 --dr_actuator_gain_scale_min 0.99 --dr_actuator_gain_scale_max 1.01 --dr_leg_geometry_jitter_scale 0.002 --push_interval_min_s 1 --push_interval_max_s 1.5 --push_magnitude_min 0.075 --push_magnitude_max 0.125 --noise_level 0.5 --noise_hip_pos 0.0075 --noise_knee_pos 0.0075 --noise_ankle_pos 0.0075 --noise_joint_vel 0.75 --noise_gravity 0.04 --noise_gyro 0.04 --noise_accelerometer 0.02 --no-push_enable --enable_behavior_prior --behavior_prior_mlp_npz /content/open-duck-mini-rdkx5/outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz --behavior_prior_scale -0.6 --behavior_prior_huber_delta 0.05 --behavior_prior_joint_weights 0.25,0.5,1,2,2,0.25,0.25,0.25,0.25,0.25,0.5,1,2,2 --behavior_prior_temporal_rate_limit_rad_s 2 --behavior_prior_temporal_rate_limit_joint_indices 2,3,4,11,12,13 --enable_actuator_bridge --actuator_bridge_delay_min_ticks 3 --actuator_bridge_delay_max_ticks 3 --actuator_bridge_tau_min_s 0.06 --actuator_bridge_tau_max_s 0.1 --actuator_bridge_velocity_limit_min_rad_s 2 --actuator_bridge_velocity_limit_max_rad_s 3.25 --actuator_bridge_per_joint_variation 0.05",
+    "deploy_performed": false,
+    "elapsed_s": 900.104076113,
+    "env_python_configured": "/usr/bin/python3",
+    "env_python_resolved": "/usr/bin/python3.12",
+    "export_min_step": 1,
+    "jax_platform_env": {
+      "JAX_PLATFORMS": "cuda",
+      "JAX_PLATFORM_NAME": "gpu"
+    },
+    "local_rocm_safe_env": false,
+    "output_dir": "/content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260711T234701Z_gpu",
+    "output_files": [
+      {
+        "mtime": 1783814244.571525,
+        "path": "2026_07_11_235724_81920/_CHECKPOINT_METADATA",
+        "size_bytes": 258
+      },
+      {
+        "mtime": 1783814244.5525231,
+        "path": "2026_07_11_235724_81920/_METADATA",
+        "size_bytes": 6948
+      },
+      {
+        "mtime": 1783814244.5005178,
+        "path": "2026_07_11_235724_81920/_sharding",
+        "size_bytes": 2708
+      },
+      {
+        "mtime": 1783814244.4995177,
+        "path": "2026_07_11_235724_81920/array_metadatas/process_0",
+        "size_bytes": 3243
+      },
+      {
+        "mtime": 1783814244.562524,
+        "path": "2026_07_11_235724_81920/d/4a05048a70894f542eea00f3e38cbe50",
+        "size_bytes": 7355
+      },
+      {
+        "mtime": 1783814244.5655246,
+        "path": "2026_07_11_235724_81920/manifest.ocdbt",
+        "size_bytes": 115
+      },
+      {
+        "mtime": 1783814244.5285208,
+        "path": "2026_07_11_235724_81920/ocdbt.process_0/d/46d18341ae1ff4ae4c6530f32938fc5c",
+        "size_bytes": 1817061
+      },
+      {
+        "mtime": 1783814244.491517,
+        "path": "2026_07_11_235724_81920/ocdbt.process_0/d/75f0609a80905c45bd7f79ac1dfcd1f9",
+        "size_bytes": 189
+      },
+      {
+        "mtime": 1783814244.5005178,
+        "path": "2026_07_11_235724_81920/ocdbt.process_0/d/8d4e490b3b08e1499ddbf2c33f3e72c0",
+        "size_bytes": 483
+      },
+      {
+        "mtime": 1783814244.5135193,
+        "path": "2026_07_11_235724_81920/ocdbt.process_0/d/c8dc99004c32f8c3ac8d52c779eb0f7e",
+        "size_bytes": 1367
+      },
+      {
+        "mtime": 1783814244.5375216,
+        "path": "2026_07_11_235724_81920/ocdbt.process_0/manifest.ocdbt",
+        "size_bytes": 244
+      },
+      {
+        "mtime": 1783814245.3356028,
+        "path": "2026_07_11_235724_81920.onnx",
+        "size_bytes": 883946
+      },
+      {
+        "mtime": 1783814447.1901126,
+        "path": "2026_07_12_000047_163840/_CHECKPOINT_METADATA",
+        "size_bytes": 258
+      },
+      {
+        "mtime": 1783814447.1741111,
+        "path": "2026_07_12_000047_163840/_METADATA",
+        "size_bytes": 6948
+      },
+      {
+        "mtime": 1783814447.1221058,
+        "path": "2026_07_12_000047_163840/_sharding",
+        "size_bytes": 2708
+      },
+      {
+        "mtime": 1783814447.1181054,
+        "path": "2026_07_12_000047_163840/array_metadatas/process_0",
+        "size_bytes": 3243
+      },
+      {
+        "mtime": 1783814447.1791115,
+        "path": "2026_07_12_000047_163840/d/516a831981e6b060613bca340f025dd4",
+        "size_bytes": 6922
+      },
+      {
+        "mtime": 1783814447.182112,
+        "path": "2026_07_12_000047_163840/manifest.ocdbt",
+        "size_bytes": 115
+      },
+      {
+        "mtime": 1783814447.135107,
+        "path": "2026_07_12_000047_163840/ocdbt.process_0/d/041695429f48b33b350d05b85e0ee4b6",
+        "size_bytes": 1359
+      },
+      {
+        "mtime": 1783814447.1511087,
+        "path": "2026_07_12_000047_163840/ocdbt.process_0/d/755ee023f0a45f11ee2b5afe2faf4be6",
+        "size_bytes": 1816937
+      },
+      {
+        "mtime": 1783814447.1121047,
+        "path": "2026_07_12_000047_163840/ocdbt.process_0/d/81c16de28f631a27acdd145e36debaa2",
+        "size_bytes": 189
+      },
+      {
+        "mtime": 1783814447.1221058,
+        "path": "2026_07_12_000047_163840/ocdbt.process_0/d/a402674f49fc23b77a56a94d73ff601c",
+        "size_bytes": 483
+      },
+      {
+        "mtime": 1783814447.1591096,
+        "path": "2026_07_12_000047_163840/ocdbt.process_0/manifest.ocdbt",
+        "size_bytes": 244
+      },
+      {
+        "mtime": 1783814447.6091552,
+        "path": "2026_07_12_000047_163840.onnx",
+        "size_bytes": 884094
+      },
+      {
+        "mtime": 1783814475.9090304,
+        "path": "2026_07_12_000115_245760/_CHECKPOINT_METADATA",
+        "size_bytes": 258
+      },
+      {
+        "mtime": 1783814475.8890283,
+        "path": "2026_07_12_000115_245760/_METADATA",
+        "size_bytes": 6948
+      },
+      {
+        "mtime": 1783814475.8240218,
+        "path": "2026_07_12_000115_245760/_sharding",
+        "size_bytes": 2708
+      },
+      {
+        "mtime": 1783814475.8240218,
+        "path": "2026_07_12_000115_245760/array_metadatas/process_0",
+        "size_bytes": 3243
+      },
+      {
+        "mtime": 1783814475.896029,
+        "path": "2026_07_12_000115_245760/d/704fbe554ed194b3ab3a02ae27a67523",
+        "size_bytes": 7231
+      },
+      {
+        "mtime": 1783814475.9000294,
+        "path": "2026_07_12_000115_245760/manifest.ocdbt",
+        "size_bytes": 115
+      },
+      {
+        "mtime": 1783814475.8290224,
+        "path": "2026_07_12_000115_245760/ocdbt.process_0/d/1db85389cf35ca98efea6e9071f1ee7b",
+        "size_bytes": 483
+      },
+      {
+        "mtime": 1783814475.8150208,
+        "path": "2026_07_12_000115_245760/ocdbt.process_0/d/480e1faa4a533f28a7221800da415a3b",
+        "size_bytes": 189
+      },
+      {
+        "mtime": 1783814475.8570251,
+        "path": "2026_07_12_000115_245760/ocdbt.process_0/d/4d6150f151a3549c220199e56e44bf9e",
+        "size_bytes": 1817352
+      },
+      {
+        "mtime": 1783814475.8730268,
+        "path": "2026_07_12_000115_245760/ocdbt.process_0/d/7d3e08eb9a41499ce7a2721c67068c66",
+        "size_bytes": 7216
+      },
+      {
+        "mtime": 1783814475.8410234,
+        "path": "2026_07_12_000115_245760/ocdbt.process_0/d/a435917cf2dfab1312eb5d91856eabc2",
+        "size_bytes": 1357
+      },
+      {
+        "mtime": 1783814475.8770273,
+        "path": "2026_07_12_000115_245760/ocdbt.process_0/manifest.ocdbt",
+        "size_bytes": 288
+      },
+      {
+        "mtime": 1783814476.3390741,
+        "path": "2026_07_12_000115_245760.onnx",
+        "size_bytes": 884094
+      },
+      {
+        "mtime": 1783814489.7014313,
+        "path": "events.out.tfevents.1783813673.da93f7c96059",
+        "size_bytes": 29915
+      },
+      {
+        "mtime": 1783814491.1645799,
+        "path": "smoke_manifest.live.json",
+        "size_bytes": 28621
+      },
+      {
+        "mtime": 1783813621.061346,
+        "path": "smoke_manifest.start.json",
+        "size_bytes": 14719
+      },
+      {
+        "mtime": 1783814476.1960597,
+        "path": "stderr.txt",
+        "size_bytes": 6684
+      },
+      {
+        "mtime": 1783814486.9051473,
+        "path": "stdout.txt",
+        "size_bytes": 6295
+      }
+    ],
+    "platform": "gpu",
+    "playground_path": "/content/Open_Duck_Playground",
+    "policy_network": {
+      "phase_modulated_activation": null,
+      "phase_modulated_context_hidden_sizes": null,
+      "phase_modulated_context_indices": null,
+      "phase_modulated_init_scale_logit": null,
+      "phase_modulated_policy_hidden_sizes": null,
+      "phase_modulated_scale": null,
+      "ppo_policy_network": null
+    },
+    "ppo_overrides": {
+      "clipping_epsilon": 0.025,
+      "desired_kl": null,
+      "entropy_cost": 0.001,
+      "learning_rate": 6e-06,
+      "learning_rate_schedule": null,
+      "learning_rate_schedule_max_lr": null,
+      "learning_rate_schedule_min_lr": null,
+      "max_grad_norm": 0.12,
+      "restore_policy_kl_scale": 4.0
+    },
+    "purpose": "offline actuator bridge PPO smoke; not a deployable policy",
+    "push_recovery_actuator_tracking": {
+      "huber_delta": null,
+      "joint_indices": null,
+      "scale": null,
+      "window_steps": null
+    },
+    "reference_motion_override": {
+      "enabled": false
+    },
+    "restore_checkpoint_path": "/content/open-duck-mini-rdkx5/outputs/analysis/ppo_bc_command_conditioned_rate175_step0_checkpoint",
+    "returncode": 0,
+    "robot_touched": false,
+    "soft_prior": {
+      "config_json": null,
+      "enabled": false,
+      "huber_delta": 0.05,
+      "phase_source": "imitation_i",
+      "scale": -0.05
+    },
+    "status": "PASS_SMOKE_RUN",
+    "stderr_path": "/content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260711T234701Z_gpu/stderr.txt",
+    "stderr_tail": "\nCloning mujoco_menagerie:           | 0/? [00:00<?]\nCloning mujoco_menagerie:           | 1/100 [00:02<04:10]\nCloning mujoco_menagerie: \u258e         | 3/100 [00:03<01:21]\nCloning mujoco_menagerie: \u258d         | 4/100 [00:03<01:01]\nCloning mujoco_menagerie: \u258c         | 5/100 [00:03<00:48]\nCloning mujoco_menagerie: \u258c         | 6/100 [00:03<00:42]\nCloning mujoco_menagerie: \u258b         | 7/100 [00:04<00:41]\nCloning mujoco_menagerie: \u258a         | 8/100 [00:05<00:56]\nCloning mujoco_menagerie: \u2589         | 9/100 [00:06<01:01]\nCloning mujoco_menagerie: \u2588\u258f        | 12/100 [00:06<00:28]\nCloning mujoco_menagerie: \u2588\u258e        | 13/100 [00:06<00:26]\nCloning mujoco_menagerie: \u2588\u258c        | 15/100 [00:06<00:20]\nCloning mujoco_menagerie: \u2588\u258b        | 17/100 [00:07<00:17]\nCloning mujoco_menagerie: \u2588\u258a        | 18/100 [00:07<00:16]\nCloning mujoco_menagerie: \u2588\u2588        | 20/100 [00:08<00:25]\nCloning mujoco_menagerie: \u2588\u2588        | 21/100 [00:09<00:36]\nCloning mujoco_menagerie: \u2588\u2588\u258f       | 22/100 [00:09<00:34]\nCloning mujoco_menagerie: \u2588\u2588\u258e       | 23/100 [00:09<00:27]\nCloning mujoco_menagerie: \u2588\u2588\u258a       | 28/100 [00:10<00:12]\nCloning mujoco_menagerie: \u2588\u2588\u2589       | 29/100 [00:10<00:12]\nCloning mujoco_menagerie: \u2588\u2588\u2588       | 30/100 [00:10<00:18]\nCloning mujoco_menagerie: \u2588\u2588\u2588       | 31/100 [00:11<00:18]\nCloning mujoco_menagerie: \u2588\u2588\u2588\u258f      | 32/100 [00:12<00:29]\nCloning mujoco_menagerie: \u2588\u2588\u2588\u258e      | 33/100 [00:13<00:38]\nCloning mujoco_menagerie: \u2588\u2588\u2588\u258d      | 34/100 [00:13<00:32]\nCloning mujoco_menagerie: \u2588\u2588\u2588\u258c      | 35/100 [00:14<00:36]\nCloning mujoco_menagerie: \u2588\u2588\u2588\u258c      | 36/100 [00:14<00:37]\nCloning mujoco_menagerie: \u2588\u2588\u2588\u258b      | 37/100 [00:15<00:32]\nCloning mujoco_menagerie: \u2588\u2588\u2588\u258a      | 38/100 [00:15<00:29]\nCloning mujoco_menagerie: \u2588\u2588\u2588\u2589      | 39/100 [00:16<00:31]\nCloning mujoco_menagerie: \u2588\u2588\u2588\u2588      | 41/100 [00:16<00:25]\nCloning mujoco_menagerie: \u2588\u2588\u2588\u2588\u258f     | 42/100 [00:17<00:21]\nCloning mujoco_menagerie: \u2588\u2588\u2588\u2588\u258e     | 43/100 [00:17<00:18]\nCloning mujoco_menagerie: \u2588\u2588\u2588\u2588\u258d     | 44/100 [00:18<00:25]\nCloning mujoco_menagerie: \u2588\u2588\u2588\u2588\u258c     | 45/100 [00:18<00:20]\nCloning mujoco_menagerie: \u2588\u2588\u2588\u2588\u258c     | 46/100 [00:19<00:29]\nCloning mujoco_menagerie: \u2588\u2588\u2588\u2588\u258b     | 47/100 [00:19<00:23]\nCloning mujoco_menagerie: \u2588\u2588\u2588\u2588\u258a     | 48/100 [00:19<00:23]\nCloning mujoco_menagerie: \u2588\u2588\u2588\u2588\u2589     | 49/100 [00:20<00:21]\nCloning mujoco_menagerie: \u2588\u2588\u2588\u2588\u2588     | 50/100 [00:21<00:29]\nCloning mujoco_menagerie: \u2588\u2588\u2588\u2588\u2588     | 51/100 [00:22<00:32]\nCloning mujoco_menagerie: \u2588\u2588\u2588\u2588\u2588\u258f    | 52/100 [00:22<00:24]\nCloning mujoco_menagerie: \u2588\u2588\u2588\u2588\u2588\u258e    | 53/100 [00:22<00:23]\nCloning mujoco_menagerie: \u2588\u2588\u2588\u2588\u2588\u258d    | 54/100 [00:22<00:18]\nCloning mujoco_menagerie: \u2588\u2588\u2588\u2588\u2588\u2589    | 59/100 [00:22<00:05]\nCloning mujoco_menagerie: \u2588\u2588\u2588\u2588\u2588\u2588\u258e   | 63/100 [00:23<00:03]\nCloning mujoco_menagerie: \u2588\u2588\u2588\u2588\u2588\u2588\u2589   | 69/100 [00:23<00:01]\nCloning mujoco_menagerie: \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e  | 73/100 [00:23<00:01]\nCloning mujoco_menagerie: \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258b  | 77/100 [00:24<00:01]\nCloning mujoco_menagerie: \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588  | 80/100 [00:24<00:02]\nCloning mujoco_menagerie: \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e | 83/100 [00:24<00:01]\nCloning mujoco_menagerie: \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f| 92/100 [00:24<00:00]\nCloning mujoco_menagerie: \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c| 96/100 [00:25<00:00]\nCloning mujoco_menagerie: \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 100/100 [00:37<00:00]\n/usr/local/lib/python3.12/dist-packages/jax/_src/abstract_arrays.py:111: RuntimeWarning: overflow encountered in cast\n  return literals.LiteralArray(np.asarray(x, dtype), weak_type=False)\nWARNING: All log messages before absl::InitializeLog() is called are written to STDERR\nI0000 00:00:1783814245.112111    1689 devices.cc:67] Number of eligible GPUs (core count >= 8, compute capability >= 0.0): 1\nI0000 00:00:1783814245.114503    1689 single_machine.cc:376] Starting new session\n2026-07-11 23:57:25.122519: W tensorflow/core/common_runtime/gpu/gpu_bfc_allocator.cc:47] Overriding orig_value setting because the TF_FORCE_GPU_ALLOW_GROWTH environment variable is set. Original config value was 0.\nI0000 00:00:1783814245.124060    1689 gpu_device.cc:2020] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 12901 MB memory:  -> device: 0, name: Tesla T4, pci bus id: 0000:00:04.0, compute capability: 7.5\nI0000 00:00:1783814245.221613    1689 devices.cc:67] Number of eligible GPUs (core count >= 8, compute capability >= 0.0): 1\nI0000 00:00:1783814245.221892    1689 single_machine.cc:376] Starting new session\nI0000 00:00:1783814245.229689    1689 gpu_device.cc:2020] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 12901 MB memory:  -> device: 0, name: Tesla T4, pci bus id: 0000:00:04.0, compute capability: 7.5\nI0000 00:00:1783814447.323238    1689 devices.cc:67] Number of eligible GPUs (core count >= 8, compute capability >= 0.0): 1\nI0000 00:00:1783814447.323520    1689 single_machine.cc:376] Starting new session\nI0000 00:00:1783814447.328225    1689 gpu_device.cc:2020] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 12901 MB memory:  -> device: 0, name: Tesla T4, pci bus id: 0000:00:04.0, compute capability: 7.5\nI0000 00:00:1783814447.381248    1689 devices.cc:67] Number of eligible GPUs (core count >= 8, compute capability >= 0.0): 1\nI0000 00:00:1783814447.381511    1689 single_machine.cc:376] Starting new session\nI0000 00:00:1783814447.386239    1689 gpu_device.cc:2020] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 12901 MB memory:  -> device: 0, name: Tesla T4, pci bus id: 0000:00:04.0, compute capability: 7.5\nI0000 00:00:1783814476.097166    1689 devices.cc:67] Number of eligible GPUs (core count >= 8, compute capability >= 0.0): 1\nI0000 00:00:1783814476.097408    1689 single_machine.cc:376] Starting new session\nI0000 00:00:1783814476.105965    1689 gpu_device.cc:2020] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 12901 MB memory:  -> device: 0, name: Tesla T4, pci bus id: 0000:00:04.0, compute capability: 7.5\nI0000 00:00:1783814476.190766    1689 devices.cc:67] Number of eligible GPUs (core count >= 8, compute capability >= 0.0): 1\nI0000 00:00:1783814476.190981    1689 single_machine.cc:376] Starting new session\nI0000 00:00:1783814476.197063    1689 gpu_device.cc:2020] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 12901 MB memory:  -> device: 0, name: Tesla T4, pci bus id: 0000:00:04.0, compute capability: 7.5\n",
+    "stdout_path": "/content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260711T234701Z_gpu/stdout.txt",
+    "stdout_tail": "Failed to import warp: No module named 'warp'\nFailed to import mujoco_warp: No module named 'warp'\nmujoco_menagerie not found. Downloading...\nChecking out commit 14ceccf557cc47240202f2354d684eca58ff8de4\nSuccessfully downloaded mujoco_menagerie\nxml: /content/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml\nactuators: ['left_hip_yaw', 'left_hip_roll', 'left_hip_pitch', 'left_knee', 'left_ankle', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_roll', 'right_hip_pitch', 'right_knee', 'right_ankle']\njoints: ['floating_base', 'left_hip_yaw', 'left_hip_yaw_backlash', 'left_hip_roll', 'left_hip_roll_backlash', 'left_hip_pitch', 'left_hip_pitch_backlash', 'left_knee', 'left_knee_backlash', 'left_ankle', 'left_ankle_backlash', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_yaw_backlash', 'right_hip_roll', 'right_hip_roll_backlash', 'right_hip_pitch', 'right_hip_pitch_backlash', 'right_knee', 'right_knee_backlash', 'right_ankle', 'right_ankle_backlash']\nbacklash joints: ['left_hip_yaw_backlash', 'left_hip_roll_backlash', 'left_hip_pitch_backlash', 'left_knee_backlash', 'left_ankle_backlash', 'right_hip_yaw_backlash', 'right_hip_roll_backlash', 'right_hip_pitch_backlash', 'right_knee_backlash', 'right_ankle_backlash']\nactuator joints ids: [1, 3, 5, 7, 9, 11, 12, 13, 14, 15, 17, 19, 21, 23]\nactuator joints dict: {'left_hip_yaw': 1, 'left_hip_roll': 3, 'left_hip_pitch': 5, 'left_knee': 7, 'left_ankle': 9, 'neck_pitch': 11, 'head_pitch': 12, 'head_yaw': 13, 'head_roll': 14, 'right_hip_yaw': 15, 'right_hip_roll': 17, 'right_hip_pitch': 19, 'right_knee': 21, 'right_ankle': 23}\nfloating qpos addr: 0 qvel addr: 0\n[Poly ref data] Processing ...\n[Poly ref data] Done processing\nxml: /content/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml\nactuators: ['left_hip_yaw', 'left_hip_roll', 'left_hip_pitch', 'left_knee', 'left_ankle', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_roll', 'right_hip_pitch', 'right_knee', 'right_ankle']\njoints: ['floating_base', 'left_hip_yaw', 'left_hip_yaw_backlash', 'left_hip_roll', 'left_hip_roll_backlash', 'left_hip_pitch', 'left_hip_pitch_backlash', 'left_knee', 'left_knee_backlash', 'left_ankle', 'left_ankle_backlash', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_yaw_backlash', 'right_hip_roll', 'right_hip_roll_backlash', 'right_hip_pitch', 'right_hip_pitch_backlash', 'right_knee', 'right_knee_backlash', 'right_ankle', 'right_ankle_backlash']\nbacklash joints: ['left_hip_yaw_backlash', 'left_hip_roll_backlash', 'left_hip_pitch_backlash', 'left_knee_backlash', 'left_ankle_backlash', 'right_hip_yaw_backlash', 'right_hip_roll_backlash', 'right_hip_pitch_backlash', 'right_knee_backlash', 'right_ankle_backlash']\nactuator joints ids: [1, 3, 5, 7, 9, 11, 12, 13, 14, 15, 17, 19, 21, 23]\nactuator joints dict: {'left_hip_yaw': 1, 'left_hip_roll': 3, 'left_hip_pitch': 5, 'left_knee': 7, 'left_ankle': 9, 'neck_pitch': 11, 'head_pitch': 12, 'head_yaw': 13, 'head_roll': 14, 'right_hip_yaw': 15, 'right_hip_roll': 17, 'right_hip_pitch': 19, 'right_knee': 21, 'right_ankle': 23}\nfloating qpos addr: 0 qvel addr: 0\n[Poly ref data] Processing ...\n[Poly ref data] Done processing\nObservation size: 101\nPPO params: {'action_repeat': 1, 'batch_size': 512, 'clipping_epsilon': 0.025, 'discounting': 0.97, 'entropy_cost': 0.001, 'episode_length': 750, 'learning_rate': 6e-06, 'max_grad_norm': 0.12, 'normalize_observations': True, 'num_envs': 64, 'num_evals': 4, 'num_minibatches': 4, 'num_resets_per_eval': 1, 'num_timesteps': 163840, 'num_updates_per_batch': 2, 'reward_scaling': 1.0, 'unroll_length': 20}\nEnabled restore-policy KL loss: scale=4.0 restore_checkpoint_path=/content/open-duck-mini-rdkx5/outputs/analysis/ppo_bc_command_conditioned_rate175_step0_checkpoint\n-----------\nSTEP: 0 reward: 42.40214538574219 reward_std: 39.3651237487793\n-----------\nSkipping checkpoint/export at step 0; export_min_step=1\nSaving checkpoint (step: 81920): /content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260711T234701Z_gpu/2026_07_11_235724_81920\n === EXPORT ONNX === \n(101,) (101,)\n(101,) (101,)\n(1, 14)\nTransferring Dense layer hidden_0, kernel shape (101, 512), bias shape (512,)\nTransferring Dense layer hidden_1, kernel shape (512, 256), bias shape (256,)\nTransferring Dense layer hidden_2, kernel shape (256, 128), bias shape (128,)\nTransferring Dense layer hidden_3, kernel shape (128, 28), bias shape (28,)\nWeights transferred successfully.\n(101,) (101,)\nTensorflow prediction: [-1.  1. -1. -1.  1.  1. -1. -1. -1.  1.  1.  1.  1.  1.]\n(101,) (101,)\n-----------\nSTEP: 81920 reward: 56.69234848022461 reward_std: 36.2502326965332\n-----------\nSaving checkpoint (step: 163840): /content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260711T234701Z_gpu/2026_07_12_000047_163840\n === EXPORT ONNX === \n(101,) (101,)\n(101,) (101,)\n(1, 14)\nTransferring Dense layer hidden_0, kernel shape (101, 512), bias shape (512,)\nTransferring Dense layer hidden_1, kernel shape (512, 256), bias shape (256,)\nTransferring Dense layer hidden_2, kernel shape (256, 128), bias shape (128,)\nTransferring Dense layer hidden_3, kernel shape (128, 28), bias shape (28,)\nWeights transferred successfully.\n(101,) (101,)\nTensorflow prediction: [-1.  1. -1. -1.  1.  1. -1. -1. -1.  1.  1.  1.  1.  1.]\n(101,) (101,)\n-----------\nSTEP: 163840 reward: 57.80665969848633 reward_std: 37.775360107421875\n-----------\nSaving checkpoint (step: 245760): /content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260711T234701Z_gpu/2026_07_12_000115_245760\n === EXPORT ONNX === \n(101,) (101,)\n(101,) (101,)\n(1, 14)\nTransferring Dense layer hidden_0, kernel shape (101, 512), bias shape (512,)\nTransferring Dense layer hidden_1, kernel shape (512, 256), bias shape (256,)\nTransferring Dense layer hidden_2, kernel shape (256, 128), bias shape (128,)\nTransferring Dense layer hidden_3, kernel shape (128, 28), bias shape (28,)\nWeights transferred successfully.\n(101,) (101,)\nTensorflow prediction: [-1.  1. -1. -1.  1.  1. -1. -1. -1.  1.  1.  1.  1.  1.]\n(101,) (101,)\n-----------\nSTEP: 245760 reward: 56.904541015625 reward_std: 38.16073989868164\n-----------\n",
+    "subprocess_env": {
+      "set": {
+        "JAX_PLATFORMS": "cuda",
+        "JAX_PLATFORM_NAME": "gpu",
+        "XLA_PYTHON_CLIENT_MEM_FRACTION": "0.5",
+        "XLA_PYTHON_CLIENT_PREALLOCATE": "false"
+      },
+      "unset": []
+    },
+    "summary": {
+      "checkpoint_lines": [
+        "Enabled restore-policy KL loss: scale=4.0 restore_checkpoint_path=/content/open-duck-mini-rdkx5/outputs/analysis/ppo_bc_command_conditioned_rate175_step0_checkpoint",
+        "Skipping checkpoint/export at step 0; export_min_step=1",
+        "Saving checkpoint (step: 81920): /content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260711T234701Z_gpu/2026_07_11_235724_81920",
+        "Saving checkpoint (step: 163840): /content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260711T234701Z_gpu/2026_07_12_000047_163840",
+        "Saving checkpoint (step: 245760): /content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260711T234701Z_gpu/2026_07_12_000115_245760"
+      ],
+      "export_lines": [],
+      "step_lines": [
+        "STEP: 0 reward: 42.40214538574219 reward_std: 39.3651237487793",
+        "STEP: 81920 reward: 56.69234848022461 reward_std: 36.2502326965332",
+        "STEP: 163840 reward: 57.80665969848633 reward_std: 37.775360107421875",
+        "STEP: 245760 reward: 56.904541015625 reward_std: 38.16073989868164"
+      ]
+    },
+    "target_rate_scale": 0.0,
+    "terrain_hfield_override": {
+      "enabled": false
+    },
+    "timeout_s": 10800,
+    "timestamp": "20260711T234701Z",
+    "training_recipe_overrides": {
+      "action_magnitude_huber_delta": null,
+      "action_magnitude_scale": -0.005,
+      "action_rate_huber_delta": 0.05,
+      "action_rate_scale": -0.08,
+      "actuator_tracking_huber_delta": 0.03,
+      "alive_scale": 2.0,
+      "ang_vel_yaw_max": 0.0,
+      "ang_vel_yaw_min": 0.0,
+      "base_height_scale": -0.8,
+      "command_progress_failure_enable": false,
+      "command_progress_failure_min_ratio": null,
+      "command_progress_failure_scale": null,
+      "command_progress_failure_warmup_steps": null,
+      "command_progress_required_ratio": 0.45,
+      "command_progress_scale": 1.5,
+      "command_progress_shortfall_huber_delta": null,
+      "command_progress_shortfall_scale": -4.0,
+      "command_progress_warmup_steps": 30,
+      "command_resample_steps": 600,
+      "dr_actuator_gain_scale_max": 1.01,
+      "dr_actuator_gain_scale_min": 0.99,
+      "dr_armature_scale_max": 1.005,
+      "dr_armature_scale_min": 1.0,
+      "dr_com_jitter_m": 0.002,
+      "dr_friction_max": 1.02,
+      "dr_friction_min": 0.98,
+      "dr_frictionloss_scale_max": 1.005,
+      "dr_frictionloss_scale_min": 0.995,
+      "dr_leg_geometry_jitter_scale": 0.002,
+      "dr_mass_scale_max": 1.01,
+      "dr_mass_scale_min": 0.99,
+      "dr_qpos_jitter_rad": 0.002,
+      "dr_torso_mass_delta_max": 0.005,
+      "dr_torso_mass_delta_min": -0.005,
+      "forward_contact_support_asymmetry_weight": null,
+      "forward_contact_support_no_contact_weight": null,
+      "forward_contact_support_scale": null,
+      "forward_contact_transition_min_progress_ratio": null,
+      "forward_contact_transition_scale": null,
+      "forward_double_support_dwell_grace_steps": null,
+      "forward_double_support_dwell_scale": null,
+      "forward_double_support_scale": null,
+      "forward_overshoot_allowed_ratio": null,
+      "forward_overshoot_huber_delta": null,
+      "forward_overshoot_scale": null,
+      "forward_phase_single_support_scale": null,
+      "forward_phase_single_support_stance_no_contact_weight": null,
+      "forward_phase_single_support_swing_contact_weight": null,
+      "forward_phase_swing_lift_huber_delta": null,
+      "forward_phase_swing_lift_scale": null,
+      "forward_phase_swing_lift_target_m": null,
+      "forward_pitch_huber_delta": null,
+      "forward_pitch_rate_huber_delta": null,
+      "forward_pitch_rate_scale": -0.08,
+      "forward_pitch_scale": -0.4,
+      "forward_progress_deadband": null,
+      "forward_progress_scale": 2.5,
+      "forward_shortfall_huber_delta": null,
+      "forward_shortfall_required_ratio": null,
+      "forward_shortfall_scale": null,
+      "forward_single_support_scale": null,
+      "forward_swing_advance_huber_delta": null,
+      "forward_swing_advance_scale": null,
+      "forward_swing_advance_target_m": null,
+      "forward_swing_balance_grace_steps": null,
+      "forward_swing_balance_scale": null,
+      "forward_swing_clearance_huber_delta": null,
+      "forward_swing_clearance_scale": null,
+      "forward_swing_clearance_target_m": null,
+      "forward_swing_phase_advance_ticks": null,
+      "forward_swing_target_rate_limit_huber_delta": null,
+      "forward_swing_target_rate_limit_joint_indices": null,
+      "forward_swing_target_rate_limit_scale": null,
+      "forward_swing_target_rate_limit_values": null,
+      "forward_wrong_direction_allowed_reverse_ratio": null,
+      "forward_wrong_direction_huber_delta": null,
+      "forward_wrong_direction_scale": null,
+      "head_range_factor": null,
+      "imitation_scale": 0.0,
+      "joint_target_tracking_huber_delta": 0.03,
+      "joint_target_tracking_joint_indices": "2,3,4,11,12,13",
+      "joint_target_tracking_scale": -0.007914891239136222,
+      "lin_vel_x_max": 0.1,
+      "lin_vel_x_min": 0.06,
+      "lin_vel_y_max": 0.0,
+      "lin_vel_y_min": 0.0,
+      "noise_accelerometer": 0.02,
+      "noise_ankle_pos": 0.0075,
+      "noise_gravity": 0.04,
+      "noise_gyro": 0.04,
+      "noise_hip_pos": 0.0075,
+      "noise_joint_vel": 0.75,
+      "noise_knee_pos": 0.0075,
+      "noise_level": 0.5,
+      "orientation_scale": null,
+      "push_enable": false,
+      "push_interval_max_s": 1.5,
+      "push_interval_min_s": 1.0,
+      "push_magnitude_max": 0.125,
+      "push_magnitude_min": 0.075,
+      "push_recovery_actuator_tracking_huber_delta": null,
+      "push_recovery_actuator_tracking_scale": null,
+      "push_recovery_tracking_joint_indices": null,
+      "push_recovery_tracking_window_steps": null,
+      "reset_actuator_qpos_multiplier_max": null,
+      "reset_actuator_qpos_multiplier_min": null,
+      "reset_base_qvel_jitter": null,
+      "reset_base_xy_jitter_m": null,
+      "reset_yaw_jitter_rad": null,
+      "reward_clip_max": null,
+      "reward_clip_min": null,
+      "stand_still_scale": null,
+      "target_rate_huber_delta": null,
+      "tracking_ang_vel_scale": null,
+      "tracking_lin_vel_scale": 3.0,
+      "tracking_sigma": 0.01,
+      "zero_command_probability": 0.15
+    }
+  },
+  "manifest_path": "/content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260711T234701Z_gpu/smoke_manifest.final.json",
+  "non_deployable": true,
+  "onnx_files": [
+    {
+      "name": "2026_07_11_235724_81920.onnx",
+      "path": "/content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260711T234701Z_gpu/2026_07_11_235724_81920.onnx",
+      "sha256": "2f4ec1d364456f4e757414fc2ca64786503abf600e458b2e593ad16d9e603deb",
+      "size_bytes": 883946,
+      "step": 81920
+    },
+    {
+      "name": "2026_07_12_000047_163840.onnx",
+      "path": "/content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260711T234701Z_gpu/2026_07_12_000047_163840.onnx",
+      "sha256": "f091e8729559cd178a871760584eec402c9b76c84c5e98e61ff2287bf69b0fa1",
+      "size_bytes": 884094,
+      "step": 163840
+    },
+    {
+      "name": "2026_07_12_000115_245760.onnx",
+      "path": "/content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260711T234701Z_gpu/2026_07_12_000115_245760.onnx",
+      "sha256": "4f835e675fb706736007cb1ed87f2d4c9907b400742a0c1143cfe9c0d0414e21",
+      "size_bytes": 884094,
+      "step": 245760
+    }
+  ],
+  "run_dir": "/content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260711T234701Z_gpu",
+  "status": "INFO_NON_DEPLOYABLE_TRAINING_RUN",
+  "stderr_warnings": {
+    "actionable_count": 0,
+    "actionable_lines": [],
+    "count": 0,
+    "known_noise_by_category": {
+      "absl_preinit": 1
+    },
+    "known_noise_count": 1,
+    "known_noise_lines": [
+      "WARNING: All log messages before absl::InitializeLog() is called are written to STDERR"
+    ],
+    "lines": [],
+    "total_signal_count": 1
+  },
+  "stdout_parse": {
+    "checkpoints": [
+      {
+        "path": "/content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260711T234701Z_gpu/2026_07_11_235724_81920",
+        "step": 81920
+      },
+      {
+        "path": "/content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260711T234701Z_gpu/2026_07_12_000047_163840",
+        "step": 163840
+      },
+      {
+        "path": "/content/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260711T234701Z_gpu/2026_07_12_000115_245760",
+        "step": 245760
+      }
+    ],
+    "exports_from_stdout": [],
+    "observation_size": 101,
+    "ppo_params_raw": "{'action_repeat': 1, 'batch_size': 512, 'clipping_epsilon': 0.025, 'discounting': 0.97, 'entropy_cost': 0.001, 'episode_length': 750, 'learning_rate': 6e-06, 'max_grad_norm': 0.12, 'normalize_observations': True, 'num_envs': 64, 'num_evals': 4, 'num_minibatches': 4, 'num_resets_per_eval': 1, 'num_timesteps': 163840, 'num_updates_per_batch': 2, 'reward_scaling': 1.0, 'unroll_length': 20}",
+    "step_metrics": [
+      {
+        "reward": 42.40214538574219,
+        "reward_std": 39.3651237487793,
+        "step": 0
+      },
+      {
+        "reward": 56.69234848022461,
+        "reward_std": 36.2502326965332,
+        "step": 81920
+      },
+      {
+        "reward": 57.80665969848633,
+        "reward_std": 37.775360107421875,
+        "step": 163840
+      },
+      {
+        "reward": 56.904541015625,
+        "reward_std": 38.16073989868164,
+        "step": 245760
+      }
+    ]
+  }
+}

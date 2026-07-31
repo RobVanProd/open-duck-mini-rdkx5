@@ -1,0 +1,160 @@
+{
+  "authority": {
+    "frozen_cpu_behavior_matrix": true,
+    "gpu_or_igpu": false,
+    "hosted_or_colab": false,
+    "rdkx5_or_robot": false,
+    "runtime_or_gate5": false,
+    "training_or_retry": false
+  },
+  "checks": {
+    "actual_centered_guard_is_selected_g1": true,
+    "all_append_exactly_13_guard_and_5_deadband_nodes": true,
+    "all_cpu_inference_contracts_pass": true,
+    "all_external_abis_exact": true,
+    "all_source_initializers_preserved": true,
+    "all_source_nodes_preserved": true,
+    "archive_hash_exact": true,
+    "deadband_is_exact_prior_contract": true,
+    "formal_behavior_cells_zero": true,
+    "replacement_preregistration_exact": true,
+    "source_rate_projection_is_exact_conservative_vector": true,
+    "training_artifact_check_passed": true,
+    "two_persistent_sources_exact": true
+  },
+  "failed_checks": [],
+  "formal_behavior_cells_executed": 0,
+  "frozen_transform_order": [
+    "measured hard-vector projection",
+    "actual-centered tracking guard",
+    "conservative all-joint actuator envelope",
+    "exact x=0 command deadband"
+  ],
+  "implementation": {
+    "appended_deadband": "abs(obs[6]) <= 0.01 emits exact zero action and previous_action_out",
+    "appended_guard": "selected G1 measured-actual-centered pitch guard at 0.20 rad",
+    "h_out_at_zero_command": "preserved from the learned recurrent actor; reset remains exact zero at episode reset",
+    "source_graph": "learned recurrent actor with exact conservative all-joint previous-action projection"
+  },
+  "policies": [
+    {
+      "all_source_initializers_exact": true,
+      "deadband_node_count": 5,
+      "graph_io": {
+        "inputs": {
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        }
+      },
+      "guard_node_count": 13,
+      "inference_contract": {
+        "all_finite": true,
+        "max_actual_centered_guard_excess_rad": 0.0,
+        "max_conservative_rate_excess_normalized": 1.2665987014770508e-07,
+        "max_positive_action_error": 0.0,
+        "max_positive_hidden_error": 0.0,
+        "max_positive_previous_action_error": 0.0,
+        "max_zero_action": 0.0,
+        "max_zero_hidden_vs_guard_error": 0.0,
+        "max_zero_previous_action": 0.0,
+        "pass": true,
+        "provider": "CPUExecutionProvider",
+        "tolerance": 2e-07
+      },
+      "output_path": "outputs/analysis/winner_v3_variable_configuration_eval_policies/R64_ZERO_INIT_RECURRENT_ADAPTER_1003520.onnx",
+      "output_sha256": "c8e03dd4afed4e7a96507e5089116944a048ac1d682210408a68cca1b8b6af7c",
+      "source_archive_member": "winner_v3_recurrent_adapter_training/stage3_domain_100_percent/2026_07_19_170451_1003520.onnx",
+      "source_max_action_delta_exact_conservative_vector": true,
+      "source_node_count": 29,
+      "source_nodes_prefix_exact_modulo_frozen_output_rename": true,
+      "source_sha256": "3d5e6dd447601246f8f5789ce370a1d63648334536359f367f0cb856ab77b04d",
+      "step": 1003520
+    },
+    {
+      "all_source_initializers_exact": true,
+      "deadband_node_count": 5,
+      "graph_io": {
+        "inputs": {
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        }
+      },
+      "guard_node_count": 13,
+      "inference_contract": {
+        "all_finite": true,
+        "max_actual_centered_guard_excess_rad": 0.0,
+        "max_conservative_rate_excess_normalized": 1.2665987014770508e-07,
+        "max_positive_action_error": 0.0,
+        "max_positive_hidden_error": 0.0,
+        "max_positive_previous_action_error": 0.0,
+        "max_zero_action": 0.0,
+        "max_zero_hidden_vs_guard_error": 0.0,
+        "max_zero_previous_action": 0.0,
+        "pass": true,
+        "provider": "CPUExecutionProvider",
+        "tolerance": 2e-07
+      },
+      "output_path": "outputs/analysis/winner_v3_variable_configuration_eval_policies/R64_ZERO_INIT_RECURRENT_ADAPTER_2007040.onnx",
+      "output_sha256": "dfdd01bf4563e3d377ffcbe70515681e75a0d87797f3b6b9e4486d1b40ad569c",
+      "source_archive_member": "winner_v3_recurrent_adapter_training/stage3_domain_100_percent/2026_07_19_171848_2007040.onnx",
+      "source_max_action_delta_exact_conservative_vector": true,
+      "source_node_count": 29,
+      "source_nodes_prefix_exact_modulo_frozen_output_rename": true,
+      "source_sha256": "fb725c5e8f45866c9b96e56b2429774f2e1ce73261ffb33ff534d977195544f0",
+      "step": 2007040
+    }
+  ],
+  "preregistration_sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b",
+  "schema_version": "winner_v3.variable_configuration_eval_policy_transform_contract.v1",
+  "status": "PASS_WINNER_V3_VARIABLE_CONFIGURATION_EVAL_POLICY_TRANSFORM_CONTRACT",
+  "training_archive_sha256": "bee604f002df5082bce579734be5a7983f2b31a6026b1caaa34d64b26ce48d91",
+  "training_artifact_check_sha256": "022c59bdf823e66b9dfac0d1e2c101783c1c196becc7006e569006929853efd6"
+}

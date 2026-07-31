@@ -1,0 +1,90 @@
+{
+  "status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+  "manifest": "outputs/analysis/phase2_terrain_live_oracle_dagger/iter_002/live_oracle_dagger_aggregate_manifest.json",
+  "samples": 2511,
+  "hidden_sizes": [
+    512,
+    256,
+    128
+  ],
+  "activation": "swish",
+  "saved_npz": "outputs/analysis/phase2_terrain_live_oracle_dagger_iter2_ppo_shape_bc_student/candidate_mlp.npz",
+  "exported_onnx": "outputs/analysis/phase2_terrain_live_oracle_dagger_iter2_ppo_shape_bc_student/candidate.onnx",
+  "train_metrics": {
+    "samples": 2511,
+    "mae": 0.008874620770252039,
+    "rmse": 0.01453944096645978,
+    "p50_abs_error": 0.005740497361923013,
+    "p95_abs_error": 0.026690004174609587,
+    "p99_abs_error": 0.055511456130978826,
+    "max_abs_error": 0.2724367651321728,
+    "pred_action_saturation_pct": 0.0
+  },
+  "target_rate": {
+    "pair_count": 2498,
+    "p50_rad_s": 0.22461806332374976,
+    "p95_rad_s": 1.6140972229247117,
+    "p99_rad_s": 2.990475385434895,
+    "max_rad_s": 4.511911288965652
+  },
+  "sample_weight": {
+    "p50": 4.0,
+    "p95": 5.0,
+    "max": 5.0,
+    "weighted_samples": 8335.0
+  },
+  "loss_rows": [
+    {
+      "step": 1,
+      "loss": 0.16865429282188416
+    },
+    {
+      "step": 500,
+      "loss": 0.0011832260061055422
+    },
+    {
+      "step": 1000,
+      "loss": 0.0005976407555863261
+    },
+    {
+      "step": 1500,
+      "loss": 0.00041318018338643014
+    },
+    {
+      "step": 2000,
+      "loss": 0.00034756454988382757
+    },
+    {
+      "step": 2500,
+      "loss": 0.00031652027973905206
+    },
+    {
+      "step": 3000,
+      "loss": 0.00024940900038927794
+    },
+    {
+      "step": 3500,
+      "loss": 0.0002806099073495716
+    },
+    {
+      "step": 4000,
+      "loss": 0.0002313523000339046
+    }
+  ],
+  "onnx_verify": {
+    "path": "outputs/analysis/phase2_terrain_live_oracle_dagger_iter2_ppo_shape_bc_student/candidate.onnx",
+    "samples_checked": 64,
+    "max_abs_error": 3.7159672050535164e-07,
+    "p95_abs_error": 1.824032377778506e-07
+  },
+  "config": {
+    "steps": 4000,
+    "batch_size": 512,
+    "learning_rate": 0.001,
+    "target_rate_scale": 0.1,
+    "target_rate_limit_rad_s": 3.75,
+    "action_scale_rad": 0.25,
+    "dt_s": 0.02,
+    "seed": 0
+  }
+}

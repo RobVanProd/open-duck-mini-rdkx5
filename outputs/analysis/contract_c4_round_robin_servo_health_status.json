@@ -1,0 +1,43 @@
+{
+  "schema_version": "contract_c4_round_robin_servo_health_status.v1",
+  "status": "PASS_C4_CPU_MOCK_CONTRACT",
+  "guard": "telemetry_read_voltage",
+  "default_off_bus_reads": 0,
+  "coverage": {
+    "servos": 14,
+    "servos_per_logged_tick": 1,
+    "ticks_per_complete_cycle": 14,
+    "read_order_preserves_id13_last": true
+  },
+  "registers": {
+    "current": {"method": "get_present_current", "stored_unit": "raw"},
+    "voltage": {"method": "get_present_voltage", "stored_unit": "raw_and_existing_0.1V_scale"},
+    "temperature": {"method": "get_present_temperature", "stored_unit": "raw", "rdk_binding_verified": false}
+  },
+  "checks": {
+    "transport_mock_tests_4_of_4": true,
+    "round_robin_coverage_and_wrap": true,
+    "mock_incremental_p95_below_5ms": true,
+    "telemetry_schema_contract": true,
+    "python_compile": true,
+    "hardware_accessed": false
+  },
+  "source_hashes": {
+    "hwi": "6fcb6a3a8dd11f762c39795a3b7203d121346c191f683baf393f8e1bbfbb4057",
+    "walker": "49d41d58f9852962b866b8700816628da3a88c580b0cd30adaceda052bcc1c49",
+    "schema": "b20f0074aa9bac24bdbf41315ccb6c3c6877fdf71cd6b9c831634cc94de72636",
+    "tests": "36131d9b2ce9b78dd6fa2d4d6a7d82c7e0fb6cf03e750e82ae6fa5c0db9a26f9",
+    "checker": "7ee2c93469c5183e6b1d769904a85e5f86530763ca8c81ac10d288d57681c23e",
+    "mock_timing_tool": "c93bda3f733285585acfc6b1ac52731894678a53b5276882638e1f850ef68512",
+    "mock_timing_result": "5f471810a2a8c12ed4b540609abbeddd3323ac4cf4cd9ffa5439838845cda935"
+  },
+  "mock_timing": {
+    "samples": 5000,
+    "baseline_noop_p95_s": 0.00000006000027497066185,
+    "extended_three_register_p95_s": 0.000002054000105999876,
+    "incremental_p95_s": 0.000001993999831029214,
+    "budget_s": 0.005,
+    "scope": "CPU_MOCK_ONLY_NOT_SERIAL_OR_RDK_TIMING"
+  },
+  "robot_clearance": "NO"
+}

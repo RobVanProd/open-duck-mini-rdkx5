@@ -818,7 +818,7 @@ def main():
     if args.output:
         Path(args.output).parent.mkdir(parents=True, exist_ok=True)
         with open(args.output, "w") as f:
-            f.write(report)
+            f.write(report.rstrip())
             f.write("\n")
     print(report)
 

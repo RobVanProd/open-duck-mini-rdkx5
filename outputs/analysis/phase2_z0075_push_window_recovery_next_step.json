@@ -1,0 +1,50 @@
+{
+  "status": "PRE_REGISTERED_NOT_STARTED",
+  "verdict_source": [
+    "outputs/analysis/PHASE2_Z0075_SEED5_RESET_SENSITIVITY_DECISION.md",
+    "outputs/analysis/PHASE2_Z0075_HOME_SUPPORT_PUSH_TRIAGE_DECISION.md",
+    "outputs/analysis/PHASE2_Z0075_HOME_SUPPORT_PUSH_FAILURE_TRACE_DIAGNOSTIC.md"
+  ],
+  "current_evidence": {
+    "home_support_rough_z0075_nopush_failed_seed_triage": "3/3 pass for seeds 0,2,6",
+    "home_support_rough_z0075_intermediate_push": "5/8 pass",
+    "failed_seeds": [0, 2, 6],
+    "failure_classification": "PUSH_WINDOW_PITCHOVER",
+    "corrected_velocity_excess": 0.0,
+    "seed5_playground_reset_sensitivity": true
+  },
+  "next_training_target": {
+    "bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+    "bridge_mode": "fitted",
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0075,
+    "reset_mode": "home-support",
+    "command_x": 0.08,
+    "push_interval_s": [1.0, 1.5],
+    "push_magnitude_curriculum": "gentle_to_intermediate",
+    "mechanism": "active push-window pitchover/base-height collapse"
+  },
+  "stage_gate": {
+    "rough_z0075_nopush_x008_home_support": "8/8 duration_complete",
+    "rough_z0075_intermediate_push_x008_home_support": "8/8 duration_complete",
+    "rough_z0075_x000_home_support": "8/8 duration_complete_near_zero_vx",
+    "corrected_velocity_excess": "zero_p95_and_zero_max",
+    "push_window_trace_diagnostic": "no_PUSH_WINDOW_PITCHOVER",
+    "playground_reset_audit": "separate_report_required"
+  },
+  "preferred_implementation": "data_live_oracle_recovery_loop",
+  "closed_branches_for_this_failure": [
+    "more rough-terrain/no-push labels",
+    "more pass-control/reverse-oracle feed-forward label weighting",
+    "reset_settle_ticks as a reset fix",
+    "over-envelope recovery maneuvers",
+    "robot-side validation"
+  ],
+  "scope": {
+    "robot_tests": false,
+    "ssh": false,
+    "deploy": false,
+    "training_started": false,
+    "runtime_behavior_changes": false
+  }
+}

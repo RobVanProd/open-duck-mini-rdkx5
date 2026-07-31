@@ -2,6 +2,45 @@
 
 This roadmap is ordered to avoid tuning before evidence. Each phase has explicit gates. Do not advance to hardware walking until the earlier gates pass.
 
+## Current Policy Gate (2026-07-25)
+
+The ground-up runtime has cleared supported no-policy hardware Gates 1–4, but
+Gate 5 remains closed. T5 corrected the servo-protection rule, and T6 then ran
+the four reopened frozen policy pairs through the first previously failed R2
+configuration endpoint (`TORSO_COM_X_NEG=-0.05 m`). The complete `64/64`
+matrix and its independent audit found no robust survivor.
+
+T7 found that the older response-conditioned evaluator did not reproduce its
+training action semantics, then tested the frozen universal response-support
+graph on the exact current stack. All `12/12` nominal and signed-COM cells
+pass for 600 ticks on both actuator fits, the two repeats are bit-exact, and
+the signed 64-D context separation clears the frozen `0.15` threshold. The
+independent audit has zero issues.
+
+T8 completed the state-coherent handoff screen. All `12/12` moving cells pass
+across both V121 checkpoints and both measured actuator fits. The four x=0
+cells remain stable and otherwise green, but each has one rate-envelope event
+at scored tick 0 when the exact-zero deadband action follows the universal
+support action. No later tick exceeds, so direct unconditional handoff closes
+at `12/16` and no training is earned.
+
+The next authorized step is an offline, CPU-only, zero-training command-aware
+startup screen: bypass response excitation while paused/x=0 and keep the
+already-green direct handoff for moving commands. It requires four new x=0
+cells and reuses the twelve audited T8 moving cells. It must not require manual
+mass, caliper, or static COM measurements. Hosted training is allowed only if
+the subsequent prospective CPU contract explicitly earns one run. Robot
+access, policy deployment, Gate 5, torque, and motion remain unauthorized.
+
+T9 passes that screen: all four new x=0 cells and all twelve reused T8 moving
+cells are green (`16/16` combined), and the corrected independent audit has
+zero issues. The next authorized step is the response-conditioned continuation
+CPU software contract. It must prove exact V121-half restore, default-off
+equivalence, command-aware startup, trainable context use, finite update
+behavior, and valid step-0/step-1,024 exports before exactly one hosted
+continuation can be earned. Training, robot access, policy deployment, Gate 5,
+torque, and motion remain unauthorized until that contract says otherwise.
+
 ## Phase 0: Repo Safety And Evidence Hygiene
 
 Goal: keep the RDK runtime, evidence, docs, tools, and policy baseline organized and reviewable.

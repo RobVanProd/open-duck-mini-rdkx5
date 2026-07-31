@@ -1,0 +1,452 @@
+{
+  "authority": {
+    "pass_authorizes_only": "one offline read-only causal diagnostic and a later separately reviewed preregistration",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "decision": "AUTHORIZE_ONE_READ_ONLY_OFFLINE_HOLD_DIAGNOSTIC",
+  "execution_now": {
+    "diagnostic_cells": 0,
+    "locomotion_steps": 0,
+    "robot_or_rdk_access": 0,
+    "training_steps": 0
+  },
+  "frozen_population": {
+    "checkpoint_labels": [
+      "half",
+      "final"
+    ],
+    "duration_ticks": 250,
+    "failed_configuration_ids": [
+      "COM_CORNER_00",
+      "COM_CORNER_01",
+      "COM_CORNER_02",
+      "COM_CORNER_03",
+      "COM_X_NEG",
+      "DISCOVERY_03",
+      "HELDOUT_04",
+      "HELDOUT_09"
+    ],
+    "graph_cells": 88,
+    "graph_configuration_ids": [
+      "COM_CORNER_00",
+      "COM_CORNER_01",
+      "COM_CORNER_02",
+      "COM_CORNER_03",
+      "COM_X_NEG",
+      "DISCOVERY_03",
+      "HELDOUT_04",
+      "HELDOUT_09",
+      "HELDOUT_00",
+      "HELDOUT_01",
+      "HELDOUT_02",
+      "HELDOUT_03",
+      "HELDOUT_05",
+      "HELDOUT_06",
+      "HELDOUT_07",
+      "HELDOUT_08",
+      "HELDOUT_10",
+      "HELDOUT_11",
+      "HELDOUT_12",
+      "HELDOUT_13",
+      "HELDOUT_14",
+      "HELDOUT_15"
+    ],
+    "heldout_configuration_ids": [
+      "HELDOUT_00",
+      "HELDOUT_01",
+      "HELDOUT_02",
+      "HELDOUT_03",
+      "HELDOUT_04",
+      "HELDOUT_05",
+      "HELDOUT_06",
+      "HELDOUT_07",
+      "HELDOUT_08",
+      "HELDOUT_09",
+      "HELDOUT_10",
+      "HELDOUT_11",
+      "HELDOUT_12",
+      "HELDOUT_13",
+      "HELDOUT_14",
+      "HELDOUT_15"
+    ],
+    "plants": [
+      "P30_ALL_JOINT",
+      "P31_34_PITCH_WITH_P30_NONPITCH"
+    ],
+    "zero_action_cells": 32
+  },
+  "interpretation_rules": {
+    "calibrator_action_instability": "All 30 formal failed checkpoint/configuration/plant pairs pass in the zero-action arm.",
+    "contact_objective_defect": "The contact floor dominates every predictor aggregate under the predeclared 99% rule.",
+    "mixed_support_cause": "At least one formal failed pair also fails in the zero-action arm.",
+    "result_authorizes_only": "A separate prospective automatic-calibration mechanism preregistration; never training, checkpoint selection, deployment, Gate 5, or robot access."
+  },
+  "predictor_diagnostic": {
+    "adjacent_state_rule": "Pair each retained prediction except the last with the next retained observation. This loses only the unavailable final target in a full-duration cell and loses no valid transition in a failed cell.",
+    "auxiliary_observation_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98
+    ],
+    "contact_floor_dominance_rule": "Both contact targets remain exactly 1, both stored standard deviations equal float32(1e-6), and contact dimensions contribute at least 99% of learned normalized SSE in every checkpoint/plant aggregate.",
+    "groups": {
+      "applied_target": {
+        "auxiliary": [
+          34,
+          48
+        ],
+        "observation": [
+          83,
+          97
+        ]
+      },
+      "foot_contact": {
+        "auxiliary": [
+          48,
+          50
+        ],
+        "observation": [
+          97,
+          99
+        ]
+      },
+      "imu": {
+        "auxiliary": [
+          0,
+          6
+        ],
+        "observation": [
+          0,
+          6
+        ]
+      },
+      "joint_position": {
+        "auxiliary": [
+          6,
+          20
+        ],
+        "observation": [
+          13,
+          27
+        ]
+      },
+      "joint_velocity": {
+        "auxiliary": [
+          20,
+          34
+        ],
+        "observation": [
+          27,
+          41
+        ]
+      }
+    },
+    "noncontact_counterfactual": "Report whether the learned 48-D noncontact normalized MSE is strictly below the identical constant baseline; this is diagnostic only and does not revise the completed 50-D formal gate.",
+    "report": "Per-dimension learned and constant normalized MSE over all 16 heldout configurations, separately by checkpoint and plant."
+  },
+  "question": "Does the constant-contact normalization dominate the frozen predictor failure, and do the graph's calibration actions cause the formal support failures relative to an otherwise identical zero-action hold?",
+  "schema_version": "winner_v12.calibrator_hold_diagnostic_preregistration.v1",
+  "source_manifest_sha256": "9299a5fb25b86261cfc522f04daf6094f93ba86f7a3ac589701611ef14d7e53c",
+  "sources": {
+    "applied_target_observation_patch": {
+      "hash_mode": "lf",
+      "path": "patches/ground_up_applied_target_observation.patch",
+      "sha256": "bdcac27115fcbe855079f5365ac046e863a9b302ff16f560d12a26cd492f2821"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v12_calibrator_hold_diagnostic_preregistration.py",
+      "sha256": "3a8aac6ff7c432ad0cd2565455117c6ee218a96719a22864191b58a60d9bc4d2"
+    },
+    "calibrator_design_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_training_preregistration.json",
+      "sha256": "1ec76a587c6fa50b92866c1632a7046ae0c6687ed17b1636b664bf45c2e8ba34"
+    },
+    "canonical_p30_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "deployable_network": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_decomposed_backend_networks.py",
+      "sha256": "f463223a33f80baf81b2604e0df22c647660f2752a7ca60b8c75a3441460d015"
+    },
+    "diagnostic_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_hold_diagnostic.py",
+      "sha256": "6848a3b1947c10da9cc60771298483328d3eaf69234989c13dceb59eb1e0f5f2"
+    },
+    "diagnostic_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v12_calibrator_hold_diagnostic.py",
+      "sha256": "82300523a57ff13f478af58d602800277ed293e4c952148fbab6f21f5207775c"
+    },
+    "diagnostic_workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v12-calibrator-hold-diagnostic.yml",
+      "sha256": "83ef502df875092b2074b5b41199df0e7b8d4d48018a1386ac1603460560f582"
+    },
+    "formal_support_launch": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_support_gate_launch.json",
+      "sha256": "4b278a6ebc631e025f759b7ab8fa31bf4c610f3e0f2784d3e5ab1b1511bfb38a"
+    },
+    "formal_support_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_support_gate_result.json",
+      "sha256": "ef0d80e8a91bc9abfe7b7e37fe6fcde5d9c48d12b6080b660a81b497655a35e1"
+    },
+    "formal_support_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_support_gate.py",
+      "sha256": "18873eee55c77a278fc065de64c0b912803bf29b4440cde7f3adaabe1297baca"
+    },
+    "full_training_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_preregistration.json",
+      "sha256": "99500648d6683097a13f894b0949bf4b5494e5653f36878710817bd0952f71dd"
+    },
+    "runtime_observer": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py",
+      "sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889"
+    },
+    "training_primitives": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_calibrator_training.py",
+      "sha256": "f5736a357d73baedae2bba1d15254dd688bddf3761eb731d757a971783c77227"
+    },
+    "variable_configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V12_CALIBRATOR_HOLD_DIAGNOSTIC",
+  "support_diagnostic": {
+    "classification": [
+      "graph_fail_zero_pass: calibrator action is causal for that support failure",
+      "graph_fail_zero_fail: the stressed home configuration also fails without calibration action",
+      "graph_pass_zero_pass: both arms remain supported",
+      "graph_pass_zero_fail: the calibrator stabilizes that cell"
+    ],
+    "graph_arm": "Rerun the frozen ONNX graph on the union of all failed and heldout configurations and require support outcome, terminal tick, and valid tick count to match the imported formal result.",
+    "no_tuning_or_selection": true,
+    "zero_action_arm": "On each of the eight failed configurations, retain the graph's hidden state transition but replace calibration_actions and previous_action_out with exact zeros before the same bridge, observer, and physics step."
+  },
+  "training_artifact": {
+    "artifact_zip_bytes": 29503744,
+    "artifact_zip_sha256": "705a728e3241d1ccf35ebf3c0e8f4871918a68744dbaf6e8694082883901d6ae",
+    "repository_attribution": {
+      "github_artifact_digest": "sha256:705a728e3241d1ccf35ebf3c0e8f4871918a68744dbaf6e8694082883901d6ae",
+      "github_artifact_id": 8488811942,
+      "github_artifact_name": "winner-v12-full-calibrator-training-29808732634",
+      "github_run_attempt": 1,
+      "github_run_head_sha": "30ba44b2461d0f11da77ebfe42ac30446682c22d",
+      "github_run_id": 29808732634,
+      "repository": "RobVanProd/open-duck-mini-rdkx5"
+    },
+    "result_lf_sha256": "f5ac4af40396419fda8e8a84b7f94f4fc9cc5a850b96614b39d36e13313609e8",
+    "training_result_sha256": "4fcb52ba9838cbc436cd2ac26b4fbc6b6cc986781cb57f6810101051a4676ae7"
+  },
+  "verified_checkpoints": {
+    "final": {
+      "checkpoint": {
+        "bytes": 122426,
+        "file": "winner_v12_calibrator_final.npz",
+        "sha256": "ee8f34386f1c7cc118ecf73f2fcdbdf32ec46c463921d5fbaeaae90185a051df"
+      },
+      "label": "final",
+      "onnx": {
+        "bytes": 54896,
+        "file": "winner_v12_calibrator_final.onnx",
+        "sha256": "e25a31f8e25d6e220d499af3d9ce7536096de7a279c0e63cfed799fb87833718"
+      },
+      "onnx_abi": {
+        "abi_exact": true,
+        "all_chain_outputs_finite": true,
+        "all_initializers_finite": true,
+        "inputs": [
+          {
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "jax_onnx_at_most_1e_7": true,
+        "jax_onnx_max_abs_error": 7.450580596923828e-09,
+        "outputs": [
+          {
+            "name": "calibration_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "previous_action_out_equals_action_bit_exact": true,
+        "training_only_tensors_absent": true
+      },
+      "receipt": {
+        "bytes": 2083,
+        "file": "winner_v12_calibrator_final_receipt.json",
+        "sha256": "9c2213afc68ace5a5b5d11a033b059422897bd3cae090822af037794f0006f98"
+      },
+      "update": 100
+    },
+    "half": {
+      "checkpoint": {
+        "bytes": 105836,
+        "file": "winner_v12_calibrator_half.npz",
+        "sha256": "9eff1cae34b1794028bef849ba2128d47264242cc7d454b40743880e500ce3b9"
+      },
+      "label": "half",
+      "onnx": {
+        "bytes": 54896,
+        "file": "winner_v12_calibrator_half.onnx",
+        "sha256": "9a9b5090d9dbb74e1ee2f822dac9b5fd8deee09d1b13419b222389abd5d2684a"
+      },
+      "onnx_abi": {
+        "abi_exact": true,
+        "all_chain_outputs_finite": true,
+        "all_initializers_finite": true,
+        "inputs": [
+          {
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "jax_onnx_at_most_1e_7": true,
+        "jax_onnx_max_abs_error": 7.450580596923828e-09,
+        "outputs": [
+          {
+            "name": "calibration_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "previous_action_out_equals_action_bit_exact": true,
+        "training_only_tensors_absent": true
+      },
+      "receipt": {
+        "bytes": 2079,
+        "file": "winner_v12_calibrator_half_receipt.json",
+        "sha256": "7b48dec60b886b273d381df8907ab95743f3e081dd9a772be1714c75c70647b6"
+      },
+      "update": 50
+    }
+  }
+}

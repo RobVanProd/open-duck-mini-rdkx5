@@ -1,0 +1,98 @@
+{
+  "status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+  "manifest": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_manifest.json",
+  "samples": 10322,
+  "hidden_sizes": [
+    512,
+    256,
+    128
+  ],
+  "activation": "swish",
+  "saved_npz": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_candidate/candidate_mlp.npz",
+  "exported_onnx": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_candidate/candidate.onnx",
+  "train_metrics": {
+    "samples": 10322,
+    "mae": 0.006890553802707799,
+    "rmse": 0.012328311530255215,
+    "p50_abs_error": 0.003526274099773649,
+    "p95_abs_error": 0.024188567295119003,
+    "p99_abs_error": 0.04987024598428945,
+    "max_abs_error": 0.20272917237754373,
+    "pred_action_saturation_pct": 0.0
+  },
+  "target_rate": {
+    "pair_count": 10302,
+    "p50_rad_s": 0.2312233855709505,
+    "p95_rad_s": 1.733526288490421,
+    "p99_rad_s": 2.190208260444277,
+    "max_rad_s": 2.500935086575677
+  },
+  "sample_weight": {
+    "p50": 1.0,
+    "p95": 1.0,
+    "max": 1.0,
+    "weighted_samples": 10322.0
+  },
+  "loss_rows": [
+    {
+      "step": 1,
+      "loss": 0.15928061306476593
+    },
+    {
+      "step": 500,
+      "loss": 0.00040346517926082015
+    },
+    {
+      "step": 1000,
+      "loss": 0.00030868404428474605
+    },
+    {
+      "step": 1500,
+      "loss": 0.0002744460362009704
+    },
+    {
+      "step": 2000,
+      "loss": 0.00021302436653058976
+    },
+    {
+      "step": 2500,
+      "loss": 0.00017760213813744485
+    },
+    {
+      "step": 3000,
+      "loss": 0.0001934112806338817
+    },
+    {
+      "step": 3500,
+      "loss": 0.00022591504966840148
+    },
+    {
+      "step": 4000,
+      "loss": 0.00018079120491165668
+    },
+    {
+      "step": 4500,
+      "loss": 0.00017113646026700735
+    },
+    {
+      "step": 5000,
+      "loss": 0.00015997370064724237
+    }
+  ],
+  "onnx_verify": {
+    "path": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_candidate/candidate.onnx",
+    "samples_checked": 64,
+    "max_abs_error": 2.7736461505334375e-07,
+    "p95_abs_error": 1.5550637957884028e-07
+  },
+  "config": {
+    "steps": 5000,
+    "batch_size": 512,
+    "learning_rate": 0.001,
+    "target_rate_scale": 0.2,
+    "target_rate_limit_rad_s": 2.25,
+    "action_scale_rad": 0.25,
+    "dt_s": 0.02,
+    "seed": 3
+  }
+}

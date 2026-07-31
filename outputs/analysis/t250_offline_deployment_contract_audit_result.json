@@ -1,0 +1,365 @@
+{
+  "authority": {
+    "gate5": false,
+    "hosted": false,
+    "policy_staging": false,
+    "rdkx5_or_robot": false,
+    "training": false,
+    "versioned_runtime_integration_preregistration": true
+  },
+  "calibrator": {
+    "abi_checks": {
+      "all_inputs_float32": true,
+      "all_outputs_float32": true,
+      "cpu_provider_only": true,
+      "input_names_and_shapes_exact": true,
+      "input_order_exact": true,
+      "onnx_checker_passes": true,
+      "output_names_and_shapes_exact": true,
+      "output_order_exact": true
+    },
+    "artifact": {
+      "bytes": 55573,
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v96-response-conditioned-mechanics\\winner_v96_universal_calibrator.onnx",
+      "sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576"
+    },
+    "chain": {
+      "action_equals_previous_action_out": true,
+      "chain_ticks_exact": 250,
+      "context_immutable": true,
+      "max_abs_action": 0.5,
+      "outputs_finite": true
+    },
+    "final_hidden_sha256": "ac7cff654a0e846cd0d55e46dc756f0264b80cfdf8bab0e8c863260d115528d2",
+    "final_previous_action": [
+      0.0,
+      0.0,
+      -0.5,
+      0.25,
+      0.25,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.5,
+      0.25,
+      0.25
+    ],
+    "initializer_count": 12,
+    "inputs": {
+      "h_in": [
+        1,
+        64
+      ],
+      "obs": [
+        1,
+        115
+      ],
+      "previous_action": [
+        1,
+        14
+      ]
+    },
+    "node_count": 25,
+    "opsets": {
+      "": 12
+    },
+    "outputs": {
+      "calibration_actions": [
+        1,
+        14
+      ],
+      "h_out": [
+        1,
+        64
+      ],
+      "previous_action_out": [
+        1,
+        14
+      ]
+    },
+    "synthetic_context_finite": true,
+    "synthetic_context_sha256": "41433dd79141673757b38cbc79133be828176325e9b268a194c6ada679b16ade"
+  },
+  "checks": {
+    "all_fresh_worker_runs_complete": true,
+    "both_policy_abis_and_chains_green": true,
+    "calibrator_abi_and_chain_green": true,
+    "fresh_48_cells_handoff_green": true,
+    "golden_first_locomotion_tick_exact": true,
+    "inherited_272_cells_handoff_green": true,
+    "p30_observer_fit_present": true,
+    "p31_34_robustness_fit_present": true,
+    "reference_table_present": true,
+    "t247_route_exactness_recovered": true,
+    "t249b_result_hash_canonical": true,
+    "t8_handoff_contract_green": true,
+    "terminal_checkpoint_selected_by_frozen_rule": true,
+    "twenty_conditions_and_320_cells_green": true,
+    "zero_simulator_optimizer_hosted_or_robot": true
+  },
+  "decision": "EARN_VERSIONED_RDKX5_STATE_COHERENT_INTEGRATION_PREREGISTRATION_ONLY",
+  "execution": {
+    "behavior_cells": 0,
+    "calibrator_chain_ticks": 250,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "platform": "cpu",
+    "policy_chain_ticks": 512,
+    "robot_or_rdk_access": 0,
+    "simulator_steps": 0
+  },
+  "failed_checks": [],
+  "full_r2": {
+    "both_checkpoints": true,
+    "both_measured_fits": true,
+    "cells": 320,
+    "commands_x_m_s": [
+      0.0,
+      0.074,
+      0.077,
+      0.08
+    ],
+    "conditions": 20,
+    "green_cells": 320
+  },
+  "golden_first_locomotion_tick": {
+    "calibration_final_action": [
+      0.0,
+      0.0,
+      -0.5,
+      0.25,
+      0.25,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.5,
+      0.25,
+      0.25
+    ],
+    "checks": {
+      "command_exact": true,
+      "context_hash_matches_handoff": true,
+      "graph_action_authoritative": true,
+      "history_41_55_preserved": true,
+      "history_55_69_preserved": true,
+      "history_69_83_preserved": true,
+      "locomotion_hidden_zero": true,
+      "observation_shape_115": true,
+      "p30_observer_83_97_preserved": true,
+      "phase_reset_exact": true,
+      "previous_action_matches_calibrator": true,
+      "projected_reference_present": true,
+      "tick_zero": true
+    },
+    "context_sha256": "22003badb9dd1c98f103e2e6e1185e4234fc8234500f6d14a18ad0b0e1a8295b",
+    "p30_observer_target_rad": [
+      0.0020000000949949026,
+      0.05299999937415123,
+      -0.7549999952316284,
+      1.4305000305175781,
+      -0.7214999794960022,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      -0.003000000026077032,
+      -0.06499999761581421,
+      0.7599999904632568,
+      1.441499948501587,
+      -0.7335000038146973
+    ],
+    "trace": {
+      "bytes": 10773691,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t249_remaining_r2_v1\\20_KP_HI\\T247_HOME_NEGATIVE_HALF_ADAPTER_FINAL\\p30\\traces\\x0.074_seed167931544_home_negative_half_adapter_route.jsonl",
+      "sha256": "7a9fde23a6ab24049db73a35ea0747cd6d0c94fe088fdd2659a94ec23c235288"
+    }
+  },
+  "handoff_manifest": {
+    "bytes": 8232,
+    "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t250_gate5_policy_handoff_manifest.json",
+    "sha256": "a72ce945eba873d1f8562547892f335986265bef88c03ca20081df69eaaedff9"
+  },
+  "handoff_population": {
+    "fresh_cells": 48,
+    "inherited_cells": 272,
+    "total_cells": 320
+  },
+  "persistence_witness": {
+    "bytes": 993875,
+    "path": "D:\\CodexArtifacts\\open-duck-policy\\t247_home_negative_half_adapter_route_v1\\graphs\\1003520\\home_negative_half_adapter_route.onnx",
+    "sha256": "21c714b0cbe30e43233f6a29d6ccfa058c550f28fab3dd836a73a6015b73f8f2"
+  },
+  "policy_graphs": {
+    "deployment_terminal": {
+      "abi_checks": {
+        "all_inputs_float32": true,
+        "all_outputs_float32": true,
+        "cpu_provider_only": true,
+        "input_names_and_shapes_exact": true,
+        "input_order_exact": true,
+        "onnx_checker_passes": true,
+        "output_names_and_shapes_exact": true,
+        "output_order_exact": true
+      },
+      "artifact": {
+        "bytes": 993875,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t247_home_negative_half_adapter_route_v1\\graphs\\2007040\\home_negative_half_adapter_route.onnx",
+        "sha256": "dadfb446ea7c720f274a15bc65e9171c2e74d715ccfaf58adbb408b6c1365a54"
+      },
+      "chain": {
+        "action_equals_previous_action_out": true,
+        "chain_ticks_exact": 256,
+        "context_immutable": true,
+        "max_abs_action": 0.9799999594688416,
+        "outputs_finite": true
+      },
+      "final_hidden_sha256": "c7d6bbc87ffe264e16a239d192d2de0f98bbfffd2ca52de243348d3bf5f0646d",
+      "final_previous_action": [
+        0.07999999821186066,
+        0.9799999594688416,
+        -0.5542584657669067,
+        -0.5371588468551636,
+        0.14898359775543213,
+        0.9799999594688416,
+        -0.9799999594688416,
+        -0.9399999380111694,
+        -0.9799999594688416,
+        -0.9799999594688416,
+        -0.9799999594688416,
+        0.7118515968322754,
+        -0.8930716514587402,
+        0.6341917514801025
+      ],
+      "initializer_count": 96,
+      "inputs": {
+        "calibration_context": [
+          1,
+          64
+        ],
+        "h_in": [
+          1,
+          64
+        ],
+        "obs": [
+          1,
+          115
+        ],
+        "previous_action": [
+          1,
+          14
+        ]
+      },
+      "node_count": 141,
+      "opsets": {
+        "": 12
+      },
+      "outputs": {
+        "continuous_actions": [
+          1,
+          14
+        ],
+        "h_out": [
+          1,
+          64
+        ],
+        "previous_action_out": [
+          1,
+          14
+        ]
+      }
+    },
+    "persistence_witness": {
+      "abi_checks": {
+        "all_inputs_float32": true,
+        "all_outputs_float32": true,
+        "cpu_provider_only": true,
+        "input_names_and_shapes_exact": true,
+        "input_order_exact": true,
+        "onnx_checker_passes": true,
+        "output_names_and_shapes_exact": true,
+        "output_order_exact": true
+      },
+      "artifact": {
+        "bytes": 993875,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t247_home_negative_half_adapter_route_v1\\graphs\\1003520\\home_negative_half_adapter_route.onnx",
+        "sha256": "21c714b0cbe30e43233f6a29d6ccfa058c550f28fab3dd836a73a6015b73f8f2"
+      },
+      "chain": {
+        "action_equals_previous_action_out": true,
+        "chain_ticks_exact": 256,
+        "context_immutable": true,
+        "max_abs_action": 0.9799999594688416,
+        "outputs_finite": true
+      },
+      "final_hidden_sha256": "c7d6bbc87ffe264e16a239d192d2de0f98bbfffd2ca52de243348d3bf5f0646d",
+      "final_previous_action": [
+        0.07999999821186066,
+        0.9799999594688416,
+        -0.5542584657669067,
+        -0.5371588468551636,
+        0.14898359775543213,
+        0.9799999594688416,
+        -0.9799999594688416,
+        -0.9399999380111694,
+        -0.9799999594688416,
+        -0.9799999594688416,
+        -0.9799999594688416,
+        0.7118515968322754,
+        -0.8930716514587402,
+        0.6341917514801025
+      ],
+      "initializer_count": 96,
+      "inputs": {
+        "calibration_context": [
+          1,
+          64
+        ],
+        "h_in": [
+          1,
+          64
+        ],
+        "obs": [
+          1,
+          115
+        ],
+        "previous_action": [
+          1,
+          14
+        ]
+      },
+      "node_count": 141,
+      "opsets": {
+        "": 12
+      },
+      "outputs": {
+        "continuous_actions": [
+          1,
+          14
+        ],
+        "h_out": [
+          1,
+          64
+        ],
+        "previous_action_out": [
+          1,
+          14
+        ]
+      }
+    }
+  },
+  "preregistered_contract_sha256": "e6505962e782a3009470ab3629d94d82add4480b516ff0be85e497d88064bc94",
+  "result_sha256": "4f6608dc03d86f50877ab925fd4ab19df43fa9d2b1a8026d2c109ff592a47fed",
+  "schema_version": "open_duck.t250_offline_deployment_contract_audit_result.v1",
+  "selected_policy": {
+    "bytes": 993875,
+    "path": "D:\\CodexArtifacts\\open-duck-policy\\t247_home_negative_half_adapter_route_v1\\graphs\\2007040\\home_negative_half_adapter_route.onnx",
+    "sha256": "dadfb446ea7c720f274a15bc65e9171c2e74d715ccfaf58adbb408b6c1365a54"
+  },
+  "status": "PASS_T250_OFFLINE_DEPLOYMENT_CONTRACT_AUDIT"
+}

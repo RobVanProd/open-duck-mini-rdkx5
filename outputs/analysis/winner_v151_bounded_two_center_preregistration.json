@@ -1,0 +1,66 @@
+{
+  "authority": {
+    "behavior": false,
+    "cpu_graph_contract": true,
+    "gate5": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "behavior_stop_rule": "if the separately preregistered one-cell causal behavior has any torque failure, close the entire finite-local family and do not add a third center",
+  "checks": {
+    "all_input_hashes_exact": true,
+    "frozen_safety_projection_reapplied": true,
+    "radius_formula_has_no_search": true,
+    "robot_surface_absent": true,
+    "second_center_is_exact_displaced_event_precursor": true,
+    "single_center_closed_without_retuning": true,
+    "third_center_forbidden": true,
+    "training_and_behavior_not_authorized": true,
+    "two_center_family_bound_preregistered": true,
+    "v150_reporting_corrected_causal_label_green": true
+  },
+  "failed_checks": [],
+  "family_bound": {
+    "centers_after_contract": 2,
+    "maximum_centers": 2,
+    "rationale": "one bounded follow-up tests whether the first correction only displaced the original event once; any further displacement closes the nonparametric local family",
+    "third_center_permitted": false
+  },
+  "input_hashes": {
+    "first_shadow_trace": "eb432bdb64c251dcbb466bd795db381891837086dae9dcc7a2564a7f2a2930b5",
+    "runner": "2dc24e99e6b5ef5efa05799b54040a5ca90c4593b936680ba1b5f20e12acfa7b",
+    "second_shadow_trace": "a816549061de726762ff01602a3366f78a919e9800132f8faca622836e39b731",
+    "source_deployed": "4d5e3a69ce33fcdce6e714c180f8533b551d604aee5edb8d0b0b143a1a0f1f4b",
+    "source_raw": "d60b9c59710bd8f636a6cbe28086fb702a6d15aaf3b249668ada7631a5aca214",
+    "v121_transform": "4bd5eab5343cd8401db1789773fa3cc345727d903cb31222e0ea9870f0e9e640",
+    "v134_loader": "632a2e12ae10d940be38858c52e738281ca6a2de1736d1be90b8adcbdbd8baa8",
+    "v145_loader": "b6f0cb28e86bc3561009af87ad5cc5136641e08057d54c81d74b119d627ded4c",
+    "v148_result": "a7c0087dc18db1b4371b3ea7598bf768bb55fef881b57b0732e97e766be72d3d",
+    "v149_result": "67ac7db8517bd72c32bf3b171e400aa40a73508d8acc3eaf8d33373fef0654f1",
+    "v150_correction": "032641cb262a8138d8cf1b395d61d2b71cca560590652ae0b92090c945531e00",
+    "v150_result": "5232d59b0334a2e83d5d62ae06b5c89886e4cdac78a14425edf6557c54869e98"
+  },
+  "mechanism": {
+    "optimizer_or_training": false,
+    "postprocess": "frozen G3 guard, x=0 deadband, and final rate projection",
+    "second_center": "V150 displaced trajectory tick 583",
+    "second_correction": "exact V150 two-fit oracle final-minus-base action",
+    "second_feature": "obs[115] concatenated with h_in[64]",
+    "second_joint": "right ankle / action index 13",
+    "second_normalization": "z-score over the frozen 4,800+600+600 aggregate",
+    "second_radius": "half the normalized distance to the nearest other aggregate row",
+    "source": "V148 raw graph with first center unchanged"
+  },
+  "pass_rule": {
+    "gate": "the second gate activates only the frozen V150 tick-583 aggregate row",
+    "preservation": "all other actions are bit-exact to V148 and all first-center initializers are bit-exact",
+    "safety": "reapplied deployment transform contract green",
+    "state": "final action feedback exact; h_out exact",
+    "target": "second-center right ankle matches its exact oracle <=1e-7"
+  },
+  "schema_version": "winner_v151.bounded_two_center_preregistration.v1",
+  "status": "PREREGISTERED_WINNER_V151_BOUNDED_TWO_CENTER",
+  "stop_rule": "any graph-contract failure closes the finite-local family; do not change either center, radius, correction, or feature"
+}

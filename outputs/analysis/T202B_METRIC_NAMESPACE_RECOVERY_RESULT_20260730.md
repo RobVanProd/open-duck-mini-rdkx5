@@ -1,0 +1,9 @@
+# T202B metric-namespace recovery result
+
+- Status: `PASS_T202B_METRIC_NAMESPACE_RECOVERY`
+- Classification: `T202_CPU_HOLD_WAS_REPORTING_NAMESPACE_ONLY`
+- Decision: `EARN_T203_PREDICTED_ROLL_RISK_HOSTED_PREREGISTRATION_ONLY`
+- Cost events: `[0.023624319583177567, 0.031832098960876465]`
+- Excess events: `[0.025786887854337692, 0.03125150874257088]`
+- Simulator/optimizer/behavior/hosted/robot: `0/0/0/0/0`
+- Result SHA-256: `75d3f3f40fb4f048029d5ccd4f478ee3ca55b31b5cd24a14f74a7ee5b662e03d`

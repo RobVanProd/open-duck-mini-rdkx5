@@ -1,0 +1,90 @@
+{
+  "config": {
+    "batch_size": 32,
+    "learning_rate": 0.001,
+    "seed": 0,
+    "sequence_length": 32,
+    "steps": 3000,
+    "target_rate_limit_rad_s": 2.0,
+    "target_rate_scale": 0.2
+  },
+  "exported_onnx": "outputs/analysis/phase2_z005_live_oracle_iter0_recurrent_h96_candidate/candidate.onnx",
+  "hidden_dim": 96,
+  "loss_rows": [
+    {
+      "loss": 1.4594420194625854,
+      "step": 1
+    },
+    {
+      "loss": 0.008873235434293747,
+      "step": 250
+    },
+    {
+      "loss": 0.005426900926977396,
+      "step": 500
+    },
+    {
+      "loss": 0.002116314135491848,
+      "step": 750
+    },
+    {
+      "loss": 0.0018728274153545499,
+      "step": 1000
+    },
+    {
+      "loss": 0.0008502842392772436,
+      "step": 1250
+    },
+    {
+      "loss": 0.0010895438026636839,
+      "step": 1500
+    },
+    {
+      "loss": 0.0015813037753105164,
+      "step": 1750
+    },
+    {
+      "loss": 0.0006011094083078206,
+      "step": 2000
+    },
+    {
+      "loss": 0.000674875860568136,
+      "step": 2250
+    },
+    {
+      "loss": 0.000488322286400944,
+      "step": 2500
+    },
+    {
+      "loss": 0.00037343151052482426,
+      "step": 2750
+    },
+    {
+      "loss": 0.0007354160188697278,
+      "step": 3000
+    }
+  ],
+  "manifest": "outputs/analysis/phase2_z005_live_oracle_terrain_support_iter0_aggregate_manifest.json",
+  "no_deploy": true,
+  "no_robot_tests": true,
+  "onnx_verify": {
+    "max_action_error": 5.331899850941069e-07,
+    "max_hidden_error": 7.248952417215904e-07,
+    "path": "outputs/analysis/phase2_z005_live_oracle_iter0_recurrent_h96_candidate/candidate.onnx",
+    "steps_checked": 128
+  },
+  "runtime_behavior_changed": false,
+  "samples": 12806,
+  "saved_npz": "outputs/analysis/phase2_z005_live_oracle_iter0_recurrent_h96_candidate/candidate_rnn.npz",
+  "sequences": 18,
+  "status": "PASS_RECURRENT_BC_FIT_SMOKE",
+  "train_metrics": {
+    "mae": 0.015778195566508675,
+    "max_abs_error": 0.6553667650261477,
+    "p95_abs_error": 0.044005062345861726,
+    "p99_abs_error": 0.09047052817283995,
+    "samples": 12806,
+    "target_rate_max_rad_s": 3.89046649418927,
+    "target_rate_p95_rad_s": 1.7170528641424823
+  }
+}

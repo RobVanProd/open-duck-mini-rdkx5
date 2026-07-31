@@ -1,0 +1,94 @@
+{
+  "status": "PARTIAL_PASS_TRACKING_PLATEAU_BROKEN_HOLD_SEED4_SWING",
+  "scope": "offline_only",
+  "robot_tests": false,
+  "ssh": false,
+  "deploy": false,
+  "grounded_replay": false,
+  "runtime_behavior_changed": false,
+  "training_from_scratch": false,
+  "label_curation": {
+    "artifact_md": "outputs/analysis/PHASE2_TRANSITION_PROTECTED_RATE_LIMIT.md",
+    "artifact_json": "outputs/analysis/phase2_transition_protected_rate_limit.json",
+    "status": "PASS_TRANSITION_PROTECTED_RATE_LIMIT_READY",
+    "traces": 2,
+    "samples": 500,
+    "protected_samples": 488,
+    "changed_ticks": 13,
+    "changed_contact_counts": {
+      "11": 13
+    },
+    "settings": {
+      "max_target_velocity_rad_s": 2.25,
+      "protect_transition_window_ticks": 6,
+      "protect_non_double_support": true
+    }
+  },
+  "curated_manifest": {
+    "artifact_md": "outputs/analysis/PHASE2_TRANSITION_PROTECTED_RATE_LIMIT_MANIFEST.md",
+    "artifact_json": "outputs/analysis/phase2_transition_protected_rate_limit_manifest.json",
+    "status": "PASS_BC_TRACE_MANIFEST_READY",
+    "entries": 2,
+    "samples": 500,
+    "seed_metrics": [
+      {
+        "seed": 2,
+        "mean_vx_m_s": 0.0397,
+        "sent_target_velocity_p95_rad_s": 2.1964,
+        "joint_tracking_p95_rad": 0.1703
+      },
+      {
+        "seed": 4,
+        "mean_vx_m_s": 0.0459,
+        "sent_target_velocity_p95_rad_s": 2.0583,
+        "joint_tracking_p95_rad": 0.1665
+      }
+    ]
+  },
+  "student_fit": {
+    "artifact_md": "outputs/analysis/PHASE2_TRANSITION_PROTECTED_RATE_LIMIT_BC_STUDENT.md",
+    "artifact_json": "outputs/analysis/phase2_transition_protected_rate_limit_bc_student.json",
+    "status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+    "samples": 500,
+    "p95_action_error": 0.022175293751723692,
+    "target_rate_p95_rad_s": 2.2062318106681396
+  },
+  "gate": {
+    "artifact_md": "outputs/analysis/PHASE2_TRANSITION_PROTECTED_RATE_LIMIT_BC_STUDENT_TERRAIN_Z002_GATE_CPU.md",
+    "artifact_json": "outputs/analysis/phase2_transition_protected_rate_limit_bc_student_terrain_z002_gate_cpu.json",
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.002,
+    "bridge": "corrected_fitted",
+    "command_x": 0.08,
+    "duration_s": 5,
+    "seeds": [2, 4],
+    "results": [
+      {
+        "seed": 2,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "mean_local_vx_m_s": 0.0291,
+        "track_ratio": 0.3641,
+        "max_velocity_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.1876,
+        "single_support_pct": 22.8,
+        "double_support_pct": 77.2,
+        "min_swing_segments": 2,
+        "min_rel_x_range_p95_m": 0.0039
+      },
+      {
+        "seed": 4,
+        "status": "HOLD_CANDIDATE_TERRAIN_SWING",
+        "mean_local_vx_m_s": 0.0255,
+        "track_ratio": 0.3184,
+        "max_velocity_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.1914,
+        "single_support_pct": 10.8,
+        "double_support_pct": 89.2,
+        "min_swing_segments": 0,
+        "min_rel_x_range_p95_m": 0.0
+      }
+    ]
+  },
+  "interpretation": "Transition-protected rate limiting breaks the rough-terrain tracking/envelope plateau without falling, but seed 4 still fails swing/advance.",
+  "next": "Use seed-balanced transition-preserving correction: keep transition-protected rate limiting and add seed-4 swing/advance weighting or contact-phase-balanced labels."
+}

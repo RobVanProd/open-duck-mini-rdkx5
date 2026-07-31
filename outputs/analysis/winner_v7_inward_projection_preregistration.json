@@ -1,0 +1,136 @@
+{
+  "all_or_nothing": true,
+  "authority": {
+    "behavior_evaluation": false,
+    "colab_hosted_gpu_or_igpu": false,
+    "dynamic_calibrator_or_training": false,
+    "one_exact_local_cpu_graph_contract": true,
+    "rdkx5_robot_torque_motion_gate5_deployment": false,
+    "robot_clearance": false,
+    "runtime_v2_implementation": false
+  },
+  "causal_hypothesis": "A final projection placed after the protected actual-centered guard and inset by a fixed analytic float32 margin will make the stored winner-v2 delta contract representation-safe without changing tolerance.",
+  "decision": "AUTHORIZE_ONE_EXACT_CPU_ONLY_GRAPH_TRANSFORM_CONTRACT",
+  "distinct_from_closed_v6": {
+    "calibrator_or_context_graph_present": false,
+    "protected_output_changed": true,
+    "requires_full_behavior_revalidation_before_any_calibrator": true,
+    "v6_or_v6b_retry": false,
+    "winner_v6_dynamic_calibration_closed": true
+  },
+  "expected_abi": {
+    "inputs": [
+      {
+        "dtype": "float32",
+        "name": "obs",
+        "shape": [
+          1,
+          115
+        ]
+      },
+      {
+        "dtype": "float32",
+        "name": "previous_action",
+        "shape": [
+          1,
+          14
+        ]
+      }
+    ],
+    "outputs": [
+      {
+        "dtype": "float32",
+        "name": "continuous_actions",
+        "shape": [
+          1,
+          14
+        ]
+      },
+      {
+        "dtype": "float32",
+        "name": "previous_action_out",
+        "shape": [
+          1,
+          14
+        ]
+      }
+    ]
+  },
+  "input_hashes": {
+    "importer": "4eb600d24bcec70e243a0cb13aafb52cb546f77885dbd860effe8e6eeea5e4c8",
+    "numeric_attribution": "eb3ed6a951b76e4c88b9adcbb52de3b3a6a84719f469ebfcd788dcef65ee879c",
+    "protected_final": "0dfc24bde5d839e4d346dd8c08d9a7d0222a3847764ec6738bfc7f8d947f4ece",
+    "protected_half": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de",
+    "runner": "8aaa73e1eda903eadb29547ca5c3556e78ee265cfee03092cfc3dc7e175a7eab"
+  },
+  "no_retry_or_tuning": "A failed graph contract closes this exact inward-margin route. Do not change the margin, perturbation cap, seeds, population, checkpoint, or rule.",
+  "pass_authorizes_only": "write and review a separate complete behavior-revalidation preregistration",
+  "pass_rule": [
+    "all frozen input hashes and both output ABIs match",
+    "source initializers and nodes are exact apart from reviewed output renames and append",
+    "all 8192 arbitrary stress cases obey absolute and stored source-delta bounds with zero tolerance",
+    "the transformation changes at least one arbitrary stress output in each checkpoint",
+    "both 256-tick x=0 chains emit exact-zero action and state",
+    "both 32-tick physically consistent moving chains obey bounds with zero tolerance",
+    "maximum source-to-transformed action perturbation on the physically chained x=0 and moving populations is at most eight float32 epsilons; arbitrary independent stress tensors have no protected-identity claim",
+    "no behavior evaluator, simulator outcome gate, calibrator, or optimizer runs"
+  ],
+  "protected_checkpoints": {
+    "final": {
+      "path": "outputs/analysis/ground_up_dual_fit_conservative_envelope_repair_policies/T2_EQUAL_1024000.onnx",
+      "sha256": "0dfc24bde5d839e4d346dd8c08d9a7d0222a3847764ec6738bfc7f8d947f4ece"
+    },
+    "half": {
+      "path": "outputs/analysis/ground_up_dual_fit_conservative_envelope_repair_policies/T2_EQUAL_512000.onnx",
+      "sha256": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de"
+    }
+  },
+  "schema_version": "winner_v7.inward_projection_transform_preregistration.v1",
+  "status": "PREREGISTERED_NOT_RUN",
+  "test_population": {
+    "arbitrary_stress_cases_per_checkpoint": 4096,
+    "arbitrary_stress_seeds": [
+      60770,
+      60771
+    ],
+    "moving_chain_seeds": [
+      60742,
+      60752
+    ],
+    "moving_chain_ticks_per_checkpoint": 32,
+    "moving_command_x": 0.077,
+    "x0_chain_seeds": [
+      60780,
+      60781
+    ],
+    "x0_chain_ticks_per_checkpoint": 256
+  },
+  "transform": {
+    "all_source_initializers_preserved": true,
+    "all_source_nodes_preserved_except_final_output_tensor_rename": true,
+    "appended_initializers": [
+      "v7_action_maximum",
+      "v7_action_minimum",
+      "v7_inward_margin",
+      "v7_safe_max_action_delta"
+    ],
+    "appended_nodes": [
+      "Clip",
+      "Sub",
+      "Add",
+      "Min",
+      "Max",
+      "Identity"
+    ],
+    "inward_margin_normalized_action": 4.76837158203125e-07,
+    "inward_margin_rate_rad_s": 5.9604644775390625e-06,
+    "inward_margin_target_rad": 1.1920928955078125e-07,
+    "location": "after actual-centered guard and zero-command deadband",
+    "maximum_allowed_action_perturbation": 9.5367431640625e-07,
+    "maximum_perturbation_derivation": "8*float32_epsilon",
+    "maximum_perturbation_population": "physically chained x=0 and moving cases only; arbitrary independent stress tensors carry no source-output identity requirement",
+    "safe_delta_equation": "float32(max_action_delta - 4*float32_epsilon)",
+    "source_delta_initializer": "max_action_delta",
+    "tolerance_change": false
+  }
+}

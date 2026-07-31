@@ -1,0 +1,205 @@
+{
+  "authority": {
+    "colab": false,
+    "execute_one_pre_margin_cpu_cell": true,
+    "gate5": false,
+    "rdkx5_or_robot": false,
+    "read_only_trace_attribution": true,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "behavior_contract": {
+    "interpretation": {
+      "core": "minimum physical/semantic validity; thresholds passed by the T4 baseline where comparable",
+      "evaluator_candidate_gate_status": "diagnostic only because T4 invalidated its use as an unqualified feasibility classifier",
+      "replacement_quality": "explicit stretch goals for replacing the behaviorally bad baseline; T4 showed the baseline can fail some of these"
+    },
+    "moving_core": {
+      "bilateral_transitions": true,
+      "maximum_action_saturation_pct": 1.0,
+      "maximum_body_pitch_p95_rad": 0.25,
+      "minimum_base_height_m": 0.12,
+      "minimum_track_ratio": 0.25,
+      "positive_mean_local_velocity": true,
+      "samples": 600
+    },
+    "moving_replacement_quality": {
+      "maximum_action_saturation_pct": 0.0,
+      "maximum_pitch_tracking_p95_rad": 0.2,
+      "maximum_rate_excess_rad_s": 0.0
+    },
+    "x0_core": {
+      "maximum_absolute_mean_local_vx_m_s": 0.02,
+      "maximum_action_saturation_pct": 1.0,
+      "maximum_body_pitch_p95_rad": 0.25,
+      "minimum_base_height_m": 0.12,
+      "samples": 600
+    },
+    "x0_replacement_quality": {
+      "maximum_action_saturation_pct": 0.0,
+      "maximum_pitch_tracking_p95_rad": 0.2,
+      "maximum_rate_excess_rad_s": 0.0
+    }
+  },
+  "calibrator": {
+    "bytes": 55573,
+    "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v96-response-conditioned-mechanics\\winner_v96_universal_calibrator.onnx",
+    "sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576"
+  },
+  "cell": {
+    "checkpoint_id": "T32_PRE_MARGIN_FINAL",
+    "command_x_m_s": 0.077,
+    "condition": {
+      "condition_index": 2,
+      "id": "FLOOR_FRICTION_HI",
+      "override": {
+        "floor_friction": 1.0
+      }
+    },
+    "duration_s": 12.0,
+    "fit_id": "p31_34",
+    "seed": 167931544
+  },
+  "checks": {
+    "failed_cell_is_behavior_only": true,
+    "failed_cell_is_exact_target": true,
+    "pre_margin_graph_is_exact_final_export": true,
+    "runner_and_worker_present": true,
+    "strict_margin_is_frozen": true,
+    "t34_is_frozen_15_of_16_hold": true
+  },
+  "decision_rule": {
+    "invalid": "Any provenance, pre-intervention equality, handoff, readback, or trace-continuity failure has zero decision weight.",
+    "no_training_or_retry": true,
+    "no_wrapped_intervention": "Attribute the failure to trained actor/state drift without a proximate deployment-margin intervention; execute no new behavior cell.",
+    "pre_margin_fails": "The strict deployment margin is not a sufficient cause. Attribute the hold to continued-training actor/state drift and require a new persistence-preserving mechanism.",
+    "pre_margin_passes": "The strict deployment margin is causal for the late fall. Keep T32 closed and do not repeat a hard postexport margin."
+  },
+  "failed_checks": [],
+  "fit": {
+    "bytes": 18788,
+    "fit_id": "p31_34",
+    "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p31_34_actuator_fit_20260712.json",
+    "sha256": "2740513f6bdeb4ad3cc5dd6dc1709319389a593fd153c1ce5abae03b66131a57"
+  },
+  "frozen_inputs": {
+    "runner": {
+      "bytes": 14146,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t35_t32_margin_causality.py",
+      "sha256": "e13e818c056e2513ae1042902408557a37b2b5842955f9a5b7cbb30077a53a9d"
+    },
+    "t28_transform": {
+      "bytes": 4745,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t28_t23_action_margin_transform_contract.json",
+      "sha256": "775d62394fc0ec2ca4fa2df263eaa703a1f0f80ddf3279fb8a4fd4572051e6fb"
+    },
+    "t33_postexport_result": {
+      "bytes": 40129,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t33_t32_postexport_result.json",
+      "sha256": "78346b3bc23ae9c92d6fdee6779f75fef8f391ecbcba6f9266db3fc7814a5248"
+    },
+    "t34_preregistration": {
+      "bytes": 10941,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t34_t32_nominal_matrix_preregistration.json",
+      "sha256": "b014deafc6156c758e2d625e06b6821409059d5b779d3719463d4e75e7837de2"
+    },
+    "t34_result": {
+      "bytes": 123194,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t34_t32_nominal_matrix_result.json",
+      "sha256": "325dc8f0d9d17e88da88c7c82440bbdb0055bbf88cde2d6672173890a1b6e924"
+    },
+    "worker": {
+      "bytes": 281,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\evaluate_t30_t28_margin_causal_cell.py",
+      "sha256": "38062df2326131c5fe30e6391100f6d98a49a68198eb053600e6def53a7dcecc"
+    }
+  },
+  "margin": {
+    "saturation_observation_threshold_abs": 0.9800000190734863,
+    "stored_float32_limit_abs": 0.9799999594688416
+  },
+  "playground": {
+    "manifest": {
+      "bytes": 5190,
+      "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v6\\T19_COMPOSED_SOURCE_MANIFEST.json",
+      "sha256": "d7c9b615c32f0e2c8434e958a900cc38485c0db6fea107b6115a69bbd2122a77"
+    },
+    "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v6"
+  },
+  "pre_margin_policy": {
+    "bytes": 964682,
+    "checkpoint_id": "T32_PRE_MARGIN_FINAL",
+    "path": "D:\\CodexArtifacts\\open-duck-policy\\t33_t32_postexport_v1\\2007040\\pre_margin\\rate_coherent_support.onnx",
+    "sha256": "9a087bdc0f0cb78434831c1a8f74f3343274cc7be75d1df89167643a770190b4",
+    "step": 2007040
+  },
+  "preregistered_contract_sha256": "41b87d86bef86b0bd68344e9adae1782fb4fc5c1a7206309d68f0afa06887c51",
+  "protection_contract": {
+    "force_limit_tolerance_nm": 5e-06,
+    "instantaneous_stall_current_and_torque": "diagnostic_only",
+    "motor_constant_nm_per_a": 0.784532,
+    "overcurrent_threshold_a": 2.0,
+    "overload_threshold_nm": 1.5298374,
+    "pass_max_consecutive_ticks": 99,
+    "simulator_force_limit_abs_nm": 3.23,
+    "simulator_force_limit_hits": "diagnostic_only",
+    "source": "T5 manufacturer-derived duration rules",
+    "strict_comparison": true,
+    "trip_ticks": 100
+  },
+  "question": "Did the final strict 0.98 action-margin clip cause T34's sole late failure, or does the otherwise identical pre-margin T32 final graph also fail the same P31/34 x=.077 cell?",
+  "reference_feature_table": {
+    "bytes": 259604,
+    "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+    "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+  },
+  "schema_version": "open_duck.t35_t32_margin_causality_preregistration.v1",
+  "status": "PREREGISTERED_T35_T32_MARGIN_CAUSAL_AB",
+  "support_handoff": {
+    "context_input_name": "calibration_context",
+    "context_is_diagnostic_only": true,
+    "locomotion_hidden_zero": true,
+    "locomotion_phase_reset": [
+      1.0,
+      0.0
+    ],
+    "preserve_applied_target_observer_state": true,
+    "preserve_final_support_action_as_previous_action": true,
+    "source": "T22/T24 exact support-train-through deployment chain and green T27 one-tick runner contract",
+    "unscored_calibration_ticks": 250,
+    "unscored_home_return_ticks": 0
+  },
+  "wrapped_failure": {
+    "first_intervention_tick": 157,
+    "intervention_count": 4,
+    "intervention_events": [
+      {
+        "action": 0.9799999594688416,
+        "joint_index": 4,
+        "tick": 157
+      },
+      {
+        "action": 0.9799999594688416,
+        "joint_index": 4,
+        "tick": 158
+      },
+      {
+        "action": 0.9799999594688416,
+        "joint_index": 4,
+        "tick": 427
+      },
+      {
+        "action": 0.9799999594688416,
+        "joint_index": 4,
+        "tick": 428
+      }
+    ],
+    "samples": 494,
+    "termination_reason": "fall_or_nan",
+    "trace": {
+      "bytes": 8880669,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t34_t32_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T32_MARGIN_FINAL\\p31_34\\traces\\x0.077_seed167931544_action_margin.jsonl",
+      "sha256": "a4415d31e99cb4faf1771d7fd8b3e38cc41dd7312dd69c6465daeb5c9563c551"
+    }
+  }
+}

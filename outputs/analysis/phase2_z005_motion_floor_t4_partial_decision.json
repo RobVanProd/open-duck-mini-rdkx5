@@ -1,0 +1,55 @@
+{
+  "status": "HOLD_NO_PROMOTABLE_CHECKPOINT",
+  "generated_at": "2026-06-29T21:02:00Z",
+  "workflow": "phase2-z005-motion-floor",
+  "hardware": "T4",
+  "training": {
+    "returncode": 0,
+    "elapsed_s": 952.863320465,
+    "steps": 122880,
+    "partial_artifact": "outputs/analysis/colab_cli/open-duck-l4-phase2-z005-motion-floor-20260629T200911Z/open_duck_colab_cli_phase2-z005-motion-floor_20260629T200935Z_artifacts.tar.gz.partial",
+    "partial_artifact_sha256": "445166ea1f0678cb3fc331e208a6b4565910c7eb2b0356161d8fcdf5a8837ba2"
+  },
+  "checkpoints": [
+    {
+      "step": 40960,
+      "sha256": "e6a3c71f72b1c359afac2573a898ee9f912a5d6c42519c2030444012382317d4",
+      "x0_status": "PASS_CANDIDATE_SIM_GATE",
+      "x008_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "x008_track_ratio": 0.16627839747525286,
+      "x008_mean_vx_m_s": 0.013302271798020229,
+      "max_pitch_tracking_p95_rad": 0.21319064497947676,
+      "max_pitch_sent_target_velocity_p95_rad_s": 1.4354893565177917,
+      "max_velocity_envelope_excess_rad_s": 0.0
+    },
+    {
+      "step": 81920,
+      "sha256": "6914cc3c9486e412d5ca82849488c4e77a6e5a886d19379ccad3e7bb96210f8d",
+      "x0_status": "PASS_CANDIDATE_SIM_GATE",
+      "x008_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "x008_track_ratio": 0.17296431412978563,
+      "x008_mean_vx_m_s": 0.013837145130382851,
+      "max_pitch_tracking_p95_rad": 0.21301820874214156,
+      "max_pitch_sent_target_velocity_p95_rad_s": 1.4368674159049988,
+      "max_velocity_envelope_excess_rad_s": 0.0
+    },
+    {
+      "step": 122880,
+      "sha256": "1b2187d7d8e92c3d00bdddb249e4f96cab41fd6ca41269108cdb87106797f9f8",
+      "x0_status": "PASS_CANDIDATE_SIM_GATE",
+      "x008_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "x008_track_ratio": 0.16986062677460723,
+      "x008_mean_vx_m_s": 0.013588850141968579,
+      "max_pitch_tracking_p95_rad": 0.21323472857475265,
+      "max_pitch_sent_target_velocity_p95_rad_s": 1.4360523223876953,
+      "max_velocity_envelope_excess_rad_s": 0.0
+    }
+  ],
+  "best_compact_checkpoint_step": 81920,
+  "promotion": {
+    "promote": false,
+    "reason": "best checkpoint holds at x=0.08: track ratio 0.1730 < 0.25 and mean vx 0.0138 < 0.0200 m/s"
+  },
+  "robot_validation": "blocked",
+  "interpretation": "The recipe preserved safety and x=0.0 behavior, but suppressed forward progress at x=0.08. Failure is low progress, not envelope violation."
+}

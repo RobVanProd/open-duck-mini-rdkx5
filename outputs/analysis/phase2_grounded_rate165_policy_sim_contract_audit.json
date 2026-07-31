@@ -1,0 +1,839 @@
+{
+  "policy": {
+    "path": "/home/lsd/robots/open-duck-mini-rdkx5/policy/candidates/phase2_corrected_live_oracle_iter1_rate165_20260703/candidate.onnx",
+    "exists": true,
+    "sha256": "e06643e5790217075d9c7a0d1e1ac262652058592b374ac0446bdd0426d0ea33",
+    "expected_input_shape": [
+      1,
+      101
+    ],
+    "expected_output_shape": [
+      1,
+      14
+    ],
+    "inputs": [
+      {
+        "name": "obs",
+        "shape": [
+          1,
+          101
+        ],
+        "type": "tensor(float)"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "continuous_actions",
+        "shape": [
+          1,
+          14
+        ],
+        "type": "tensor(float)"
+      }
+    ],
+    "status": "PASS_ONNX_RUNTIME_METADATA"
+  },
+  "playground_static": {
+    "path": "/home/lsd/robots/Open_Duck_Playground",
+    "exists": true,
+    "open_duck_dir": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2",
+    "joystick_path": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/joystick.py",
+    "constants_path": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/constants.py",
+    "joints_order_no_head": [
+      "left_hip_yaw",
+      "left_hip_roll",
+      "left_hip_pitch",
+      "left_knee",
+      "left_ankle",
+      "right_hip_yaw",
+      "right_hip_roll",
+      "right_hip_pitch",
+      "right_knee",
+      "right_ankle"
+    ],
+    "feet_sites": [
+      "left_foot",
+      "right_foot"
+    ],
+    "feet_geoms": null,
+    "default_config": {
+      "ctrl_dt": 0.02,
+      "sim_dt": 0.002,
+      "action_repeat": 1,
+      "action_scale": 0.25,
+      "dof_vel_scale": 0.05,
+      "max_motor_velocity": 5.24,
+      "action_min_delay": 0,
+      "action_max_delay": 3,
+      "imu_min_delay": 0,
+      "imu_max_delay": 3
+    },
+    "xmls": [
+      {
+        "path": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/.codex_eval_72f2qwf1_hfield_z0.002.xml",
+        "exists": true,
+        "nu_static": 14,
+        "actuator_names": [
+          "left_hip_yaw",
+          "left_hip_roll",
+          "left_hip_pitch",
+          "left_knee",
+          "left_ankle",
+          "neck_pitch",
+          "head_pitch",
+          "head_yaw",
+          "head_roll",
+          "right_hip_yaw",
+          "right_hip_roll",
+          "right_hip_pitch",
+          "right_knee",
+          "right_ankle"
+        ],
+        "joint_names": [
+          "left_hip_yaw",
+          "left_hip_yaw_backlash",
+          "left_hip_roll",
+          "left_hip_roll_backlash",
+          "left_hip_pitch",
+          "left_hip_pitch_backlash",
+          "left_knee",
+          "left_knee_backlash",
+          "left_ankle",
+          "left_ankle_backlash",
+          "neck_pitch",
+          "head_pitch",
+          "head_yaw",
+          "head_roll",
+          "right_hip_yaw",
+          "right_hip_yaw_backlash",
+          "right_hip_roll",
+          "right_hip_roll_backlash",
+          "right_hip_pitch",
+          "right_hip_pitch_backlash",
+          "right_knee",
+          "right_knee_backlash",
+          "right_ankle",
+          "right_ankle_backlash"
+        ],
+        "keyframes": [
+          {
+            "name": "home",
+            "ctrl_len": 14,
+            "qpos_len": 31,
+            "ctrl": [
+              0.002,
+              0.053,
+              -0.63,
+              1.368,
+              -0.784,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              -0.003,
+              -0.065,
+              0.635,
+              1.379,
+              -0.796
+            ]
+          }
+        ],
+        "error": null
+      },
+      {
+        "path": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/.codex_eval_ao8pdqc4_hfield_z0.005.xml",
+        "exists": true,
+        "nu_static": 14,
+        "actuator_names": [
+          "left_hip_yaw",
+          "left_hip_roll",
+          "left_hip_pitch",
+          "left_knee",
+          "left_ankle",
+          "neck_pitch",
+          "head_pitch",
+          "head_yaw",
+          "head_roll",
+          "right_hip_yaw",
+          "right_hip_roll",
+          "right_hip_pitch",
+          "right_knee",
+          "right_ankle"
+        ],
+        "joint_names": [
+          "left_hip_yaw",
+          "left_hip_yaw_backlash",
+          "left_hip_roll",
+          "left_hip_roll_backlash",
+          "left_hip_pitch",
+          "left_hip_pitch_backlash",
+          "left_knee",
+          "left_knee_backlash",
+          "left_ankle",
+          "left_ankle_backlash",
+          "neck_pitch",
+          "head_pitch",
+          "head_yaw",
+          "head_roll",
+          "right_hip_yaw",
+          "right_hip_yaw_backlash",
+          "right_hip_roll",
+          "right_hip_roll_backlash",
+          "right_hip_pitch",
+          "right_hip_pitch_backlash",
+          "right_knee",
+          "right_knee_backlash",
+          "right_ankle",
+          "right_ankle_backlash"
+        ],
+        "keyframes": [
+          {
+            "name": "home",
+            "ctrl_len": 14,
+            "qpos_len": 31,
+            "ctrl": [
+              0.002,
+              0.053,
+              -0.63,
+              1.368,
+              -0.784,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              -0.003,
+              -0.065,
+              0.635,
+              1.379,
+              -0.796
+            ]
+          }
+        ],
+        "error": null
+      },
+      {
+        "path": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/.codex_eval_bzi_k2f4_hfield_z0.005.xml",
+        "exists": true,
+        "nu_static": 14,
+        "actuator_names": [
+          "left_hip_yaw",
+          "left_hip_roll",
+          "left_hip_pitch",
+          "left_knee",
+          "left_ankle",
+          "neck_pitch",
+          "head_pitch",
+          "head_yaw",
+          "head_roll",
+          "right_hip_yaw",
+          "right_hip_roll",
+          "right_hip_pitch",
+          "right_knee",
+          "right_ankle"
+        ],
+        "joint_names": [
+          "left_hip_yaw",
+          "left_hip_yaw_backlash",
+          "left_hip_roll",
+          "left_hip_roll_backlash",
+          "left_hip_pitch",
+          "left_hip_pitch_backlash",
+          "left_knee",
+          "left_knee_backlash",
+          "left_ankle",
+          "left_ankle_backlash",
+          "neck_pitch",
+          "head_pitch",
+          "head_yaw",
+          "head_roll",
+          "right_hip_yaw",
+          "right_hip_yaw_backlash",
+          "right_hip_roll",
+          "right_hip_roll_backlash",
+          "right_hip_pitch",
+          "right_hip_pitch_backlash",
+          "right_knee",
+          "right_knee_backlash",
+          "right_ankle",
+          "right_ankle_backlash"
+        ],
+        "keyframes": [
+          {
+            "name": "home",
+            "ctrl_len": 14,
+            "qpos_len": 31,
+            "ctrl": [
+              0.002,
+              0.053,
+              -0.63,
+              1.368,
+              -0.784,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              -0.003,
+              -0.065,
+              0.635,
+              1.379,
+              -0.796
+            ]
+          }
+        ],
+        "error": null
+      },
+      {
+        "path": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/.codex_eval_m9qvl818_hfield_z0.005.xml",
+        "exists": true,
+        "nu_static": 14,
+        "actuator_names": [
+          "left_hip_yaw",
+          "left_hip_roll",
+          "left_hip_pitch",
+          "left_knee",
+          "left_ankle",
+          "neck_pitch",
+          "head_pitch",
+          "head_yaw",
+          "head_roll",
+          "right_hip_yaw",
+          "right_hip_roll",
+          "right_hip_pitch",
+          "right_knee",
+          "right_ankle"
+        ],
+        "joint_names": [
+          "left_hip_yaw",
+          "left_hip_yaw_backlash",
+          "left_hip_roll",
+          "left_hip_roll_backlash",
+          "left_hip_pitch",
+          "left_hip_pitch_backlash",
+          "left_knee",
+          "left_knee_backlash",
+          "left_ankle",
+          "left_ankle_backlash",
+          "neck_pitch",
+          "head_pitch",
+          "head_yaw",
+          "head_roll",
+          "right_hip_yaw",
+          "right_hip_yaw_backlash",
+          "right_hip_roll",
+          "right_hip_roll_backlash",
+          "right_hip_pitch",
+          "right_hip_pitch_backlash",
+          "right_knee",
+          "right_knee_backlash",
+          "right_ankle",
+          "right_ankle_backlash"
+        ],
+        "keyframes": [
+          {
+            "name": "home",
+            "ctrl_len": 14,
+            "qpos_len": 31,
+            "ctrl": [
+              0.002,
+              0.053,
+              -0.63,
+              1.368,
+              -0.784,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              -0.003,
+              -0.065,
+              0.635,
+              1.379,
+              -0.796
+            ]
+          }
+        ],
+        "error": null
+      },
+      {
+        "path": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/.codex_eval_qs7p_7u7_hfield_z0.005.xml",
+        "exists": true,
+        "nu_static": 14,
+        "actuator_names": [
+          "left_hip_yaw",
+          "left_hip_roll",
+          "left_hip_pitch",
+          "left_knee",
+          "left_ankle",
+          "neck_pitch",
+          "head_pitch",
+          "head_yaw",
+          "head_roll",
+          "right_hip_yaw",
+          "right_hip_roll",
+          "right_hip_pitch",
+          "right_knee",
+          "right_ankle"
+        ],
+        "joint_names": [
+          "left_hip_yaw",
+          "left_hip_yaw_backlash",
+          "left_hip_roll",
+          "left_hip_roll_backlash",
+          "left_hip_pitch",
+          "left_hip_pitch_backlash",
+          "left_knee",
+          "left_knee_backlash",
+          "left_ankle",
+          "left_ankle_backlash",
+          "neck_pitch",
+          "head_pitch",
+          "head_yaw",
+          "head_roll",
+          "right_hip_yaw",
+          "right_hip_yaw_backlash",
+          "right_hip_roll",
+          "right_hip_roll_backlash",
+          "right_hip_pitch",
+          "right_hip_pitch_backlash",
+          "right_knee",
+          "right_knee_backlash",
+          "right_ankle",
+          "right_ankle_backlash"
+        ],
+        "keyframes": [
+          {
+            "name": "home",
+            "ctrl_len": 14,
+            "qpos_len": 31,
+            "ctrl": [
+              0.002,
+              0.053,
+              -0.63,
+              1.368,
+              -0.784,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              -0.003,
+              -0.065,
+              0.635,
+              1.379,
+              -0.796
+            ]
+          }
+        ],
+        "error": null
+      },
+      {
+        "path": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/joints_properties.xml",
+        "exists": true,
+        "nu_static": 0,
+        "actuator_names": [],
+        "joint_names": [],
+        "keyframes": [],
+        "error": null
+      },
+      {
+        "path": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/open_duck_mini_v2.xml",
+        "exists": true,
+        "nu_static": 14,
+        "actuator_names": [
+          "left_hip_yaw",
+          "left_hip_roll",
+          "left_hip_pitch",
+          "left_knee",
+          "left_ankle",
+          "neck_pitch",
+          "head_pitch",
+          "head_yaw",
+          "head_roll",
+          "right_hip_yaw",
+          "right_hip_roll",
+          "right_hip_pitch",
+          "right_knee",
+          "right_ankle"
+        ],
+        "joint_names": [
+          "left_hip_yaw",
+          "left_hip_roll",
+          "left_hip_pitch",
+          "left_knee",
+          "left_ankle",
+          "neck_pitch",
+          "head_pitch",
+          "head_yaw",
+          "head_roll",
+          "right_hip_yaw",
+          "right_hip_roll",
+          "right_hip_pitch",
+          "right_knee",
+          "right_ankle"
+        ],
+        "keyframes": [],
+        "error": null
+      },
+      {
+        "path": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/open_duck_mini_v2_backlash.xml",
+        "exists": true,
+        "nu_static": 14,
+        "actuator_names": [
+          "left_hip_yaw",
+          "left_hip_roll",
+          "left_hip_pitch",
+          "left_knee",
+          "left_ankle",
+          "neck_pitch",
+          "head_pitch",
+          "head_yaw",
+          "head_roll",
+          "right_hip_yaw",
+          "right_hip_roll",
+          "right_hip_pitch",
+          "right_knee",
+          "right_ankle"
+        ],
+        "joint_names": [
+          "left_hip_yaw",
+          "left_hip_yaw_backlash",
+          "left_hip_roll",
+          "left_hip_roll_backlash",
+          "left_hip_pitch",
+          "left_hip_pitch_backlash",
+          "left_knee",
+          "left_knee_backlash",
+          "left_ankle",
+          "left_ankle_backlash",
+          "neck_pitch",
+          "head_pitch",
+          "head_yaw",
+          "head_roll",
+          "right_hip_yaw",
+          "right_hip_yaw_backlash",
+          "right_hip_roll",
+          "right_hip_roll_backlash",
+          "right_hip_pitch",
+          "right_hip_pitch_backlash",
+          "right_knee",
+          "right_knee_backlash",
+          "right_ankle",
+          "right_ankle_backlash"
+        ],
+        "keyframes": [],
+        "error": null
+      },
+      {
+        "path": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_flat_terrain.xml",
+        "exists": true,
+        "nu_static": 14,
+        "actuator_names": [
+          "left_hip_yaw",
+          "left_hip_roll",
+          "left_hip_pitch",
+          "left_knee",
+          "left_ankle",
+          "neck_pitch",
+          "head_pitch",
+          "head_yaw",
+          "head_roll",
+          "right_hip_yaw",
+          "right_hip_roll",
+          "right_hip_pitch",
+          "right_knee",
+          "right_ankle"
+        ],
+        "joint_names": [
+          "left_hip_yaw",
+          "left_hip_roll",
+          "left_hip_pitch",
+          "left_knee",
+          "left_ankle",
+          "neck_pitch",
+          "head_pitch",
+          "head_yaw",
+          "head_roll",
+          "right_hip_yaw",
+          "right_hip_roll",
+          "right_hip_pitch",
+          "right_knee",
+          "right_ankle"
+        ],
+        "keyframes": [
+          {
+            "name": "home",
+            "ctrl_len": 14,
+            "qpos_len": 21,
+            "ctrl": [
+              0.002,
+              0.053,
+              -0.63,
+              1.368,
+              -0.784,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              -0.003,
+              -0.065,
+              0.635,
+              1.379,
+              -0.796
+            ]
+          }
+        ],
+        "error": null
+      },
+      {
+        "path": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml",
+        "exists": true,
+        "nu_static": 14,
+        "actuator_names": [
+          "left_hip_yaw",
+          "left_hip_roll",
+          "left_hip_pitch",
+          "left_knee",
+          "left_ankle",
+          "neck_pitch",
+          "head_pitch",
+          "head_yaw",
+          "head_roll",
+          "right_hip_yaw",
+          "right_hip_roll",
+          "right_hip_pitch",
+          "right_knee",
+          "right_ankle"
+        ],
+        "joint_names": [
+          "left_hip_yaw",
+          "left_hip_yaw_backlash",
+          "left_hip_roll",
+          "left_hip_roll_backlash",
+          "left_hip_pitch",
+          "left_hip_pitch_backlash",
+          "left_knee",
+          "left_knee_backlash",
+          "left_ankle",
+          "left_ankle_backlash",
+          "neck_pitch",
+          "head_pitch",
+          "head_yaw",
+          "head_roll",
+          "right_hip_yaw",
+          "right_hip_yaw_backlash",
+          "right_hip_roll",
+          "right_hip_roll_backlash",
+          "right_hip_pitch",
+          "right_hip_pitch_backlash",
+          "right_knee",
+          "right_knee_backlash",
+          "right_ankle",
+          "right_ankle_backlash"
+        ],
+        "keyframes": [
+          {
+            "name": "home",
+            "ctrl_len": 14,
+            "qpos_len": 31,
+            "ctrl": [
+              0.002,
+              0.053,
+              -0.63,
+              1.368,
+              -0.784,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              -0.003,
+              -0.065,
+              0.635,
+              1.379,
+              -0.796
+            ]
+          }
+        ],
+        "error": null
+      },
+      {
+        "path": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_rough_terrain_backlash.xml",
+        "exists": true,
+        "nu_static": 14,
+        "actuator_names": [
+          "left_hip_yaw",
+          "left_hip_roll",
+          "left_hip_pitch",
+          "left_knee",
+          "left_ankle",
+          "neck_pitch",
+          "head_pitch",
+          "head_yaw",
+          "head_roll",
+          "right_hip_yaw",
+          "right_hip_roll",
+          "right_hip_pitch",
+          "right_knee",
+          "right_ankle"
+        ],
+        "joint_names": [
+          "left_hip_yaw",
+          "left_hip_yaw_backlash",
+          "left_hip_roll",
+          "left_hip_roll_backlash",
+          "left_hip_pitch",
+          "left_hip_pitch_backlash",
+          "left_knee",
+          "left_knee_backlash",
+          "left_ankle",
+          "left_ankle_backlash",
+          "neck_pitch",
+          "head_pitch",
+          "head_yaw",
+          "head_roll",
+          "right_hip_yaw",
+          "right_hip_yaw_backlash",
+          "right_hip_roll",
+          "right_hip_roll_backlash",
+          "right_hip_pitch",
+          "right_hip_pitch_backlash",
+          "right_knee",
+          "right_knee_backlash",
+          "right_ankle",
+          "right_ankle_backlash"
+        ],
+        "keyframes": [
+          {
+            "name": "home",
+            "ctrl_len": 14,
+            "qpos_len": 31,
+            "ctrl": [
+              0.002,
+              0.053,
+              -0.63,
+              1.368,
+              -0.784,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              -0.003,
+              -0.065,
+              0.635,
+              1.379,
+              -0.796
+            ]
+          }
+        ],
+        "error": null
+      },
+      {
+        "path": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/sensors.xml",
+        "exists": true,
+        "nu_static": 0,
+        "actuator_names": [],
+        "joint_names": [],
+        "keyframes": [],
+        "error": null
+      }
+    ],
+    "candidate_14_actuator_xmls": [
+      "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/.codex_eval_72f2qwf1_hfield_z0.002.xml",
+      "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/.codex_eval_ao8pdqc4_hfield_z0.005.xml",
+      "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/.codex_eval_bzi_k2f4_hfield_z0.005.xml",
+      "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/.codex_eval_m9qvl818_hfield_z0.005.xml",
+      "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/.codex_eval_qs7p_7u7_hfield_z0.005.xml",
+      "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/open_duck_mini_v2.xml",
+      "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/open_duck_mini_v2_backlash.xml",
+      "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_flat_terrain.xml",
+      "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml",
+      "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_rough_terrain_backlash.xml"
+    ]
+  },
+  "playground_instantiated": {
+    "action_size": 14,
+    "actuator_names": [
+      "left_hip_yaw",
+      "left_hip_roll",
+      "left_hip_pitch",
+      "left_knee",
+      "left_ankle",
+      "neck_pitch",
+      "head_pitch",
+      "head_yaw",
+      "head_roll",
+      "right_hip_yaw",
+      "right_hip_roll",
+      "right_hip_pitch",
+      "right_knee",
+      "right_ankle"
+    ],
+    "backlash_joint_names": [],
+    "config": {
+      "action_max_delay": 3,
+      "action_min_delay": 0,
+      "action_repeat": 1,
+      "action_scale": 0.25,
+      "ctrl_dt": 0.02,
+      "dof_vel_scale": 0.05,
+      "imu_max_delay": 3,
+      "imu_min_delay": 0,
+      "max_motor_velocity": 5.24,
+      "sim_dt": 0.002
+    },
+    "jax_default_backend": "cpu",
+    "jax_devices": [
+      "TFRT_CPU_0"
+    ],
+    "joint_names": [
+      "floating_base",
+      "left_hip_yaw",
+      "left_hip_roll",
+      "left_hip_pitch",
+      "left_knee",
+      "left_ankle",
+      "neck_pitch",
+      "head_pitch",
+      "head_yaw",
+      "head_roll",
+      "right_hip_yaw",
+      "right_hip_roll",
+      "right_hip_pitch",
+      "right_knee",
+      "right_ankle"
+    ],
+    "mjcf": {
+      "home_ctrl_len": 14,
+      "nq": 21,
+      "nu": 14,
+      "nv": 20
+    },
+    "observation_size": {
+      "privileged_state": [
+        212
+      ],
+      "state": [
+        101
+      ]
+    },
+    "python": "/home/lsd/robots/envs/open-duck-playground/bin/python",
+    "reset_obs_shapes": {
+      "privileged_state": [
+        212
+      ],
+      "state": [
+        101
+      ]
+    },
+    "status": "PASS_ENV_INSTANTIATED",
+    "returncode": 0,
+    "output_tail": "/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\nFailed to import warp: No module named 'warp'\nFailed to import mujoco_warp: No module named 'warp'\nxml: /home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_flat_terrain.xml\nactuators: ['left_hip_yaw', 'left_hip_roll', 'left_hip_pitch', 'left_knee', 'left_ankle', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_roll', 'right_hip_pitch', 'right_knee', 'right_ankle']\njoints: ['floating_base', 'left_hip_yaw', 'left_hip_roll', 'left_hip_pitch', 'left_knee', 'left_ankle', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_roll', 'right_hip_pitch', 'right_knee', 'right_ankle']\nbacklash joints: []\nactuator joints ids: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]\nactuator joints dict: {'left_hip_yaw': 1, 'left_hip_roll': 2, 'left_hip_pitch': 3, 'left_knee': 4, 'left_ankle': 5, 'neck_pitch': 6, 'head_pitch': 7, 'head_yaw': 8, 'head_roll': 9, 'right_hip_yaw': 10, 'right_hip_roll': 11, 'right_hip_pitch': 12, 'right_knee': 13, 'right_ankle': 14}\nfloating qpos addr: 0 qvel addr: 0\n[Poly ref data] Processing ...\n[Poly ref data] Done processing\nCONTRACT_JSON_START\n{\"action_size\": 14, \"actuator_names\": [\"left_hip_yaw\", \"left_hip_roll\", \"left_hip_pitch\", \"left_knee\", \"left_ankle\", \"neck_pitch\", \"head_pitch\", \"head_yaw\", \"head_roll\", \"right_hip_yaw\", \"right_hip_roll\", \"right_hip_pitch\", \"right_knee\", \"right_ankle\"], \"backlash_joint_names\": [], \"config\": {\"action_max_delay\": 3, \"action_min_delay\": 0, \"action_repeat\": 1, \"action_scale\": 0.25, \"ctrl_dt\": 0.02, \"dof_vel_scale\": 0.05, \"imu_max_delay\": 3, \"imu_min_delay\": 0, \"max_motor_velocity\": 5.24, \"sim_dt\": 0.002}, \"jax_default_backend\": \"cpu\", \"jax_devices\": [\"TFRT_CPU_0\"], \"joint_names\": [\"floating_base\", \"left_hip_yaw\", \"left_hip_roll\", \"left_hip_pitch\", \"left_knee\", \"left_ankle\", \"neck_pitch\", \"head_pitch\", \"head_yaw\", \"head_roll\", \"right_hip_yaw\", \"right_hip_roll\", \"right_hip_pitch\", \"right_knee\", \"right_ankle\"], \"mjcf\": {\"home_ctrl_len\": 14, \"nq\": 21, \"nu\": 14, \"nv\": 20}, \"observation_size\": {\"privileged_state\": [212], \"state\": [101]}, \"python\": \"/home/lsd/robots/envs/open-duck-playground/bin/python\", \"reset_obs_shapes\": {\"privileged_state\": [212], \"state\": [101]}, \"status\": \"PASS_ENV_INSTANTIATED\"}\nCONTRACT_JSON_END\n"
+  },
+  "assessment": {
+    "status": "PASS_POLICY_SIM_CONTRACT",
+    "expected_observation_dim": 101,
+    "expected_action_dim": 14,
+    "instantiated_observation_dim": 101,
+    "instantiated_action_dim": 14,
+    "static_14_actuator_xml_found": true,
+    "actuator_order_matches_policy": true,
+    "recommended_next": "run full actuator bridge policy-loop eval"
+  }
+}

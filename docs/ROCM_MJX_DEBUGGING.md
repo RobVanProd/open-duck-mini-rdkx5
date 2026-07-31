@@ -846,3 +846,54 @@ closed-loop policy/eval code can survive on ROCm when repeated MJX substeps are
 not lowered through XLA control flow. It does not make local ROCm practical for
 training or full-horizon closed-loop evaluation. CUDA remains the confirmed
 backend for full eval and candidate training.
+
+## External ROCm / JAX Leads
+
+External search found a real JAX/ROCm batched Cholesky issue:
+
+```text
+https://github.com/jax-ml/jax/issues/35455
+```
+
+That issue reports that batched `potrf` can route through hipSOLVER batched
+APIs that allocate outside XLA's allocator. The documented workaround is:
+
+```bash
+export XLA_PYTHON_CLIENT_PREALLOCATE=false
+```
+
+This is relevant background because JAX normally preallocates a large fraction
+of GPU memory, and the official JAX memory docs document:
+
+```text
+https://docs.jax.dev/en/latest/gpu_memory_allocation.html
+```
+
+Project interpretation:
+
+```text
+The hipSOLVER/preallocation issue is a plausible explanation for some ROCm
+OOM-like failures, but it is not enough to explain the current Open Duck local
+MJX hold by itself.
+```
+
+Reason:
+
+```text
+The project already tested XLA_PYTHON_CLIENT_PREALLOCATE=false,
+XLA_PYTHON_CLIENT_MEM_FRACTION=0.50, XLA_PYTHON_CLIENT_MEM_FRACTION=0.60, and
+XLA_PYTHON_CLIENT_ALLOCATOR=platform. Those variants did not clear the direct
+Open Duck Playground MJX step/scan hold.
+```
+
+AMD's current MuJoCo/JAX-on-ROCm blog uses ROCm 7.2 for its published robotics
+example:
+
+```text
+https://rocm.blogs.amd.com/artificial-intelligence/rocm-jax-mujoco/README.html
+```
+
+That supports keeping a ROCm package/driver upgrade as a separate backend-debug
+thread. It does not change the current project path: use CUDA/Colab for full
+training and keep local ROCm as a quarantined backend issue until a version
+upgrade or reduced reproducer clears `mjx_env.step(...)`.

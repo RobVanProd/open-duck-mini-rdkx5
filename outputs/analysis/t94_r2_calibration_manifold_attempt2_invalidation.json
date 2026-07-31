@@ -1,0 +1,39 @@
+{
+  "schema_version": "open_duck.t94_r2_calibration_manifold_attempt2_invalidation.v1",
+  "status": "INVALIDATED_T94_ATTEMPT2_REPORTING_ONLY",
+  "reason": "action_saturated is a 14-element zero vector, but the v2 audit converted the nonempty list itself to bool, falsely marking an otherwise green calibration cell as saturated.",
+  "correction": "Apply numpy.any to the frozen per-joint action_saturated vector before the unchanged requirement that every element is zero.",
+  "completed_blocks": 2,
+  "completed_blocks_reused": false,
+  "formal_policy_or_classifier_result_emitted": false,
+  "fresh_cache_required": true,
+  "attempt2_preregistration": {
+    "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t94_r2_calibration_manifold_preregistration_v2.json",
+    "bytes": 14601,
+    "sha256": "b90104726642828f2b2d15e195142f1f5e0de343a43dd61edf13a5328fceb994"
+  },
+  "attempt2_completed_block_manifests": [
+    {
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t94_r2_calibration_manifold_v2\\FLOOR_FRICTION_LO\\p30\\repeat_0\\manifest.json",
+      "bytes": 3022,
+      "sha256": "74348f313b775ff3a6cbe36ea8059414b3fbc8c322195716deef03ee1d98f535"
+    },
+    {
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t94_r2_calibration_manifold_v2\\FLOOR_FRICTION_LO\\p31_34\\repeat_0\\manifest.json",
+      "bytes": 3043,
+      "sha256": "187b8d6285e4b6c7afef7c807453cf36a1e168ffc701448f14d8d75877f4b1de"
+    }
+  ],
+  "attempt2_stdout": {
+    "path": "D:\\CodexArtifacts\\open-duck-policy\\t94_v2_runner.stdout.log",
+    "bytes": 137,
+    "sha256": "4def3fdf51bd6cf573d94346fea47ac724928817dc9bc52c8defb010c5e2fb80"
+  },
+  "authority": {
+    "behavior_selection": false,
+    "hosted_training": false,
+    "deployment": false,
+    "gate5": false,
+    "rdkx5_or_robot": false
+  }
+}

@@ -1,0 +1,318 @@
+{
+  "analysis": {
+    "cross_checkpoint_replay": [
+      "failing half/P31-34/x=.080 states",
+      "passing final/P31-34/x=.080 states"
+    ],
+    "gait_period_ticks": 27,
+    "joint_order": [
+      "left_hip_yaw",
+      "left_hip_roll",
+      "left_hip_pitch",
+      "left_knee",
+      "left_ankle",
+      "neck_pitch",
+      "head_pitch",
+      "head_yaw",
+      "head_roll",
+      "right_hip_yaw",
+      "right_hip_roll",
+      "right_hip_pitch",
+      "right_knee",
+      "right_ankle"
+    ],
+    "next_screen_switch_tick_rule": "failure terminal tick - (gait_period_ticks - 1)",
+    "paired_dynamics": "half versus final P31-34/x=.080",
+    "recorded_onnx_replay": "all stored rows, exact",
+    "selection_weight": 0,
+    "support_proximity_rule": "failure terminal tick minus last single-support tick <= 27",
+    "terminal_window_ticks": 54
+  },
+  "authority": {
+    "behavior": false,
+    "execute_read_only_autopsy": true,
+    "full_r2": false,
+    "gate5": false,
+    "head_switch_preregistration": false,
+    "robot_or_rdk": false,
+    "training": false
+  },
+  "checks": {
+    "gait_period_is_frozen_27_ticks": true,
+    "new_failure_is_half_p31_x008_only": true,
+    "paired_traces_present": true,
+    "prior_t170_autopsy_exact_and_green": true,
+    "read_only_no_behavior_training_hosted_robot": true,
+    "t190b_is_exact_15_of_16_hold": true,
+    "two_composed_graphs_present": true,
+    "two_y_negative_contexts_exact": true
+  },
+  "contexts": {
+    "p30": {
+      "condition_id": "TORSO_COM_Y_NEG",
+      "context": [
+        0.5800173282623291,
+        -0.5945931673049927,
+        -0.6792619824409485,
+        -0.6917221546173096,
+        -0.6885808706283569,
+        0.6048201322555542,
+        0.1847171187400818,
+        0.7417566180229187,
+        -0.5063944458961487,
+        0.7156811952590942,
+        0.7942132353782654,
+        0.47959744930267334,
+        0.7538225650787354,
+        0.7322460412979126,
+        -0.6090723872184753,
+        -0.46034952998161316,
+        -0.6744005680084229,
+        -0.6243632435798645,
+        0.6973139643669128,
+        0.207722008228302,
+        0.8796172738075256,
+        0.6334306597709656,
+        0.640498697757721,
+        -0.4504890441894531,
+        -0.6317108869552612,
+        0.5280655026435852,
+        0.03863558918237686,
+        -0.677825391292572,
+        0.6580488681793213,
+        0.33139386773109436,
+        -0.26318874955177307,
+        0.6180002093315125,
+        -0.3035661280155182,
+        0.6390781998634338,
+        -0.6163024306297302,
+        -0.7403678894042969,
+        0.14554265141487122,
+        -0.497548371553421,
+        0.8216938972473145,
+        0.5727240443229675,
+        -0.0031245665159076452,
+        -0.7065889239311218,
+        -0.7054978013038635,
+        -0.24226732552051544,
+        0.3081253468990326,
+        -0.2933974862098694,
+        -0.04493105411529541,
+        -0.15647079050540924,
+        0.2736755907535553,
+        -0.49023932218551636,
+        -0.28054875135421753,
+        -0.1442708522081375,
+        -0.34188151359558105,
+        0.5113840699195862,
+        0.5542054176330566,
+        0.35036027431488037,
+        0.7760293483734131,
+        0.5306971073150635,
+        -0.5302873253822327,
+        -0.4801355302333832,
+        -0.8071569204330444,
+        -0.7353729009628296,
+        -0.6414777636528015,
+        0.6302157640457153
+      ],
+      "context_sha256": "098cc8a292ef2f209f09f079434fa2cd0e89f02d471740212508e4ee9dffb817",
+      "fit_id": "p30"
+    },
+    "p31_34": {
+      "condition_id": "TORSO_COM_Y_NEG",
+      "context": [
+        0.578777015209198,
+        -0.5965659022331238,
+        -0.6806613802909851,
+        -0.6942094564437866,
+        -0.6884058713912964,
+        0.6042795777320862,
+        0.18345485627651215,
+        0.7415886521339417,
+        -0.5023974776268005,
+        0.7163352966308594,
+        0.7942392230033875,
+        0.48161450028419495,
+        0.7528862953186035,
+        0.7333662509918213,
+        -0.6106430888175964,
+        -0.45925918221473694,
+        -0.6753503084182739,
+        -0.6221381425857544,
+        0.6991726160049438,
+        0.21130649745464325,
+        0.8798244595527649,
+        0.6328909993171692,
+        0.6414726376533508,
+        -0.4496645927429199,
+        -0.63457190990448,
+        0.5263369083404541,
+        0.04330798611044884,
+        -0.6785919666290283,
+        0.6615756750106812,
+        0.32942095398902893,
+        -0.2590620219707489,
+        0.6202223896980286,
+        -0.30770429968833923,
+        0.6365388631820679,
+        -0.617920458316803,
+        -0.741201639175415,
+        0.14163735508918762,
+        -0.4982394278049469,
+        0.8223440647125244,
+        0.5737837553024292,
+        -0.0069126165471971035,
+        -0.7080899477005005,
+        -0.7064435482025146,
+        -0.24246208369731903,
+        0.3092605173587799,
+        -0.29455626010894775,
+        -0.0459166020154953,
+        -0.15189029276371002,
+        0.268724650144577,
+        -0.4951029419898987,
+        -0.2834329307079315,
+        -0.1467045247554779,
+        -0.34293630719184875,
+        0.5149144530296326,
+        0.5556153655052185,
+        0.35314929485321045,
+        0.7773347496986389,
+        0.5318042039871216,
+        -0.5305049419403076,
+        -0.48318466544151306,
+        -0.8070585131645203,
+        -0.7345271110534668,
+        -0.6434925198554993,
+        0.6327222585678101
+      ],
+      "context_sha256": "1877bd45d746f7c79312c5c919c68918c5139dbc382dd90314c8c5d8de9145ec",
+      "fit_id": "p31_34"
+    }
+  },
+  "decision_rule": {
+    "no_optimizer_or_behavior": true,
+    "otherwise": "RETURN_TO_MECHANISM_SELECTION_WITHOUT_HEAD_SWITCH",
+    "support_proximal_and_state_compatible": "EARN_T192_ONE_PERIOD_HEAD_SWITCH_FEASIBILITY_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "inference_rows": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 8805,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t191_t186_failure_exchange_autopsy_preregistration.py",
+      "sha256": "c981baab78a81760c337a2b911a46dae493819aa4e359620c190cb2930d65d8a"
+    },
+    "runner": {
+      "bytes": 10870,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t191_t186_failure_exchange_autopsy.py",
+      "sha256": "574efacb15cc00d76623913b10ba713b7508f4c28988710baf2cf77d219dbbe8"
+    },
+    "t167_contexts": {
+      "bytes": 128322,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t167_calibration_context_separability_result.json",
+      "sha256": "0d55e78a96317bff9bb1363a65a1de48beaa61217609a768e148b63a59827e35"
+    },
+    "t174_prior_autopsy": {
+      "bytes": 13554,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t174_t173_failure_autopsy_result.json",
+      "sha256": "f7236f636318e6e3e8dc904f22c8394a885feed48ab8a0a67d51a64164631a19"
+    },
+    "t188_composition": {
+      "bytes": 238140,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t188_t186_postexport_composition_result.json",
+      "sha256": "ab869ad651f73f946957911f19fbc1f1cc8335673be038c43e7b5bed76fc7b70"
+    },
+    "t190b_result": {
+      "bytes": 120465,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t190b_interrupted_execution_recovery_result.json",
+      "sha256": "d7163fe9c84f85167402b8a2219f977507ce5a47d3e76d42ee4347ff4b3e2c3e"
+    },
+    "test": {
+      "bytes": 1834,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t191_t186_failure_exchange_autopsy.py",
+      "sha256": "f21a4003883fb04a31de39948a7ed96c757c36ceaf8a7985b608f79a83772f04"
+    }
+  },
+  "graphs": {
+    "final": {
+      "bytes": 983104,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t188_t186_postexport_composition_v1\\2007040\\t186_composed.onnx",
+      "sha256": "8958548b8e838a8405c713e4db7a6b55419649f54cc127e0312bde8a52d1ad6d"
+    },
+    "half": {
+      "bytes": 983104,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t188_t186_postexport_composition_v1\\1003520\\t186_composed.onnx",
+      "sha256": "2a64c41630ddded744efdf8556bed24258f45b95d35406fa7690a2d277e8662a"
+    }
+  },
+  "preregistered_contract_sha256": "c6e472b87eb679f9aab6494373ae10b32032cb53c55b0d9fbba6c1eb7f2306eb",
+  "question": "Did the reset-only single-support curriculum merely exchange T170's Y-negative failure for a late locomotion single-support failure, and does the T186 final head supply a state-compatible correction on the failing half trajectory?",
+  "schema_version": "open_duck.t191_t186_failure_exchange_autopsy_preregistration.v1",
+  "status": "PREREGISTERED_T191_T186_FAILURE_EXCHANGE_AUTOPSY",
+  "traces": [
+    {
+      "cell_green": false,
+      "checkpoint_id": "T186_COMPOSED_HALF",
+      "command_x_m_s": 0.08,
+      "fit_id": "p31_34",
+      "samples": 547,
+      "step": 1003520,
+      "termination_reason": "fall_or_nan",
+      "trace": {
+        "bytes": 9819157,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t190_t186_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T186_COMPOSED_HALF\\p31_34\\traces\\x0.080_seed167931544_t186_composed.jsonl",
+        "sha256": "b71108078650ad1c114fe744c9f04e6e77c092de3e95769fe312d6a94ebdeee3"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T186_COMPOSED_FINAL",
+      "command_x_m_s": 0.08,
+      "fit_id": "p31_34",
+      "samples": 600,
+      "step": 2007040,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10771984,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t190_t186_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T186_COMPOSED_FINAL\\p31_34\\traces\\x0.080_seed167931544_t186_composed.jsonl",
+        "sha256": "437944b25225c4bc37d9452450bc8c24ce4f804a76cc7a045eaabe7f0364192d"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T186_COMPOSED_HALF",
+      "command_x_m_s": 0.08,
+      "fit_id": "p30",
+      "samples": 600,
+      "step": 1003520,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10768726,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t190_t186_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T186_COMPOSED_HALF\\p30\\traces\\x0.080_seed167931544_t186_composed.jsonl",
+        "sha256": "7cbb988b48a464085772d074d454e1ed59afa4a08df57c093650a933408d12c3"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T186_COMPOSED_FINAL",
+      "command_x_m_s": 0.08,
+      "fit_id": "p30",
+      "samples": 600,
+      "step": 2007040,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10771662,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t190_t186_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T186_COMPOSED_FINAL\\p30\\traces\\x0.080_seed167931544_t186_composed.jsonl",
+        "sha256": "58960c74f84b9f07331290549319b947edf5dc906a0824f09a87cd1d2f69d45e"
+      }
+    }
+  ]
+}

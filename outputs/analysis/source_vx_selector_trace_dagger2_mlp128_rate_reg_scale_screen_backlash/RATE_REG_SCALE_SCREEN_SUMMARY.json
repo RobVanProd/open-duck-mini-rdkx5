@@ -1,0 +1,127 @@
+{
+  "status": "HOLD_RATE_REG_SCALE_SWEEP_NO_BALANCED_PASS",
+  "task": "flat_terrain_backlash",
+  "bridge_mode": "fitted",
+  "command_x": 0.08,
+  "duration_s": 10,
+  "screen_seeds": [
+    0,
+    3
+  ],
+  "rows": [
+    {
+      "scale": 0.03,
+      "seed": 0,
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "samples": 500,
+      "term": "duration_complete",
+      "mean_vx": 0.03849994672359935,
+      "ratio": 0.4812493340449918,
+      "sent_vel_p95_max": 3.768822252750397,
+      "tracking_p95_max": 0.24704787731170655,
+      "height_min": 0.1520119160413742
+    },
+    {
+      "scale": 0.03,
+      "seed": 3,
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "samples": 500,
+      "term": "duration_complete",
+      "mean_vx": 0.03482367853508913,
+      "ratio": 0.4352959816886141,
+      "sent_vel_p95_max": 3.7355035543441772,
+      "tracking_p95_max": 0.248935467004776,
+      "height_min": 0.155056893825531
+    },
+    {
+      "scale": 0.05,
+      "seed": 0,
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "samples": 500,
+      "term": "duration_complete",
+      "mean_vx": 0.04041636071362882,
+      "ratio": 0.5052045089203603,
+      "sent_vel_p95_max": 3.676044642925263,
+      "tracking_p95_max": 0.24531856179237368,
+      "height_min": 0.1520121544599533
+    },
+    {
+      "scale": 0.05,
+      "seed": 3,
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "samples": 500,
+      "term": "duration_complete",
+      "mean_vx": 0.03271829610678833,
+      "ratio": 0.4089787013348541,
+      "sent_vel_p95_max": 3.695244789123535,
+      "tracking_p95_max": 0.24773481488227844,
+      "height_min": 0.1552940309047699
+    },
+    {
+      "scale": 0.1,
+      "seed": 0,
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "samples": 500,
+      "term": "duration_complete",
+      "mean_vx": 0.036737424933351574,
+      "ratio": 0.4592178116668947,
+      "sent_vel_p95_max": 3.6419138312339783,
+      "tracking_p95_max": 0.24609408378601075,
+      "height_min": 0.15201039612293243
+    },
+    {
+      "scale": 0.1,
+      "seed": 3,
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "samples": 500,
+      "term": "duration_complete",
+      "mean_vx": 0.02892765140719712,
+      "ratio": 0.36159564258996396,
+      "sent_vel_p95_max": 3.6395889520645146,
+      "tracking_p95_max": 0.2457792639732361,
+      "height_min": 0.15517817437648773
+    }
+  ],
+  "summary": [
+    {
+      "target_rate_scale": 0.03,
+      "duration_complete": 2,
+      "seed_count": 2,
+      "moving_ratio_ge_0p5": 0,
+      "mean_ratio": 0.45827265786680293,
+      "min_ratio": 0.4352959816886141,
+      "mean_vx": 0.03666181262934424,
+      "max_sent_vel_p95": 3.768822252750397,
+      "mean_sent_vel_p95": 3.752162903547287,
+      "max_tracking_p95": 0.248935467004776,
+      "min_height": 0.1520119160413742
+    },
+    {
+      "target_rate_scale": 0.05,
+      "duration_complete": 2,
+      "seed_count": 2,
+      "moving_ratio_ge_0p5": 1,
+      "mean_ratio": 0.45709160512760716,
+      "min_ratio": 0.4089787013348541,
+      "mean_vx": 0.03656732841020857,
+      "max_sent_vel_p95": 3.695244789123535,
+      "mean_sent_vel_p95": 3.685644716024399,
+      "max_tracking_p95": 0.24773481488227844,
+      "min_height": 0.1520121544599533
+    },
+    {
+      "target_rate_scale": 0.1,
+      "duration_complete": 2,
+      "seed_count": 2,
+      "moving_ratio_ge_0p5": 0,
+      "mean_ratio": 0.4104067271284293,
+      "min_ratio": 0.36159564258996396,
+      "mean_vx": 0.032832538170274345,
+      "max_sent_vel_p95": 3.6419138312339783,
+      "mean_sent_vel_p95": 3.640751391649246,
+      "max_tracking_p95": 0.24609408378601075,
+      "min_height": 0.15201039612293243
+    }
+  ],
+  "interpretation": "Target-rate regularization forms the expected tradeoff: stronger scale reduces max pitch-chain target velocity but also reduces forward tracking. No tested scale clears both motion and envelope on seeds 0/3."
+}

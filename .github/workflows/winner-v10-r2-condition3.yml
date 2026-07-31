@@ -1,0 +1,169 @@
+name: Winner v10 R2 condition 3 CPU gate
+
+on:
+  push:
+    branches:
+      - codex/winner-v4-response-contract
+    paths:
+      - .github/workflows/winner-v10-r2-condition3.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  condition-3:
+    name: Frozen joint-frictionloss-0.9 matrix
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout policy repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install frozen CPU evaluation environment
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            "jax[cpu]==0.7.2" \
+            "jaxlib==0.7.2" \
+            "playground==0.0.5" \
+            "mujoco==3.9.0" \
+            "mujoco-mjx==3.9.0" \
+            "onnxruntime==1.27.0" \
+            "ml-collections==1.1.0" \
+            "numpy==2.0.2" \
+            "matplotlib==3.10.0" \
+            "mediapy==1.2.6" \
+            "tensorflow==2.20.0" \
+            "protobuf==5.29.6" \
+            "onnx==1.22.0"
+
+      - name: Compose exact 115-D Playground
+        run: |
+          git clone --quiet https://github.com/RobVanProd/Open_Duck_Playground.git /tmp/playground-source
+          python tools/compose_winner_v7_playground.py \
+            --source-repository /tmp/playground-source \
+            --output-root /tmp/pg115-v10-r2c3
+          python - <<'PY'
+          from pathlib import Path
+
+          root = Path("/tmp/pg115-v10-r2c3")
+          for name in (
+              "playground/common/phase_moe_networks.py",
+              "playground/common/recurrent_ppo_networks.py",
+              "playground/common/rewards.py",
+              "playground/common/runner.py",
+              "playground/open_duck_mini_v2/custom_rewards.py",
+              "playground/open_duck_mini_v2/joystick.py",
+              "playground/open_duck_mini_v2/runner.py",
+              "playground/open_duck_mini_v2/xmls/open_duck_mini_v2_backlash.xml",
+              "playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml",
+          ):
+              path = root / name
+              data = path.read_bytes().replace(b"\r\n", b"\n")
+              path.write_bytes(data.replace(b"\n", b"\r\n"))
+          PY
+          python -m pip install --no-deps -e /tmp/pg115-v10-r2c3
+
+      - name: Reconstruct reviewed Windows-origin evidence bytes
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          for name in (
+              "outputs/analysis/winner_v6b_numeric_hold_attribution.json",
+              "outputs/analysis/winner_v8_numeric_hold_attribution.json",
+              "outputs/analysis/winner_v9_stored_bound_contract_result.json",
+              "outputs/analysis/winner_v9_nominal_behavior_result.json",
+              "outputs/analysis/winner_v9_numeric_torque_hold_attribution.json",
+              "outputs/analysis/winner_v10_inward_torque_contract_result.json",
+              "outputs/analysis/winner_v10_nominal_behavior_result.json",
+              "outputs/analysis/winner_v10_r2_condition1_result.json",
+              "outputs/analysis/winner_v10_r2_condition2_result.json",
+              "outputs/analysis/ground_up_robustness_r2_matrix_preregistration.json",
+              "outputs/analysis/ground_up_robustness_r2_evaluator_contract.json",
+              "outputs/analysis/ground_up_robustness_r2_reporting_contract.json",
+              "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+              "outputs/analysis/fixed_target_p31_34_actuator_fit_20260712.json",
+              "tools/evaluate_ground_up_policy.py",
+              "tools/closed_loop_sim_eval.py",
+              "tools/actuator_bridge_model.py",
+              "tools/aggregate_ground_up_robustness_r1.py",
+          ):
+              path = Path(name)
+              data = path.read_bytes().replace(b"\r\n", b"\n")
+              path.write_bytes(data.replace(b"\n", b"\r\n"))
+          PY
+
+      - name: Reconstruct hash-bound winner-v7 through winner-v10 assets
+        run: |
+          python tools/run_winner_v7_inward_projection_contract.py \
+            --work-root /tmp/winner-v7 \
+            --output /tmp/winner-v7-contract.json
+          python tools/run_winner_v9_stored_bound_contract.py \
+            --source-half /tmp/winner-v7/winner_v7_half_inward_projection.onnx \
+            --source-final /tmp/winner-v7/winner_v7_final_inward_projection.onnx \
+            --model-xml /tmp/pg115-v10-r2c3/playground/open_duck_mini_v2/xmls/open_duck_mini_v2_backlash.xml \
+            --scene-xml /tmp/pg115-v10-r2c3/playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml \
+            --work-root /tmp/winner-v9 \
+            --output /tmp/winner-v9-contract.json
+          python - <<'PY'
+          from hashlib import sha256
+          from pathlib import Path
+
+          path = Path("/tmp/winner-v9/xmls/open_duck_mini_v2_backlash.xml")
+          data = path.read_bytes().replace(b"\r\n", b"\n")
+          path.write_bytes(data.replace(b"\n", b"\r\n"))
+          expected = "2132e477d2504faf08af4c5250952bd8b17611fb496ab15f30afc0371f327f9c"
+          if sha256(path.read_bytes()).hexdigest() != expected:
+              raise SystemExit("winner-v9 XML reconstruction mismatch")
+          PY
+          python tools/run_winner_v10_inward_torque_contract.py \
+            --source-half /tmp/winner-v9/winner_v9_half_stored_bound.onnx \
+            --source-final /tmp/winner-v9/winner_v9_final_stored_bound.onnx \
+            --source-model-xml /tmp/winner-v9/xmls/open_duck_mini_v2_backlash.xml \
+            --source-scene-xml /tmp/winner-v9/xmls/scene_flat_terrain_backlash.xml \
+            --work-root /tmp/winner-v10 \
+            --output /tmp/winner-v10-contract.json
+          cp /tmp/winner-v10/xmls/open_duck_mini_v2_backlash.xml \
+            /tmp/pg115-v10-r2c3/playground/open_duck_mini_v2/xmls/open_duck_mini_v2_backlash.xml
+          cp /tmp/winner-v10/xmls/scene_flat_terrain_backlash.xml \
+            /tmp/pg115-v10-r2c3/playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml
+
+      - name: Run frozen Winner-v10 R2 condition 3
+        run: |
+          python tools/run_winner_v10_r2_condition.py \
+            --preregistration outputs/analysis/winner_v10_r2_condition3_preregistration.json \
+            --playground-root /tmp/pg115-v10-r2c3 \
+            --policy-half /tmp/winner-v10/winner_v10_half_inward_torque.onnx \
+            --policy-final /tmp/winner-v10/winner_v10_final_inward_torque.onnx \
+            --work-root /tmp/winner-v10-r2-condition3 \
+            --output /tmp/winner-v10-r2-condition3-result.json
+
+      - name: Hash recovered evidence
+        if: always()
+        run: |
+          if test -f /tmp/winner-v10-r2-condition3-result.json; then
+            sha256sum /tmp/winner-v10-r2-condition3-result.json | tee /tmp/winner-v10-r2-condition3-result.sha256
+          fi
+
+      - name: Upload raw gate evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: winner-v10-r2-condition3-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 14
+          path: |
+            /tmp/winner-v10-r2-condition3-result.json
+            /tmp/winner-v10-r2-condition3-result.sha256
+            /tmp/winner-v10-r2-condition3
+

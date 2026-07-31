@@ -1,0 +1,75 @@
+{
+  "status": "HOLD_TRACKING_MARGIN",
+  "generated_at": "2026-06-30T10:55:00Z",
+  "workflow": "phase2-z002-tracking-margin",
+  "session": "open-duck-a100-phase2c",
+  "hardware": "Colab A100",
+  "jax_version": "0.7.2",
+  "jaxlib_version": "0.7.2",
+  "restore_checkpoint": "outputs/phase2_domain_randomization/stage_c2_terrain_z002_targetrate_from_c1_gpu/smoke_20260628T113221Z_gpu/2026_06_28_073829_163840",
+  "preserved_output": "outputs/phase2_domain_randomization/stage_z002_tracking_margin_c2_a100/smoke_20260630T102226Z_gpu",
+  "training_elapsed_s": 812.604446414,
+  "robot_touched": false,
+  "onnx_hashes": {
+    "40960": "32b750b829129d442db34cf96d2bb310341c2e27e0f83e2eaf1ba4d70e10514d",
+    "81920": "5091a128d740b94015093c35b82a2574a1a45d4963289a2ecb7885418fca1186",
+    "122880": "747cd1e3bb2eea0d3eb09efa23b6fed273fa54dc8a05c53684ba65f09f87b316"
+  },
+  "compact_sweep": [
+    {
+      "step": 40960,
+      "command_x": 0.0,
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "max_pitch_vel_p95": 1.0943,
+      "max_tracking_p95": 0.1936,
+      "track_ratio": null,
+      "mean_local_vx": 0.0065
+    },
+    {
+      "step": 40960,
+      "command_x": 0.08,
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "max_pitch_vel_p95": 1.555,
+      "max_tracking_p95": 0.2198,
+      "track_ratio": 0.2001,
+      "mean_local_vx": 0.016
+    },
+    {
+      "step": 81920,
+      "command_x": 0.0,
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "max_pitch_vel_p95": 1.1165,
+      "max_tracking_p95": 0.1939,
+      "track_ratio": null,
+      "mean_local_vx": 0.0053
+    },
+    {
+      "step": 81920,
+      "command_x": 0.08,
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "max_pitch_vel_p95": 1.5586,
+      "max_tracking_p95": 0.2205,
+      "track_ratio": 0.2368,
+      "mean_local_vx": 0.0189
+    },
+    {
+      "step": 122880,
+      "command_x": 0.0,
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "max_pitch_vel_p95": 1.0666,
+      "max_tracking_p95": 0.194,
+      "track_ratio": null,
+      "mean_local_vx": 0.0064
+    },
+    {
+      "step": 122880,
+      "command_x": 0.08,
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "max_pitch_vel_p95": 1.5238,
+      "max_tracking_p95": 0.2163,
+      "track_ratio": 0.3018,
+      "mean_local_vx": 0.0241
+    }
+  ],
+  "next": "Warm-start from the 122880 checkpoint and polish corrected-bridge tracking below 0.20 rad without losing x=0.08 command progress."
+}

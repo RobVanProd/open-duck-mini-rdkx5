@@ -1,0 +1,92 @@
+{
+  "authority": {
+    "colab": false,
+    "local_gpu": false,
+    "r2_or_later": false,
+    "rdk_or_robot": false,
+    "run_16_cell_cpu_behavior": true,
+    "training": false
+  },
+  "checks": {
+    "all_cpu_inference_contracts_pass": true,
+    "all_other_initializers_exact": true,
+    "exact_two_policies": true,
+    "nodes_and_interfaces_exact": true,
+    "old_and_new_values_exact": true,
+    "only_left_ankle_element_changed": true,
+    "only_named_initializer_changed": true,
+    "preregistration_valid": true,
+    "source_hashes_exact": true
+  },
+  "failed_checks": [],
+  "policies": [
+    {
+      "all_other_initializers_exact": true,
+      "changed_initializer_indices": [
+        [
+          0,
+          4
+        ]
+      ],
+      "changed_initializers": [
+        "max_action_delta"
+      ],
+      "expected_source_sha256": "5c0b20a186408077ac14bbf6c9cefb4c5421c2db0ac351641f7f89e05e52fe2b",
+      "inference": {
+        "all_finite": true,
+        "max_left_ankle_action_delta": 0.12000012397766113,
+        "max_pitch_bound_excess": 1.23977656585339e-07,
+        "max_zero_action": 0.0,
+        "max_zero_state": 0.0,
+        "pass": true,
+        "provider": "CPUExecutionProvider",
+        "tolerance": 5e-07
+      },
+      "inputs_exact": true,
+      "new_value": 0.11999999731779099,
+      "nodes_exact": true,
+      "old_value": 0.14000000059604645,
+      "output_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_dual_fit_conservative_envelope_repair_policies/T2_EQUAL_512000.onnx",
+      "output_sha256": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de",
+      "outputs_exact": true,
+      "source_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_command_deadband_repair_policies/T2_EQUAL_512000.onnx",
+      "source_sha256": "5c0b20a186408077ac14bbf6c9cefb4c5421c2db0ac351641f7f89e05e52fe2b",
+      "step": 512000
+    },
+    {
+      "all_other_initializers_exact": true,
+      "changed_initializer_indices": [
+        [
+          0,
+          4
+        ]
+      ],
+      "changed_initializers": [
+        "max_action_delta"
+      ],
+      "expected_source_sha256": "a964dc980bb2fc8aecc664a197964be18747188a880b570968774626bdd803a8",
+      "inference": {
+        "all_finite": true,
+        "max_left_ankle_action_delta": 0.12000012397766113,
+        "max_pitch_bound_excess": 1.23977656585339e-07,
+        "max_zero_action": 0.0,
+        "max_zero_state": 0.0,
+        "pass": true,
+        "provider": "CPUExecutionProvider",
+        "tolerance": 5e-07
+      },
+      "inputs_exact": true,
+      "new_value": 0.11999999731779099,
+      "nodes_exact": true,
+      "old_value": 0.14000000059604645,
+      "output_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_dual_fit_conservative_envelope_repair_policies/T2_EQUAL_1024000.onnx",
+      "output_sha256": "0dfc24bde5d839e4d346dd8c08d9a7d0222a3847764ec6738bfc7f8d947f4ece",
+      "outputs_exact": true,
+      "source_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_command_deadband_repair_policies/T2_EQUAL_1024000.onnx",
+      "source_sha256": "a964dc980bb2fc8aecc664a197964be18747188a880b570968774626bdd803a8",
+      "step": 1024000
+    }
+  ],
+  "schema_version": "ground_up_dual_fit_conservative_envelope_transform_contract.v1",
+  "status": "PASS_DUAL_FIT_CONSERVATIVE_ENVELOPE_TRANSFORM_CONTRACT"
+}

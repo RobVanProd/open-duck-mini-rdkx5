@@ -1,0 +1,57 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "full_matrix": false,
+    "gate5": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "read_only_cpu_audit": true,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "checks": {
+    "all_input_hashes_exact": true,
+    "compact_radius_formula_frozen": true,
+    "leave_one_trace_out_before_result": true,
+    "read_only_no_training": true,
+    "robot_surface_absent": true,
+    "v131_teacher_green": true,
+    "v132_static_linear_closed": true
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "audit_runner": "c0ef1211823164f057c9ae2582b2f70e2312f2ff24bb04986fe9cffc91f25343",
+    "cpu_template": "217a1551c4cc778e4b957636a40ca6e01eafa51efeaef905eb73e9debc7c26e5",
+    "source_checkpoint": "c1d9b8574c941e2279294de14aca1cb57d4736bdc63635b5aaf1e205fa7f86c1",
+    "v131_behavior_result": "ab1535e11287f191e8ee6b4be5c020c44726c6263465c7cb760892387b07c9ea",
+    "v132_dataset_audit": "1292b12ff996cf99fc5fdd718048517256bb86d656512fad3586a6d62a8963ca"
+  },
+  "method": {
+    "centers": "all nonzero per-joint teacher corrections",
+    "feature_normalization": "training-fold z-score; dimensions below 1e-6 removed",
+    "prediction": "nearest same-joint center correction inside radius and exact zero outside",
+    "radius": "0.5 times each center's nearest zero-correction training distance; no search",
+    "representations": [
+      "current h_out[64]",
+      "source-normalized obs[115] plus h_in[64]"
+    ],
+    "validation": "eight leave-one-(plant,command)-trace-out folds"
+  },
+  "question": "Are V131's 45 joint corrections locally separable from exact preservation rows under whole-trace holdout, so a compact nonlinear residual is evidenced rather than merely memorized?",
+  "schema_version": "winner_v133.compact_local_residual_preregistration.v1",
+  "selection": "prefer current hidden if it qualifies; otherwise permit normalized observation plus recurrent state",
+  "status": "PREREGISTERED_WINNER_V133_COMPACT_LOCAL_RESIDUAL_AUDIT_V3",
+  "stop_rule": "if neither representation passes, close a compact local residual from the nominal teacher dataset without training",
+  "supersedes": {
+    "artifact": "winner_v133_compact_local_residual_preregistration_v2.json",
+    "reason": "V2 incorrectly required all 45 projected joint flags to produce a nonzero shared-action correction. Some flags certify the shadow fit without changing the common action. V3 requires the 17 frozen corrected rows and defines nonzero corrections as a nonempty subset of the 45 flags. No advancement threshold changes."
+  },
+  "thresholds": {
+    "combined_corrected_ratio": "<=0.25",
+    "combined_event_recall": ">=0.90",
+    "combined_preservation_ratio": "<=0.01",
+    "each_corrected_fold_corrected_ratio": "<1.0",
+    "each_corrected_fold_preservation_ratio": "<=0.01",
+    "x0_false_positive_joint_events": 0
+  }
+}

@@ -1,0 +1,236 @@
+{
+  "authority": {
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "comparison_to_v13": {
+    "final_delta": 1,
+    "half_delta": -3,
+    "persistence_pass": false,
+    "persistent_core_removed": false,
+    "v13_failure_counts": {
+      "final": 11,
+      "half": 15
+    },
+    "v15_failure_counts": {
+      "final": 12,
+      "half": 12
+    }
+  },
+  "decision": "CLOSE_PITCH_MARGIN_OBJECTIVE_PREREGISTER_ACTION_DIRECTION_DIAGNOSTIC",
+  "evidence_selected_next_step": {
+    "authorized": "preregister one CPU-only negative-X support action-direction diagnostic on the fixed persistent failure core, with no optimizer updates",
+    "flat_transport_kernel_selected": false,
+    "not_authorized": [
+      "additional pitch-margin training",
+      "reward-scale search",
+      "response-conditioned locomotion training",
+      "checkpoint selection",
+      "runtime deployment",
+      "Gate 5",
+      "robot or RDK-X5 access"
+    ],
+    "reason_flat_transport_not_selected": "All 16 heldout contexts remain separated and failures occur by ticks 28-62; no long-range context collapse is observed."
+  },
+  "execution": {
+    "locomotion_steps": 0,
+    "new_behavior_cells": 0,
+    "new_optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "formal_result": {
+    "decision": "DO_NOT_TRAIN_RESPONSE_CONDITIONED_LOCOMOTION",
+    "path": "outputs/analysis/winner_v15_pitch_margin_support_gate_result.json",
+    "sha256": "5f239afe0333eb9a9c42ad10eb6079c0cf5a4bf0ca63e122d07c47dd83c1e287",
+    "status": "HOLD_WINNER_V15_PITCH_MARGIN_SUPPORT_GATE"
+  },
+  "objective_decision": {
+    "more_updates_or_reward_scale_search_selected": false,
+    "one_sided_negative_pitch_margin_closed": true,
+    "reason": "The dense margin signal was nonzero and exact on every training update, yet the six-configuration persistent core remains at both checkpoints and neither checkpoint passes."
+  },
+  "physical_failure": {
+    "all_failures_are_roll_pitch_only": true,
+    "all_failures_have_negative_torso_com_x": true,
+    "checkpoint_results": {
+      "final": {
+        "all_16_contexts_separate": true,
+        "all_32_repeats_bit_exact": true,
+        "failed_terminal_checks": {
+          "roll_pitch": 12
+        },
+        "failure_configuration_counts": {
+          "COM_CORNER_01": 2,
+          "COM_CORNER_03": 2,
+          "COM_X_NEG": 2,
+          "DISCOVERY_03": 2,
+          "HELDOUT_04": 2,
+          "HELDOUT_09": 2
+        },
+        "failure_configuration_x_offsets_m": {
+          "COM_CORNER_01": -0.05,
+          "COM_CORNER_03": -0.05,
+          "COM_X_NEG": -0.05,
+          "DISCOVERY_03": -0.046875,
+          "HELDOUT_04": -0.046875,
+          "HELDOUT_09": -0.040625
+        },
+        "failure_count": 12,
+        "legacy_reported_prediction_metrics": {
+          "P30_ALL_JOINT": {
+            "constant_normalized_prediction_mse": 0.11649304643738606,
+            "learned_normalized_prediction_mse": 39957305684.84555,
+            "learned_strictly_below_constant": false
+          },
+          "P31_34_PITCH_WITH_P30_NONPITCH": {
+            "constant_normalized_prediction_mse": 0.11689592876991932,
+            "learned_normalized_prediction_mse": 39956906075.88531,
+            "learned_strictly_below_constant": false
+          }
+        },
+        "minimum_context_linf_separation": 5.296431481838226e-05,
+        "sensor_transport_failure_count": 0,
+        "terminal_gyro_xy_norm_rad_s_range": [
+          1.5116424129726278,
+          1.8046907243340589
+        ],
+        "terminal_pitch_rad_range": [
+          -0.38411338631684844,
+          -0.3509809374049496
+        ],
+        "terminal_tick_range": [
+          28,
+          62
+        ]
+      },
+      "half": {
+        "all_16_contexts_separate": true,
+        "all_32_repeats_bit_exact": true,
+        "failed_terminal_checks": {
+          "roll_pitch": 12
+        },
+        "failure_configuration_counts": {
+          "COM_CORNER_01": 2,
+          "COM_CORNER_03": 2,
+          "COM_X_NEG": 2,
+          "DISCOVERY_03": 2,
+          "HELDOUT_04": 2,
+          "HELDOUT_09": 2
+        },
+        "failure_configuration_x_offsets_m": {
+          "COM_CORNER_01": -0.05,
+          "COM_CORNER_03": -0.05,
+          "COM_X_NEG": -0.05,
+          "DISCOVERY_03": -0.046875,
+          "HELDOUT_04": -0.046875,
+          "HELDOUT_09": -0.040625
+        },
+        "failure_count": 12,
+        "legacy_reported_prediction_metrics": {
+          "P30_ALL_JOINT": {
+            "constant_normalized_prediction_mse": 0.11973275659757077,
+            "learned_normalized_prediction_mse": 40001635091.56461,
+            "learned_strictly_below_constant": false
+          },
+          "P31_34_PITCH_WITH_P30_NONPITCH": {
+            "constant_normalized_prediction_mse": 0.11638307331468437,
+            "learned_normalized_prediction_mse": 40003300201.12663,
+            "learned_strictly_below_constant": false
+          }
+        },
+        "minimum_context_linf_separation": 2.606213092803955e-05,
+        "sensor_transport_failure_count": 0,
+        "terminal_gyro_xy_norm_rad_s_range": [
+          1.4957004412252057,
+          1.7702045986482418
+        ],
+        "terminal_pitch_rad_range": [
+          -0.3798152589690684,
+          -0.35270314376434236
+        ],
+        "terminal_tick_range": [
+          28,
+          49
+        ]
+      }
+    },
+    "classification": "PERSISTENT_NEGATIVE_X_EARLY_BACKWARD_PITCH_INSTABILITY",
+    "formal_hold_remains_outcome_determining": true,
+    "persistent_failure_configuration_ids": [
+      "COM_CORNER_01",
+      "COM_CORNER_03",
+      "COM_X_NEG",
+      "DISCOVERY_03",
+      "HELDOUT_04",
+      "HELDOUT_09"
+    ],
+    "sensor_transport_failures": 0
+  },
+  "reporting_note": {
+    "corrected_v14_source_predictor_passed_both_plants_at_both_checkpoints": true,
+    "known_defect": "normalized prediction misread as raw response",
+    "legacy_predictor_failure_is_reporting_only": true,
+    "outcome_effect": "NONE_SUPPORT_FAILURES_INDEPENDENTLY_HOLD_BOTH_CHECKPOINTS",
+    "v15_predictor_recomputation_needed_for_any_future_predictor_dependent_claim": true
+  },
+  "schema_version": "winner_v15.pitch_margin_support_hold_attribution.v1",
+  "source_manifest_sha256": "337db1fb9bf8ad10a0bb9a606b56d3f217b8fd4e1dd742eac35afbeefa77170b",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v15_pitch_margin_support_hold_attribution.py",
+      "sha256": "865eaed4f197b8c551053dcc3f6007594d3e4f76f595672d5b1c2b1d07f21d83"
+    },
+    "configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "formal_gate_importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v15_pitch_margin_support_gate_result.py",
+      "sha256": "1e06f1196d54f69e06eab14f99e11f5a9a07a63fb1f85cc784fa6929a385cd97"
+    },
+    "formal_gate_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v15_pitch_margin_support_gate_result.json",
+      "sha256": "37b8dbcf043f5917de61bcc18a892e1ebad6e8ab02e2b2450a0461252f8e241d"
+    },
+    "formal_gate_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v15_pitch_margin_support_gate.py",
+      "sha256": "49002e26a9f55e26199cf789c72192c1258944f4b4f736841db047c9d32ba380"
+    },
+    "pitch_margin_patch": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v15_pitch_margin_support.py",
+      "sha256": "b2dfecf77971596e2c67a7185b1a9c1acea2d49ecbb04eaf846666239b3326e8"
+    },
+    "pitch_margin_training_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v15_pitch_margin_support_training_result.json",
+      "sha256": "6014e6cf3492855f7c61aaa83a57e8058543237dd9ac0509149a0a20236b7980"
+    },
+    "pitch_margin_training_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v15_pitch_margin_support_training.py",
+      "sha256": "2843817edec648b6c7021bc2b1bacd11814c3b67d8672ce257128e911a27ac0a"
+    },
+    "reviewed_base_gate_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_support_gate.py",
+      "sha256": "18873eee55c77a278fc065de64c0b912803bf29b4440cde7f3adaabe1297baca"
+    },
+    "v13_hold_attribution": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v13_support_controller_hold_attribution.json",
+      "sha256": "daf70b772d48376964ab5c1f728fe7fa041c03e93d03497ade55912303a90ad1"
+    },
+    "v14_action_diagnostic": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v14_support_action_diagnostic_result.json",
+      "sha256": "41b586b604e5ca34578f905f6ce5e85df4b91e460027b836ad18daa07465d1e4"
+    }
+  },
+  "status": "PASS_WINNER_V15_PITCH_MARGIN_SUPPORT_HOLD_ATTRIBUTION"
+}

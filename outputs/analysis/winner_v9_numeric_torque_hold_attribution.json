@@ -1,0 +1,62 @@
+{
+  "authority": {
+    "robot_clearance": false,
+    "runtime_robot_torque_motion_gate5": false,
+    "winner_v10_preregistration_design": true,
+    "winner_v10_run_behavior_training_gpu_colab": false
+  },
+  "checks": {
+    "all_12_moving_cells_fail_only_at_represented_torque_boundary": true,
+    "all_16_cells_and_four_behavior_matrices_pass": true,
+    "all_current_duration_and_rate_components_pass_independently": true,
+    "all_four_x0_cells_pass_complete_protection_gate": true,
+    "formal_result_remains_hold_and_route_closed": true,
+    "nearest_float32_is_strictly_above_decimal_gate": true,
+    "one_step_inward_decimal_round_trips_exactly": true,
+    "only_combined_protection_check_failed": true,
+    "represented_current_is_below_frozen_current_gate": true,
+    "winner_v9_close_rule_preserved": true
+  },
+  "decision": "PREREGISTER_DISTINCT_WINNER_V10_INWARD_TORQUE_REPRESENTATION_CONTRACT_ONLY",
+  "distinct_v10_hypothesis": {
+    "equation": "nextafter(float32(frozen_decimal_torque_gate_nm), -infinity)",
+    "first_gate": "new zero-behavior CPU graph/XML representation contract only",
+    "pass_authorizes_only": "a separately frozen complete 16-cell nominal revalidation",
+    "physical_effect": "one float32 torque step inward on the inherited STS3215 actuator range",
+    "policy_graph_change": false,
+    "tolerance_or_current_gate_change": false,
+    "why_distinct": "the XML force-range bytes and represented physical boundary differ from closed winner-v9 while both stateful ONNX graphs remain bit-identical",
+    "xml_change": "forcerange=\"-1.91229675 1.91229675\" -> forcerange=\"-1.91229665 1.91229665\""
+  },
+  "failed_checks": [],
+  "inputs": {
+    "preregistration": {
+      "path": "outputs/analysis/winner_v9_nominal_behavior_preregistration.json",
+      "sha256": "0132792a3e23869dad23a97a950f29c6e960f5d8e552c1c1c55b1cfec9fdebbb"
+    },
+    "result": {
+      "path": "outputs/analysis/winner_v9_nominal_behavior_result.json",
+      "sha256": "78646dee9c0015b9311e985f1ff88a7ab660db16c8af8b148d72de581142d0fe"
+    }
+  },
+  "numeric_evidence": {
+    "float32_spacing_at_gate_nm": 1.1920928955078125e-07,
+    "frozen_decimal_torque_gate_nm": 1.91229675,
+    "maximum_consecutive_ticks_above_2a": 9,
+    "maximum_full_measured_vector_excess_rad_s": 0.0,
+    "moving_cell_count": 12,
+    "moving_force_limit_hit_ticks_max": 171,
+    "moving_force_limit_hit_ticks_min": 119,
+    "nearest_float32_implied_current_a": 2.4375000280462413,
+    "nearest_float32_torque_nm": 1.9122967720031738,
+    "one_step_inward_float32_torque_nm": 1.9122966527938843,
+    "one_step_inward_round_trip_float32_nm": 1.9122966527938843,
+    "one_step_inward_xml_decimal": "1.91229665",
+    "representational_overage_nm": 2.2003173727469516e-08,
+    "x0_cell_count": 4
+  },
+  "schema_version": "open_duck_mini.winner_v9_numeric_torque_hold_attribution.v1",
+  "status": "PASS_WINNER_V9_HOLD_ATTRIBUTED_TO_FLOAT32_TORQUE_BOUNDARY",
+  "winner_v9_reclassified_or_retried": false,
+  "winner_v9_remains_closed": true
+}

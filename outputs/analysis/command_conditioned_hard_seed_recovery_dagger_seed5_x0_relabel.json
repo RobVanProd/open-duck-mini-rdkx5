@@ -1,0 +1,48 @@
+{
+  "status": "PASS_BC_TRACE_RELABEL_READY",
+  "teacher": {
+    "teacher_manifest": "outputs/analysis/command_conditioned_hard_seed_recovery_manifest.json",
+    "teacher_dataset_id": "c9f8db0fac6d0022",
+    "teacher_entries": 19,
+    "teacher_samples": 10250,
+    "teacher_model_kind": "blend",
+    "knn_k": 5,
+    "blend_alpha": 0.8,
+    "vx_blend_alpha": 1.0,
+    "vx_blend_threshold_m_s": 0.02,
+    "source_vx_threshold_m_s": 0.02,
+    "include_source_regex": null,
+    "exclude_source_regex": null,
+    "alt_include_source_regex": null,
+    "alt_exclude_source_regex": null,
+    "best_alpha": 1e-06
+  },
+  "trace_globs": [
+    "outputs/analysis/command_conditioned_hard_seed_recovery/seed5_x0_trace/command_conditioned_hard_seed_recovery_candidate/seed_005/trace.jsonl"
+  ],
+  "output_trace_dir": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0/relabelled_traces",
+  "summary": {
+    "traces": 1,
+    "samples_out": 72,
+    "truncated_traces": 1
+  },
+  "traces": [
+    {
+      "source_trace": "outputs/analysis/command_conditioned_hard_seed_recovery/seed5_x0_trace/command_conditioned_hard_seed_recovery_candidate/seed_005/trace.jsonl",
+      "output_trace": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0/relabelled_traces/seed_005/trace.jsonl",
+      "samples_in": 73,
+      "samples_out": 72,
+      "skipped": 0,
+      "truncate_before_done": true,
+      "first_done_index": 72,
+      "action_delta_p50": 0.019352537693200937,
+      "action_delta_p95": 0.10049524625353382,
+      "action_delta_max": 0.28668724806973434,
+      "active_model_counts": {
+        "primary": 72
+      },
+      "blend_alpha_p50": 0.8,
+      "blend_alpha_p95": 0.8
+    }
+  ]
+}

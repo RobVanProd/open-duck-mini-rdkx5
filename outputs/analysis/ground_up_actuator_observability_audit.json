@@ -1,0 +1,112 @@
+{
+  "actor_observation_layout": {
+    "accelerometer": [
+      3,
+      6
+    ],
+    "command": [
+      6,
+      13
+    ],
+    "contact": [
+      97,
+      99
+    ],
+    "gyro": [
+      0,
+      3
+    ],
+    "joint_position": [
+      13,
+      27
+    ],
+    "joint_velocity": [
+      27,
+      41
+    ],
+    "last_sent_action": [
+      41,
+      55
+    ],
+    "phase": [
+      99,
+      101
+    ],
+    "reference_action": [
+      101,
+      115
+    ],
+    "second_last_sent_action": [
+      55,
+      69
+    ],
+    "sent_motor_target": [
+      83,
+      97
+    ],
+    "size": 115,
+    "third_last_sent_action": [
+      69,
+      83
+    ]
+  },
+  "authority": {
+    "gpu_authorized": false,
+    "robot_or_rdk_authorized": false,
+    "training_authorized": false
+  },
+  "checks": {
+    "actor_contains_sent_motor_target": true,
+    "actor_contains_three_sent_action_states": true,
+    "actor_omits_bridge_applied_target": true,
+    "bridge_transition_depends_on_previous_applied_target": true,
+    "fork_has_identical_current_actor_observation": true,
+    "fork_hidden_applied_state_differs": true,
+    "same_observation_and_action_yield_different_next_state": true,
+    "same_observation_and_action_yield_different_physics_control": true,
+    "sent_motor_target_slot_is_affine_duplicate": true,
+    "three_actor_action_states_cover_delay_history": true
+  },
+  "conclusion": "The actor observation is non-Markov for the fitted first-order bridge: previous applied target changes the next transition but is absent. The discrete 2-3 tick sent-target history is already present. The absolute sent motor-target slot is an affine duplicate of last_sent_action, so replacing that 14-D slot with the deterministic bridge-applied target adds the missing causal state without changing observation size or requiring recurrence.",
+  "execution": {
+    "colab_access": false,
+    "jax_backend": "cpu",
+    "jax_devices": [
+      "TFRT_CPU_0"
+    ],
+    "local_gpu_access": false,
+    "rdk_access": false,
+    "robot_access": false
+  },
+  "failed_checks": [],
+  "hidden_state_fork": {
+    "current_actor_observation_max_error": 0.0,
+    "hidden_applied_target_difference_rad": 0.03999999910593033,
+    "next_actor_observation_difference": 1.9553356170654297,
+    "next_applied_target_difference_rad": 0.02999746799468994,
+    "next_physics_ctrl_difference_rad": 0.02999746799468994,
+    "next_qpos_difference_rad": 0.0028491150587797165
+  },
+  "inputs": {
+    "composed_joystick": {
+      "path": "/tmp/ground_up_measured_bridge_contract_20260714/playground/open_duck_mini_v2/joystick.py",
+      "sha256": "ae98093a0a2a5ee18954f4f239d2daa840f7bfb817c1d8423e720082dc2b7955"
+    },
+    "reference_feature_table": {
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_projected_reference_feature_table.npz",
+      "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+    }
+  },
+  "redundancy": {
+    "max_bridge_history_vs_three_actor_action_states_error_rad": 5.1498413089490214e-08,
+    "max_sent_target_vs_home_plus_scaled_last_action_error_rad": 5.1498413089490214e-08
+  },
+  "schema_version": "ground_up_actuator_observability_audit.v1",
+  "source_checks": {
+    "actor_contains_sent_motor_target": true,
+    "actor_contains_three_sent_action_states": true,
+    "actor_omits_bridge_applied_target": true,
+    "bridge_transition_depends_on_previous_applied_target": true
+  },
+  "status": "PASS_SELECT_APPLIED_TARGET_STATE"
+}

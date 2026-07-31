@@ -1,0 +1,275 @@
+{
+  "authority": {
+    "execute_cached_trace_recovery": true,
+    "gate5": false,
+    "hosted_training": false,
+    "policy_promotion": false,
+    "positive_endpoint_preregistration": false,
+    "positive_only_training_contract": false,
+    "rdkx5_or_robot": false
+  },
+  "checks": {
+    "all_inputs_present": true,
+    "all_sixteen_positive_trace_receipts_exact": true,
+    "arbitrary_x0_population_contradicted_zero_assumption": true,
+    "cached_graph_receipts_exact": true,
+    "corrected_base_test_records_historical_hold": true,
+    "no_new_behavior_optimizer_hosted_or_hardware": true,
+    "random_moving_population_was_output_aliased": true,
+    "t152_held_only_on_stimulus_assumptions": true
+  },
+  "correction": {
+    "graph_mutation": false,
+    "moving_population": "replace saturated random states with all frozen T151 +COM trace states",
+    "new_simulation": false,
+    "x0_invariant": "require finite exact action feedback; defer behavioral x0 preservation to the 16-cell endpoint gate"
+  },
+  "decision_rule": {
+    "fail_decision": "CLOSE_REFLECTED_POSITIVE_EXPERT",
+    "pass": "Both cached graphs are finite and action-bound on the actual T151 moving states; hidden output remains exact, the forced expert is context invariant, and action feedback is exact for every moving and x=0 trace row.",
+    "pass_decision": "EARN_T153_REFLECTED_POSITIVE_ENDPOINT_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "environment_steps": 0,
+    "hosted_compute_units": 0,
+    "new_behavior_cells": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "trace_rows_read": 0
+  },
+  "failed_checks": [],
+  "failed_t152_contract_sha256": "afe73129dae00b3436a02a9558316ba26da449934aaba231fedcc8a53026bc14",
+  "failed_t152_result_sha256": "26b00376f856e1bda18bdbeb04f72ad756fee0b4944421a91df557fb0fca231f",
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 9474,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t152b_reflected_positive_expert_recovery_preregistration.py",
+      "sha256": "a4cb3dc1fc03f116b9b959621c0951d7bfd7ea92502660c9b6d91d82341d4542"
+    },
+    "corrected_t152_test": {
+      "bytes": 1462,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t152_reflected_positive_expert.py",
+      "sha256": "bd76ce905d1fdf986b4d9cf1448afe9a2e9a5894970bde5fd56e9e3691e7103f"
+    },
+    "reflected_graph_1003520": {
+      "bytes": 975325,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t152_reflected_positive_expert_v1\\1003520\\reflected_positive_expert.onnx",
+      "sha256": "047134f085cb78f5f945da879ba7f60e3ebe7a02b8d8233e93cfc735afa1990f"
+    },
+    "reflected_graph_2007040": {
+      "bytes": 975325,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t152_reflected_positive_expert_v1\\2007040\\reflected_positive_expert.onnx",
+      "sha256": "4e70755f5848cc503a3fbab5eb63a5689fe108c9e136468914474b2e29b83a8a"
+    },
+    "runner": {
+      "bytes": 13413,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t152b_reflected_positive_expert_recovery.py",
+      "sha256": "bc27874558b2baaad3aec64af03e3125b6a5b60f449a6a65d545cea2f4e3cf84"
+    },
+    "source_graph_1003520": {
+      "bytes": 975291,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t143c_conditional_forward_path_v1\\1003520\\conditional_forward_path.onnx",
+      "sha256": "82ab93eb97db602561b3525bb3551f4e94b87808320b8c944f6e0a9c8a4b6869"
+    },
+    "source_graph_2007040": {
+      "bytes": 975291,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t143c_conditional_forward_path_v1\\2007040\\conditional_forward_path.onnx",
+      "sha256": "a43dbac7b4995a71f53cc3ee0145ad6e2698f624c4c02749c664a7a09c2be528"
+    },
+    "t151_full_r2_stop": {
+      "bytes": 960097,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t151_command_plateau_full_r2_result.json",
+      "sha256": "a6ce9ab4ff0d366fde794dba306371ea2c13bc96c4ad66ef1246f0d3a5cd2496"
+    },
+    "t152_hold_result": {
+      "bytes": 4951,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t152_reflected_positive_expert_result.json",
+      "sha256": "c0a580956a208147a521178f88552bb09a9e6da01e7e5b36159a9c52b5a35ec4"
+    },
+    "t152_preregistration": {
+      "bytes": 5455,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t152_reflected_positive_expert_preregistration.json",
+      "sha256": "1eaa5d4c1344d5a7ac2c5afa8c5498fc5798cd6dbd24c529f584695cd259b4a8"
+    },
+    "test": {
+      "bytes": 1378,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t152b_reflected_positive_expert_recovery.py",
+      "sha256": "4c8f870fcd8a99cf14e99fbb409124933387be1bea44b45a473edbd8a4d95f19"
+    }
+  },
+  "preregistered_contract_sha256": "3ad75c5a754bf7464b29d9ad4bfb2d765ff6d356403b2fda7505b687b5a5e93b",
+  "question": "Do the already-built reflected graphs bind actions on the actual T151 +COM states while retaining exact hidden state, finite action feedback, and context independence?",
+  "recovery_kind": "OUT_OF_DISTRIBUTION_RANDOM_HARNESS_AND_FALSE_X0_INVARIANT",
+  "repository_commit": "059d6bc8c30bd5bff21243146b8c13b29a5a0250",
+  "schema_version": "open_duck.t152b_reflected_positive_expert_recovery_preregistration.v1",
+  "status": "PREREGISTERED_T152B_REFLECTED_POSITIVE_EXPERT_RECOVERY",
+  "thresholds": {
+    "maximum_context_dependence_error": 0.0,
+    "maximum_hidden_state_error": 0.0,
+    "minimum_moving_action_changed_fraction": 0.0,
+    "minimum_moving_action_changed_rows": 1,
+    "minimum_realistic_moving_rows": 500
+  },
+  "trace_population": [
+    {
+      "bytes": 8233482,
+      "checkpoint_id": "T149B_NEGATIVE_PLATEAU_HALF",
+      "command_x_m_s": 0.0,
+      "fit_id": "p30",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t151_command_plateau_full_r2_v1\\08_TORSO_COM_X_POS\\T149B_NEGATIVE_PLATEAU_HALF\\p30\\traces\\x0.000_seed167931544_negative_command_plateau.jsonl",
+      "rows": 600,
+      "sha256": "4586003b52dadf5a1edaca94c6f8195632122543a2bbc4fcb93e716f0bd22d5f",
+      "step": 1003520
+    },
+    {
+      "bytes": 1215058,
+      "checkpoint_id": "T149B_NEGATIVE_PLATEAU_HALF",
+      "command_x_m_s": 0.074,
+      "fit_id": "p30",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t151_command_plateau_full_r2_v1\\08_TORSO_COM_X_POS\\T149B_NEGATIVE_PLATEAU_HALF\\p30\\traces\\x0.074_seed167931544_negative_command_plateau.jsonl",
+      "rows": 68,
+      "sha256": "7973b9a7af2b78a8ea5b8eb61e693d6bc8320f5ddda10072ad1b8ffc80acfc93",
+      "step": 1003520
+    },
+    {
+      "bytes": 1215145,
+      "checkpoint_id": "T149B_NEGATIVE_PLATEAU_HALF",
+      "command_x_m_s": 0.077,
+      "fit_id": "p30",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t151_command_plateau_full_r2_v1\\08_TORSO_COM_X_POS\\T149B_NEGATIVE_PLATEAU_HALF\\p30\\traces\\x0.077_seed167931544_negative_command_plateau.jsonl",
+      "rows": 68,
+      "sha256": "225a96432d93abe6d39adb352cfb9e961c4b94796072c01e3dc91cd0a56a4ca5",
+      "step": 1003520
+    },
+    {
+      "bytes": 1359886,
+      "checkpoint_id": "T149B_NEGATIVE_PLATEAU_HALF",
+      "command_x_m_s": 0.08,
+      "fit_id": "p30",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t151_command_plateau_full_r2_v1\\08_TORSO_COM_X_POS\\T149B_NEGATIVE_PLATEAU_HALF\\p30\\traces\\x0.080_seed167931544_negative_command_plateau.jsonl",
+      "rows": 76,
+      "sha256": "f0fe66c05c0d89f2bdfcda78e9e01e6aca7d9ca5f2b2624ad87333d55b77c793",
+      "step": 1003520
+    },
+    {
+      "bytes": 8232296,
+      "checkpoint_id": "T149B_NEGATIVE_PLATEAU_HALF",
+      "command_x_m_s": 0.0,
+      "fit_id": "p31_34",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t151_command_plateau_full_r2_v1\\08_TORSO_COM_X_POS\\T149B_NEGATIVE_PLATEAU_HALF\\p31_34\\traces\\x0.000_seed167931544_negative_command_plateau.jsonl",
+      "rows": 600,
+      "sha256": "755c280a1248be4bec1e524aae0ab57508d3158098c1078ae2c5ee801bb3c84e",
+      "step": 1003520
+    },
+    {
+      "bytes": 1234193,
+      "checkpoint_id": "T149B_NEGATIVE_PLATEAU_HALF",
+      "command_x_m_s": 0.074,
+      "fit_id": "p31_34",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t151_command_plateau_full_r2_v1\\08_TORSO_COM_X_POS\\T149B_NEGATIVE_PLATEAU_HALF\\p31_34\\traces\\x0.074_seed167931544_negative_command_plateau.jsonl",
+      "rows": 69,
+      "sha256": "2e43ee8dd049659f9dce31257535e418b29b3972214ee0e54fbf05564a381163",
+      "step": 1003520
+    },
+    {
+      "bytes": 1269662,
+      "checkpoint_id": "T149B_NEGATIVE_PLATEAU_HALF",
+      "command_x_m_s": 0.077,
+      "fit_id": "p31_34",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t151_command_plateau_full_r2_v1\\08_TORSO_COM_X_POS\\T149B_NEGATIVE_PLATEAU_HALF\\p31_34\\traces\\x0.077_seed167931544_negative_command_plateau.jsonl",
+      "rows": 71,
+      "sha256": "aa0426fbff780e6a2e66c4333b606c91dadd3c805721655d8ebb2ca2364faadd",
+      "step": 1003520
+    },
+    {
+      "bytes": 1324224,
+      "checkpoint_id": "T149B_NEGATIVE_PLATEAU_HALF",
+      "command_x_m_s": 0.08,
+      "fit_id": "p31_34",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t151_command_plateau_full_r2_v1\\08_TORSO_COM_X_POS\\T149B_NEGATIVE_PLATEAU_HALF\\p31_34\\traces\\x0.080_seed167931544_negative_command_plateau.jsonl",
+      "rows": 74,
+      "sha256": "1911bba80c99fd40e0e5f318a9628b2213c7f226909a3b66f4e917c2b38573d5",
+      "step": 1003520
+    },
+    {
+      "bytes": 8233482,
+      "checkpoint_id": "T149B_NEGATIVE_PLATEAU_FINAL",
+      "command_x_m_s": 0.0,
+      "fit_id": "p30",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t151_command_plateau_full_r2_v1\\08_TORSO_COM_X_POS\\T149B_NEGATIVE_PLATEAU_FINAL\\p30\\traces\\x0.000_seed167931544_negative_command_plateau.jsonl",
+      "rows": 600,
+      "sha256": "4586003b52dadf5a1edaca94c6f8195632122543a2bbc4fcb93e716f0bd22d5f",
+      "step": 2007040
+    },
+    {
+      "bytes": 1215299,
+      "checkpoint_id": "T149B_NEGATIVE_PLATEAU_FINAL",
+      "command_x_m_s": 0.074,
+      "fit_id": "p30",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t151_command_plateau_full_r2_v1\\08_TORSO_COM_X_POS\\T149B_NEGATIVE_PLATEAU_FINAL\\p30\\traces\\x0.074_seed167931544_negative_command_plateau.jsonl",
+      "rows": 68,
+      "sha256": "e9fa4787280f06a58da7726e8465541a0610ad83f12b2bf322608922d162db9e",
+      "step": 2007040
+    },
+    {
+      "bytes": 1215119,
+      "checkpoint_id": "T149B_NEGATIVE_PLATEAU_FINAL",
+      "command_x_m_s": 0.077,
+      "fit_id": "p30",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t151_command_plateau_full_r2_v1\\08_TORSO_COM_X_POS\\T149B_NEGATIVE_PLATEAU_FINAL\\p30\\traces\\x0.077_seed167931544_negative_command_plateau.jsonl",
+      "rows": 68,
+      "sha256": "800f17e6d3d55bcc81bd8e05dfeec1406fe26b398f20335e194a97d6dbebc9e5",
+      "step": 2007040
+    },
+    {
+      "bytes": 1359886,
+      "checkpoint_id": "T149B_NEGATIVE_PLATEAU_FINAL",
+      "command_x_m_s": 0.08,
+      "fit_id": "p30",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t151_command_plateau_full_r2_v1\\08_TORSO_COM_X_POS\\T149B_NEGATIVE_PLATEAU_FINAL\\p30\\traces\\x0.080_seed167931544_negative_command_plateau.jsonl",
+      "rows": 76,
+      "sha256": "f0fe66c05c0d89f2bdfcda78e9e01e6aca7d9ca5f2b2624ad87333d55b77c793",
+      "step": 2007040
+    },
+    {
+      "bytes": 8232296,
+      "checkpoint_id": "T149B_NEGATIVE_PLATEAU_FINAL",
+      "command_x_m_s": 0.0,
+      "fit_id": "p31_34",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t151_command_plateau_full_r2_v1\\08_TORSO_COM_X_POS\\T149B_NEGATIVE_PLATEAU_FINAL\\p31_34\\traces\\x0.000_seed167931544_negative_command_plateau.jsonl",
+      "rows": 600,
+      "sha256": "755c280a1248be4bec1e524aae0ab57508d3158098c1078ae2c5ee801bb3c84e",
+      "step": 2007040
+    },
+    {
+      "bytes": 1234155,
+      "checkpoint_id": "T149B_NEGATIVE_PLATEAU_FINAL",
+      "command_x_m_s": 0.074,
+      "fit_id": "p31_34",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t151_command_plateau_full_r2_v1\\08_TORSO_COM_X_POS\\T149B_NEGATIVE_PLATEAU_FINAL\\p31_34\\traces\\x0.074_seed167931544_negative_command_plateau.jsonl",
+      "rows": 69,
+      "sha256": "0aba211df1acbab2b74f22cc5f9ba550a52accfb803264974fe5f30896f0ae97",
+      "step": 2007040
+    },
+    {
+      "bytes": 1269821,
+      "checkpoint_id": "T149B_NEGATIVE_PLATEAU_FINAL",
+      "command_x_m_s": 0.077,
+      "fit_id": "p31_34",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t151_command_plateau_full_r2_v1\\08_TORSO_COM_X_POS\\T149B_NEGATIVE_PLATEAU_FINAL\\p31_34\\traces\\x0.077_seed167931544_negative_command_plateau.jsonl",
+      "rows": 71,
+      "sha256": "871ea31050c1f2344d0e3f87a6eb56d0a04fee0267ae09eb9905a05ca03d6db0",
+      "step": 2007040
+    },
+    {
+      "bytes": 1324351,
+      "checkpoint_id": "T149B_NEGATIVE_PLATEAU_FINAL",
+      "command_x_m_s": 0.08,
+      "fit_id": "p31_34",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t151_command_plateau_full_r2_v1\\08_TORSO_COM_X_POS\\T149B_NEGATIVE_PLATEAU_FINAL\\p31_34\\traces\\x0.080_seed167931544_negative_command_plateau.jsonl",
+      "rows": 74,
+      "sha256": "000bd1407034a32ebd50a2571fef6456975135ba9dc3486f25e5b5e2989cc528",
+      "step": 2007040
+    }
+  ]
+}

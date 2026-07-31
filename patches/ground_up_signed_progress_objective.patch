@@ -1,0 +1,90 @@
+diff --git a/playground/common/rewards.py b/playground/common/rewards.py
+index 1700a62..ae66497 100644
+--- a/playground/common/rewards.py
++++ b/playground/common/rewards.py
+@@ -22,6 +22,20 @@ def reward_tracking_lin_vel(
+     return jp.nan_to_num(jp.exp(-lin_vel_error / tracking_sigma))
+ 
+ 
++def reward_signed_command_progress(
++    commands: jax.Array,
++    local_vel: jax.Array,
++    command_deadband: float = 0.01,
++) -> jax.Array:
++    """Gate-aligned signed vx ratio for nonzero forward commands.
++
++    Zero command retains the canonical Gaussian tracking behavior in the caller.
++    """
++    denominator = jp.maximum(jp.abs(commands[0]), command_deadband)
++    ratio = local_vel[0] / denominator
++    return jp.nan_to_num(jp.clip(ratio, -1.0, 1.0))
++
++
+ def reward_tracking_ang_vel(
+     commands: jax.Array,
+     ang_vel: jax.Array,
+diff --git a/playground/open_duck_mini_v2/joystick.py b/playground/open_duck_mini_v2/joystick.py
+index 3b82bea..e80cab8 100644
+--- a/playground/open_duck_mini_v2/joystick.py
++++ b/playground/open_duck_mini_v2/joystick.py
+@@ -33,6 +33,7 @@ from . import base as open_duck_mini_v2_base
+ from playground.common.poly_reference_motion import PolyReferenceMotion
+ from playground.common.rewards import (
+     reward_tracking_lin_vel,
++    reward_signed_command_progress,
+     reward_tracking_ang_vel,
+     cost_torques,
+     cost_action_rate,
+@@ -107,6 +108,7 @@ def default_config() -> config_dict.ConfigDict:
+         nominal_reference_bootstrap=False,
+         nominal_reference_command_x=0.074,
+         reference_start_phase=0,
++        ground_up_signed_progress_objective=False,
+     )
+ 
+ 
+@@ -690,10 +692,17 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+         del metrics  # Unused.
+ 
+         ret = {
+-            "tracking_lin_vel": reward_tracking_lin_vel(
+-                info["command"],
+-                self.get_local_linvel(data),
+-                self._config.reward_config.tracking_sigma,
++            "tracking_lin_vel": jp.where(
++                self._config.ground_up_signed_progress_objective
++                & (jp.abs(info["command"][0]) > 0.01),
++                reward_signed_command_progress(
++                    info["command"], self.get_local_linvel(data)
++                ),
++                reward_tracking_lin_vel(
++                    info["command"],
++                    self.get_local_linvel(data),
++                    self._config.reward_config.tracking_sigma,
++                ),
+             ),
+             "tracking_ang_vel": reward_tracking_ang_vel(
+                 info["command"],
+diff --git a/playground/open_duck_mini_v2/runner.py b/playground/open_duck_mini_v2/runner.py
+index 920453f..061ccf2 100644
+--- a/playground/open_duck_mini_v2/runner.py
++++ b/playground/open_duck_mini_v2/runner.py
+@@ -30,6 +30,9 @@ class OpenDuckMiniV2Runner(BaseRunner):
+         self.env_config.nominal_reference_bootstrap = args.nominal_reference_bootstrap
+         self.env_config.nominal_reference_command_x = args.nominal_reference_command_x
+         self.env_config.reference_start_phase = args.reference_start_phase
++        self.env_config.ground_up_signed_progress_objective = (
++            args.ground_up_signed_progress_objective
++        )
+         if args.nominal_reference_bootstrap:
+             self.env_config.noise_config.level = 0.0
+             self.env_config.noise_config.action_min_delay = 0
+@@ -83,6 +86,7 @@ def main() -> None:
+     parser.add_argument("--nominal_reference_bootstrap", action="store_true")
+     parser.add_argument("--nominal_reference_command_x", type=float, default=0.074)
+     parser.add_argument("--reference_start_phase", type=int, default=0)
++    parser.add_argument("--ground_up_signed_progress_objective", action="store_true")
+     parser.add_argument(
+         "--critic_observation", choices=["privileged_state", "state"], default="privileged_state"
+     )
+

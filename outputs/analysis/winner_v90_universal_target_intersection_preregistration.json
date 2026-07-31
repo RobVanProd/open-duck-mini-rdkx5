@@ -1,0 +1,93 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "deployment_authorized": false,
+    "gate5_authorized": false,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "result_authorizes": "one separate full-124-cell universal-target CPU feasibility gate preregistration only if the intersection is nonempty",
+    "robot_clearance": false,
+    "saved_result_audit_authorized": true,
+    "support_gate_authorized_now": false,
+    "training_authorized_now": false
+  },
+  "decision": "AUTHORIZE_ONE_SAVED_V42_RESULT_INTERSECTION_AUDIT_ONLY",
+  "execution_now": {
+    "new_simulation_cells": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0,
+    "saved_candidate_receipts_read": 0,
+    "snapshot_or_onnx_writes": 0
+  },
+  "frozen_source": {
+    "actuator_plants": 2,
+    "candidate_plant_cells_already_captured": 21870,
+    "candidates_per_configuration": 729,
+    "configurations": 15,
+    "grid_dimensions": 3,
+    "grid_values": [
+      -1.0,
+      -0.75,
+      -0.5,
+      -0.25,
+      0.0,
+      0.25,
+      0.5,
+      0.75,
+      1.0
+    ],
+    "v42_result_sha256": "ff1f12d556661548df272ef4b5a6c5f69bd614d2e54d3d7e17654be6de9ebc1c",
+    "v89_result_sha256": "0197add105f174eb856613fa62d773fa633841266724f4d76a791fd2fd250a20"
+  },
+  "intersection": {
+    "empty_decision": "NO_UNIVERSAL_STATIC_TARGET_IN_CAPTURED_GRID",
+    "membership": "candidate_index has shared_support_pass true in every one of the 15 captured configuration tables",
+    "nonempty_decision": "select exactly one universal target by the frozen aggregate V41 key",
+    "required_readback": "all tables contain candidate indices 0..728 in order and each coordinate hash matches the reconstructed V41 float32 grid"
+  },
+  "question": "Did the per-configuration V42 selector create contradictory labels despite one or more exact grid targets being support-valid for all 15 configurations and both actuator plants?",
+  "schema_version": "winner_v90.universal_target_intersection_preregistration.v1",
+  "selection_key_largest_first": [
+    "support_pass_count across 30 captured cells",
+    "minimum valid ticks",
+    "sum valid ticks",
+    "minimum base z",
+    "negative maximum absolute tilt",
+    "negative maximum final-window gyro norm",
+    "negative squared coordinate norm",
+    "negative candidate index"
+  ],
+  "source_manifest_sha256": "06d34f0ec83d6214bca000dfa05cc2bb3360dc5686289063608016859d2c93bd",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v90_universal_target_intersection_preregistration.py",
+      "sha256": "4fa3e3a33583d5f8498588caa16a3522a9c3bf099547adfbda2e866794da6294"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v90_universal_target_intersection.py",
+      "sha256": "6b109020a9dcec3e41af8f27b090064810054a8a813a1f9a6f30c821ae907342"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v90_universal_target_intersection.py",
+      "sha256": "16e6748fc616d1a4e9ddd5688e21ce60c3d447f6b8f62f09722d38e38b499bd6"
+    },
+    "v41_grid": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v41_static_equilibrium_target_feasibility.py",
+      "sha256": "111ae5870e94be1b6d859e78c1043d093c345436bb3db834cdc9b9ede4d8724b"
+    },
+    "v42_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v42_static_target_teacher_table_result.json",
+      "sha256": "c465d9b3951941715ee0bb588a0ba24a9c4b15d7a2c99430340bcaea43964469"
+    },
+    "v89_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v89_teacher_gradient_transfer_result.json",
+      "sha256": "9731c814b69eaa29bfd5db4d2c8196deb8697d99bac65bc0277ddeffe7821124"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V90_UNIVERSAL_TARGET_INTERSECTION_AUDIT"
+}

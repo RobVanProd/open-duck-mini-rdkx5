@@ -1,0 +1,62 @@
+{
+  "schema_version": "ground_up_stage1_mechanism_screen.v1",
+  "status": "PREREGISTERED_BEFORE_MECHANISM_COMPUTE",
+  "training_seed": 100,
+  "timesteps": 8028160,
+  "num_evals": 5,
+  "shared": {
+    "discounting": 0.97,
+    "unroll_length": 20,
+    "ground_up_command_curriculum": true,
+    "extra_patches": [
+      "ground_up_stage1_mechanism_stack.patch"
+    ]
+  },
+  "candidates": [
+    {
+      "id": "M0_UPSTREAM",
+      "learning_rate": 0.0003,
+      "entropy_cost": 0.005,
+      "imitation_scale": 1.0,
+      "policy_architecture": "mlp",
+      "critic_observation": "privileged_state"
+    },
+    {
+      "id": "M1_REFCOND",
+      "learning_rate": 0.0003,
+      "entropy_cost": 0.005,
+      "imitation_scale": 1.0,
+      "policy_architecture": "mlp",
+      "critic_observation": "privileged_state",
+      "reference_feature_table_path": "ground_up_projected_reference_feature_table.npz"
+    },
+    {
+      "id": "M2_PHASE_MOE",
+      "learning_rate": 0.0003,
+      "entropy_cost": 0.005,
+      "imitation_scale": 1.0,
+      "policy_architecture": "phase_moe",
+      "critic_observation": "privileged_state"
+    },
+    {
+      "id": "M3_RECURRENT",
+      "learning_rate": 0.0003,
+      "entropy_cost": 0.005,
+      "imitation_scale": 1.0,
+      "policy_architecture": "recurrent",
+      "recurrent_hidden_size": 64,
+      "critic_observation": "privileged_state"
+    },
+    {
+      "id": "M4_SYMCRIT",
+      "learning_rate": 0.0003,
+      "entropy_cost": 0.005,
+      "imitation_scale": 1.0,
+      "policy_architecture": "mlp",
+      "critic_observation": "state"
+    }
+  ],
+  "selection_uses_training_reward": false,
+  "robot_access_authorized": false,
+  "local_gpu_authorized": false
+}

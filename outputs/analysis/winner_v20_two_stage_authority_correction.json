@@ -1,0 +1,79 @@
+{
+  "authority": {
+    "calibrator_is_deployable_walking_policy": false,
+    "deployment_checkpoint_selected": false,
+    "no_manual_mass_com_inertia_measurements": true,
+    "robot_clearance": false
+  },
+  "causal_correction": {
+    "correct_interpretation": "Winner-v20 emits calibration_actions and a 64-value response state; it is the first stage of a two-stage policy and is not a walking policy",
+    "correct_next_authority_if_support_passes": "one separate response-conditioned locomotion-training preregistration",
+    "incorrect_interpretation": "a passing Winner-v20 calibrator support gate could directly authorize deployment-checkpoint selection"
+  },
+  "decision": "CALIBRATOR_GATE_CANNOT_SELECT_A_DEPLOYMENT_POLICY",
+  "execution": {
+    "behavior_cells": 0,
+    "formal_support_cells": 0,
+    "locomotion_training_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "frozen_sequence": [
+    "train and independently import the Winner-v20 calibrator artifact",
+    "require both calibrator checkpoints to pass the unchanged support gate",
+    "freeze the successful calibrator and its exact context-handoff semantics",
+    "preregister and train exactly one response-conditioned locomotion continuation",
+    "require both locomotion checkpoints to pass the unchanged full behavior/current matrix",
+    "apply the preregistered behavior tie-breaker to select exactly one walking ONNX"
+  ],
+  "schema_version": "winner_v20.two_stage_authority_correction.v1",
+  "source_manifest_sha256": "e70a7626402aaa869692d997129a88bf5e8d86431b8d5bedb568807528c606b4",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v20_two_stage_authority_correction.py",
+      "sha256": "cb24401917747f3619dd4610b30ede360d8d0e73832d0ac9a11ddfbd4db64233"
+    },
+    "network_interface": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v6_dynamic_calibration_networks.py",
+      "sha256": "cfff280a1c592043d7e1849c68a3c99b05574814180506e6608f17877a5dbb90"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v20_two_stage_authority_correction.py",
+      "sha256": "166effb9352aa04c80176965100cc164a426833481883bb21d5f964f66f1680c"
+    },
+    "v12_design": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_training_preregistration.json",
+      "sha256": "1ec76a587c6fa50b92866c1632a7046ae0c6687ed17b1636b664bf45c2e8ba34"
+    },
+    "v20_gate_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v20_joint_recurrent_support_gate_preregistration.py",
+      "sha256": "c04c7970b893a90f43d548f38bc1be6919099f9b58adcf13c71d0d8738a3ef37"
+    },
+    "v20_gate_importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v20_joint_recurrent_support_gate_result.py",
+      "sha256": "9b2fb73807f39ae6f731316cb38c2a7e4ded51ee131f0da3fc29186956f897d8"
+    },
+    "v20_gate_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v20_joint_recurrent_support_gate.py",
+      "sha256": "7225cf25be01bfa5dc827ca25970761726bad7a6bcef0bb287db34a0794ee5e2"
+    },
+    "v20_training": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v20_joint_recurrent_support_training_preregistration.json",
+      "sha256": "cbc73f11888a082332e4340098f5c07a78567da8c735ca8daaa263d7ac06f583"
+    },
+    "v6_interface": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v6_dynamic_calibration_interface_preregistration.json",
+      "sha256": "8f4fa5249a91adb139b7b30b4d4cb71c42fe24e56b7b75e270122b6d2b601f17"
+    }
+  },
+  "status": "PASS_WINNER_V20_TWO_STAGE_AUTHORITY_CORRECTED_PRE_OUTCOME"
+}

@@ -1,0 +1,349 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "gate5": false,
+    "hosted_preregistration": false,
+    "hosted_training": false,
+    "policy_promotion": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false
+  },
+  "causal_contract": {
+    "postupdate_random": {
+      "jointly_changed_steps": 0,
+      "maximum_raw_action_delta": 5.960464477539063e-08,
+      "maximum_router_weight_delta": 0.03555488586425781,
+      "steps": 256
+    },
+    "postupdate_trace": {
+      "maximum_hidden_delta": 0.0,
+      "negative_com": {
+        "final_changed_rows": 36,
+        "final_weight_max": 0.8888158798217773,
+        "final_weight_min": 0.7711267471313477,
+        "initial_weight_max": 0.8945151567459106,
+        "initial_weight_min": 0.7685437202453613,
+        "maximum_conditional_delta": 0.05611482262611389,
+        "maximum_expert_delta": 0.06646506488323212,
+        "maximum_final_action_delta": 0.03993150591850281,
+        "maximum_raw_action_delta": 0.05343084782361984,
+        "maximum_router_score_delta": 0.0722951889038086,
+        "maximum_router_weight_delta": 0.009920179843902588,
+        "raw_changed_rows": 36,
+        "router_weight_changed_rows": 36,
+        "rows": 36
+      },
+      "nominal": {
+        "final_changed_rows": 36,
+        "final_weight_max": 0.5888909697532654,
+        "final_weight_min": 0.42766544222831726,
+        "initial_weight_max": 0.6018643379211426,
+        "initial_weight_min": 0.42532896995544434,
+        "maximum_conditional_delta": 0.0396576002240181,
+        "maximum_expert_delta": 0.06930427253246307,
+        "maximum_final_action_delta": 0.021413087844848633,
+        "maximum_raw_action_delta": 0.031471505761146545,
+        "maximum_router_score_delta": 0.07131729274988174,
+        "maximum_router_weight_delta": 0.01780235767364502,
+        "raw_changed_rows": 36,
+        "router_weight_changed_rows": 36,
+        "rows": 36
+      },
+      "rows": 72
+    },
+    "step_zero_random_chain": {
+      "bit_exact_steps": 256,
+      "maximum_abs_error": 0.0,
+      "steps": 256
+    },
+    "step_zero_trace": {
+      "bit_exact_rows": 72,
+      "maximum_abs_error": 0.0,
+      "rows": 72
+    }
+  },
+  "checks": {
+    "all_trainable_actor_leaves_changed": true,
+    "command_exact": true,
+    "cpu_only": true,
+    "every_critic_leaf_changed": true,
+    "graph_abi_and_cpu_chain_exact": true,
+    "negative_population_action_and_router_binding": true,
+    "no_formal_behavior_hosted_or_hardware": true,
+    "nominal_population_action_and_router_binding": true,
+    "normalizer_bit_exact": true,
+    "protected_hidden_path_exact": true,
+    "protected_mature_actor_bit_exact": true,
+    "random_action_and_router_binding": false,
+    "runner_readback_exact": true,
+    "step_zero_random_chain_exact": true,
+    "step_zero_trace_exact": true,
+    "step_zero_tree_exact": true,
+    "trees_finite": true,
+    "update_structure_exact": true
+  },
+  "decision": "CLOSE_JOINT_SOFT_ROUTER_TRAINTHROUGH",
+  "execution": {
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 1024,
+    "robot_or_rdk_access": 0,
+    "simulator_behavior_steps": 0
+  },
+  "failed_checks": [
+    "random_action_and_router_binding"
+  ],
+  "preregistered_contract_sha256": "117c4c62e11adfbc3aed6a40d773f158cf9a24b84af3149c3300db5c76877bd9",
+  "repository_commit": "427c1095c4ff71d6d1edef691624a6b10f5fd8f3",
+  "result_sha256": "f35ab9e2f89ce565e2beb9e1b298b126a97a3616740fae8b80d7399bff5b4a6c",
+  "schema_version": "open_duck.t119_joint_soft_router_cpu_result.v1",
+  "status": "HOLD_T119_JOINT_SOFT_ROUTER_CPU_CONTRACT",
+  "training": {
+    "command": [
+      "D:\\CodexArtifacts\\venvs\\open-duck-policy-py31213\\Scripts\\python.exe",
+      "playground/open_duck_mini_v2/runner.py",
+      "--task",
+      "flat_terrain_backlash",
+      "--env",
+      "joystick",
+      "--output_dir",
+      "D:\\CodexArtifacts\\open-duck-policy\\t119_joint_soft_router_cpu_v1\\smoke",
+      "--num_timesteps",
+      "1024",
+      "--ppo_seed",
+      "100",
+      "--ppo_num_envs",
+      "8",
+      "--ppo_num_evals",
+      "2",
+      "--ppo_episode_length",
+      "64",
+      "--ppo_unroll_length",
+      "8",
+      "--ppo_batch_size",
+      "8",
+      "--ppo_num_minibatches",
+      "1",
+      "--ppo_num_updates_per_batch",
+      "2",
+      "--ppo_learning_rate",
+      "0.0003",
+      "--ppo_discounting",
+      "0.97",
+      "--ppo_entropy_cost",
+      "0.005",
+      "--policy_architecture",
+      "reference_residual_recurrent_adapter",
+      "--recurrent_hidden_size",
+      "64",
+      "--imitation_scale",
+      "1.0",
+      "--reference_feature_table_path",
+      "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+      "--nominal_reference_bootstrap",
+      "--ground_up_hard_vector_command_support",
+      "--ground_up_command_support_min_x",
+      "0.074",
+      "--ground_up_command_support_max_x",
+      "0.080",
+      "--ground_up_action_velocity_limits_rad_s",
+      "1.0,.75,1.4736209064722061,1.4300791546702385,1.3976470567286015,.5,.5,.5,.5,.5,.75,1.25,1.0,1.2215287424623966",
+      "--ground_up_measured_actuator_bridge",
+      "--ground_up_actuator_bridge_delay_ticks",
+      "3,3,3,3,3,3,2,3,3,3,2,3,2,3",
+      "--ground_up_actuator_bridge_tau_s",
+      ".015,.015,.005,.010,.010,.120,.120,.120,.120,.020,.035,.010,.030,.005",
+      "--ground_up_applied_target_observation",
+      "--ground_up_tracking_tail_exceedance_scale",
+      "-6572.254964031055",
+      "--ground_up_tracking_tail_threshold_rad",
+      "0.20",
+      "--ground_up_peak_torque_exceedance_scale",
+      "0",
+      "--ground_up_linear_peak_torque_exceedance_scale",
+      "-307.48131091308585",
+      "--reference_start_phase",
+      "0",
+      "--ground_up_signed_progress_objective",
+      "--winner_v3_variable_configuration",
+      "--winner_v3_deviation_scale",
+      "1.0",
+      "--winner_v119_train_transition_match",
+      "--winner_t19_support_trainthrough",
+      "--winner_t31_action_margin_trainthrough",
+      "--winner_t37_freeze_observation_normalizer",
+      "--winner_t98_hidden_expert_continuation",
+      "--winner_t98_hidden_gate_asset_path",
+      "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t98_hidden_gate_asset.json",
+      "--critic_observation",
+      "privileged_state",
+      "--restore_checkpoint_path",
+      "D:\\CodexArtifacts\\open-duck-policy\\t119_joint_soft_router_assets_v2\\expanded_checkpoint"
+    ],
+    "elapsed_seconds": 526.890000000014,
+    "final_checkpoint": {
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t119_joint_soft_router_cpu_v1\\smoke\\2026_07_29_032127_1024",
+      "sha256": "fadd2a7de1bceca11081c7d36c964b8b5cc1caf82fa64abd6552a9392a419f01"
+    },
+    "graphs": {
+      "0": {
+        "chain": {
+          "finite": true,
+          "maximum_abs_action": 1.0,
+          "maximum_abs_hidden": 1.0,
+          "steps": 256
+        },
+        "io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          },
+          "providers": [
+            "CPUExecutionProvider"
+          ]
+        },
+        "receipt": {
+          "bytes": 960260,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t119_joint_soft_router_cpu_v1\\smoke\\2026_07_29_032032_0.onnx",
+          "sha256": "1a2443367996b13fdc72c39430f92b42b3df08db96df76dce0bb18e16bb65c62"
+        }
+      },
+      "1024": {
+        "chain": {
+          "finite": true,
+          "maximum_abs_action": 1.0,
+          "maximum_abs_hidden": 1.0,
+          "steps": 256
+        },
+        "io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          },
+          "providers": [
+            "CPUExecutionProvider"
+          ]
+        },
+        "receipt": {
+          "bytes": 960260,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t119_joint_soft_router_cpu_v1\\smoke\\2026_07_29_032127_1024.onnx",
+          "sha256": "89a6da45955cccac8983818da721e8f217f3da7fc289cbfbe7c735146adba3b6"
+        }
+      }
+    },
+    "initial_checkpoint": {
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t119_joint_soft_router_cpu_v1\\smoke\\2026_07_29_032032_0",
+      "sha256": "1d5706c2cffd2f7052a45eb649baab929375a3bd4dedfcac5d627c465d219067"
+    },
+    "log": {
+      "bytes": 6903,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t119_joint_soft_router_cpu_v1\\training.log",
+      "sha256": "b2e16bd72d9acbb89668c573a71b9230975c8bc01ee2a6890f848a0c923e1925"
+    }
+  },
+  "tree_contract": {
+    "critic_leaf_deltas": {
+      "2/params/hidden_0/bias": 0.006620638072490692,
+      "2/params/hidden_0/kernel": 0.00785655528306961,
+      "2/params/hidden_1/bias": 0.006286304444074631,
+      "2/params/hidden_1/kernel": 0.007907725870609283,
+      "2/params/hidden_2/bias": 0.00221344456076622,
+      "2/params/hidden_2/kernel": 0.005676076747477055,
+      "2/params/hidden_3/bias": 0.0008285269141197205,
+      "2/params/hidden_3/kernel": 0.004816979169845581
+    },
+    "expert_leaf_deltas": {
+      "1/params/negative_adapter_location/bias": 0.0035986476577818394,
+      "1/params/negative_adapter_location/kernel": 0.007140301633626223
+    },
+    "normalizer_leaf_deltas": {
+      "0/count/hi": 0.0,
+      "0/count/lo": 0.0,
+      "0/mean/policy_hidden": 0.0,
+      "0/mean/privileged_state": 0.0,
+      "0/mean/state": 0.0,
+      "0/std/policy_hidden": 0.0,
+      "0/std/privileged_state": 0.0,
+      "0/std/state": 0.0,
+      "0/std_eps": 0.0,
+      "0/summed_variance/policy_hidden": 0.0,
+      "0/summed_variance/privileged_state": 0.0,
+      "0/summed_variance/state": 0.0
+    },
+    "protected_mature_actor_leaf_deltas": {
+      "1/params/adapter_hidden_bias": 0.0,
+      "1/params/adapter_hidden_projection/kernel": 0.0,
+      "1/params/adapter_location/bias": 0.0,
+      "1/params/adapter_location/kernel": 0.0,
+      "1/params/adapter_obs_projection/kernel": 0.0,
+      "1/params/residual_location/bias": 0.0,
+      "1/params/residual_location/kernel": 0.0,
+      "1/params/residual_trunk/hidden_0/bias": 0.0,
+      "1/params/residual_trunk/hidden_0/kernel": 0.0,
+      "1/params/residual_trunk/hidden_1/bias": 0.0,
+      "1/params/residual_trunk/hidden_1/kernel": 0.0,
+      "1/params/residual_trunk/hidden_2/bias": 0.0,
+      "1/params/residual_trunk/hidden_2/kernel": 0.0,
+      "1/params/scale_logits/bias": 0.0,
+      "1/params/scale_logits/kernel": 0.0
+    },
+    "router_leaf_deltas": {
+      "1/params/soft_router_coefficient_delta": 0.006456221919506788,
+      "1/params/soft_router_intercept_delta": 0.0009046123013831675
+    },
+    "trainable_actor_leaf_deltas": {
+      "1/params/negative_adapter_location/bias": 0.0035986476577818394,
+      "1/params/negative_adapter_location/kernel": 0.007140301633626223,
+      "1/params/soft_router_coefficient_delta": 0.006456221919506788,
+      "1/params/soft_router_intercept_delta": 0.0009046123013831675
+    }
+  }
+}

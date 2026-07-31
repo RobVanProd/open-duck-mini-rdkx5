@@ -1,0 +1,80 @@
+{
+  "attribution": {
+    "action_checker": "The checker fed a nonzero externally realized previous_action into a zero-head graph and incorrectly required exact-zero output. The graph's frozen slew projection must instead produce the JAX-reference bounded step toward zero.",
+    "hidden_checker": "The checker compared an ONNX recurrent chain against an independently accumulated JAX chain at a one-step 1e-7 threshold. Backend differences accumulated to 3.5762786865234375e-7, while the established paired-chain graph contract passed at 8.731149137020111e-11.",
+    "learning_rate_declaration": "The preregistration declared 0.0003, while the source-bound runner used v13.STAGE1_LEARNING_RATE=0.0001. The mismatch invalidates advancement even though the executed code and artifacts are deterministic."
+  },
+  "authority": {
+    "pass_authorizes_only": "a corrected checker CPU contract and fresh preregistration",
+    "robot_clearance": false,
+    "support_controller_training_authorized": false
+  },
+  "decision": "DO_NOT_ADVANCE_REVALIDATE_CORRECTED_CHECKER",
+  "execution": {
+    "additional_optimizer_updates": 0,
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "robot_or_rdk_access": 0,
+    "stage2_optimizer_updates": 0
+  },
+  "non_authorizing_observation": {
+    "both_checkpoints_pass_prediction_per_plant": true,
+    "both_checkpoints_repeat_bit_exact": true,
+    "both_checkpoints_separate_all_16_plant_pairs": true,
+    "half_final_standard_graph_chain_error": [
+      8.731149137020111e-11,
+      8.731149137020111e-11
+    ],
+    "half_final_training_loss": [
+      0.9654023051261902,
+      1.0174906253814697
+    ]
+  },
+  "required_correction": {
+    "action_check": "compare every ONNX action/output/state against networks.calibrator_step using the identical observation, externally realized previous_action, and identical h_in",
+    "cpu_contract_before_rerun": true,
+    "fresh_preregistration_and_fresh_run_required": true,
+    "hidden_check": "same-input one-step JAX/ONNX maximum absolute error <=1e-7",
+    "learning_rate": 0.0001
+  },
+  "schema_version": "winner_v13.normalized_response_stage1_invalid_attribution.v1",
+  "source_manifest_sha256": "6a905aee6ffe4acbf236801e62b94b8906b4a4eeb04fbb28ab29eab87711e68e",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v13_normalized_response_stage1_invalid_attribution.py",
+      "sha256": "454613ed4d444164e294d5c82f12398f10d7e6c6532b0df7f274533bab378540"
+    },
+    "import_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v13_normalized_response_stage1_import.py",
+      "sha256": "41d586318f9ac75822291bccea1a32368fb1ca95d48967b049e09010d24ca1b1"
+    },
+    "importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v13_normalized_response_stage1.py",
+      "sha256": "82eafc95a7380a065be0796ba048edcde942b7ee6ba885e7cbaf7cd9b43d34f0"
+    },
+    "preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v13_normalized_response_stage1_preregistration.json",
+      "sha256": "5a8450d6de0c1f9b30f45fc3cfb9d385598bf74ca332db5cc92707836996ba4c"
+    },
+    "raw_import": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v13_normalized_response_stage1_result.json",
+      "sha256": "41fe687a71a913867f77cf002938360094885e57a80ac2052380c15de3a39992"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v13_normalized_response_stage1.py",
+      "sha256": "894a4ea04ac39376878387eea883fd9d296566f8596f58469c6a5e6c39229362"
+    },
+    "training_primitives": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v13_normalized_calibrator_training.py",
+      "sha256": "b57ae2823cff90bfd8d78317adb1dfe9607bcae069a4d985863144b4e12ec3ca"
+    }
+  },
+  "status": "INVALID_WINNER_V13_STAGE1_DECISION_CONTRACT"
+}

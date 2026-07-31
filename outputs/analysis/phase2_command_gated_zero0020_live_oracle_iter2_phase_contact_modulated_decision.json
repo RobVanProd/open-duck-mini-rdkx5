@@ -1,0 +1,107 @@
+{
+  "status": "HOLD_PHASE_CONTACT_MODULATED_MOVING_GATE",
+  "candidate": {
+    "onnx": "outputs/analysis/phase2_command_gated_zero0020_live_oracle_iter2_phase_contact_modulated_bc_student/candidate.onnx",
+    "manifest": "outputs/analysis/phase2_command_gated_zero0020_live_oracle_iter2/live_oracle_dagger_aggregate_manifest.json",
+    "samples": 11555,
+    "context_indices": [6, 97, 98, 99, 100],
+    "fit_p95_abs_error": 0.009653,
+    "target_rate_p95_rad_s": 1.232130,
+    "onnx_max_abs_error": 0.00000006
+  },
+  "gate": {
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0075,
+    "reset_mode": "home-support",
+    "reset_settle_ticks": 10,
+    "bridge_mode": "fitted",
+    "fit_json": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+    "command_x": 0.08,
+    "seeds": [0, 1, 2, 6, 7],
+    "push_enable": true,
+    "push_interval_s": [1.0, 1.5],
+    "push_magnitude": [0.075, 0.125],
+    "output_md": "outputs/analysis/PHASE2_COMMAND_GATED_ZERO0020_LIVE_ORACLE_ITER2_PHASE_CONTACT_MODULATED_BC_STUDENT_X008_GATE.md",
+    "output_json": "outputs/analysis/phase2_command_gated_zero0020_live_oracle_iter2_phase_contact_modulated_bc_student_x008_gate.json"
+  },
+  "result": {
+    "passes": 2,
+    "runs": 5,
+    "pass_seeds": [1, 7],
+    "fall_seeds": [0, 2, 6],
+    "mean_track_ratio": 1.0931,
+    "mean_local_vx_m_s": 0.0874,
+    "mean_body_pitch_p95_rad": 0.5699,
+    "max_p95_velocity_excess_rad_s": 0.0,
+    "max_velocity_excess_rad_s": 0.0,
+    "mean_max_tracking_p95_rad": 0.1936
+  },
+  "per_seed": [
+    {
+      "seed": 0,
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 161,
+      "termination": "fall_or_nan",
+      "mean_local_vx_m_s": 0.1343,
+      "track_ratio": 1.6787,
+      "body_pitch_p95_rad": 0.9100,
+      "base_height_min_m": -0.0054,
+      "max_pitch_vel_p95_rad_s": 1.6523,
+      "p95_velocity_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.1976
+    },
+    {
+      "seed": 1,
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "samples": 750,
+      "termination": "duration_complete",
+      "mean_local_vx_m_s": 0.0288,
+      "track_ratio": 0.3598,
+      "body_pitch_p95_rad": 0.1804,
+      "base_height_min_m": 0.1568,
+      "max_pitch_vel_p95_rad_s": 1.6535,
+      "p95_velocity_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.1917
+    },
+    {
+      "seed": 2,
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 158,
+      "termination": "fall_or_nan",
+      "mean_local_vx_m_s": 0.1333,
+      "track_ratio": 1.6668,
+      "body_pitch_p95_rad": 0.8726,
+      "base_height_min_m": 0.0054,
+      "max_pitch_vel_p95_rad_s": 1.6714,
+      "p95_velocity_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.2003
+    },
+    {
+      "seed": 6,
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 207,
+      "termination": "fall_or_nan",
+      "mean_local_vx_m_s": 0.1128,
+      "track_ratio": 1.4105,
+      "body_pitch_p95_rad": 0.7205,
+      "base_height_min_m": -0.0031,
+      "max_pitch_vel_p95_rad_s": 1.6137,
+      "p95_velocity_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.1932
+    },
+    {
+      "seed": 7,
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "samples": 750,
+      "termination": "duration_complete",
+      "mean_local_vx_m_s": 0.0280,
+      "track_ratio": 0.3495,
+      "body_pitch_p95_rad": 0.1660,
+      "base_height_min_m": 0.1568,
+      "max_pitch_vel_p95_rad_s": 1.6489,
+      "p95_velocity_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.1852
+    }
+  ],
+  "decision": "Do not start Phase 2 domain-randomized PPO from this phase/contact-modulated student. The x=0.08 compact moving gate fails 2/5, so x=0.0 is intentionally skipped."
+}

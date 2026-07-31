@@ -1,0 +1,92 @@
+{
+  "status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+  "manifest": "outputs/analysis/ppo_swish_cmd_conditioned_pitch_ratelimit_2p25_manifest.json",
+  "samples": 8000,
+  "hidden_sizes": [
+    512,
+    256,
+    128
+  ],
+  "activation": "swish",
+  "saved_npz": "outputs/analysis/ppo_loc_swish_cmd_pitch_rl_2p25_candidate/candidate_mlp.npz",
+  "exported_onnx": "outputs/analysis/ppo_loc_swish_cmd_pitch_rl_2p25_candidate/candidate.onnx",
+  "train_metrics": {
+    "samples": 8000,
+    "mae": 0.006875882283412996,
+    "rmse": 0.012618615842256852,
+    "p50_abs_error": 0.0032654958072412255,
+    "p95_abs_error": 0.024947222769087757,
+    "p99_abs_error": 0.05209858569566347,
+    "max_abs_error": 0.21534013038220196,
+    "pred_action_saturation_pct": 0.0
+  },
+  "target_rate": {
+    "pair_count": 7984,
+    "p50_rad_s": 0.18545976352157845,
+    "p95_rad_s": 1.7846989717581472,
+    "p99_rad_s": 2.2164042670229054,
+    "max_rad_s": 2.4970769153220647
+  },
+  "loss_rows": [
+    {
+      "step": 1,
+      "loss": 0.14159658551216125
+    },
+    {
+      "step": 500,
+      "loss": 0.0003781115519814193
+    },
+    {
+      "step": 1000,
+      "loss": 0.0003155816229991615
+    },
+    {
+      "step": 1500,
+      "loss": 0.00025372294476255774
+    },
+    {
+      "step": 2000,
+      "loss": 0.00026784121291711926
+    },
+    {
+      "step": 2500,
+      "loss": 0.00027665807283483446
+    },
+    {
+      "step": 3000,
+      "loss": 0.00021082861348986626
+    },
+    {
+      "step": 3500,
+      "loss": 0.00023949879687279463
+    },
+    {
+      "step": 4000,
+      "loss": 0.0002001799875870347
+    },
+    {
+      "step": 4500,
+      "loss": 0.00016229208267759532
+    },
+    {
+      "step": 5000,
+      "loss": 0.000159990435349755
+    }
+  ],
+  "onnx_verify": {
+    "path": "outputs/analysis/ppo_loc_swish_cmd_pitch_rl_2p25_candidate/candidate.onnx",
+    "samples_checked": 64,
+    "max_abs_error": 2.914527196251626e-07,
+    "p95_abs_error": 1.3634154144570587e-07
+  },
+  "config": {
+    "steps": 5000,
+    "batch_size": 512,
+    "learning_rate": 0.001,
+    "target_rate_scale": 0.2,
+    "target_rate_limit_rad_s": 2.25,
+    "action_scale_rad": 0.25,
+    "dt_s": 0.02,
+    "seed": 0
+  }
+}

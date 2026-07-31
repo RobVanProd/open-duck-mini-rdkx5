@@ -1,0 +1,146 @@
+{
+  "authority": {
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "result_authorizes_only": "a separately preregistered mechanism chosen from the frozen classification",
+    "robot_clearance": false,
+    "training_authorized": false
+  },
+  "causal_question": "After the full-14D V52 continuation, does the frozen full teacher still rescue every final V53 failure, and is the residual mismatch localized to pitch output or pitch/non-pitch interaction?",
+  "classification": {
+    "either_single_intervention_rescues": "pitch_teacher and nonpitch_zero both pass",
+    "no_posthoc_threshold_or_arm_change": true,
+    "nonpitch_output_causal": "nonpitch_zero passes and pitch_teacher fails",
+    "pitch_nonpitch_interaction": "full_teacher passes and both single interventions fail",
+    "pitch_output_causal": "pitch_teacher passes and nonpitch_zero fails",
+    "teacher_insufficient": "full_teacher fails"
+  },
+  "decision": "AUTHORIZE_ONE_READ_ONLY_48_CELL_CPU_DIAGNOSTIC_ONLY",
+  "execution_now": {
+    "diagnostic_cells": 0,
+    "locomotion_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "frozen_arms": {
+    "full_teacher": "replace all 14 actor outputs with the frozen V42 target before the unchanged graph bound",
+    "graph": "unchanged V52 final graph",
+    "nonpitch_zero": "replace indices [0,1,5,6,7,8,9,10] with zero before the unchanged graph bound",
+    "pitch_teacher": "replace indices [2,3,4,11,12,13] with the frozen V42 target before the unchanged graph bound",
+    "response_state": "retain the graph h_out exactly, matching the reviewed V48 intervention semantics"
+  },
+  "frozen_execution": {
+    "arm_count": 4,
+    "checkpoint_count": 1,
+    "configuration_count": 6,
+    "diagnostic_cells": 48,
+    "formal_graph_cells_must_match_v53_bit_exact": true,
+    "locomotion_steps": 0,
+    "optimizer_updates": 0,
+    "plant_count": 2,
+    "robot_or_rdk_access": 0,
+    "ticks_per_cell": 250
+  },
+  "frozen_source": {
+    "checkpoint_label": "final",
+    "completed_updates": 453,
+    "configuration_ids": [
+      "COM_X_NEG",
+      "COM_CORNER_01",
+      "COM_CORNER_03",
+      "DISCOVERY_03",
+      "HELDOUT_04",
+      "HELDOUT_09"
+    ],
+    "formal_failed_cells": 12,
+    "onnx_sha256": "b710e8c1578d5cd7261646daa54e3b8c8565c5a84fbf9f40fcfe5e86b53b618b",
+    "plants": [
+      "P30_ALL_JOINT",
+      "P31_34_PITCH_WITH_P30_NONPITCH"
+    ],
+    "snapshot_sha256": "b7bfd05bb8af7a1085b91495d62273f238c71fbea6e1d9c6dbd64604ff4b7b60",
+    "v53_result_sha256": "6fb272a5147dc67074a8196467504717ef7a70b422b355f5c6d7252c7ab41579"
+  },
+  "pass_rule": {
+    "all_12_graph_cells_bit_exact_to_v53": true,
+    "all_jax_onnx_hidden_errors_at_most_1e_7": true,
+    "all_previous_action_chains_exact": true,
+    "all_values_finite": true,
+    "exact_12_failed_pair_classifications": true,
+    "exact_48_cells": true
+  },
+  "schema_version": "winner_v54.residual_teacher_causal_preregistration.v1",
+  "source_manifest_sha256": "5894bc6609984de8fa25e37196f9cd6999a27e49253c798d7b3a143219aeb2fc",
+  "sources": {
+    "base_gate_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_preregistration.json",
+      "sha256": "99500648d6683097a13f894b0949bf4b5494e5653f36878710817bd0952f71dd"
+    },
+    "base_gate_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_support_gate.py",
+      "sha256": "18873eee55c77a278fc065de64c0b912803bf29b4440cde7f3adaabe1297baca"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v54_residual_teacher_causal_preregistration.py",
+      "sha256": "4e176b998a8aeb0a27d6ebbf0d64d0bfea267895a2073cf21a468c5d5a063998"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v54_residual_teacher_causal.py",
+      "sha256": "8a2b87a9b3832b9b73dbc53295f402bac0a007e5c6f83c7af9a3d487242850d1"
+    },
+    "teacher_table": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v42_static_target_teacher_table_result.json",
+      "sha256": "c465d9b3951941715ee0bb588a0ba24a9c4b15d7a2c99430340bcaea43964469"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v54_residual_teacher_causal.py",
+      "sha256": "bef4279bde1fc4119c2851d924f6f9fc5801143d012641ed1eb73d2db8bdb578"
+    },
+    "v48_intervention_mechanics": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v48_static_teacher_causal_diagnostic.py",
+      "sha256": "892db8ce547e8a2ee74b9f2352201c8b6334a201fd8cbfdc38f849d65fbc00ac"
+    },
+    "v48c_causal_scope_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v48c_causal_population_scope_result.json",
+      "sha256": "2b48971a02aa837cb4a9185280a70d304228f11aef7cd26759a58b2aabf6d8d9"
+    },
+    "v52_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v52_full_action_teacher_training_preregistration.json",
+      "sha256": "0a0d2a088be7b420b9d16f0af2d16f6ca173b4d8ee1662b484493ec2f3d143d2"
+    },
+    "v52_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v52_full_action_teacher_training_result.json",
+      "sha256": "1f7b146d169bc726eff1f4985866a65b530eeb27d1f4386040c43ee2e13a9b16"
+    },
+    "v53_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v53_full_action_teacher_support_gate_preregistration.json",
+      "sha256": "8bef4d8c4bf15509c960458c686e43572d6f0d646755297b7a084e1414dba369"
+    },
+    "v53_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v53_full_action_teacher_support_gate_result.json",
+      "sha256": "c3c5f806f80c57b04af90b9013aeb71b23fa7eb5e6108eb98c24c8a8a73072dd"
+    },
+    "v53_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v53_full_action_teacher_support_gate.py",
+      "sha256": "406af17b3376317dd88f434a75265161471ae18b725fb5b9bb78edc4f478b8a6"
+    },
+    "variable_configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V54_RESIDUAL_TEACHER_CAUSAL_DIAGNOSTIC"
+}

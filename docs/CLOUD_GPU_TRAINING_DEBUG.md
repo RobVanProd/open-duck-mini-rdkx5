@@ -1,0 +1,308 @@
+# Cloud GPU Training Debug
+
+This project currently treats cloud GPU training as an infrastructure thread,
+separate from robot validation.
+
+Robot status: parked. Do not run robot tests from this workflow.
+
+## Current Status
+
+Known-good:
+
+- local CPU `training-smoke`: `PASS`
+- local CPU candidate gates: `PASS_PLUMBING`
+- Colab CUDA JAX device detection: `PASS` in prior manual notebook checks
+- Colab L4 minimal CUDA PPO smoke: `PASS`
+  - `num_envs=4`
+  - `num_timesteps=32`
+  - actuator bridge enabled
+  - final manifest written
+  - checkpoint saved at step 40
+- Colab A100 CUDA PPO smoke: `PASS`
+  - `num_envs=8`
+  - `num_timesteps=64`
+  - actuator bridge enabled
+  - final manifest written
+  - checkpoint saved at step 80
+- Colab A100 staged curriculum phase execution: `PASS_INFRA`
+  - `movement_bootstrap_v15` phase 1 trained to step 337920
+  - exported ONNX/checkpoint
+  - automatic gate ran and returned `HOLD_CANDIDATE_LOW_FORWARD_PROGRESS`
+
+Current hold:
+
+```text
+Colab L4 8-env / 64-timestep training-smoke: HOLD_REMOTE_NO_SENTINEL
+Colab L4 8-env training-smoke diagnostic: HOLD_REMOTE_NO_SENTINEL
+movement_bootstrap_v15 phase 1 on A100: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+```
+
+The minimal L4 runs prove CUDA/JAX/Brax/Playground are usable at very small
+scale. The remaining problem is scale-sensitive or long-compile/runtime related:
+the 4-env / 32-timestep diagnostic completed after a long quiet window. The
+8-env / 64-timestep diagnostic still disappears without a final sentinel after
+the poller fix, and the expected remote output paths are missing afterward.
+
+An A100 session passed the same 8-env / 64-timestep smoke, so the current
+recommended cloud backend for substantial candidate training is A100.
+
+## Required Next Command
+
+Use the staged startup diagnostic before launching another recipe:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py \
+  --session open-duck-l4 \
+  --workflow training-smoke-diagnostic \
+  --run \
+  --foreground-remote \
+  --foreground-remote-timeout-s 1800 \
+  --idle-no-sentinel-polls 5 \
+  --timeout-s 1800 \
+  --smoke-num-timesteps 8 \
+  --smoke-ppo-num-envs 1 \
+  --smoke-ppo-batch-size 1 \
+  --smoke-export-min-step 1
+```
+
+It records one stage at a time:
+
+```text
+00_python_jax_device
+01_import_training_stack
+02_smoke_dry_run
+03_smoke_run
+```
+
+The poller also attempts to recover the remote workflow output directory into
+`partial_remote_output` before declaring `HOLD_REMOTE_NO_SENTINEL` or
+`HOLD_REMOTE_TIMEOUT`. Because `google-colab-cli` cannot download directories
+directly, the helper now falls back to tarring the remote output directory and
+downloading that archive.
+
+Long JAX/Brax compiles can produce no new stdout for minutes. The poller records
+unchanged log polls as evidence, but it does not declare `HOLD_REMOTE_NO_SENTINEL`
+from unchanged logs alone; it waits for repeated `IDLE` status without an exit
+sentinel or artifact bundle.
+
+If a notebook is connected in the browser but `google-colab-cli` reports no
+active sessions, generate a diagnostic single-cell notebook instead:
+
+```bash
+python3 tools/print_cuda_colab_cell.py \
+  --training-smoke-diagnostic \
+  --rdk-branch codex/colab-cli-cuda-workflow \
+  --playground-branch codex/forward-progress-reward \
+  --handoff-dir /home/lsd/robots/cuda_colab_diagnostic_handoff
+```
+
+Then upload/open:
+
+```text
+/home/lsd/robots/cuda_colab_diagnostic_handoff/open_duck_cuda_smoke.ipynb
+```
+
+See `docs/CUDA_COLAB_SINGLE_CELL.md` for the manual notebook fallback.
+
+## Backend Selection Rules
+
+Use explicit JAX backend selection for every smoke/gate command.
+
+Local CPU:
+
+```text
+JAX_PLATFORM_NAME=cpu
+JAX_PLATFORMS=cpu
+```
+
+Colab/NVIDIA CUDA:
+
+```text
+JAX_PLATFORM_NAME=gpu
+JAX_PLATFORMS=cuda
+```
+
+Do not use `JAX_PLATFORMS=gpu`; CUDA JAX expects the backend name `cuda`.
+
+## Diagnostic Environment Toggles
+
+Use these only for isolation runs, not as permanent training defaults.
+
+GPU memory preallocation:
+
+```bash
+export XLA_PYTHON_CLIENT_PREALLOCATE=false
+export XLA_PYTHON_CLIENT_MEM_FRACTION=0.60
+```
+
+JAX documents that it preallocates GPU memory by default and exposes these
+environment variables for memory-allocation debugging:
+https://docs.jax.dev/en/latest/gpu_memory_allocation.html
+
+NaN/Inf and JIT debugging:
+
+```bash
+export JAX_DEBUG_NANS=true
+export JAX_DEBUG_INFS=true
+export JAX_DISABLE_JIT=true
+```
+
+JAX debugging flags are documented here:
+https://docs.jax.dev/en/latest/debugging/flags.html
+
+JAX configuration options, including platform controls, are documented here:
+https://docs.jax.dev/en/latest/config_options.html
+
+## Interpretation Rules
+
+If `00_python_jax_device` fails:
+
+- debug JAX/CUDA installation before touching Open Duck code.
+
+If `01_import_training_stack` fails:
+
+- debug dependency pins or editable Playground install.
+
+If `02_smoke_dry_run` fails:
+
+- debug smoke runner arguments/path validation.
+
+If `03_smoke_run` fails or disappears:
+
+- the issue is inside the tiny PPO/Brax/MJX training path.
+- compare against the passing 1-env / 8-timestep smoke before changing recipe
+  code.
+- keep recipe search on a stable backend or a known-good cloud scale until the
+  cloud runtime is fixed.
+
+If the run disappears without a sentinel:
+
+- do not promote any partial checkpoint.
+- inspect `remote_live.log`, `REMOTE_NO_SENTINEL.md`, and
+  `partial_remote_output` if present.
+
+## Current Scale Question
+
+The passing L4 smoke used `num_envs=1` and `num_timesteps=8`.
+
+The next point, `num_envs=1` and `num_timesteps=16`, also passed once the poller
+stopped treating unchanged logs alone as a lost-sentinel condition.
+
+The next point, `num_envs=2` and `num_timesteps=16`, also passed.
+
+The next point, `num_envs=4` and `num_timesteps=32`, also passed.
+
+The failing diagnostic used `num_envs=8` and `num_timesteps=64`.
+
+The next cloud isolation step should sweep upward conservatively, for example:
+
+```text
+1 env / 8 timesteps   known PASS
+1 env / 16 timesteps  known PASS
+2 env / 16 timesteps  known PASS
+4 env / 32 timesteps  known PASS
+8 env / 64 timesteps  HOLD_REMOTE_NO_SENTINEL
+```
+
+Stop at the first scale that disappears or times out and preserve the partial
+output bundle.
+
+Current first hold:
+
+```text
+8 env / 64 timesteps
+```
+
+The helper found no exit sentinel, no artifact bundle, and no recoverable
+partial output directory. Treat this as a cloud runtime/session loss until an
+A100 run or an intermediate scale says otherwise.
+
+A100 result:
+
+```text
+8 env / 64 timesteps: PASS
+STEP: 80 reward: 11.273723602294922 reward_std: 4.483529567718506
+```
+
+### A100 V15 Phase-1 Hold
+
+`movement_bootstrap_v15` phase 1 was run on A100 after the smoke ladder passed:
+
+```text
+phase: phase1_no_bridge_high_entropy_gait_discovery
+num_timesteps: 320000
+ppo_num_envs: 256
+actuator bridge: disabled
+command x range: 0.06 to 0.10
+zero_command_probability: 0
+```
+
+Training completed and exported `2026_06_24_100138_337920.onnx`, but the
+automatic vanilla `x=0.08` gate held:
+
+```text
+overall_status: HOLD_CANDIDATE_LOW_FORWARD_PROGRESS
+mean_local_vx: 0.0009 m/s
+track_ratio: 0.0111
+max_sent_target_velocity_p95_rad_s: 0.0988
+max_pitch_tracking_p95_rad: 0.0540
+max_action_saturation_pct: 0.0000
+body_pitch_p95: 0.0818 rad
+base_height_min: 0.1534 m
+```
+
+Interpretation: the A100 training infrastructure is usable for full phase runs,
+but this V15 phase-1 recipe learned a quiet standstill. Do not run V15 phases 2
+or 3 from this checkpoint.
+
+An eight-seed local CPU sweep of the recovered phase-1 ONNX confirmed the hold:
+
+```text
+falls: 3 / 8
+duration_complete low-progress runs: 5 / 8
+track_ratio_mean: -0.7433
+vx_mean: -0.0595 m/s
+```
+
+So the V15 phase-1 output should be treated as a freeze/reverse/collapse
+distribution rather than a single unlucky seed.
+
+Summary artifact:
+`outputs/analysis/A100_V15_PHASE1_HOLD_SUMMARY.md`.
+
+Seed sweep artifact:
+`outputs/analysis/V15_PHASE1_SEED_SWEEP_VALID.md`.
+
+## Related Upstream Notes
+
+This behavior is not unique to this repo. A Brax issue reports an NVIDIA L4
+Colab PPO locomotion run that stayed very slow or never finished even after the
+author reduced `num_timesteps` to `10`:
+https://github.com/google/brax/issues/520
+
+JAX/XLA has also had historical reports of GPU compilation hangs where a
+program compiles successfully for some shapes and hangs for others:
+https://github.com/jax-ml/jax/issues/6823
+
+MuJoCo's MJX documentation notes that `MJX-Warp` is specifically optimized for
+NVIDIA GPUs and resolves several performance bottlenecks of `MJX-JAX`, but it
+does not support automatic differentiation:
+https://mujoco.readthedocs.io/en/stable/mjx.html
+
+Current Open Duck Colab smoke stdout says:
+
+```text
+Failed to import warp: No module named 'warp'
+Failed to import mujoco_warp: No module named 'warp'
+```
+
+Do not switch simulator implementation in the training path casually. Treat
+Warp as a separate backend experiment only after the current JAX/MJX baseline is
+well characterized.
+
+## Non-Goals
+
+- Do not run robot validation from cloud GPU diagnostics.
+- Do not change robot runtime behavior.
+- Do not treat a partial cloud checkpoint as a candidate unless it later passes
+  local closed-loop gates.

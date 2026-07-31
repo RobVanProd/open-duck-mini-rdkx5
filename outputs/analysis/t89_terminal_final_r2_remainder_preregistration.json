@@ -1,0 +1,527 @@
+{
+  "authority": {
+    "candidate_promotion": false,
+    "checkpoint_selection": false,
+    "colab": false,
+    "gate5": false,
+    "one_cpu_diagnostic_remainder": true,
+    "persistence_stabilization_cpu_contract_preregistration": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "behavior_contract": {
+    "interpretation": {
+      "core": "minimum physical/semantic validity; thresholds passed by the T4 baseline where comparable",
+      "evaluator_candidate_gate_status": "diagnostic only because T4 invalidated its use as an unqualified feasibility classifier",
+      "replacement_quality": "explicit stretch goals for replacing the behaviorally bad baseline; T4 showed the baseline can fail some of these"
+    },
+    "moving_core": {
+      "bilateral_transitions": true,
+      "maximum_action_saturation_pct": 1.0,
+      "maximum_body_pitch_p95_rad": 0.25,
+      "minimum_base_height_m": 0.12,
+      "minimum_track_ratio": 0.25,
+      "positive_mean_local_velocity": true,
+      "samples": 600
+    },
+    "moving_replacement_quality": {
+      "maximum_action_saturation_pct": 0.0,
+      "maximum_pitch_tracking_p95_rad": 0.2,
+      "maximum_rate_excess_rad_s": 0.0
+    },
+    "x0_core": {
+      "maximum_absolute_mean_local_vx_m_s": 0.02,
+      "maximum_action_saturation_pct": 1.0,
+      "maximum_body_pitch_p95_rad": 0.25,
+      "minimum_base_height_m": 0.12,
+      "samples": 600
+    },
+    "x0_replacement_quality": {
+      "maximum_action_saturation_pct": 0.0,
+      "maximum_pitch_tracking_p95_rad": 0.2,
+      "maximum_rate_excess_rad_s": 0.0
+    }
+  },
+  "calibrator": {
+    "bytes": 55573,
+    "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v96-response-conditioned-mechanics\\winner_v96_universal_calibrator.onnx",
+    "sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576"
+  },
+  "checks": {
+    "all_assets_exact": true,
+    "all_repository_inputs_present": true,
+    "conditions_exactly_five_through_twenty": true,
+    "exact_128_new_diagnostic_cells": true,
+    "t86_terminal_final_green_through_condition_four": true,
+    "t88_closes_static_right_smoothing": true,
+    "terminal_policy_byte_exact_to_t84": true,
+    "zero_behavior_training_colab_or_robot": true
+  },
+  "commands_x_m_s": [
+    0.0,
+    0.074,
+    0.077,
+    0.08
+  ],
+  "conditions": [
+    {
+      "condition_index": 5,
+      "id": "ARMATURE_LO",
+      "override": {
+        "armature_scale": 1.0
+      }
+    },
+    {
+      "condition_index": 6,
+      "id": "ARMATURE_HI",
+      "override": {
+        "armature_scale": 1.05
+      }
+    },
+    {
+      "condition_index": 7,
+      "id": "TORSO_COM_X_NEG",
+      "override": {
+        "torso_com_offset_m": [
+          -0.05,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "condition_index": 8,
+      "id": "TORSO_COM_X_POS",
+      "override": {
+        "torso_com_offset_m": [
+          0.05,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "condition_index": 9,
+      "id": "TORSO_COM_Y_NEG",
+      "override": {
+        "torso_com_offset_m": [
+          0.0,
+          -0.05,
+          0.0
+        ]
+      }
+    },
+    {
+      "condition_index": 10,
+      "id": "TORSO_COM_Y_POS",
+      "override": {
+        "torso_com_offset_m": [
+          0.0,
+          0.05,
+          0.0
+        ]
+      }
+    },
+    {
+      "condition_index": 11,
+      "id": "TORSO_COM_Z_NEG",
+      "override": {
+        "torso_com_offset_m": [
+          0.0,
+          0.0,
+          -0.05
+        ]
+      }
+    },
+    {
+      "condition_index": 12,
+      "id": "TORSO_COM_Z_POS",
+      "override": {
+        "torso_com_offset_m": [
+          0.0,
+          0.0,
+          0.05
+        ]
+      }
+    },
+    {
+      "condition_index": 13,
+      "id": "ALL_LINK_MASS_LO",
+      "override": {
+        "all_link_mass_scale": 0.9
+      }
+    },
+    {
+      "condition_index": 14,
+      "id": "ALL_LINK_MASS_HI",
+      "override": {
+        "all_link_mass_scale": 1.1
+      }
+    },
+    {
+      "condition_index": 15,
+      "id": "TORSO_MASS_NEG",
+      "override": {
+        "torso_mass_add_kg": -0.1
+      }
+    },
+    {
+      "condition_index": 16,
+      "id": "TORSO_MASS_POS",
+      "override": {
+        "torso_mass_add_kg": 0.1
+      }
+    },
+    {
+      "condition_index": 17,
+      "id": "HOME_JOINT_OFFSET_NEG",
+      "override": {
+        "joint_qpos0_offset_rad": -0.03
+      }
+    },
+    {
+      "condition_index": 18,
+      "id": "HOME_JOINT_OFFSET_POS",
+      "override": {
+        "joint_qpos0_offset_rad": 0.03
+      }
+    },
+    {
+      "condition_index": 19,
+      "id": "KP_LO",
+      "override": {
+        "kp_scale": 0.9
+      }
+    },
+    {
+      "condition_index": 20,
+      "id": "KP_HI",
+      "override": {
+        "kp_scale": 1.1
+      }
+    }
+  ],
+  "decision_rule": {
+    "fail_decision": "STOP_T89_AT_FIRST_TERMINAL_FINAL_FAILURE_AND_ATTRIBUTE",
+    "no_retry": true,
+    "pass": "All 128 new cells pass; combined with the 32 immutable T86 terminal-final cells, this one diagnostic graph is 160/160 across R2.",
+    "pass_decision": "EARN_T90_PERSISTENCE_STABILIZATION_CPU_CONTRACT_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "fits": [
+    {
+      "bytes": 18664,
+      "fit_id": "p30",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "a58db8ffc505d2bb64cba7f5618d0e2c65904fc9f9ac37b560a1231e090f5f4f"
+    },
+    {
+      "bytes": 18788,
+      "fit_id": "p31_34",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p31_34_actuator_fit_20260712.json",
+      "sha256": "2740513f6bdeb4ad3cc5dd6dc1709319389a593fd153c1ce5abae03b66131a57"
+    }
+  ],
+  "immutable_conditions_one_through_four": {
+    "cells": 32,
+    "conditions": [
+      {
+        "blocks": [
+          {
+            "block_green": true,
+            "cells": 4,
+            "fit_id": "p30",
+            "green_cells": 4,
+            "manifest": {
+              "bytes": 6693,
+              "path": "D:\\CodexArtifacts\\open-duck-policy\\t86_rolling_midpoint_r2_v1\\01_FLOOR_FRICTION_LO\\T84_ROLLING_FINAL\\p30\\manifest.json",
+              "sha256": "7b7ba0e348d52ef8505aca50ef8e5ac4b8466a48efc556b1ac8f584625193992"
+            }
+          },
+          {
+            "block_green": true,
+            "cells": 4,
+            "fit_id": "p31_34",
+            "green_cells": 4,
+            "manifest": {
+              "bytes": 6723,
+              "path": "D:\\CodexArtifacts\\open-duck-policy\\t86_rolling_midpoint_r2_v1\\01_FLOOR_FRICTION_LO\\T84_ROLLING_FINAL\\p31_34\\manifest.json",
+              "sha256": "cfa1809e791c3f4e3dd3ed7382794f27e67303874183ffcb625bae7c3ddf586e"
+            }
+          }
+        ],
+        "cells": 8,
+        "condition": {
+          "condition_index": 1,
+          "id": "FLOOR_FRICTION_LO",
+          "override": {
+            "floor_friction": 0.5
+          }
+        },
+        "green_cells": 8
+      },
+      {
+        "blocks": [
+          {
+            "block_green": true,
+            "cells": 4,
+            "fit_id": "p30",
+            "green_cells": 4,
+            "manifest": {
+              "bytes": 6693,
+              "path": "D:\\CodexArtifacts\\open-duck-policy\\t86_rolling_midpoint_r2_v1\\02_FLOOR_FRICTION_HI\\T84_ROLLING_FINAL\\p30\\manifest.json",
+              "sha256": "851854ecf3e5db0ed712be9cdfa296911f672a92f53cab4cd4bbe75d5bd61366"
+            }
+          },
+          {
+            "block_green": true,
+            "cells": 4,
+            "fit_id": "p31_34",
+            "green_cells": 4,
+            "manifest": {
+              "bytes": 6723,
+              "path": "D:\\CodexArtifacts\\open-duck-policy\\t86_rolling_midpoint_r2_v1\\02_FLOOR_FRICTION_HI\\T84_ROLLING_FINAL\\p31_34\\manifest.json",
+              "sha256": "8ff2f1785070237a0de3b6dffc81ea5c4b7ed84a50e30f972cf972b534f9df41"
+            }
+          }
+        ],
+        "cells": 8,
+        "condition": {
+          "condition_index": 2,
+          "id": "FLOOR_FRICTION_HI",
+          "override": {
+            "floor_friction": 1.0
+          }
+        },
+        "green_cells": 8
+      },
+      {
+        "blocks": [
+          {
+            "block_green": true,
+            "cells": 4,
+            "fit_id": "p30",
+            "green_cells": 4,
+            "manifest": {
+              "bytes": 6749,
+              "path": "D:\\CodexArtifacts\\open-duck-policy\\t86_rolling_midpoint_r2_v1\\03_JOINT_FRICTIONLOSS_LO\\T84_ROLLING_FINAL\\p30\\manifest.json",
+              "sha256": "66631d0483f0ce6ab805693570965174f8a846d12838106f3407a914b91e33d7"
+            }
+          },
+          {
+            "block_green": true,
+            "cells": 4,
+            "fit_id": "p31_34",
+            "green_cells": 4,
+            "manifest": {
+              "bytes": 6779,
+              "path": "D:\\CodexArtifacts\\open-duck-policy\\t86_rolling_midpoint_r2_v1\\03_JOINT_FRICTIONLOSS_LO\\T84_ROLLING_FINAL\\p31_34\\manifest.json",
+              "sha256": "9eb7b8ba6d479ff8bb40b21ca2ceab507ad698d8fdf472303aa2705915700ac3"
+            }
+          }
+        ],
+        "cells": 8,
+        "condition": {
+          "condition_index": 3,
+          "id": "JOINT_FRICTIONLOSS_LO",
+          "override": {
+            "joint_frictionloss_scale": 0.9
+          }
+        },
+        "green_cells": 8
+      },
+      {
+        "blocks": [
+          {
+            "block_green": true,
+            "cells": 4,
+            "fit_id": "p30",
+            "green_cells": 4,
+            "manifest": {
+              "bytes": 6749,
+              "path": "D:\\CodexArtifacts\\open-duck-policy\\t86_rolling_midpoint_r2_v1\\04_JOINT_FRICTIONLOSS_HI\\T84_ROLLING_FINAL\\p30\\manifest.json",
+              "sha256": "134442b8efb52af8af2d39608a34fdd8f16e430b207f070ec9edbfa0ea6a8d70"
+            }
+          },
+          {
+            "block_green": true,
+            "cells": 4,
+            "fit_id": "p31_34",
+            "green_cells": 4,
+            "manifest": {
+              "bytes": 6779,
+              "path": "D:\\CodexArtifacts\\open-duck-policy\\t86_rolling_midpoint_r2_v1\\04_JOINT_FRICTIONLOSS_HI\\T84_ROLLING_FINAL\\p31_34\\manifest.json",
+              "sha256": "54703d33bd76bc2bc12421c07b393bab36fe1c40a094267639ac4f3206fcfcaa"
+            }
+          }
+        ],
+        "cells": 8,
+        "condition": {
+          "condition_index": 4,
+          "id": "JOINT_FRICTIONLOSS_HI",
+          "override": {
+            "joint_frictionloss_scale": 1.1
+          }
+        },
+        "green_cells": 8
+      }
+    ],
+    "green_cells": 32,
+    "source_result": {
+      "bytes": 491351,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t86_rolling_midpoint_r2_result.json",
+      "sha256": "8fe4405334def7d2a871f3aae3a4968e28fe928bc5db1902dcd640c2077fb53f"
+    }
+  },
+  "interpretation": {
+    "cannot_promote_or_deploy": true,
+    "diagnostic_only": true,
+    "purpose": "decide whether persistence stabilization around this terminal source is worth a CPU software contract",
+    "single_checkpoint_cannot_satisfy_persistence": true
+  },
+  "matrix": {
+    "cells_per_condition": 8,
+    "checkpoint_selection": false,
+    "commands": 4,
+    "complete_each_eight_cell_condition_before_decision": true,
+    "condition_indices": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "conditions": 16,
+    "fits": 2,
+    "maximum_new_cells": 128,
+    "plan_sha256": "42a70b09b0abff243b04cb5fc5d47a639ccd508da47ffcbe16ff8c51df557e82",
+    "policies": 1,
+    "reuse_prior_condition_evidence": true,
+    "stop_after_first_failed_condition": true,
+    "strictly_sequential_conditions": true
+  },
+  "playground": {
+    "manifest": {
+      "bytes": 5190,
+      "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v6\\T19_COMPOSED_SOURCE_MANIFEST.json",
+      "sha256": "d7c9b615c32f0e2c8434e958a900cc38485c0db6fea107b6115a69bbd2122a77"
+    },
+    "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v6"
+  },
+  "policies": [
+    {
+      "bytes": 965047,
+      "checkpoint_id": "T84_ROLLING_FINAL_DIAGNOSTIC",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t84_t78_rolling_midpoint_v1\\rolling_final\\action_margin.onnx",
+      "sha256": "24275abcc324fc6cb6677ff175f0c160f98cc9cee97ae4e6b016a43f1be7202d",
+      "step": 2007040
+    }
+  ],
+  "preregistered_contract_sha256": "ca54133a31c4f04c4e76ebefbfa8fcf2d54ab6ab1ed5cf4d54b5dfa665ba642b",
+  "protection_contract": {
+    "force_limit_tolerance_nm": 5e-06,
+    "instantaneous_stall_current_and_torque": "diagnostic_only",
+    "motor_constant_nm_per_a": 0.784532,
+    "overcurrent_threshold_a": 2.0,
+    "overload_threshold_nm": 1.5298374,
+    "pass_max_consecutive_ticks": 99,
+    "simulator_force_limit_abs_nm": 3.23,
+    "simulator_force_limit_hits": "diagnostic_only",
+    "source": "T5 manufacturer-derived duration rules",
+    "strict_comparison": true,
+    "trip_ticks": 100
+  },
+  "question": "Is T86's hold a persistence-source problem only, or does the otherwise-green terminal rolling-final fail a later R2 condition?",
+  "reference_feature_table": {
+    "bytes": 259604,
+    "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+    "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+  },
+  "repository_inputs": {
+    "adapter": {
+      "bytes": 8272,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\t27_state_coherent_eval_adapter.py",
+      "sha256": "e53d6e74bad78e6ffa0423807e6dbe168730e881a47017f5343a0391ac5836cb"
+    },
+    "builder": {
+      "bytes": 11180,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t89_terminal_final_r2_remainder_preregistration.py",
+      "sha256": "714039c45a4aa17470026c5a0eeaaa005b1b4259a9ce5a6f4feca9a8a26d4e89"
+    },
+    "matrix_helper": {
+      "bytes": 21782,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t27_t23_robustness_matrix.py",
+      "sha256": "142668ac3dbe27f65ccb1d113c90d854b9ff76201a70120fa1bec722038b8ea3"
+    },
+    "r2_basis": {
+      "bytes": 14051,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t86_rolling_midpoint_r2_preregistration.json",
+      "sha256": "e2c74f5524b83fa5d12b2814c7c4070e62937fd0dfb7e338be4fdb516e96675a"
+    },
+    "runner": {
+      "bytes": 12090,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t89_terminal_final_r2_remainder.py",
+      "sha256": "5dba4548972a3dd643a0cf4307a414eb3921093f42dd6ea64eb979f686c581b9"
+    },
+    "t86_result": {
+      "bytes": 491351,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t86_rolling_midpoint_r2_result.json",
+      "sha256": "8fe4405334def7d2a871f3aae3a4968e28fe928bc5db1902dcd640c2077fb53f"
+    },
+    "t87_result": {
+      "bytes": 32291,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t87_right_smoothed_pair_result.json",
+      "sha256": "e1a426e33d5b6851e25a8245b9db80e885bb9ffa7d49fe7f1f6e199d847fa17f"
+    },
+    "t88_result": {
+      "bytes": 64275,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t88_right_smoothed_targeted_result.json",
+      "sha256": "1b44281557160b28a26fbb7e42eac1cc9d6c63cc97ec3a0aa637b933888d06d5"
+    },
+    "test": {
+      "bytes": 2485,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t89_terminal_final_r2_remainder.py",
+      "sha256": "54fcd56c80410337886d1ea7e807c7ff6d6ccdb60c361e3f8f509b984feb8154"
+    },
+    "worker": {
+      "bytes": 7932,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\evaluate_t27_t23_robustness_condition.py",
+      "sha256": "93ff8c405d6bf1923cd8bea69ce5efde4cd97388f6b71a1d0f9ba5aa599b096c"
+    }
+  },
+  "schema_version": "open_duck.t89_terminal_final_r2_remainder_preregistration.v1",
+  "seed": 167931544,
+  "status": "PREREGISTERED_T89_TERMINAL_FINAL_R2_REMAINDER_DIAGNOSTIC",
+  "support_handoff": {
+    "context_input_name": "calibration_context",
+    "context_is_diagnostic_only": true,
+    "locomotion_hidden_zero": true,
+    "locomotion_phase_reset": [
+      1.0,
+      0.0
+    ],
+    "preserve_applied_target_observer_state": true,
+    "preserve_final_support_action_as_previous_action": true,
+    "source": "T22/T24 exact support-train-through deployment chain and green T27 one-tick runner contract",
+    "unscored_calibration_ticks": 250,
+    "unscored_home_return_ticks": 0
+  }
+}

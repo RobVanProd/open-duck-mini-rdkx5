@@ -1,0 +1,101 @@
+{
+  "status": "HOLD_DIAGNOSTIC_ONLY",
+  "generated_at": "2026-06-30T05:00:00Z",
+  "workflow": "phase2-z002-teacher-continuity",
+  "session": "open-duck-a100-clean",
+  "candidate_name": "phase2_z002_teacher_continuity_clean_fg64",
+  "phase2_num_timesteps_override": 64,
+  "training": {
+    "platform": "gpu",
+    "returncode": 0,
+    "elapsed_s": 798.0699514370001,
+    "actuator_bridge_enabled": true,
+    "target_rate_scale": -0.01,
+    "actuator_tracking_scale": -0.005,
+    "non_deployable": true
+  },
+  "onnx_exports": [
+    {
+      "step": 40960,
+      "sha256": "6148963790d356515a738a472adb33d1781e5b50862449bcbc5eb4af9c826321"
+    },
+    {
+      "step": 81920,
+      "sha256": "aa14be31769cfc72a942bdc4c92d36bb6b7aca99274acc47e1fd4a949ced7221"
+    },
+    {
+      "step": 122880,
+      "sha256": "9fd3019c18ec8ddfccaeff0187595dc4e2266df5b6ff3946faf639b1c560d010"
+    }
+  ],
+  "compact_sweep": {
+    "path": "outputs/analysis/phase2_z002_teacher_continuity_clean_fg64_local_compact_sweep",
+    "duration_s": 1.0,
+    "commands": [0.0, 0.08],
+    "bridge_mode": "fitted",
+    "velocity_envelope_rad_s": [2.0, 3.25],
+    "results": [
+      {
+        "step": 40960,
+        "command_x": 0.0,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "max_pitch_vel_p95": 1.0601,
+        "max_tracking_p95": 0.1942,
+        "track_ratio": null,
+        "mean_local_vx": 0.0057
+      },
+      {
+        "step": 40960,
+        "command_x": 0.08,
+        "status": "HOLD_CANDIDATE_TRACKING",
+        "max_pitch_vel_p95": 1.5646,
+        "max_tracking_p95": 0.2200,
+        "track_ratio": 0.2598,
+        "mean_local_vx": 0.0208
+      },
+      {
+        "step": 81920,
+        "command_x": 0.0,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "max_pitch_vel_p95": 1.1026,
+        "max_tracking_p95": 0.1947,
+        "track_ratio": null,
+        "mean_local_vx": 0.0066
+      },
+      {
+        "step": 81920,
+        "command_x": 0.08,
+        "status": "HOLD_CANDIDATE_TRACKING",
+        "max_pitch_vel_p95": 1.5218,
+        "max_tracking_p95": 0.2174,
+        "track_ratio": 0.3029,
+        "mean_local_vx": 0.0242
+      },
+      {
+        "step": 122880,
+        "command_x": 0.0,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "max_pitch_vel_p95": 1.1428,
+        "max_tracking_p95": 0.1951,
+        "track_ratio": null,
+        "mean_local_vx": 0.0063
+      },
+      {
+        "step": 122880,
+        "command_x": 0.08,
+        "status": "HOLD_CANDIDATE_TRACKING",
+        "max_pitch_vel_p95": 1.5089,
+        "max_tracking_p95": 0.2175,
+        "track_ratio": 0.3174,
+        "mean_local_vx": 0.0254
+      }
+    ],
+    "best_diagnostic_step": 122880
+  },
+  "decision": "Clean A100 training/export works, but the 64-step diagnostic checkpoints are not promotable because x=0.08 still holds on candidate tracking.",
+  "robot_tests_run": false,
+  "ssh_run": false,
+  "deploy_run": false,
+  "runtime_behavior_changed": false,
+  "training_run_type": "reduced diagnostic"
+}

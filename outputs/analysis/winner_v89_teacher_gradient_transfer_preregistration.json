@@ -1,0 +1,114 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "deployment_authorized": false,
+    "diagnostic_authorized": true,
+    "gate5_authorized": false,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "support_gate_authorized_now": false,
+    "training_authorized_now": false
+  },
+  "classification_rule": {
+    "action_only_boundary": "report only; V87 already rejected a frozen-hidden action-head proof",
+    "checkpoint_priority": "half, then final",
+    "endpoint_mechanism": "joint if combined, recurrent, and action groups are coherent; recurrent_only if recurrent is coherent and action is not; action_only if action is coherent and recurrent is not; otherwise none",
+    "group_coherent_for_endpoint": "all 12 leave-one-configuration-out gradient dots are strictly positive",
+    "no_coherent_group": "reject static-teacher gradient transfer and select only a separate outcome-aligned mechanism diagnostic"
+  },
+  "decision": "AUTHORIZE_ONE_ZERO_UPDATE_TWO_ENDPOINT_LOO_GRADIENT_AUDIT_ONLY",
+  "diagnostic": {
+    "direction_test": "float64 dot(g_train, g_heldout); positive means an infinitesimal negative training-gradient step also descends heldout loss",
+    "folds_per_checkpoint": 12,
+    "heldout_mask": "one configuration ID, both plants, every valid tick, pitch only",
+    "objective": "unchanged graph-bounded action MSE to bounded static teacher",
+    "optimizer_step_or_parameter_commit": false,
+    "parameter_groups": {
+      "action_head": [
+        "action_weight",
+        "action_bias"
+      ],
+      "combined_policy": "union of recurrent_core and action_head",
+      "recurrent_core": [
+        "obs_weight",
+        "previous_action_weight",
+        "hidden_weight",
+        "hidden_bias"
+      ]
+    },
+    "teacher_gradient_evaluations": 48,
+    "training_mask": "11 configuration IDs, both plants, every valid tick, pitch only"
+  },
+  "execution_now": {
+    "formal_support_cells": 0,
+    "gradient_evaluations": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0,
+    "snapshot_or_onnx_writes": 0,
+    "stage2_rollout_episodes": 0
+  },
+  "frozen_source": {
+    "checkpoint_labels_updates": {
+      "final": 755,
+      "half": 705
+    },
+    "groups": [
+      "recurrent_core",
+      "action_head",
+      "combined_policy"
+    ],
+    "pitch_indices": [
+      2,
+      3,
+      4,
+      11,
+      12,
+      13
+    ],
+    "teacher_configurations": 12,
+    "teacher_episodes_per_checkpoint": 24,
+    "training_population_episodes": 80,
+    "v88_result_sha256": "adf4a892b9d19d5b5458e544b576de2188873814128f43b13c0ab232641faaae"
+  },
+  "question": "Does descending the persistent six-pitch teacher loss on 11 configurations also descend that loss on the held-out twelfth configuration, and is transfer carried by recurrence or the action head?",
+  "schema_version": "winner_v89.teacher_gradient_transfer_preregistration.v1",
+  "source_manifest_sha256": "dfada352b065e98ae4da5e6cf7f5b7b2eaf89c7f18b6d38d66c6c0fec6c79552",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v89_teacher_gradient_transfer_preregistration.py",
+      "sha256": "0a6d4d6481579ae1d99efc72dac70dcf490e4e880ab99c0b482005a2358035db"
+    },
+    "joint_policy": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v21_predictor_preserving_joint_support.py",
+      "sha256": "2d274c6c7c63fa2de5e3a7114ac047df1346189e66ec7bf8d83221e2f93aef0a"
+    },
+    "recurrent_policy": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v20_joint_recurrent_support.py",
+      "sha256": "276f0008049be9e28cbfc7cb430a5fec6c0a092c02e605f08f3ea95e2df942c7"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v89_teacher_gradient_transfer.py",
+      "sha256": "ab8d714782bd8da81253973fc8708ded180631d6ebc835706e60a659dca20804"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v89_teacher_gradient_transfer.py",
+      "sha256": "b2a1051feebc827f983ef61eeb259a45b704ee5572e21bdf5581fbe0846844f0"
+    },
+    "v80_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v80_pitch_action_head_step.py",
+      "sha256": "1666e7194a9615c9bad0850db21cef2218edb72cb328a7bdffd3ef01a2dd8826"
+    },
+    "v88_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v88_flat_transport_representation_result.json",
+      "sha256": "b98983fe2217f94ca06939f17c376c80dd6d403221100a26f159a0147daef6eb"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V89_TEACHER_GRADIENT_TRANSFER_DIAGNOSTIC"
+}

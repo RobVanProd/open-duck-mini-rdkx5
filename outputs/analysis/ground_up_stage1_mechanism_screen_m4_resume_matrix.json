@@ -1,0 +1,34 @@
+{
+  "schema_version": "ground_up_stage1_mechanism_screen_m4_resume.v1",
+  "status": "RESUME_FINAL_UNFINISHED_PREREGISTERED_FAMILY_ONLY",
+  "training_seed": 100,
+  "timesteps": 8028160,
+  "num_evals": 5,
+  "shared": {
+    "discounting": 0.97,
+    "unroll_length": 20,
+    "ground_up_command_curriculum": true,
+    "extra_patches": [
+      "ground_up_stage1_mechanism_stack.patch"
+    ]
+  },
+  "completed_evidence_not_repeated": [
+    "M0_UPSTREAM",
+    "M1_REFCOND",
+    "M2_PHASE_MOE",
+    "M3_RECURRENT"
+  ],
+  "candidates": [
+    {
+      "id": "M4_SYMCRIT",
+      "learning_rate": 0.0003,
+      "entropy_cost": 0.005,
+      "imitation_scale": 1.0,
+      "policy_architecture": "mlp",
+      "critic_observation": "state"
+    }
+  ],
+  "selection_uses_training_reward": false,
+  "robot_access_authorized": false,
+  "local_gpu_authorized": false
+}

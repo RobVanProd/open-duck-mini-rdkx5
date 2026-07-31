@@ -1,0 +1,38 @@
+{
+  "status": "HOLD_BEHAVIOR_PRIOR_PPO_REJECTED_BY_CHECKPOINT_SWEEP",
+  "robot_touched": false,
+  "deploy_performed": false,
+  "training": {
+    "platform": "cuda",
+    "device": "NVIDIA A100-SXM4-40GB",
+    "jax_version": "0.7.2",
+    "status": "PASS_SMOKE_RUN",
+    "restored_checkpoint": "outputs/analysis/ppo_bc_command_conditioned_dagger_seed5_x0_step0_checkpoint",
+    "behavior_prior_mlp_npz": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_candidate/candidate_mlp.npz",
+    "behavior_prior_scale": -0.2,
+    "ppo_learning_rate": 0.00005,
+    "ppo_clipping_epsilon": 0.1,
+    "ppo_entropy_cost": 0.001,
+    "ppo_max_grad_norm": 0.5,
+    "exported_steps": [40960],
+    "reward_by_step": {
+      "0": 10.29487419128418,
+      "40960": 14.132686614990234
+    }
+  },
+  "artifact_bundle": {
+    "path": "outputs/analysis/ppo_behavior_prior_a100_finetune/open_duck_behavior_prior_a100_artifacts.tar.gz",
+    "sha256": "6d0b7f768321612eb6964498e41cb7a5ad515f4b5858814c42c84c5312306c6d"
+  },
+  "checkpoint_sweep": {
+    "path": "outputs/analysis/ppo_behavior_prior_a100_finetune/CHECKPOINT_SWEEP.md",
+    "status": "HOLD_REJECT_CANDIDATE_CHECKPOINT",
+    "x0_status": "HOLD_CANDIDATE_ACTION_SATURATION",
+    "x008_status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+    "x008_mean_vx_m_s": 0.0109,
+    "x008_track_ratio": 0.1362,
+    "x008_max_pitch_tracking_p95_rad": 0.2109,
+    "x008_max_pitch_target_velocity_p95_rad_s": 1.0248
+  },
+  "decision": "Do not continue this exact behavior-prior PPO recipe. It completed training but failed compact candidate-promotion gates."
+}

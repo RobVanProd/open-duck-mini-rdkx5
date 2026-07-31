@@ -1,0 +1,77 @@
+{
+  "anticipated_but_absent_tags": [
+    "eval/episode_reward/t202/predicted_roll_risk_rad",
+    "eval/episode_reward/t202/roll_risk_excess_rad"
+  ],
+  "authority": {
+    "behavior": false,
+    "execute_read_only_recovery": true,
+    "gate5": false,
+    "hosted_preregistration": false,
+    "hosted_training": false,
+    "robot_or_rdk": false
+  },
+  "checks": {
+    "all_mechanism_checks_green": true,
+    "event_file_exists": true,
+    "read_only_no_simulator_optimizer_hosted_robot": true,
+    "t202_held_on_exact_single_metric_check": true,
+    "t202_preregistration_identity_matches": true
+  },
+  "decision_rule": {
+    "otherwise": "CLOSE_T202_PREDICTED_ROLL_RISK_AND_RETURN_TO_MECHANISM_SELECTION",
+    "reporting_only": "all four actual tags exist with exactly two finite events; cost and excess are positive; every non-reporting T202 check remains green",
+    "reporting_only_decision": "EARN_T203_PREDICTED_ROLL_RISK_HOSTED_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "behavior_cells": 0,
+    "event_files_read": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_transitions": 0
+  },
+  "expected_tags": {
+    "cost": "eval/episode_cost/t202_predicted_roll_risk",
+    "excess": "eval/episode_t202/roll_risk_excess_rad",
+    "original": "eval/episode_t202/original_clipped_reward",
+    "risk": "eval/episode_t202/predicted_roll_risk_rad"
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 5891,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t202b_metric_namespace_recovery_preregistration.py",
+      "sha256": "8f414f4b1fa8a74f20f3a8482c558a5857d6cd4508d7c40abeb9a0677411f0e2"
+    },
+    "event_file": {
+      "bytes": 5825,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t202_predicted_roll_risk_cpu_contract_v1\\smoke\\events.out.tfevents.1785413496.WinLSD",
+      "sha256": "86bfd9775066b4b6171165c647e9b7d885b173c7868a472e67ac311e7f70c3d1"
+    },
+    "runner": {
+      "bytes": 5610,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t202b_metric_namespace_recovery.py",
+      "sha256": "92769789d7f67dc9d3823f074662e357faf07c8036055a03ec1033550df9f2ba"
+    },
+    "t202_preregistration": {
+      "bytes": 13612,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t202_predicted_roll_risk_cpu_preregistration.json",
+      "sha256": "5b947fe39d2766553870a100f377f50ec20b2df8a4727aa779a4dfa0be7ca571"
+    },
+    "t202_result": {
+      "bytes": 14114,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t202_predicted_roll_risk_cpu_result.json",
+      "sha256": "03517af937c4804bf9999a794e93434bf009d6fd297dd544a54d56684c050b19"
+    },
+    "test": {
+      "bytes": 1466,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t202b_metric_namespace_recovery.py",
+      "sha256": "3e493bbed77694e631fe92b20f47671580f0b893e8387f4864caf4df0c646b26"
+    }
+  },
+  "preregistered_contract_sha256": "7c979ce3054eba3fca24e5e760f0d8bddcec8c4cce1e910b1e2baf83c30c703d",
+  "question": "Did T202 hold solely because non-cost state diagnostics were emitted under eval/episode_t202/... instead of the anticipated eval/episode_reward/t202/... namespace?",
+  "schema_version": "open_duck.t202b_metric_namespace_recovery_preregistration.v1",
+  "status": "PREREGISTERED_T202B_METRIC_NAMESPACE_RECOVERY"
+}

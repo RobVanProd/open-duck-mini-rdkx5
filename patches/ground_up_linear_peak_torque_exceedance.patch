@@ -1,0 +1,62 @@
+diff --git a/playground/open_duck_mini_v2/joystick.py b/playground/open_duck_mini_v2/joystick.py
+--- a/playground/open_duck_mini_v2/joystick.py
++++ b/playground/open_duck_mini_v2/joystick.py
+@@ -69,6 +69,15 @@ def ground_up_peak_torque_exceedance_cost(
+     return jp.mean(jp.square(excess))
+ 
+ 
++def ground_up_linear_peak_torque_exceedance_cost(
++    actuator_force_nm: jax.Array,
++    threshold_nm: float,
++) -> jax.Array:
++    """Mean linear all-joint torque excess above the physical peak limit."""
++    excess = jp.maximum(jp.abs(actuator_force_nm) - threshold_nm, 0.0)
++    return jp.mean(excess)
++
++
+ def default_config() -> config_dict.ConfigDict:
+     return config_dict.create(
+         ctrl_dt=0.02,
+@@ -109,6 +118,7 @@ def default_config() -> config_dict.ConfigDict:
+                 imitation=1.0,
+                 tracking_tail_exceedance=0.0,
+                 peak_torque_exceedance=0.0,
++                linear_peak_torque_exceedance=0.0,
+             ),
+             tracking_sigma=0.01,  # was working at 0.01
+         ),
+@@ -902,6 +912,10 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+                 data.actuator_force,
+                 self._config.ground_up_peak_torque_threshold_nm,
+             ),
++            "linear_peak_torque_exceedance": ground_up_linear_peak_torque_exceedance_cost(
++                data.actuator_force,
++                self._config.ground_up_peak_torque_threshold_nm,
++            ),
+             "stand_still": cost_stand_still(
+                 # info["command"], data.qpos[7:], data.qvel[6:], self._default_pose
+                 info["command"],
+diff --git a/playground/open_duck_mini_v2/runner.py b/playground/open_duck_mini_v2/runner.py
+--- a/playground/open_duck_mini_v2/runner.py
++++ b/playground/open_duck_mini_v2/runner.py
+@@ -70,6 +70,9 @@ class OpenDuckMiniV2Runner(BaseRunner):
+         self.env_config.reward_config.scales.peak_torque_exceedance = (
+             args.ground_up_peak_torque_exceedance_scale
+         )
++        self.env_config.reward_config.scales.linear_peak_torque_exceedance = (
++            args.ground_up_linear_peak_torque_exceedance_scale
++        )
+         self.env_config.ground_up_peak_torque_threshold_nm = 1.91229675
+         delay_ticks = [
+             int(value)
+@@ -280,5 +283,11 @@ def main() -> None:
+         "--ground_up_peak_torque_exceedance_scale", type=float, default=0.0
+     )
+     parser.add_argument(
++        "--ground_up_linear_peak_torque_exceedance_scale",
++        type=float,
++        default=0.0,
++    )
++    parser.add_argument(
+         "--ground_up_actuator_bridge_delay_ticks",
+         default="3,3,3,3,3,3,2,3,3,3,2,3,2,3",

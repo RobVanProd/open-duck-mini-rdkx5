@@ -1,0 +1,151 @@
+name: Winner v24 baseline-anchored one-update CPU proof
+
+on:
+  push:
+    branches:
+      - codex/winner-v4-response-contract
+    paths:
+      - outputs/analysis/winner_v24_baseline_anchored_one_update_cpu_contract.json
+      - outputs/analysis/WINNER_V24_BASELINE_ANCHORED_ONE_UPDATE_CPU_CONTRACT_20260722.md
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: winner-v24-baseline-anchored-one-update-cpu-proof
+  cancel-in-progress: false
+
+jobs:
+  proof:
+    name: Exact one-update baseline-anchored proof
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Reject workflow reruns
+        run: test "${{ github.run_attempt }}" = "1"
+
+      - name: Checkout frozen proof
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up exact Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12.13"
+
+      - name: Install exact CPU environment
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            "jax[cpu]==0.7.2" \
+            "jaxlib==0.7.2" \
+            "mujoco==3.9.0" \
+            "numpy==2.0.2" \
+            "onnx==1.22.0" \
+            "onnxruntime==1.27.0" \
+            "pytest==8.4.2"
+
+      - name: Verify frozen one-update package
+        run: |
+          python -m pytest -q \
+            tests/test_winner_v24_symmetric_support_failure_v2.py \
+            tests/test_winner_v24_baseline_anchored_one_update_cpu_contract.py \
+            tests/test_winner_v24_baseline_anchored_one_update_cpu_preregistration.py \
+            tests/test_winner_v24_baseline_anchored_one_update_cpu_import.py
+
+      - name: Resolve exact imported Winner-v22 training artifact
+        id: training
+        shell: bash
+        run: |
+          python - <<'PY' >>"$GITHUB_OUTPUT"
+          import hashlib
+          import json
+          from pathlib import Path
+
+          value = json.loads(Path("outputs/analysis/winner_v24_baseline_anchored_one_update_cpu_contract.json").read_text())
+          if value["status"] != "FROZEN_WINNER_V24_BASELINE_ANCHORED_ONE_UPDATE_CPU_CONTRACT":
+              raise SystemExit("Winner-v24 one-update contract is not frozen")
+          if value["execution_future"]["optimizer_updates"] != 1:
+              raise SystemExit("Winner-v24 one-update authority changed")
+          sources = value["sources"]
+          for name, item in sources.items():
+              observed = hashlib.sha256(Path(item["path"]).read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+              if item["hash_mode"] != "lf" or observed != item["sha256"]:
+                  raise SystemExit(f"Winner-v24 one-update source changed: {name}")
+          canonical = hashlib.sha256(json.dumps(sources, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+          if canonical != value["source_manifest_sha256"]:
+              raise SystemExit("Winner-v24 one-update source manifest changed")
+          attribution = value["source_checkpoint"]["repository_attribution"]
+          if attribution["repository"] != "RobVanProd/open-duck-mini-rdkx5" or attribution["github_run_attempt"] != 1:
+              raise SystemExit("Winner-v22 source attribution changed")
+          print(f"run_id={attribution['github_run_id']}")
+          print(f"artifact_name={attribution['github_artifact_name']}")
+          PY
+
+      - name: Download exact verified Winner-v22 training artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ steps.training.outputs.artifact_name }}
+          path: /tmp/winner-v22-training-artifact
+          repository: RobVanProd/open-duck-mini-rdkx5
+          run-id: ${{ steps.training.outputs.run_id }}
+          github-token: ${{ github.token }}
+
+      - name: Verify exact final snapshot identity
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+
+          value = json.loads(Path("outputs/analysis/winner_v24_baseline_anchored_one_update_cpu_contract.json").read_text())
+          receipt = value["source_checkpoint"]["snapshot"]
+          path = Path("/tmp/winner-v22-training-artifact/winner-v22-normalized-predictor-training-work/snapshots/snapshot_normalized_predictor_update_100.npz")
+          if hashlib.sha256(path.read_bytes()).hexdigest() != receipt["sha256"] or path.stat().st_size != receipt["bytes"]:
+              raise SystemExit("Winner-v22 final snapshot changed")
+          PY
+
+      - name: Prepare exact reviewed simulation environment
+        run: |
+          git clone --quiet https://github.com/RobVanProd/Open_Duck_Playground.git /tmp/playground-source
+          python tools/prepare_winner_v15_cpu_environment.py \
+            --source-repository /tmp/playground-source \
+            --output-root /tmp/pg115-v24-one-update \
+            --work-root /tmp/winner-v24-one-update-environment \
+            --fit-output /tmp/fixed_target_p30_actuator_fit_lf.json
+
+      - name: Run exactly one frozen optimizer update
+        run: |
+          python tools/run_winner_v24_baseline_anchored_one_update_cpu_proof.py \
+            --playground-root /tmp/pg115-v24-one-update \
+            --canonical-fit /tmp/fixed_target_p30_actuator_fit_lf.json \
+            --final-snapshot /tmp/winner-v22-training-artifact/winner-v22-normalized-predictor-training-work/snapshots/snapshot_normalized_predictor_update_100.npz \
+            --work-root /tmp/winner-v24-baseline-anchored-one-update-work \
+            --output /tmp/winner-v24-baseline-anchored-one-update-result.json \
+            --offline-cpu-only \
+            --one-update-baseline-anchored-proof-authorized
+
+      - name: Hash CPU result
+        if: always()
+        run: |
+          result=/tmp/winner-v24-baseline-anchored-one-update-result.json
+          if test -f "$result"; then
+            sha256sum "$result" | tee /tmp/winner-v24-baseline-anchored-one-update-result.sha256
+          fi
+
+      - name: Upload only CPU evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: winner-v24-baseline-anchored-one-update-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 14
+          compression-level: 6
+          path: |
+            /tmp/winner-v24-baseline-anchored-one-update-result.json
+            /tmp/winner-v24-baseline-anchored-one-update-result.sha256
+            /tmp/winner-v24-baseline-anchored-one-update-work/winner_v24_baseline_anchored_update_101.npz
+            /tmp/winner-v24-baseline-anchored-one-update-work/winner_v24_baseline_anchored_update_101.onnx

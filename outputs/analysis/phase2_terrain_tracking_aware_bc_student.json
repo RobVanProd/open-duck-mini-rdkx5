@@ -1,0 +1,89 @@
+{
+  "status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+  "manifest": "outputs/analysis/phase2_terrain_tracking_aware_bc_manifest.json",
+  "samples": 1150,
+  "hidden_sizes": [
+    256,
+    256
+  ],
+  "activation": "swish",
+  "saved_npz": "outputs/analysis/phase2_terrain_tracking_aware_bc_student/candidate_mlp.npz",
+  "exported_onnx": "outputs/analysis/phase2_terrain_tracking_aware_bc_student/candidate.onnx",
+  "train_metrics": {
+    "samples": 1150,
+    "mae": 0.008590850712699246,
+    "rmse": 0.017718357083752155,
+    "p50_abs_error": 0.005070410043188173,
+    "p95_abs_error": 0.023855176622874497,
+    "p99_abs_error": 0.06851535760352973,
+    "max_abs_error": 0.28424221240775455,
+    "pred_action_saturation_pct": 0.0
+  },
+  "target_rate": {
+    "pair_count": 1143,
+    "p50_rad_s": 0.31311632383791765,
+    "p95_rad_s": 1.9401762627960646,
+    "p99_rad_s": 2.230164673378572,
+    "max_rad_s": 2.531112925036855
+  },
+  "sample_weight": {
+    "p50": 2.0,
+    "p95": 5.0,
+    "max": 5.0,
+    "weighted_samples": 2797.0
+  },
+  "loss_rows": [
+    {
+      "step": 1,
+      "loss": 0.27999114990234375
+    },
+    {
+      "step": 500,
+      "loss": 0.0005138857522979379
+    },
+    {
+      "step": 1000,
+      "loss": 0.00030891268397681415
+    },
+    {
+      "step": 1500,
+      "loss": 0.00028054078575223684
+    },
+    {
+      "step": 2000,
+      "loss": 0.00022724253358319402
+    },
+    {
+      "step": 2500,
+      "loss": 0.00017663603648543358
+    },
+    {
+      "step": 3000,
+      "loss": 0.00017617411504033953
+    },
+    {
+      "step": 3500,
+      "loss": 0.00020125856099184602
+    },
+    {
+      "step": 4000,
+      "loss": 0.0001755664561642334
+    }
+  ],
+  "onnx_verify": {
+    "path": "outputs/analysis/phase2_terrain_tracking_aware_bc_student/candidate.onnx",
+    "samples_checked": 64,
+    "max_abs_error": 2.069807096454282e-07,
+    "p95_abs_error": 1.1688986847110255e-07
+  },
+  "config": {
+    "steps": 4000,
+    "batch_size": 512,
+    "learning_rate": 0.001,
+    "target_rate_scale": 0.5,
+    "target_rate_limit_rad_s": 2.25,
+    "action_scale_rad": 0.25,
+    "dt_s": 0.02,
+    "seed": 0
+  }
+}

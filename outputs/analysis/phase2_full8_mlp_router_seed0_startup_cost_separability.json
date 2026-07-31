@@ -1,0 +1,187 @@
+{
+  "config": {
+    "batch_size": 256,
+    "extra_negative_first_ticks": 80,
+    "extra_negative_trace_count": 1,
+    "extra_negative_weight": 50.0,
+    "hidden_sizes": [
+      128,
+      64
+    ],
+    "learning_rate": 0.001,
+    "seed": 20260705,
+    "steps": 3000,
+    "test_fraction": 0.2,
+    "weight_decay": 1e-05
+  },
+  "created_utc": "2026-07-05T20:05:05Z",
+  "decision": "The branch labels are separable by a nonlinear stateless observation gate on the held-out split.",
+  "entries": [
+    {
+      "branch": "negative",
+      "samples": 750,
+      "source_path": "outputs/analysis/phase2_full8_router_source_command_gated_traces/command_gated_zero0020/seed_000/trace.jsonl",
+      "test_samples": 150,
+      "train_samples": 600,
+      "weight": 1.0
+    },
+    {
+      "branch": "negative",
+      "samples": 750,
+      "source_path": "outputs/analysis/phase2_full8_router_source_command_gated_traces/command_gated_zero0020/seed_001/trace.jsonl",
+      "test_samples": 150,
+      "train_samples": 600,
+      "weight": 1.0
+    },
+    {
+      "branch": "negative",
+      "samples": 750,
+      "source_path": "outputs/analysis/phase2_full8_router_source_command_gated_traces/command_gated_zero0020/seed_002/trace.jsonl",
+      "test_samples": 150,
+      "train_samples": 600,
+      "weight": 1.0
+    },
+    {
+      "branch": "negative",
+      "samples": 750,
+      "source_path": "outputs/analysis/phase2_full8_router_source_command_gated_traces/command_gated_zero0020/seed_003/trace.jsonl",
+      "test_samples": 150,
+      "train_samples": 600,
+      "weight": 1.0
+    },
+    {
+      "branch": "negative",
+      "samples": 750,
+      "source_path": "outputs/analysis/phase2_full8_router_source_command_gated_traces/command_gated_zero0020/seed_004/trace.jsonl",
+      "test_samples": 150,
+      "train_samples": 600,
+      "weight": 1.0
+    },
+    {
+      "branch": "negative",
+      "samples": 750,
+      "source_path": "outputs/analysis/phase2_full8_router_source_command_gated_traces/command_gated_zero0020/seed_006/trace.jsonl",
+      "test_samples": 150,
+      "train_samples": 600,
+      "weight": 1.0
+    },
+    {
+      "branch": "negative",
+      "samples": 750,
+      "source_path": "outputs/analysis/phase2_full8_router_source_command_gated_traces/command_gated_zero0020/seed_007/trace.jsonl",
+      "test_samples": 150,
+      "train_samples": 600,
+      "weight": 1.0
+    },
+    {
+      "branch": "positive",
+      "samples": 750,
+      "source_path": "outputs/analysis/phase2_full8_router_source_iter25_seed5_trace/iter25/seed_005/trace.jsonl",
+      "test_samples": 150,
+      "train_samples": 600,
+      "weight": 1.0
+    },
+    {
+      "branch": "negative_correction",
+      "samples": 80,
+      "source_path": "outputs/analysis/phase2_full8_mlp_router_candidate_seed0_trace/full8_mlp_router/seed_000/trace.jsonl",
+      "test_samples": 0,
+      "train_samples": 80,
+      "weight": 50.0
+    }
+  ],
+  "loss_rows": [
+    {
+      "loss": 0.5961920619010925,
+      "step": 1
+    },
+    {
+      "loss": 0.41134709119796753,
+      "step": 250
+    },
+    {
+      "loss": 0.3703467547893524,
+      "step": 500
+    },
+    {
+      "loss": 0.40170231461524963,
+      "step": 750
+    },
+    {
+      "loss": 0.377252459526062,
+      "step": 1000
+    },
+    {
+      "loss": 0.27207377552986145,
+      "step": 1250
+    },
+    {
+      "loss": 0.37310662865638733,
+      "step": 1500
+    },
+    {
+      "loss": 0.3261859714984894,
+      "step": 1750
+    },
+    {
+      "loss": 0.2172456681728363,
+      "step": 2000
+    },
+    {
+      "loss": 0.242224782705307,
+      "step": 2250
+    },
+    {
+      "loss": 0.2639593482017517,
+      "step": 2500
+    },
+    {
+      "loss": 0.2717131972312927,
+      "step": 2750
+    },
+    {
+      "loss": 0.11744623631238937,
+      "step": 3000
+    }
+  ],
+  "manifest": "outputs/analysis/phase2_full8_router_source_selected_manifest.json",
+  "metrics": {
+    "test": {
+      "balanced_accuracy_pct": 87.14285714285714,
+      "negative_false_selected_pct": 2.380952380952381,
+      "negative_logit_p50": -5.381979355646431,
+      "negative_logit_p95": -0.6876168341026904,
+      "negative_samples": 1050,
+      "positive_logit_p05": -2.570133422152998,
+      "positive_logit_p50": 1.4424192666276752,
+      "positive_samples": 150,
+      "positive_selected_pct": 76.66666666666667,
+      "samples": 1200
+    },
+    "train": {
+      "balanced_accuracy_pct": 92.02959501557632,
+      "negative_false_selected_pct": 3.107476635514019,
+      "negative_logit_p50": -4.858938495352781,
+      "negative_logit_p95": -0.4396991707398545,
+      "negative_samples": 4280,
+      "positive_logit_p05": -2.370115460195154,
+      "positive_logit_p50": 3.026206960534158,
+      "positive_samples": 600,
+      "positive_selected_pct": 87.16666666666667,
+      "samples": 4880
+    }
+  },
+  "no_deploy": true,
+  "no_grounded_replay": true,
+  "no_robot_tests": true,
+  "no_ssh": true,
+  "positive_marker": "iter25/seed_005",
+  "runtime_behavior_changed": false,
+  "saved_npz": "outputs/analysis/phase2_full8_mlp_router_gate_seed0_startup_cost/gate_mlp.npz",
+  "saved_npz_sha256": "e663f806af55dde33295b169a445551515d8435da82b623738523fb2904f4861",
+  "status": "PASS_MLP_ROUTER_SEPARABLE",
+  "thresholds": {
+    "max_test_negative_false_selected_pct": 10.0,
+    "min_test_balanced_accuracy_pct": 85.0
+  }
+}

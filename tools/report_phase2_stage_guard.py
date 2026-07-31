@@ -1,0 +1,472 @@
+#!/usr/bin/env python3
+"""Report the allowed next actions for the current Phase 2 stage.
+
+This is a read-only guardrail artifact. It does not train, SSH, deploy, touch
+the robot, or modify Playground. It combines the current curriculum ledger,
+next-run plan, active Phase 2 recipe, and artifact manifest into one explicit
+"allowed vs forbidden" decision so the campaign cannot silently advance past a
+held gate.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+from pathlib import Path
+from typing import Any
+
+from run_colab_cli_cuda_workflow import required_rdk_package_paths, would_package_path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_LEDGER = ROOT / "outputs/analysis/phase2_curriculum_gate_ledger.json"
+DEFAULT_NEXT_PLAN = ROOT / "outputs/analysis/phase2_next_run_plan.json"
+DEFAULT_RECIPE = ROOT / "outputs/analysis/phase2_z005_support_next_recipe.json"
+DEFAULT_MANIFEST = ROOT / "outputs/analysis/phase2_artifact_manifest.json"
+DEFAULT_PACKAGE_MANIFEST = ROOT / "outputs/analysis/phase2_colab_package_manifest.json"
+DEFAULT_LOCAL_ROCM_ISOLATION = (
+    ROOT / "outputs/analysis/rocm_mjx_isolation_post_bios/rocm_mjx_runtime_isolation.json"
+)
+DEFAULT_OUTPUT_MD = ROOT / "outputs/analysis/PHASE2_STAGE_GUARD.md"
+DEFAULT_OUTPUT_JSON = ROOT / "outputs/analysis/phase2_stage_guard.json"
+
+
+def rel(path: Path | str | None) -> str | None:
+    if path is None:
+        return None
+    path = Path(path)
+    try:
+        return str(path.resolve().relative_to(ROOT))
+    except ValueError:
+        return str(path)
+
+
+def read_json(path: Path) -> dict[str, Any]:
+    try:
+        return json.loads(path.read_text())
+    except Exception as exc:
+        return {
+            "_read_error": str(exc),
+            "_path": rel(path),
+        }
+
+
+def nested(payload: dict[str, Any], *keys: str, default: Any = None) -> Any:
+    current: Any = payload
+    for key in keys:
+        if not isinstance(current, dict):
+            return default
+        current = current.get(key)
+    return default if current is None else current
+
+
+def package_preflight(workflow: str) -> dict[str, Any]:
+    items = []
+    for relative_path in required_rdk_package_paths(workflow):
+        local_path = ROOT / relative_path
+        items.append(
+            {
+                "path": relative_path,
+                "exists": local_path.exists(),
+                "included_by_tar_filter": would_package_path(relative_path),
+            }
+        )
+    missing = [item["path"] for item in items if not item["exists"]]
+    excluded = [item["path"] for item in items if item["exists"] and not item["included_by_tar_filter"]]
+    status = "PASS_PACKAGE_PREFLIGHT" if not missing and not excluded else "HOLD_PACKAGE_PREFLIGHT"
+    return {
+        "status": status,
+        "workflow": workflow,
+        "missing": missing,
+        "excluded_by_tar_filter": excluded,
+        "items": items,
+    }
+
+
+def local_backend_summary(path: Path) -> dict[str, Any]:
+    payload = read_json(path)
+    assessment = payload.get("assessment") if isinstance(payload.get("assessment"), dict) else {}
+    capabilities = payload.get("capabilities") if isinstance(payload.get("capabilities"), dict) else {}
+    gate_result = assessment.get("gate_result") or "UNKNOWN"
+    closed_loop_cpu = capabilities.get("closed_loop_cpu") or "UNKNOWN"
+    closed_loop_gpu = capabilities.get("closed_loop_gpu") or "UNKNOWN"
+
+    if gate_result == "PASS_ROCM_MJX_READY":
+        launch_class = "PASS_LOCAL_GPU_TRAINING_BACKEND_READY"
+    elif closed_loop_cpu == "PASS":
+        launch_class = "HOLD_LOCAL_ROCM_GPU_CPU_CORRECTNESS_ONLY"
+    else:
+        launch_class = "HOLD_LOCAL_BACKEND_NOT_READY"
+
+    return {
+        "path": rel(path),
+        "gate_result": gate_result,
+        "smallest_failing_subtest": assessment.get("smallest_failing_subtest"),
+        "smallest_failing_status": assessment.get("smallest_failing_status"),
+        "basic_jax_gpu": capabilities.get("basic_jax_gpu"),
+        "minimal_mjx_gpu": capabilities.get("minimal_mjx_gpu"),
+        "playground_step_gpu": capabilities.get("playground_step_gpu"),
+        "closed_loop_gpu": closed_loop_gpu,
+        "closed_loop_cpu": closed_loop_cpu,
+        "launch_class": launch_class,
+    }
+
+
+def collect(args: argparse.Namespace) -> dict[str, Any]:
+    ledger_path = Path(args.ledger)
+    next_plan_path = Path(args.next_plan)
+    recipe_path = Path(args.recipe)
+    manifest_path = Path(args.manifest)
+    package_manifest_path = Path(args.package_manifest)
+    local_rocm_isolation_path = Path(args.local_rocm_isolation)
+
+    ledger = read_json(ledger_path)
+    next_plan = read_json(next_plan_path)
+    recipe = read_json(recipe_path)
+    manifest = read_json(manifest_path)
+    package_manifest = read_json(package_manifest_path)
+    local_backend = local_backend_summary(local_rocm_isolation_path)
+
+    current_stage = ledger.get("current_stage")
+    current_gate_status = ledger.get("status")
+    next_recipe_status = recipe.get("status")
+    launch_status = nested(next_plan, "readiness", "launch_status")
+    colab_status = nested(next_plan, "readiness", "colab", "status")
+    colab_hardware = nested(next_plan, "readiness", "colab", "hardware")
+    git_status = nested(next_plan, "readiness", "git", "status")
+    colab_active = bool(nested(next_plan, "readiness", "colab", "active", default=False))
+    preferred_command = nested(next_plan, "commands", "colab", "shell") or nested(recipe, "commands", "colab", "shell")
+    preferred_workflow = nested(next_plan, "commands", "colab", "workflow") or recipe.get("key_recipe_settings", {}).get("workflow") or "phase2-z002-teacher-continuity"
+    package = package_preflight(preferred_workflow)
+    package_manifest_workflow = package_manifest.get("workflow")
+    package_manifest_status = package_manifest.get("status")
+    package_manifest_matches_workflow = package_manifest_workflow == preferred_workflow
+    z002_tracking_margin = preferred_workflow == "phase2-z002-tracking-margin"
+    z002_teacher_continuity = preferred_workflow == "phase2-z002-teacher-continuity"
+    z002_parent_recovery = z002_tracking_margin or z002_teacher_continuity
+    if z002_teacher_continuity and current_stage == "stage_z005_support":
+        stage_strategy = (
+            "The curriculum ledger is held at stage_z005_support, but the selected launch "
+            "workflow intentionally backs up to z=0.002 teacher-action continuity. The "
+            "scalar z=0.002 tracking-margin A100 run preserved motion but held at about "
+            "0.216-0.218 rad tracking p95, so the next GPU run must recover tracking "
+            "margin using a behavior-prior/trust-region mechanism before escalating terrain."
+        )
+    elif z002_tracking_margin and current_stage == "stage_z005_support":
+        stage_strategy = (
+            "The curriculum ledger is held at stage_z005_support, but the selected launch "
+            "workflow intentionally backs up to z=0.002 tracking-margin recovery. The "
+            "z=0.005 gates failed after the z=0.002 parent lost tracking margin, so the "
+            "next GPU run must recover and re-gate the z=0.002 parent before escalating "
+            "terrain again."
+        )
+    elif z002_tracking_margin:
+        stage_strategy = (
+            "The selected launch workflow is a z=0.002 tracking-margin recovery run. "
+            "It is a parent-selection step, not a terrain escalation."
+        )
+    elif z002_teacher_continuity:
+        stage_strategy = (
+            "The selected launch workflow is a z=0.002 teacher-action continuity run. "
+            "It is a parent-selection step that replaces the held scalar tracking-margin recipe."
+        )
+    elif current_stage == "stage_z005_stronger_push_or_terrain":
+        stage_strategy = (
+            "The current promoted parent has cleared z=0.005 no-push and gentle-push "
+            "support gates plus z=0.0026 regressions. The next work is a one-rung "
+            "offline robustness screen: stronger z=0.005 push or modestly higher "
+            "terrain, followed by paired x=0.08/x=0.0 command gates before any "
+            "training or robot validation."
+        )
+    else:
+        stage_strategy = (
+            "The selected launch workflow targets the current held curriculum stage."
+        )
+    post_training_tool = (
+        "report_phase2_z002_tracking_margin_post_training_gates.py"
+        if z002_parent_recovery
+        else "report_phase2_z005_post_training_gates.py"
+    )
+    post_training_status = (
+        "PASS_PHASE2_Z002_TRACKING_MARGIN_POST_TRAINING_GATES"
+        if z002_parent_recovery
+        else "PASS_PHASE2_Z005_POST_TRAINING_GATES"
+    )
+
+    gates = ledger.get("gates") if isinstance(ledger.get("gates"), dict) else {}
+    held_gates = [
+        name
+        for name, item in gates.items()
+        if isinstance(item, dict) and item.get("status") not in {"PASS_GATE", None}
+    ]
+    missing_gates = [
+        name
+        for name, item in gates.items()
+        if isinstance(item, dict) and item.get("status") in {"MISSING_GATE_ARTIFACT", "INVALID_GATE_JSON"}
+    ]
+
+    allowed_actions = [
+        "Review committed Phase 2 analysis artifacts and guard reports.",
+        "Run read-only report tools: report_phase2_curriculum_gate.py, report_phase2_artifact_manifest.py, and report_phase2_stage_guard.py.",
+        f"Run the {preferred_workflow} Colab workflow in plan-only mode to verify the package preflight and generated remote driver.",
+        f"Run the {preferred_workflow} Colab workflow with --package-only to build and hash local upload archives without contacting Colab.",
+        "Prepare or reconnect a Colab GPU session named open-duck-l4; A100/L4 is preferred, T4 is acceptable but slower.",
+        f"Run the {preferred_workflow} recipe only after the Colab session is active and still using the corrected bridge.",
+        f"Run {post_training_tool} on post-training seed-gate output.",
+    ]
+    if local_backend["launch_class"] == "PASS_LOCAL_GPU_TRAINING_BACKEND_READY":
+        allowed_actions.append(
+            "Use local ROCm only after a fresh small training smoke also passes; keep Colab as the preferred backend for this stage."
+        )
+    else:
+        allowed_actions.append(
+            "Use local CPU only for reduced-horizon correctness checks; local ROCm GPU is not cleared for Phase 2 training."
+        )
+    if colab_active:
+        allowed_actions.append(f"Launch the preferred {preferred_workflow} Colab workflow.")
+    else:
+        allowed_actions.append("Do not launch training yet from this host; Colab session open-duck-l4 is not active.")
+    if current_stage == "stage_z005_stronger_push_or_terrain":
+        allowed_actions.extend(
+            [
+                "Run a local CPU stronger-push screen from the promoted rate150 parent.",
+                "Run a local CPU modest terrain-escalation screen from the promoted rate150 parent.",
+                "Record a hold if either screen exceeds the corrected actuator envelope, even without falls.",
+            ]
+        )
+
+    forbidden_actions = [
+        "No robot validation.",
+        "No SSH.",
+        "No deploy.",
+        "No grounded replay.",
+        "No direct BEST_WALK deployment.",
+        "No training from scratch; continue only from the Phase 2 warm-start checkpoint.",
+        "No old/asymmetric actuator bridge.",
+        f"No promotion without {post_training_status}.",
+    ]
+    if z002_parent_recovery:
+        forbidden_actions.extend(
+            [
+                "No z=0.005 push stage until the current z=0.002 parent-selection gate passes.",
+                "No stronger terrain until z=0.002 tracking margin is recovered and z=0.002 regression stays clear.",
+            ]
+        )
+    elif current_stage == "stage_z005_stronger_push_or_terrain":
+        forbidden_actions.extend(
+            [
+                "No robot validation from the rate150 parent just because z=0.005 gentle-push passed.",
+                "No escalation by more than one robustness rung without a paired x=0.08/x=0.0 decision artifact.",
+                "No promotion of stronger-push or stronger-terrain results with any corrected-envelope target-velocity excess.",
+            ]
+        )
+    else:
+        forbidden_actions.extend(
+            [
+                "No z=0.005 push stage until the current z=0.005 no-push support gates pass.",
+                "No stronger terrain until z=0.005 no-push gates pass and z=0.002 regressions remain clear.",
+            ]
+        )
+    if local_backend["launch_class"] != "PASS_LOCAL_GPU_TRAINING_BACKEND_READY":
+        forbidden_actions.append("No local ROCm Phase 2 training launch while local backend status is HOLD_PLAYGROUND_GPU_STEP.")
+
+    if z002_tracking_margin:
+        advance_requirements = [
+            "z=0.002 x=0.08 no-push: 8/8 duration complete, zero falls, no velocity excess, tracking p95 <= 0.20, track ratio >= 0.25.",
+            "z=0.002 x=0.0 no-push: 8/8 duration complete, zero falls, no velocity excess, |mean vx| <= 0.005.",
+            "z=0.002 x=0.08/x=0.0 no-push regression gates remain passing.",
+            "z=0.002 x=0.08/x=0.0 gentle-push regression gates remain passing.",
+            "Post-training decision artifact reports PASS_PHASE2_Z002_TRACKING_MARGIN_POST_TRAINING_GATES.",
+        ]
+    elif current_stage == "stage_z005_stronger_push_or_terrain":
+        advance_requirements = [
+            "Next robustness screen x=0.08: 8/8 duration complete, zero falls, no corrected-envelope velocity excess, tracking p95 <= 0.20, forward motion preserved.",
+            "Companion x=0.0 screen: 8/8 duration complete, zero falls, no corrected-envelope velocity excess, |mean vx| <= 0.005.",
+            "z=0.005 no-push and gentle-push support gates remain passing.",
+            "z=0.0026 no-push and gentle-push regression gates remain passing.",
+            "Decision artifact explicitly records PASS or HOLD before any further escalation.",
+        ]
+    else:
+        advance_requirements = [
+            "z=0.005 x=0.08 no-push: 8/8 duration complete, zero falls, no velocity excess, tracking p95 <= 0.20, track ratio >= 0.40.",
+            "z=0.005 x=0.0 no-push: 8/8 duration complete, zero falls, no velocity excess, |mean vx| <= 0.005.",
+            "z=0.002 x=0.08/x=0.0 no-push regression gates remain passing.",
+            "z=0.002 x=0.08/x=0.0 gentle-push regression gates remain passing.",
+            "Post-training decision artifact reports PASS_PHASE2_Z005_POST_TRAINING_GATES.",
+        ]
+
+    if current_stage == "stage_z005_stronger_push_or_terrain":
+        status = "PASS_PHASE2_STAGE_GUARD_READY_FOR_NEXT_ROBUSTNESS_SCREEN"
+    elif launch_status and launch_status != "PASS_PHASE2_NEXT_RUN_READY":
+        status = launch_status
+    elif package["status"] != "PASS_PACKAGE_PREFLIGHT":
+        status = package["status"]
+    elif not package_manifest_matches_workflow:
+        status = "HOLD_PACKAGE_MANIFEST_WORKFLOW_MISMATCH"
+    elif current_gate_status and str(current_gate_status).startswith("HOLD"):
+        status = "PASS_PHASE2_STAGE_GUARD_READY_TO_RUN_Z005_SUPPORT"
+    else:
+        status = "PASS_PHASE2_STAGE_GUARD_READY"
+
+    return {
+        "status": status,
+        "current_stage": current_stage,
+        "current_gate_status": current_gate_status,
+        "next_recipe_status": next_recipe_status,
+        "launch_status": launch_status,
+        "colab_status": colab_status,
+        "colab_hardware": colab_hardware,
+        "git_status": git_status,
+        "held_gates": held_gates,
+        "missing_gates": missing_gates,
+        "candidate": manifest.get("core_artifacts", {}).get("candidate", {}),
+        "corrected_bridge": manifest.get("core_artifacts", {}).get("corrected_bridge", {}),
+        "restore_checkpoint": manifest.get("core_artifacts", {}).get("restore_checkpoint", {}),
+        "package_preflight": package,
+        "package_manifest_status": (
+            package_manifest_status
+            if package_manifest_matches_workflow
+            else "HOLD_PACKAGE_MANIFEST_WORKFLOW_MISMATCH"
+        ),
+        "package_manifest_workflow": package_manifest_workflow,
+        "package_manifest_matches_workflow": package_manifest_matches_workflow,
+        "local_backend": local_backend,
+        "preferred_workflow": preferred_workflow,
+        "stage_strategy": stage_strategy,
+        "post_training_tool": post_training_tool,
+        "post_training_status": post_training_status,
+        "input_artifacts": {
+            "ledger": rel(ledger_path),
+            "next_plan": rel(next_plan_path),
+            "recipe": rel(recipe_path),
+            "manifest": rel(manifest_path),
+            "package_manifest": rel(package_manifest_path),
+            "local_rocm_isolation": rel(local_rocm_isolation_path),
+        },
+        "allowed_actions": allowed_actions,
+        "forbidden_actions": forbidden_actions,
+        "advance_requirements": advance_requirements,
+        "preferred_command": preferred_command,
+        "robot_touched": False,
+        "ssh_used": False,
+        "deploy_performed": False,
+        "training_started": False,
+    }
+
+
+def write_markdown(payload: dict[str, Any], path: Path) -> None:
+    lines = [
+        "# Phase 2 Stage Guard",
+        "",
+        f"status: `{payload['status']}`",
+        f"current_stage: `{payload.get('current_stage')}`",
+        f"current_gate_status: `{payload.get('current_gate_status')}`",
+        f"next_recipe_status: `{payload.get('next_recipe_status')}`",
+        f"launch_status: `{payload.get('launch_status')}`",
+        f"preferred_workflow: `{payload.get('preferred_workflow')}`",
+        "",
+        "This is a read-only guard. It did not train, SSH, deploy, or touch the robot.",
+        "",
+        "## Stage Strategy",
+        "",
+        payload.get("stage_strategy") or "NA",
+        "",
+        "## Readiness",
+        "",
+        f"- colab_status: `{payload.get('colab_status')}`",
+        f"- colab_hardware: `{payload.get('colab_hardware')}`",
+        f"- git_status: `{payload.get('git_status')}`",
+        f"- package_preflight: `{payload.get('package_preflight', {}).get('status')}`",
+        f"- package_manifest_status: `{payload.get('package_manifest_status')}`",
+        f"- package_manifest_workflow: `{payload.get('package_manifest_workflow')}`",
+        f"- package_manifest_matches_workflow: `{payload.get('package_manifest_matches_workflow')}`",
+        f"- local_backend_status: `{payload.get('local_backend', {}).get('launch_class')}`",
+        f"- local_rocm_gate: `{payload.get('local_backend', {}).get('gate_result')}`",
+        f"- local_rocm_evidence: `{payload.get('local_backend', {}).get('path')}`",
+        f"- post_training_tool: `{payload.get('post_training_tool')}`",
+        f"- post_training_status: `{payload.get('post_training_status')}`",
+        f"- held_gates: `{', '.join(payload.get('held_gates') or []) or 'none'}`",
+        f"- missing_gates: `{', '.join(payload.get('missing_gates') or []) or 'none'}`",
+        "",
+        "## Allowed Now",
+        "",
+    ]
+    for item in payload["allowed_actions"]:
+        lines.append(f"- {item}")
+    lines.extend(["", "## Forbidden", ""])
+    for item in payload["forbidden_actions"]:
+        lines.append(f"- {item}")
+    lines.extend(["", "## Required Evidence To Advance", ""])
+    for item in payload["advance_requirements"]:
+        lines.append(f"- {item}")
+    lines.extend(["", "## Local Backend", ""])
+    local_backend = payload.get("local_backend", {})
+    for key in [
+        "launch_class",
+        "gate_result",
+        "smallest_failing_subtest",
+        "smallest_failing_status",
+        "basic_jax_gpu",
+        "minimal_mjx_gpu",
+        "playground_step_gpu",
+        "closed_loop_gpu",
+        "closed_loop_cpu",
+        "path",
+    ]:
+        lines.append(f"- `{key}`: `{local_backend.get(key)}`")
+    lines.extend(
+        [
+            "",
+            "## Package Preflight",
+            "",
+            "| path | exists | included by tar filter |",
+            "|---|---|---|",
+        ]
+    )
+    for item in payload.get("package_preflight", {}).get("items", []):
+        lines.append(
+            f"| `{item['path']}` | `{item['exists']}` | `{item['included_by_tar_filter']}` |"
+        )
+    lines.extend(
+        [
+            "",
+            "## Preferred Command",
+            "",
+            "```bash",
+            payload.get("preferred_command") or "NA",
+            "```",
+            "",
+            "## Input Artifacts",
+            "",
+        ]
+    )
+    for key, value in payload["input_artifacts"].items():
+        lines.append(f"- `{key}`: `{value}`")
+    lines.append("")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("\n".join(lines))
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--ledger", default=str(DEFAULT_LEDGER))
+    parser.add_argument("--next-plan", default=str(DEFAULT_NEXT_PLAN))
+    parser.add_argument("--recipe", default=str(DEFAULT_RECIPE))
+    parser.add_argument("--manifest", default=str(DEFAULT_MANIFEST))
+    parser.add_argument("--package-manifest", default=str(DEFAULT_PACKAGE_MANIFEST))
+    parser.add_argument("--local-rocm-isolation", default=str(DEFAULT_LOCAL_ROCM_ISOLATION))
+    parser.add_argument("--output-md", default=str(DEFAULT_OUTPUT_MD))
+    parser.add_argument("--output-json", default=str(DEFAULT_OUTPUT_JSON))
+    args = parser.parse_args()
+    payload = collect(args)
+    output_json = Path(args.output_json)
+    output_md = Path(args.output_md)
+    output_json.parent.mkdir(parents=True, exist_ok=True)
+    output_json.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
+    write_markdown(payload, output_md)
+    print(payload["status"])
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

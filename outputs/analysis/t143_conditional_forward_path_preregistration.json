@@ -1,0 +1,97 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "gate5": false,
+    "negative_endpoint_preregistration": false,
+    "nominal_identity_reuse_preregistration": false,
+    "one_cpu_graph_transform": true,
+    "rdkx5_or_robot": false,
+    "training": false
+  },
+  "checks": {
+    "frozen_inputs_present": true,
+    "no_behavior_training_colab_or_robot": true,
+    "paired_graphs_present": true,
+    "router_asset_exact": true,
+    "t142_forward_path_mismatch_green": true
+  },
+  "decision_rule": {
+    "fail_decision": "CLOSE_CONDITIONAL_FORWARD_PATH",
+    "pass_decision": "EARN_T144_CONDITIONAL_PATH_NOMINAL_IDENTITY_REUSE_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "formal_behavior_cells": 0,
+    "graphs_transformed": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 5754,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t143_conditional_forward_path_preregistration.py",
+      "sha256": "b047eb5f1bd95aef6877061b0f7a9d05d1a5da1109abb8d65ab6eb8503d3fc64"
+    },
+    "router_asset": {
+      "bytes": 2431,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t135_calibration_context_router_v1\\calibration_context_router_asset.json",
+      "sha256": "8bf59871ef2a98771416b075f38b66480007edace26b121b549f456c92424a26"
+    },
+    "runner": {
+      "bytes": 18798,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t143_conditional_forward_path_transform.py",
+      "sha256": "9393a5a7751cacb74d749d1c2fa98b2f544084ce8b04d980b86a1c658024f327"
+    },
+    "t135b_result": {
+      "bytes": 14765,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t135b_interrupted_calibration_context_router_recovery_result.json",
+      "sha256": "b01f711e751490fab17d327eebf770473636285dfbc97102478dc5328dfcd540"
+    },
+    "t142_result": {
+      "bytes": 3022,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t142_t129_forward_path_mismatch_result.json",
+      "sha256": "ee059496045c2caa069051357c880d3c40cd0f6b4b101fe95432f2c7f8121c2c"
+    },
+    "test": {
+      "bytes": 1071,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t143_conditional_forward_path.py",
+      "sha256": "1b741d61ca64b750d5142ac584ec1a80fc4ff6856d8c89b79ac8e33133008fbb"
+    }
+  },
+  "negative_graphs": {
+    "1003520": {
+      "bytes": 970391,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t131_t129_deployments_v1\\1003520\\deployment\\action_margin.onnx",
+      "sha256": "de0e24e1d719b76b274beb5202355c3915670a6feb64ed2f618e29b1d12b4171"
+    },
+    "2007040": {
+      "bytes": 970391,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t131_t129_deployments_v1\\2007040\\deployment\\action_margin.onnx",
+      "sha256": "0676a0fd52c13f11cefe051f416c25baf74ffc05e942436570a3c512890a2c20"
+    }
+  },
+  "nominal_graphs": {
+    "1003520": {
+      "bytes": 970391,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t101_t100c_postexport_v1\\1003520\\action_margin.onnx",
+      "sha256": "fcf4260ba6e866bba51d90a62d15027501098c693b1ca02fde6baf996e899564"
+    },
+    "2007040": {
+      "bytes": 970391,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t101_t100c_postexport_v1\\2007040\\action_margin.onnx",
+      "sha256": "f57f9e2055cab9aefbb190622dd1a5953a7391d4fdb52f4411f97ac4bdd218ab"
+    }
+  },
+  "preregistered_contract_sha256": "92209d81c77c84347fd19669f55cb37a4109639163b157956f50d6ac612f21b6",
+  "question": "Can calibration preserve T100C's dynamic-gated nominal path while using T129's exact always-on training path only for the negative-COM condition?",
+  "schema_version": "open_duck.t143_conditional_forward_path_preregistration.v1",
+  "status": "PREREGISTERED_T143_CONDITIONAL_FORWARD_PATH_TRANSFORM",
+  "transform": {
+    "abi": "unchanged 115+14+64+64 to 14+14+64",
+    "calibration_context": "existing automatic 64-D response",
+    "downstream_deployment_chain": "unchanged",
+    "negative_context": "T129 expert always on",
+    "nominal_context": "T100C expert behind original dynamic gate"
+  }
+}

@@ -1,0 +1,462 @@
+{
+  "authority": {
+    "audit_authorized": true,
+    "deployment": false,
+    "gate5": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "successor_cpu_preregistration": false
+  },
+  "checks": {
+    "all_trace_and_policy_receipts_exact": true,
+    "both_raw_checkpoints_exact": true,
+    "no_behavior_training_or_colab": true,
+    "no_robot_or_rdk": true,
+    "read_only_trace_replay_only": true,
+    "source_results_exact": true,
+    "t80_nominal_inventory_exact": true,
+    "t92_com_inventory_exact": true
+  },
+  "classification_rule": {
+    "downstream_suppression": {
+      "classification": "DEPLOYMENT_WRAPPERS_SUPPRESS_ADAPTER_AUTHORITY",
+      "decision": "EARN_WRAPPER_ORDER_CPU_SCREEN_ONLY",
+      "predicate": "no prior predicate; COM moving final/pre-boundary adapter L1 retention <=0.25 or >=50% material-adapter ticks are erased to <=1e-7 by downstream wrappers"
+    },
+    "hard_cap": {
+      "classification": "EXPLICIT_ADAPTER_AUTHORITY_CAP_PRESENT",
+      "decision": "EARN_EXACT_CAP_REMOVAL_CPU_SCREEN_ONLY",
+      "predicate": "an explicit finite Clip or constant-bound Mul exists on the adapter_location path before anchored_location"
+    },
+    "hidden_saturation": {
+      "classification": "COM_FAILURE_ALIGNS_WITH_HIDDEN_SATURATION",
+      "decision": "EARN_HIDDEN_RANGE_CPU_SCREEN_ONLY",
+      "predicate": "no hard cap; failed moving COM hidden |h|>=0.99 fraction is at least 0.50 and exceeds nominal moving by at least 0.10"
+    },
+    "none": {
+      "classification": "NO_HARD_ADAPTER_AUTHORITY_LIMIT_FOUND",
+      "decision": "CLOSE_ADAPTER_AUTHORITY_HYPOTHESIS",
+      "predicate": "none of the preceding predicates"
+    },
+    "ordered": true,
+    "training_selection_weight": 0
+  },
+  "execution_now": {
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_steps": 0,
+    "trace_rows": 0
+  },
+  "failed_checks": [],
+  "measurements": {
+    "counterfactual": "zero adapter_weight and adapter_bias only; replay the same recorded obs, previous_action, and h_in",
+    "intermediate_outputs": [
+      "adapter_hidden_pre",
+      "h_out",
+      "adapter_location",
+      "base_anchored_location",
+      "raw_continuous_actions",
+      "velocity_bounded_actions"
+    ],
+    "nonzero_adapter_action_threshold": 0.005,
+    "trace_output_tolerance": 1e-07
+  },
+  "policies": {
+    "T78_JOINT_ADAPTER_FINAL": {
+      "bytes": 965047,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t79_t78_postexport_v1\\2007040\\action_margin.onnx",
+      "sha256": "7732fbf124525d8116d0c90e3afb78ed6af21c252f4092113848cf0bf1441eff"
+    },
+    "T78_JOINT_ADAPTER_HALF": {
+      "bytes": 965047,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t79_t78_postexport_v1\\1003520\\action_margin.onnx",
+      "sha256": "e2f44ef27c4c1e0274f94f5712138ffa02b3adc135f2293447c60a5873712346"
+    }
+  },
+  "preregistered_contract_sha256": "0c5e5842bcfefa7f4d04bda95716ae95d988272fbea454195ceb114377799546",
+  "question": "Did the T78 COM failure come from an explicit adapter-output cap, a saturated recurrent state, or downstream deployment wrappers erasing an otherwise material adapter response?",
+  "repository_inputs": {
+    "builder": {
+      "bytes": 8592,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t93_adapter_authority_preregistration.py",
+      "sha256": "15fe927ad7187f06a17364fc35fe9b5308f53659bc0c77cb122cccc6358ff53f"
+    },
+    "runner": {
+      "bytes": 15941,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t93_adapter_authority_audit.py",
+      "sha256": "056f4bfbde074a2ca1dd93f8a10c1d19fcabc247154eb49455ba2996fc3ab023"
+    },
+    "t80_result": {
+      "bytes": 123375,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t80_t78_nominal_matrix_result.json",
+      "sha256": "d12b30311dbf5b97a029ed4b8b095c3a7ad23ee05be9c13967c56a672f1f85f2"
+    },
+    "t92_result": {
+      "bytes": 124559,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t92_raw_t78_com_attribution_result.json",
+      "sha256": "99caa1fb2936b2698950da4563390c8196b9d4ed9d482aa0bf4e472a22235ea4"
+    },
+    "test": {
+      "bytes": 1629,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t93_adapter_authority_audit.py",
+      "sha256": "872674077785bd901eb853955c400341a4539e5ff2ff152439b0c6b298d7123b"
+    }
+  },
+  "schema_version": "open_duck.t93_adapter_authority_preregistration.v1",
+  "status": "PREREGISTERED_T93_ADAPTER_AUTHORITY_AUDIT",
+  "traces": [
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_HALF",
+      "command_x_m_s": 0.0,
+      "fit_id": "p30",
+      "population": "nominal",
+      "trace": {
+        "bytes": 8252267,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t80_t78_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T78_JOINT_ADAPTER_HALF\\p30\\traces\\x0.000_seed167931544_action_margin.jsonl",
+        "sha256": "c9dad34468f6a118d3a941ebf95ae90f90052945fadc1f8d7b8fcbc3e2397715"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_HALF",
+      "command_x_m_s": 0.074,
+      "fit_id": "p30",
+      "population": "nominal",
+      "trace": {
+        "bytes": 10776830,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t80_t78_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T78_JOINT_ADAPTER_HALF\\p30\\traces\\x0.074_seed167931544_action_margin.jsonl",
+        "sha256": "9bef3884d46771260a0dbc3a8004d47651442ee38ba7458d087f2c9e534e0b5f"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_HALF",
+      "command_x_m_s": 0.077,
+      "fit_id": "p30",
+      "population": "nominal",
+      "trace": {
+        "bytes": 10776526,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t80_t78_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T78_JOINT_ADAPTER_HALF\\p30\\traces\\x0.077_seed167931544_action_margin.jsonl",
+        "sha256": "d1e76448a6cc1c6956df07fd88ee3b3868b8b80b0df509d87ad6d675d150cdb0"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_HALF",
+      "command_x_m_s": 0.08,
+      "fit_id": "p30",
+      "population": "nominal",
+      "trace": {
+        "bytes": 10777792,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t80_t78_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T78_JOINT_ADAPTER_HALF\\p30\\traces\\x0.080_seed167931544_action_margin.jsonl",
+        "sha256": "d6af0ebd7f87e11931be5378b5f46e3f9c2ce5b6b669501c4edf49214eeed84e"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_HALF",
+      "command_x_m_s": 0.0,
+      "fit_id": "p31_34",
+      "population": "nominal",
+      "trace": {
+        "bytes": 8252705,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t80_t78_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T78_JOINT_ADAPTER_HALF\\p31_34\\traces\\x0.000_seed167931544_action_margin.jsonl",
+        "sha256": "954365d5e9c200b330059206ccf720368ed59ed1841417fa7db0e50104ad185f"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_HALF",
+      "command_x_m_s": 0.074,
+      "fit_id": "p31_34",
+      "population": "nominal",
+      "trace": {
+        "bytes": 10775055,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t80_t78_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T78_JOINT_ADAPTER_HALF\\p31_34\\traces\\x0.074_seed167931544_action_margin.jsonl",
+        "sha256": "bc3adac297ff1d3d641a5ae1d3502af7af96f7791ee97ee64790abf46a55afc5"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_HALF",
+      "command_x_m_s": 0.077,
+      "fit_id": "p31_34",
+      "population": "nominal",
+      "trace": {
+        "bytes": 10776330,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t80_t78_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T78_JOINT_ADAPTER_HALF\\p31_34\\traces\\x0.077_seed167931544_action_margin.jsonl",
+        "sha256": "de1772e8163c810097feb82749542d0558b7918649853864accbe5243952be27"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_HALF",
+      "command_x_m_s": 0.08,
+      "fit_id": "p31_34",
+      "population": "nominal",
+      "trace": {
+        "bytes": 4091306,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t80_t78_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T78_JOINT_ADAPTER_HALF\\p31_34\\traces\\x0.080_seed167931544_action_margin.jsonl",
+        "sha256": "668dedae1c56176e91a7d7798affa1eae8384200fa91ffbc98a37322e2dd0366"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_FINAL",
+      "command_x_m_s": 0.0,
+      "fit_id": "p30",
+      "population": "nominal",
+      "trace": {
+        "bytes": 8243229,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t80_t78_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T78_JOINT_ADAPTER_FINAL\\p30\\traces\\x0.000_seed167931544_action_margin.jsonl",
+        "sha256": "3726011123e52c910bb28602dca2e2ef6449ff45222d046237b94812f5fa35c2"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_FINAL",
+      "command_x_m_s": 0.074,
+      "fit_id": "p30",
+      "population": "nominal",
+      "trace": {
+        "bytes": 10773492,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t80_t78_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T78_JOINT_ADAPTER_FINAL\\p30\\traces\\x0.074_seed167931544_action_margin.jsonl",
+        "sha256": "b08d5412a34162043e6d678ecea465b200515742b1a25a1f7f9e88ea0b9f2e04"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_FINAL",
+      "command_x_m_s": 0.077,
+      "fit_id": "p30",
+      "population": "nominal",
+      "trace": {
+        "bytes": 10771625,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t80_t78_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T78_JOINT_ADAPTER_FINAL\\p30\\traces\\x0.077_seed167931544_action_margin.jsonl",
+        "sha256": "3ed007363eb4a1f9f45bcd221e6d58b3ad222409eeaaa45b19dc0bdc2106c3ee"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_FINAL",
+      "command_x_m_s": 0.08,
+      "fit_id": "p30",
+      "population": "nominal",
+      "trace": {
+        "bytes": 9011977,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t80_t78_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T78_JOINT_ADAPTER_FINAL\\p30\\traces\\x0.080_seed167931544_action_margin.jsonl",
+        "sha256": "ccd45d25753236d8d0cde484f4c3840135b8ef675b05633e7868e7bd1ec48ec4"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_FINAL",
+      "command_x_m_s": 0.0,
+      "fit_id": "p31_34",
+      "population": "nominal",
+      "trace": {
+        "bytes": 8242978,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t80_t78_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T78_JOINT_ADAPTER_FINAL\\p31_34\\traces\\x0.000_seed167931544_action_margin.jsonl",
+        "sha256": "7819369e0f6300ed8834bfa8f690843fefc61155cfa149374a76fbdcfb2a0861"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_FINAL",
+      "command_x_m_s": 0.074,
+      "fit_id": "p31_34",
+      "population": "nominal",
+      "trace": {
+        "bytes": 10774577,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t80_t78_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T78_JOINT_ADAPTER_FINAL\\p31_34\\traces\\x0.074_seed167931544_action_margin.jsonl",
+        "sha256": "2d5e00e075701c2935c04cd2f47d51b1137bebfe619f1ee08e4d4ea6a3a76526"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_FINAL",
+      "command_x_m_s": 0.077,
+      "fit_id": "p31_34",
+      "population": "nominal",
+      "trace": {
+        "bytes": 10773751,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t80_t78_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T78_JOINT_ADAPTER_FINAL\\p31_34\\traces\\x0.077_seed167931544_action_margin.jsonl",
+        "sha256": "eaa9ad855b8e768d945f9217ba38851479aa76e14bdf5d6cfe728523870377fd"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_FINAL",
+      "command_x_m_s": 0.08,
+      "fit_id": "p31_34",
+      "population": "nominal",
+      "trace": {
+        "bytes": 10772581,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t80_t78_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T78_JOINT_ADAPTER_FINAL\\p31_34\\traces\\x0.080_seed167931544_action_margin.jsonl",
+        "sha256": "1b436c2dce55fb0801d7530725acf600f25dd019f3de086cbb864bd527fa7bf5"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_HALF",
+      "command_x_m_s": 0.0,
+      "fit_id": "p30",
+      "population": "com_x_negative",
+      "trace": {
+        "bytes": 8263630,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t92_raw_t78_com_attribution_v1\\07_TORSO_COM_X_NEG\\T78_JOINT_ADAPTER_HALF\\p30\\traces\\x0.000_seed167931544_action_margin.jsonl",
+        "sha256": "00e697ee8d6f429fbe708feca0047d1e89cfe997b1767839cf397c88d282c811"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_HALF",
+      "command_x_m_s": 0.074,
+      "fit_id": "p30",
+      "population": "com_x_negative",
+      "trace": {
+        "bytes": 5297612,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t92_raw_t78_com_attribution_v1\\07_TORSO_COM_X_NEG\\T78_JOINT_ADAPTER_HALF\\p30\\traces\\x0.074_seed167931544_action_margin.jsonl",
+        "sha256": "2de0667f49f6f5f8b71d0435769d7d281ebbb55e4a602b0136166f9ffe830c57"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_HALF",
+      "command_x_m_s": 0.077,
+      "fit_id": "p30",
+      "population": "com_x_negative",
+      "trace": {
+        "bytes": 3535755,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t92_raw_t78_com_attribution_v1\\07_TORSO_COM_X_NEG\\T78_JOINT_ADAPTER_HALF\\p30\\traces\\x0.077_seed167931544_action_margin.jsonl",
+        "sha256": "e62bf034d455e988ce2efccc68f88f5e73d4b17e59a080508af748c59a108c8c"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_HALF",
+      "command_x_m_s": 0.08,
+      "fit_id": "p30",
+      "population": "com_x_negative",
+      "trace": {
+        "bytes": 4812877,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t92_raw_t78_com_attribution_v1\\07_TORSO_COM_X_NEG\\T78_JOINT_ADAPTER_HALF\\p30\\traces\\x0.080_seed167931544_action_margin.jsonl",
+        "sha256": "e67bb7240c1e6080982ebb6a4bb7ec638fe07536c2412565549030e6eb788c7a"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_HALF",
+      "command_x_m_s": 0.0,
+      "fit_id": "p31_34",
+      "population": "com_x_negative",
+      "trace": {
+        "bytes": 8263174,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t92_raw_t78_com_attribution_v1\\07_TORSO_COM_X_NEG\\T78_JOINT_ADAPTER_HALF\\p31_34\\traces\\x0.000_seed167931544_action_margin.jsonl",
+        "sha256": "1372d28264260c3c06dc87eccf6b60e9310e28b4b2b5fe1de64c33becb25ae47"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_HALF",
+      "command_x_m_s": 0.074,
+      "fit_id": "p31_34",
+      "population": "com_x_negative",
+      "trace": {
+        "bytes": 6051008,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t92_raw_t78_com_attribution_v1\\07_TORSO_COM_X_NEG\\T78_JOINT_ADAPTER_HALF\\p31_34\\traces\\x0.074_seed167931544_action_margin.jsonl",
+        "sha256": "6ddf29fe2676d098cddde9685c351fc9048abb3d22269e251c752df01061ef0c"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_HALF",
+      "command_x_m_s": 0.077,
+      "fit_id": "p31_34",
+      "population": "com_x_negative",
+      "trace": {
+        "bytes": 3427595,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t92_raw_t78_com_attribution_v1\\07_TORSO_COM_X_NEG\\T78_JOINT_ADAPTER_HALF\\p31_34\\traces\\x0.077_seed167931544_action_margin.jsonl",
+        "sha256": "f88e15bb15ec35636568373cabe9856ef18823c3e553fbab2d371f5d4bf6e23f"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_HALF",
+      "command_x_m_s": 0.08,
+      "fit_id": "p31_34",
+      "population": "com_x_negative",
+      "trace": {
+        "bytes": 3912492,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t92_raw_t78_com_attribution_v1\\07_TORSO_COM_X_NEG\\T78_JOINT_ADAPTER_HALF\\p31_34\\traces\\x0.080_seed167931544_action_margin.jsonl",
+        "sha256": "df2a063e4376d5ffa791b3d521f9ec4c65f79245bf93a8320bbb575e731a0254"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_FINAL",
+      "command_x_m_s": 0.0,
+      "fit_id": "p30",
+      "population": "com_x_negative",
+      "trace": {
+        "bytes": 8259620,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t92_raw_t78_com_attribution_v1\\07_TORSO_COM_X_NEG\\T78_JOINT_ADAPTER_FINAL\\p30\\traces\\x0.000_seed167931544_action_margin.jsonl",
+        "sha256": "76bcfc46b352bcd9506d94486365f3ed6c0fdfec2484acc8f11d0d63fadbcdbc"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_FINAL",
+      "command_x_m_s": 0.074,
+      "fit_id": "p30",
+      "population": "com_x_negative",
+      "trace": {
+        "bytes": 1702004,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t92_raw_t78_com_attribution_v1\\07_TORSO_COM_X_NEG\\T78_JOINT_ADAPTER_FINAL\\p30\\traces\\x0.074_seed167931544_action_margin.jsonl",
+        "sha256": "0227238cefb4be524d46314350bf9f606e92e7a90bd253ea1ef6ac59436a8edd"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_FINAL",
+      "command_x_m_s": 0.077,
+      "fit_id": "p30",
+      "population": "com_x_negative",
+      "trace": {
+        "bytes": 3139810,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t92_raw_t78_com_attribution_v1\\07_TORSO_COM_X_NEG\\T78_JOINT_ADAPTER_FINAL\\p30\\traces\\x0.077_seed167931544_action_margin.jsonl",
+        "sha256": "b02c928a507bfe208f97bb8c1ecc53db574120feffb235a9bea7b1889266f1be"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_FINAL",
+      "command_x_m_s": 0.08,
+      "fit_id": "p30",
+      "population": "com_x_negative",
+      "trace": {
+        "bytes": 4038855,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t92_raw_t78_com_attribution_v1\\07_TORSO_COM_X_NEG\\T78_JOINT_ADAPTER_FINAL\\p30\\traces\\x0.080_seed167931544_action_margin.jsonl",
+        "sha256": "c7a5416d64e4102be6dab67c19e16061117bd7a86eff1ce10b1b33f73aa35d77"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_FINAL",
+      "command_x_m_s": 0.0,
+      "fit_id": "p31_34",
+      "population": "com_x_negative",
+      "trace": {
+        "bytes": 8258224,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t92_raw_t78_com_attribution_v1\\07_TORSO_COM_X_NEG\\T78_JOINT_ADAPTER_FINAL\\p31_34\\traces\\x0.000_seed167931544_action_margin.jsonl",
+        "sha256": "8ea4311d1f7c1be3da6e79ba1678614333f1b75b0881b87d0b9698db0ab44265"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_FINAL",
+      "command_x_m_s": 0.074,
+      "fit_id": "p31_34",
+      "population": "com_x_negative",
+      "trace": {
+        "bytes": 1558407,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t92_raw_t78_com_attribution_v1\\07_TORSO_COM_X_NEG\\T78_JOINT_ADAPTER_FINAL\\p31_34\\traces\\x0.074_seed167931544_action_margin.jsonl",
+        "sha256": "30c4faddf9dca0fe2e1fcf55b307752b7a6897716c19e049352aa3633090f34f"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_FINAL",
+      "command_x_m_s": 0.077,
+      "fit_id": "p31_34",
+      "population": "com_x_negative",
+      "trace": {
+        "bytes": 5564792,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t92_raw_t78_com_attribution_v1\\07_TORSO_COM_X_NEG\\T78_JOINT_ADAPTER_FINAL\\p31_34\\traces\\x0.077_seed167931544_action_margin.jsonl",
+        "sha256": "63d35574acf107767d1fb0f8047fd900658a9e50672918b2b08345755286bc47"
+      }
+    },
+    {
+      "checkpoint_id": "T78_JOINT_ADAPTER_FINAL",
+      "command_x_m_s": 0.08,
+      "fit_id": "p31_34",
+      "population": "com_x_negative",
+      "trace": {
+        "bytes": 2655943,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t92_raw_t78_com_attribution_v1\\07_TORSO_COM_X_NEG\\T78_JOINT_ADAPTER_FINAL\\p31_34\\traces\\x0.080_seed167931544_action_margin.jsonl",
+        "sha256": "ff484e17b76d257990e8edc52ae4ceaf7a742caf705b27aa0caa4556fb2fa309"
+      }
+    }
+  ]
+}

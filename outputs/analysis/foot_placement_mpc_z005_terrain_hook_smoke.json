@@ -1,0 +1,109 @@
+{
+  "status": "PASS_FOOT_PLACEMENT_MPC_PROBE_RAN",
+  "command_x": 0.08,
+  "duration_s": 1.0,
+  "seeds": [
+    5
+  ],
+  "terrain_override": {
+    "enabled": true,
+    "hfield_z_scale": 0.005,
+    "source_xml": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_rough_terrain_backlash.xml",
+    "temp_xml": "/home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/.codex_eval_bzi_k2f4_hfield_z0.005.xml"
+  },
+  "trace_dir": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/foot_placement_mpc_z005_terrain_smoke_traces",
+  "candidate_count": 1,
+  "results": [
+    {
+      "candidate": {
+        "label": "fpm_is1_p0p56_ly0p02_fpx0p03_fpg1_smam0p08_shp0p02_skp0_sap0_sbx0_sg0_vxg0_pl0_pp1_tvl2_plg1000_pyg1000_pms1_yg0_yvg0_rg1p5_vyg0p5_byg0p5",
+        "initial_stance_side": 1.0,
+        "period_s": 0.56,
+        "load_s": 0.28,
+        "unweight_s": 0.22,
+        "push_s": 0.14,
+        "load_shift_y_m": 0.02,
+        "base_y_gate_m": 0.03,
+        "lateral_velocity_gate_m_s": 0.12,
+        "foot_place_x_m": 0.03,
+        "foot_place_gain": 1.0,
+        "swing_min_advance_m": -0.08,
+        "swing_knee_rad": 0.1,
+        "swing_ankle_rad": 0.0,
+        "swing_reach_limit_rad": 0.08,
+        "stance_retract_rad": 0.04,
+        "stance_hip_push_rad": 0.02,
+        "stance_knee_push_rad": 0.0,
+        "stance_ankle_push_rad": 0.0,
+        "stance_base_x_offset_m": 0.0,
+        "sagittal_gain": 0.0,
+        "vx_gain": 0.0,
+        "propulsion_limit_rad": 0.0,
+        "propulsion_pattern": 1.0,
+        "teacher_target_velocity_limit_rad_s": 2.0,
+        "push_lateral_soft_gate_m_s": 1000.0,
+        "push_yaw_soft_gate_rad": 1000.0,
+        "push_min_scale": 1.0,
+        "yaw_gain": 0.0,
+        "yaw_vy_gain": 0.0,
+        "roll_gain": 1.5,
+        "vy_damping_gain": 0.5,
+        "body_y_gain": 0.5,
+        "pitch_target_rad": 0.0,
+        "pitch_damping": 1.0,
+        "clearance_gate_m": 0.008,
+        "min_height_m": 0.145
+      },
+      "runs": [
+        {
+          "samples": 44,
+          "termination_reason": "fall_or_nan",
+          "mean_vx_m_s": -0.3481373523615978,
+          "track_ratio": -4.351716904519972,
+          "vy_abs_p95_m_s": 0.19620315507054334,
+          "body_pitch_abs_p95_rad": 1.342266962084612,
+          "base_height_min_m": 0.0565037727355957,
+          "foot_site_z_p95_m": 0.041139001399278646,
+          "action_saturation_pct": 0.0,
+          "target_clip_p95_rad": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.15195012092590332,
+          "joint_tracking_p95_rad": 0.06503925658762455,
+          "contact_counts": {
+            "00": 4,
+            "01": 4,
+            "10": 5,
+            "11": 31
+          },
+          "contact_transitions": 14,
+          "phase_pct": {
+            "LOAD_STANCE": 59.09090909090909,
+            "PUSH_FORWARD": 15.909090909090908,
+            "UNWEIGHT_SWING": 25.0
+          },
+          "load_ready_pct": 0.0,
+          "swing_ready_pct": 0.0,
+          "push_allowed_pct": 0.0,
+          "switch_ready_pct": 6.8181818181818175,
+          "state_transitions": 3,
+          "forced_transitions": 3,
+          "recovery_holds": 0,
+          "seed": 5,
+          "trace": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/foot_placement_mpc_z005_terrain_smoke_traces/fpm_is1_p0p56_ly0p02_fpx0p03_fpg1_smam0p08_shp0p02_skp0_sap0_sbx0_sg0_vxg0_pl0_pp1_tvl2_plg1000_pyg1000_pms1_yg0_yvg0_rg1p5_vyg0p5_byg0p5/seed_005.jsonl"
+        }
+      ],
+      "aggregate": {
+        "runs": 1,
+        "falls": 1,
+        "duration_complete": 0,
+        "mean_vx_m_s": -0.3481373523615978,
+        "max_mean_vx_m_s": -0.3481373523615978,
+        "mean_push_allowed_pct": 0.0
+      }
+    }
+  ],
+  "limitations": [
+    "first implementation uses joint-space approximations for swing-foot placement",
+    "not a full nonlinear MPC solver",
+    "passing still requires external 100-150 tick score artifacts"
+  ]
+}

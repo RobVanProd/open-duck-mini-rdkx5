@@ -1,0 +1,61 @@
+{
+  "authority": {
+    "behavior_evaluation_authorized": false,
+    "checkpoint_selection_authorized": false,
+    "cpu_transform_authorized": true,
+    "gate5_authorized": false,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "deadband_selected_before_transform": true,
+    "formal_behavior_cells_zero": true,
+    "frozen_transform_inputs_exact": true,
+    "g3_selected_before_transform": true,
+    "two_postupdate_sources_exact": true,
+    "v112_validation_exact": true
+  },
+  "execution_now": {
+    "formal_behavior_cells": 0,
+    "robot_or_rdk_access": 0,
+    "training_steps": 0,
+    "transformed_policies": 0
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "deadband_preregistration": "8df6129f260c0d0e0a48a81d5e318bd7d2ede7fdb9e3ffa3374d6c967c8856f4",
+    "guard_preregistration": "9bf9b3ec4e4423a5e44a582d29a69927382468e24d7aa3a478712b6c87988dae",
+    "transform_tool": "d01b69e33f253c91938e34b3c163630e371207e7500b45a1d4111b20b59f7eac",
+    "v112_validation": "895c010a015da4dc43bec2bf3752767c7633859adef2f1b277ef7315e941d4a7"
+  },
+  "schema_version": "winner_v113.postexport_transform_preregistration.v1",
+  "sources": [
+    {
+      "filename": "2026_07_24_141433_1003520.onnx",
+      "id": "V112_PEAK_TORQUE_HALF",
+      "output_filename": "V112_G3_DEADBAND_1003520.onnx",
+      "sha256": "eb691f6e85b58f3c514779926cc6aeb769091c3609f894e7e6cde8e538be6718",
+      "step": 1003520
+    },
+    {
+      "filename": "2026_07_24_141819_2007040.onnx",
+      "id": "V112_PEAK_TORQUE_FINAL",
+      "output_filename": "V112_G3_DEADBAND_2007040.onnx",
+      "sha256": "6a400a7c465e56520e853d3607265e544888f86560d065f553a765b3d259563b",
+      "step": 2007040
+    }
+  ],
+  "status": "PREREGISTERED_WINNER_V113_POSTEXPORT_TRANSFORM",
+  "transform": {
+    "g3_margin_rad": 0.165,
+    "order": [
+      "preserve source conservative all-joint rate projection",
+      "append frozen G3 actual-centered pitch guard",
+      "append frozen x=0 deadband"
+    ],
+    "positive_support_behavior": "bit-exact after G3 guard",
+    "source_nodes_and_initializers": "bit-exact",
+    "zero_deadband_absolute_command_x": 0.01
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "status": "HOLD_PPO_LOC_COMPRESSION_SEED_TRADEOFF",
+  "robot_scope": "not_run",
+  "ssh": false,
+  "deploy": false,
+  "grounded_replay": false,
+  "runtime_behavior_changed": false,
+  "parent": {
+    "onnx": "policy/candidates/phase2_health_routed_parent_phase_mod_rate150_20260706/candidate.onnx",
+    "sha256": "5cadefcb3582043eb989a0e7c65ea9e2702a0815ba46c9ffe1c70b1f68f1db8f",
+    "x008_full8_status": "PASS",
+    "x000_full8_status": "PASS"
+  },
+  "variants": [
+    {
+      "name": "original_ppo_loc_step0_no_seed5_trace",
+      "step0_onnx_sha256": "10499450f92307a49de9faf8de557cb6348977b9ec4f0ecb798758b57cfc5aa8",
+      "gate": "x008_full8",
+      "duration_complete": 7,
+      "runs": 8,
+      "failing_seed": 5
+    },
+    {
+      "name": "seed5_trace_weight_5p0",
+      "step0_onnx_sha256": "58eb6e0b4ce1af2e920105ff7cbd07d67b9864aed329745e6726cdcb349460f4",
+      "gate": "x008_full8",
+      "duration_complete": 7,
+      "runs": 8,
+      "failing_seed": 0,
+      "gate_json_sha256": "12035a88bcbd08931dd6c288338c3fc192ec464a9a563f46e62d55d0c88fb26b"
+    },
+    {
+      "name": "seed5_trace_weight_2p5",
+      "step0_onnx_sha256": "cd87074bebf106e28eea0e13d1f0d8b0ac559986836d18b0ce76f661e9dc22e8",
+      "gate": "x008_seed0_5_screen",
+      "duration_complete": 1,
+      "runs": 2,
+      "failing_seed": 0,
+      "gate_json_sha256": "6d89edc80a89bf79858d470be0a351327b1da358641a883b498770e93c402a98"
+    },
+    {
+      "name": "seed5_trace_equal_weight_fit_seed31",
+      "step0_onnx_sha256": "ab159c60ee2bc42299b5e960495bc5a182c15a1881929ae3a190ee3db1cffe40",
+      "gate": "x008_full8",
+      "duration_complete": 7,
+      "runs": 8,
+      "failing_seed": 2,
+      "gate_json_sha256": "17eb9119a4017b84e4f1cd3ee7765c72cff2d48529547cb0e60cd867a06ded0e"
+    },
+    {
+      "name": "seed5_trace_equal_weight_fit_seed33",
+      "step0_onnx_sha256": "d431b8b30f3ac51d8e6715938d9d09e981daf341f8af16e00fb3aa63b5dbab0f",
+      "gate": "x008_seed0_2_5_screen",
+      "duration_complete": 2,
+      "runs": 3,
+      "failing_seed": 5,
+      "gate_json_sha256": "7d898648e332674479d18efb4153f1aa546445f2936b7dc7c872b4cd22bcc1a9"
+    }
+  ],
+  "decision": "Do not launch Stage A DR from any PPO-loc step-0 variant in this report.",
+  "next_work": [
+    "Preserve phase/context conditioning in the restorable PPO actor path.",
+    "Build a step-0 checkpoint with action fidelity to the passing parent.",
+    "Re-run x=0.08 and x=0.0 rough+push full8 gates before Stage A DR."
+  ]
+}

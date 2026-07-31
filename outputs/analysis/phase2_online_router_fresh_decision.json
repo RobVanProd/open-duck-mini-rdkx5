@@ -1,0 +1,39 @@
+{
+  "status": "PASS_ONLINE_ROUTER_FRESH_COMPACT_SOURCE",
+  "fresh_sweeps": [
+    "outputs/analysis/phase2_online_router_fresh_iter24_25_sweep.json",
+    "outputs/analysis/phase2_online_router_fresh_iter26_27_sweep.json"
+  ],
+  "router_gate": {
+    "json": "outputs/analysis/phase2_online_router_fresh_iter24_27_gate.json",
+    "status": "PASS_HEALTH_GATED_ROUTER_COMPACT",
+    "prefix_ticks": 100,
+    "knn_k": 3,
+    "policy_onehot_scale": 5.0,
+    "pitch_guard_limit_rad": 0.2,
+    "pitch_guard_scale": 1.0
+  },
+  "selected_routes": [
+    {"seed": 0, "policy": "iter24", "status": "PASS_CANDIDATE_SIM_GATE", "track_ratio": 0.3256, "mean_vx_m_s": 0.0261},
+    {"seed": 1, "policy": "iter25", "status": "PASS_CANDIDATE_SIM_GATE", "track_ratio": 0.3567, "mean_vx_m_s": 0.0285},
+    {"seed": 2, "policy": "iter24", "status": "PASS_CANDIDATE_SIM_GATE", "track_ratio": 0.3278, "mean_vx_m_s": 0.0262},
+    {"seed": 6, "policy": "iter25", "status": "PASS_CANDIDATE_SIM_GATE", "track_ratio": 0.3273, "mean_vx_m_s": 0.0262},
+    {"seed": 7, "policy": "iter24", "status": "PASS_CANDIDATE_SIM_GATE", "track_ratio": 0.3437, "mean_vx_m_s": 0.0275}
+  ],
+  "selected_manifest": {
+    "json": "outputs/analysis/phase2_online_router_fresh_selected_manifest.json",
+    "status": "PASS_BC_TRACE_MANIFEST_READY",
+    "dataset_id": "f2ecbdfab21ccafa",
+    "entries": 5,
+    "samples": 3750
+  },
+  "decision": "router_is_valid_eval_source_not_single_policy_parent",
+  "phase2_domain_randomization": "blocked_until_trainable_parent_clears_behavior_preservation_gate",
+  "guardrails": [
+    "no_robot",
+    "no_ssh",
+    "no_deploy",
+    "no_grounded_replay",
+    "no_runtime_behavior_change"
+  ]
+}

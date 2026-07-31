@@ -1,0 +1,95 @@
+{
+  "algorithm": {
+    "actor_branches": [
+      {
+        "condition": "batch_cost==0 and cost_seen==false",
+        "direction": "reward descent"
+      },
+      {
+        "condition": "batch_cost>0",
+        "direction": "cost descent"
+      },
+      {
+        "condition": "batch_cost==0 and cost_seen==true",
+        "direction": "minimum Euclidean projection of reward descent onto g_C dot d <= 0"
+      }
+    ],
+    "actor_optimizer": {
+      "adam": false,
+      "global_norm_cap": 1.0,
+      "learning_rate": 0.0003,
+      "type": "direct Euclidean parameter update"
+    },
+    "critics": "reward and cost critics retain the frozen Adam update; actor gradient is zeroed in that optimizer",
+    "deployment": "unchanged policy graph and stateful ONNX ABI",
+    "dual": "lambda, eta, and initialization remain exactly zero",
+    "new_deployment_state": false,
+    "state": "cost_seen, training-only boolean initialized false",
+    "tunable_scalars": 0
+  },
+  "authority": {
+    "candidate_selection": false,
+    "gate5": false,
+    "hosted_training": false,
+    "one_1024_step_cpu_contract": true,
+    "rdkx5_or_robot": false,
+    "robustness_matrix": false,
+    "torque_or_motion": false,
+    "v174_nominal_behavior_screen": false
+  },
+  "checks": {
+    "cpu_only_no_hosted_compute_or_hardware": true,
+    "frozen_lr_and_norm_cap_exact": true,
+    "source_checkpoint_hash_exact": true,
+    "v121_half_deployed_hash_exact": true,
+    "v172_positive_cost_geometry_green": true,
+    "v172_preregistration_exact": true,
+    "v173_source_contract_exact": true,
+    "zero_cost_causal_gap_remains_corrected": true
+  },
+  "cpu_contract": {
+    "real": [
+      "strictly positive cost must be observed",
+      "reward-only and cost-first branches must execute",
+      "all 64 actor updates must be accounted exactly once",
+      "no zero actor direction",
+      "any real tangent branch retains at least 1/32 reward norm",
+      "all cost-first/tangent directions have zero positive derivative excess",
+      "every actor, reward-critic, and cost-critic leaf changes and stays finite",
+      "dual state remains exactly zero",
+      "step-0 and step-1024 stateful ONNX contracts pass"
+    ],
+    "source": "bit-exact V121-half normalizer/policy/reward critic",
+    "steps": 1024,
+    "synthetic": "exercise reward-only, cost-first, and tangent branches with exact derivative and norm-cap checks"
+  },
+  "decision_rule": {
+    "derivative_excess_tolerance": 7.62939453125e-06,
+    "green": "earn V174 nominal CPU behavior screen only",
+    "hold": "close the lexicographic tangent implementation with no alternate optimizer, branch order, batch, lr, norm cap, retention floor, or retry",
+    "retention_floor": 0.03125
+  },
+  "external_paths": {
+    "playground": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v173-lexicographic-tangent-playground-20260725",
+    "source_checkpoint": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v119-extracted-20260724\\winner_v119_transition_continuation\\training\\2026_07_24_193907_1003520",
+    "v121_half_deployed": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v127-constrained-cpu-contract-20260724\\v127_deployed_0.onnx"
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "builder": "15ada7f63d490b2a941e466c5ab8e004e493befca899672ac7fb25c27ae2d08a",
+    "composer": "6fb63e438e09dabc7ef25dc1e4bfb0c8b3d5676e1e7adb4ac8bbfc5fd05c67a6",
+    "direction_helper": "b7ff83f8d68f1034ab1ddb5562d4a32a384756a330bb150b8ca69d92a63f3841",
+    "runner": "8a0366891874cdaa1a474981b6adc8cee452a6ceaaed1a47ed3fb9efa9e81631",
+    "source_checkpoint": "29b6d1d707784cc49050ab4b5513c06b020ebf7cf02dba3bee304a74477348f8",
+    "update_patch": "0a5f45a20063363d5ec8730ba2c4f560cff99048d8118fd0dc2c9ef5e9b5620e",
+    "v121_half_deployed": "bee1d65fa0acd08f7ab5b8a10fe66ea64b9f933d06bbd47c6def168f7e06830f",
+    "v127_cpu_preregistration": "a77c677816714a0517c70f84c56d8c6a2b731ae135696c11b15ff51caf24bc34",
+    "v127_cpu_result": "cd728eb3cf2900f038c4134e3f603106238e960046b3482d4cd2b695b5a76ed4",
+    "v171a_correction": "41050b77ec796742edc669dad4180f4076620e48e3f6748b2181ee62f5fc09c7",
+    "v172_preregistration": "3399ed95731c378fb48dcbdd7a459c2543b26e718e772c7b9306cd7b40507e75",
+    "v172_result": "8411f70a33421d2b8ba1aa27cccecc1549bb453890965878bba76c5b173131ad",
+    "v173_manifest": "ba33a3467893c59ed4ff57388ef61ce3c1257b6abd38702b982fa3230438bfe7"
+  },
+  "schema_version": "winner_v173.lexicographic_tangent_cpu_preregistration.v1",
+  "status": "PREREGISTERED_WINNER_V173_LEXICOGRAPHIC_TANGENT_CPU_CONTRACT"
+}

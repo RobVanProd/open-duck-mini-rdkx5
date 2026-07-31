@@ -1,0 +1,129 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "deployment_authorized": false,
+    "formal_cpu_contract_authorized": true,
+    "gate5_authorized": false,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "result_authorizes": "one separately preregistered response-conditioned locomotion CPU contract only if every pass condition is met",
+    "robot_clearance": false,
+    "training_authorized_now": false
+  },
+  "decision": "AUTHORIZE_ONE_PRECISION_DERIVED_TRUNCATED_SVD_CONTRACT_ONLY",
+  "execution_now": {
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0,
+    "snapshot_or_onnx_writes": 0,
+    "source_trace_cells": 0,
+    "svd_fits": 0
+  },
+  "pass_rule": "at least one singular direction is retained; the retained condition number times float32 epsilon is at most 1e-3; heldout float64-to-float32 prediction delta is at most 1e-4; the float32 readout beats the frozen predictor and constant on each plant; all 112 traces pass",
+  "readout": {
+    "condition_limit": 8388.608,
+    "condition_number_times_float32_epsilon_at_most": 0.001,
+    "feature_dimension": 65,
+    "feature_order": [
+      "h_out[0:64]",
+      "bias"
+    ],
+    "flat_transport_feature_enabled": false,
+    "float32_epsilon": 1.1920928955078125e-07,
+    "heldout_float64_vs_float32_max_abs_at_most": 0.0001,
+    "hyperparameter_rank_or_feature_search": false,
+    "mapping": {
+      "auxiliary_action_weight": "exact zeros [14,50]",
+      "auxiliary_bias": "retained-SVD fit row 64",
+      "auxiliary_hidden_weight": "retained-SVD fit rows 0:64"
+    },
+    "policy_action_parameters_changed": false,
+    "rank_rule": "retain singular value s_i iff s_0 / s_i <= (1e-3 / eps(float32))",
+    "recurrent_parameters_changed": false,
+    "regularization": null,
+    "relative_singular_value_cutoff": 0.00011920928955078125,
+    "solver": "explicit numpy.linalg.svd float64 full_matrices=False",
+    "stored_coefficient_dtype": "float32",
+    "target_dimension": 50
+  },
+  "schema_version": "winner_v95.precision_truncated_readout_preregistration.v1",
+  "source": {
+    "observer_label": "winner_v22_final",
+    "onnx_sha256": "cb3380ed99b3e9d7e9000904a210227aa397db2a064aa80d8f70e77c8339783b",
+    "snapshot_sha256": "ddc8c4b905bb9acac2d7d48c3e9c1f0c0ca0173a1ba21f375740b051bc48c806",
+    "universal_target_action": [
+      0.0,
+      0.0,
+      -0.5,
+      0.25,
+      0.25,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.5,
+      0.25,
+      0.25
+    ],
+    "universal_target_candidate": 536,
+    "v94_result_sha256": "63acd3836b0c37cc83b9aa8cfd1298d2593af2226bc6de042d2c93e9743ff233"
+  },
+  "source_manifest_sha256": "63530633c725edb38be6abbe6d0337f3c445d0772e1f489a2add8ee73c44925b",
+  "sources": {
+    "base_gate": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_support_gate.py",
+      "sha256": "18873eee55c77a278fc065de64c0b912803bf29b4440cde7f3adaabe1297baca"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v95_precision_truncated_readout_preregistration.py",
+      "sha256": "d564b88fa611fd6c3b3cf7b083225f373f8484a9796440d2d9599f762392ccca"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v95_precision_truncated_readout.py",
+      "sha256": "12ca437197e6342caca23158f3f88e486fdf2a91bfa550c1546b51caa44639a7"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v95_precision_truncated_readout.py",
+      "sha256": "124a1745da14ab6692efc0152c4236ef4e01eb2b6246c20e87c9b9440409f5e1"
+    },
+    "v22_gate": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v22_normalized_predictor_support_gate.py",
+      "sha256": "0a217b355f43b304187f02bc3025feb3d4aa26fb7b9fae7d0c395667ce501cd3"
+    },
+    "v92_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v92_universal_target_response_observer.py",
+      "sha256": "ff482915172c100bb879ced71d1c45b9e830013736e52a9905efa147375720c1"
+    },
+    "v93_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v93_universal_response_readout.py",
+      "sha256": "a9a35a67e6661339c5ab95206f83ed0c5c4b2643faa993c58947b1e0bb9803dd"
+    },
+    "v94_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v94_stable_response_readout_result.json",
+      "sha256": "6001dd563008e505abd9bbb9a037a6d5a3598dc85af8dbfd6447cfd7c8e744dd"
+    },
+    "v94_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v94_stable_response_readout.py",
+      "sha256": "edf0fd17c1d953d721078347f163133fa655476480ee189c5c93f44b60f3cd37"
+    }
+  },
+  "split": {
+    "actuator_plants": 2,
+    "fit_configurations": 40,
+    "fit_transitions": 19920,
+    "heldout_configurations": 16,
+    "heldout_data_used_during_fit_or_rank_selection": false,
+    "heldout_transitions": 7968,
+    "ticks_per_cell": 250
+  },
+  "status": "PREREGISTERED_WINNER_V95_PRECISION_TRUNCATED_READOUT"
+}

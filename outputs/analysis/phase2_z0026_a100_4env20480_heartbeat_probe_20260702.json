@@ -1,0 +1,73 @@
+{
+  "artifact_bundle": {
+    "local_path": "outputs/analysis/colab_cli/open-duck-a100-heartbeat-phase2-z002-teacher-continuity-20260702T045759Z/open_duck_colab_cli_phase2-z002-teacher-continuity_20260702T045830Z_artifacts.tar.gz",
+    "sha256": "bad2b950a4f48d0235b0f55d566f4aebbc23b555646dba2ba6f22d46c9768033"
+  },
+  "candidate_name": "phase2_z0026_teacher_continuity_a100_4env20480_heartbeat_probe",
+  "generated_at": "2026-07-02T05:15:00Z",
+  "heartbeat_result": "PASS_A100_HEARTBEAT_ARTIFACT_RECOVERY",
+  "no_robot_actions": true,
+  "onnx": {
+    "remote_path": "/content/open_duck_training_phase2_z002_teacher_continuity_cli/smoke_20260702T045858Z_gpu/2026_07_02_050621_20480.onnx",
+    "sha256": "2ca86dd002614716a7d8c7061fa6d371dab0f9a4879433156e4e3736652fb5a5",
+    "size_bytes": 883946,
+    "step": 20480
+  },
+  "promotion_decision": {
+    "duration_complete_count": 2,
+    "failure_reasons": [
+      "command 0.08: HOLD_CANDIDATE_TRACKING"
+    ],
+    "max_action_saturation_pct": 0.0,
+    "max_pitch_sent_target_velocity_p95_rad_s": 1.5470132231712341,
+    "max_pitch_tracking_p95_rad": 0.21937983036041248,
+    "pass_count": 1,
+    "positive_command_tracking_ratio_mean": 0.3039445642498322,
+    "promote": false,
+    "required_command_count": 2,
+    "status": "HOLD_PARTIAL_CANDIDATE_CHECKPOINT"
+  },
+  "remote": {
+    "execution_mode": "foreground-remote",
+    "remote_artifact_interval_s": 120,
+    "session": "open-duck-a100-heartbeat",
+    "workflow": "phase2-z002-teacher-continuity"
+  },
+  "result": "HOLD_PARTIAL_CANDIDATE_CHECKPOINT",
+  "sweep": {
+    "bridge_mode": "fitted",
+    "commands": [
+      {
+        "command_x": 0.0,
+        "max_pitch_sent_target_velocity_p95_rad_s": 1.0858,
+        "max_pitch_tracking_p95_rad": 0.1935,
+        "mean_local_vx_m_s": 0.0062,
+        "samples": 50,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "termination": "duration_complete",
+        "track_ratio": null
+      },
+      {
+        "command_x": 0.08,
+        "max_pitch_sent_target_velocity_p95_rad_s": 1.547,
+        "max_pitch_tracking_p95_rad": 0.2194,
+        "mean_local_vx_m_s": 0.0243,
+        "samples": 50,
+        "status": "HOLD_CANDIDATE_TRACKING",
+        "termination": "duration_complete",
+        "track_ratio": 0.3039
+      }
+    ],
+    "duration_s": 1.0,
+    "velocity_envelope_rad_s": [
+      2.0,
+      3.25
+    ]
+  },
+  "training": {
+    "episode_length": 128,
+    "num_envs": 4,
+    "num_timesteps": 20480,
+    "status": "PASS_SMOKE_RUN"
+  }
+}

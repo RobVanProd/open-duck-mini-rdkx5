@@ -1,0 +1,143 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "deployment_authorized": false,
+    "formal_cpu_gate_authorized": true,
+    "gate5_authorized": false,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "result_authorizes": "one separately preregistered response-conditioned locomotion CPU contract only if the entire gate passes",
+    "robot_clearance": false,
+    "training_authorized_now": false
+  },
+  "decision": "AUTHORIZE_ONE_FROZEN_UNIVERSAL_TARGET_RESPONSE_OBSERVER_GATE_ONLY",
+  "execution_now": {
+    "formal_support_cells": 0,
+    "heldout_repeat_cells": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0,
+    "snapshot_or_onnx_writes": 0
+  },
+  "frozen_target": {
+    "application": "full 14-D replacement before the unchanged graph-authoritative absolute/rate boundary at every tick",
+    "candidate_index": 536,
+    "expanded_raw_action": [
+      0.0,
+      0.0,
+      -0.5,
+      0.25,
+      0.25,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.5,
+      0.25,
+      0.25
+    ],
+    "expanded_raw_action_sha256": "b4b91073dd01f8f554023a5ac06b4aa358398aafe2dfddb885cacbef25dfce29",
+    "mirrored_coordinates": [
+      0.5,
+      0.25,
+      0.25
+    ],
+    "v90_result_sha256": "4c97d2ac41ca5d6000359217d25c8e8d17702fb4f329f70015bd5b1b1128f775"
+  },
+  "gate": {
+    "actuator_plants": 2,
+    "checkpoint_or_candidate_selection_from_new_result": false,
+    "core_model_configurations": 56,
+    "duration_ticks": 250,
+    "flat_transport_feature_enabled": false,
+    "formal_support_cells": 124,
+    "heldout_repeat_cells": 32,
+    "pass_rule": "all 124 support cells pass; all 32 heldout repeats are bit-exact; all 16 heldout configurations separate the two actuator plants in final recurrent state above 1e-7; the learned response predictor strictly beats the constant comparator per plant; every requested action equals the bounded universal-target chain; previous_action is exact; and JAX/ONNX hidden error is at most 1e-7",
+    "sensor_prng_checkpoint_index": 1,
+    "sensor_transport_conditions": 6,
+    "thresholds": "unchanged reviewed Winner-v12 physical support thresholds"
+  },
+  "schema_version": "winner_v92.universal_target_response_observer_preregistration.v1",
+  "source_manifest_sha256": "c57d21544c090ec3809cd4b909f35daa0f771ccd51d05e0eb9feeaee9e0b134e",
+  "source_observer": {
+    "heldout_advantage_over_constant": {
+      "P30_ALL_JOINT": 0.07711534052470709,
+      "P31_34_PITCH_WITH_P30_NONPITCH": 0.07715283826026931
+    },
+    "heldout_prediction": {
+      "P30_ALL_JOINT": {
+        "constant_normalized_prediction_mse": 0.21643945126833525,
+        "learned_normalized_prediction_mse": 0.13932411074362816,
+        "learned_strictly_below_constant": true
+      },
+      "P31_34_PITCH_WITH_P30_NONPITCH": {
+        "constant_normalized_prediction_mse": 0.21805959964424632,
+        "learned_normalized_prediction_mse": 0.140906761383977,
+        "learned_strictly_below_constant": true
+      }
+    },
+    "label": "final",
+    "onnx_sha256": "cb3380ed99b3e9d7e9000904a210227aa397db2a064aa80d8f70e77c8339783b",
+    "selection_rule": "preselected from saved Winner-v22 evidence because both endpoints pass predictor/context/repeatability, while final has the larger heldout predictor advantage on both actuator plants",
+    "snapshot_sha256": "ddc8c4b905bb9acac2d7d48c3e9c1f0c0ca0173a1ba21f375740b051bc48c806",
+    "update": 100
+  },
+  "sources": {
+    "base_gate": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_support_gate.py",
+      "sha256": "18873eee55c77a278fc065de64c0b912803bf29b4440cde7f3adaabe1297baca"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v92_universal_target_response_observer_preregistration.py",
+      "sha256": "39d4d00fef3fd2496eee39e53d0088721a81fa20ca4df2a362550d154b0d8b88"
+    },
+    "intervention": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v48_static_teacher_causal_diagnostic.py",
+      "sha256": "892db8ce547e8a2ee74b9f2352201c8b6334a201fd8cbfdc38f849d65fbc00ac"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v92_universal_target_response_observer.py",
+      "sha256": "ff482915172c100bb879ced71d1c45b9e830013736e52a9905efa147375720c1"
+    },
+    "target_expansion": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v43_static_target_teacher.py",
+      "sha256": "214df40f1b2033d190c4f601280679f7105267ddb8dbcd7a2fb0f6c3929242a3"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v92_universal_target_response_observer.py",
+      "sha256": "c3e24b59b7dd8fcc2acc3d0c9bfab9559c709e40c38d55370012ae67b5960e00"
+    },
+    "v22_coordinate_adapter": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v22_normalized_support_gate.py",
+      "sha256": "2c13cdb767d222bed510c7d2f650b98566a107daa8f027373e001c5496e51f8a"
+    },
+    "v22_gate": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v22_normalized_predictor_support_gate.py",
+      "sha256": "0a217b355f43b304187f02bc3025feb3d4aa26fb7b9fae7d0c395667ce501cd3"
+    },
+    "v22_support_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v22_normalized_predictor_support_gate_result.json",
+      "sha256": "c5741850e832fa7bcc091bdffc58c2c9595cf4e0102631012bafeeb21427ee45"
+    },
+    "v22_training_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v22_normalized_predictor_training_result.json",
+      "sha256": "10bae5bb32f32cc90e222eb1d6644d97e2a0253baa6ad1a37fe06fde48cf11c1"
+    },
+    "v91_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v91_universal_target_full_gate_result.json",
+      "sha256": "695e8c3a217f7aab7123e491985ff48cf960a8f32f87bec20ba5bd13949d6e15"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V92_UNIVERSAL_TARGET_RESPONSE_OBSERVER"
+}

@@ -1,0 +1,91 @@
+{
+  "status": "HOLD_FULL8_MLP_ROUTER_LIVE_CORRECTION_REGRESSES_SEED7",
+  "no_robot_tests": true,
+  "no_ssh": true,
+  "no_deploy": true,
+  "no_grounded_replay": true,
+  "runtime_behavior_changed": false,
+  "gate_npz": "outputs/analysis/phase2_full8_mlp_router_gate_live_corrected_iter2/gate_mlp.npz",
+  "gate_npz_sha256": "3e7d6797065d690acfa0217ffd8cce7dc2847aa8a5ba6aba2dc6fa9b6ea88615",
+  "candidate": "outputs/analysis/phase2_full8_mlp_router_live_corrected_iter2_candidate/candidate.onnx",
+  "candidate_sha256": "7192c7b193100ac60ad6a44d9167aa1337d24cde17a0e50a8a0662f78eaba6d9",
+  "onnx_verify": "outputs/analysis/phase2_full8_mlp_router_live_corrected_iter2_candidate/onnx_verify.json",
+  "onnx_verify_sha256": "95ad864bf5e2c747a8dc4cc392616e42c9518d896be4986d5195380d689343ec",
+  "separability": {
+    "status": "PASS_MLP_ROUTER_SEPARABLE",
+    "test_balanced_accuracy_pct": 88.43,
+    "test_positive_selected_pct": 80.0,
+    "test_negative_false_selected_pct": 3.14
+  },
+  "corrections": [
+    {
+      "branch": "A",
+      "trace": "outputs/analysis/phase2_full8_mlp_router_candidate_seed0_trace/full8_mlp_router/seed_000/trace.jsonl",
+      "first_ticks": 80,
+      "weight": 50.0
+    },
+    {
+      "branch": "A",
+      "trace": "outputs/analysis/phase2_full8_mlp_router_seed0_seed5_startup_cost_wide_tneg2_candidate_seed0_trace/full8_mlp_router_seed0_seed5_startup_cost_wide_tneg2/seed_000/trace.jsonl",
+      "first_ticks": 80,
+      "weight": 50.0
+    },
+    {
+      "branch": "B",
+      "trace": "outputs/analysis/phase2_full8_mlp_router_seed0_startup_cost_candidate_seed5_trace/full8_mlp_router_seed0_startup_cost/seed_005/trace.jsonl",
+      "first_ticks": 80,
+      "weight": 50.0
+    }
+  ],
+  "closed_loop_screen": {
+    "policy_label": "full8_mlp_router_live_corrected_iter2",
+    "command_x": 0.08,
+    "task": "rough_terrain_backlash",
+    "bridge_mode": "fitted",
+    "terrain_hfield_z_scale": 0.0075,
+    "reset_mode": "home-support",
+    "eval_push_enable": true,
+    "seeds": [
+      {
+        "seed": 0,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "samples": 750,
+        "mean_local_vx_m_s": 0.025193705569933323,
+        "track_ratio": 0.31492131962416653,
+        "body_pitch_p95_rad": 0.19412516791975887,
+        "base_height_min_m": 0.1587517261505127,
+        "max_pitch_vel_limit_excess_rad_s": 0.0,
+        "max_pitch_vel_max_limit_excess_rad_s": 0.0
+      },
+      {
+        "seed": 5,
+        "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "samples": 169,
+        "mean_local_vx_m_s": 0.12568548391194265,
+        "track_ratio": 1.571068548899283,
+        "body_pitch_p95_rad": 0.7670237195357824,
+        "base_height_min_m": 0.009979510679841042,
+        "max_pitch_vel_limit_excess_rad_s": 0.0,
+        "max_pitch_vel_max_limit_excess_rad_s": 0.0
+      },
+      {
+        "seed": 7,
+        "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "samples": 605,
+        "mean_local_vx_m_s": 0.054902178335652016,
+        "track_ratio": 0.6862772291956502,
+        "body_pitch_p95_rad": 0.24759783730642249,
+        "base_height_min_m": 0.010591228492558002,
+        "max_pitch_vel_limit_excess_rad_s": 0.0,
+        "max_pitch_vel_max_limit_excess_rad_s": 0.0
+      }
+    ],
+    "passes": 1,
+    "runs": 3,
+    "falls": 2,
+    "p95_velocity_excess_rad_s": 0.0,
+    "max_velocity_excess_rad_s": 0.0
+  },
+  "decision": "Live-correcting the stateless MLP router with another failed rollout recovers seed 0 but still fails seed 5 and regresses seed 7. Close this stateless router sub-branch.",
+  "recommended_next": "Move to a stateful/prefix-conditioned router or closed-loop mixture objective graded on rollout outcomes before any domain-randomization promotion."
+}

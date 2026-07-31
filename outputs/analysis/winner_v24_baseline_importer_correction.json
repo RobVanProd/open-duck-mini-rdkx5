@@ -1,0 +1,57 @@
+{
+  "authority": {
+    "artifact_or_result_rewritten": false,
+    "new_workflow_run_authorized": false,
+    "optimizer_or_training_authorized": false,
+    "pass_authorizes_only": "strict import of the unchanged first-attempt artifact with the corrected trainable-leaf inventory",
+    "robot_or_rdk_access": false
+  },
+  "correction": {
+    "actual_runner_gradient_keys": [
+      "action_bias",
+      "action_weight",
+      "auxiliary_action_weight",
+      "auxiliary_bias",
+      "auxiliary_hidden_weight",
+      "hidden_bias",
+      "hidden_weight",
+      "obs_weight",
+      "previous_action_weight",
+      "training_only_log_std",
+      "training_only_value_bias",
+      "training_only_value_weight"
+    ],
+    "all_other_import_validation_unchanged": true,
+    "frozen_importer_expected_keys": [
+      "action_bias",
+      "action_weight",
+      "hidden_bias",
+      "hidden_weight",
+      "obs_weight",
+      "prev_action_weight"
+    ],
+    "one_variable": "replace only the importer's gradient-key inventory with the exact 12 leaves emitted by the frozen runner",
+    "rejected_before_result_write": true
+  },
+  "failed_checks": [],
+  "first_attempt_artifact": {
+    "artifact_id": 8514571607,
+    "artifact_name": "winner-v24-baseline-anchored-cpu-contract-29880437377",
+    "artifact_zip_bytes": 3555,
+    "artifact_zip_sha256": "54d0079bb4d9706692919a037897ca78b632063d419d445e0c17689d858a732b",
+    "github_run_attempt": 1,
+    "github_run_head_sha": "54eb856170550ea9b37d58da6f4cfb483f6ddbcc",
+    "github_run_id": 29880437377,
+    "raw_decision": "AUTHORIZE_SEPARATE_ONE_UPDATE_BASELINE_ANCHORED_CPU_PROOF_PREREGISTRATION_ONLY",
+    "raw_failed_checks": [],
+    "raw_status": "PASS_WINNER_V24_BASELINE_ANCHORED_CPU_CONTRACT"
+  },
+  "reason": "the original importer copied an obsolete six-leaf name set; the frozen runner emitted the exact twelve-leaf Winner-v21 joint trainable tree, so strict validation stopped at schema inventory before classifying the otherwise unchanged result",
+  "schema_version": "winner_v24.baseline_importer_correction.v1",
+  "sources": {
+    "contract_lf_sha256": "2169db8c98ba1b9719dedb5164b803a8b2d236b2b6b8a28f73c78eba9808422c",
+    "frozen_importer_lf_sha256": "3a96bc18d1d1e7834da934166a7883e84a22c6a99664be3c86a03841ede18cb0",
+    "runner_lf_sha256": "45747c5090c04b1c2fa1183a80dc81bc095376d7e1317e2b57159ad9d5cc4976"
+  },
+  "status": "FROZEN_WINNER_V24_BASELINE_IMPORTER_CORRECTION"
+}

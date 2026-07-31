@@ -1,0 +1,65 @@
+{
+  "status": "HOLD_B0C_LK097_PUSH_LOCAL_LEFT_KNEE_MARGIN",
+  "scope": {
+    "robot_tests": false,
+    "ssh": false,
+    "deploy": false,
+    "grounded_replay": false,
+    "runtime_behavior_changes": false,
+    "policy_overwrite": false
+  },
+  "candidate": {
+    "policy": "outputs/analysis/phase2_b0c_245_leftknee_scale097_candidate/candidate.onnx",
+    "policy_sha256": "4985f1bccaa68838d006104fb380c50a2f06d8627ff8990564f178c0b0ad7f87",
+    "corrected_bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+    "corrected_bridge_sha256": "3661543d0745073b561eb4fa2ae8f9616368ee8b72cb397f8b953dada532c8c0",
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.002,
+    "command_x": 0.08,
+    "seed": 4,
+    "duration_s": 5.0,
+    "push_enabled": true,
+    "push_magnitude_min": 0.05,
+    "push_magnitude_max": 0.1,
+    "push_interval_min_s": 1.0,
+    "push_interval_max_s": 1.5
+  },
+  "gate": {
+    "status": "HOLD_CANDIDATE_TRACKING",
+    "track_ratio": 0.42854808297779523,
+    "mean_vx_m_s": 0.0343,
+    "progress_x_m": 0.042271438986063004,
+    "max_pitch_tracking_p95_rad": 0.20130223035812378,
+    "max_pitch_tracking_threshold_rad": 0.2,
+    "max_sent_target_velocity_p95_rad_s": 1.800190806388855,
+    "max_velocity_limit_excess_rad_s": 0.0,
+    "action_saturation_pct": 0.0,
+    "body_pitch_abs_p95_rad": 0.1402361218617521,
+    "base_height_min_m": 0.15061572194099426,
+    "termination": "duration_complete"
+  },
+  "offending_joint": {
+    "joint": "left_knee",
+    "joint_tracking_p95_rad": 0.20130223035812378,
+    "sent_velocity_p95_rad_s": 1.635425090789795,
+    "bridge_tracking_p95_rad": 0.1022,
+    "lag_ticks": 4
+  },
+  "push_correlation": {
+    "push_windows_ticks": [[57, 57], [115, 115], [173, 173], [231, 231]],
+    "left_knee_abs_error_p95_rad": 0.20130223035812375,
+    "left_knee_abs_error_max_rad": 0.22342312335968018,
+    "high_error_tick_count": 13,
+    "high_error_near_push_count": 13,
+    "high_error_not_near_push_count": 0,
+    "high_error_near_push_pct": 100.0,
+    "near_window_ticks": 25
+  },
+  "decision": {
+    "b0f_continue": false,
+    "scalar_gain_sweeps_continue": false,
+    "global_target_rate_clipping_continue": false,
+    "next_step": "Start from the lk097 near-pass line and add a localized push-recovery tracking-margin correction, focused on left-knee recovery, then gate on corrected bridge rough z=0.002 gentle-push 8-seed screen.",
+    "robot_validation_blocked": true
+  }
+}

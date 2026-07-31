@@ -1,0 +1,92 @@
+{
+  "status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+  "manifest": "outputs/analysis/command_conditioned_hard_seed_recovery_manifest.json",
+  "samples": 10250,
+  "hidden_sizes": [
+    512,
+    256,
+    128
+  ],
+  "activation": "swish",
+  "saved_npz": "outputs/analysis/command_conditioned_hard_seed_recovery_candidate/candidate_mlp.npz",
+  "exported_onnx": "outputs/analysis/command_conditioned_hard_seed_recovery_candidate/candidate.onnx",
+  "train_metrics": {
+    "samples": 10250,
+    "mae": 0.007638622061775897,
+    "rmse": 0.012639131625235254,
+    "p50_abs_error": 0.004462132225442037,
+    "p95_abs_error": 0.02477336310378345,
+    "p99_abs_error": 0.05026986465797324,
+    "max_abs_error": 0.20987995234169196,
+    "pred_action_saturation_pct": 0.0
+  },
+  "target_rate": {
+    "pair_count": 10231,
+    "p50_rad_s": 0.2293028002235819,
+    "p95_rad_s": 1.7360605844068688,
+    "p99_rad_s": 2.1978108490866792,
+    "max_rad_s": 2.759758421682056
+  },
+  "loss_rows": [
+    {
+      "step": 1,
+      "loss": 0.16643385589122772
+    },
+    {
+      "step": 500,
+      "loss": 0.00040526865632273257
+    },
+    {
+      "step": 1000,
+      "loss": 0.00030807164148427546
+    },
+    {
+      "step": 1500,
+      "loss": 0.0002645985223352909
+    },
+    {
+      "step": 2000,
+      "loss": 0.00023484342091251165
+    },
+    {
+      "step": 2500,
+      "loss": 0.00021303805988281965
+    },
+    {
+      "step": 3000,
+      "loss": 0.00017058459343388677
+    },
+    {
+      "step": 3500,
+      "loss": 0.0001702302397461608
+    },
+    {
+      "step": 4000,
+      "loss": 0.00017257356375921518
+    },
+    {
+      "step": 4500,
+      "loss": 0.00016003444034140557
+    },
+    {
+      "step": 5000,
+      "loss": 0.0001652552600717172
+    }
+  ],
+  "onnx_verify": {
+    "path": "outputs/analysis/command_conditioned_hard_seed_recovery_candidate/candidate.onnx",
+    "samples_checked": 64,
+    "max_abs_error": 3.285434362343409e-07,
+    "p95_abs_error": 1.6316213816841563e-07
+  },
+  "config": {
+    "steps": 5000,
+    "batch_size": 512,
+    "learning_rate": 0.001,
+    "target_rate_scale": 0.2,
+    "target_rate_limit_rad_s": 2.25,
+    "action_scale_rad": 0.25,
+    "dt_s": 0.02,
+    "seed": 3
+  }
+}

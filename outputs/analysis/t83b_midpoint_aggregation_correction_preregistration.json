@@ -1,0 +1,79 @@
+{
+  "authority": {
+    "candidate_promotion": false,
+    "colab": false,
+    "execute_one_read_only_correction": true,
+    "gate5": false,
+    "persistent_mechanism_preregistration": false,
+    "rdkx5_or_robot": false,
+    "training": false
+  },
+  "checks": {
+    "behavior_training_colab_robot_and_gate5_zero": true,
+    "both_underlying_fit_blocks_green": true,
+    "corrector_and_test_present": true,
+    "every_underlying_cell_green": true,
+    "hardcoded_shared_cardinality_identified": true,
+    "t83_preregistration_was_green": true,
+    "t83_raw_reporting_hold_exact": true
+  },
+  "classification": "REPORTING_CARDINALITY_DEFECT_NOT_BEHAVIOR_FAILURE",
+  "decision_rule": {
+    "candidate_promotion": false,
+    "fail_decision": "HOLD_T83_WITHOUT_BEHAVIOR_INTERPRETATION",
+    "pass": "Every source/manifest/trace receipt is exact; two fit blocks and eight cells are present; every block and cell is green.",
+    "pass_decision": "EARN_T84_PERSISTENT_INTERPOLATION_MECHANISM_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "correction_formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_trace_rows_generated": 0,
+    "source_formal_behavior_cells": 8
+  },
+  "failed_checks": [],
+  "frozen_correction": {
+    "cell_fields_changed": 0,
+    "condition_green": "two blocks, eight cells, every block and cell green",
+    "expected_blocks": 2,
+    "expected_cells": 8,
+    "expected_fits": [
+      "p30",
+      "p31_34"
+    ],
+    "manifest_or_trace_fields_changed": 0,
+    "simulator_rerun": false
+  },
+  "preregistered_contract_sha256": "f6844b36d7d14e5dc7419ed9e0622dfa37da4a60c7c4424efff6ee921a47c3d2",
+  "question": "Does a read-only cardinality-aware aggregation of T83's two hashed fit blocks classify the already executed eight cells without changing any cell or rerunning simulation?",
+  "schema_version": "open_duck.t83b_midpoint_aggregation_correction_preregistration.v1",
+  "source_receipts": {
+    "corrector": {
+      "bytes": 7282,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t83b_midpoint_aggregation_correction.py",
+      "sha256": "9dbc9385ed31983af1e06320a74429316d799c45b5d86f1fd77e4e9a0cd9f4fc"
+    },
+    "shared_runner": {
+      "bytes": 21782,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t27_t23_robustness_matrix.py",
+      "sha256": "142668ac3dbe27f65ccb1d113c90d854b9ff76201a70120fa1bec722038b8ea3"
+    },
+    "t83_preregistration": {
+      "bytes": 11321,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t83_t78_midpoint_full_preregistration.json",
+      "sha256": "7797451a7d814ff524126a6eba3d24c776be806a86a6a5b8c3bcb5d5061f62fd"
+    },
+    "t83_raw_result": {
+      "bytes": 62677,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t83_t78_midpoint_full_result.json",
+      "sha256": "b8203029f5311395039c5463a63870101eb7dfe14797873711783a62440602de"
+    },
+    "test": {
+      "bytes": 1805,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t83b_midpoint_aggregation_correction.py",
+      "sha256": "8a555ee5ed66c77c9970679b68ac05c00d1fcefe5042a62123b7e2605e95c5f6"
+    }
+  },
+  "status": "PREREGISTERED_T83B_REPORTING_ONLY_AGGREGATION_CORRECTION"
+}

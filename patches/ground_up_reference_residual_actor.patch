@@ -1,0 +1,46 @@
+diff --git a/playground/common/runner.py b/playground/common/runner.py
+--- a/playground/common/runner.py
++++ b/playground/common/runner.py
+@@ -95,6 +95,18 @@ class BaseRunner(ABC):
+                 self.args.recurrent_hidden_size,
+                 onnx_export_path,
+             )
++        elif self.args.policy_architecture == "reference_residual":
++            from playground.common.reference_residual_ppo_networks import (
++                export_reference_residual_onnx,
++            )
++
++            export_reference_residual_onnx(
++                params,
++                self.action_size,
++                self.obs_size,
++                onnx_export_path,
++                self.ppo_params.network_factory.policy_hidden_layer_sizes,
++            )
+         else:
+             export_onnx(
+                 params,
+@@ -150,6 +162,12 @@ class BaseRunner(ABC):
+                     make_recurrent_ppo_networks,
+                     recurrent_hidden_size=self.args.recurrent_hidden_size,
+                 )
++            elif self.args.policy_architecture == "reference_residual":
++                from playground.common.reference_residual_ppo_networks import (
++                    make_reference_residual_ppo_networks,
++                )
++
++                network_builder = make_reference_residual_ppo_networks
+             else:
+                 network_builder = ppo_networks.make_ppo_networks
+             network_factory = functools.partial(
+diff --git a/playground/open_duck_mini_v2/runner.py b/playground/open_duck_mini_v2/runner.py
+--- a/playground/open_duck_mini_v2/runner.py
++++ b/playground/open_duck_mini_v2/runner.py
+@@ -79,6 +79,6 @@ def main() -> None:
+     parser.add_argument(
+         "--policy_architecture",
+-        choices=["mlp", "phase_moe", "recurrent"],
++        choices=["mlp", "phase_moe", "recurrent", "reference_residual"],
+         default="mlp",
+     )
+     parser.add_argument("--recurrent_hidden_size", type=int, default=64)

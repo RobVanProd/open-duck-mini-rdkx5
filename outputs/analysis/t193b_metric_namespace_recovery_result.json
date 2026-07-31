@@ -1,0 +1,91 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "deployment_audit": false,
+    "gate5": false,
+    "hosted_preregistration": true,
+    "hosted_training": false,
+    "policy_promotion": false,
+    "rdkx5_or_robot": false
+  },
+  "checks": {
+    "all_other_t193_checks_true": true,
+    "incorrect_metric_namespaces_absent": true,
+    "no_new_simulator_optimizer_inference_behavior_hosted_or_robot": true,
+    "original_reward_finite_positive_both_evaluations": true,
+    "reference_metrics_finite_positive_both_evaluations": true,
+    "source_only_metric_readback_held": true,
+    "source_result_hash_exact": true,
+    "support_metrics_finite_positive_both_evaluations": true
+  },
+  "classification": "T193_CPU_HOLD_WAS_REPORTING_NAMESPACE_ONLY",
+  "decision": "EARN_T194_CORRECTED_DYNAMIC_REFERENCE_SUPPORT_HOSTED_PREREGISTRATION_ONLY",
+  "execution_now": {
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "model_inference_rows": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "saved_event_files": 1,
+    "simulator_transitions": 0
+  },
+  "failed_checks": [],
+  "observed": {
+    "event_scalar_row_count": 96,
+    "event_scalar_tag_count": 55,
+    "original_reward_values": [
+      30.439044952392578,
+      30.47276496887207
+    ],
+    "reference_metric_values": {
+      "eval/episode_t193/reference_left_requested": [
+        24.0,
+        23.9375
+      ],
+      "eval/episode_t193/reference_right_requested": [
+        16.0,
+        16.0
+      ],
+      "eval/episode_t193/reference_single_support_requested": [
+        40.0,
+        39.9375
+      ]
+    },
+    "support_metric_values": {
+      "eval/episode_reward/t193_left_support_match": [
+        7.4140625,
+        8.1796875
+      ],
+      "eval/episode_reward/t193_reference_support_balance": [
+        3.9810352325439453,
+        4.43467903137207
+      ],
+      "eval/episode_reward/t193_right_support_match": [
+        4.203125,
+        4.4921875
+      ]
+    }
+  },
+  "preregistered_contract_sha256": "9301db262e4edf10d9896b05c38afffc54d57f15f80cb5ccd4c05386e0f4d60f",
+  "preserved_t193_checks": {
+    "both_checkpoint_trees_finite": true,
+    "cpu_only": true,
+    "default_off_observation_abi_and_finiteness_exact": true,
+    "default_off_trajectory_bit_exact": true,
+    "enabled_environment_contract_green": true,
+    "every_critic_leaf_changes": true,
+    "graph_abi_and_cpu_chain_exact": true,
+    "no_formal_behavior_hosted_or_hardware": true,
+    "normalizer_bit_exact": true,
+    "only_t170_negative_adapter_head_changes": true,
+    "runner_readback_exact": true,
+    "source_cpu_remap_exact": true,
+    "step_zero_raw_onnx_byte_exact": true,
+    "step_zero_tree_exact": true,
+    "update_structure_exact": true
+  },
+  "result_sha256": "e09b93acc5ff0b179318dccbf1221f67ce2412c628625388f197848661e3a857",
+  "schema_version": "open_duck.t193b_metric_namespace_recovery_result.v1",
+  "source_result_sha256": "5ff3fc91d98999e77c059290b41d06acbcafda2db1cc34f88c7e990eab78bcb5",
+  "status": "PASS_T193B_METRIC_NAMESPACE_RECOVERY"
+}

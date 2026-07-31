@@ -1,0 +1,113 @@
+{
+  "authority": {
+    "authorizes_only": "offline source audit and a separately reviewed CPU-only training-repair contract",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "authority_evidence": {
+    "BASELINE": {
+      "activation_mean": 0.0,
+      "maximum_abs_action_delta_from_source": 0.0,
+      "maximum_target_offset_rad": 0.0,
+      "mean_squared_action_delta_from_source": 0.0
+    },
+    "CONSTANT_003": {
+      "activation_mean": 1.0,
+      "maximum_abs_action_delta_from_source": 0.12000000476837158,
+      "maximum_target_offset_rad": 0.03,
+      "mean_squared_action_delta_from_source": 0.0019315926814063762
+    },
+    "CONSTANT_006": {
+      "activation_mean": 1.0,
+      "maximum_abs_action_delta_from_source": 0.23999905586242676,
+      "maximum_target_offset_rad": 0.06,
+      "mean_squared_action_delta_from_source": 0.0026889433211181313
+    },
+    "CONSTANT_009": {
+      "activation_mean": 1.0,
+      "maximum_abs_action_delta_from_source": 0.23999905586242676,
+      "maximum_target_offset_rad": 0.09,
+      "mean_squared_action_delta_from_source": 0.0026889433211181313
+    },
+    "TILT_RATE_003": {
+      "activation_mean": 0.31290942492584384,
+      "maximum_abs_action_delta_from_source": 0.10922244936227798,
+      "maximum_target_offset_rad": 0.03,
+      "mean_squared_action_delta_from_source": 0.0002750343292063917
+    },
+    "TILT_RATE_006": {
+      "activation_mean": 0.29216597601771355,
+      "maximum_abs_action_delta_from_source": 0.21827220916748047,
+      "maximum_target_offset_rad": 0.06,
+      "mean_squared_action_delta_from_source": 0.0009613207597188497
+    },
+    "TILT_RATE_009": {
+      "activation_mean": 0.28815250284969807,
+      "maximum_abs_action_delta_from_source": 0.23999905586242676,
+      "maximum_target_offset_rad": 0.09,
+      "mean_squared_action_delta_from_source": 0.0018326520003029145
+    }
+  },
+  "causal_interpretation": "Insufficient post-policy correction authority is falsified. Doubling the constant ankle correction worsens both checkpoints from 8/6 failures to 12/12, while doubling and tripling the state-dependent ceiling plateaus at 10/8 failures despite monotonically larger action deviation. Together with Winner-v16 through Winner-v18, this closes constant, combined, and deployable IMU-conditioned action wrappers. The missing recovery must be learned within the policy under the failed support contexts rather than appended after policy inference.",
+  "closed_mechanisms": [
+    "single bilateral fixed-axis direction",
+    "all nonempty sign-consistent fixed-axis subsets",
+    "one-sided deployable IMU ankle feedback at 0.03 rad",
+    "one-sided deployable IMU ankle feedback at 0.03/0.06/0.09 rad"
+  ],
+  "decision": "CLOSE_POST_POLICY_ACTION_WRAPPERS_PREREGISTER_TRAINING_SIDE_CAUSAL_REPAIR",
+  "execution": {
+    "new_diagnostic_cells": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failure_counts_half_final": {
+    "BASELINE": [
+      12,
+      12
+    ],
+    "CONSTANT_003": [
+      8,
+      6
+    ],
+    "CONSTANT_006": [
+      12,
+      12
+    ],
+    "CONSTANT_009": [
+      12,
+      12
+    ],
+    "TILT_RATE_003": [
+      10,
+      10
+    ],
+    "TILT_RATE_006": [
+      10,
+      8
+    ],
+    "TILT_RATE_009": [
+      10,
+      8
+    ]
+  },
+  "next_work": {
+    "diagnostic_cells_authorized_now": 0,
+    "mechanism_class": "training_side_state_dependent_support_recovery",
+    "optimizer_updates_authorized_now": 0,
+    "prohibited": [
+      "another post-policy target or action wrapper",
+      "post-result scalar tuning",
+      "checkpoint selection by closest failure"
+    ],
+    "required_first_step": "a separately reviewed CPU contract and preregistration derived from the frozen Winner-v15 source and the failed support-cell traces"
+  },
+  "schema_version": "winner_v19.imu_ankle_feedback_magnitude_hold_attribution.v1",
+  "source": {
+    "artifact_zip_sha256": "8634e251e4b73d13ff4fc8e01e87eac7cf905fafc1b918fa0f668b5492b76cd2",
+    "github_artifact_id": 8503113171,
+    "github_run_id": 29850348125,
+    "raw_result_sha256": "d247e4b2ab788b17a9288bb6926115dd9f9854c322edaf8b096747b489bd7d71"
+  },
+  "status": "PASS_WINNER_V19_IMU_ANKLE_FEEDBACK_MAGNITUDE_HOLD_ATTRIBUTION"
+}

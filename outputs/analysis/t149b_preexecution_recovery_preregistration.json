@@ -1,0 +1,145 @@
+{
+  "authority": {
+    "colab": false,
+    "execute_transform_contract": true,
+    "gate5": false,
+    "negative_endpoint_preregistration": false,
+    "policy_promotion": false,
+    "rdkx5_or_robot": false,
+    "training": false
+  },
+  "checks": {
+    "all_recovery_sources_present": true,
+    "mechanism_thresholds_and_decision_unchanged": true,
+    "no_environment_training_colab_or_robot": true,
+    "recovery_runner_uses_labeled_verification": true,
+    "source_contract_green": true,
+    "source_defect_exact": true,
+    "source_stopped_before_work_or_result": true
+  },
+  "decision_rule": {
+    "fail_decision": "CLOSE_NEGATIVE_CONTEXT_COMMAND_PLATEAU",
+    "no_further_preexecution_recovery": true,
+    "pass": "Both transformed graphs retain exact ABI and old graph content except the two raw-observation consumers; nominal all-command, negative x=0/x=.074, and negative-upper counterfactual outputs are bit-exact over random samples and 256-step stateful chains.",
+    "pass_decision": "EARN_T150_NEGATIVE_COMMAND_PLATEAU_ENDPOINT_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "behavior_cells": 0,
+    "environment_steps": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 8284,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t149_negative_context_command_plateau_preregistration.py",
+      "sha256": "5b9a0173aed4d60948f578497ebea33339d206fd6b64c2358173fcd8ddafe17d"
+    },
+    "recovery_builder": {
+      "bytes": 4856,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t149b_preexecution_recovery_preregistration.py",
+      "sha256": "8231db08ef934e5734e49bd7d14126752d87b8631bb7990f8f67c8a72af689f8"
+    },
+    "recovery_runner": {
+      "bytes": 6971,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t149b_preexecution_recovery.py",
+      "sha256": "7b9e3ee08dad698edbf72053cd4eaf66c2ab45f392b0027ebffee7200d4292c2"
+    },
+    "recovery_test": {
+      "bytes": 968,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t149b_preexecution_recovery.py",
+      "sha256": "451112d9e6c2d0ddc3ca2a453be118a546e54d7c29da3346b5e7e14686ca2d3b"
+    },
+    "reference_feature_table": {
+      "bytes": 259604,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+      "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+    },
+    "runner": {
+      "bytes": 23528,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t149_negative_context_command_plateau_transform.py",
+      "sha256": "bc61dc83476d1c3a098c36cfd358b0c7409f497a16d98d56ee2af25f9c7542f8"
+    },
+    "source_graph_1003520": {
+      "bytes": 975291,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t143c_conditional_forward_path_v1\\1003520\\conditional_forward_path.onnx",
+      "sha256": "82ab93eb97db602561b3525bb3551f4e94b87808320b8c944f6e0a9c8a4b6869"
+    },
+    "source_graph_2007040": {
+      "bytes": 975291,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t143c_conditional_forward_path_v1\\2007040\\conditional_forward_path.onnx",
+      "sha256": "a43dbac7b4995a71f53cc3ee0145ad6e2698f624c4c02749c664a7a09c2be528"
+    },
+    "source_preregistration": {
+      "bytes": 5882,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t149_negative_context_command_plateau_preregistration.json",
+      "sha256": "0a4c5cc96ff1412c871eb8b99445504f7f912e2931ab19312018cde29b9e4f42"
+    },
+    "source_runner": {
+      "bytes": 23528,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t149_negative_context_command_plateau_transform.py",
+      "sha256": "bc61dc83476d1c3a098c36cfd358b0c7409f497a16d98d56ee2af25f9c7542f8"
+    },
+    "t135b_contexts": {
+      "bytes": 14765,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t135b_interrupted_calibration_context_router_recovery_result.json",
+      "sha256": "b01f711e751490fab17d327eebf770473636285dfbc97102478dc5328dfcd540"
+    },
+    "t143c_result": {
+      "bytes": 8412,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t143c_runner_receipt_recovery_result.json",
+      "sha256": "7a40d747ae4b700b21eb2545bc9f9992a7967539afc7b4fd83b8f45efb8b3504"
+    },
+    "t145c_result": {
+      "bytes": 121199,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t145c_cache_contract_recovery_result.json",
+      "sha256": "751220a22c8a92ce103af3f6cae5e9ad8ab07574867eeabf1db263a1a8a5f93d"
+    },
+    "t146c_result": {
+      "bytes": 10431,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t146c_test_receipt_recovery_result.json",
+      "sha256": "f16e0ab0df39c46e19a7f0ba8584580a317059b1cebb420f6964c84b5ba28f26"
+    },
+    "t148b_closure": {
+      "bytes": 16047,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t148b_command_group_risk_cpu_recovery_result.json",
+      "sha256": "ee83d76ae57ee94ba9a34ed1d233c094366d587e9c9dcdf602dd1de6c9e13dda"
+    },
+    "test": {
+      "bytes": 1128,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t149_negative_context_command_plateau.py",
+      "sha256": "0ab43c7b5e3bb7d460f810b11fcc4770d342203f377cf1c50f2701f44e271bcd"
+    }
+  },
+  "mechanism": {
+    "action_pipeline": "unchanged",
+    "cap_derivation": "only_full_horizon_passing_negative_command",
+    "cap_m_s": 0.074,
+    "external_command": "unchanged",
+    "external_input_abi": "unchanged_115_14_64_plus_context",
+    "negative_context_upper": "internal_command_capped_at_0.074",
+    "negative_context_x0": "bit_exact_source",
+    "negative_context_x074": "bit_exact_source",
+    "new_scalar_search": false,
+    "nominal_context": "bit_exact_source",
+    "reference_features": "unchanged",
+    "runtime_change": false,
+    "training": false
+  },
+  "preregistered_contract_sha256": "e2d49aa062c9da5995b918539f77d54c9d9b6aff76e313dbbdf7ad0b344b17bc",
+  "question": "Can a zero-credit graph-internal plateau preserve the proven negative-COM x=.074 gait at x=.077/.080 while leaving nominal, x=0, x=.074, external command semantics, and the ABI exact?",
+  "recovery_kind": "T149_MISSING_VERIFY_LABEL_PREEXECUTION",
+  "repository_commit": "e08400be95db7790540255c40043754c0af23de8",
+  "schema_version": "open_duck.t149b_preexecution_recovery_preregistration.v1",
+  "source_t149_contract_sha256": "5c16ad88c59efad82f20956d7b1637b9ca6c46a63adca0b4b17450bbc51094c5",
+  "status": "PREREGISTERED_T149B_PREEXECUTION_RECOVERY",
+  "thresholds": {
+    "maximum_equivalence_error": 0.0,
+    "maximum_reference_feature_delta": 0.0,
+    "minimum_shared_trace_rows": 95,
+    "random_equivalence_samples_per_context_command": 32,
+    "stateful_chain_steps_per_context": 256
+  }
+}

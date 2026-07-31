@@ -1,0 +1,62 @@
+{
+  "schema_version": "oracle_com_receding_horizon_result.v1",
+  "status": "PASS_PREREGISTERED_STAGES_A_B_COMPLETE",
+  "decision": "HOLD_LOCAL_AUTHORITY_NOT_COMPOSABLE",
+  "decision_token": "HOLD_LOCAL_AUTHORITY_NOT_COMPOSABLE",
+  "stage_a": {
+    "status": "PASS_ORACLE_COM_FAILURE_LOCALIZATION",
+    "failing_moving_cells": 24,
+    "frozen_states": 298,
+    "design_states": 49,
+    "x_neg_velocity_event_ticks": [0],
+    "x_pos_velocity_event_tick_min": 23,
+    "x_pos_velocity_event_tick_max": 26
+  },
+  "stage_b": {
+    "status": "PASS_SEQUENCE_SCREEN_COMPLETE",
+    "states": 49,
+    "valid_states_by_horizon": {
+      "8": 5,
+      "16": 4,
+      "32": 0
+    },
+    "horizon_pass_all_states": {
+      "8": false,
+      "16": false,
+      "32": false
+    },
+    "states_without_any_valid_horizon": 40,
+    "earliest_no_valid_state_tick": {
+      "X_NEG": 4,
+      "X_POS": 12
+    },
+    "advance_to_stage_c": false
+  },
+  "stage_c": {
+    "status": "NOT_RUN_FROZEN_STAGE_B_HARD_STOP",
+    "formal_cells_run": 0,
+    "formal_traces_generated": 0
+  },
+  "interpretation": "bounded local pulse authority does not compose into a viability funnel under the exact frozen six-joint receding-horizon formulation",
+  "closest_configuration_promoted": false,
+  "training_reward_used": false,
+  "robot_clearance": "NO",
+  "source_hashes": {
+    "plan": "864177b232e333a06146ecd90b9b62b801a1efeea698be864aa10a1d6c0e1143",
+    "contract": "76b680136570ee37fc41c5b6492bfaa320cd9d8e2f7fa85c3a8da4441db2408f",
+    "localization_markdown": "d5a3a286b57760804805de480b45aa044b0205167db4297c49cd7175c041f4af",
+    "localization_json": "00bb3c89670f435b22c1fcd18cadf7dad87c6c2b2a69370006bbb47368cd2e40",
+    "sequence_markdown": "299939b68e359769f07f7c9276a92dc4f574890049aa860f6d57be444b188460",
+    "sequence_json": "a765e253e4f397f4089f09f1cb5f885d436f4d73c4fe3f3c387448345cfa4843",
+    "queue_restore_correction": "9a86c79d6bc39400ab4b5679e1fe2d92ef15c0998801f6941a0c21faf8699e67",
+    "corrected_sequence_tool": "fcaf9fb583f999fe48f363064f3aa5fd38d4b51a5ee52b320d89a36c44b1523e"
+  },
+  "execution": {
+    "cpu_only": true,
+    "training": false,
+    "hosted": false,
+    "gpu_or_igpu": false,
+    "robot_or_rdk": false,
+    "deployment": false
+  }
+}

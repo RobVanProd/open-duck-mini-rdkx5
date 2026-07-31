@@ -1,0 +1,50 @@
+{
+  "authority": {
+    "additional_training": false,
+    "colab": false,
+    "deployment_contract_audit": false,
+    "gate5": false,
+    "rdkx5_or_robot": false,
+    "t180b_corrected_preregistration": true,
+    "torque_or_motion": false
+  },
+  "decision": "PREREGISTER_T180B_WITH_EXACT_CONDITION_ID_BLOCK_BINDING",
+  "execution": {
+    "new_behavior_cells": 0,
+    "onnx_replay_rows_completed": 0,
+    "optimizer_steps": 0,
+    "result_artifacts_created": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failure": {
+    "detected_by": "frozen policy_calibration_context_sha256 equality check",
+    "error": "context SHA differs on the first positive-Z transformed row",
+    "expected_condition_id": "TORSO_COM_Z_POS",
+    "incorrect_condition_id": "FLOOR_FRICTION_LO",
+    "mechanism": "the T180 builder selected T177 blocks by checkpoint_id and fit_id but omitted condition_id"
+  },
+  "recovery_contract": {
+    "all_case_block_lookups_bind_condition_checkpoint_and_fit": true,
+    "all_other_t180_cases_thresholds_and_decisions_unchanged": true,
+    "fresh_preregistration_required": true,
+    "no_reuse_of_invalid_positive_z_trace_receipts": true
+  },
+  "result_sha256": "1e53786cf370ef0a353bdd261af1c353c121cfa18685201715e3658580f369d0",
+  "schema_version": "open_duck.t180_input_mapping_recovery.v1",
+  "source": {
+    "builder": {
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t180_transform_route_attribution_preregistration.py",
+      "sha256": "8e9cea6219aff9ae2f2c824bba6feab244bb0537ef143ebee03641a111617766"
+    },
+    "preregistration": {
+      "internal_contract_sha256": "900683b939d287e47b3db42b5893127991e128442af73d3b9aefd7ed2a19978a",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t180_transform_route_attribution_preregistration.json",
+      "sha256": "b6b2eb9c0414152b67ab9b7c08a7129232a025a9057b58dc7a3a5da4d3e0a7ec"
+    },
+    "runner": {
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t180_transform_route_attribution.py",
+      "sha256": "8a3dd9de8d0c9c6e1f8327ba375d4c1725a8b24df4f2fc6d400205df70104cd1"
+    }
+  },
+  "status": "INVALID_T180_INPUT_MAPPING_NO_RESULT"
+}

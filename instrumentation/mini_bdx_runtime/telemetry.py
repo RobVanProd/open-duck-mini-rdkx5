@@ -153,6 +153,51 @@ def extract_onnx_obs_normalization(onnx_path, input_name="obs", obs_size=101):
     return result
 
 
+def require_onnx_obs_normalization(info, onnx_path="<unknown>"):
+    """Reject missing or malformed policy normalization metadata.
+
+    Telemetry that silently omits normalized observations defeats the purpose of
+    the observation-contract diagnostic.  Keep extraction read-only, but make
+    callers explicitly require a complete result before starting a capture.
+    """
+
+    if info is None:
+        raise RuntimeError(
+            f"ONNX observation normalization unavailable for {onnx_path}: "
+            "extractor returned no result"
+        )
+    error = info.get("error")
+    if error:
+        raise RuntimeError(
+            f"ONNX observation normalization unavailable for {onnx_path}: "
+            f"{error}"
+        )
+    for name in ("mean", "std_recip"):
+        values = info.get(name)
+        if values is None:
+            raise RuntimeError(
+                f"ONNX observation normalization unavailable for {onnx_path}: "
+                f"missing {name}"
+            )
+        array = np.asarray(values, dtype=float)
+        if array.shape != (101,):
+            raise RuntimeError(
+                f"ONNX observation normalization unavailable for {onnx_path}: "
+                f"{name} shape {array.shape}, expected (101,)"
+            )
+        if not np.all(np.isfinite(array)):
+            raise RuntimeError(
+                f"ONNX observation normalization unavailable for {onnx_path}: "
+                f"{name} contains a non-finite value"
+            )
+    if np.any(np.asarray(info["std_recip"], dtype=float) <= 0):
+        raise RuntimeError(
+            f"ONNX observation normalization unavailable for {onnx_path}: "
+            "std_recip must be strictly positive"
+        )
+    return info
+
+
 def normalize_observation(obs, mean, std_recip):
     if obs is None or mean is None or std_recip is None:
         return None

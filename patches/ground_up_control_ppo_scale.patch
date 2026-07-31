@@ -1,0 +1,37 @@
+diff --git a/playground/common/runner.py b/playground/common/runner.py
+index 628f325..90f8707 100644
+--- a/playground/common/runner.py
++++ b/playground/common/runner.py
+@@ -88,4 +88,14 @@ class BaseRunner(ABC):
+             "BerkeleyHumanoidJoystickFlatTerrain"
+         )  # TODO
+         self.ppo_training_params = dict(self.ppo_params)
++        for config_key, arg_name in (
++            ("num_envs", "ppo_num_envs"),
++            ("num_evals", "ppo_num_evals"),
++            ("episode_length", "ppo_episode_length"),
++            ("unroll_length", "ppo_unroll_length"),
++            ("batch_size", "ppo_batch_size"),
++            ("num_minibatches", "ppo_num_minibatches"),
++            ("num_updates_per_batch", "ppo_num_updates_per_batch"),
++        ):
++            self.ppo_training_params[config_key] = getattr(self.args, arg_name)
+         # self.ppo_training_params["num_timesteps"] = 150000000 * 20
+diff --git a/playground/open_duck_mini_v2/runner.py b/playground/open_duck_mini_v2/runner.py
+index d73442c..a72df2d 100644
+--- a/playground/open_duck_mini_v2/runner.py
++++ b/playground/open_duck_mini_v2/runner.py
+@@ -42,6 +42,13 @@ def main() -> None:
+     )
+     # parser.add_argument("--num_timesteps", type=int, default=300000000)
+     parser.add_argument("--num_timesteps", type=int, default=150000000)
++    parser.add_argument("--ppo_num_envs", type=int, default=8192)
++    parser.add_argument("--ppo_num_evals", type=int, default=15)
++    parser.add_argument("--ppo_episode_length", type=int, default=1000)
++    parser.add_argument("--ppo_unroll_length", type=int, default=20)
++    parser.add_argument("--ppo_batch_size", type=int, default=256)
++    parser.add_argument("--ppo_num_minibatches", type=int, default=32)
++    parser.add_argument("--ppo_num_updates_per_batch", type=int, default=4)
+     parser.add_argument("--env", type=str, default="joystick", help="env")
+     parser.add_argument("--task", type=str, default="flat_terrain", help="Task to run")
+     parser.add_argument(

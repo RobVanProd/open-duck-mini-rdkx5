@@ -1,0 +1,31 @@
+{
+  "status": "PASS_OFFLINE_EVAL_SCAFFOLD_READY",
+  "scope": "offline_eval_only",
+  "stateless_default_preserved": true,
+  "stateful_onnx_supported": true,
+  "state_reset_semantics": "zero_init_at_env_reset_and_between_seeds",
+  "new_cli_flags": [
+    "--policy-obs-input-name",
+    "--policy-action-output-name",
+    "--policy-state-input-names",
+    "--policy-state-output-names"
+  ],
+  "trainer": "tools/train_recurrent_bc_student.py",
+  "trainer_contract": "obs[1,101], h_in[1,H] -> continuous_actions[1,14], h_out[1,H]",
+  "smoke_artifacts": [
+    "outputs/analysis/RECURRENT_BC_STUDENT_SMOKE.md",
+    "outputs/analysis/recurrent_bc_student_smoke.json"
+  ],
+  "promotion_boundary": "recurrent_policy_not_robot_deployable_without_runtime_hidden_state_adapter_or_stateless_distillation",
+  "hardware_note": {
+    "left_knee_offset_corrected": true,
+    "old_offset_rad": -1.488,
+    "new_offset_rad": 0.0371,
+    "right_knee_offset_rad": 0.0798,
+    "actuator_bridge_fit_stale_for_final_robot_validation": true
+  },
+  "no_robot_tests": true,
+  "no_deploy": true,
+  "no_runtime_behavior_change": true,
+  "no_training_started": true
+}

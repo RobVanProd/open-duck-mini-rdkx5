@@ -1,0 +1,98 @@
+{
+  "attribution_rule": {
+    "all_noncomposition_v50_checks_must_pass": true,
+    "compare_every_signed_float32_gradient_element": true,
+    "maximum_ulp_distance_each": 8,
+    "old_and_new_absolute_errors_must_reproduce_bit_exact": true,
+    "optimizer_parameters_and_transitions_must_remain_unchanged": true,
+    "rerun_exact_v50_rollout": true,
+    "rollout_episode_slots": 80,
+    "source_update": 352,
+    "ticks_per_slot": 250,
+    "ulp_bound_origin": "the existing preregistered Winner-v31 CPU replay bound; not selected from the unrecorded V50 elementwise ULP distances",
+    "v50_absolute_threshold_changed": false,
+    "v50_scalar_and_rollout_evidence_must_reproduce_bit_exact": true
+  },
+  "authority": {
+    "one_update_authorized": false,
+    "pass_authorizes_only": "one separately preregistered CPU-only one-update proof",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "training_authorized": false
+  },
+  "decision": "AUTHORIZE_ONE_ZERO_UPDATE_GRADIENT_ULP_RECOMPUTATION_ONLY",
+  "execution_now": {
+    "deployable_graph_exports": 0,
+    "formal_support_cells": 0,
+    "locomotion_training_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0,
+    "rollout_episode_slots": 0,
+    "scheduled_rollout_ticks": 0
+  },
+  "frozen_hold": {
+    "failed_checks": [
+      "new_direct_composition_at_most_4e_6",
+      "old_direct_composition_at_most_4e_6"
+    ],
+    "new_absolute_error": 4.76837158203125e-06,
+    "old_absolute_error": 4.76837158203125e-06,
+    "old_threshold_unchanged": 4e-06,
+    "result": {
+      "bytes": 9698,
+      "path": "outputs/analysis/winner_v50_full_action_teacher_source_gradient_result.json",
+      "sha256": "7f1a6ae01ba9aaf01766ccbdaa6246c0aa2629e04a2e695e1425a45e858b79b1"
+    },
+    "result_rewritten": false
+  },
+  "schema_version": "winner_v50b.gradient_composition_ulp_attribution_contract.v1",
+  "source_manifest_sha256": "00f7b1dac90907efd6723a6339acbb4d4a5aabfe462bf925fcd03962d151bf4b",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v50b_gradient_composition_ulp_attribution.py",
+      "sha256": "8cd4985257d18e90085f0c35b1ef93686a1bb84a1dfebdf60464962c7bfb9094"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v50b_gradient_composition_ulp_attribution.py",
+      "sha256": "390253a2e80eba76b90fa1e409ed1687af8514a288e71f5a1452366290080879"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v50b_gradient_composition_ulp_attribution.py",
+      "sha256": "58ed6d33f2696a58760cc860b602984ad13d769b08a77623933b9f68be67cdcc"
+    },
+    "winner_v31_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v31_cross_worker_replay_attribution_preregistration.json",
+      "sha256": "6208e9205a824a0b8ebca68a493cdd884ec9ec47a7b86a9bb3dab78ecb3cbdfa"
+    },
+    "winner_v31_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v31_cross_worker_replay_attribution_result.json",
+      "sha256": "68e1a96ea2e32f15d49ae74dc20c99fc4b487ce997f94623e0faa0bfd3b133f7"
+    },
+    "winner_v31_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v31_cross_worker_replay_attribution.py",
+      "sha256": "92e1e76fe9b5fbbd13c6e65716c377c2f4308346e8a1d8904f337385a9d8b9be"
+    },
+    "winner_v50_contract": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v50_full_action_teacher_source_gradient_contract.json",
+      "sha256": "e40a047112c63074e4f2cd4df7b8d70785dc7e6f9d3bf81476742d549e8b4972"
+    },
+    "winner_v50_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v50_full_action_teacher_source_gradient_result.json",
+      "sha256": "37b80608ac5e60291a5f194345cdce9bbdda5607d6559e6be9dfc1e619b453b7"
+    },
+    "winner_v50_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v50_full_action_teacher_source_gradient_contract.py",
+      "sha256": "0c235e882922867f8b8998bdb902d170b964641503b574f289a5e30f68ab4a42"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V50B_GRADIENT_COMPOSITION_ULP_ATTRIBUTION"
+}

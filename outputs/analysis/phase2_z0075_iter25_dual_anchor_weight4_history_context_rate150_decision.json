@@ -1,0 +1,50 @@
+{
+  "status": "HOLD_ITER25_DUAL_ANCHOR_REGRESSES_SEEDS0_7",
+  "candidate": {
+    "path": "policy/candidates/phase2_z0075_iter25_dual_anchor_weight4_history_context_rate150_20260704/candidate.onnx",
+    "onnx_sha256": "4e6b462a0daac0c624044bee58951846340e6382c960d194dd06de16763e9b3d",
+    "npz_sha256": "e58c985d11b01a250f5f09640a23581b0fed0fcca72ed5426452fc6fa2d7afde",
+    "contract": "obs[1,101] -> continuous_actions[1,14]"
+  },
+  "inputs": {
+    "base_manifest": "outputs/analysis/live_oracle_dagger_phase_student/iter_024_history_context_resetsettle10_seed2_active/live_oracle_dagger_aggregate_manifest.json",
+    "dual_anchor_weighted_manifest": "outputs/analysis/phase2_z0075_iter24_dual_anchor_seed2_seed6_weight4_manifest.json",
+    "aggregate_manifest": "outputs/analysis/phase2_z0075_iter25_dual_anchor_weight4_aggregate_manifest.json",
+    "aggregate_manifest_sha256": "d6ddd98a535aec2147db157f978eae80669a9718076cf926b2e8f85db9e02467",
+    "anchor_entry_sample_weight": 4.0
+  },
+  "fit_metrics": {
+    "samples": 68719,
+    "target_rate_p95_rad_s": 1.3618991374969482,
+    "target_rate_max_rad_s": 9.124381065368652,
+    "training_status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE"
+  },
+  "gate": {
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0075,
+    "bridge_mode": "fitted",
+    "fit_json": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+    "reset_mode": "home-support",
+    "reset_settle_ticks": 10,
+    "pushes": {
+      "enabled": true,
+      "interval_s": [1.0, 1.5],
+      "magnitude": [0.075, 0.125],
+      "recovery_window_s": 1.2
+    },
+    "x008": {
+      "json": "outputs/analysis/phase2_z0075_iter25_dual_anchor_weight4_history_context_rate150_x008_seed0_1_2_6_7_screen.json",
+      "json_sha256": "ec6e2b9ef4f76263248c97bc80269bfa25db397de0dfba9ca14c443d17d1ff74",
+      "seeds": {
+        "0": {"status": "HOLD_CANDIDATE_FALL_OR_TERMINATION", "samples": 525, "termination": "fall_or_nan", "track_ratio": 0.7229, "mean_local_vx": 0.0578, "max_vel_excess": 0.0},
+        "1": {"status": "PASS_CANDIDATE_SIM_GATE", "samples": 750, "termination": "duration_complete", "track_ratio": 0.3567, "mean_local_vx": 0.0285, "max_vel_excess": 0.0},
+        "2": {"status": "PASS_CANDIDATE_SIM_GATE", "samples": 750, "termination": "duration_complete", "track_ratio": 0.3816, "mean_local_vx": 0.0305, "max_vel_excess": 0.0},
+        "6": {"status": "PASS_CANDIDATE_SIM_GATE", "samples": 750, "termination": "duration_complete", "track_ratio": 0.3273, "mean_local_vx": 0.0262, "max_vel_excess": 0.0},
+        "7": {"status": "HOLD_CANDIDATE_FALL_OR_TERMINATION", "samples": 470, "termination": "fall_or_nan", "track_ratio": 0.8327, "mean_local_vx": 0.0666, "max_vel_excess": 0.0}
+      }
+    }
+  },
+  "interpretation": "Strong dual-anchor weighting preserves seeds2 and6 but regresses seeds0 and7 into higher-speed pitch/base-height failures.",
+  "promotion": "not_promoted",
+  "next_recommendation": "Do not keep strong global dual-anchor weighting as default; use weaker or distribution-aware anti-regression if continuing BC aggregation."
+}

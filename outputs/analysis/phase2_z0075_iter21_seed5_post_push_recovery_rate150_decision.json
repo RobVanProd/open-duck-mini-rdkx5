@@ -1,0 +1,65 @@
+{
+  "status": "HOLD_SEED5_RECOVERY_TRANSFERRED_BUT_OTHER_SEEDS_REGRESSED",
+  "scope": "offline_only",
+  "candidate": "policy/candidates/phase2_z0075_iter21_seed5_post_push_recovery_rate150_20260704/candidate.onnx",
+  "candidate_sha256": "e4ea65621cc641e00fafdf6b78d94fd730c22188e8b8ce3ed8f0a7f668d7592b",
+  "student_npz": "outputs/analysis/phase2_z0075_iter21_seed5_post_push_recovery_rate150_student/candidate_mlp.npz",
+  "student_npz_sha256": "9363f242d84235f9418d0cec0a5b27321bdd9d7d5f73fd86c28897aaf70675ae",
+  "merged_manifest": "outputs/analysis/phase2_z0075_iter21_seed5_post_push_recovery_merged_manifest.json",
+  "merged_manifest_sha256": "c97c873d2c99401d3d5004cabb37923359161158bd93ca68f9d5ef09d8ebf383",
+  "corrected_bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+  "recovery_data": {
+    "snippets": 1,
+    "samples": 79,
+    "teacher_model_kind": "source_vx_blend",
+    "blend_alpha": 0.8,
+    "vx_blend_threshold_m_s": 0.02,
+    "source_vx_threshold_m_s": 0.02,
+    "alt_exclude_source_regex": "seed_004",
+    "action_delta_p50": 0.0204,
+    "action_delta_p95": 0.0869,
+    "action_delta_max": 0.3296
+  },
+  "fit": {
+    "samples": 53209,
+    "mae": 0.013113,
+    "p95_abs_error": 0.03931,
+    "target_rate_p95_rad_s": 1.342554,
+    "target_rate_max_rad_s": 7.594885,
+    "onnx_p95_abs_error": 0.00000018,
+    "onnx_max_abs_error": 0.00000036
+  },
+  "x008_gate": {
+    "settings": {
+      "task": "rough_terrain_backlash",
+      "terrain_hfield_z_scale": 0.0075,
+      "command_x": 0.08,
+      "bridge_mode": "fitted",
+      "reset_mode": "home-support",
+      "reset_settle_ticks": 10,
+      "pushes": true
+    },
+    "pass": 5,
+    "falls": 3,
+    "duration_complete": 5,
+    "mean_track_ratio": 0.5528,
+    "mean_vx_m_s": 0.0442,
+    "p95_vel_excess": 0.0,
+    "max_vel_excess": 0.0,
+    "seed_status": {
+      "0": "PASS_CANDIDATE_SIM_GATE",
+      "1": "PASS_CANDIDATE_SIM_GATE",
+      "2": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "3": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "4": "PASS_CANDIDATE_SIM_GATE",
+      "5": "PASS_CANDIDATE_SIM_GATE",
+      "6": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "7": "PASS_CANDIDATE_SIM_GATE"
+    }
+  },
+  "x0_gate": {
+    "run": false,
+    "reason": "x=0.08 promotion gate failed"
+  },
+  "decision": "Do not promote. Seed5 recovery transferred and all velocity excess cleared, but seeds 2, 3, and 6 regressed to falls."
+}

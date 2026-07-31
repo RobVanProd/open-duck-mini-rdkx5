@@ -1,0 +1,260 @@
+{
+  "amendment_contract_sha256": "a3f1141d761352f493dafd7416a36c62703b8c4d4489cc76fefff04be1ce2a04",
+  "authority": {
+    "resume_exact_t8_cpu_screen": true,
+    "robot_rdkx5_gate5_torque_motion": false,
+    "training_or_hosted_compute": false
+  },
+  "authorized_change": {
+    "new_state_inputs": [
+      "h_in",
+      "previous_action"
+    ],
+    "new_state_outputs": [
+      "h_out",
+      "previous_action_out"
+    ],
+    "old_state_inputs": [
+      "previous_action",
+      "h_in"
+    ],
+    "old_state_outputs": [
+      "previous_action_out",
+      "h_out"
+    ],
+    "reason": "match the already-frozen response-conditioned evaluator ABI and preserve correct input/output state pairing"
+  },
+  "corrected_files": {
+    "independent_auditor": {
+      "bytes": 23792,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\audit_t8_state_coherent_handoff.py",
+      "sha256": "2a6c3b1e3d2dbbcd650cbd45d0ea49b15041fc5c9dffe576036dc028736d8bad"
+    },
+    "runner": {
+      "bytes": 27023,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t8_state_coherent_handoff.py",
+      "sha256": "a941d2f9cf0c9a9da8da7759bb98fd84ec41ef08c46ec0506c37d585b6a338da"
+    },
+    "worker": {
+      "bytes": 11710,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\evaluate_t8_state_coherent_handoff.py",
+      "sha256": "dfda29c57b7233166ad62b91e780cf6b27b9c9531ba7fc3ffcc24ffd6c6ac48d"
+    }
+  },
+  "onnx_abi": {
+    "graphs": [
+      {
+        "inputs": [
+          {
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ],
+            "type": "tensor(float)"
+          },
+          {
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ],
+            "type": "tensor(float)"
+          },
+          {
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ],
+            "type": "tensor(float)"
+          },
+          {
+            "name": "calibration_context",
+            "shape": [
+              1,
+              64
+            ],
+            "type": "tensor(float)"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "continuous_actions",
+            "shape": [
+              1,
+              14
+            ],
+            "type": "tensor(float)"
+          },
+          {
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ],
+            "type": "tensor(float)"
+          },
+          {
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ],
+            "type": "tensor(float)"
+          }
+        ],
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t8_state_coherent_handoff_assets_v2\\policies\\V121_DEPLOYMENT_1003520_T8_CONTEXT_ABI.onnx",
+        "sha256": "8749ba91e98c18b8c2d123bae3558154bc7221cc8b58c1a8ad6c9adc39d8ae4a"
+      },
+      {
+        "inputs": [
+          {
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ],
+            "type": "tensor(float)"
+          },
+          {
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ],
+            "type": "tensor(float)"
+          },
+          {
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ],
+            "type": "tensor(float)"
+          },
+          {
+            "name": "calibration_context",
+            "shape": [
+              1,
+              64
+            ],
+            "type": "tensor(float)"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "continuous_actions",
+            "shape": [
+              1,
+              14
+            ],
+            "type": "tensor(float)"
+          },
+          {
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ],
+            "type": "tensor(float)"
+          },
+          {
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ],
+            "type": "tensor(float)"
+          }
+        ],
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t8_state_coherent_handoff_assets_v2\\policies\\V121_DEPLOYMENT_2007040_T8_CONTEXT_ABI.onnx",
+        "sha256": "76aed96802919921ad8cce378752f684c03aa1fc529a874268bc250334327d44"
+      }
+    ],
+    "input_name_set": [
+      "calibration_context",
+      "h_in",
+      "obs",
+      "previous_action"
+    ],
+    "output_name_set": [
+      "continuous_actions",
+      "h_out",
+      "previous_action_out"
+    ],
+    "policy_state_pairing": [
+      [
+        "h_in",
+        "h_out"
+      ],
+      [
+        "previous_action",
+        "previous_action_out"
+      ]
+    ]
+  },
+  "original_preregistration": {
+    "file_sha256": "c4184d8bdba742034ec83fc30a6df4662d822150549298252e19bf19d58e19cd",
+    "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t8_state_coherent_handoff_preregistration.json",
+    "preregistered_contract_sha256": "548a0b1cd5967e1e0976871a01983996b48bed5b43619969eaa5c472b2cbe7ce",
+    "published_commit": "c2c1b587",
+    "repository_inputs": {
+      "independent_auditor": {
+        "bytes": 21665,
+        "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\audit_t8_state_coherent_handoff.py",
+        "sha256": "7acbb71a183d27564e14117495fba90878ec6d17fa1309455c227ddea38c5f5e"
+      },
+      "runner": {
+        "bytes": 24711,
+        "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t8_state_coherent_handoff.py",
+        "sha256": "530f33e91290ccb5ffd6734ab71d59c47846a7da75de2530522cac0f8a0c6d11"
+      },
+      "worker": {
+        "bytes": 11710,
+        "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\evaluate_t8_state_coherent_handoff.py",
+        "sha256": "dfd6ef18888239f1726be760a49915995fd9f273f9e9386ac56abb01dce3fe8a"
+      }
+    }
+  },
+  "preoutcome_evidence": {
+    "attempted_commands": [
+      0.0,
+      0.074,
+      0.077,
+      0.08
+    ],
+    "behavior_cells_with_decision_weight": 0,
+    "completed_block_manifests": 0,
+    "dynamics_readbacks_returned": 0,
+    "failed_evaluation": {
+      "bytes": 5586,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t8_state_coherent_handoff_v1\\V121_TRAIN_MATCHED_HALF\\p30\\evaluation.json",
+      "sha256": "811eae0d4a35f3a5fdfa43814a7754a4c0441c9eba5e10217fc3e978aeda4168"
+    },
+    "failed_stdout": {
+      "bytes": 6500,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t8_state_coherent_handoff_v1\\V121_TRAIN_MATCHED_HALF\\p30\\stdout.log",
+      "sha256": "2a1b0de60d7a50d74e7e07dcca54d0dfb1353af84de03c2188e2e4ccecf6dc90"
+    },
+    "failure": "the frozen response-conditioned ABI requires state tuple order h_in,previous_action paired with h_out,previous_action_out; the worker declared the reverse order and was rejected before simulator modes were run",
+    "jsonl_trace_files": 0,
+    "policy_io_holds": 4,
+    "result_exists": false,
+    "simulator_modes_returned": 0
+  },
+  "schema_version": "open_duck.t8_preoutcome_abi_amendment.v1",
+  "status": "PREREGISTERED_T8_PREOUTCOME_ABI_ORDER_CORRECTION",
+  "unchanged_contract": {
+    "asset_parity": true,
+    "authority": true,
+    "behavior_and_protection_gates": true,
+    "calibrator_and_support_action": true,
+    "candidate_and_checkpoints": true,
+    "decision_rule": true,
+    "fits_commands_seed_and_duration": true,
+    "handoff_semantics": true,
+    "policies_and_hashes": true,
+    "training_steps": 0
+  }
+}

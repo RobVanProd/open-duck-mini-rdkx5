@@ -1,0 +1,77 @@
+{
+  "authority": {
+    "additional_training": false,
+    "colab": false,
+    "deployment_contract_audit": false,
+    "gate5": false,
+    "rdkx5_or_robot": false,
+    "t178b_saved_trace_correction_preregistration": true,
+    "torque_or_motion": false
+  },
+  "decision": "PREREGISTER_T178B_PRE_ACTION_HANDOFF_FIELD_CORRECTION_ONLY",
+  "findings": {
+    "actual_position_pre_rad": {
+      "provenance": "captured before current policy action and physics step",
+      "source_line": 2770,
+      "valid_handoff_field": true
+    },
+    "applied_target_rad": {
+      "provenance": "computed from the current command before physics step",
+      "source_line": 2996,
+      "valid_handoff_field": false
+    },
+    "qpos_and_qvel": {
+      "provenance": "captured after apply_motor_target_runner advances the current action",
+      "source_lines": [
+        3006,
+        3081,
+        3082
+      ],
+      "valid_handoff_fields": false
+    }
+  },
+  "invalidated_claim": "The T178 HANDOFF_STATE_MISMATCH classification is invalid because three of its compared fields are post-current-action outputs, not handoff inputs.",
+  "preserved_observations": {
+    "failure_signature_analysis": true,
+    "midpoint_analysis": true,
+    "receipt_and_trace_integrity": true,
+    "reason": "Those analyses intentionally consume post-step closed-loop values and are unaffected by the handoff-field provenance error."
+  },
+  "recovery_contract": {
+    "compare_only_pre_action_fields": [
+      "policy_calibration_context_sha256",
+      "policy_state_input",
+      "actual_position_pre_rad",
+      "obs_state[83:97]"
+    ],
+    "exclude_post_action_fields": [
+      "applied_target_rad",
+      "qpos",
+      "qvel"
+    ],
+    "no_new_behavior_execution": true,
+    "no_post_hoc_threshold_change": true,
+    "no_reuse_of_original_handoff_classification": true
+  },
+  "schema_version": "open_duck.t178_analysis_field_provenance.v1",
+  "source": {
+    "evaluator": {
+      "bytes": 155236,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\closed_loop_sim_eval.py",
+      "sha256": "a5bff87f2cce5e5f5c661a9fe73dee9de77a4c356912279e4771025c3379a4ac"
+    },
+    "runner": {
+      "bytes": 24447,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t178_positive_z_failure_autopsy.py",
+      "sha256": "f2880869c4b6d5a7bce5ff397783654507eaa89a74ae20742f9e07f54fcf6fbb"
+    },
+    "t178_result": {
+      "bytes": 407436,
+      "internal_result_sha256": "425d90353e3a6c6e7df425f6fe00b74fa2e17778c1226568c6bbd5fbba78e24e",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t178_positive_z_failure_autopsy_result.json",
+      "sha256": "b77727f131f74f62b129b636463715cfe32b3bc9730d5ddf4556a48a017751ef"
+    }
+  },
+  "status": "INVALIDATED_T178_HANDOFF_CLASSIFICATION_FIELD_PROVENANCE",
+  "result_sha256": "49b4817911dee113b61705a57679ad9d33cdc33977799e8385fe3ec6e5bf325e"
+}

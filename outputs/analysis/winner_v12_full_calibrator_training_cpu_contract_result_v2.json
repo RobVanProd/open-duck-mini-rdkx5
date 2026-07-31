@@ -1,0 +1,257 @@
+{
+  "authority": {
+    "formal_support_gate_executed": false,
+    "full_calibrator_training_executed": false,
+    "locomotion_training_or_behavior_executed": false,
+    "pass_authorizes_only": "one frozen seed-120120 full calibrator training run",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "checks": {
+    "cpu_only_jax": true,
+    "fractional_terminal_mask_rejected": true,
+    "fresh_adam_counts_zero": true,
+    "full_population_exact": true,
+    "full_rollout_action_boundary_exact": true,
+    "heldout_excluded": true,
+    "independent_normalizer_lineage_rejects_tamper": true,
+    "independent_stage1_lineage_rejects_tamper": true,
+    "initial_parameter_tree_exact": true,
+    "logical_run_claim_repeat_exact": true,
+    "malformed_realized_action_rejected": true,
+    "nonzero_onnx_chain_passes": true,
+    "observation_bank_nonzero_finite": true,
+    "older_resume_rejected": true,
+    "optimizer_updates_zero": true,
+    "pending_recovery_exact": true,
+    "plants_balanced": true,
+    "playground_tree_exact": true,
+    "sample_accounting_valid": true,
+    "second_fresh_root_claim_rejected": true,
+    "snapshot_archive_schema_rejects_extra": true,
+    "snapshot_metadata_schema_rejects_extra": true,
+    "snapshot_metric_schema_rejects_extra": true,
+    "snapshot_self_hash_rejects_tamper": true,
+    "snapshot_transition_order_exact": true,
+    "software_versions_exact": true,
+    "stage1_action_chain_exact": true,
+    "stage1_final_checkpoint_exact": true,
+    "stage1_fixed_p30_slot_exact": true,
+    "stage1_full_shape": true,
+    "stage1_mixed_type_normalization_receipt_exact": true,
+    "stage1_normalizer_independently_recomputed_exact": true,
+    "stage1_objective_and_gradients_finite": true,
+    "stage1_receipts_exact": true,
+    "stage2_full_shape": true,
+    "stage2_objective_and_gradients_finite": true,
+    "stage2_receipts_exact": true,
+    "stage2_terminal_masks_exact": true,
+    "stale_latest_repaired": true
+  },
+  "contract_lf_sha256": "6288b4f9bc1919ecb2638fe1bc1f6908f7e720f40f7721b4677c81f151cb9505",
+  "decision": "AUTHORIZE_ONE_WINNER_V12_FULL_CALIBRATOR_TRAINING_RUN_ONLY",
+  "environment": {
+    "jax_devices": [
+      "TFRT_CPU_0"
+    ],
+    "software_versions": {
+      "exact": true,
+      "expected": {
+        "jax": "0.7.2",
+        "jaxlib": "0.7.2",
+        "mujoco": "3.9.0",
+        "numpy": "2.0.2",
+        "onnx": "1.22.0",
+        "onnxruntime": "1.27.0",
+        "python": "3.12.13"
+      },
+      "observed": {
+        "jax": "0.7.2",
+        "jaxlib": "0.7.2",
+        "mujoco": "3.9.0",
+        "numpy": "2.0.2",
+        "onnx": "1.22.0",
+        "onnxruntime": "1.27.0",
+        "python": "3.12.13"
+      }
+    }
+  },
+  "execution": {
+    "formal_support_cells": 0,
+    "locomotion_training_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "persistence_contract": {
+    "half": {
+      "checkpoint": {
+        "array_count": 26,
+        "bit_exact_readback": true,
+        "bytes": 73443,
+        "path": "/tmp/winner-v12-full-calibrator-cpu-contract-work/persistence/winner_v12_calibrator_half.npz",
+        "sha256": "4327b457ee5e01176de700e6f4b4d4dc94d5eb48cafe169c738edb297042f843"
+      },
+      "graph": {
+        "abi_exact": true,
+        "all_chain_outputs_finite": true,
+        "all_initializers_finite": true,
+        "bytes": 54896,
+        "chain_ticks": 250,
+        "forbidden_training_or_privileged_tokens": [],
+        "initializer_count": 9,
+        "inputs": [
+          {
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "jax_onnx_at_most_1e_7": true,
+        "jax_onnx_max_abs_error": 8.731149137020111e-11,
+        "outputs": [
+          {
+            "name": "calibration_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "path": "/tmp/winner-v12-full-calibrator-cpu-contract-work/persistence/winner_v12_calibrator_half.onnx",
+        "previous_action_out_equals_action_bit_exact": true,
+        "sha256": "ffcb14f2675cfcccba5d7ad71665a8300004579af92859b4239ca08f1cf07f1d",
+        "training_only_tensors_absent": true
+      },
+      "label": "half",
+      "onnx_observation_bank": {
+        "all_finite": true,
+        "construction": "((arange(250*115) + update*17) % 257 - 128) / 128 as float32",
+        "nonzero_values": 28638,
+        "sha256": "684284ee60d0e846239c0285d17374bc8caadc13774d25966999230c800b1612",
+        "shape": [
+          250,
+          115
+        ]
+      },
+      "source_snapshot": {
+        "path": "/tmp/winner-v12-full-calibrator-cpu-contract-work/persistence/snapshots/snapshot_stage2_update_050.npz",
+        "sha256": "4327b457ee5e01176de700e6f4b4d4dc94d5eb48cafe169c738edb297042f843"
+      },
+      "update": 50
+    },
+    "newest_snapshot": {
+      "path": "/tmp/winner-v12-full-calibrator-cpu-contract-work/persistence/snapshots/snapshot_stage2_update_050.npz",
+      "sha256": "4327b457ee5e01176de700e6f4b4d4dc94d5eb48cafe169c738edb297042f843"
+    },
+    "recovery": {
+      "entries": [
+        {
+          "bytes": 13,
+          "final_target": "/tmp/winner-v12-full-calibrator-cpu-contract-work/persistence/snapshots/snapshot_stage2_update_001.npz",
+          "final_target_exists": false,
+          "original_path": "/tmp/winner-v12-full-calibrator-cpu-contract-work/persistence/snapshots/snapshot_stage2_update_001.npz.pending.npz",
+          "quarantined_path": "/tmp/winner-v12-full-calibrator-cpu-contract-work/persistence/recovery_quarantine/snapshots__snapshot_stage2_update_001.npz_pending_.npz.80b81760f5a275ee.uncommitted",
+          "sha256": "80b81760f5a275ee1b2eb2becd89ceedea64e3146ed66baec131219f2db00da3"
+        },
+        {
+          "bytes": 13,
+          "final_target": "/tmp/winner-v12-full-calibrator-cpu-contract-work/persistence/winner_v12_calibrator_half.onnx",
+          "final_target_exists": false,
+          "original_path": "/tmp/winner-v12-full-calibrator-cpu-contract-work/persistence/winner_v12_calibrator_half.onnx.pending.onnx",
+          "quarantined_path": "/tmp/winner-v12-full-calibrator-cpu-contract-work/persistence/recovery_quarantine/winner_v12_calibrator_half.onnx_pending_.onnx.f7f0ffdbf1a53dee.uncommitted",
+          "sha256": "f7f0ffdbf1a53dee7fa4b3ab050817897b065c4cfa7f282ad8f0143b7da7fc63"
+        },
+        {
+          "bytes": 13,
+          "final_target": "/tmp/winner-v12-full-calibrator-cpu-contract-work/persistence/winner_v12_calibrator_half_receipt.json",
+          "final_target_exists": false,
+          "original_path": "/tmp/winner-v12-full-calibrator-cpu-contract-work/persistence/winner_v12_calibrator_half_receipt.json.pending",
+          "quarantined_path": "/tmp/winner-v12-full-calibrator-cpu-contract-work/persistence/recovery_quarantine/winner_v12_calibrator_half_receipt.json_pending_.f16ec6df2d27564b.uncommitted",
+          "sha256": "f16ec6df2d27564ba55e5715931d133d91d97834ec47b89d0aec3245b0f455fc"
+        },
+        {
+          "bytes": 13,
+          "final_target": "/tmp/winner-v12-full-calibrator-cpu-contract-work/persistence/winner_v12_full_calibrator_latest.npz",
+          "final_target_exists": true,
+          "original_path": "/tmp/winner-v12-full-calibrator-cpu-contract-work/persistence/winner_v12_full_calibrator_latest.npz.pending",
+          "quarantined_path": "/tmp/winner-v12-full-calibrator-cpu-contract-work/persistence/recovery_quarantine/winner_v12_full_calibrator_latest.npz_pending_.714a1a86743fd16e.uncommitted",
+          "sha256": "714a1a86743fd16eafb9a948fe598eb271f82dd38b23ab260559e7ab7eeaeb07"
+        }
+      ],
+      "policy": "pending artifacts are never committed and are quarantined before replay from the newest committed snapshot",
+      "schema_version": "winner_v12.full_calibrator_recovery_event.v1"
+    },
+    "stage1_final": {
+      "checkpoint": {
+        "array_count": 30,
+        "bit_exact_readback": true,
+        "bytes": 71105,
+        "path": "/tmp/winner-v12-full-calibrator-cpu-contract-work/persistence/winner_v12_calibrator_stage1_final.npz",
+        "sha256": "90b412d53922fcab32dc06f781bb1147dd10cc63ffb641eef75a0f4a93944034"
+      },
+      "label": "stage1_final",
+      "source_snapshot": {
+        "path": "/tmp/winner-v12-full-calibrator-cpu-contract-work/persistence/snapshots/snapshot_stage1_update_100.npz",
+        "sha256": "90b412d53922fcab32dc06f781bb1147dd10cc63ffb641eef75a0f4a93944034"
+      },
+      "update": 100
+    }
+  },
+  "repository_attribution": {
+    "github_artifact_digest": "sha256:f02a902412abf23ef08832c3d73e3faee13f5af53cfe977bb3832c4b13fe853c",
+    "github_artifact_id": 8486408542,
+    "github_run_attempt": 1,
+    "github_run_commit": "35069ead37433e1b8d98c3082d4b163e06ec5fef",
+    "github_run_id": 29808349887,
+    "raw_result_sha256": "d0d035123122bc37462c2a6e83cb6a8bc82081f34cfdd3317fd79db3fbbc010e"
+  },
+  "rollouts": {
+    "stage1": {
+      "attempted_transition_samples": 14113,
+      "environments": 80,
+      "receipt_sha256": "6155c97bfb9b07e69bc061f654a297ea30b343c8b88a1683247b13be2b25666c",
+      "scheduled_tick_slots": 20000,
+      "valid_transitions": 14072
+    },
+    "stage2": {
+      "attempted_transition_samples": 18251,
+      "environments": 80,
+      "receipt_sha256": "95cc50c6401b5e44904702922783ae9f2d7dfaf680f0769ee3be4dcedb1a18e7",
+      "scheduled_tick_slots": 20000,
+      "valid_transitions": 18243
+    }
+  },
+  "schema_version": "winner_v12.full_calibrator_training_cpu_contract_result.v1",
+  "status": "PASS_WINNER_V12_FULL_CALIBRATOR_TRAINING_CPU_CONTRACT"
+}

@@ -1,0 +1,61 @@
+{
+  "status": "HOLD_NO_TASK_MATCHED_TRAINABLE_WARMSTART",
+  "scope": "offline_current_gate_trainable_warmstart_screen",
+  "gate": {
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0075,
+    "reset_mode": "home-support",
+    "reset_settle_ticks": 10,
+    "bridge_mode": "fitted",
+    "command_x": 0.08,
+    "eval_push_enable": true,
+    "push_interval_s": [1.0, 1.5],
+    "push_magnitude": [0.075, 0.125],
+    "seeds": [0, 1, 2, 6, 7]
+  },
+  "artifacts": {
+    "screen_md": "outputs/analysis/PPO_TRAINABLE_WARMSTART_Z0075_PUSH_SCREEN.md",
+    "screen_json": "outputs/analysis/ppo_trainable_warmstart_z0075_push_screen.json"
+  },
+  "candidates": {
+    "limit198_step0": {
+      "onnx": "outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0.onnx",
+      "sha256": "1dc894eebc144d790f1a6b4be6ada5a05e748f215f2053c72610347955deb3bb",
+      "pass_count": 0,
+      "total_count": 5,
+      "fall_count": 2,
+      "duration_complete_count": 3,
+      "track_ratio_mean": 0.1630371513828402,
+      "mean_vx_m_s": 0.013042972110627212,
+      "p95_velocity_excess_mean_rad_s": 0.0,
+      "max_velocity_excess_mean_rad_s": 0.5744861364364624,
+      "single_support_mean_pct": 26.003234868695962,
+      "double_support_mean_pct": 73.70587123525442,
+      "decision": "Not promotable. Safer but too slow under the current z0.0075 push gate and falls on seeds 6 and 7."
+    },
+    "rate165_step0": {
+      "onnx": "outputs/analysis/phase2_rate165_ppo_loc_warmstart_step0.onnx",
+      "sha256": "3aa2770022d2b5b0e6cf77df45d4ce1a2aeb2c86e80f57e3892a6ad9bd65ad5a",
+      "pass_count": 0,
+      "total_count": 5,
+      "fall_count": 3,
+      "duration_complete_count": 2,
+      "track_ratio_mean": 1.1016063929905697,
+      "mean_vx_m_s": 0.08812851143924558,
+      "p95_velocity_excess_mean_rad_s": 0.0,
+      "max_velocity_excess_mean_rad_s": 0.23498799800872802,
+      "single_support_mean_pct": 12.762624564977505,
+      "double_support_mean_pct": 86.19332144979204,
+      "decision": "Not promotable. Moves aggressively but falls early on seeds 0, 1, and 2."
+    },
+    "ppo_loc_iter24_step0": {
+      "onnx": "outputs/analysis/ppo_loc_iter24_live_oracle_seed2_active_rate150_step0.onnx",
+      "sha256": "de669ede7342797e07f0acd21f7b8a5be975af62bde0f07d9a1730918a454ee7",
+      "pass_count": 2,
+      "total_count": 5,
+      "source_artifact": "outputs/analysis/PPO_LOC_ITER24_LIVE_ORACLE_SEED2_ACTIVE_RATE150_STEP0_X008_SEED0_1_2_6_7_SCREEN.md",
+      "decision": "Not promotable. Good action fidelity and close manifest coverage, but closed-loop seed stability regresses."
+    }
+  },
+  "decision": "No existing PPO-compatible step-0 checkpoint clears the current z0.0075 rough+push corrected-bridge screen. Future PPO/DR launches must first create a task-matched behavior-preserving warm-start."
+}

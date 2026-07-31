@@ -1,0 +1,105 @@
+{
+  "generated_at": "2026-07-03T18:42:55Z",
+  "status": "PASS_LIVE_ORACLE_ITER3_DATA_READY",
+  "scope": "Offline live-oracle DAgger data generation only. No robot, SSH, deploy, grounded replay, runtime behavior change, or PPO training.",
+  "robot_touched": false,
+  "ssh_used": false,
+  "deploy_performed": false,
+  "grounded_replay_performed": false,
+  "training_started": false,
+  "student_policy": "policy/candidates/phase2_iter2_right_ankle_limit198_rate165_20260703/candidate.onnx",
+  "teacher_manifest": "outputs/analysis/phase2_iter2_right_ankle_limit198_manifest.json",
+  "corrected_bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+  "run_dir": "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_run",
+  "config": {
+    "iteration": 3,
+    "rung": "transition_preserving_limit198_z0026",
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0026,
+    "reset_mode": "home-support",
+    "bridge_mode": "fitted",
+    "jax_platform": "cpu",
+    "duration_s": 15.0,
+    "x008_seeds": "0-7",
+    "x0_seeds": "0-7",
+    "x008_teacher_model_kind": "source_vx_blend",
+    "x0_teacher_model_kind": "zero_action",
+    "x0_zero_action_alpha": 1.0,
+    "min_swing_segments_per_foot": 1,
+    "min_swing_rel_x_range_p95_m": 0.003,
+    "min_swing_peak_lift_m": 0.005
+  },
+  "x008_rollout": {
+    "status": "PASS_CANDIDATE_SIM_GATE",
+    "runs": 8,
+    "duration_complete": 8,
+    "falls": 0,
+    "mean_local_vx_m_s": 0.026152187503437743,
+    "track_ratio": 0.3269023437929718,
+    "body_pitch_p95_rad": 0.13201388030651867,
+    "base_height_min_m": 0.15223538875579834,
+    "max_pitch_vel_p95_rad_s": 1.7502179741859436,
+    "p95_vel_excess_rad_s": 0.0,
+    "max_vel_excess_rad_s": 0.0,
+    "max_tracking_p95_rad": 0.189157885313034,
+    "min_swing_peak_lift_m": 0.012330524623394012,
+    "min_swing_segments": 18,
+    "min_swing_rel_x_range_p95_m": 0.0116414189338684,
+    "single_support_pct": 25.2,
+    "double_support_pct": 74.8
+  },
+  "x0_rollout": {
+    "status": "PASS_CANDIDATE_SIM_GATE",
+    "runs": 8,
+    "duration_complete": 8,
+    "falls": 0,
+    "mean_local_vx_m_s": 0.00006234486107420404,
+    "body_pitch_p95_rad": 0.016838103263286962,
+    "base_height_min_m": 0.15236049890518188,
+    "max_pitch_vel_p95_rad_s": 0.05610689520835874,
+    "p95_vel_excess_rad_s": 0.0,
+    "max_vel_excess_rad_s": 0.0,
+    "max_tracking_p95_rad": 0.03198727369308472,
+    "single_support_pct": 0.0,
+    "double_support_pct": 100.0
+  },
+  "relabel": {
+    "x008": {
+      "status": "PASS_BC_TRACE_RELABEL_READY",
+      "traces": 8,
+      "samples_out": 6000,
+      "truncated_traces": 0
+    },
+    "x0": {
+      "status": "PASS_BC_TRACE_RELABEL_READY",
+      "traces": 8,
+      "samples_out": 6000,
+      "truncated_traces": 0
+    }
+  },
+  "manifests": {
+    "x008": {
+      "status": "PASS_BC_TRACE_MANIFEST_READY",
+      "entries": 8,
+      "samples": 6000,
+      "bc_ready_entries": 8
+    },
+    "x0": {
+      "status": "PASS_BC_TRACE_MANIFEST_READY",
+      "entries": 8,
+      "samples": 6000,
+      "bc_ready_entries": 8
+    },
+    "aggregate": {
+      "status": "PASS_FILTERED_BC_MANIFEST_READY",
+      "input_entries": 54,
+      "kept_entries": 54,
+      "rejected_entries": 0,
+      "samples": 40500,
+      "source_files": 54,
+      "max_source_fraction": 0.018518518518518517
+    }
+  },
+  "decision": "Data ready for the next supervised phase/contact or transition-preserving student fit. No candidate is promoted from this run.",
+  "next_action": "Fit a student from the aggregate manifest, then run canonical corrected-bridge x=0.08 and x=0.0 gates before any Phase 2 randomization widening."
+}

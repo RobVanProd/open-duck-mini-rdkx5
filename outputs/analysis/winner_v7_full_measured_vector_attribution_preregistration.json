@@ -1,0 +1,79 @@
+{
+  "analysis_contract": {
+    "causal_prior_window_ticks": 6,
+    "numeric_tolerance": 1e-09,
+    "population": "all 128 hash-bound winner-v7 traces",
+    "replay": [
+      "derive the 14-element conservative vector from the frozen P30/P31 actuator evidence",
+      "compare it field-by-field with the graph-authoritative vector in the runtime handoff",
+      "recompute both recorded rate-excess fields from sent_target_velocity_rad_s",
+      "recompute every per-joint peak-current and peak-torque failure",
+      "measure whether each failing joint's peak follows a same-joint full-vector violation in the fixed six-tick window"
+    ],
+    "window_basis": "the measured all-joint profiles contain 2-3 tick delay and head/neck tau up to 0.12 s, equal to six 50-Hz ticks"
+  },
+  "authority": {
+    "policy_or_simulator_mutation": false,
+    "read_only_cpu_analysis": true,
+    "runtime_robot_torque_motion_gate5": false,
+    "training_behavior_gpu_colab": false
+  },
+  "causal_question": "Did the source graph's pitch-only measured projection leave eight non-pitch joints at the legacy 5.24 rad/s allowance, causing the moving-only current and torque failures attributed incompletely by the closed force-ceiling route?",
+  "closed_routes_not_reopened": [
+    "winner-v7 protected base",
+    "simple XML force-ceiling attribution",
+    "winner-v6/v6b dynamic-calibrator contracts"
+  ],
+  "frozen_inputs": {
+    "audit_tool_sha256": "693963aecb93de0d65a252e6757ff99a78eb49ea2784552179ae5c8cb54127f1",
+    "current_gate_contract": {
+      "path": "outputs/analysis/winner_v3_current_gate_application_contract.json",
+      "sha256": "17e841450a2dde66182c3d41a06abf8d14366011f811bcde20adb1f1c8f68ddb"
+    },
+    "force_limit_attribution": {
+      "path": "outputs/analysis/winner_v7_actuator_force_limit_attribution.json",
+      "sha256": "f9cd5547111c0c63a11a9a85fb54142b5b0a6ef440ce9f9ff80dc56f6deb5382"
+    },
+    "measured_all_joint_envelope": {
+      "path": "outputs/analysis/winner_v5_automatic_support_recovery_preregistration.json",
+      "sha256": "0e9e1d78444ce2f9d5e3d8c14d4f5805369e39ac645ad5b097b0cf7c4d3a2276"
+    },
+    "runtime_policy_contract": {
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/policy_contract.json",
+      "sha256": "7ceeaeceabc3dd6319700da53b278fa3d0c3478f6f722e9dd7df759bbde407c4"
+    },
+    "winner_v7_graph_contract": {
+      "path": "outputs/analysis/winner_v7_inward_projection_contract_result.json",
+      "sha256": "0655ea0a5e5708d0bff4ea3e084a0aef7c463f58eb7f6d3e0b16e283718b7fe2"
+    },
+    "winner_v7_result": {
+      "path": "outputs/analysis/winner_v7_full_behavior_revalidation_result.json",
+      "sha256": "f181b7337e67c0b0d11d9a96b84ca0506ae689b49c5cb6de66a9f9811eb4f41e"
+    }
+  },
+  "pass_authorizes_only": [
+    "freeze a separately named zero-behavior CPU graph-transform contract",
+    "replace both source and final-projection deltas with the complete measured conservative vector",
+    "require arbitrary stress, x=0, physically chained, graph identity, and both current and torque checks before any behavior run"
+  ],
+  "schema_version": "open_duck_mini.winner_v7_full_measured_vector_attribution_preregistration.v1",
+  "selection_rule": {
+    "all_checks_required": [
+      "source_winner_v7_remains_closed",
+      "source_population_complete",
+      "recorded_rate_fields_replay_exactly",
+      "partial_graph_vector_has_exactly_eight_relaxed_nonpitch_joints",
+      "all_moving_traces_violate_full_measured_vector",
+      "no_zero_trace_violates_full_measured_vector",
+      "graph_vector_reports_zero_excess_for_all_traces",
+      "all_moving_traces_fail_current_and_torque",
+      "no_zero_trace_fails_current_or_torque",
+      "every_gate_failing_joint_is_in_relaxed_vector_subset",
+      "at_least_95pct_failure_peaks_follow_same_joint_violation_within_six_ticks"
+    ],
+    "fail_decision": "CLOSE_FULL_MEASURED_VECTOR_CAUSAL_ROUTE",
+    "pass_decision": "SELECT_DISTINCT_FULL_MEASURED_VECTOR_GRAPH_CONTRACT"
+  },
+  "source_commit": "cf800ae",
+  "status": "FROZEN_WINNER_V7_FULL_MEASURED_VECTOR_ATTRIBUTION"
+}

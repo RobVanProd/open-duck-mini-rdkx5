@@ -2,8 +2,10 @@ import time
 import pickle
 
 import numpy as np
+from motor_velocity_limits import parse_motor_velocity_limits
 from mini_bdx_runtime.rustypot_position_hwi import HWI
 from mini_bdx_runtime.onnx_infer import OnnxInfer
+from mini_bdx_runtime.winner_v2 import WinnerV2ObservationAdapter, WinnerV2OnnxPolicy
 
 from mini_bdx_runtime.raw_imu import Imu
 from mini_bdx_runtime.poly_reference_motion import PolyReferenceMotion
@@ -42,6 +44,11 @@ class RLWalk:
         telemetry_path: str | None = None,
         telemetry_read_voltage: bool = False,
         telemetry_every_n: int = 1,
+        kp_overrides: dict[str, float] | None = None,
+        motor_velocity_limits_rad_s: list[float] | None = None,
+        policy_contract: str = "legacy101_sent_target_v1",
+        winner_v2_fit_path: str | None = None,
+        winner_v2_reference_table_path: str | None = None,
     ):
 
         self.duck_config = DuckConfig(config_json_path=duck_config_path)
@@ -51,12 +58,33 @@ class RLWalk:
         self.max_runtime_seconds = max_runtime_seconds
         self.pitch_bias = pitch_bias
         self.cutoff_frequency = cutoff_frequency
+        if policy_contract == "ground_up115_applied_target_v2":
+            if float(control_freq) != 50.0 or float(action_scale) != 0.25:
+                raise ValueError("winner-v2 requires 50 Hz and action_scale=0.25")
+            if float(self.duck_config.phase_frequency_factor_offset) != 0.0:
+                raise ValueError("winner-v2 requires zero phase-frequency offset")
+            if kp_overrides:
+                raise ValueError("winner-v2 P30 observer contract forbids gain overrides")
 
         self.onnx_model_path = onnx_model_path
-        self.policy = OnnxInfer(self.onnx_model_path, awd=True)
+        self.policy_contract = policy_contract
+        if self.policy_contract == "legacy101_sent_target_v1":
+            self.policy = OnnxInfer(self.onnx_model_path, awd=True)
+        elif self.policy_contract == "ground_up115_applied_target_v2":
+            if winner_v2_fit_path is None or winner_v2_reference_table_path is None:
+                raise ValueError("winner-v2 requires explicit fit and reference-table paths")
+            if cutoff_frequency is not None:
+                raise ValueError("winner-v2 forbids the optional action filter")
+            self.policy = WinnerV2OnnxPolicy(self.onnx_model_path)
+        else:
+            raise ValueError(f"unknown policy contract: {self.policy_contract}")
 
         self.num_dofs = 14
         self.max_motor_velocity = 5.24  # rad/s
+        self.motor_velocity_limits = np.full(self.num_dofs, self.max_motor_velocity)
+        parsed_velocity_limits = parse_motor_velocity_limits(motor_velocity_limits_rad_s)
+        if parsed_velocity_limits is not None:
+            self.motor_velocity_limits = np.asarray(parsed_velocity_limits, dtype=float)
 
         # Control
         self.control_freq = control_freq
@@ -80,6 +108,8 @@ class RLWalk:
         self.telemetry_path = telemetry_path
         self.telemetry_read_voltage = bool(telemetry_read_voltage)
         self.telemetry_every_n = max(1, int(telemetry_every_n or 1))
+        self.kp_overrides = dict(kp_overrides or {})
+        self.effective_kps = None
         self.telemetry_logger = None
         self.telemetry_norm = None
         self._telemetry_utc_timestamp = None
@@ -91,8 +121,22 @@ class RLWalk:
         self._telemetry_last_dof_pos = None
         self._telemetry_last_dof_vel = None
         self._telemetry_last_feet_contacts = None
+        self._telemetry_servo_current_raw = [None] * self.num_dofs
+        self._telemetry_servo_voltage_raw = [None] * self.num_dofs
+        self._telemetry_servo_voltage_v = [None] * self.num_dofs
+        self._telemetry_servo_temperature_raw = [None] * self.num_dofs
 
         self.hwi = HWI(self.duck_config, serial_port)
+        self.init_pos = list(self.hwi.init_pos.values())
+        self.winner_v2_adapter = None
+        if self.policy_contract == "ground_up115_applied_target_v2":
+            self.winner_v2_adapter = WinnerV2ObservationAdapter(
+                winner_v2_fit_path,
+                winner_v2_reference_table_path,
+                self.init_pos,
+                phase_step=1,
+                action_filter_enabled=self.action_filter is not None,
+            )
 
         self.start()
 
@@ -110,8 +154,6 @@ class RLWalk:
         self.last_action = np.zeros(self.num_dofs)
         self.last_last_action = np.zeros(self.num_dofs)
         self.last_last_last_action = np.zeros(self.num_dofs)
-
-        self.init_pos = list(self.hwi.init_pos.values())
 
         self.motor_targets = np.array(self.init_pos.copy())
         self.prev_motor_targets = np.array(self.init_pos.copy())
@@ -136,6 +178,10 @@ class RLWalk:
         self.phase_frequency_factor_offset = (
             self.duck_config.phase_frequency_factor_offset
         )
+        if self.policy_contract == "ground_up115_applied_target_v2" and (
+            self.phase_frequency_factor != 1.0 or self.phase_frequency_factor_offset != 0.0
+        ):
+            raise ValueError("winner-v2 requires exact one-step phase advance")
 
         # Optional expression features
         if self.duck_config.eyes:
@@ -159,6 +205,7 @@ class RLWalk:
             JsonlTelemetryLogger,
             extract_onnx_obs_normalization,
             normalize_observation,
+            require_onnx_obs_normalization,
             sha256_file,
             timestamp_slug,
             utc_timestamp,
@@ -174,6 +221,9 @@ class RLWalk:
         self._telemetry_policy_sha256 = sha256_file(self.onnx_model_path)
         self._telemetry_policy_output_name = self._policy_output_name()
         self.telemetry_norm = extract_onnx_obs_normalization(self.onnx_model_path)
+        require_onnx_obs_normalization(
+            self.telemetry_norm, self.onnx_model_path
+        )
         self.telemetry_logger = JsonlTelemetryLogger(self.telemetry_path)
         print("telemetry:", self.telemetry_logger.path, flush=True)
 
@@ -183,12 +233,22 @@ class RLWalk:
         except Exception:
             return None
 
-    def _telemetry_voltage(self):
-        # Voltage reads are intentionally opt-in and currently unavailable
-        # through the local HWI wrapper without adding new bus traffic.
+    def _telemetry_servo_health(self):
+        """Opt-in, one-servo-per-logged-tick health telemetry."""
         if not self.telemetry_read_voltage:
             return None
-        return None
+        sample = self.hwi.read_servo_health_round_robin()
+        index = sample["joint_index"]
+        current = sample.get("present_current_raw")
+        voltage_raw = sample.get("present_voltage_raw")
+        temperature = sample.get("present_temperature_raw")
+        self._telemetry_servo_current_raw[index] = current
+        self._telemetry_servo_voltage_raw[index] = voltage_raw
+        self._telemetry_servo_voltage_v[index] = (
+            None if voltage_raw is None else float(voltage_raw) * 0.1
+        )
+        self._telemetry_servo_temperature_raw[index] = temperature
+        return sample
 
     def _log_policy_tick(
         self,
@@ -207,6 +267,8 @@ class RLWalk:
             return
         if tick % self.telemetry_every_n != 0:
             return
+
+        servo_health_sample = self._telemetry_servo_health()
 
         if self._telemetry_last_tick_monotonic is None:
             dt_s = None
@@ -242,15 +304,28 @@ class RLWalk:
                 "onnx_sha256": self._telemetry_policy_sha256,
                 "input_name": getattr(self.policy, "input_name", "obs"),
                 "output_name": self._telemetry_policy_output_name,
-                "observation_dim": 101,
+                "observation_dim": 115
+                if self.policy_contract == "ground_up115_applied_target_v2"
+                else 101,
                 "action_dim": 14,
+                "policy_contract": self.policy_contract,
+                "winner_v2_policy_sha256": getattr(self.policy, "policy_sha256", None),
+                "winner_v2_fit_sha256": None
+                if self.winner_v2_adapter is None
+                else self.winner_v2_adapter.observer.fit_sha256,
+                "winner_v2_reference_table_sha256": None
+                if self.winner_v2_adapter is None
+                else self.winner_v2_adapter.reference.sha256,
             },
             "control": {
                 "control_freq_hz": self.control_freq,
                 "paused": self.paused,
                 "action_scale": self.action_scale,
                 "max_motor_velocity_rad_s": self.max_motor_velocity,
+                "motor_velocity_limits_rad_s": self.motor_velocity_limits.tolist(),
                 "cutoff_frequency_hz": self.cutoff_frequency,
+                "kp_overrides": self.kp_overrides,
+                "effective_kps": self.effective_kps,
                 "commands": self.last_commands,
                 "imitation_i": self.imitation_i,
                 "imitation_phase": self.imitation_phase,
@@ -272,7 +347,11 @@ class RLWalk:
                 "actual_position_rad": actual_pos,
                 "actual_velocity_rad_s": actual_vel,
                 "tracking_error_rad": tracking_error,
-                "battery_voltage_v": self._telemetry_voltage(),
+                "battery_voltage_v": self._telemetry_servo_voltage_v if self.telemetry_read_voltage else None,
+                "present_current_raw": self._telemetry_servo_current_raw if self.telemetry_read_voltage else None,
+                "present_voltage_raw": self._telemetry_servo_voltage_raw if self.telemetry_read_voltage else None,
+                "present_temperature_raw": self._telemetry_servo_temperature_raw if self.telemetry_read_voltage else None,
+                "servo_health_sample": servo_health_sample,
             },
             "observation": {
                 "raw_vector": obs,
@@ -297,12 +376,20 @@ class RLWalk:
             "bus": {
                 "read_error_count": getattr(self.hwi, "read_error_count", None),
                 "write_error_count": getattr(self.hwi, "write_error_count", None),
+                "transport_reset_count": getattr(
+                    self.hwi, "transport_reset_count", None
+                ),
                 "last_error": getattr(self.hwi, "last_error", None),
             },
         }
         self.telemetry_logger.log(record)
 
     def get_obs(self):
+
+        if self.winner_v2_adapter is not None and (
+            self.phase_frequency_factor != 1.0 or self.phase_frequency_factor_offset != 0.0
+        ):
+            raise ValueError("winner-v2 phase advance changed from exactly one step")
 
         imu_data = self.imu.get_data()
 
@@ -360,6 +447,11 @@ class RLWalk:
             ]
         )
 
+        if self.winner_v2_adapter is not None:
+            obs = self.winner_v2_adapter.compose(
+                obs, self.last_commands, self.imitation_i
+            )
+
         return obs
 
     def start(self):
@@ -368,6 +460,18 @@ class RLWalk:
 
         # lower head kps
         kps[5:9] = [8, 8, 8, 8]
+
+        joint_names = list(self.hwi.joints.keys())
+        unknown = sorted(set(self.kp_overrides) - set(joint_names))
+        if unknown:
+            raise ValueError(f"unknown kp override joints: {unknown}")
+        for joint_name, value in self.kp_overrides.items():
+            if not 0 <= value <= 254:
+                raise ValueError(f"kp override out of range for {joint_name}: {value}")
+            kps[joint_names.index(joint_name)] = value
+        self.effective_kps = list(kps)
+        if self.kp_overrides:
+            print(f"KP_OVERRIDES={self.kp_overrides}", flush=True)
 
         self.hwi.set_kps(kps)
         self.hwi.set_kds(kds)
@@ -391,11 +495,11 @@ class RLWalk:
         i = 0
         try:
             print("Starting")
-            start_t = time.time()
+            start_t = time.monotonic()
             while True:
                 if (
                     self.max_runtime_seconds is not None
-                    and time.time() - start_t >= self.max_runtime_seconds
+                    and time.monotonic() - start_t >= self.max_runtime_seconds
                 ):
                     print("Max runtime reached")
                     break
@@ -504,16 +608,16 @@ class RLWalk:
                 self.motor_targets = np.clip(
                     self.motor_targets,
                     self.prev_motor_targets
-                    - self.max_motor_velocity * (1 / self.control_freq),  # control dt
+                    - self.motor_velocity_limits * (1 / self.control_freq),  # control dt
                     self.prev_motor_targets
-                    + self.max_motor_velocity * (1 / self.control_freq),  # control dt
+                    + self.motor_velocity_limits * (1 / self.control_freq),  # control dt
                 )
 
                 if self.action_filter is not None:
                     self.action_filter.push(self.motor_targets)
                     filtered_motor_targets = self.action_filter.get_filtered_action()
                     if (
-                        time.time() - start_t > 1
+                        time.monotonic() - start_t > 1
                     ):  # give time to the filter to stabilize
                         self.motor_targets = filtered_motor_targets
 
@@ -529,6 +633,9 @@ class RLWalk:
                 )
 
                 self.hwi.set_position_all(action_dict)
+
+                if self.winner_v2_adapter is not None:
+                    self.winner_v2_adapter.advance_sent_target(motor_targets_sent)
 
                 self._log_policy_tick(
                     tick=i,
@@ -639,6 +746,18 @@ if __name__ == "__main__":
     parser.add_argument("--telemetry-read-voltage", action="store_true")
     parser.add_argument("--telemetry-every-n", type=int, default=1)
     parser.add_argument(
+        "--motor-velocity-limits-rad-s",
+        default=None,
+        help="Default-off comma-separated 14-value target slew limits in action order.",
+    )
+    parser.add_argument(
+        "--policy-contract",
+        choices=["legacy101_sent_target_v1", "ground_up115_applied_target_v2"],
+        default="legacy101_sent_target_v1",
+    )
+    parser.add_argument("--winner-v2-fit-path", default=None)
+    parser.add_argument("--winner-v2-reference-table-path", default=None)
+    parser.add_argument(
         "--controller",
         type=str,
         default="f710",
@@ -668,6 +787,12 @@ if __name__ == "__main__":
         telemetry_path=args.telemetry_path,
         telemetry_read_voltage=args.telemetry_read_voltage,
         telemetry_every_n=args.telemetry_every_n,
+        motor_velocity_limits_rad_s=parse_motor_velocity_limits(
+            args.motor_velocity_limits_rad_s
+        ),
+        policy_contract=args.policy_contract,
+        winner_v2_fit_path=args.winner_v2_fit_path,
+        winner_v2_reference_table_path=args.winner_v2_reference_table_path,
     )
     print("Done instantiating RLWalk")
     

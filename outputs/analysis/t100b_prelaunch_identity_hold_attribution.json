@@ -1,0 +1,52 @@
+{
+  "authority": {
+    "additional_training_attempt_retry_or_resume": false,
+    "behavior_evaluation": false,
+    "gate5": false,
+    "hosted_launch": false,
+    "one_t100c_wrapper_preregistration": true,
+    "rdkx5_or_robot": false
+  },
+  "checks": {
+    "driver_selects_original_prereg_only": true,
+    "exact_validation_failure_reproduced": true,
+    "optimizer_simulator_behavior_steps_zero": true,
+    "package_was_not_launched": true,
+    "packaged_driver_conflicts_with_original_prereg": true,
+    "packaged_driver_matches_recovery_prereg": true,
+    "robot_or_rdk_access_zero": true
+  },
+  "classification": "PRELAUNCH_DRIVER_PREREGISTRATION_IDENTITY_MISMATCH",
+  "decision": "EARN_T100C_ORIGINAL_DRIVER_WRAPPER_PREREGISTRATION_ONLY",
+  "failed_checks": [],
+  "failure": {
+    "original_preregistration_driver_sha256": "83ea5ff09b7198c3eafb826c7f1f59da303cc521c4bc441539fe3328070d3397",
+    "package_contract": {
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t100b_hidden_expert_hosted_package_contract.json",
+      "sha256": "3eb5527a8da2ac779daa9de9790fc802cc8512ed3f37f6c770d5b7b3dd41416b"
+    },
+    "packaged_driver": {
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t100b_hidden_expert_package_v1\\t100b_hidden_expert_bundle\\colab_t100_hidden_expert_continuation.py",
+      "sha256": "3cc058b3b25cf292ac553cbddf674a1acc59009adf9b0b00ee11bee9613a6e9e"
+    },
+    "recovery_preregistration_driver_sha256": "3cc058b3b25cf292ac553cbddf674a1acc59009adf9b0b00ee11bee9613a6e9e",
+    "reproduction": "ValueError: T100 frozen inputs changed"
+  },
+  "interpretation": {
+    "behavior_started": false,
+    "hosted_session_opened": false,
+    "mechanism_or_recipe_falsified": false,
+    "optimizer_started": false,
+    "simulator_training_started": false,
+    "t100b_package_launchable": false
+  },
+  "recovery_design": {
+    "add_hash_frozen_external_dispatch_wrapper": true,
+    "mechanism_source_gate_recipe_changes": 0,
+    "preserve_original_t100_driver_byte_exact": true,
+    "preserve_original_t100_preregistration_byte_exact": true
+  },
+  "result_sha256": "104b7404040c5a45a73f977797aa25392f2017e71499f15fcd84eb346626e07a",
+  "schema_version": "open_duck.t100b_prelaunch_identity_hold.v1",
+  "status": "PASS_T100B_PRELAUNCH_IDENTITY_HOLD_ATTRIBUTION"
+}

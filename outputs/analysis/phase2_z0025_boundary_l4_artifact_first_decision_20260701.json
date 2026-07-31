@@ -1,0 +1,70 @@
+{
+  "status": "HOLD_Z0025_BOUNDARY_NOT_PROMOTED",
+  "robot_validation": "blocked",
+  "workflow": "phase2-z0025-boundary",
+  "session": "open-duck-l4-z0025-artifact",
+  "artifact": {
+    "path": "outputs/analysis/colab_cli/open-duck-l4-z0025-artifact-phase2-z0025-boundary-20260701T090250Z/open_duck_colab_cli_phase2-z0025-boundary_20260701T090317Z_artifacts.tar.gz",
+    "sha256": "c291b943630bfa4b73ba7b26e97887591fe8882da2d9bf9985f6db40bc23e11a",
+    "size_human": "4.4M"
+  },
+  "stack": {
+    "jax": "0.7.2",
+    "jaxlib": "0.7.2",
+    "brax": "0.14.2",
+    "mujoco": "3.9.0",
+    "mujoco_mjx": "3.9.0",
+    "playground": "0.0.5"
+  },
+  "selected_checkpoint": {
+    "status": "HOLD_PARTIAL_CANDIDATE_CHECKPOINT",
+    "selection_reason": "best_available_but_not_promoted",
+    "path": "outputs/analysis/colab_cli/open-duck-l4-z0025-artifact-phase2-z0025-boundary-20260701T090250Z/extracted/open_duck_colab_cli_phase2-z0025-boundary_20260701T090317Z/open_duck_training_phase2_z0025_boundary_cli/smoke_20260701T090648Z_gpu/2026_07_01_092118_122880.onnx",
+    "sha256": "b65ee4675bd6c7df97e4a7a1ecfcec48c7afee9f67c203464d2d91fb5eabac90",
+    "compact_sweep": {
+      "x008_track_ratio": 0.23501305567333475,
+      "x008_mean_vx_m_s": 0.0188,
+      "max_pitch_tracking_p95_rad": 0.21237667798995957,
+      "max_pitch_sent_target_velocity_p95_rad_s": 1.393374502658844
+    }
+  },
+  "full_seed_gates": {
+    "z0025_x008": {
+      "status": "HOLD_Z0025_BOUNDARY_NOT_PROMOTED",
+      "seeds": 8,
+      "falls": 0,
+      "duration_complete": 8,
+      "pass_statuses": 4,
+      "track_ratio_mean": 0.25528423841186243,
+      "vx_mean_m_s": 0.020422739072948996,
+      "body_pitch_p95_mean_rad": 0.11993432889020053,
+      "base_height_min_mean_m": 0.15263132378458977,
+      "max_pitch_vel_p95_mean_rad_s": 1.6346189379692075,
+      "p95_vel_excess_mean_rad_s": 0.0,
+      "max_vel_excess_mean_rad_s": 0.09537205100059509,
+      "max_tracking_p95_mean_rad": 0.18897164240479467,
+      "single_support_mean_pct": 14.683333333333334,
+      "double_support_mean_pct": 85.26666666666667,
+      "hold_seeds": {
+        "0": "HOLD_CANDIDATE_TARGET_VELOCITY",
+        "3": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "4": "HOLD_CANDIDATE_TARGET_VELOCITY",
+        "6": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS"
+      }
+    },
+    "z0025_x000": {
+      "status": "PASS_COMMAND_SEMANTICS",
+      "seeds": 8,
+      "falls": 0,
+      "duration_complete": 8,
+      "pass_statuses": 8,
+      "vx_mean_m_s": 0.0006215220757867475,
+      "body_pitch_p95_mean_rad": 0.016855455545018067,
+      "base_height_min_mean_m": 0.1526418924331665,
+      "max_pitch_vel_p95_mean_rad_s": 0.34255061298608774,
+      "p95_vel_excess_mean_rad_s": 0.0,
+      "max_tracking_p95_mean_rad": 0.06327142044901847
+    }
+  },
+  "next_recommendation": "Do not broaden domain randomization. Preserve x=0.0 and no-fall behavior while targeting z=0.0025 x=0.08 seed consistency: reduce instantaneous velocity excursions on seeds 0/4 and improve forward progress on seeds 3/6."
+}

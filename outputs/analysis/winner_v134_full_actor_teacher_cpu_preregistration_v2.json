@@ -1,0 +1,91 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "cpu_contract": true,
+    "formal_cpu_distillation": false,
+    "full_matrix": false,
+    "gate5": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "all_input_hashes_exact": true,
+    "behavior_not_authorized": true,
+    "class_balance_and_line_search_derived_without_sweep": true,
+    "compact_local_residual_closed": true,
+    "formal_training_not_authorized": true,
+    "nonlinear_full_actor_is_mechanically_distinct": true,
+    "robot_surface_absent": true,
+    "robust_teacher_green": true,
+    "scale_logits_frozen_as_unsupervised": true,
+    "two_update_cpu_smoke_only": true
+  },
+  "dataset": {
+    "corrected_rows": 71,
+    "correction_weight": "4729/71",
+    "preservation_rows": 4729,
+    "preservation_weight": 1.0,
+    "rows": 4800,
+    "smoke_batch": "all 71 corrected plus first 185 SHA-sorted rows",
+    "supreme_only_corrected_rows": 54,
+    "targets": [
+      "V131 final action[14]",
+      "V121/V131 h_out[64]"
+    ],
+    "torque_projected_rows": 17
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "cpu_template": "217a1551c4cc778e4b957636a40ca6e01eafa51efeaef905eb73e9debc7c26e5",
+    "network_source": "ffd07d0a6e96d846aa1f62a8d131bf892f10db6b2a22710affe3946b7b145ebd",
+    "runner": "3470a1d4f1ffee4d261814327291eac7ffc1b2e0470b7425c99788a75daf9bde",
+    "source_checkpoint": "c1d9b8574c941e2279294de14aca1cb57d4736bdc63635b5aaf1e205fa7f86c1",
+    "training_module": "632a2e12ae10d940be38858c52e738281ca6a2de1736d1be90b8adcbdbd8baa8",
+    "v121_final_deployed": "bc54ea1bf39e617f76771e7416de91db2ccfe0b1bf903de08faaa64a67ce4aab",
+    "v121_transform": "4bd5eab5343cd8401db1789773fa3cc345727d903cb31222e0ea9870f0e9e640",
+    "v131_behavior_result": "ab1535e11287f191e8ee6b4be5c020c44726c6263465c7cb760892387b07c9ea",
+    "v133_local_audit": "c57f894724e0f350658945990f19b76caae9f3e7da219d32f97b9cb5df8f4229"
+  },
+  "mechanism": {
+    "deployment_abi": "unchanged 115/14/64 stateful ONNX",
+    "source": "V121 final recurrent actor",
+    "teacher": "V131 exact common-safe two-fit oracle",
+    "why_distinct": "updates the existing nonlinear residual trunk and recurrent adapter, rather than fitting a global linear head or a nearest-neighbor local wrapper"
+  },
+  "objective": {
+    "action": "class-balanced MSE on the exact final deployment action",
+    "frozen": [
+      "normalizer",
+      "scale_logits kernel and bias",
+      "value tree"
+    ],
+    "hidden": "unweighted MSE on the frozen teacher h_out",
+    "total": "action MSE + hidden MSE",
+    "trainable": "all actor leaves except scale_logits kernel and bias"
+  },
+  "optimizer": {
+    "acceptance": "Armijo decrease with fixed conventional fraction 1e-4",
+    "backtracking": "halve at most 24 times",
+    "direction": "full-batch gradient",
+    "initial_step": "1/max(1, global_gradient_l2)",
+    "search_or_retry": false,
+    "updates": 2
+  },
+  "pass_rule": {
+    "corrected_ratio": "<=0.95 after two smoke updates",
+    "exports": "step 0 and 2 stateful ONNX contracts both pass",
+    "hidden_mse": "<=0.01 times corrected baseline MSE",
+    "leaves": "every non-scale actor leaf changes; scale logits stay exact",
+    "loss": "total and action losses strictly decrease",
+    "preservation_ratio": "<=0.01",
+    "step_zero": "deployed inference matches V121 final <=1e-7"
+  },
+  "schema_version": "winner_v134.full_actor_teacher_cpu_preregistration.v1",
+  "status": "PREREGISTERED_WINNER_V134_FULL_ACTOR_TEACHER_CPU_CONTRACT_V2",
+  "stop_rule": "if any check fails, do not run formal nonlinear teacher distillation and do not alter optimizer constants",
+  "supersedes": {
+    "artifact": "winner_v134_full_actor_teacher_cpu_preregistration.json",
+    "reason": "The V1 runner stopped before optimization because it incorrectly counted only 17 explicit torque-projection rows. Frozen deployed-ONNX replay matches oracle base on all 4,800 rows and proves that the two-fit oracle changes the complete final action on 71 rows: 17 torque-projected and 54 common supreme-constraint corrections. V2 trains against that complete teacher action; thresholds and optimizer rules are unchanged."
+  }
+}

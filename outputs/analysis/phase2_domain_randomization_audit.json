@@ -1,0 +1,125 @@
+{
+  "blockers": [],
+  "files": {
+    "common_randomize": "../Open_Duck_Playground/playground/common/randomize.py",
+    "common_runner": "../Open_Duck_Playground/playground/common/runner.py",
+    "constants": "../Open_Duck_Playground/playground/open_duck_mini_v2/constants.py",
+    "flat_xml": "../Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml",
+    "joystick": "../Open_Duck_Playground/playground/open_duck_mini_v2/joystick.py",
+    "rough_xml": "../Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_rough_terrain_backlash.xml",
+    "runner": "../Open_Duck_Playground/playground/open_duck_mini_v2/runner.py"
+  },
+  "flat_floor_friction_xml": "0.6",
+  "hooks": {
+    "action_delay": {
+      "evidence": "joystick.py samples delayed action from action_history",
+      "status": "PRESENT"
+    },
+    "actuator_bridge": {
+      "evidence": "joystick.py bridge model and runner.py bridge CLI flags",
+      "status": "PRESENT"
+    },
+    "actuator_gain_randomization": {
+      "evidence": "playground/common/randomize.py scales actuator gains/bias",
+      "status": "PRESENT"
+    },
+    "com_randomization": {
+      "evidence": "playground/common/randomize.py jitters torso body_ipos",
+      "status": "PRESENT"
+    },
+    "domain_randomize_training_hook": {
+      "evidence": "BaseRunner passes configured randomization_fn into Brax PPO train",
+      "status": "PRESENT"
+    },
+    "dr_range_cli": {
+      "evidence": "runner.py exposes staged DR range CLI for friction, mass, COM, push, noise, actuator gain, qpos jitter, and leg geometry",
+      "status": "PRESENT"
+    },
+    "friction_randomization": {
+      "current_range": null,
+      "evidence": "playground/common/randomize.py mutates model.geom_friction",
+      "status": "PRESENT"
+    },
+    "frictionloss_armature_randomization": {
+      "evidence": "playground/common/randomize.py scales dof frictionloss and armature",
+      "status": "PRESENT"
+    },
+    "imu_delay": {
+      "evidence": "joystick.py samples delayed IMU/gravity history",
+      "status": "PRESENT"
+    },
+    "leg_geometry_randomization": {
+      "evidence": "playground/common/randomize.py supports default-off leg body_pos scale jitter and runner.py exposes --dr_leg_geometry_jitter_scale",
+      "status": "PRESENT"
+    },
+    "mass_randomization": {
+      "evidence": "playground/common/randomize.py mutates model.body_mass",
+      "status": "PRESENT"
+    },
+    "observation_noise": {
+      "evidence": "joystick.py default_config and _get_obs add joint/IMU noise",
+      "status": "PRESENT"
+    },
+    "push_perturbations": {
+      "evidence": "joystick.py adds random planar velocity impulse to floating base qvel",
+      "status": "PRESENT"
+    },
+    "rough_terrain": {
+      "evidence": "constants.py maps rough_terrain_backlash and XML contains hfield",
+      "status": "PRESENT"
+    }
+  },
+  "playground_path": "../Open_Duck_Playground",
+  "rough_floor_friction_xml": "1.0",
+  "status": "PASS_PHASE2_READY_TO_DRY_RUN",
+  "trainable_warmstart": {
+    "candidate_mlp_npz": {
+      "exists": true,
+      "path": "outputs/analysis/phase2_health_routed_pass_parent_phase_mod_rate150_student/candidate_mlp.npz",
+      "sha256": "1e22aa3c06a451e3ee4da32e58c6b45b881cdf87ea8ed8738c541b6dccb3e9c8",
+      "size_bytes": 888338
+    },
+    "compression_decision": {
+      "decision": "Do not launch Stage A DR from any PPO-loc step-0 variant in this report.",
+      "decision_status": "HOLD_PPO_LOC_COMPRESSION_SEED_TRADEOFF",
+      "exists": true,
+      "next_work": [
+        "Preserve phase/context conditioning in the restorable PPO actor path.",
+        "Build a step-0 checkpoint with action fidelity to the passing parent.",
+        "Re-run x=0.08 and x=0.0 rough+push full8 gates before Stage A DR."
+      ],
+      "path": "outputs/analysis/phase2_ppo_loc_compression_seed5_augmentation_decision.json",
+      "sha256": "b9b37458fb9620811bb1a1e0cb8006a161dc551c529e11ff7efcf91d9eee4912",
+      "size_bytes": 2484,
+      "status": "HOLD"
+    },
+    "policy_onnx": {
+      "exists": true,
+      "path": "policy/candidates/phase2_health_routed_parent_phase_mod_rate150_20260706/candidate.onnx",
+      "sha256": "5cadefcb3582043eb989a0e7c65ea9e2702a0815ba46c9ffe1c70b1f68f1db8f",
+      "size_bytes": 885758
+    },
+    "reason": "A verified phase/context-preserving PPO step-0 Orbax checkpoint exists. The older PPO-loc compression hold is retained as historical evidence but no longer blocks the Phase 2 dry-run gate.",
+    "required_by_phase2": true,
+    "restore_checkpoint": {
+      "exists": true,
+      "path": "outputs/analysis/phase2_health_routed_parent_phase_mod_rate150_step0_checkpoint",
+      "sha256": null,
+      "size_bytes": null
+    },
+    "status": "PASS_TRAINABLE_CHECKPOINT_PRESENT",
+    "warmstart_fidelity": {
+      "exists": true,
+      "max_abs_error": 0.0,
+      "output_checkpoint": "outputs/analysis/phase2_health_routed_parent_phase_mod_rate150_step0_checkpoint",
+      "p95_abs_error": 0.0,
+      "path": "outputs/analysis/phase2_health_routed_parent_phase_mod_rate150_step0_fidelity.json",
+      "reference_onnx": "policy/candidates/phase2_health_routed_parent_phase_mod_rate150_20260706/candidate.onnx",
+      "report_status": "PASS_PHASE_MODULATED_PPO_WARMSTART_STEP0_EXPORT_FIDELITY",
+      "sha256": "b7c16cb76f50a29e0e55c926ca315c9663cf7ba9efda3f225e0710fdbd6c2017",
+      "size_bytes": 2085,
+      "status": "PASS"
+    }
+  },
+  "warnings": []
+}

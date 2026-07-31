@@ -1,0 +1,160 @@
+{
+  "activation": "swish",
+  "config": {
+    "batch_size": 512,
+    "learning_rate": 0.0005,
+    "seed": 4,
+    "steps": 12000,
+    "target_rate_limit_rad_s": 1.8,
+    "target_rate_scale": 1.0
+  },
+  "context_hidden_sizes": [
+    32
+  ],
+  "context_indices": [
+    6,
+    99,
+    100
+  ],
+  "exported_onnx": "policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate180_20260703/candidate.onnx",
+  "loss_rows": [
+    {
+      "loss": 0.676867663860321,
+      "step": 1
+    },
+    {
+      "loss": 0.0012191965943202376,
+      "step": 500
+    },
+    {
+      "loss": 0.0008175629191100597,
+      "step": 1000
+    },
+    {
+      "loss": 0.0005902302218601108,
+      "step": 1500
+    },
+    {
+      "loss": 0.0005312628927640617,
+      "step": 2000
+    },
+    {
+      "loss": 0.00030542328022420406,
+      "step": 2500
+    },
+    {
+      "loss": 0.00034057782613672316,
+      "step": 3000
+    },
+    {
+      "loss": 0.00039825457497499883,
+      "step": 3500
+    },
+    {
+      "loss": 0.000370816676877439,
+      "step": 4000
+    },
+    {
+      "loss": 0.0002456532383803278,
+      "step": 4500
+    },
+    {
+      "loss": 0.0003174332086928189,
+      "step": 5000
+    },
+    {
+      "loss": 0.0003142454079352319,
+      "step": 5500
+    },
+    {
+      "loss": 0.0002242312766611576,
+      "step": 6000
+    },
+    {
+      "loss": 0.00023088397574611008,
+      "step": 6500
+    },
+    {
+      "loss": 0.0003081134054809809,
+      "step": 7000
+    },
+    {
+      "loss": 0.00016016184235922992,
+      "step": 7500
+    },
+    {
+      "loss": 0.00016566234990023077,
+      "step": 8000
+    },
+    {
+      "loss": 0.00021696157637052238,
+      "step": 8500
+    },
+    {
+      "loss": 0.00015791470650583506,
+      "step": 9000
+    },
+    {
+      "loss": 0.00014667760115116835,
+      "step": 9500
+    },
+    {
+      "loss": 0.0001993866462726146,
+      "step": 10000
+    },
+    {
+      "loss": 0.0002832797181326896,
+      "step": 10500
+    },
+    {
+      "loss": 0.0002183551696361974,
+      "step": 11000
+    },
+    {
+      "loss": 0.0001932891900651157,
+      "step": 11500
+    },
+    {
+      "loss": 0.0001918961643241346,
+      "step": 12000
+    }
+  ],
+  "manifest": "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_run/live_oracle_dagger_aggregate_manifest.json",
+  "modulation_scale": 0.5,
+  "onnx_verify": {
+    "max_abs_error": 2.384185791015625e-07,
+    "p95_abs_error": 1.1920928955078125e-07,
+    "path": "policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate180_20260703/candidate.onnx",
+    "samples_checked": 64
+  },
+  "sample_weight": {
+    "max": 5.0,
+    "p50": 3.0,
+    "p95": 5.0,
+    "weighted_samples": 115468.0
+  },
+  "samples": 40500,
+  "saved_npz": "policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate180_20260703/student.npz",
+  "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+  "target_rate": {
+    "max_rad_s": 2.0095913410186768,
+    "p50_rad_s": 0.17292462289333344,
+    "p95_rad_s": 1.3949856758117676,
+    "p99_rad_s": 1.6973302364349365,
+    "pair_count": 40446
+  },
+  "train_metrics": {
+    "mae": 0.007581562853150738,
+    "max_abs_error": 0.31827377534741497,
+    "p50_abs_error": 0.004338866576477279,
+    "p95_abs_error": 0.02450213859257777,
+    "p99_abs_error": 0.04423755407333374,
+    "pred_action_saturation_pct": 0.0,
+    "rmse": 0.01278080028707194,
+    "samples": 40500
+  },
+  "trunk_hidden_sizes": [
+    128,
+    128
+  ]
+}

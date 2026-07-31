@@ -1,0 +1,1921 @@
+{
+  "authority": {
+    "formal_behavior_evaluation_executed": false,
+    "full_training_executed": false,
+    "pass_authorizes_only": "a separate prospective full-calibrator training preregistration",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "checks": {
+    "action_boundary_numpy_jax_bit_exact": true,
+    "all_initial_contacts_loaded": true,
+    "balanced_hidden_plants": true,
+    "checkpoint_all_arrays_finite": true,
+    "checkpoint_counts_exactly_one": true,
+    "checkpoint_hash_exact_and_unchanged": true,
+    "checkpoint_repeat_load_bit_exact": true,
+    "checkpoint_schema_exact": true,
+    "corrected_observer_canary_pass": true,
+    "cpu_only": true,
+    "every_stage2_leaf_changed": true,
+    "exact_population": true,
+    "fixed_p30_observer_slot_exact": true,
+    "graph_hash_exact_and_unchanged": true,
+    "locomotion_adapter_bit_exact_and_unused": true,
+    "log_std_clamp_respected": true,
+    "no_new_optimizer_update_or_candidate_artifact": true,
+    "normalization_mean_bit_exact": true,
+    "normalization_std_bit_exact": true,
+    "onnx_abi_exact": true,
+    "onnx_chain_outputs_finite": true,
+    "onnx_initializers_finite": true,
+    "onnx_jax_error_at_most_1e_7": true,
+    "onnx_previous_action_chain_exact": true,
+    "onnx_training_only_tensors_absent": true,
+    "protected_policies_bit_exact_and_unused": true,
+    "realized_action_chain_exact": true,
+    "software_versions_exact": true,
+    "stage1_auxiliary_action_gradient_nonzero": true,
+    "stage1_has_valid_transitions": true,
+    "stage1_losses_gradients_finite": true,
+    "stage1_moments_reproduce": true,
+    "stage1_optimizer_schema_excludes_action_head": true,
+    "stage1_parameters_reproduce": true,
+    "stage1_previous_action_gradient_nonzero": true,
+    "stage2_attempted_samples_include_valid_transitions": true,
+    "stage2_has_valid_transitions": true,
+    "stage2_losses_gradients_metrics_finite": true,
+    "stage2_moments_reproduce": true,
+    "stage2_optimizer_schema_excludes_encoder_auxiliary": true,
+    "stage2_parameters_reproduce": true,
+    "stage2_terminal_encoding_exact": true,
+    "support_boundary_canary_all_exact": true,
+    "xml_force_ranges_inside_independent_torque_limit": true
+  },
+  "contract": {
+    "canonical_lf_sha256": "c06c1d5e4d94d0396d25caa2dfefa718a22823cca660404c45cc60f59a9a3826",
+    "hash_mode": "lf",
+    "path": "/home/runner/work/open-duck-mini-rdkx5/open-duck-mini-rdkx5/outputs/analysis/winner_v12_calibrator_artifact_recovery_contract.json"
+  },
+  "corrected_observer_plant_canary": {
+    "fixed_p30_observer_bit_exact_across_hidden_plant_choice": true,
+    "hidden_physical_plants_are_distinct": true,
+    "maximum_hidden_plant_separation_rad": 0.015210241112700862
+  },
+  "decision": "AUTHORIZE_FULL_CALIBRATOR_TRAINING_PREREGISTRATION_ONLY",
+  "environment": {
+    "composition_receipt": {
+      "base_commit": "b9be205ac64488c23504ca42e5ec790337adeec3",
+      "checked_file_count": 10,
+      "checked_files_sha256": "d901f245fbba976d864ca4d7d52389d9c2c42354feacd20130795ddc3b04e929",
+      "git_status_paths": [
+        "playground/common/phase_moe_networks.py",
+        "playground/common/recurrent_ppo_networks.py",
+        "playground/common/reference_residual_ppo_networks.py",
+        "playground/common/rewards.py",
+        "playground/common/runner.py",
+        "playground/open_duck_mini_v2/custom_rewards.py",
+        "playground/open_duck_mini_v2/joystick.py",
+        "playground/open_duck_mini_v2/runner.py",
+        "playground/open_duck_mini_v2/xmls/open_duck_mini_v2_backlash.xml",
+        "playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml",
+        "winner_v7_playground_composition_receipt.json"
+      ],
+      "patches": [
+        {
+          "name": "ground_up_search_runner.patch",
+          "sha256": "6a176589b766de65ac2746c66f3387bfca5384d6ce4adf3703c752d8103a5e55"
+        },
+        {
+          "name": "ground_up_reference_conditioned.patch",
+          "sha256": "4138ecddb9ffc0df468a2780522c1732bc4b0e1a0865d181da1112d1c16902fb"
+        },
+        {
+          "name": "ground_up_recipe_search.patch",
+          "sha256": "3f5d892f5ce531207de6c86b18c9f5dbea83bc131a3fc2e5085851c2e4e3e5f8"
+        },
+        {
+          "name": "ground_up_stage1_mechanism_stack.patch",
+          "sha256": "cf5155dfd54a4699865b9823e8bf090f9f54b0e53df5583eb448e315d60053dc"
+        },
+        {
+          "name": "ground_up_nominal_reference_bootstrap.patch",
+          "sha256": "0d89b85815eb570115ec5f35d677aba68299f977b3e36c60b10dfa869533ebba"
+        },
+        {
+          "name": "ground_up_signed_progress_objective.patch",
+          "sha256": "13ddc699d3a005416a5790152b4a9d4f442216cfec4a991f93be65bde85ffa5b"
+        },
+        {
+          "name": "ground_up_reference_residual_actor.patch",
+          "sha256": "57bcf2394fa47745e9c26c6933e58a06c3799aba35e7000762befc5fac2f7d3b"
+        },
+        {
+          "name": "ground_up_hard_vector_command_support.patch",
+          "sha256": "900e65beaa4aa714ec352a527bf3f1a85888c0c76dab8d4cbef2352fa4986875"
+        },
+        {
+          "name": "ground_up_measured_actuator_bridge.patch",
+          "sha256": "133531963abea46cd0394526a2fa88b018fc21ca68c365863304e3e96d6ca0df"
+        },
+        {
+          "name": "ground_up_applied_target_observation.patch",
+          "sha256": "bdcac27115fcbe855079f5365ac046e863a9b302ff16f560d12a26cd492f2821"
+        },
+        {
+          "name": "ground_up_tracking_tail_exceedance.patch",
+          "sha256": "9f716243e0c4ef487ef4227ef0cb9f389ed43c0456435987ac0846e1b629811e"
+        }
+      ],
+      "receipt_canonical_lf_sha256": "628c35fab95e41a2fa82ae2255e0109502d72632c7ad408bf7e1294f5eb1c196",
+      "receipt_hash_mode": "lf"
+    },
+    "playground_commit": "b9be205ac64488c23504ca42e5ec790337adeec3",
+    "software_versions": {
+      "exact": true,
+      "expected": {
+        "jax": "0.7.2",
+        "jaxlib": "0.7.2",
+        "mujoco": "3.9.0",
+        "numpy": "2.0.2",
+        "onnx": "1.22.0",
+        "onnxruntime": "1.27.0",
+        "python": "3.12.13"
+      },
+      "observed": {
+        "jax": "0.7.2",
+        "jaxlib": "0.7.2",
+        "mujoco": "3.9.0",
+        "numpy": "2.0.2",
+        "onnx": "1.22.0",
+        "onnxruntime": "1.27.0",
+        "python": "3.12.13"
+      }
+    }
+  },
+  "execution": {
+    "formal_support_cells": 0,
+    "locomotion_behavior_cells": 0,
+    "locomotion_training_steps": 0,
+    "new_checkpoints_written": 0,
+    "new_onnx_graphs_written": 0,
+    "optimizer_updates": {
+      "stage1": 0,
+      "stage2": 0
+    },
+    "protected_policy_inference_calls": 0,
+    "retry_of_failed_smoke": false,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "failed_smoke": {
+    "checkpoint_sha256": "5748978f050c222f156d733f709b1ddc76e2b27bebaa00ed726ad53d9fca2288",
+    "graph_sha256": "9c0d018cd4d496abf9081584f969a917293ef72ecdcd6047483d6c553389aa4c",
+    "run_id": 29802206612
+  },
+  "force_range_contract": {
+    "actuator_count": 14,
+    "all_force_limited": true,
+    "all_ranges_within_independent_threshold": true,
+    "force_ranges_nm": [
+      [
+        -1.91229665,
+        1.91229665
+      ],
+      [
+        -1.91229665,
+        1.91229665
+      ],
+      [
+        -1.91229665,
+        1.91229665
+      ],
+      [
+        -1.91229665,
+        1.91229665
+      ],
+      [
+        -1.91229665,
+        1.91229665
+      ],
+      [
+        -1.91229665,
+        1.91229665
+      ],
+      [
+        -1.91229665,
+        1.91229665
+      ],
+      [
+        -1.91229665,
+        1.91229665
+      ],
+      [
+        -1.91229665,
+        1.91229665
+      ],
+      [
+        -1.91229665,
+        1.91229665
+      ],
+      [
+        -1.91229665,
+        1.91229665
+      ],
+      [
+        -1.91229665,
+        1.91229665
+      ],
+      [
+        -1.91229665,
+        1.91229665
+      ],
+      [
+        -1.91229665,
+        1.91229665
+      ]
+    ],
+    "independent_threshold_nm": 1.91229675,
+    "maximum_absolute_represented_nm": 1.91229665
+  },
+  "onnx": {
+    "abi_exact": true,
+    "all_chain_outputs_finite": true,
+    "all_initializers_finite": true,
+    "bytes": 54896,
+    "chain_ticks": 250,
+    "forbidden_training_or_privileged_tokens": [],
+    "initializer_count": 9,
+    "inputs": [
+      {
+        "name": "obs",
+        "shape": [
+          1,
+          115
+        ]
+      },
+      {
+        "name": "previous_action",
+        "shape": [
+          1,
+          14
+        ]
+      },
+      {
+        "name": "h_in",
+        "shape": [
+          1,
+          64
+        ]
+      }
+    ],
+    "jax_onnx_at_most_1e_7": true,
+    "jax_onnx_max_abs_error": 8.731149137020111e-11,
+    "outputs": [
+      {
+        "name": "calibration_actions",
+        "shape": [
+          1,
+          14
+        ]
+      },
+      {
+        "name": "previous_action_out",
+        "shape": [
+          1,
+          14
+        ]
+      },
+      {
+        "name": "h_out",
+        "shape": [
+          1,
+          64
+        ]
+      }
+    ],
+    "path": "/tmp/recovered-smoke/winner-v12-calibrator-smoke/winner_v12_calibrator_after_smoke.onnx",
+    "previous_action_out_equals_action_bit_exact": true,
+    "sha256": "9c0d018cd4d496abf9081584f969a917293ef72ecdcd6047483d6c553389aa4c",
+    "training_only_tensors_absent": true
+  },
+  "population": {
+    "configuration_ids": [
+      "MASS_LOW",
+      "MASS_HIGH",
+      "COM_X_NEG",
+      "COM_X_POS",
+      "COM_Y_NEG",
+      "COM_Y_POS",
+      "COM_Z_NEG",
+      "COM_Z_POS",
+      "INERTIA_X_LOW",
+      "INERTIA_X_HIGH",
+      "INERTIA_Y_LOW",
+      "INERTIA_Y_HIGH",
+      "INERTIA_Z_LOW",
+      "INERTIA_Z_HIGH",
+      "COM_CORNER_00",
+      "COM_CORNER_01"
+    ],
+    "plant_counts": {
+      "P30_ALL_JOINT": 8,
+      "P31_34_PITCH_WITH_P30_NONPITCH": 8
+    },
+    "stage1_valid_transitions": 2711,
+    "stage2_attempted_samples": 3562,
+    "stage2_valid_transitions": 3560
+  },
+  "repository_attribution": {
+    "github_artifact_digest": "sha256:4d6be6c54f0c44cc2279aa37b7bf462b8a6912a40b8e71ed46ebb195bbbfd070",
+    "github_artifact_id": 8484550478,
+    "github_run_commit": "0d7b0309431e5401259f0528d8cc0ee009bc9d4a",
+    "github_run_id": 29803319695,
+    "raw_result_sha256": "940f8a94cf5710b120892f1d7207f96ce6835e79cf970647e3bb65f646ac19e8"
+  },
+  "schema_version": "winner_v12.calibrator_artifact_recovery_result.v1",
+  "stage1": {
+    "episodes": [
+      {
+        "configuration_id": "MASS_LOW",
+        "configuration_sha256": "e1f3ab4fe42b3934e2ba03d88430be964cebc81b181ff512e6e69ad4bd8857bb",
+        "environment": 0,
+        "episode": {
+          "initial_contacts": [
+            1,
+            1
+          ],
+          "maximum_abs_tilt_rad": 0.09367827855015068,
+          "maximum_current_a": 1.103949298985863,
+          "maximum_final_window_gyro_xy_norm_rad_s": 0.32279694261250735,
+          "maximum_fixed_observer_physical_separation_rad": 0.03655985585448856,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.8660835514319771,
+          "minimum_base_z_m": 0.15,
+          "plant": "P30_ALL_JOINT",
+          "valid_ticks": 250
+        },
+        "plant": "P30_ALL_JOINT",
+        "prng": {
+          "algorithm": "NumPy PCG64",
+          "seed_sequence_entropy": [
+            120120,
+            1,
+            0
+          ],
+          "seed_sequence_state_u32": [
+            398453829,
+            699129448,
+            669751071,
+            3161264132
+          ]
+        },
+        "terminal": null
+      },
+      {
+        "configuration_id": "MASS_HIGH",
+        "configuration_sha256": "a44f6c0794d58904e6a4d0813247c91761519e6bbb2aa0507885d0cc121e02d4",
+        "environment": 1,
+        "episode": {
+          "initial_contacts": [
+            1,
+            1
+          ],
+          "maximum_abs_tilt_rad": 0.10508067731016944,
+          "maximum_current_a": 1.2267599726799854,
+          "maximum_final_window_gyro_xy_norm_rad_s": 0.16178113785890727,
+          "maximum_fixed_observer_physical_separation_rad": 0.03229936335239758,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.9624324548865744,
+          "minimum_base_z_m": 0.15,
+          "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+          "valid_ticks": 250
+        },
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "prng": {
+          "algorithm": "NumPy PCG64",
+          "seed_sequence_entropy": [
+            120120,
+            1,
+            1
+          ],
+          "seed_sequence_state_u32": [
+            3908650219,
+            3387760077,
+            2275536596,
+            318974411
+          ]
+        },
+        "terminal": null
+      },
+      {
+        "configuration_id": "COM_X_NEG",
+        "configuration_sha256": "9a7278e95f2201ea287307618435401a48a64a248cb44b1ae011c22028da2bfe",
+        "environment": 2,
+        "episode": {
+          "initial_contacts": [
+            1,
+            1
+          ],
+          "maximum_abs_tilt_rad": 0.37177827965329474,
+          "maximum_current_a": 0.6760442344189828,
+          "maximum_final_window_gyro_xy_norm_rad_s": 1.810445090190956,
+          "maximum_fixed_observer_physical_separation_rad": 0.018856990364693352,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.5303783353171934,
+          "minimum_base_z_m": 0.15,
+          "plant": "P30_ALL_JOINT",
+          "valid_ticks": 30
+        },
+        "plant": "P30_ALL_JOINT",
+        "prng": {
+          "algorithm": "NumPy PCG64",
+          "seed_sequence_entropy": [
+            120120,
+            1,
+            2
+          ],
+          "seed_sequence_state_u32": [
+            3192074007,
+            2833676070,
+            1319754281,
+            730172958
+          ]
+        },
+        "terminal": {
+          "base_z_m": 0.16928465295222234,
+          "checks": {
+            "base_z": true,
+            "both_contacts": true,
+            "current": true,
+            "finite": true,
+            "overcurrent_streak": true,
+            "roll_pitch": false,
+            "torque": true
+          },
+          "contacts": [
+            1,
+            1
+          ],
+          "fixed_p30_observer_target_sha256": "c5b16dec1170505cdf1369703adf979c4d493f32416ec9f967ce6ff36b72bb56",
+          "gyro_xy_norm_rad_s": 1.810445090190956,
+          "maximum_current_a": 0.45914086243263513,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.3602106990860001,
+          "physical_applied_target_sha256": "8d7b089336e8416e5049a87be94339c4101160ee47f45b347be16c0fc73e2d0b",
+          "pitch_rad": -0.37177827965329474,
+          "roll_rad": -0.005949310968909358,
+          "sent_target_sha256": "71eadabe7caea7115649670d41c5c00e9b94a2dbea9758831cc5b5a8918123f2",
+          "tick": 30
+        }
+      },
+      {
+        "configuration_id": "COM_X_POS",
+        "configuration_sha256": "1e25bbe862242f45be2b455c2bfcc8abcf6b0c91cf783711d192d985ec76e588",
+        "environment": 3,
+        "episode": {
+          "initial_contacts": [
+            1,
+            1
+          ],
+          "maximum_abs_tilt_rad": 0.3555903215018421,
+          "maximum_current_a": 1.4544321266448352,
+          "maximum_final_window_gyro_xy_norm_rad_s": 0.7088171981025936,
+          "maximum_fixed_observer_physical_separation_rad": 0.030740549457022863,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 1.1410485451809258,
+          "minimum_base_z_m": 0.15,
+          "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+          "valid_ticks": 156
+        },
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "prng": {
+          "algorithm": "NumPy PCG64",
+          "seed_sequence_entropy": [
+            120120,
+            1,
+            3
+          ],
+          "seed_sequence_state_u32": [
+            3835878976,
+            1968228233,
+            3879483419,
+            435376634
+          ]
+        },
+        "terminal": {
+          "base_z_m": 0.1709046291563356,
+          "checks": {
+            "base_z": true,
+            "both_contacts": true,
+            "current": true,
+            "finite": true,
+            "overcurrent_streak": true,
+            "roll_pitch": false,
+            "torque": true
+          },
+          "contacts": [
+            1,
+            1
+          ],
+          "fixed_p30_observer_target_sha256": "5f8e5630572adef090293c44ec35205b018749e83d9f88d267bef849324ce83b",
+          "gyro_xy_norm_rad_s": 0.7088171981025936,
+          "maximum_current_a": 0.671236401642622,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.5266064366534895,
+          "physical_applied_target_sha256": "1a5e555656f462f1f28f78f45e6ae47bf10f3d2fb00a68f3fe4f4e5ef3198369",
+          "pitch_rad": -0.3555903215018421,
+          "roll_rad": 0.024488684220972397,
+          "sent_target_sha256": "9a7260ef067316699f7e6258545344d9464c1e87193735131bb72b66edebeafc",
+          "tick": 156
+        }
+      },
+      {
+        "configuration_id": "COM_Y_NEG",
+        "configuration_sha256": "3dbc25a88a1bfcb6db93d8c59711e2d7ddbedde68d7a937341226e4259b99d45",
+        "environment": 4,
+        "episode": {
+          "initial_contacts": [
+            1,
+            1
+          ],
+          "maximum_abs_tilt_rad": 0.10831485945469176,
+          "maximum_current_a": 1.472894754381559,
+          "maximum_final_window_gyro_xy_norm_rad_s": 0.22349552040533743,
+          "maximum_fixed_observer_physical_separation_rad": 0.027880838541022863,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 1.1555330674444733,
+          "minimum_base_z_m": 0.15,
+          "plant": "P30_ALL_JOINT",
+          "valid_ticks": 250
+        },
+        "plant": "P30_ALL_JOINT",
+        "prng": {
+          "algorithm": "NumPy PCG64",
+          "seed_sequence_entropy": [
+            120120,
+            1,
+            4
+          ],
+          "seed_sequence_state_u32": [
+            1637448053,
+            2124882073,
+            143042747,
+            125389797
+          ]
+        },
+        "terminal": null
+      },
+      {
+        "configuration_id": "COM_Y_POS",
+        "configuration_sha256": "1e2550ae0b2cb1d37db35d326738bc42fcc5c8f91ee3bd48985ca06a65425078",
+        "environment": 5,
+        "episode": {
+          "initial_contacts": [
+            1,
+            1
+          ],
+          "maximum_abs_tilt_rad": 0.33286717225513346,
+          "maximum_current_a": 1.9097760217690458,
+          "maximum_final_window_gyro_xy_norm_rad_s": 0.3393588274232744,
+          "maximum_fixed_observer_physical_separation_rad": 0.03704391640620683,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 1.4982804019105131,
+          "minimum_base_z_m": 0.14458921875867817,
+          "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+          "valid_ticks": 250
+        },
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "prng": {
+          "algorithm": "NumPy PCG64",
+          "seed_sequence_entropy": [
+            120120,
+            1,
+            5
+          ],
+          "seed_sequence_state_u32": [
+            1458137373,
+            3566113980,
+            2951615017,
+            4235278412
+          ]
+        },
+        "terminal": null
+      },
+      {
+        "configuration_id": "COM_Z_NEG",
+        "configuration_sha256": "abbbdfa76be98e4a98b6086102c9b8d596524badda9fd1d848fafb8e695e926f",
+        "environment": 6,
+        "episode": {
+          "initial_contacts": [
+            1,
+            1
+          ],
+          "maximum_abs_tilt_rad": 0.3546608170073753,
+          "maximum_current_a": 1.6767468543206145,
+          "maximum_final_window_gyro_xy_norm_rad_s": 0.5594771976764003,
+          "maximum_fixed_observer_physical_separation_rad": 0.02750484661359004,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 1.3154615631138604,
+          "minimum_base_z_m": 0.15,
+          "plant": "P30_ALL_JOINT",
+          "valid_ticks": 190
+        },
+        "plant": "P30_ALL_JOINT",
+        "prng": {
+          "algorithm": "NumPy PCG64",
+          "seed_sequence_entropy": [
+            120120,
+            1,
+            6
+          ],
+          "seed_sequence_state_u32": [
+            3334098423,
+            573820197,
+            4020093452,
+            2140052093
+          ]
+        },
+        "terminal": {
+          "base_z_m": 0.15233260074339866,
+          "checks": {
+            "base_z": true,
+            "both_contacts": true,
+            "current": true,
+            "finite": true,
+            "overcurrent_streak": true,
+            "roll_pitch": false,
+            "torque": true
+          },
+          "contacts": [
+            1,
+            1
+          ],
+          "fixed_p30_observer_target_sha256": "c6bfd0711c4f9e919d4aa2104f75f16dfdd1a9c4687b5249690cb54ff338c130",
+          "gyro_xy_norm_rad_s": 0.29003226367587603,
+          "maximum_current_a": 1.5177204298819313,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 1.1907002442961314,
+          "physical_applied_target_sha256": "6bfdb77320e71b36e04aeede4daccadc08de5d62904fa20433246a83899bf688",
+          "pitch_rad": 0.3546608170073753,
+          "roll_rad": -0.07431108994378906,
+          "sent_target_sha256": "1183a53ce6493d9ec6d7e6ea0f961912708d507a16a43e6c904db0e7015bf365",
+          "tick": 190
+        }
+      },
+      {
+        "configuration_id": "COM_Z_POS",
+        "configuration_sha256": "d5b8d16927d198da7eeaa6dff68056b898eb2b8f2925937bf1ca8e35b8671480",
+        "environment": 7,
+        "episode": {
+          "initial_contacts": [
+            1,
+            1
+          ],
+          "maximum_abs_tilt_rad": 0.361546371942319,
+          "maximum_current_a": 1.2280758345678484,
+          "maximum_final_window_gyro_xy_norm_rad_s": 0.7965140344444768,
+          "maximum_fixed_observer_physical_separation_rad": 0.03693897123118464,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.9634647906451832,
+          "minimum_base_z_m": 0.15,
+          "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+          "valid_ticks": 234
+        },
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "prng": {
+          "algorithm": "NumPy PCG64",
+          "seed_sequence_entropy": [
+            120120,
+            1,
+            7
+          ],
+          "seed_sequence_state_u32": [
+            2969746507,
+            2543955748,
+            257601451,
+            675147528
+          ]
+        },
+        "terminal": {
+          "base_z_m": 0.17048751107441018,
+          "checks": {
+            "base_z": true,
+            "both_contacts": true,
+            "current": true,
+            "finite": true,
+            "overcurrent_streak": true,
+            "roll_pitch": false,
+            "torque": true
+          },
+          "contacts": [
+            1,
+            1
+          ],
+          "fixed_p30_observer_target_sha256": "09a8c07ae682529a4024be97d3ca7300f7a2e9188aab9dabfb60334e74a0525c",
+          "gyro_xy_norm_rad_s": 0.7965140344444768,
+          "maximum_current_a": 0.634802747448652,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.4980230690613858,
+          "physical_applied_target_sha256": "85d8e7b63176976ea4082ceb757d7f705fdf50958437014ad7c7368b7dc7d6fe",
+          "pitch_rad": -0.361546371942319,
+          "roll_rad": 0.07041504146785964,
+          "sent_target_sha256": "668a0c089e7583663c0166ac2ef97d4db6a0d5088e186bbc9bbec6f3e8332cde",
+          "tick": 234
+        }
+      },
+      {
+        "configuration_id": "INERTIA_X_LOW",
+        "configuration_sha256": "52c984e70c1c86d83350aaaea16f185d89e1f56b4444b7d75257172ce6c4b7af",
+        "environment": 8,
+        "episode": {
+          "initial_contacts": [
+            1,
+            1
+          ],
+          "maximum_abs_tilt_rad": 0.09012411523259763,
+          "maximum_current_a": 1.1502405574874408,
+          "maximum_final_window_gyro_xy_norm_rad_s": 0.38204791242148933,
+          "maximum_fixed_observer_physical_separation_rad": 0.03135532402454025,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.9024005250467368,
+          "minimum_base_z_m": 0.15,
+          "plant": "P30_ALL_JOINT",
+          "valid_ticks": 250
+        },
+        "plant": "P30_ALL_JOINT",
+        "prng": {
+          "algorithm": "NumPy PCG64",
+          "seed_sequence_entropy": [
+            120120,
+            1,
+            8
+          ],
+          "seed_sequence_state_u32": [
+            689761698,
+            852808815,
+            3994040557,
+            3256263245
+          ]
+        },
+        "terminal": null
+      },
+      {
+        "configuration_id": "INERTIA_X_HIGH",
+        "configuration_sha256": "4989f4556f7c2f1ec9c51ebd014701c0fc92eea09c76f807b8b907a2c9c6588c",
+        "environment": 9,
+        "episode": {
+          "initial_contacts": [
+            1,
+            1
+          ],
+          "maximum_abs_tilt_rad": 0.36978922275994197,
+          "maximum_current_a": 1.1175731532546944,
+          "maximum_final_window_gyro_xy_norm_rad_s": 1.274140846298224,
+          "maximum_fixed_observer_physical_separation_rad": 0.021830770983374177,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.8767719010692119,
+          "minimum_base_z_m": 0.15,
+          "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+          "valid_ticks": 78
+        },
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "prng": {
+          "algorithm": "NumPy PCG64",
+          "seed_sequence_entropy": [
+            120120,
+            1,
+            9
+          ],
+          "seed_sequence_state_u32": [
+            108662337,
+            3389293401,
+            1276821445,
+            2329863869
+          ]
+        },
+        "terminal": {
+          "base_z_m": 0.16927766617203208,
+          "checks": {
+            "base_z": true,
+            "both_contacts": true,
+            "current": true,
+            "finite": true,
+            "overcurrent_streak": true,
+            "roll_pitch": false,
+            "torque": true
+          },
+          "contacts": [
+            1,
+            1
+          ],
+          "fixed_p30_observer_target_sha256": "4684c10785493bbecd2fac929efbde69fbedb7092c3593e0461d2f08bd5391aa",
+          "gyro_xy_norm_rad_s": 1.274140846298224,
+          "maximum_current_a": 0.4818665980131525,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.3780397658724546,
+          "physical_applied_target_sha256": "91366f428b56fc5fc36012a743209536cfd17a4b8041fb22fcfec7f959b5ab99",
+          "pitch_rad": -0.36978922275994197,
+          "roll_rad": 0.08334418761051977,
+          "sent_target_sha256": "aad3588333456ab145ee44b79b37e242211645a1babed30f73b9296f6bcefd24",
+          "tick": 78
+        }
+      },
+      {
+        "configuration_id": "INERTIA_Y_LOW",
+        "configuration_sha256": "9d4daf172f28c422fe93344424fae5cabc5d2a91b4620cc2d95e4ba42b9f7c57",
+        "environment": 10,
+        "episode": {
+          "initial_contacts": [
+            1,
+            1
+          ],
+          "maximum_abs_tilt_rad": 0.3586332310743549,
+          "maximum_current_a": 1.094318410293641,
+          "maximum_final_window_gyro_xy_norm_rad_s": 0.9230665402155593,
+          "maximum_fixed_observer_physical_separation_rad": 0.018770963789483504,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.8585278110644907,
+          "minimum_base_z_m": 0.15,
+          "plant": "P30_ALL_JOINT",
+          "valid_ticks": 98
+        },
+        "plant": "P30_ALL_JOINT",
+        "prng": {
+          "algorithm": "NumPy PCG64",
+          "seed_sequence_entropy": [
+            120120,
+            1,
+            10
+          ],
+          "seed_sequence_state_u32": [
+            3355916389,
+            2629151569,
+            192958774,
+            978447940
+          ]
+        },
+        "terminal": {
+          "base_z_m": 0.17059199623620963,
+          "checks": {
+            "base_z": true,
+            "both_contacts": true,
+            "current": true,
+            "finite": true,
+            "overcurrent_streak": true,
+            "roll_pitch": false,
+            "torque": true
+          },
+          "contacts": [
+            1,
+            1
+          ],
+          "fixed_p30_observer_target_sha256": "3cfdc5148f7afe719cf2de6146bf8adc9e082018026f02a3326c6eeb52309564",
+          "gyro_xy_norm_rad_s": 0.9230665402155593,
+          "maximum_current_a": 0.596264597416168,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.4677886571401011,
+          "physical_applied_target_sha256": "11dd437d329f368772ff0ab81c768bfd4a575f22d589839a12f7d3e8f0fc09d7",
+          "pitch_rad": -0.3586332310743549,
+          "roll_rad": 0.04618635411928116,
+          "sent_target_sha256": "bb781f409d0cafb7245f8cadf5e191680203874dd8564d39ba057529fbc6833a",
+          "tick": 98
+        }
+      },
+      {
+        "configuration_id": "INERTIA_Y_HIGH",
+        "configuration_sha256": "f1f469ebf3966d4efd83addd44bb8e5777dae64e2269d71cd3a6a13d57e81b3a",
+        "environment": 11,
+        "episode": {
+          "initial_contacts": [
+            1,
+            1
+          ],
+          "maximum_abs_tilt_rad": 0.36354310261546785,
+          "maximum_current_a": 1.359213148684992,
+          "maximum_final_window_gyro_xy_norm_rad_s": 1.377713230515667,
+          "maximum_fixed_observer_physical_separation_rad": 0.034656430263388695,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 1.0663462099641343,
+          "minimum_base_z_m": 0.15,
+          "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+          "valid_ticks": 159
+        },
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "prng": {
+          "algorithm": "NumPy PCG64",
+          "seed_sequence_entropy": [
+            120120,
+            1,
+            11
+          ],
+          "seed_sequence_state_u32": [
+            1413546347,
+            1729702911,
+            3088820261,
+            1313398592
+          ]
+        },
+        "terminal": {
+          "base_z_m": 0.1619915648399414,
+          "checks": {
+            "base_z": true,
+            "both_contacts": true,
+            "current": true,
+            "finite": true,
+            "overcurrent_streak": true,
+            "roll_pitch": false,
+            "torque": true
+          },
+          "contacts": [
+            1,
+            1
+          ],
+          "fixed_p30_observer_target_sha256": "917f7f90abca578598ece4717c158dc642a412a9d854e2da399a5d5661d1b1b7",
+          "gyro_xy_norm_rad_s": 1.377713230515667,
+          "maximum_current_a": 0.5545078658892462,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.4350291650418221,
+          "physical_applied_target_sha256": "1f18a872da74596547145a2de0992d58c4c84a5ab33922b4778be45f9f2c4fdf",
+          "pitch_rad": -0.36354310261546785,
+          "roll_rad": -0.0758525978445608,
+          "sent_target_sha256": "7eafc7c4b42c8c31382d8da7869630049d12dff2c8690835f004133d371f2e4f",
+          "tick": 159
+        }
+      },
+      {
+        "configuration_id": "INERTIA_Z_LOW",
+        "configuration_sha256": "fec00929e42089eb0fa613733a1fdf165278c349f3991c55b1d31f3da2a2bef3",
+        "environment": 12,
+        "episode": {
+          "initial_contacts": [
+            1,
+            1
+          ],
+          "maximum_abs_tilt_rad": 0.3742809265253546,
+          "maximum_current_a": 1.519389069533168,
+          "maximum_final_window_gyro_xy_norm_rad_s": 1.3071741509197907,
+          "maximum_fixed_observer_physical_separation_rad": 0.048491009049327696,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 1.1920093454989953,
+          "minimum_base_z_m": 0.15,
+          "plant": "P30_ALL_JOINT",
+          "valid_ticks": 192
+        },
+        "plant": "P30_ALL_JOINT",
+        "prng": {
+          "algorithm": "NumPy PCG64",
+          "seed_sequence_entropy": [
+            120120,
+            1,
+            12
+          ],
+          "seed_sequence_state_u32": [
+            3197429162,
+            848933473,
+            4045886283,
+            276359811
+          ]
+        },
+        "terminal": {
+          "base_z_m": 0.1687934435660442,
+          "checks": {
+            "base_z": true,
+            "both_contacts": true,
+            "current": true,
+            "finite": true,
+            "overcurrent_streak": true,
+            "roll_pitch": false,
+            "torque": true
+          },
+          "contacts": [
+            1,
+            1
+          ],
+          "fixed_p30_observer_target_sha256": "ba7a8e9b31f65dc1c28c0d8fa996c63d111b57055baff0978c4f2444b8429ebf",
+          "gyro_xy_norm_rad_s": 1.3071741509197907,
+          "maximum_current_a": 0.8249966697095262,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.647236287280554,
+          "physical_applied_target_sha256": "eb4300c9e72f561f2136afbbad2fb76f605210ea7bf13e79ed20f06ee5c77e49",
+          "pitch_rad": -0.3742809265253546,
+          "roll_rad": 0.0032993604731084533,
+          "sent_target_sha256": "2af3cc977b6b55be46b1900eaa06a4d5944ec1a3931450ba48c67557149c1e6f",
+          "tick": 192
+        }
+      },
+      {
+        "configuration_id": "INERTIA_Z_HIGH",
+        "configuration_sha256": "9838791cc73b35016ec172d0aeef2430e6596be00c74d441c33e2989577fdb7c",
+        "environment": 13,
+        "episode": {
+          "initial_contacts": [
+            1,
+            1
+          ],
+          "maximum_abs_tilt_rad": 0.07143873872195083,
+          "maximum_current_a": 1.0950426820921575,
+          "maximum_final_window_gyro_xy_norm_rad_s": 0.200615418467227,
+          "maximum_fixed_observer_physical_separation_rad": 0.03660565403170776,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.8590960254671245,
+          "minimum_base_z_m": 0.15,
+          "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+          "valid_ticks": 250
+        },
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "prng": {
+          "algorithm": "NumPy PCG64",
+          "seed_sequence_entropy": [
+            120120,
+            1,
+            13
+          ],
+          "seed_sequence_state_u32": [
+            3446803532,
+            2227730692,
+            2239087549,
+            3419239254
+          ]
+        },
+        "terminal": null
+      },
+      {
+        "configuration_id": "COM_CORNER_00",
+        "configuration_sha256": "f182221e7bfe1bc072b2a00015763fb78aeda219cdc379142d34cc4dce6b5b28",
+        "environment": 14,
+        "episode": {
+          "initial_contacts": [
+            1,
+            1
+          ],
+          "maximum_abs_tilt_rad": 0.3596807870067385,
+          "maximum_current_a": 0.6995440469838584,
+          "maximum_final_window_gyro_xy_norm_rad_s": 1.553607075275593,
+          "maximum_fixed_observer_physical_separation_rad": 0.018736810934016714,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.5488146902683404,
+          "minimum_base_z_m": 0.15,
+          "plant": "P30_ALL_JOINT",
+          "valid_ticks": 46
+        },
+        "plant": "P30_ALL_JOINT",
+        "prng": {
+          "algorithm": "NumPy PCG64",
+          "seed_sequence_entropy": [
+            120120,
+            1,
+            14
+          ],
+          "seed_sequence_state_u32": [
+            1406086008,
+            1380504922,
+            2222229180,
+            1392115396
+          ]
+        },
+        "terminal": {
+          "base_z_m": 0.16967636528057617,
+          "checks": {
+            "base_z": true,
+            "both_contacts": true,
+            "current": true,
+            "finite": true,
+            "overcurrent_streak": true,
+            "roll_pitch": false,
+            "torque": true
+          },
+          "contacts": [
+            1,
+            1
+          ],
+          "fixed_p30_observer_target_sha256": "aa85d3642f740be1ee27a0d353936c1bec7e9f0663b248701377a15ec035c0a8",
+          "gyro_xy_norm_rad_s": 1.553607075275593,
+          "maximum_current_a": 0.5628675551777643,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.44158760879872183,
+          "physical_applied_target_sha256": "5731b936d375c4c26b65788df2b9e253c10ba0e76ddd428867591a8af1a9ecfc",
+          "pitch_rad": -0.3596807870067385,
+          "roll_rad": 0.006333084183466019,
+          "sent_target_sha256": "609900c98981704c20b8676ae7661ebb62b35bfafca7a0f23276ffc865e8e392",
+          "tick": 46
+        }
+      },
+      {
+        "configuration_id": "COM_CORNER_01",
+        "configuration_sha256": "e79a3143da00f5ee5dd2537015644228a357a6531d6ca296d78dfb004ea26e87",
+        "environment": 15,
+        "episode": {
+          "initial_contacts": [
+            1,
+            1
+          ],
+          "maximum_abs_tilt_rad": 0.36662259159520083,
+          "maximum_current_a": 0.7031091513475577,
+          "maximum_final_window_gyro_xy_norm_rad_s": 1.745778902495869,
+          "maximum_fixed_observer_physical_separation_rad": 0.013114199797667564,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.5516116287250021,
+          "minimum_base_z_m": 0.15,
+          "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+          "valid_ticks": 28
+        },
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "prng": {
+          "algorithm": "NumPy PCG64",
+          "seed_sequence_entropy": [
+            120120,
+            1,
+            15
+          ],
+          "seed_sequence_state_u32": [
+            716352686,
+            3472128055,
+            820842725,
+            707568343
+          ]
+        },
+        "terminal": {
+          "base_z_m": 0.1704146013790518,
+          "checks": {
+            "base_z": true,
+            "both_contacts": true,
+            "current": true,
+            "finite": true,
+            "overcurrent_streak": true,
+            "roll_pitch": false,
+            "torque": true
+          },
+          "contacts": [
+            1,
+            1
+          ],
+          "fixed_p30_observer_target_sha256": "003b8f81df01b6e31a5f91a4722e3579c80fd9f72cae683a2b12a78197b0c364",
+          "gyro_xy_norm_rad_s": 1.745778902495869,
+          "maximum_current_a": 0.6661235141204939,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.5225952127799793,
+          "physical_applied_target_sha256": "a705ab086bfb8cdedbc6f6c7969d13b3934ec971726afc95b54e682609bb924a",
+          "pitch_rad": -0.36662259159520083,
+          "roll_rad": 0.03529802920805035,
+          "sent_target_sha256": "82130c6ff23fff9ee0c81a08b17e338b0b0529f22c8c183a3e4cc505c12db90f",
+          "tick": 28
+        }
+      }
+    ],
+    "gradient_max_abs_by_leaf": {
+      "auxiliary_action_weight": 4028586240.0,
+      "auxiliary_bias": 42636955648.0,
+      "auxiliary_hidden_weight": 26932561920.0,
+      "hidden_bias": 5532505600.0,
+      "hidden_weight": 3479282944.0,
+      "obs_weight": 54351052800.0,
+      "previous_action_weight": 507938848.0
+    },
+    "loss_after": 40528498688.0,
+    "loss_before": 41055580160.0,
+    "m_comparison": {
+      "bit_exact": true,
+      "maximum_absolute_error": 0.0,
+      "schema_exact": true
+    },
+    "normalization": {
+      "dtype": "float64 population mean/std (ddof=0), floor 1e-6, cast float32",
+      "empirical_std_float64_sha256": "f7afc98686e747e079de03d657e1add343af449288d3fefb1232ae390c094cce",
+      "floored_fields": 2,
+      "floored_std_float64_sha256": "70596eb92f3debb8cb87d4906acb4b7d5272d2892493a09e760857faf7d0ff43",
+      "heldout_rows": 0,
+      "mean_float64_sha256": "d1f45645cc1359aa707676b434a5c22059dcb20b5a8d93c5ed62bd793f60ec4a",
+      "population": "all valid Stage-1 smoke transitions only",
+      "valid_rows": 2711
+    },
+    "parameter_comparison": {
+      "bit_exact": true,
+      "maximum_absolute_error": 0.0,
+      "schema_exact": true
+    },
+    "parameter_max_abs_delta_by_leaf": {
+      "auxiliary_action_weight": 0.00010000169277191162,
+      "auxiliary_bias": 9.999934263760224e-05,
+      "auxiliary_hidden_weight": 0.00010000169277191162,
+      "hidden_bias": 9.999936446547508e-05,
+      "hidden_weight": 9.999936446547508e-05,
+      "obs_weight": 0.00010000169277191162,
+      "previous_action_weight": 0.00010000169277191162
+    },
+    "rollout": {
+      "fixed_p30_observer_slot_exact": true,
+      "realized_action_chain_exact": true,
+      "ternary_counts": {
+        "-1": 12754,
+        "0": 12598,
+        "1": 12742
+      }
+    },
+    "v_comparison": {
+      "bit_exact": true,
+      "maximum_absolute_error": 0.0,
+      "schema_exact": true
+    }
+  },
+  "stage2": {
+    "episodes": [
+      {
+        "configuration_id": "MASS_LOW",
+        "configuration_sha256": "e1f3ab4fe42b3934e2ba03d88430be964cebc81b181ff512e6e69ad4bd8857bb",
+        "environment": 0,
+        "episode": {
+          "initial_contacts": [
+            1,
+            1
+          ],
+          "maximum_abs_tilt_rad": 0.014362514196990988,
+          "maximum_current_a": 0.8915218449716868,
+          "maximum_final_window_gyro_xy_norm_rad_s": 0.048349077395476656,
+          "maximum_fixed_observer_physical_separation_rad": 0.01724493082687168,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.6994274160793275,
+          "minimum_base_z_m": 0.15,
+          "plant": "P30_ALL_JOINT",
+          "valid_ticks": 250
+        },
+        "plant": "P30_ALL_JOINT",
+        "prng": {
+          "algorithm": "NumPy PCG64",
+          "seed_sequence_entropy": [
+            120120,
+            2,
+            0
+          ],
+          "seed_sequence_state_u32": [
+            2696451484,
+            208152335,
+            3956949517,
+            3776572027
+          ]
+        },
+        "terminal": null,
+        "terminal_success_bonus_applied": true
+      },
+      {
+        "configuration_id": "MASS_HIGH",
+        "configuration_sha256": "a44f6c0794d58904e6a4d0813247c91761519e6bbb2aa0507885d0cc121e02d4",
+        "environment": 1,
+        "episode": {
+          "initial_contacts": [
+            1,
+            1
+          ],
+          "maximum_abs_tilt_rad": 0.01716027232625637,
+          "maximum_current_a": 1.190511412070817,
+          "maximum_final_window_gyro_xy_norm_rad_s": 0.04837870422754327,
+          "maximum_fixed_observer_physical_separation_rad": 0.016004673200437018,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.9339942991347421,
+          "minimum_base_z_m": 0.15,
+          "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+          "valid_ticks": 250
+        },
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "prng": {
+          "algorithm": "NumPy PCG64",
+          "seed_sequence_entropy": [
+            120120,
+            2,
+            1
+          ],
+          "seed_sequence_state_u32": [
+            3679213362,
+            3849458427,
+            1556451557,
+            1052203093
+          ]
+        },
+        "terminal": null,
+        "terminal_success_bonus_applied": true
+      },
+      {
+        "configuration_id": "COM_X_NEG",
+        "configuration_sha256": "9a7278e95f2201ea287307618435401a48a64a248cb44b1ae011c22028da2bfe",
+        "environment": 2,
+        "episode": {
+          "initial_contacts": [
+            1,
+            1
+          ],
+          "maximum_abs_tilt_rad": 0.3680254876702491,
+          "maximum_current_a": 0.617065501276569,
+          "maximum_final_window_gyro_xy_norm_rad_s": 1.6395062081850527,
+          "maximum_fixed_observer_physical_separation_rad": 0.014766407190856272,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.48410763184750927,
+          "minimum_base_z_m": 0.15,
+          "plant": "P30_ALL_JOINT",
+          "valid_ticks": 31
+        },
+        "plant": "P30_ALL_JOINT",
+        "prng": {
+          "algorithm": "NumPy PCG64",
+          "seed_sequence_entropy": [
+            120120,
+            2,
+            2
+          ],
+          "seed_sequence_state_u32": [
+            4153311521,
+            2750893424,
+            762535412,
+            2999793956
+          ]
+        },
+        "terminal": {
+          "base_z_m": 0.17029792372954747,
+          "checks": {
+            "base_z": true,
+            "both_contacts": true,
+            "current": true,
+            "finite": true,
+            "overcurrent_streak": true,
+            "roll_pitch": false,
+            "torque": true
+          },
+          "contacts": [
+            1,
+            1
+          ],
+          "fixed_p30_observer_target_sha256": "2c7935f958eb8d2e6fe9f7279901f42d2cd2841a6d0d06d0ee87223123d0f56e",
+          "gyro_xy_norm_rad_s": 1.6395062081850527,
+          "maximum_current_a": 0.4366069147114776,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.34253209601242496,
+          "physical_applied_target_sha256": "5a1b43aef4366e21d78a6a10864d9e654a7d26459b90569affb1ea06cf63619f",
+          "pitch_rad": -0.3680254876702491,
+          "roll_rad": -0.00043615357655150754,
+          "sent_target_sha256": "906a355c67076a9e2c5fe4a916086858c2108fb91c97ff742701214f05d280de",
+          "tick": 31
+        },
+        "terminal_success_bonus_applied": false
+      },
+      {
+        "configuration_id": "COM_X_POS",
+        "configuration_sha256": "1e25bbe862242f45be2b455c2bfcc8abcf6b0c91cf783711d192d985ec76e588",
+        "environment": 3,
+        "episode": {
+          "initial_contacts": [
+            1,
+            1
+          ],
+          "maximum_abs_tilt_rad": 0.06358166602405357,
+          "maximum_current_a": 1.2696015124539617,
+          "maximum_final_window_gyro_xy_norm_rad_s": 0.06920400891504644,
+          "maximum_fixed_observer_physical_separation_rad": 0.018850871417957826,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.9960430137685314,
+          "minimum_base_z_m": 0.15,
+          "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+          "valid_ticks": 250
+        },
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "prng": {
+          "algorithm": "NumPy PCG64",
+          "seed_sequence_entropy": [
+            120120,
+            2,
+            3
+          ],
+          "seed_sequence_state_u32": [
+            754094486,
+            1266025878,
+            3107320169,
+            283460405
+          ]
+        },
+        "terminal": null,
+        "terminal_success_bonus_applied": false
+      },
+      {
+        "configuration_id": "COM_Y_NEG",
+        "configuration_sha256": "3dbc25a88a1bfcb6db93d8c59711e2d7ddbedde68d7a937341226e4259b99d45",
+        "environment": 4,
+        "episode": {
+          "initial_contacts": [
+            1,
+            1
+          ],
+          "maximum_abs_tilt_rad": 0.015718259669481326,
+          "maximum_current_a": 0.8995510190204603,
+          "maximum_final_window_gyro_xy_norm_rad_s": 0.06322947164498034,
+          "maximum_fixed_observer_physical_separation_rad": 0.018234938501869188,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.7057265600541598,
+          "minimum_base_z_m": 0.15,
+          "plant": "P30_ALL_JOINT",
+          "valid_ticks": 250
+        },
+        "plant": "P30_ALL_JOINT",
+        "prng": {
+          "algorithm": "NumPy PCG64",
+          "seed_sequence_entropy": [
+            120120,
+            2,
+            4
+          ],
+          "seed_sequence_state_u32": [
+            3536927872,
+            1113671261,
+            1089419296,
+            2194841132
+          ]
+        },
+        "terminal": null,
+        "terminal_success_bonus_applied": false
+      },
+      {
+        "configuration_id": "COM_Y_POS",
+        "configuration_sha256": "1e2550ae0b2cb1d37db35d326738bc42fcc5c8f91ee3bd48985ca06a65425078",
+        "environment": 5,
+        "episode": {
+          "initial_contacts": [
+            1,
+            1
+          ],
+          "maximum_abs_tilt_rad": 0.015611879606081947,
+          "maximum_current_a": 1.194309476743869,
+          "maximum_final_window_gyro_xy_norm_rad_s": 0.04185902216339522,
+          "maximum_fixed_observer_physical_separation_rad": 0.01784147663642288,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.9369740024088209,
+          "minimum_base_z_m": 0.15,
+          "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+          "valid_ticks": 250
+        },
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "prng": {
+          "algorithm": "NumPy PCG64",
+          "seed_sequence_entropy": [
+            120120,
+            2,
+            5
+          ],
+          "seed_sequence_state_u32": [
+            929147341,
+            1406397750,
+            2846659245,
+            3825047276
+          ]
+        },
+        "terminal": null,
+        "terminal_success_bonus_applied": true
+      },
+      {
+        "configuration_id": "COM_Z_NEG",
+        "configuration_sha256": "abbbdfa76be98e4a98b6086102c9b8d596524badda9fd1d848fafb8e695e926f",
+        "environment": 6,
+        "episode": {
+          "initial_contacts": [
+            1,
+            1
+          ],
+          "maximum_abs_tilt_rad": 0.014644564748033618,
+          "maximum_current_a": 0.8988316587672829,
+          "maximum_final_window_gyro_xy_norm_rad_s": 0.04519085269293529,
+          "maximum_fixed_observer_physical_separation_rad": 0.0154923262457247,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.705162198916014,
+          "minimum_base_z_m": 0.15,
+          "plant": "P30_ALL_JOINT",
+          "valid_ticks": 250
+        },
+        "plant": "P30_ALL_JOINT",
+        "prng": {
+          "algorithm": "NumPy PCG64",
+          "seed_sequence_entropy": [
+            120120,
+            2,
+            6
+          ],
+          "seed_sequence_state_u32": [
+            859954008,
+            2606488386,
+            2703828298,
+            4002013905
+          ]
+        },
+        "terminal": null,
+        "terminal_success_bonus_applied": true
+      },
+      {
+        "configuration_id": "COM_Z_POS",
+        "configuration_sha256": "d5b8d16927d198da7eeaa6dff68056b898eb2b8f2925937bf1ca8e35b8671480",
+        "environment": 7,
+        "episode": {
+          "initial_contacts": [
+            1,
+            1
+          ],
+          "maximum_abs_tilt_rad": 0.016288693025589253,
+          "maximum_current_a": 1.1034322207719869,
+          "maximum_final_window_gyro_xy_norm_rad_s": 0.05643400424220576,
+          "maximum_fixed_observer_physical_separation_rad": 0.016261585510763423,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.8656778870266884,
+          "minimum_base_z_m": 0.15,
+          "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+          "valid_ticks": 250
+        },
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "prng": {
+          "algorithm": "NumPy PCG64",
+          "seed_sequence_entropy": [
+            120120,
+            2,
+            7
+          ],
+          "seed_sequence_state_u32": [
+            2737278928,
+            1932969532,
+            590282997,
+            4072740318
+          ]
+        },
+        "terminal": null,
+        "terminal_success_bonus_applied": false
+      },
+      {
+        "configuration_id": "INERTIA_X_LOW",
+        "configuration_sha256": "52c984e70c1c86d83350aaaea16f185d89e1f56b4444b7d75257172ce6c4b7af",
+        "environment": 8,
+        "episode": {
+          "initial_contacts": [
+            1,
+            1
+          ],
+          "maximum_abs_tilt_rad": 0.02083026379702316,
+          "maximum_current_a": 0.9742662252621475,
+          "maximum_final_window_gyro_xy_norm_rad_s": 0.052176710036147114,
+          "maximum_fixed_observer_physical_separation_rad": 0.01785224925209202,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.764343030237363,
+          "minimum_base_z_m": 0.15,
+          "plant": "P30_ALL_JOINT",
+          "valid_ticks": 250
+        },
+        "plant": "P30_ALL_JOINT",
+        "prng": {
+          "algorithm": "NumPy PCG64",
+          "seed_sequence_entropy": [
+            120120,
+            2,
+            8
+          ],
+          "seed_sequence_state_u32": [
+            1724153896,
+            580718694,
+            2446473930,
+            2732118919
+          ]
+        },
+        "terminal": null,
+        "terminal_success_bonus_applied": false
+      },
+      {
+        "configuration_id": "INERTIA_X_HIGH",
+        "configuration_sha256": "4989f4556f7c2f1ec9c51ebd014701c0fc92eea09c76f807b8b907a2c9c6588c",
+        "environment": 9,
+        "episode": {
+          "initial_contacts": [
+            1,
+            1
+          ],
+          "maximum_abs_tilt_rad": 0.020355424973314492,
+          "maximum_current_a": 1.1209821496976213,
+          "maximum_final_window_gyro_xy_norm_rad_s": 0.05960878978548994,
+          "maximum_fixed_observer_physical_separation_rad": 0.014185397640954087,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.8794463678665743,
+          "minimum_base_z_m": 0.15,
+          "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+          "valid_ticks": 250
+        },
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "prng": {
+          "algorithm": "NumPy PCG64",
+          "seed_sequence_entropy": [
+            120120,
+            2,
+            9
+          ],
+          "seed_sequence_state_u32": [
+            1785794165,
+            3531287620,
+            3128449583,
+            1616206325
+          ]
+        },
+        "terminal": null,
+        "terminal_success_bonus_applied": false
+      },
+      {
+        "configuration_id": "INERTIA_Y_LOW",
+        "configuration_sha256": "9d4daf172f28c422fe93344424fae5cabc5d2a91b4620cc2d95e4ba42b9f7c57",
+        "environment": 10,
+        "episode": {
+          "initial_contacts": [
+            1,
+            1
+          ],
+          "maximum_abs_tilt_rad": 0.016709029102221464,
+          "maximum_current_a": 0.8945169885302656,
+          "maximum_final_window_gyro_xy_norm_rad_s": 0.03959680718800955,
+          "maximum_fixed_observer_physical_separation_rad": 0.020553644393184703,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.7017772020456263,
+          "minimum_base_z_m": 0.15,
+          "plant": "P30_ALL_JOINT",
+          "valid_ticks": 250
+        },
+        "plant": "P30_ALL_JOINT",
+        "prng": {
+          "algorithm": "NumPy PCG64",
+          "seed_sequence_entropy": [
+            120120,
+            2,
+            10
+          ],
+          "seed_sequence_state_u32": [
+            2665321130,
+            2552723448,
+            1196869635,
+            3910832224
+          ]
+        },
+        "terminal": null,
+        "terminal_success_bonus_applied": true
+      },
+      {
+        "configuration_id": "INERTIA_Y_HIGH",
+        "configuration_sha256": "f1f469ebf3966d4efd83addd44bb8e5777dae64e2269d71cd3a6a13d57e81b3a",
+        "environment": 11,
+        "episode": {
+          "initial_contacts": [
+            1,
+            1
+          ],
+          "maximum_abs_tilt_rad": 0.018834502271886346,
+          "maximum_current_a": 1.0862312915357837,
+          "maximum_final_window_gyro_xy_norm_rad_s": 0.06472879471146782,
+          "maximum_fixed_observer_physical_separation_rad": 0.01585243010941599,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.8521832076111515,
+          "minimum_base_z_m": 0.15,
+          "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+          "valid_ticks": 250
+        },
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "prng": {
+          "algorithm": "NumPy PCG64",
+          "seed_sequence_entropy": [
+            120120,
+            2,
+            11
+          ],
+          "seed_sequence_state_u32": [
+            31139361,
+            719579490,
+            3227750065,
+            2061791344
+          ]
+        },
+        "terminal": null,
+        "terminal_success_bonus_applied": false
+      },
+      {
+        "configuration_id": "INERTIA_Z_LOW",
+        "configuration_sha256": "fec00929e42089eb0fa613733a1fdf165278c349f3991c55b1d31f3da2a2bef3",
+        "environment": 12,
+        "episode": {
+          "initial_contacts": [
+            1,
+            1
+          ],
+          "maximum_abs_tilt_rad": 0.01878511514627835,
+          "maximum_current_a": 1.015991278524712,
+          "maximum_final_window_gyro_xy_norm_rad_s": 0.04416665493503929,
+          "maximum_fixed_observer_physical_separation_rad": 0.020407061489327694,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.7970776697235493,
+          "minimum_base_z_m": 0.15,
+          "plant": "P30_ALL_JOINT",
+          "valid_ticks": 250
+        },
+        "plant": "P30_ALL_JOINT",
+        "prng": {
+          "algorithm": "NumPy PCG64",
+          "seed_sequence_entropy": [
+            120120,
+            2,
+            12
+          ],
+          "seed_sequence_state_u32": [
+            2627265122,
+            1212236473,
+            2100881065,
+            1445128868
+          ]
+        },
+        "terminal": null,
+        "terminal_success_bonus_applied": true
+      },
+      {
+        "configuration_id": "INERTIA_Z_HIGH",
+        "configuration_sha256": "9838791cc73b35016ec172d0aeef2430e6596be00c74d441c33e2989577fdb7c",
+        "environment": 13,
+        "episode": {
+          "initial_contacts": [
+            1,
+            1
+          ],
+          "maximum_abs_tilt_rad": 0.015366221577444605,
+          "maximum_current_a": 1.0777216100248317,
+          "maximum_final_window_gyro_xy_norm_rad_s": 0.07225005285403656,
+          "maximum_fixed_observer_physical_separation_rad": 0.016318185665331518,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.8455070901560013,
+          "minimum_base_z_m": 0.15,
+          "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+          "valid_ticks": 250
+        },
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "prng": {
+          "algorithm": "NumPy PCG64",
+          "seed_sequence_entropy": [
+            120120,
+            2,
+            13
+          ],
+          "seed_sequence_state_u32": [
+            3250753096,
+            2656985814,
+            2374689999,
+            1911800414
+          ]
+        },
+        "terminal": null,
+        "terminal_success_bonus_applied": false
+      },
+      {
+        "configuration_id": "COM_CORNER_00",
+        "configuration_sha256": "f182221e7bfe1bc072b2a00015763fb78aeda219cdc379142d34cc4dce6b5b28",
+        "environment": 14,
+        "episode": {
+          "initial_contacts": [
+            1,
+            1
+          ],
+          "maximum_abs_tilt_rad": 0.08169514529680535,
+          "maximum_current_a": 0.6794123320187857,
+          "maximum_final_window_gyro_xy_norm_rad_s": 0.0419975743532322,
+          "maximum_fixed_observer_physical_separation_rad": 0.01884883283431956,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.533020715663362,
+          "minimum_base_z_m": 0.15,
+          "plant": "P30_ALL_JOINT",
+          "valid_ticks": 250
+        },
+        "plant": "P30_ALL_JOINT",
+        "prng": {
+          "algorithm": "NumPy PCG64",
+          "seed_sequence_entropy": [
+            120120,
+            2,
+            14
+          ],
+          "seed_sequence_state_u32": [
+            2038872996,
+            1060582543,
+            812413644,
+            1425796196
+          ]
+        },
+        "terminal": null,
+        "terminal_success_bonus_applied": true
+      },
+      {
+        "configuration_id": "COM_CORNER_01",
+        "configuration_sha256": "e79a3143da00f5ee5dd2537015644228a357a6531d6ca296d78dfb004ea26e87",
+        "environment": 15,
+        "episode": {
+          "initial_contacts": [
+            1,
+            1
+          ],
+          "maximum_abs_tilt_rad": 0.38057161847942383,
+          "maximum_current_a": 0.8084165213573135,
+          "maximum_final_window_gyro_xy_norm_rad_s": 1.7759359175926543,
+          "maximum_fixed_observer_physical_separation_rad": 0.014271215535700323,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.6342286303334959,
+          "minimum_base_z_m": 0.15,
+          "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+          "valid_ticks": 29
+        },
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "prng": {
+          "algorithm": "NumPy PCG64",
+          "seed_sequence_entropy": [
+            120120,
+            2,
+            15
+          ],
+          "seed_sequence_state_u32": [
+            928003828,
+            1036029160,
+            2563968542,
+            3766977501
+          ]
+        },
+        "terminal": {
+          "base_z_m": 0.17029507107209074,
+          "checks": {
+            "base_z": true,
+            "both_contacts": true,
+            "current": true,
+            "finite": true,
+            "overcurrent_streak": true,
+            "roll_pitch": false,
+            "torque": true
+          },
+          "contacts": [
+            1,
+            1
+          ],
+          "fixed_p30_observer_target_sha256": "2543d01f285a5a0c6cec1cb2577beb33469a1009627f3aa5c32db3f6f47e4bde",
+          "gyro_xy_norm_rad_s": 1.7759359175926543,
+          "maximum_current_a": 0.48783980638946983,
+          "maximum_overcurrent_streak_ticks": 0,
+          "maximum_torque_nm": 0.38272593898634355,
+          "physical_applied_target_sha256": "dccbfbc6caaebf9b06922f35b429b9fb3d2329df0eb7a930a1ff432fa1743c32",
+          "pitch_rad": -0.38057161847942383,
+          "roll_rad": 0.009166200853618486,
+          "sent_target_sha256": "b784afcb0059b2a9ce23fca74075c4f8667fe979d0d061753a9f661ec7f5b543",
+          "tick": 29
+        },
+        "terminal_success_bonus_applied": false
+      }
+    ],
+    "loss_after": 452.83746337890625,
+    "loss_before": 452.8275451660156,
+    "m_comparison": {
+      "bit_exact": true,
+      "maximum_absolute_error": 0.0,
+      "schema_exact": true
+    },
+    "metrics_after": {
+      "entropy": -37.28250503540039,
+      "policy_loss": 0.037097081542015076,
+      "ratio_max": 7.407852649688721,
+      "ratio_min": 0.10853049159049988,
+      "value_loss": 905.526123046875
+    },
+    "metrics_before": {
+      "entropy": -37.28171157836914,
+      "policy_loss": -4.283770138613363e-08,
+      "ratio_max": 1.0,
+      "ratio_min": 1.0,
+      "value_loss": 905.5805053710938
+    },
+    "parameter_comparison": {
+      "bit_exact": true,
+      "maximum_absolute_error": 0.0,
+      "schema_exact": true
+    },
+    "parameter_max_abs_delta_by_leaf": {
+      "action_bias": 9.999933536164463e-05,
+      "action_weight": 9.999934263760224e-05,
+      "training_only_log_std": 0.00010013580322265625,
+      "training_only_value_bias": 9.999932808568701e-05,
+      "training_only_value_weight": 9.999934263760224e-05
+    },
+    "v_comparison": {
+      "bit_exact": true,
+      "maximum_absolute_error": 0.0,
+      "schema_exact": true
+    }
+  },
+  "status": "PASS_WINNER_V12_CALIBRATOR_ARTIFACT_RECOVERY",
+  "support_boundary_canary": {
+    "base_below_by_one_ulp_fails": true,
+    "current_above_by_one_ulp_fails": true,
+    "inclusive_boundaries_pass": true,
+    "missing_left_contact_fails": true,
+    "missing_right_contact_fails": true,
+    "nonfinite_fails": true,
+    "one_ulp_above_two_amp_increments": true,
+    "overcurrent_100_fails": true,
+    "overcurrent_99_passes": true,
+    "pitch_below_by_one_ulp_fails": true,
+    "roll_above_by_one_ulp_fails": true,
+    "strict_two_amp_does_not_increment": true,
+    "torque_above_by_one_ulp_fails": true
+  }
+}

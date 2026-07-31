@@ -1,0 +1,117 @@
+{
+  "archive_verification_json": "outputs/analysis/phase2_package_only_archive_verification.json",
+  "artifact_manifest_json": "outputs/analysis/phase2_artifact_manifest.json",
+  "checks": {
+    "artifact_manifest_promotion_gate_matches": true,
+    "artifact_manifest_stage_matches": true,
+    "next_run_workflow_matches": true,
+    "package_archive_verification_manifest_matches": true,
+    "package_archive_verification_workflow_matches": true,
+    "package_archives_verified": true,
+    "package_only_ready": true,
+    "package_workflow_matches": true,
+    "readiness_workflow_matches": true,
+    "recipe_workflow_matches": true,
+    "required_inputs_exist": true,
+    "robot_scope_clean": true,
+    "stage_guard_post_training_status_matches": true,
+    "stage_guard_workflow_matches": true
+  },
+  "colab_status": "HOLD_NO_ACTIVE_COLAB_SESSION",
+  "deploy_performed": false,
+  "git_status": "PASS_GIT_REMOTE_READ_AUTH",
+  "launch_command": [
+    "python3",
+    "tools/run_colab_cli_cuda_workflow.py",
+    "--workflow",
+    "phase2-z002-tracking-margin",
+    "--session",
+    "open-duck-l4",
+    "--candidate-name",
+    "phase2_z002_tracking_margin_cuda",
+    "--candidate-checkpoint-sweep",
+    "--candidate-checkpoint-sweep-commands",
+    "0.0,0.08",
+    "--candidate-checkpoint-sweep-duration",
+    "1.0",
+    "--candidate-checkpoint-sweep-jax-platform",
+    "cpu",
+    "--candidate-timeout-s",
+    "10800",
+    "--run"
+  ],
+  "launch_command_shell": "python3 tools/run_colab_cli_cuda_workflow.py --workflow phase2-z002-tracking-margin --session open-duck-l4 --candidate-name phase2_z002_tracking_margin_cuda --candidate-checkpoint-sweep --candidate-checkpoint-sweep-commands 0.0,0.08 --candidate-checkpoint-sweep-duration 1.0 --candidate-checkpoint-sweep-jax-platform cpu --candidate-timeout-s 10800 --run",
+  "launch_status": "HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY",
+  "next_run_json": "outputs/analysis/phase2_next_run_plan.json",
+  "package_archives": {
+    "playground": {
+      "path": "/home/lsd/robots/outputs/colab_cli_uploads/Open_Duck_Playground_cli_20260630T012421Z.tar.gz",
+      "sha256": "55a80acb03da9aadfd26b8e8214b1269a668ab5bb54adce808fa9f16b4644f43",
+      "size_bytes": 1940410
+    },
+    "rdk": {
+      "path": "/home/lsd/robots/outputs/colab_cli_uploads/open-duck-mini-rdkx5_cli_20260630T012421Z.tar.gz",
+      "sha256": "a808d2af55cf60ef4224791e2dab46caffb443c32b073c8c7d8e129727e04079",
+      "size_bytes": 36389512
+    }
+  },
+  "package_manifest": "outputs/analysis/colab_cli/open-duck-l4-phase2-z002-tracking-margin-20260630T012421Z/PACKAGE_ONLY_MANIFEST.json",
+  "package_required_paths": [
+    "outputs/analysis/actuator_response_fit_corrected_knee.json",
+    "outputs/analysis/phase2_z002_tracking_margin_next_recipe.json",
+    "tools/run_actuator_bridge_training_smoke.py",
+    "tools/report_phase2_z002_tracking_margin_post_training_gates.py",
+    "outputs/phase2_domain_randomization/stage_c0_terrain_z002_preserve_from_a2_gpu/smoke_20260628T103743Z_gpu/2026_06_28_064431_245760"
+  ],
+  "readiness_json": "outputs/analysis/phase2_local_fallback_readiness.json",
+  "recipe_json": "outputs/analysis/phase2_z002_tracking_margin_next_recipe.json",
+  "recipe_settings": {
+    "action_rate_scale": -0.04,
+    "actuator_bridge_velocity_limit_range_rad_s": [
+      2.0,
+      3.25
+    ],
+    "actuator_tracking_scale": -0.005,
+    "command_progress_required_ratio": 0.55,
+    "command_progress_scale": 3.5,
+    "command_progress_shortfall_scale": -10.0,
+    "forward_progress_scale": 4.5,
+    "num_timesteps": 122880,
+    "ppo_clipping_epsilon": 0.015,
+    "ppo_learning_rate": 2e-06,
+    "ppo_max_grad_norm": 0.08,
+    "push_enable": false,
+    "restore_policy_kl_scale": 6.0,
+    "target_rate_scale": -0.02,
+    "terrain_hfield_z_scale": 0.002,
+    "workflow": "phase2-z002-tracking-margin"
+  },
+  "required_inputs": {
+    "corrected_bridge": {
+      "exists": true,
+      "kind": "file",
+      "path": "outputs/analysis/actuator_response_fit_corrected_knee.json"
+    },
+    "phase2_candidate": {
+      "exists": true,
+      "kind": "file",
+      "path": "policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/candidate.onnx"
+    },
+    "recipe": {
+      "exists": true,
+      "kind": "file",
+      "path": "outputs/analysis/phase2_z002_tracking_margin_next_recipe.json"
+    },
+    "restore_checkpoint": {
+      "exists": true,
+      "kind": "directory",
+      "path": "outputs/phase2_domain_randomization/stage_c0_terrain_z002_preserve_from_a2_gpu/smoke_20260628T103743Z_gpu/2026_06_28_064431_245760"
+    }
+  },
+  "robot_touched": false,
+  "ssh_used": false,
+  "stage_guard_json": "outputs/analysis/phase2_stage_guard.json",
+  "status": "HOLD_EXTERNAL_LAUNCH_BLOCKERS",
+  "training_started": false,
+  "workflow": "phase2-z002-tracking-margin"
+}

@@ -1,0 +1,588 @@
+{
+  "authority": {
+    "colab": false,
+    "execute_six_cpu_cells": true,
+    "gate5": false,
+    "mechanism_contract_preregistration": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "behavior_contract": {
+    "interpretation": {
+      "core": "minimum physical/semantic validity; thresholds passed by the T4 baseline where comparable",
+      "evaluator_candidate_gate_status": "diagnostic only because T4 invalidated its use as an unqualified feasibility classifier",
+      "replacement_quality": "explicit stretch goals for replacing the behaviorally bad baseline; T4 showed the baseline can fail some of these"
+    },
+    "moving_core": {
+      "bilateral_transitions": true,
+      "maximum_action_saturation_pct": 1.0,
+      "maximum_body_pitch_p95_rad": 0.25,
+      "minimum_base_height_m": 0.12,
+      "minimum_track_ratio": 0.25,
+      "positive_mean_local_velocity": true,
+      "samples": 600
+    },
+    "moving_replacement_quality": {
+      "maximum_action_saturation_pct": 0.0,
+      "maximum_pitch_tracking_p95_rad": 0.2,
+      "maximum_rate_excess_rad_s": 0.0
+    },
+    "x0_core": {
+      "maximum_absolute_mean_local_vx_m_s": 0.02,
+      "maximum_action_saturation_pct": 1.0,
+      "maximum_body_pitch_p95_rad": 0.25,
+      "minimum_base_height_m": 0.12,
+      "samples": 600
+    },
+    "x0_replacement_quality": {
+      "maximum_action_saturation_pct": 0.0,
+      "maximum_pitch_tracking_p95_rad": 0.2,
+      "maximum_rate_excess_rad_s": 0.0
+    }
+  },
+  "calibrator": {
+    "bytes": 55573,
+    "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v96-response-conditioned-mechanics\\winner_v96_universal_calibrator.onnx",
+    "sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576"
+  },
+  "cell": {
+    "command_x_m_s": 0.077,
+    "condition": {
+      "condition_index": 2,
+      "id": "FLOOR_FRICTION_HI",
+      "override": {
+        "floor_friction": 1.0
+      }
+    },
+    "duration_s": 12.0,
+    "fit_id": "p31_34",
+    "seed": 167931544
+  },
+  "checks": {
+    "all_changed_initializers_are_grouped": true,
+    "all_grouped_initializers_exist": true,
+    "all_variant_graph_contracts_pass": true,
+    "factorial_has_exactly_six_nonendpoint_variants": true,
+    "margin_limit_exact": true,
+    "runner_and_worker_present": true,
+    "t34_has_exactly_one_final_p31_x0077_failure": true,
+    "t35_attributes_non_green_to_actor_state_drift": true
+  },
+  "decision_rule": {
+    "diagnostic_precedence": [
+      "fewest half groups",
+      "frozen execution order"
+    ],
+    "no_early_stop": true,
+    "no_policy_promotion_or_checkpoint_selection": true,
+    "no_training_or_retry": true,
+    "no_variant_pass": "Close block freezing as a local repair and require a different persistence mechanism.",
+    "one_group_pass": "A passing one-group rollback identifies that block as a sufficient drift source and earns only a prospective freeze-during-training CPU contract.",
+    "only_multi_group_pass": "Classify the drift as coupled. The passing variant with fewest half groups wins diagnostic precedence; ties follow the frozen execution order.",
+    "run_all_six": true
+  },
+  "endpoint_evidence": {
+    "final": {
+      "cell_green": false,
+      "pre_margin": {
+        "bytes": 964682,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t33_t32_postexport_v1\\2007040\\pre_margin\\rate_coherent_support.onnx",
+        "sha256": "9a087bdc0f0cb78434831c1a8f74f3343274cc7be75d1df89167643a770190b4"
+      },
+      "samples": 494,
+      "source": "T34 T32_MARGIN_FINAL p31_34 x=.077",
+      "wrapped": {
+        "bytes": 965047,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t33_t32_postexport_v1\\2007040\\action_margin.onnx",
+        "sha256": "7b88a5f7628f78b075b182eaef9f41847360cb63fc967143a2f78b965e9e9c08"
+      }
+    },
+    "half": {
+      "cell_green": true,
+      "pre_margin": {
+        "bytes": 964682,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t33_t32_postexport_v1\\1003520\\pre_margin\\rate_coherent_support.onnx",
+        "sha256": "3e6bb3044efc87729023bce16121de7ac1b5fbc0a791a7be6bf9679020c3f5bd"
+      },
+      "source": "T34 T32_MARGIN_HALF p31_34 x=.077",
+      "wrapped": {
+        "bytes": 965047,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t33_t32_postexport_v1\\1003520\\action_margin.onnx",
+        "sha256": "6407d5ebb0811bcb47018ef8817e372153b5f326d786e030921e77c08885e4c1"
+      }
+    }
+  },
+  "execution_order": [
+    "NORMALIZER_HALF",
+    "BASE_HALF",
+    "ADAPTER_HALF",
+    "NORMALIZER_BASE_HALF",
+    "NORMALIZER_ADAPTER_HALF",
+    "BASE_ADAPTER_HALF"
+  ],
+  "failed_checks": [],
+  "fit": {
+    "bytes": 18788,
+    "fit_id": "p31_34",
+    "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p31_34_actuator_fit_20260712.json",
+    "sha256": "2740513f6bdeb4ad3cc5dd6dc1709319389a593fd153c1ce5abae03b66131a57"
+  },
+  "frozen_inputs": {
+    "runner": {
+      "bytes": 13551,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t36_t32_actor_block_factorial.py",
+      "sha256": "253a5b67ba80b6daed4066a0c3a110680b69bf3c23953492195d8b27b0c2d294"
+    },
+    "t28_transform": {
+      "bytes": 4745,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t28_t23_action_margin_transform_contract.json",
+      "sha256": "775d62394fc0ec2ca4fa2df263eaa703a1f0f80ddf3279fb8a4fd4572051e6fb"
+    },
+    "t33_postexport_result": {
+      "bytes": 40129,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t33_t32_postexport_result.json",
+      "sha256": "78346b3bc23ae9c92d6fdee6779f75fef8f391ecbcba6f9266db3fc7814a5248"
+    },
+    "t34_preregistration": {
+      "bytes": 10941,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t34_t32_nominal_matrix_preregistration.json",
+      "sha256": "b014deafc6156c758e2d625e06b6821409059d5b779d3719463d4e75e7837de2"
+    },
+    "t34_result": {
+      "bytes": 123194,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t34_t32_nominal_matrix_result.json",
+      "sha256": "325dc8f0d9d17e88da88c7c82440bbdb0055bbf88cde2d6672173890a1b6e924"
+    },
+    "t35_result": {
+      "bytes": 10436,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t35_t32_margin_causality_result.json",
+      "sha256": "3bb6848f59f686382d6964a5c90fe5adfc2095c4a35d2ad61d4ca891cef5232d"
+    },
+    "worker": {
+      "bytes": 281,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\evaluate_t30_t28_margin_causal_cell.py",
+      "sha256": "38062df2326131c5fe30e6391100f6d98a49a68198eb053600e6def53a7dcecc"
+    }
+  },
+  "groups": {
+    "adapter": [
+      "adapter_weight",
+      "adapter_bias",
+      "adapter_obs_weight",
+      "adapter_hidden_weight",
+      "adapter_hidden_bias"
+    ],
+    "base": [
+      "trunk_0_weight",
+      "trunk_0_bias",
+      "trunk_1_weight",
+      "trunk_1_bias",
+      "trunk_2_weight",
+      "trunk_2_bias",
+      "base_residual_weight",
+      "base_residual_bias"
+    ],
+    "normalizer": [
+      "obs_mean",
+      "obs_std"
+    ]
+  },
+  "playground": {
+    "manifest": {
+      "bytes": 5190,
+      "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v6\\T19_COMPOSED_SOURCE_MANIFEST.json",
+      "sha256": "d7c9b615c32f0e2c8434e958a900cc38485c0db6fea107b6115a69bbd2122a77"
+    },
+    "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v6"
+  },
+  "preregistered_contract_sha256": "3803763a9cb4ace3d98bc1b442c1989aed73c1e4ac911d3d4ca83826b48eb226",
+  "protection_contract": {
+    "force_limit_tolerance_nm": 5e-06,
+    "instantaneous_stall_current_and_torque": "diagnostic_only",
+    "motor_constant_nm_per_a": 0.784532,
+    "overcurrent_threshold_a": 2.0,
+    "overload_threshold_nm": 1.5298374,
+    "pass_max_consecutive_ticks": 99,
+    "simulator_force_limit_abs_nm": 3.23,
+    "simulator_force_limit_hits": "diagnostic_only",
+    "source": "T5 manufacturer-derived duration rules",
+    "strict_comparison": true,
+    "trip_ticks": 100
+  },
+  "question": "Which final-checkpoint state block\u2014observation normalizer, feed-forward base actor, recurrent adapter, or a coupled combination\u2014is sufficient to reproduce T32-half behavior on T34's sole failed cell when rolled back exactly?",
+  "reference_feature_table": {
+    "bytes": 259604,
+    "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+    "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+  },
+  "schema_version": "open_duck.t36_t32_actor_block_factorial_preregistration.v1",
+  "status": "PREREGISTERED_T36_T32_ACTOR_BLOCK_FACTORIAL",
+  "support_handoff": {
+    "context_input_name": "calibration_context",
+    "context_is_diagnostic_only": true,
+    "locomotion_hidden_zero": true,
+    "locomotion_phase_reset": [
+      1.0,
+      0.0
+    ],
+    "preserve_applied_target_observer_state": true,
+    "preserve_final_support_action_as_previous_action": true,
+    "source": "T22/T24 exact support-train-through deployment chain and green T27 one-tick runner contract",
+    "unscored_calibration_ticks": 250,
+    "unscored_home_return_ticks": 0
+  },
+  "variants": [
+    {
+      "changed_initializers": [
+        "obs_mean",
+        "obs_std"
+      ],
+      "contract": {
+        "changed_initializers_exact": true,
+        "graph_topology_exact_final": true,
+        "onnx_checker_pre_margin": true,
+        "onnx_checker_wrapped": true,
+        "selected_initializers_exact_half": true,
+        "unselected_initializers_exact_final": true
+      },
+      "half_group_count": 1,
+      "half_groups": [
+        "normalizer"
+      ],
+      "margin_contract": {
+        "changed_action_values": 23,
+        "checks": {
+          "action_clip_exact": true,
+          "feedback_exact": true,
+          "finite": true,
+          "hidden_exact": true,
+          "previous_action_clip_exact": true,
+          "strict_margin": true
+        },
+        "pass": true
+      },
+      "pass": true,
+      "policy": {
+        "bytes": 965047,
+        "checkpoint_id": "T36_NORMALIZER_HALF",
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t36_t32_actor_block_factorial_v1\\NORMALIZER_HALF\\action_margin.onnx",
+        "sha256": "c74b37423508f707ad4e906e324e14a5b7900856e900837fe40054f159f35086"
+      },
+      "pre_margin": {
+        "bytes": 964682,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t36_t32_actor_block_factorial_v1\\NORMALIZER_HALF\\pre_margin.onnx",
+        "sha256": "f8cb77e4e3ee265062c3da3713d298cbd714a2c5d937dc56e5eeedbb462d6017"
+      },
+      "selected_initializers": [
+        "obs_mean",
+        "obs_std"
+      ],
+      "variant_id": "NORMALIZER_HALF"
+    },
+    {
+      "changed_initializers": [
+        "base_residual_bias",
+        "base_residual_weight",
+        "trunk_0_bias",
+        "trunk_0_weight",
+        "trunk_1_bias",
+        "trunk_1_weight",
+        "trunk_2_bias",
+        "trunk_2_weight"
+      ],
+      "contract": {
+        "changed_initializers_exact": true,
+        "graph_topology_exact_final": true,
+        "onnx_checker_pre_margin": true,
+        "onnx_checker_wrapped": true,
+        "selected_initializers_exact_half": true,
+        "unselected_initializers_exact_final": true
+      },
+      "half_group_count": 1,
+      "half_groups": [
+        "base"
+      ],
+      "margin_contract": {
+        "changed_action_values": 24,
+        "checks": {
+          "action_clip_exact": true,
+          "feedback_exact": true,
+          "finite": true,
+          "hidden_exact": true,
+          "previous_action_clip_exact": true,
+          "strict_margin": true
+        },
+        "pass": true
+      },
+      "pass": true,
+      "policy": {
+        "bytes": 965047,
+        "checkpoint_id": "T36_BASE_HALF",
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t36_t32_actor_block_factorial_v1\\BASE_HALF\\action_margin.onnx",
+        "sha256": "fe353ea448bdf9e9336ff4faeae2a8cc39fa059b2525be0c8b731259913ef168"
+      },
+      "pre_margin": {
+        "bytes": 964682,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t36_t32_actor_block_factorial_v1\\BASE_HALF\\pre_margin.onnx",
+        "sha256": "892ded9e2f03f5d452371ed31b226e07b700157618f91f50ac68bd78c77950ab"
+      },
+      "selected_initializers": [
+        "base_residual_bias",
+        "base_residual_weight",
+        "trunk_0_bias",
+        "trunk_0_weight",
+        "trunk_1_bias",
+        "trunk_1_weight",
+        "trunk_2_bias",
+        "trunk_2_weight"
+      ],
+      "variant_id": "BASE_HALF"
+    },
+    {
+      "changed_initializers": [
+        "adapter_bias",
+        "adapter_hidden_bias",
+        "adapter_hidden_weight",
+        "adapter_obs_weight",
+        "adapter_weight"
+      ],
+      "contract": {
+        "changed_initializers_exact": true,
+        "graph_topology_exact_final": true,
+        "onnx_checker_pre_margin": true,
+        "onnx_checker_wrapped": true,
+        "selected_initializers_exact_half": true,
+        "unselected_initializers_exact_final": true
+      },
+      "half_group_count": 1,
+      "half_groups": [
+        "adapter"
+      ],
+      "margin_contract": {
+        "changed_action_values": 23,
+        "checks": {
+          "action_clip_exact": true,
+          "feedback_exact": true,
+          "finite": true,
+          "hidden_exact": true,
+          "previous_action_clip_exact": true,
+          "strict_margin": true
+        },
+        "pass": true
+      },
+      "pass": true,
+      "policy": {
+        "bytes": 965047,
+        "checkpoint_id": "T36_ADAPTER_HALF",
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t36_t32_actor_block_factorial_v1\\ADAPTER_HALF\\action_margin.onnx",
+        "sha256": "0ba0887e553b35c500df9d3336ab71e971660f65efed0a7e097f55739bf7fff2"
+      },
+      "pre_margin": {
+        "bytes": 964682,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t36_t32_actor_block_factorial_v1\\ADAPTER_HALF\\pre_margin.onnx",
+        "sha256": "d29d4980e1ea0cffb89f177d47c4f7bccb85dc00bb99620e3c0a186f23fd7132"
+      },
+      "selected_initializers": [
+        "adapter_bias",
+        "adapter_hidden_bias",
+        "adapter_hidden_weight",
+        "adapter_obs_weight",
+        "adapter_weight"
+      ],
+      "variant_id": "ADAPTER_HALF"
+    },
+    {
+      "changed_initializers": [
+        "base_residual_bias",
+        "base_residual_weight",
+        "obs_mean",
+        "obs_std",
+        "trunk_0_bias",
+        "trunk_0_weight",
+        "trunk_1_bias",
+        "trunk_1_weight",
+        "trunk_2_bias",
+        "trunk_2_weight"
+      ],
+      "contract": {
+        "changed_initializers_exact": true,
+        "graph_topology_exact_final": true,
+        "onnx_checker_pre_margin": true,
+        "onnx_checker_wrapped": true,
+        "selected_initializers_exact_half": true,
+        "unselected_initializers_exact_final": true
+      },
+      "half_group_count": 2,
+      "half_groups": [
+        "normalizer",
+        "base"
+      ],
+      "margin_contract": {
+        "changed_action_values": 24,
+        "checks": {
+          "action_clip_exact": true,
+          "feedback_exact": true,
+          "finite": true,
+          "hidden_exact": true,
+          "previous_action_clip_exact": true,
+          "strict_margin": true
+        },
+        "pass": true
+      },
+      "pass": true,
+      "policy": {
+        "bytes": 965047,
+        "checkpoint_id": "T36_NORMALIZER_BASE_HALF",
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t36_t32_actor_block_factorial_v1\\NORMALIZER_BASE_HALF\\action_margin.onnx",
+        "sha256": "18eb3e03feb24e752981a9801218ff89588782c11646a5f813212c8d81577d7d"
+      },
+      "pre_margin": {
+        "bytes": 964682,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t36_t32_actor_block_factorial_v1\\NORMALIZER_BASE_HALF\\pre_margin.onnx",
+        "sha256": "473e8651431de5c12935aeca31d5c365d9100a593543a807fef804f6c4970bae"
+      },
+      "selected_initializers": [
+        "base_residual_bias",
+        "base_residual_weight",
+        "obs_mean",
+        "obs_std",
+        "trunk_0_bias",
+        "trunk_0_weight",
+        "trunk_1_bias",
+        "trunk_1_weight",
+        "trunk_2_bias",
+        "trunk_2_weight"
+      ],
+      "variant_id": "NORMALIZER_BASE_HALF"
+    },
+    {
+      "changed_initializers": [
+        "adapter_bias",
+        "adapter_hidden_bias",
+        "adapter_hidden_weight",
+        "adapter_obs_weight",
+        "adapter_weight",
+        "obs_mean",
+        "obs_std"
+      ],
+      "contract": {
+        "changed_initializers_exact": true,
+        "graph_topology_exact_final": true,
+        "onnx_checker_pre_margin": true,
+        "onnx_checker_wrapped": true,
+        "selected_initializers_exact_half": true,
+        "unselected_initializers_exact_final": true
+      },
+      "half_group_count": 2,
+      "half_groups": [
+        "normalizer",
+        "adapter"
+      ],
+      "margin_contract": {
+        "changed_action_values": 23,
+        "checks": {
+          "action_clip_exact": true,
+          "feedback_exact": true,
+          "finite": true,
+          "hidden_exact": true,
+          "previous_action_clip_exact": true,
+          "strict_margin": true
+        },
+        "pass": true
+      },
+      "pass": true,
+      "policy": {
+        "bytes": 965047,
+        "checkpoint_id": "T36_NORMALIZER_ADAPTER_HALF",
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t36_t32_actor_block_factorial_v1\\NORMALIZER_ADAPTER_HALF\\action_margin.onnx",
+        "sha256": "628e7f67bb12f47f84e3d0926b16f0677857023513d94a1ab7a8cf5001eaa736"
+      },
+      "pre_margin": {
+        "bytes": 964682,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t36_t32_actor_block_factorial_v1\\NORMALIZER_ADAPTER_HALF\\pre_margin.onnx",
+        "sha256": "47e15484f2cb0a3259ad5b7046c39002d75f679b7361ea072eafa3cf34274557"
+      },
+      "selected_initializers": [
+        "adapter_bias",
+        "adapter_hidden_bias",
+        "adapter_hidden_weight",
+        "adapter_obs_weight",
+        "adapter_weight",
+        "obs_mean",
+        "obs_std"
+      ],
+      "variant_id": "NORMALIZER_ADAPTER_HALF"
+    },
+    {
+      "changed_initializers": [
+        "adapter_bias",
+        "adapter_hidden_bias",
+        "adapter_hidden_weight",
+        "adapter_obs_weight",
+        "adapter_weight",
+        "base_residual_bias",
+        "base_residual_weight",
+        "trunk_0_bias",
+        "trunk_0_weight",
+        "trunk_1_bias",
+        "trunk_1_weight",
+        "trunk_2_bias",
+        "trunk_2_weight"
+      ],
+      "contract": {
+        "changed_initializers_exact": true,
+        "graph_topology_exact_final": true,
+        "onnx_checker_pre_margin": true,
+        "onnx_checker_wrapped": true,
+        "selected_initializers_exact_half": true,
+        "unselected_initializers_exact_final": true
+      },
+      "half_group_count": 2,
+      "half_groups": [
+        "base",
+        "adapter"
+      ],
+      "margin_contract": {
+        "changed_action_values": 24,
+        "checks": {
+          "action_clip_exact": true,
+          "feedback_exact": true,
+          "finite": true,
+          "hidden_exact": true,
+          "previous_action_clip_exact": true,
+          "strict_margin": true
+        },
+        "pass": true
+      },
+      "pass": true,
+      "policy": {
+        "bytes": 965047,
+        "checkpoint_id": "T36_BASE_ADAPTER_HALF",
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t36_t32_actor_block_factorial_v1\\BASE_ADAPTER_HALF\\action_margin.onnx",
+        "sha256": "9e4c756f453735a22b41578fc40b80f8bf8e6599fe3eabe4c6344c4c75124d25"
+      },
+      "pre_margin": {
+        "bytes": 964682,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t36_t32_actor_block_factorial_v1\\BASE_ADAPTER_HALF\\pre_margin.onnx",
+        "sha256": "28f6493f9a1a6f8bf9230e18eee095a7fa18dbf5470135dcef35219e173dbeb5"
+      },
+      "selected_initializers": [
+        "adapter_bias",
+        "adapter_hidden_bias",
+        "adapter_hidden_weight",
+        "adapter_obs_weight",
+        "adapter_weight",
+        "base_residual_bias",
+        "base_residual_weight",
+        "trunk_0_bias",
+        "trunk_0_weight",
+        "trunk_1_bias",
+        "trunk_1_weight",
+        "trunk_2_bias",
+        "trunk_2_weight"
+      ],
+      "variant_id": "BASE_ADAPTER_HALF"
+    }
+  ]
+}

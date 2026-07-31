@@ -1,0 +1,218 @@
+{
+  "authority": {
+    "gpu_authorized": false,
+    "robot_or_rdk_authorized": false,
+    "training_authorized": false
+  },
+  "checks": {
+    "all_sequences_finite": true,
+    "all_sequences_within_1e_6_rad": true,
+    "applied_target_is_exact_home": true,
+    "bridge_is_after_hard_sent_limit": true,
+    "bridge_is_before_physics": true,
+    "bridge_output_matches_independent_model": true,
+    "history_has_four_rows": true,
+    "history_home_quantization_below_1e_7_rad": true,
+    "history_is_exact_execution_dtype_home": true,
+    "no_bridge_reward_or_cost_metric": true,
+    "no_bridge_reward_scale": true,
+    "no_tracking_penalty_implementation": true,
+    "observation_retains_realized_sent_action": true,
+    "observation_retains_sent_motor_target": true,
+    "physics_ctrl_equals_bridged_applied_target": true,
+    "physics_uses_applied_target": true,
+    "policy_action_history_retains_sent_target": true,
+    "sent_target_is_exact_home": true,
+    "sent_target_is_preserved": true,
+    "sent_target_respects_hard_vector": true,
+    "state_and_reward_finite": true
+  },
+  "environment_transition": {
+    "checks": {
+      "applied_target_is_exact_home": true,
+      "bridge_output_matches_independent_model": true,
+      "history_has_four_rows": true,
+      "history_home_quantization_below_1e_7_rad": true,
+      "history_is_exact_execution_dtype_home": true,
+      "no_bridge_reward_or_cost_metric": true,
+      "no_bridge_reward_scale": true,
+      "observation_retains_realized_sent_action": true,
+      "observation_retains_sent_motor_target": true,
+      "physics_ctrl_equals_bridged_applied_target": true,
+      "policy_action_history_retains_sent_target": true,
+      "sent_target_is_exact_home": true,
+      "sent_target_respects_hard_vector": true,
+      "state_and_reward_finite": true
+    },
+    "max_action_history_error": 2.0599365235796085e-07,
+    "max_bridge_model_error_rad": 5.1498413089490214e-08,
+    "max_observation_action_error": 2.0599365235796085e-07,
+    "max_observation_target_error_rad": 0.0,
+    "max_physics_ctrl_error_rad": 0.0,
+    "max_sent_rate_bound_excess_rad": 4.673004153077365e-08,
+    "reset_execution_dtype_home_target_rad": [
+      0.0020000000949949026,
+      0.05299999937415123,
+      -0.6299999952316284,
+      1.3680000305175781,
+      -0.7839999794960022,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      -0.003000000026077032,
+      -0.06499999761581421,
+      0.6349999904632568,
+      1.378999948501587,
+      -0.7960000038146973
+    ],
+    "reset_history_max_error_rad": 5.1498413089490214e-08,
+    "reset_history_rows_rad": [
+      [
+        0.0020000000949949026,
+        0.05299999937415123,
+        -0.6299999952316284,
+        1.3680000305175781,
+        -0.7839999794960022,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.003000000026077032,
+        -0.06499999761581421,
+        0.6349999904632568,
+        1.378999948501587,
+        -0.7960000038146973
+      ],
+      [
+        0.0020000000949949026,
+        0.05299999937415123,
+        -0.6299999952316284,
+        1.3680000305175781,
+        -0.7839999794960022,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.003000000026077032,
+        -0.06499999761581421,
+        0.6349999904632568,
+        1.378999948501587,
+        -0.7960000038146973
+      ],
+      [
+        0.0020000000949949026,
+        0.05299999937415123,
+        -0.6299999952316284,
+        1.3680000305175781,
+        -0.7839999794960022,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.003000000026077032,
+        -0.06499999761581421,
+        0.6349999904632568,
+        1.378999948501587,
+        -0.7960000038146973
+      ],
+      [
+        0.0020000000949949026,
+        0.05299999937415123,
+        -0.6299999952316284,
+        1.3680000305175781,
+        -0.7839999794960022,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.003000000026077032,
+        -0.06499999761581421,
+        0.6349999904632568,
+        1.378999948501587,
+        -0.7960000038146973
+      ]
+    ],
+    "reset_home_target_rad": [
+      0.002,
+      0.053,
+      -0.63,
+      1.368,
+      -0.784,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      -0.003,
+      -0.065,
+      0.635,
+      1.379,
+      -0.796
+    ]
+  },
+  "execution": {
+    "colab_access": false,
+    "jax_backend": "cpu",
+    "jax_devices": [
+      "TFRT_CPU_0"
+    ],
+    "local_gpu_access": false,
+    "rdk_access": false,
+    "robot_access": false
+  },
+  "failed_checks": [],
+  "helper_parity": {
+    "checks": {
+      "all_sequences_finite": true,
+      "all_sequences_within_1e_6_rad": true
+    },
+    "global_max_abs_error_rad": 2.2315979020248733e-07,
+    "sequences": {
+      "alternating": {
+        "finite": true,
+        "max_abs_error_rad": 1.735687256143592e-07,
+        "mean_abs_error_rad": 3.365916301430413e-08
+      },
+      "bounded_random": {
+        "finite": true,
+        "max_abs_error_rad": 1.3418895306038792e-07,
+        "mean_abs_error_rad": 2.029482003663878e-08
+      },
+      "chirp": {
+        "finite": true,
+        "max_abs_error_rad": 1.3521644959268997e-07,
+        "mean_abs_error_rad": 1.2641120652991074e-08
+      },
+      "home_hold": {
+        "finite": true,
+        "max_abs_error_rad": 5.1498413089490214e-08,
+        "mean_abs_error_rad": 8.840779101662688e-09
+      },
+      "step": {
+        "finite": true,
+        "max_abs_error_rad": 2.2315979020248733e-07,
+        "mean_abs_error_rad": 2.5582644175338494e-08
+      }
+    },
+    "threshold_rad": 1e-06
+  },
+  "inputs": {
+    "composed_joystick": {
+      "path": "/tmp/ground_up_measured_bridge_contract_20260714/playground/open_duck_mini_v2/joystick.py",
+      "sha256": "ae98093a0a2a5ee18954f4f239d2daa840f7bfb817c1d8423e720082dc2b7955"
+    },
+    "patch": {
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/patches/ground_up_measured_actuator_bridge.patch",
+      "sha256": "133531963abea46cd0394526a2fa88b018fc21ca68c365863304e3e96d6ca0df"
+    }
+  },
+  "schema_version": "ground_up_measured_bridge_contract.v1",
+  "source_checks": {
+    "bridge_is_after_hard_sent_limit": true,
+    "bridge_is_before_physics": true,
+    "no_tracking_penalty_implementation": true,
+    "physics_uses_applied_target": true,
+    "sent_target_is_preserved": true
+  },
+  "status": "PASS_CPU_MEASURED_BRIDGE_CONTRACT"
+}

@@ -1,0 +1,146 @@
+name: Winner v21 predictor preserving joint CPU contract
+
+on:
+  push:
+    branches:
+      - codex/winner-v4-response-contract
+    paths:
+      - outputs/analysis/winner_v21_predictor_preserving_joint_cpu_contract.json
+      - outputs/analysis/WINNER_V21_PREDICTOR_PRESERVING_JOINT_CPU_CONTRACT_20260721.md
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: winner-v21-predictor-preserving-joint-cpu-contract
+  cancel-in-progress: false
+
+jobs:
+  cpu-contract:
+    name: Zero-update predictor-preserving gradient proof
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: Reject workflow reruns
+        run: test "${{ github.run_attempt }}" = "1"
+
+      - name: Checkout frozen CPU contract
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up exact Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12.13"
+
+      - name: Install exact CPU environment
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            "jax[cpu]==0.7.2" \
+            "jaxlib==0.7.2" \
+            "mujoco==3.9.0" \
+            "numpy==2.0.2" \
+            "onnx==1.22.0" \
+            "onnxruntime==1.27.0" \
+            "pytest==8.4.2"
+
+      - name: Verify frozen Winner v21 package
+        run: |
+          python -m pytest -q \
+            tests/test_winner_v15_pitch_margin_support.py \
+            tests/test_winner_v20_joint_recurrent_support.py \
+            tests/test_winner_v21_predictor_preserving_joint_support.py \
+            tests/test_winner_v21_predictor_preserving_joint_cpu_contract.py
+
+      - name: Recover exact passing Stage-1 final snapshot
+        run: |
+          gh api \
+            repos/RobVanProd/open-duck-mini-rdkx5/actions/artifacts/8492593761/zip \
+            > /tmp/winner-v13-stage1-v2.zip
+          echo 'b3ff19186ef39e8a72f9e43095d373840fb0b1562a2f7bed83a74c9f10cf6680  /tmp/winner-v13-stage1-v2.zip' \
+            | sha256sum --check
+          python - <<'PY'
+          import hashlib
+          from pathlib import Path, PurePosixPath
+          import stat
+          import zipfile
+
+          archive_path = Path("/tmp/winner-v13-stage1-v2.zip")
+          target_name = (
+              "winner-v13-normalized-response-stage1-v2-work/snapshots/"
+              "snapshot_stage1_update_100.npz"
+          )
+          with zipfile.ZipFile(archive_path) as archive:
+              infos = archive.infolist()
+              names = [item.filename for item in infos]
+              if len(names) != len(set(names)) or target_name not in names:
+                  raise SystemExit("Stage-1 artifact inventory is invalid")
+              if sum(item.file_size for item in infos) > 100_000_000:
+                  raise SystemExit("Stage-1 artifact exceeds size ceiling")
+              for info in infos:
+                  member = PurePosixPath(info.filename)
+                  file_type = stat.S_IFMT(info.external_attr >> 16)
+                  if (
+                      member.is_absolute()
+                      or ".." in member.parts
+                      or "." in member.parts
+                      or "\\" in info.filename
+                      or info.flag_bits & 1
+                      or info.is_dir()
+                      or file_type == stat.S_IFLNK
+                      or file_type not in {0, stat.S_IFREG}
+                  ):
+                      raise SystemExit("Stage-1 artifact has unsafe member")
+              payload = archive.read(target_name)
+          expected = "8c1392c738eddfb098e61c1a6ae2f863eda883e1eba6ac546aef695da6f163af"
+          if len(payload) != 189027 or hashlib.sha256(payload).hexdigest() != expected:
+              raise SystemExit("Stage-1 final snapshot changed")
+          Path("/tmp/winner-v13-stage1-final.npz").write_bytes(payload)
+          PY
+
+      - name: Prepare exact reviewed simulation environment
+        run: |
+          git clone --quiet https://github.com/RobVanProd/Open_Duck_Playground.git \
+            /tmp/playground-source
+          python tools/prepare_winner_v15_cpu_environment.py \
+            --source-repository /tmp/playground-source \
+            --output-root /tmp/pg115-v21-predictor \
+            --work-root /tmp/winner-v21-environment \
+            --fit-output /tmp/fixed_target_p30_actuator_fit_lf.json
+
+      - name: Run zero-update gradient-balance proof
+        run: |
+          python tools/run_winner_v21_predictor_preserving_joint_cpu_contract.py \
+            --playground-root /tmp/pg115-v21-predictor \
+            --canonical-fit /tmp/fixed_target_p30_actuator_fit_lf.json \
+            --stage1-final-snapshot /tmp/winner-v13-stage1-final.npz \
+            --output /tmp/winner-v21-predictor-preserving-cpu-result.json \
+            --offline-cpu-only \
+            --zero-update-predictor-preserving-contract-authorized
+
+      - name: Hash CPU result
+        if: always()
+        run: |
+          result=/tmp/winner-v21-predictor-preserving-cpu-result.json
+          if test -f "$result"; then
+            sha256sum "$result" \
+              | tee /tmp/winner-v21-predictor-preserving-cpu-result.sha256
+          fi
+
+      - name: Upload only CPU evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: winner-v21-predictor-preserving-cpu-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 14
+          compression-level: 6
+          path: |
+            /tmp/winner-v21-predictor-preserving-cpu-result.json
+            /tmp/winner-v21-predictor-preserving-cpu-result.sha256

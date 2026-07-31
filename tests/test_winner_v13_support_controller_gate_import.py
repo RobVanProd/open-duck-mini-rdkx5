@@ -1,0 +1,326 @@
+from __future__ import annotations
+
+import importlib.util
+import json
+from pathlib import Path
+import stat
+import zipfile
+
+import pytest
+
+
+ROOT = Path(__file__).resolve().parents[1]
+IMPORTER = ROOT / "tools/import_winner_v13_support_controller_gate_result.py"
+RESULT = ROOT / "outputs/analysis/winner_v13_support_controller_gate_result.json"
+
+
+def load_importer():
+    spec = importlib.util.spec_from_file_location("winner_v13_gate_import", IMPORTER)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def write_artifact(path: Path, raw: bytes = b"{}") -> str:
+    importer = load_importer()
+    digest = importer.sha256_bytes(raw)
+    with zipfile.ZipFile(path, "w") as archive:
+        archive.writestr(importer.RAW_RESULT_NAME, raw)
+        archive.writestr(
+            importer.RAW_RECEIPT_NAME,
+            f"{digest}  /tmp/{importer.RAW_RESULT_NAME}\n".encode(),
+        )
+    return digest
+
+
+def bind_sources(importer, tmp_path: Path) -> tuple[str, str, dict[str, str]]:
+    source_names = (
+        "PREREGISTRATION",
+        "TRAINING_PREREGISTRATION",
+        "TRAINING_RUNNER",
+        "BASE_GATE_RUNNER",
+        "RUNNER",
+    )
+    for index, name in enumerate(source_names):
+        path = tmp_path / f"{name.lower()}.txt"
+        path.write_text(f"source-{index}\n", encoding="utf-8")
+        setattr(importer, name, path)
+    snapshot_hashes = {"half": "a" * 64, "final": "b" * 64}
+    graph_hashes = {"half": "c" * 64, "final": "d" * 64}
+    training = {
+        "status": "PASS_WINNER_V13_SUPPORT_CONTROLLER_TRAINING_ARTIFACT",
+        "decision": "AUTHORIZE_SEPARATE_124_CELL_SUPPORT_GATE_PREREGISTRATION_ONLY",
+        "failed_checks": [],
+        "repository_attribution": {"repository": importer.EXPECTED_REPOSITORY},
+        "snapshot_manifest": [
+            {"sha256": snapshot_hashes["half"] if index == 49 else (
+                snapshot_hashes["final"] if index == 99 else "e" * 64
+            )}
+            for index in range(100)
+        ],
+        "persistent_checkpoints": [
+            {"label": "half", "graph": {"sha256": graph_hashes["half"]}},
+            {"label": "final", "graph": {"sha256": graph_hashes["final"]}},
+        ],
+    }
+    training_path = tmp_path / "training_result.json"
+    training_path.write_text(json.dumps(training), encoding="utf-8")
+    importer.TRAINING_RESULT = training_path
+    return snapshot_hashes["half"], snapshot_hashes["final"], graph_hashes
+
+
+def checkpoint_result(
+    label: str, checkpoint_sha256: str, onnx_sha256: str
+) -> dict:
+    checks = {
+        "all_16_heldout_contexts_separate": True,
+        "all_32_heldout_repeats_bit_exact": True,
+        "all_jax_onnx_hidden_errors_at_most_1e_7": True,
+        "all_previous_action_chains_exact": True,
+        "all_support_cells_pass": True,
+        "exact_124_main_cells": True,
+        "learned_prediction_beats_constant_per_plant": True,
+    }
+    return {
+        "label": label,
+        "update": {"half": 50, "final": 100}[label],
+        "checkpoint_sha256": checkpoint_sha256,
+        "onnx_sha256": onnx_sha256,
+        "core_model_plant_cells": [{} for _ in range(112)],
+        "sensor_transport_plant_cells": [{} for _ in range(12)],
+        "heldout_repeatability": [{"bit_exact": True} for _ in range(32)],
+        "heldout_context_separation": [{} for _ in range(16)],
+        "heldout_prediction": {"P30": {}, "P31_34": {}},
+        "checks": checks,
+        "failed_checks": [],
+    }
+
+
+def valid_result(importer, tmp_path: Path) -> dict:
+    half_snapshot, final_snapshot, graph_hashes = bind_sources(importer, tmp_path)
+    return {
+        "schema_version": "winner_v13.support_controller_gate_result.v1",
+        "status": "PASS_WINNER_V13_SUPPORT_CONTROLLER_GATE",
+        "decision": "AUTHORIZE_RESPONSE_CONDITIONED_LOCOMOTION_PREREGISTRATION_ONLY",
+        "checks": {
+            "all_248_main_cells_pass": True,
+            "both_checkpoints_evaluated": True,
+            "formal_cell_count_exact": True,
+        },
+        "failed_checks": [],
+        "sources": {
+            "preregistration_lf_sha256": importer.lf_sha256(importer.PREREGISTRATION),
+            "training_result_lf_sha256": importer.lf_sha256(importer.TRAINING_RESULT),
+            "training_preregistration_lf_sha256": importer.lf_sha256(
+                importer.TRAINING_PREREGISTRATION
+            ),
+            "training_runner_lf_sha256": importer.lf_sha256(importer.TRAINING_RUNNER),
+            "base_gate_runner_lf_sha256": importer.lf_sha256(importer.BASE_GATE_RUNNER),
+            "gate_runner_lf_sha256": importer.lf_sha256(importer.RUNNER),
+        },
+        "checkpoint_results": [
+            checkpoint_result("half", half_snapshot, graph_hashes["half"]),
+            checkpoint_result("final", final_snapshot, graph_hashes["final"]),
+        ],
+        "execution": {
+            "formal_support_cells": 248,
+            "heldout_repeat_cells": 64,
+            "locomotion_training_steps": 0,
+            "robot_or_rdk_access": 0,
+        },
+        "authority": {
+            "robot_clearance": False,
+            "rdkx5_robot_serial_gpio_i2c_torque_motion": False,
+            "pass_authorizes_only": (
+                "a separate response-conditioned locomotion-training preregistration"
+            ),
+        },
+    }
+
+
+def test_reads_exact_artifact(tmp_path: Path) -> None:
+    importer = load_importer()
+    archive = tmp_path / "gate.zip"
+    expected = b'{"status":"PASS"}\n'
+    digest = write_artifact(archive, expected)
+    raw, receipt = importer.read_result_artifact(archive)
+    assert raw == expected
+    assert receipt == f"{digest}  /tmp/{importer.RAW_RESULT_NAME}\n".encode()
+
+
+def test_rejects_extra_artifact_member(tmp_path: Path) -> None:
+    importer = load_importer()
+    archive = tmp_path / "extra.zip"
+    write_artifact(archive)
+    with zipfile.ZipFile(archive, "a") as stream:
+        stream.writestr("extra", b"unexpected")
+    with pytest.raises(ValueError, match="inventory"):
+        importer.read_result_artifact(archive)
+
+
+def test_rejects_symlink_artifact_member(tmp_path: Path) -> None:
+    importer = load_importer()
+    archive = tmp_path / "symlink.zip"
+    link = zipfile.ZipInfo(importer.RAW_RESULT_NAME)
+    link.create_system = 3
+    link.external_attr = (stat.S_IFLNK | 0o777) << 16
+    receipt = "0" * 64 + f"  /tmp/{importer.RAW_RESULT_NAME}\n"
+    with zipfile.ZipFile(archive, "w") as stream:
+        stream.writestr(link, "target")
+        stream.writestr(importer.RAW_RECEIPT_NAME, receipt)
+    with pytest.raises(ValueError, match="unsafe"):
+        importer.read_result_artifact(archive)
+
+
+def test_repository_attribution_is_exact() -> None:
+    importer = load_importer()
+    result = importer.repository_attribution(
+        run_id=42,
+        run_attempt=1,
+        run_head_sha="a" * 40,
+        artifact_id=73,
+        artifact_name="winner-v13-support-controller-gate-42",
+        artifact_digest=f"sha256:{'b' * 64}",
+        artifact_zip_sha256="b" * 64,
+    )
+    assert result["repository"] == importer.EXPECTED_REPOSITORY
+
+
+def test_validates_complete_pass_and_exact_training_artifacts(tmp_path: Path) -> None:
+    importer = load_importer()
+    importer.validate_result(valid_result(importer, tmp_path))
+
+
+def test_rejects_checkpoint_not_bound_to_training_artifact(tmp_path: Path) -> None:
+    importer = load_importer()
+    result = valid_result(importer, tmp_path)
+    result["checkpoint_results"][0]["onnx_sha256"] = "f" * 64
+    with pytest.raises(ValueError, match="artifact identity"):
+        importer.validate_result(result)
+
+
+def test_rejects_incomplete_population(tmp_path: Path) -> None:
+    importer = load_importer()
+    result = valid_result(importer, tmp_path)
+    result["checkpoint_results"][1]["sensor_transport_plant_cells"].pop()
+    with pytest.raises(ValueError, match="population"):
+        importer.validate_result(result)
+
+
+def test_rejects_global_pass_not_rederived_from_checkpoint_rows(
+    tmp_path: Path,
+) -> None:
+    importer = load_importer()
+    result = valid_result(importer, tmp_path)
+    result["checkpoint_results"][0]["checks"]["all_support_cells_pass"] = False
+    result["checkpoint_results"][0]["failed_checks"] = ["all_support_cells_pass"]
+    with pytest.raises(ValueError, match="not rederived"):
+        importer.validate_result(result)
+
+
+def test_accepts_exact_rederived_hold(tmp_path: Path) -> None:
+    importer = load_importer()
+    result = valid_result(importer, tmp_path)
+    result["checkpoint_results"][1]["checks"][
+        "learned_prediction_beats_constant_per_plant"
+    ] = False
+    result["checkpoint_results"][1]["failed_checks"] = [
+        "learned_prediction_beats_constant_per_plant"
+    ]
+    result["checks"]["all_248_main_cells_pass"] = False
+    result["failed_checks"] = ["all_248_main_cells_pass"]
+    result["status"] = "HOLD_WINNER_V13_SUPPORT_CONTROLLER_GATE"
+    result["decision"] = "DO_NOT_TRAIN_RESPONSE_CONDITIONED_LOCOMOTION"
+    importer.validate_result(result)
+
+
+@pytest.mark.parametrize(
+    ("key", "value"),
+    [
+        ("run_attempt", 2),
+        ("run_head_sha", "a" * 39),
+        ("artifact_id", 0),
+        ("artifact_name", "wrong"),
+        ("artifact_digest", f"sha256:{'c' * 64}"),
+    ],
+)
+def test_repository_attribution_rejects_drift(key: str, value: object) -> None:
+    importer = load_importer()
+    arguments = {
+        "run_id": 42,
+        "run_attempt": 1,
+        "run_head_sha": "a" * 40,
+        "artifact_id": 73,
+        "artifact_name": "winner-v13-support-controller-gate-42",
+        "artifact_digest": f"sha256:{'b' * 64}",
+        "artifact_zip_sha256": "b" * 64,
+    }
+    arguments[key] = value
+    with pytest.raises(ValueError, match="attribution"):
+        importer.repository_attribution(**arguments)
+
+
+def test_importer_cannot_run_gate_training_inference_or_hardware() -> None:
+    source = IMPORTER.read_text(encoding="utf-8")
+    assert "--formal-gate-authorized" not in source
+    assert "--hardware-authorized" not in source
+    assert "onnxruntime" not in source
+    assert "import jax" not in source
+    assert "from jax" not in source
+
+
+def test_imported_gate_hold_is_exact_when_present() -> None:
+    if not RESULT.exists():
+        return
+    importer = load_importer()
+    value = json.loads(RESULT.read_text(encoding="utf-8"))
+    raw = dict(value)
+    raw.pop("repository_attribution")
+    importer.validate_result(raw)
+    assert value["status"] == "HOLD_WINNER_V13_SUPPORT_CONTROLLER_GATE"
+    assert value["decision"] == "DO_NOT_TRAIN_RESPONSE_CONDITIONED_LOCOMOTION"
+    assert value["failed_checks"] == ["all_248_main_cells_pass"]
+    assert value["repository_attribution"] == {
+        "repository": "RobVanProd/open-duck-mini-rdkx5",
+        "github_run_id": 29831347628,
+        "github_run_attempt": 1,
+        "github_run_head_sha": "737cf4a6ea2a3117086a6f91af9a9da3813b35ee",
+        "github_artifact_id": 8495490862,
+        "github_artifact_name": "winner-v13-support-controller-gate-29831347628",
+        "github_artifact_digest": (
+            "sha256:57a357f24a4439ad60b2441e260ae5c6f06598854b8f221c73ac2136ef997e95"
+        ),
+        "artifact_zip_sha256": (
+            "57a357f24a4439ad60b2441e260ae5c6f06598854b8f221c73ac2136ef997e95"
+        ),
+        "artifact_zip_bytes": 254003,
+        "raw_result_sha256": (
+            "988125d8b2ea8a1f108f8c4ffaa8c4a0df1b00bfe79b263fa6db98ec45b371a6"
+        ),
+        "raw_result_receipt_sha256": (
+            "2c7af5d018ee0985423696ada8d9ba0b8e12337a6dd2de0d04f1d86a48c07d24"
+        ),
+        "preregistration_lf_sha256": importer.lf_sha256(importer.PREREGISTRATION),
+        "workflow_lf_sha256": importer.lf_sha256(importer.WORKFLOW),
+        "runner_lf_sha256": importer.lf_sha256(importer.RUNNER),
+        "importer_lf_sha256": importer.lf_sha256(Path(importer.__file__)),
+    }
+    expected_failures = {"half": 15, "final": 11}
+    for checkpoint in value["checkpoint_results"]:
+        cells = (
+            checkpoint["core_model_plant_cells"]
+            + checkpoint["sensor_transport_plant_cells"]
+        )
+        failed = [cell for cell in cells if not cell["support_pass"]]
+        assert len(failed) == expected_failures[checkpoint["label"]]
+        assert all(cell["condition"] is None for cell in failed)
+        assert all(
+            sorted(
+                name
+                for name, passed in cell["terminal"]["checks"].items()
+                if not passed
+            )
+            == ["roll_pitch"]
+            for cell in failed
+        )

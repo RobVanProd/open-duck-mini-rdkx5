@@ -1,0 +1,59 @@
+{
+  "status": "HOLD_SEED_WEIGHTING_REINTRODUCES_TRACKING_EXCESS",
+  "scope": "offline_only",
+  "robot_tests": false,
+  "ssh": false,
+  "deploy": false,
+  "grounded_replay": false,
+  "runtime_behavior_changed": false,
+  "training_from_scratch": false,
+  "manifest": {
+    "artifact_md": "outputs/analysis/PHASE2_TRANSITION_PROTECTED_SEED4_WEIGHTED_MANIFEST.md",
+    "artifact_json": "outputs/analysis/phase2_transition_protected_seed4_weighted_manifest.json",
+    "seed_002_weight": 1.0,
+    "seed_004_weight": 3.0
+  },
+  "student_fit": {
+    "artifact_md": "outputs/analysis/PHASE2_TRANSITION_PROTECTED_SEED4_WEIGHTED_BC_STUDENT.md",
+    "artifact_json": "outputs/analysis/phase2_transition_protected_seed4_weighted_bc_student.json",
+    "status": "PASS_PPO_LOC_BC_FIT_SMOKE"
+  },
+  "gate": {
+    "artifact_md": "outputs/analysis/PHASE2_TRANSITION_PROTECTED_SEED4_WEIGHTED_BC_STUDENT_TERRAIN_Z002_GATE_CPU.md",
+    "artifact_json": "outputs/analysis/phase2_transition_protected_seed4_weighted_bc_student_terrain_z002_gate_cpu.json",
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.002,
+    "bridge": "corrected_fitted",
+    "command_x": 0.08,
+    "duration_s": 5,
+    "seeds": [2, 4],
+    "results": [
+      {
+        "seed": 2,
+        "status": "HOLD_CANDIDATE_TRACKING",
+        "mean_local_vx_m_s": 0.0409,
+        "track_ratio": 0.5112,
+        "max_velocity_excess_rad_s": 0.2465,
+        "max_tracking_p95_rad": 0.2202,
+        "single_support_pct": 29.2,
+        "double_support_pct": 70.8,
+        "min_swing_segments": 7,
+        "min_rel_x_range_p95_m": 0.0079
+      },
+      {
+        "seed": 4,
+        "status": "HOLD_CANDIDATE_TRACKING",
+        "mean_local_vx_m_s": 0.0335,
+        "track_ratio": 0.4184,
+        "max_velocity_excess_rad_s": 0.2935,
+        "max_tracking_p95_rad": 0.2222,
+        "single_support_pct": 21.2,
+        "double_support_pct": 78.8,
+        "min_swing_segments": 6,
+        "min_rel_x_range_p95_m": 0.0080
+      }
+    ]
+  },
+  "interpretation": "Seed weighting improves swing but reintroduces tracking/envelope excess.",
+  "next": "Use contact-phase-balanced labels or explicit action-space correction; do not continue naive seed weighting."
+}

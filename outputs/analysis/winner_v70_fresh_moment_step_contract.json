@@ -1,0 +1,113 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "continuation_authorized_now": false,
+    "deployment_authorized": false,
+    "gate5_authorized": false,
+    "pass_authorizes_only": "preregistration of a bounded fresh-moment safeguarded continuation",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "support_gate_authorized": false
+  },
+  "decision": "AUTHORIZE_EXACTLY_ONE_FRESH_MOMENT_TEACHER_STEP",
+  "execution_now": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "objective": {
+    "attention_or_flat_transport_added": false,
+    "coefficient_or_length_search": false,
+    "persistent_teacher_scale": 136.35153198242188,
+    "update_gradient": "full_action_persistent_teacher_only"
+  },
+  "schema_version": "winner_v70.fresh_moment_step_contract.v1",
+  "source_checkpoint": {
+    "completed_updates": 601,
+    "optimizer_count": 601,
+    "snapshot": {
+      "bytes": 195247,
+      "completed_updates": 601,
+      "metadata_payload_sha256": "2db6787c9d94b73543ba2c47aaa2826bd4b370e0db7d86f6c441614e7eb63d59",
+      "path": "D:/CodexArtifacts/open-duck-mini-rdkx5/winner-v68-backtracked-adam-continuation/snapshots/snapshot_backtracked_adam_update_601.npz",
+      "sha256": "3e3725f1ae5220569422c9ed7a7e7f33fd8799f2e2d90bef66f1493607ac4078",
+      "state_payload_sha256": "f42894aa89339f1a3bb7dc37e441ebf5844c7e3778df985e3bb7ba3b9aceabd8"
+    }
+  },
+  "source_manifest_sha256": "4dfb5f26f1a2727cb2080d682ac51ec69e9e1204188abf9411fc5ddb3738dfd9",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v70_fresh_moment_step.py",
+      "sha256": "a226a972af4af3ce331fca86833e1bbc63a144b16a2f17af4a6ea9c17ddd503f"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v70_fresh_moment_step.py",
+      "sha256": "0dbce32328d0daed2ce05a4604149a56e44f1ca539354b9dbf0baa0cd0f4e3fc"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v70_fresh_moment_step.py",
+      "sha256": "0eec43fa0aa9fbecc53ef3daa465747f693b2c77b3e7e08a995d9651da30bb62"
+    },
+    "v68_stopped_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v68_backtracked_adam_continuation_result.json",
+      "sha256": "0621f43f97f82814a6c15212a7ba72bf01da79edac99f25a8ded549ee985ba2f"
+    },
+    "v69_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v69_count602_direction_attribution.py",
+      "sha256": "009c168017ada0b0a73842288d1d1f634754c867703965b1c00f85b8470f2d80"
+    },
+    "v69_contract": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v69_count602_direction_attribution_preregistration.json",
+      "sha256": "38b9ddaecc3662790a019d716c9fd5fd9f7d220310a1f0a26b3ccbf04abef94a"
+    },
+    "v69_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v69_count602_direction_attribution_result.json",
+      "sha256": "8b02ec895705bfb194602fe094b0ff1235d3827646bc043d10097050454a23cd"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V70_FRESH_MOMENT_STEP",
+  "step": {
+    "acceptance_rule": "first strict same-batch teacher-loss descent",
+    "completed_optimizer_count": 602,
+    "fractions_largest_first": [
+      1.0,
+      0.5,
+      0.25,
+      0.125,
+      0.0625,
+      0.03125,
+      0.015625,
+      0.0078125,
+      0.00390625,
+      0.001953125,
+      0.0009765625
+    ],
+    "preserve": "global optimizer count and all non-teacher-active moments",
+    "reset_moments": "m and v only for the six teacher-active policy leaves",
+    "rollout_update_index": 601,
+    "source_optimizer_count": 601
+  },
+  "teacher_checkpoint": {
+    "completed_updates": 100,
+    "optimizer_count": 100,
+    "snapshot": {
+      "bytes": 194808,
+      "completed_updates": 100,
+      "optimizer_count": 100,
+      "path": null,
+      "sha256": "ddc8c4b905bb9acac2d7d48c3e9c1f0c0ca0173a1ba21f375740b051bc48c806"
+    }
+  },
+  "transformation": {
+    "base": "Winner-v69 exact count-602 attribution runner",
+    "transformed_source_sha256": "d4686ba580422e514b752344b29f3897bd632d4cfa53eb957f37020220f03939"
+  }
+}

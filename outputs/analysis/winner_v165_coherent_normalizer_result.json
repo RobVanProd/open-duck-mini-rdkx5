@@ -1,0 +1,543 @@
+{
+  "authority": {
+    "full_robustness": false,
+    "gate5": false,
+    "hosted_training": false,
+    "next_cpu_integration_smoke": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "cells": [
+    {
+      "cell_sha256": "6e01f5ea5ca392bbfdc71eb7a1cb27ce083e44a593b63a7ace86b36336ee1bbb",
+      "failure_reasons": [
+        "torque_peak_at_most_1p91229675_nm"
+      ],
+      "identity": {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V165_COHERENT_ACCEPTED_STATE",
+        "command_x_m_s": 0.08,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "policy_sha256": "63d1696aa464ba629b426f5a54ed9999e8539b08ff136d726e94347c91bf7f2f",
+        "seed": 167931544,
+        "step": 1003520,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      "metrics": {
+        "accelerometer_norm_p95_m_s2": 15.51172155019737,
+        "body_pitch_p95_abs_rad": 0.02963492769076006,
+        "body_pitch_rate_p95_abs_rad_s": 0.5013567954301829,
+        "body_roll_rate_p95_abs_rad_s": 1.461051291227339,
+        "candidate_gate_status": "PASS_CANDIDATE_SIM_GATE",
+        "checks": {
+          "bilateral_transitions": true,
+          "candidate_gate_pass": true,
+          "cpu_only": true,
+          "current_peak_at_most_2p5": true,
+          "duration_complete_600": true,
+          "oracle_disabled": true,
+          "overcurrent_gt_2a_at_most_99_consecutive_ticks": true,
+          "per_run_readback_exact": true,
+          "phase0_first_observation_exact": true,
+          "positive_command_consistent_motion": true,
+          "torque_peak_at_most_1p91229675_nm": false,
+          "trace_contract": true,
+          "tracking_p95_at_most_0p20": true,
+          "x0_deadband_exact": true,
+          "zero_command_base_height": true,
+          "zero_command_pitch": true,
+          "zero_command_velocity": true,
+          "zero_envelope_excess": true,
+          "zero_rate_excess": true,
+          "zero_recurrent_state_exact": true,
+          "zero_saturation": true
+        },
+        "current_p95_a_by_joint": {
+          "head_pitch": 0.2901564344507644,
+          "head_roll": 0.2386047163587319,
+          "head_yaw": 0.1852331079239611,
+          "left_ankle": 1.9834557895740434,
+          "left_hip_pitch": 1.4930886173911033,
+          "left_hip_roll": 1.3547607307278289,
+          "left_hip_yaw": 0.8106644878284951,
+          "left_knee": 2.081604870577897,
+          "neck_pitch": 0.24255637445884665,
+          "right_ankle": 1.955756114760884,
+          "right_hip_pitch": 1.4315489861819464,
+          "right_hip_roll": 1.0818823322090112,
+          "right_hip_yaw": 0.5562465207164287,
+          "right_knee": 1.8099661069318609
+        },
+        "left_contact_transition_count": 54,
+        "max_actual_centered_guard_excess_rad": 0.0,
+        "max_conservative_rate_excess_rad_s": 0.0,
+        "mean_local_vx_m_s": 0.10726511675398796,
+        "minimum_base_height_m": 0.15153080224990845,
+        "right_contact_transition_count": 47,
+        "samples": 600,
+        "saturation_pct_by_joint": {
+          "head_pitch": 0.0,
+          "head_roll": 0.0,
+          "head_yaw": 0.0,
+          "left_ankle": 0.0,
+          "left_hip_pitch": 0.0,
+          "left_hip_roll": 0.0,
+          "left_hip_yaw": 0.0,
+          "left_knee": 0.0,
+          "neck_pitch": 0.0,
+          "right_ankle": 0.0,
+          "right_hip_pitch": 0.0,
+          "right_hip_roll": 0.0,
+          "right_hip_yaw": 0.0,
+          "right_knee": 0.0
+        },
+        "termination_reason": "duration_complete",
+        "tracking_p95_rad_by_joint": {
+          "head_pitch": 0.056620758026838296,
+          "head_roll": 0.08023843895643948,
+          "head_yaw": 0.11609461456537244,
+          "left_ankle": 0.14014605283737183,
+          "left_hip_pitch": 0.11444598734378811,
+          "left_hip_roll": 0.09476592727005476,
+          "left_hip_yaw": 0.07664177885744718,
+          "left_knee": 0.14539123177528382,
+          "neck_pitch": 0.10004563718102873,
+          "right_ankle": 0.14013087451457976,
+          "right_hip_pitch": 0.13533205091953268,
+          "right_hip_roll": 0.09465658105909822,
+          "right_hip_yaw": 0.04677335266023874,
+          "right_knee": 0.12112517356872557
+        },
+        "worst_current_p95_a": 2.081604870577897,
+        "worst_saturation_pct": 0.0,
+        "worst_tracking_p95_rad": 0.14539123177528382
+      },
+      "model_readback": {
+        "actual": {
+          "all_body_mass_kg": [
+            0.0,
+            0.0,
+            0.6985260248184204,
+            0.06648000329732895,
+            0.07515999674797058,
+            0.12407000362873077,
+            0.07259000092744827,
+            0.07524000108242035,
+            0.06617999821901321,
+            0.016937799751758575,
+            0.09180989861488342,
+            0.4066070020198822,
+            0.06648000329732895,
+            0.07515999674797058,
+            0.12407000362873077,
+            0.07259000092744827,
+            0.07524000108242035,
+            0.0
+          ],
+          "torso_body_ipos_m": [
+            -0.04832589998841286,
+            -9.978230082197115e-05,
+            0.03849710151553154
+          ],
+          "torso_body_iquat_wxyz": [
+            0.5054987668991089,
+            0.49069473147392273,
+            0.49620741605758667,
+            0.5074129104614258
+          ],
+          "torso_inertia_tensor_nominal_frame_kg_m2": [
+            [
+              0.0034448949301507967,
+              9.752039707786026e-11,
+              8.014266836416753e-11
+            ],
+            [
+              9.752039707786026e-11,
+              0.0029271881125270574,
+              7.284993129176153e-11
+            ],
+            [
+              8.014266836416753e-11,
+              7.284993129176153e-11,
+              0.001676066443158942
+            ]
+          ],
+          "torso_mass_kg": 0.6985260248184204,
+          "torso_principal_inertia_kg_m2": [
+            0.0034448951482772827,
+            0.0029271882958710194,
+            0.0016760665457695723
+          ]
+        },
+        "body_id": 2,
+        "body_name": "trunk_assembly",
+        "enabled": false,
+        "nominal": {
+          "all_body_mass_kg": [
+            0.0,
+            0.0,
+            0.6985260248184204,
+            0.06648000329732895,
+            0.07515999674797058,
+            0.12407000362873077,
+            0.07259000092744827,
+            0.07524000108242035,
+            0.06617999821901321,
+            0.016937799751758575,
+            0.09180989861488342,
+            0.4066070020198822,
+            0.06648000329732895,
+            0.07515999674797058,
+            0.12407000362873077,
+            0.07259000092744827,
+            0.07524000108242035,
+            0.0
+          ],
+          "torso_body_ipos_m": [
+            -0.04832589998841286,
+            -9.978230082197115e-05,
+            0.03849710151553154
+          ],
+          "torso_body_iquat_wxyz": [
+            0.5054987668991089,
+            0.49069473147392273,
+            0.49620741605758667,
+            0.5074129104614258
+          ],
+          "torso_mass_kg": 0.6985260248184204,
+          "torso_principal_inertia_kg_m2": [
+            0.0034448951482772827,
+            0.0029271882958710194,
+            0.0016760665457695723
+          ]
+        },
+        "requested": {
+          "all_link_mass_scale": 1.0,
+          "torso_com_offset_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "torso_inertia_tensor_kg_m2": [
+            [
+              0.0034448951482772827,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0029271882958710194,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0016760665457695723
+            ]
+          ],
+          "torso_mass_add_kg": 0.0
+        }
+      },
+      "pass": false,
+      "policy": {
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v165-coherent-normalizer-20260725\\winner_v165_accepted_deployed.onnx",
+        "sha256": "63d1696aa464ba629b426f5a54ed9999e8539b08ff136d726e94347c91bf7f2f"
+      },
+      "policy_contract": {
+        "first_h_in_linf": 0.0,
+        "first_phase": [
+          1.0,
+          0.0
+        ],
+        "first_phase_linf_error": 0.0,
+        "first_previous_action_linf": 0.0,
+        "oracle_rows": 0,
+        "rows": 600,
+        "sha256": "ef14b9d8d491996cdaa7ac424e9baf046e0375711aa29381924b1a8772eeb753",
+        "x0_action_nonzero_values": null
+      },
+      "prospective_current_gate": {
+        "checks": {
+          "current_peak_at_most_2p5": true,
+          "overcurrent_gt_2a_at_most_99_consecutive_ticks": true
+        },
+        "conversion_nm_per_a": 0.784532,
+        "longest_strict_over_2a_run_ticks_by_joint": [
+          0,
+          0,
+          0,
+          9,
+          3,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          3
+        ],
+        "p95_current_a_by_joint": [
+          0.8106644878284951,
+          1.3547607307278289,
+          1.4930886173911033,
+          2.081604870577897,
+          1.9834557895740434,
+          0.24255637445884667,
+          0.29015643445076444,
+          0.1852331079239611,
+          0.2386047163587319,
+          0.5562465207164287,
+          1.0818823322090112,
+          1.4315489861819464,
+          1.8099661069318609,
+          1.955756114760884
+        ],
+        "pass": true,
+        "peak_current_a_by_joint": [
+          0.9282757960683892,
+          1.4699803719402875,
+          1.8645973211595765,
+          2.3127500498630273,
+          2.44022357189902,
+          0.37308919188665496,
+          0.3737668869091607,
+          0.22752919010148095,
+          0.28405621056978925,
+          0.6367137712378462,
+          1.1796561281979356,
+          1.6028769736518924,
+          2.206409672161138,
+          2.2210916461195676
+        ],
+        "samples": 600,
+        "worst_p95_current_a_diagnostic_only": 2.081604870577897,
+        "worst_peak_current_a": 2.44022357189902,
+        "worst_strict_over_2a_run_ticks": 9
+      },
+      "readback_checks": {
+        "actuator_readback_exact": true,
+        "all_body_mass_readback_exact": true,
+        "body_identity_exact": true,
+        "configuration_enabled_exact": true,
+        "full_inertia_readback_exact": true,
+        "requested_inertia_tensor_exact": true,
+        "requested_scale_add_offset_exact": true,
+        "torso_com_readback_exact": true,
+        "transport_readback_exact": true
+      },
+      "robot_clearance": false,
+      "schema_version": "winner_v141.projected_final_cell.v1",
+      "simulator": {
+        "error": null,
+        "status": "PASS_CANDIDATE_SIM_GATE"
+      },
+      "status": "HOLD_WINNER_V141_PROJECTED_FINAL_CELL",
+      "torque_gate": {
+        "check": false,
+        "limit_nm": 1.91229675,
+        "peak_torque_nm_by_joint": [
+          0.7282620668411255,
+          1.1532466411590576,
+          1.4628362655639648,
+          1.8144264221191406,
+          1.914433479309082,
+          0.2927004098892212,
+          0.2932320833206177,
+          0.17850393056869507,
+          0.22285118699073792,
+          0.49952232837677,
+          0.9254779815673828,
+          1.2575082778930664,
+          1.7309989929199219,
+          1.7425174713134766
+        ],
+        "worst_peak_torque_nm": 1.914433479309082
+      },
+      "trace": {
+        "all_values_finite": true,
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v165-coherent-normalizer-20260725\\traces\\v165_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.jsonl",
+        "required_fields_every_tick": true,
+        "reset_h_exact_zero": true,
+        "reset_previous_action_exact_zero": true,
+        "rows": 600,
+        "sha256": "ef14b9d8d491996cdaa7ac424e9baf046e0375711aa29381924b1a8772eeb753",
+        "ticks_contiguous": true
+      },
+      "training_or_simulator_reward_selection_weight": 0
+    }
+  ],
+  "checks": {
+    "accepted_checkpoint_restore_exact": true,
+    "accepted_tree_finite": true,
+    "all_six_moving_cells_pass": false,
+    "cost_critic_proposal_finite": true,
+    "cpu_only": true,
+    "deployment_contract_green": true,
+    "export_initializer_contract_linf_at_most_1e_7": true,
+    "normalizer_algebra_error_at_most_1e_7": true,
+    "normalizer_count_increment_exact": true,
+    "optimizer_reset_all_finite": true,
+    "optimizer_reset_counters_zero": true,
+    "optimizer_reset_moments_zero": true,
+    "reward_critic_proposal_bit_exact": true,
+    "source_worst_torque_strictly_improved": false,
+    "x0_deadband_exact": true
+  },
+  "decision": "CLOSE_FEASIBILITY_PRESERVING_BLOCK_CONTINUATION_NO_RETRY",
+  "export": {
+    "deployed": {
+      "bytes": 958446,
+      "graph_io": {
+        "inputs": {
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        }
+      },
+      "inference": {
+        "changed_projection_is_exercised": true,
+        "checks": {
+          "all_outputs_finite": true,
+          "changed_projection_is_exercised": true,
+          "cpu_provider_exact": true,
+          "g3_guard_preserved_in_consistent_chain": true,
+          "moving_rate_delta_enforced": true,
+          "realized_state_feedback_exact": true,
+          "recurrent_hidden_output_bit_exact": true,
+          "zero_action_exact": true,
+          "zero_previous_exact": true
+        },
+        "max_guard_excess_rad": 0.0,
+        "max_hidden_error": 0.0,
+        "max_moving_delta_excess": 2.2351741790771484e-08,
+        "max_state_error": 0.0,
+        "max_zero_action": 0.0,
+        "max_zero_previous": 0.0,
+        "pass": true
+      },
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v165-coherent-normalizer-20260725\\winner_v165_accepted_deployed.onnx",
+      "sha256": "63d1696aa464ba629b426f5a54ed9999e8539b08ff136d726e94347c91bf7f2f"
+    },
+    "initializer_errors": {
+      "adapter_bias": 0.0,
+      "adapter_hidden_bias": 0.0,
+      "adapter_hidden_weight": 0.0,
+      "adapter_obs_weight": 0.0,
+      "adapter_weight": 0.0,
+      "base_residual_bias": 0.0,
+      "base_residual_weight": 0.0,
+      "clip_max": 0.0,
+      "clip_min": 0.0,
+      "max_action_delta": 0.0,
+      "obs_mean": 0.0,
+      "obs_std": 0.0,
+      "reference_indices": 0.0,
+      "trunk_0_bias": 0.0,
+      "trunk_0_weight": 0.0,
+      "trunk_1_bias": 0.0,
+      "trunk_1_weight": 0.0,
+      "trunk_2_bias": 0.0,
+      "trunk_2_weight": 0.0
+    },
+    "initializer_linf": 0.0,
+    "raw": {
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v165-coherent-normalizer-20260725\\winner_v165_accepted_raw.onnx",
+      "sha256": "d9a4895dd545469e7868841173744e8aad49d22d4aeb18ce84ba65519cce2f3f"
+    }
+  },
+  "failed_checks": [
+    "all_six_moving_cells_pass",
+    "source_worst_torque_strictly_improved"
+  ],
+  "input_hashes": {
+    "base_preregistration": "c8f986ceb24863f33c1fc99170548d2e255cb6a26737d3f74762f8dcd4485a24",
+    "builder": "ab520c261b929c7505a83e1f65e6320903796468232e92aaa77f848497a26f42",
+    "cell_runner": "41cc51abb21dde2fde8fa4cbf36ad50212794fea0a38eb73b2c3705ee96ac034",
+    "composed_evaluator": "1539ba18b5b207a15538a8a8611475f5c73bcd7164f2fe039cad8b279a587e43",
+    "composition_manifest": "39e842470828208dfea08b17d936d3f0e6f0d45b8f9813a1edd139692e4a6f74",
+    "deployer": "ca59440ded91cf70d96cc02a6a5e53c5700ccf3cc31084bf6b177ad3311cd0cc",
+    "preregistration": "d4c890bb07f65b0156288f634b4e8546bf2e8c51b36b38422bbe7a6fce15c312",
+    "proposal_aux": "3629bf003496e88e71d32342191c8cff635edd8cd002ba1f3d6c316251e1cf8d",
+    "proposal_checkpoint": "f65225628fa708fce89150759f633c4eaf5edd71f480c919860fa9394bc74942",
+    "proposal_cost_checkpoint": "591fe99b5f80d9935102fd3e6c154db862fa0ea8dfa9f0b9589b6f1142a3224b",
+    "proposal_raw": "2fbb837b23ed35c460f877ff9c5189b819572b8cd8dc5258b2cb4578ce4b8a90",
+    "runner": "80541ae0e58738fe344e3e1511ad81d18f3d5cbc55a14b2f0a050998a0210c38",
+    "source_checkpoint": "b8f007e69f3ba54ed1d07fe2cbe9da96f6701b3e619284f9f75ccc64cab41677",
+    "source_raw": "2d3cfb686a9c9643d9414a99a10e4db3aee7fc8f63cbc2fd81f107b487cf1311",
+    "state_module": "9b17cf82039b0aba4be2db7e528bdff308b3dcd3d5bb8e22df3c525407c6b081",
+    "v121_preregistration": "9c10dc3de6ea4b5f0f5fe00b287a53e7dc17f1e77b34da84916f90ba285770f5",
+    "v121_result": "8bdefb90032facb4a3f3f7c833e608d2b35dac958ac0fcc2bbbd393ddcbb6047",
+    "v126_preregistration": "eb40f17d9c08b8362f068567e1620bdafef21ad9123a633c9536f3637a31c899",
+    "v127_preregistration": "a77c677816714a0517c70f84c56d8c6a2b731ae135696c11b15ff51caf24bc34",
+    "v127_result": "cd728eb3cf2900f038c4134e3f603106238e960046b3482d4cd2b695b5a76ed4",
+    "v163_result": "df771a2ad5343e1ed54b1229fb4600fc7e9e3b6cd5cfd3d0f63dacdf24a6960c",
+    "v164_preregistration": "ee779c4877beca09f9dd80d15300e47f7c065255ad29e4172d90e5b70a017512",
+    "v164_result": "0247a88fe1567a0b8f28dbe7fe53481fb9327b9c0a9b4fd97a8722001d0cf1ac",
+    "v164_state_module": "ea8d61ccfcd02f7ad64453bb02ad3bfdd5348be43ca4ff408999e4da11a7ba3d"
+  },
+  "schema_version": "winner_v165.coherent_normalizer_result.v1",
+  "state": {
+    "accepted_alpha": 0.03571428571428571,
+    "accepted_aux": {
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v165-coherent-normalizer-20260725\\winner_v165_accepted_aux.json",
+      "sha256": "dcfb1b91dd986125f4f18679115720dae95fad2ea3f848e86299daef084b449f"
+    },
+    "accepted_checkpoint": {
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v165-coherent-normalizer-20260725\\accepted_checkpoint",
+      "sha256": "93f4f56533f7c70e989d207456faa7f6cd2d3cd884cb8e1fa2f1ff99dd775bda"
+    },
+    "accepted_count": 15052837,
+    "accepted_count_increment": 37,
+    "normalizer_consistency_error": 8.352174063475104e-08,
+    "optimizer_reset": {
+      "all_finite": true,
+      "all_float_moments_zero": true,
+      "all_integer_counters_zero": true,
+      "leaves": 63
+    },
+    "proposal_count": 15053824,
+    "source_count": 15052800
+  },
+  "status": "HOLD_WINNER_V165_COHERENT_NORMALIZER",
+  "summary": {
+    "candidate_worst_peak_torque_nm": 1.914433479309082,
+    "moving_cells_completed": 1,
+    "moving_cells_passing": 0,
+    "source_worst_peak_torque_nm": 1.909637451171875,
+    "wall_seconds": 96.26262545585632
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "authority": {
+    "behavior_execution": false,
+    "candidate_promotion": false,
+    "colab": false,
+    "execute_one_cpu_graph_transform": true,
+    "gate5": false,
+    "nominal_matrix_preregistration": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "causal_basis": {
+    "exact_half_final_midpoint": "8/8 nominal cells green",
+    "selected_mechanism": "apply the same adjacent-checkpoint midpoint rule at both post-update export times",
+    "t78_nominal": "14/16 with opposite-fit x=.08 failures"
+  },
+  "checks": {
+    "behavior_not_run": true,
+    "exact_three_raw_exports": true,
+    "hosted_robot_and_gate5_zero": true,
+    "runner_and_test_present": true,
+    "t78_validation_green": true,
+    "t81_exact_midpoint_green": true,
+    "t83b_midpoint_eight_of_eight_green": true,
+    "zero_scalar_or_checkpoint_search": true
+  },
+  "decision_rule": {
+    "fail_decision": "CLOSE_T78_ROLLING_ADAPTER_MIDPOINT",
+    "pass": "Both rolling exports use exactly the same midpoint rule; only five expected adapter initializers change; every deployment sub-contract passes; rolling-final is byte-exact to T81.",
+    "pass_decision": "EARN_T85_ROLLING_MIDPOINT_NOMINAL_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "onnx_graphs_built": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "persistence_contract": {
+    "both_required": true,
+    "exports": [
+      "rolling_half",
+      "rolling_final"
+    ],
+    "no_checkpoint_selection": true,
+    "no_single_midpoint_promotion": true
+  },
+  "preregistered_contract_sha256": "2a07c06abc8a96f17e354b623be433a2046537a87569f01fbc8f45fe344cd84d",
+  "question": "Can one uniform rolling-midpoint rule produce two valid post-update policies\u2014mean(step0, half) and mean(half, final)\u2014so persistence can be tested without training?",
+  "schema_version": "open_duck.t84_t78_rolling_midpoint_preregistration.v1",
+  "sources": {
+    "raw_exports": {
+      "0": {
+        "bytes": 954952,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t78_extracted_20260728\\t78_endpoint_joint_adapter_continuation\\training\\2026_07_28_182830_0.onnx",
+        "sha256": "b395a0299b7a35b3c35c0eb063135c4e08be527eac441de9215aeea22bb9157e"
+      },
+      "1003520": {
+        "bytes": 954952,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t78_extracted_20260728\\t78_endpoint_joint_adapter_continuation\\training\\2026_07_28_183419_1003520.onnx",
+        "sha256": "6e1d0cbbf9c81e431fc967645461912b7b99f84cece29857e84c6be9b4763ccd"
+      },
+      "2007040": {
+        "bytes": 954952,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t78_extracted_20260728\\t78_endpoint_joint_adapter_continuation\\training\\2026_07_28_183936_2007040.onnx",
+        "sha256": "f63da30a9dc3ea1ab3ed45cde050566d19fa3599d715cb7e60050fbd8ed04472"
+      }
+    },
+    "runner": {
+      "bytes": 10462,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t84_t78_rolling_midpoint_transform.py",
+      "sha256": "8298df57c3b818a1754ab0ce3a4766480a2741013840ba968cbb2f1f75080f6f"
+    },
+    "t81_midpoint": {
+      "bytes": 16837,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t81_t78_midpoint_result.json",
+      "sha256": "930b4603488c4027c8d39a524a72b423e9857207f1c3a1eb3d7e6f8b5cc0e0c8"
+    },
+    "t83b_midpoint_matrix": {
+      "bytes": 63693,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t83b_midpoint_aggregation_correction_result.json",
+      "sha256": "c1301e397dd046df26e50ea0906c636dcd571863ac81fb9f0b08d15234ac1b8d"
+    },
+    "test": {
+      "bytes": 1770,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t84_t78_rolling_midpoint_transform.py",
+      "sha256": "9c6ee2cc435aaa5511391e1d1cc7a64dc63a2103bf42e967d473fb58514dd988"
+    },
+    "validation": {
+      "bytes": 9095,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t78_recovered_training_validation.json",
+      "sha256": "8f638d7c640eca9b3df7cb1667c166b36ae5c01b975dc3d6491bcb2939279445"
+    }
+  },
+  "status": "PREREGISTERED_T84_T78_ROLLING_ADAPTER_MIDPOINTS",
+  "transform": {
+    "all_other_initializers_bit_exact": true,
+    "coefficient": 0.5,
+    "coefficient_sweep": false,
+    "deployment_chain": "exact frozen T31/T79 chain",
+    "formula": "float32((float64(earlier) + float64(later)) * 0.5)",
+    "initializers": [
+      "adapter_bias",
+      "adapter_hidden_bias",
+      "adapter_hidden_weight",
+      "adapter_obs_weight",
+      "adapter_weight"
+    ],
+    "rolling_final": "mean(step1003520, step2007040)",
+    "rolling_half": "mean(step0, step1003520)",
+    "uniform_rule_at_both_exports": true
+  }
+}

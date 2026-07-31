@@ -1,0 +1,102 @@
+{
+  "authority": {
+    "behavior_cells": 0,
+    "candidate_selection": false,
+    "cpu_only": true,
+    "deployment_or_gate5": false,
+    "hosted_or_colab_compute": false,
+    "optimizer_steps": 0,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false
+  },
+  "causal_basis": {
+    "actual_blocker": "T6 found V121 at 0/16 under the exact -0.05 m torso-COM condition while timing, transition, and nominal behavior were already green.",
+    "closed_response_routes": "T10/T11 closed the added context-to-action family; T12 closed the response-prefix preparation; T13 independently closed the existing recurrent shadow handoff.",
+    "materially_distinct_open_question": "No prior objective optimized the worst domain or used group-DRO/minimax selection. T14 measures whether average objective geometry itself points against the clearance condition before any optimizer is changed.",
+    "prior_average_route": "Winner-v3 trained one shared actor on the full uniformly sampled variable-configuration distribution and produced no robustness survivor."
+  },
+  "checks": {
+    "exact_worst_domain_objective_untried": true,
+    "permanent_d_inputs_present": true,
+    "t13_existing_recurrence_handoff_closed": true,
+    "t13_independent_audit_green": true,
+    "t6_v121_negative_com_zero_of_sixteen": true,
+    "v3_full_variable_configuration_route_failed": true
+  },
+  "decision_rule": {
+    "fail": "Close worst-domain objective continuation from V121-half; do not narrow the domain, alter the seed, threshold, normalizer, batch, or gradient definition.",
+    "no_threshold_changes_after_execution": true,
+    "partial_results_selection_weight": 0,
+    "pass": "Earn only a separately preregistered CPU implementation contract for one parameter-free worst-domain/group-DRO continuation objective. No hosted run is earned by T14."
+  },
+  "execution_now": {
+    "behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "rollout_observations": 0
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "cpu_template_directory": "217a1551c4cc778e4b957636a40ca6e01eafa51efeaef905eb73e9debc7c26e5",
+    "joystick": "5bbdfcf77dc36fcc2b02751fa7234b89c38fea53e35fbf09b37084102d9033d3",
+    "playground_manifest": "ba33a3467893c59ed4ff57388ef61ce3c1257b6abd38702b982fa3230438bfe7",
+    "recurrent_network": "ffd07d0a6e96d846aa1f62a8d131bf892f10db6b2a22710affe3946b7b145ebd",
+    "reference": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212",
+    "runner": "c2f52cd6ac70897e20d2c555436c96afb56f1006946a07a3a8336e07ed730bc2",
+    "source_checkpoint_directory": "29b6d1d707784cc49050ab4b5513c06b020ebf7cf02dba3bee304a74477348f8",
+    "winner_v3_randomizer": "daab44325e6dd98b8b4054fc5c5fe7391ca9e358e7aca97999ef1a2441285ab7"
+  },
+  "matrix": {
+    "domains": [
+      "winner_v3_full_distribution_scale_1",
+      "exact_negative_com_p30",
+      "exact_nominal_p30"
+    ],
+    "environments_per_domain": 256,
+    "frozen_minibatches": 4,
+    "minibatch_sequences": 256,
+    "observations_per_domain": 20480,
+    "seed": 20260726,
+    "sequences_per_domain": 1024,
+    "ticks_per_environment": 80,
+    "torso_com_negative_offset_m": -0.05,
+    "unroll_length": 20
+  },
+  "pairing": {
+    "permutation": "one frozen PCG64 permutation shared by all domains",
+    "policy_standard_normal_draws": "bit-identical across all three domains at every tick",
+    "reset_keys": "bit-identical across all three domains",
+    "sensitivity": "the source-frozen normalizer must preserve the primary interference sign",
+    "source_normalizer": "V121 source for collection; broad-batch-updated source normalizer is the primary gradient processor",
+    "source_policy": "V121_TRAIN_MATCHED_HALF"
+  },
+  "pass_rule": {
+    "all_rollouts_and_gradients_finite": true,
+    "broad_and_negative_gradients_nonzero": true,
+    "exact_model_and_pairing_readbacks": true,
+    "harm_sign_minibatches": "at least 3 of 4",
+    "negative_loss_derivative_along_broad_descent": "> 64*eps32*max(1,abs(dot),norm_product)",
+    "primary_gradient_cosine_strictly_negative": true,
+    "source_checkpoint_bytes_unchanged": true,
+    "source_normalizer_sensitivity": "strictly negative cosine and positive harm derivative above the same tolerance"
+  },
+  "preregistered_contract_sha256": "bdfdba6f5f3d52ba0ace28f8e0a92bb85b4b62ff3755e4f9912bf4e0baa5a83d",
+  "prior_objective_family_audit": {
+    "cvar_reporting_metric_paths": [
+      "outputs/analysis/ground_up_nominal_horizon_persistence_audit.json",
+      "tools/audit_ground_up_nominal_horizon_persistence.py"
+    ],
+    "interpretation": "The only CVaR usage is a read-only tracking statistic. No group-DRO, distributionally robust, worst-domain, or minimax training objective exists in prior work.",
+    "objective_term_hit_count": 0,
+    "objective_term_hits": {
+      "distributionally_robust": [],
+      "group_dro": [],
+      "minimax": [],
+      "worst_domain": []
+    }
+  },
+  "question": "At the frozen V121-half actor, does the exact winner-v3 broad-domain PPO descent direction locally increase the PPO actor loss of the exact -0.05 m torso-COM P30 domain?",
+  "schema_version": "open_duck.t14_domain_gradient_geometry_preregistration.v1",
+  "status": "PREREGISTERED_T14_DOMAIN_GRADIENT_GEOMETRY"
+}

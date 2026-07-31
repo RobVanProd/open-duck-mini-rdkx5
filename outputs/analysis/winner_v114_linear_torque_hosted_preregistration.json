@@ -1,0 +1,111 @@
+{
+  "authority": {
+    "additional_training_or_retry": false,
+    "behavior_evaluation_after_valid_artifact": false,
+    "checkpoint_selection": false,
+    "deployment": false,
+    "gate5": false,
+    "one_hosted_gpu_continuation_after_package_contract": true,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "composed_manifest_exact": true,
+    "cpu_result_exact": true,
+    "driver_exact": true,
+    "no_scalar_search": true,
+    "reference_features_exact": true,
+    "robot_surface_absent": true,
+    "single_continuation_only": true,
+    "source_checkpoint_exact": true
+  },
+  "date": "2026-07-24",
+  "decision": "AUTHORIZE_ONE_HASH_FROZEN_GPU_CONTINUATION_WITHOUT_RETRY",
+  "evidence_basis": {
+    "behavior_failure_count": 0,
+    "current_peak_failure_count": 9,
+    "max_squared_closed_as_scalar_rewrite": true,
+    "scale_derivation": "matches the frozen prior squared penalty at the V110 worst-tick evidence point; not selected by a sweep",
+    "selected_mechanism": "mean_all_joint_linear_torque_hinge",
+    "torque_failures_sparse_single_joint": true,
+    "torque_peak_failure_count": 11,
+    "v113_nominal_cells": 16,
+    "v113_nominal_passes": 5
+  },
+  "execution_now": {
+    "formal_behavior_cells": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_locomotion_steps": 0
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "composed_manifest": "d0bcf899e9be15b1ddd678ccb35036f6d750eae6aa65e9686fba2a1cf81a5a41",
+    "cpu_result": "f211c6cb344e5548c15de9d3213217a69e1c3891afce9e63e30e07d2a177c104",
+    "driver": "ebca591a31b0b1894ca115649eb7eee0afa24c7cbfe0f790013cec7ae666f3aa",
+    "reference_features": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212",
+    "source_checkpoint": "d63309e0e0524d684813d1bf068e8642b21d2e829653d7716949614350f0423c"
+  },
+  "post_training": {
+    "apply_exact_frozen_g3_guard_and_deadband_to": [
+      1003520,
+      2007040
+    ],
+    "behavior_cells_during_training": 0,
+    "both_postupdate_checkpoints_must_pass": true,
+    "checkpoint_cherry_pick": false,
+    "cpu_topology_validation_before_behavior": true,
+    "evaluate_full_frozen_matrix_only_after_nominal_pass": true,
+    "evaluate_nominal_16_cells_first": true
+  },
+  "schema_version": "winner_v114.linear_torque_hosted_preregistration.v1",
+  "software_versions": {
+    "brax": "0.14.2",
+    "flax": "0.11.2",
+    "jax": "0.7.2",
+    "jaxlib": "0.7.2",
+    "mujoco": "3.9.0",
+    "mujoco-mjx": "3.9.0",
+    "numpy": "2.0.2",
+    "onnx": "1.22.0",
+    "onnxruntime": "1.27.0",
+    "optax": "0.2.5",
+    "orbax-checkpoint": "0.11.25",
+    "playground": "0.0.3"
+  },
+  "status": "PREREGISTERED_WINNER_V114_LINEAR_TORQUE_HOSTED_CONTINUATION",
+  "training": {
+    "architecture": "reference_residual_recurrent_adapter",
+    "batch_size": 256,
+    "deviation_scale": 1.0,
+    "discounting": 0.97,
+    "entropy_cost": 0.005,
+    "episode_length": 600,
+    "exports": [
+      0,
+      1003520,
+      2007040
+    ],
+    "full_variable_configuration": true,
+    "learning_rate": 0.0003,
+    "linear_peak_torque_scale": -307.48131091308585,
+    "linear_peak_torque_threshold_nm": 1.91229675,
+    "num_envs": 256,
+    "num_minibatches": 4,
+    "num_updates_per_batch": 4,
+    "recurrent_hidden_size": 64,
+    "resume": false,
+    "retry": false,
+    "reward_curve_selection": false,
+    "scalar_sweep": false,
+    "seed": 100,
+    "source": "exact_v112_final_checkpoint",
+    "squared_peak_torque_scale": 0.0,
+    "timesteps": 2007040,
+    "tracking_tail_scale": -6572.254964031055,
+    "tracking_tail_threshold_rad": 0.2,
+    "unroll_length": 20,
+    "wall_ceiling_seconds": 21600
+  }
+}

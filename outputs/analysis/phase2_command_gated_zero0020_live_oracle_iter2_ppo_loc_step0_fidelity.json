@@ -1,0 +1,32 @@
+{
+  "status": "PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY",
+  "bc_npz": "outputs/analysis/phase2_command_gated_zero0020_live_oracle_iter2_ppo_loc_bc_student/candidate_mlp.npz",
+  "reference_onnx": "outputs/analysis/phase2_command_gated_zero0020_live_oracle_iter2_ppo_loc_bc_student/candidate.onnx",
+  "output_checkpoint": "outputs/analysis/phase2_command_gated_zero0020_live_oracle_iter2_ppo_loc_step0_checkpoint",
+  "output_onnx": "outputs/analysis/phase2_command_gated_zero0020_live_oracle_iter2_ppo_loc_step0.onnx",
+  "manifest": "outputs/analysis/phase2_command_gated_zero0020_live_oracle_iter2/live_oracle_dagger_aggregate_manifest.json",
+  "samples_checked": 512,
+  "scale_logit": -2.0,
+  "scale_std": 0.1279280110429725,
+  "fidelity": {
+    "samples": 512,
+    "mae": 1.3030413192893775e-08,
+    "rmse": 1.676348659884752e-08,
+    "p50_abs_error": 1.1059455573558807e-08,
+    "p95_abs_error": 3.3527612686157227e-08,
+    "p99_abs_error": 4.7142384573817126e-08,
+    "max_abs_error": 7.264316082000732e-08
+  },
+  "pass_thresholds": {
+    "p95_abs_error": 1e-05,
+    "max_abs_error": 0.0001
+  },
+  "mapping": {
+    "bc_w0_b0": "policy.params.hidden_0",
+    "bc_w1_b1": "policy.params.hidden_1",
+    "bc_w2_b2": "policy.params.hidden_2",
+    "bc_w3_b3": "policy.params.hidden_3 columns 0:14",
+    "scale_logits": "policy.params.hidden_3 columns 14:28, constant",
+    "value_network": "fresh PPO initialization"
+  }
+}

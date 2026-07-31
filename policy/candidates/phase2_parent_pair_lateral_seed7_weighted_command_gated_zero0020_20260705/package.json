@@ -1,0 +1,539 @@
+{
+  "baseline": {
+    "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_parent_pair_lateral_seed7_weighted_student/candidate.onnx",
+    "sha256": "5e64620834dbb4366d91e18f2b3e0bfd1cc992b5f12ce5c4de3131c0fd061321"
+  },
+  "candidate": {
+    "name": "phase2_parent_pair_lateral_seed7_weighted_command_gated_zero0020_20260705",
+    "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_parent_pair_lateral_seed7_weighted_command_gated_zero0020/candidate.onnx",
+    "sha256": "f3d5d735e96cf88bfe037bd4c6c1289eebc5d25bcc7722416f62dcee292866d0",
+    "size_bytes": 2299201
+  },
+  "contract": {
+    "input_dim": 101,
+    "inputs": [
+      {
+        "dtype": "tensor(float)",
+        "name": "obs",
+        "shape": [
+          1,
+          101
+        ]
+      }
+    ],
+    "output_dim": 14,
+    "outputs": [
+      {
+        "dtype": "tensor(float)",
+        "name": "continuous_actions",
+        "shape": [
+          1,
+          14
+        ]
+      }
+    ],
+    "status": "PASS_POLICY_CONTRACT"
+  },
+  "evidence": {
+    "actuator_bridge_eval": {
+      "label": "actuator_bridge_eval_legacy",
+      "path": null,
+      "status": "MISSING"
+    },
+    "candidate_gate_x0": {
+      "label": "candidate_gate_x0",
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_parent_pair_lateral_seed7_weighted_command_gated_zero0020_x000_gate.json",
+      "sha256": "62e90aba8efb17bd7db6d3575a71ee8e26d247fcd20dd540cf2b994268909b70",
+      "size_bytes": 33788,
+      "status": "PRESENT"
+    },
+    "candidate_gate_x008": {
+      "label": "candidate_gate_x008",
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_parent_pair_lateral_seed7_weighted_command_gated_zero0020_x008_gate.json",
+      "sha256": "a4d6d2e1bf7b506b5b6d2c1e50e0708213a19f69cfe1b26e1788f486f85ffc8c",
+      "size_bytes": 35655,
+      "status": "PRESENT"
+    },
+    "contract_audit": {
+      "label": "contract_audit",
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/policy_sim_contract_audit.json",
+      "sha256": "d5fe8ce192cbe7a48e42e0b0fcf0a622d9451e86a08c57e6da72e139bcde228f",
+      "size_bytes": 14963,
+      "status": "PRESENT"
+    },
+    "target_velocity_summary": {
+      "label": "target_velocity_summary",
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/actuator_response_fit_corrected_knee.json",
+      "sha256": "3661543d0745073b561eb4fa2ae8f9616368ee8b72cb397f8b953dada532c8c0",
+      "size_bytes": 18363,
+      "status": "PRESENT"
+    },
+    "training_manifest": {
+      "label": "training_manifest",
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_parent_pair_lateral_seed7_weighted_manifest.json",
+      "sha256": "0aedfe840fa68a977fe95144700c555c9f2bdd94835dcebc7e2eecdc7079c6f9",
+      "size_bytes": 6430,
+      "status": "PRESENT"
+    }
+  },
+  "generated_at": "2026-07-05T11:32:39Z",
+  "non_deployable_reason": null,
+  "required_evidence": [
+    "candidate_gate_x0",
+    "candidate_gate_x008",
+    "contract_audit",
+    "training_manifest"
+  ],
+  "sim_gate": {
+    "actuator_bridge_eval": {
+      "path": null,
+      "status": "MISSING"
+    },
+    "candidate_gate_x0": {
+      "aggregate": {
+        "command_gated_zero0020": {
+          "base_height_min_m": {
+            "max": 0.1614130586385727,
+            "mean": 0.16123732626438142,
+            "min": 0.16093650460243225,
+            "p50": 0.16129231452941895,
+            "p95": 0.16141064763069152
+          },
+          "body_pitch_p95_rad": {
+            "max": 0.06994178701067491,
+            "mean": 0.0660703001833125,
+            "min": 0.0632977012342254,
+            "p50": 0.06573744737976538,
+            "p95": 0.06929116540482416
+          },
+          "double_support_pct": {
+            "max": 100.0,
+            "mean": 100.0,
+            "min": 100.0,
+            "p50": 100.0,
+            "p95": 100.0
+          },
+          "duration_complete_count": 5,
+          "fall_count": 0,
+          "left_swing_lift_p95_m": null,
+          "max_pitch_vel_limit_excess_rad_s": {
+            "max": 0.0,
+            "mean": 0.0,
+            "min": 0.0,
+            "p50": 0.0,
+            "p95": 0.0
+          },
+          "max_pitch_vel_max_limit_excess_rad_s": {
+            "max": 0.0,
+            "mean": 0.0,
+            "min": 0.0,
+            "p50": 0.0,
+            "p95": 0.0
+          },
+          "max_pitch_vel_p95_rad_s": {
+            "max": 0.0,
+            "mean": 0.0,
+            "min": 0.0,
+            "p50": 0.0,
+            "p95": 0.0
+          },
+          "max_tracking_p95_rad": {
+            "max": 0.04243621826171875,
+            "mean": 0.04171034097671509,
+            "min": 0.04097256064414978,
+            "p50": 0.04153376221656799,
+            "p95": 0.042385463714599614
+          },
+          "mean_local_vx_m_s": {
+            "max": 0.0008595025893876785,
+            "mean": 0.0007952783384291213,
+            "min": 0.0007109704988609451,
+            "p50": 0.0008039206399857903,
+            "p95": 0.0008579660565113045
+          },
+          "min_swing_peak_lift_m": null,
+          "min_swing_rel_x_range_p95_m": {
+            "max": 0.0,
+            "mean": 0.0,
+            "min": 0.0,
+            "p50": 0.0,
+            "p95": 0.0
+          },
+          "min_swing_segment_count": {
+            "max": 0.0,
+            "mean": 0.0,
+            "min": 0.0,
+            "p50": 0.0,
+            "p95": 0.0
+          },
+          "push_event_count": {
+            "max": 13.0,
+            "mean": 12.2,
+            "min": 10.0,
+            "p50": 13.0,
+            "p95": 13.0
+          },
+          "push_success_rate": {
+            "max": 1.0,
+            "mean": 0.9525641025641025,
+            "min": 0.9166666666666666,
+            "p50": 0.9230769230769231,
+            "p95": 1.0
+          },
+          "right_swing_lift_p95_m": null,
+          "runs": 5,
+          "samples": {
+            "max": 750.0,
+            "mean": 750.0,
+            "min": 750.0,
+            "p50": 750.0,
+            "p95": 750.0
+          },
+          "single_support_pct": {
+            "max": 0.0,
+            "mean": 0.0,
+            "min": 0.0,
+            "p50": 0.0,
+            "p95": 0.0
+          },
+          "track_ratio": null
+        }
+      },
+      "candidate_gate_status": "PASS_CANDIDATE_SEED_SWEEP",
+      "eval_role": "candidate_seed_sweep",
+      "hold_count": 0,
+      "overall_status": "PASS_CANDIDATE_SEED_SWEEP",
+      "pass_count": 5,
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_parent_pair_lateral_seed7_weighted_command_gated_zero0020_x000_gate.json",
+      "status": "PASS_PARSED_GATE_STATUS",
+      "total_count": 5
+    },
+    "candidate_gate_x008": {
+      "aggregate": {
+        "command_gated_zero0020": {
+          "base_height_min_m": {
+            "max": 0.15810194611549377,
+            "mean": 0.15810194611549377,
+            "min": 0.15810194611549377,
+            "p50": 0.15810194611549377,
+            "p95": 0.15810194611549377
+          },
+          "body_pitch_p95_rad": {
+            "max": 0.1917009851419644,
+            "mean": 0.18295165786273784,
+            "min": 0.17237641356879269,
+            "p50": 0.18759063513752267,
+            "p95": 0.1912380933382404
+          },
+          "double_support_pct": {
+            "max": 78.0,
+            "mean": 76.72,
+            "min": 75.33333333333333,
+            "p50": 76.8,
+            "p95": 77.81333333333333
+          },
+          "duration_complete_count": 5,
+          "fall_count": 0,
+          "left_swing_lift_p95_m": {
+            "max": 0.01475205719470978,
+            "mean": 0.01352565824985504,
+            "min": 0.012639716267585751,
+            "p50": 0.013512316346168519,
+            "p95": 0.014576233625411989
+          },
+          "max_pitch_vel_limit_excess_rad_s": {
+            "max": 0.0,
+            "mean": 0.0,
+            "min": 0.0,
+            "p50": 0.0,
+            "p95": 0.0
+          },
+          "max_pitch_vel_max_limit_excess_rad_s": {
+            "max": 0.0,
+            "mean": 0.0,
+            "min": 0.0,
+            "p50": 0.0,
+            "p95": 0.0
+          },
+          "max_pitch_vel_p95_rad_s": {
+            "max": 1.6065514087677002,
+            "mean": 1.598077118396759,
+            "min": 1.5916073322296143,
+            "p50": 1.595642864704132,
+            "p95": 1.6058655381202698
+          },
+          "max_tracking_p95_rad": {
+            "max": 0.19074959754943846,
+            "mean": 0.18835130095481872,
+            "min": 0.18589789271354676,
+            "p50": 0.18882840871810913,
+            "p95": 0.19049160957336425
+          },
+          "mean_local_vx_m_s": {
+            "max": 0.02722650805834322,
+            "mean": 0.02583649149892784,
+            "min": 0.023169917651078623,
+            "p50": 0.02649097024752215,
+            "p95": 0.027168118551437512
+          },
+          "min_swing_peak_lift_m": {
+            "max": 0.016959264874458313,
+            "mean": 0.01569257155060768,
+            "min": 0.014070037752389908,
+            "p50": 0.01641998440027237,
+            "p95": 0.01693700775504112
+          },
+          "min_swing_rel_x_range_p95_m": {
+            "max": 0.022331045707687736,
+            "mean": 0.02094366761855781,
+            "min": 0.018027588725090027,
+            "p50": 0.021527722477912903,
+            "p95": 0.022318679206073284
+          },
+          "min_swing_segment_count": {
+            "max": 15.0,
+            "mean": 12.6,
+            "min": 11.0,
+            "p50": 12.0,
+            "p95": 14.599999999999998
+          },
+          "push_event_count": {
+            "max": 13.0,
+            "mean": 12.2,
+            "min": 10.0,
+            "p50": 13.0,
+            "p95": 13.0
+          },
+          "push_success_rate": {
+            "max": 1.0,
+            "mean": 0.9525641025641025,
+            "min": 0.9166666666666666,
+            "p50": 0.9230769230769231,
+            "p95": 1.0
+          },
+          "right_swing_lift_p95_m": {
+            "max": 0.017516589723527428,
+            "mean": 0.0157835952937603,
+            "min": 0.014162478968501091,
+            "p50": 0.015751422941684724,
+            "p95": 0.017172798439860342
+          },
+          "runs": 5,
+          "samples": {
+            "max": 750.0,
+            "mean": 750.0,
+            "min": 750.0,
+            "p50": 750.0,
+            "p95": 750.0
+          },
+          "single_support_pct": {
+            "max": 24.666666666666668,
+            "mean": 23.28,
+            "min": 22.0,
+            "p50": 23.200000000000003,
+            "p95": 24.453333333333333
+          },
+          "track_ratio": {
+            "max": 0.3403313507292902,
+            "mean": 0.3229561437365979,
+            "min": 0.2896239706384828,
+            "p50": 0.3311371280940269,
+            "p95": 0.3396014818929689
+          }
+        }
+      },
+      "candidate_gate_status": "PASS_CANDIDATE_SEED_SWEEP",
+      "eval_role": "candidate_seed_sweep",
+      "hold_count": 0,
+      "overall_status": "PASS_CANDIDATE_SEED_SWEEP",
+      "pass_count": 5,
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_parent_pair_lateral_seed7_weighted_command_gated_zero0020_x008_gate.json",
+      "status": "PASS_PARSED_GATE_STATUS",
+      "total_count": 5
+    }
+  },
+  "sources": {
+    "playground_repo": {
+      "branch": "codex/forward-progress-reward",
+      "commit": "4af95c9756a07aa245f4312b6ee68510fbcd2d15",
+      "path": "/home/lsd/robots/Open_Duck_Playground",
+      "status_short": "?? playground/open_duck_mini_v2/xmls/.codex_eval_72f2qwf1_hfield_z0.002.xml\n?? playground/open_duck_mini_v2/xmls/.codex_eval_ao8pdqc4_hfield_z0.005.xml\n?? playground/open_duck_mini_v2/xmls/.codex_eval_bzi_k2f4_hfield_z0.005.xml\n?? playground/open_duck_mini_v2/xmls/.codex_eval_m9qvl818_hfield_z0.005.xml\n?? playground/open_duck_mini_v2/xmls/.codex_eval_qs7p_7u7_hfield_z0.005.xml"
+    },
+    "rdk_repo": {
+      "branch": "codex/live-oracle-dagger-phase-student",
+      "commit": "770d983462a3a93ab75be9b04b1d0ea6355da7f3",
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5",
+      "status_short": "?? outputs/analysis/PHASE2_ITER2_RIGHT_ANKLE_LIMITED_MANIFEST.md\n?? outputs/analysis/PHASE2_ITER2_RIGHT_ANKLE_LIMITED_RATE165_STUDENT.md\n?? outputs/analysis/PHASE2_ITER2_RIGHT_ANKLE_LIMITED_RATE165_STUDENT_X008_SEED0_SCREEN.md\n?? outputs/analysis/PHASE2_ITER2_RIGHT_ANKLE_LIMITED_RATE165_Z0075_INTERMEDIATE_PUSH_SEED0_7_SCREEN.md\n?? outputs/analysis/PHASE2_ITER2_RIGHT_ANKLE_TRACE_LIMIT.md\n?? outputs/analysis/PHASE2_LIMIT198_TRANSITION_PRESERVING_LIVE_ORACLE_ITER3_PHASE_MODULATED_RATE150_Z005_X008_SEED0_SCREEN.md\n?? outputs/analysis/PHASE2_LIMIT198_TRANSITION_PRESERVING_LIVE_ORACLE_ITER3_PHASE_MODULATED_RATE160_X008_Z0026_GENTLE_PUSH_SEED1_2_SCREEN.md\n?? outputs/analysis/PHASE2_LIMIT198_TRANSITION_PRESERVING_LIVE_ORACLE_ITER3_PHASE_MODULATED_RATE180_X008_SEED0_GATE.md\n?? outputs/analysis/PHASE2_PARENT_PAIR_LATERAL_SEED7_WEIGHTED_COMMAND_GATED_ZERO0020_X000_GATE.md\n?? outputs/analysis/PHASE2_PARENT_PAIR_LATERAL_SEED7_WEIGHTED_COMMAND_GATED_ZERO0020_X008_GATE.md\n?? outputs/analysis/PHASE2_PHASE1_RATE175_Z0026_X008_SOURCE_PROBE.md\n?? outputs/analysis/PHASE2_Z0075_ITER21_PPO_LOC_RATE150_STEP0_FIDELITY.md\n?? outputs/analysis/PHASE2_Z0075_ITER21_PPO_LOC_RATE150_STUDENT.md\n?? outputs/analysis/PHASE2_Z0075_ITER21_SEED5_POSTPUSH_REGRESSED_SEED_PUSH_RELABEL.md\n?? outputs/analysis/PHASE2_Z0075_ITER21_SEED5_POSTPUSH_REGRESSED_SEED_PUSH_RELABEL_MANIFEST.md\n?? outputs/analysis/PHASE2_Z0075_ITER21_SEED5_POSTPUSH_REGRESSED_SEED_PUSH_SNIPPETS.md\n?? outputs/analysis/PHASE2_Z0075_ITER21_SEED5_POSTPUSH_REGRESSED_SEED_TRACES.md\n?? outputs/analysis/phase2_iter2_right_ankle_limited_manifest.json\n?? outputs/analysis/phase2_iter2_right_ankle_limited_rate165_student.json\n?? outputs/analysis/phase2_iter2_right_ankle_limited_rate165_student_x008_seed0_screen.json\n?? outputs/analysis/phase2_iter2_right_ankle_limited_rate165_z0075_intermediate_push_seed0_7_screen.json\n?? outputs/analysis/phase2_iter2_right_ankle_trace_limit.json\n?? outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z005_x008_seed0_screen.json\n?? outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate160_x008_z0026_gentle_push_seed1_2_screen.json\n?? outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate180_x008_seed0_gate.json\n?? outputs/analysis/phase2_parent_pair_lateral_seed7_weighted_command_gated_zero0020_x000_gate.json\n?? outputs/analysis/phase2_parent_pair_lateral_seed7_weighted_command_gated_zero0020_x008_gate.json\n?? outputs/analysis/phase2_phase1_rate175_z0026_x008_source_probe.json\n?? outputs/analysis/phase2_z0075_iter21_ppo_loc_rate150_step0_fidelity.json\n?? outputs/analysis/phase2_z0075_iter21_ppo_loc_rate150_student.json\n?? outputs/analysis/phase2_z0075_iter21_seed5_postpush_regressed_seed_push_relabel.json\n?? outputs/analysis/phase2_z0075_iter21_seed5_postpush_regressed_seed_push_relabel_manifest.json\n?? outputs/analysis/phase2_z0075_iter21_seed5_postpush_regressed_seed_push_snippets.json\n?? outputs/analysis/phase2_z0075_iter21_seed5_postpush_regressed_seed_traces.json\n?? outputs/phase2_domain_randomization/stage_a_rate165_local_cpu_smoke/\n?? outputs/phase2_domain_randomization/stage_a_rate165_motion_preserve_cpu_smoke/\n?? outputs/phase2_domain_randomization/stage_b0_mild_push_from_a2_gpu/\n?? outputs/phase2_domain_randomization/stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu/smoke_20260629T062042Z_gpu/2026_06_29_022447_81920.onnx\n?? outputs/phase2_domain_randomization/stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu/smoke_20260629T062042Z_gpu/2026_06_29_022447_81920/\n?? outputs/phase2_domain_randomization/stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu/smoke_20260629T062042Z_gpu/2026_06_29_022651_163840.onnx\n?? outputs/phase2_domain_randomization/stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu/smoke_20260629T062042Z_gpu/2026_06_29_022651_163840/\n?? outputs/phase2_domain_randomization/stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu/smoke_20260629T062042Z_gpu/2026_06_29_022725_245760.onnx\n?? outputs/phase2_domain_randomization/stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu/smoke_20260629T062042Z_gpu/2026_06_29_022725_245760/\n?? outputs/phase2_domain_randomization/stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu/smoke_20260629T062042Z_gpu/events.out.tfevents.1782714044.LSD\n?? outputs/phase2_domain_randomization/stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu/smoke_20260629T062042Z_gpu/scene_rough_terrain_backlash.xml.original\n?? outputs/phase2_domain_randomization/stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu/smoke_20260629T062042Z_gpu/stderr.txt\n?? outputs/phase2_domain_randomization/stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu/smoke_20260629T062042Z_gpu/stdout.txt\n?? outputs/phase2_domain_randomization/stage_b0d_gpu_recovery_smoke/\n?? outputs/phase2_domain_randomization/stage_b0d_tracking_margin_cpu_path_check/\n?? outputs/phase2_domain_randomization/stage_b0d_tracking_margin_from_b0c_gpu/\n?? outputs/phase2_domain_randomization/stage_b0d_tracking_margin_from_b0c_rocm_memfix_gpu/\n?? outputs/phase2_domain_randomization/stage_b0d_tracking_margin_local_gpu_32env/\n?? outputs/phase2_domain_randomization/stage_b0d_tracking_margin_local_gpu_scale/\n?? outputs/phase2_domain_randomization/stage_b0e_motion_preserving_tracking_cpu_path_check/\n?? outputs/phase2_domain_randomization/stage_b0e_motion_preserving_tracking_gpu_path_check/\n?? outputs/phase2_domain_randomization/stage_b0e_motion_preserving_tracking_gpu_scale_matrix/\n?? outputs/phase2_domain_randomization/stage_b0e_motion_preserving_tracking_gpu_scale_matrix_memfix/\n?? outputs/phase2_domain_randomization/stage_b0e_motion_preserving_tracking_local_gpu_16env/\n?? outputs/phase2_domain_randomization/stage_b0e_motion_preserving_tracking_local_gpu_32env/\n?? outputs/phase2_domain_randomization/stage_b0e_motion_preserving_tracking_local_rocm_memfix_16env_fullshape/\n?? outputs/phase2_domain_randomization/stage_b0e_motion_preserving_tracking_local_rocm_memfix_32env/\n?? outputs/phase2_domain_randomization/stage_b0e_motion_preserving_tracking_local_rocm_memfix_32env_noeval/\n?? outputs/phase2_domain_randomization/stage_b0e_motion_preserving_tracking_local_rocm_memfix_8env_fullshape/\n?? outputs/phase2_domain_randomization/stage_b0g_push_recovery_local_rocm_smoke/\n?? outputs/phase2_domain_randomization/stage_b1_full_flat_gentle_push_from_a2_gpu/\n?? outputs/phase2_domain_randomization/stage_c0_terrain_z002_preserve_from_a2_gpu/\n?? outputs/phase2_domain_randomization/stage_c1_terrain_z002_tracking_from_c0_gpu/\n?? outputs/phase2_domain_randomization/stage_c2_terrain_z002_targetrate_from_c1_gpu/\n?? outputs/phase2_domain_randomization/stage_c3_terrain_z002_contact_from_c2_gpu/\n?? outputs/phase2_domain_randomization/stage_c4_terrain_z002_clearance_from_c3_gpu/\n?? outputs/phase2_domain_randomization/stage_c4b_terrain_z002_clearance_weak_from_c3_gpu/\n?? outputs/phase2_domain_randomization/stage_c5_terrain_z002_clearance_preserve_from_c3_gpu/\n?? outputs/phase2_domain_randomization/stage_c5a_terrain_z002_clearance_preserve_xla_autotune0_from_c3_gpu/\n?? outputs/phase2_domain_randomization/stage_c6_terrain_z002_transition_clearance_from_c3_gpu/\n?? outputs/phase2_domain_randomization/stage_c7_terrain_z002_gate_selected_from_c3_gpu/\n?? outputs/phase2_domain_randomization/stage_c8_terrain_z002_swing_balance_from_c3_gpu/\n?? outputs/phase2_domain_randomization/stage_c9_terrain_z002_swing_advance_from_c7_gpu/\n?? outputs/phase2_domain_randomization/stage_z002_teacher_continuity_local_cpu_fg64/\n?? outputs/phase2_domain_randomization/stage_z002_tracking_margin_restore_export_probe_cpu/\n?? outputs/phase2_domain_randomization/stage_z005_support_local_rocm/\n?? outputs/phase2_domain_randomization/stage_z005_support_local_rocm_no_override/\n?? outputs/phase2_domain_randomization/stage_z005_support_local_rocm_no_override_8env_20480/\n?? outputs/phase2_domain_randomization/stage_z005_support_local_rocm_no_override_8env_20480_nocmdbuf/\n?? outputs/phase2_domain_randomization/stage_z005_support_local_rocm_no_override_8env_81920_nocmdbuf/\n?? outputs/phase2_domain_randomization/stage_z005_support_local_rocm_no_override_smoke/\n?? outputs/phase2_domain_randomization/stage_z0075_behavior_prior_wiring_cpu_smoke/\n?? outputs/phase2_domain_randomization/stage_z0075_motion_guarded_behavior_prior_local_rocm/\n?? outputs/phase2_domain_randomization/stage_z0075_post_push_stability_local_rocm/\n?? policy/candidates/phase2_z0075_iter21_ppo_loc_rate150_20260704/\n?? policy/candidates/phase2_z0075_iter21_ppo_loc_rate150_step0_20260704/\n?? runtime/scripts/live_knee_monitor.py"
+    }
+  },
+  "status": "READY_FOR_SIM_GATE_REVIEW",
+  "training_manifest": {
+    "command_x": 0.08,
+    "dataset_id": "cbca4cd9878899ea",
+    "default_weight": 1.0,
+    "entries": [
+      {
+        "action_dim_ok": true,
+        "base_height_min_m": 0.15537245571613312,
+        "bc_ready": true,
+        "body_pitch_abs_p95_rad": 0.20772505471640126,
+        "contact_pct": {
+          "01": 8.799999999999999,
+          "10": 13.866666666666665,
+          "11": 77.33333333333333
+        },
+        "done_inside_window": false,
+        "end_tick": 749,
+        "entry_id": "3ce139e1789b5dbc",
+        "joint_tracking_p95_rad": 0.13825913667678827,
+        "mean_vx_m_s": 0.025842922405068143,
+        "mode": "fitted",
+        "obs_state_dim_ok": true,
+        "raw_trace_exists": true,
+        "sample_weight": 1.0,
+        "sample_weight_rule": "default",
+        "samples": 750,
+        "sent_target_velocity_p95_rad_s": 1.4087274670600891,
+        "source_name": "phase2_health_routed_parent_phase_modulated_trace_gate/phase_mod_parent/seed_001/trace.jsonl",
+        "source_path": "outputs/analysis/phase2_health_routed_parent_phase_modulated_trace_gate/phase_mod_parent/seed_001/trace.jsonl",
+        "start_tick": 0,
+        "vy_abs_p95_m_s": 0.15355338603258128,
+        "weighted_samples": 750.0
+      },
+      {
+        "action_dim_ok": true,
+        "base_height_min_m": 0.15917275846004486,
+        "bc_ready": true,
+        "body_pitch_abs_p95_rad": 0.1763858521992976,
+        "contact_pct": {
+          "01": 8.4,
+          "10": 15.6,
+          "11": 76.0
+        },
+        "done_inside_window": false,
+        "end_tick": 749,
+        "entry_id": "aa4990fe8c751cbc",
+        "joint_tracking_p95_rad": 0.13792956471443177,
+        "mean_vx_m_s": 0.026277181704994292,
+        "mode": "fitted",
+        "obs_state_dim_ok": true,
+        "raw_trace_exists": true,
+        "sample_weight": 1.0,
+        "sample_weight_rule": "default",
+        "samples": 750,
+        "sent_target_velocity_p95_rad_s": 1.4179863035678864,
+        "source_name": "phase2_health_routed_parent_phase_modulated_trace_gate/phase_mod_parent/seed_002/trace.jsonl",
+        "source_path": "outputs/analysis/phase2_health_routed_parent_phase_modulated_trace_gate/phase_mod_parent/seed_002/trace.jsonl",
+        "start_tick": 0,
+        "vy_abs_p95_m_s": 0.16141517385840415,
+        "weighted_samples": 750.0
+      },
+      {
+        "action_dim_ok": true,
+        "base_height_min_m": 0.15717685222625732,
+        "bc_ready": true,
+        "body_pitch_abs_p95_rad": 0.18496016379104316,
+        "contact_pct": {
+          "01": 7.333333333333333,
+          "10": 15.6,
+          "11": 77.06666666666668
+        },
+        "done_inside_window": false,
+        "end_tick": 749,
+        "entry_id": "62e18d7c54ba9099",
+        "joint_tracking_p95_rad": 0.13852094113826752,
+        "mean_vx_m_s": 0.02407263019917688,
+        "mode": "fitted",
+        "obs_state_dim_ok": true,
+        "raw_trace_exists": true,
+        "sample_weight": 1.0,
+        "sample_weight_rule": "default",
+        "samples": 750,
+        "sent_target_velocity_p95_rad_s": 1.415184698998928,
+        "source_name": "phase2_health_routed_parent_phase_modulated_trace_gate/phase_mod_parent/seed_006/trace.jsonl",
+        "source_path": "outputs/analysis/phase2_health_routed_parent_phase_modulated_trace_gate/phase_mod_parent/seed_006/trace.jsonl",
+        "start_tick": 0,
+        "vy_abs_p95_m_s": 0.1484889358282089,
+        "weighted_samples": 750.0
+      },
+      {
+        "action_dim_ok": true,
+        "base_height_min_m": 0.15913419425487518,
+        "bc_ready": true,
+        "body_pitch_abs_p95_rad": 0.16610380076586062,
+        "contact_pct": {
+          "01": 5.066666666666666,
+          "10": 14.399999999999999,
+          "11": 80.53333333333333
+        },
+        "done_inside_window": false,
+        "end_tick": 749,
+        "entry_id": "de0d0e5ba1132d5b",
+        "joint_tracking_p95_rad": 0.13848931789398194,
+        "mean_vx_m_s": 0.023172676663578994,
+        "mode": "fitted",
+        "obs_state_dim_ok": true,
+        "raw_trace_exists": true,
+        "sample_weight": 1.0,
+        "sample_weight_rule": "default",
+        "samples": 750,
+        "sent_target_velocity_p95_rad_s": 1.4185898005962372,
+        "source_name": "phase2_online_router_fresh_rich_context_parent_gate/rich_context_parent/seed_000/trace.jsonl",
+        "source_path": "outputs/analysis/phase2_online_router_fresh_rich_context_parent_gate/rich_context_parent/seed_000/trace.jsonl",
+        "start_tick": 0,
+        "vy_abs_p95_m_s": 0.1518182285130024,
+        "weighted_samples": 750.0
+      },
+      {
+        "action_dim_ok": true,
+        "base_height_min_m": 0.15890316665172577,
+        "bc_ready": true,
+        "body_pitch_abs_p95_rad": 0.177501017787433,
+        "contact_pct": {
+          "01": 6.800000000000001,
+          "10": 17.866666666666667,
+          "11": 75.33333333333333
+        },
+        "done_inside_window": false,
+        "end_tick": 749,
+        "entry_id": "faaf641570b989ea",
+        "joint_tracking_p95_rad": 0.1406773805618286,
+        "mean_vx_m_s": 0.026418171000909447,
+        "mode": "fitted",
+        "obs_state_dim_ok": true,
+        "raw_trace_exists": true,
+        "sample_weight": 3.0,
+        "sample_weight_rule": "seed_007",
+        "samples": 750,
+        "sent_target_velocity_p95_rad_s": 1.4230549335479736,
+        "source_name": "phase2_online_router_fresh_rich_context_parent_gate/rich_context_parent/seed_007/trace.jsonl",
+        "source_path": "outputs/analysis/phase2_online_router_fresh_rich_context_parent_gate/rich_context_parent/seed_007/trace.jsonl",
+        "start_tick": 0,
+        "vy_abs_p95_m_s": 0.15714321434497835,
+        "weighted_samples": 2250.0
+      }
+    ],
+    "input_dataset_id": "6ccbb7ea49f243c6",
+    "input_manifest": "outputs/analysis/phase2_online_router_parent_pair_lateral_selected_manifest.json",
+    "rules": [
+      {
+        "pattern": "seed_007",
+        "weight": 3.0
+      }
+    ],
+    "status": "PASS_WEIGHTED_BC_MANIFEST_READY",
+    "summary": {
+      "bc_ready_entries": 5,
+      "entries": 5,
+      "samples": 3750,
+      "weighted_samples": 5250.0
+    },
+    "trace_globs": [
+      "outputs/analysis/phase2_online_router_fresh_rich_context_parent_gate/rich_context_parent/seed_000/trace.jsonl",
+      "outputs/analysis/phase2_health_routed_parent_phase_modulated_trace_gate/phase_mod_parent/seed_001/trace.jsonl",
+      "outputs/analysis/phase2_health_routed_parent_phase_modulated_trace_gate/phase_mod_parent/seed_002/trace.jsonl",
+      "outputs/analysis/phase2_health_routed_parent_phase_modulated_trace_gate/phase_mod_parent/seed_006/trace.jsonl",
+      "outputs/analysis/phase2_online_router_fresh_rich_context_parent_gate/rich_context_parent/seed_007/trace.jsonl"
+    ]
+  }
+}

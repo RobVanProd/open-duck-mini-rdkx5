@@ -1,0 +1,116 @@
+{
+  "authority": {
+    "additional_attempt": false,
+    "behavior_evaluation": false,
+    "checkpoint_selection": false,
+    "deployment": false,
+    "gate5": false,
+    "one_exact_preexecution_recovery": true,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false
+  },
+  "checks": {
+    "behavior_and_robot_absent": true,
+    "executor_still_l4_pinned_and_no_retry": true,
+    "only_correction_is_complete_driver_hash": true,
+    "preexecution_hold_attributed_with_zero_steps": true,
+    "same_green_package_exact": true,
+    "training_or_behavior_not_run_by_recovery_contract": true
+  },
+  "commands": [
+    [
+      "colab",
+      "new",
+      "--session",
+      "t32b-action-margin-trainthrough-20260727",
+      "--gpu",
+      "L4"
+    ],
+    [
+      "colab",
+      "upload",
+      "--session",
+      "t32b-action-margin-trainthrough-20260727",
+      "D:\\CodexArtifacts\\open-duck-policy\\t32-action-margin-trainthrough-hosted-20260727.tar.gz",
+      "/content/t32-action-margin-trainthrough-hosted-20260727.tar.gz"
+    ],
+    [
+      "colab",
+      "exec",
+      "--session",
+      "t32b-action-margin-trainthrough-20260727",
+      "--file",
+      "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\execute_t32_colab_cli.py",
+      "--timeout",
+      "21600"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "t32b-action-margin-trainthrough-20260727",
+      "/content/t32_result.json",
+      "<LOCAL_RESULT>"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "t32b-action-margin-trainthrough-20260727",
+      "/content/t32_artifacts.tar.gz",
+      "<LOCAL_ARCHIVE>"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "t32b-action-margin-trainthrough-20260727",
+      "/content/t32_launch_receipt.json",
+      "<LOCAL_RECEIPT>"
+    ],
+    [
+      "colab",
+      "stop",
+      "--session",
+      "t32b-action-margin-trainthrough-20260727"
+    ]
+  ],
+  "correction": {
+    "after_hex_chars": 64,
+    "before_hex_chars": 62,
+    "field": "DRIVER_SHA256",
+    "package_change": false,
+    "training_change": false,
+    "value": "a15ec26c3419d75b2b0417bfd3950947c7d1ae711a050ee33f967f8f1f1f01dd"
+  },
+  "execution_now": {
+    "colab_sessions_opened": 0,
+    "formal_behavior_cells": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_locomotion_steps": 0
+  },
+  "failed_checks": [],
+  "hashes": {
+    "attribution": "0d2b293b53405366c762a9437abd8746a2a53dbba063792064a6fa5130cbba15",
+    "executor": "c77273162207f1e4e5b4a18d7e7b701f3891f76f4f2ffb6c1439841fe8cb6648",
+    "package": "4c0ffe0e5787eb4db12a6b3112b9f895b9bb736d2526c24daf31fe74689840ed",
+    "package_contract": "ba7733d4f4406bd5149dd4f6e8cac1343165c89906925297577ac25785c225c5"
+  },
+  "package_bytes": 3459578,
+  "recovery": {
+    "download_result_archive_receipt_before_stop": true,
+    "prior_optimizer_steps": 0,
+    "resume": false,
+    "retry": false,
+    "stop_session_after_pass_or_hold": true
+  },
+  "schema_version": "open_duck.t32b_colab_cli_recovery_contract.v1",
+  "session": {
+    "accelerator": "L4",
+    "count": 1,
+    "max_wall_seconds": 21600,
+    "name": "t32b-action-margin-trainthrough-20260727"
+  },
+  "status": "PASS_T32B_COLAB_CLI_RECOVERY_CONTRACT"
+}

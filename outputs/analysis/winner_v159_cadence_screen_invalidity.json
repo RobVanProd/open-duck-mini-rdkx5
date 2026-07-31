@@ -1,0 +1,43 @@
+{
+  "authority": {
+    "behavior_result": false,
+    "candidate_selection": false,
+    "gate5": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "runtime_or_observation_contract_change": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "checks": {
+    "failed_before_behavior_artifact": true,
+    "fractional_evaluator_increment_present": true,
+    "no_training_hosted_compute_or_hardware": true,
+    "preregistration_was_one_point": true,
+    "runtime_reference_lookup_rejects_fractional_phase": true,
+    "runtime_requires_integer_unit_phase_step": true,
+    "training_observation_table_is_integer_indexed": true
+  },
+  "decision": "CLOSE_POSTEXPORT_CADENCE_MECHANISM_AS_NONDEPLOYABLE_UNDER_FROZEN_CONTRACT",
+  "failed_checks": [],
+  "input_hashes": {
+    "attributor": "92d5d4648b236242968b020298de77091067e3de976be2af0435d36ce4ffe465",
+    "composed_evaluator": "7214a6ed5c306f6cf70a6e2aa7d0665f15e47271510cd4014ecda246c9ffa1a2",
+    "composition_manifest": "3617361d73b320228ad08e2546ce8fa662b2646f3587ec5b434f1828e8fd2be2",
+    "preregistration": "8f2cbd258ad974d3fe82c561e68f18222e9237ade5de081c24eb02e0cd561408",
+    "runner": "a2af16655c5648393e83ce17fd16dfd71abfe30c34b0667304f930a6b4694c19",
+    "runtime_adapter": "a6a3009978b6249f2bb095f2e43e16ddf035c495dc7edd16d811e458231374c5",
+    "training_joystick": "5aff7a4cc3316f563cf12e3d5f52c95ee005532fe4839ff88cf706dd77ad5c5e",
+    "v126_preregistration": "eb40f17d9c08b8362f068567e1620bdafef21ad9123a633c9536f3637a31c899"
+  },
+  "interpretation": "fractional cadence is not representable by this policy's frozen 115-D observation constructor or its RDK winner-v2 adapter; adding interpolation would change the policy contract",
+  "observed_exception": {
+    "behavior_ticks_completed": 0,
+    "location": "joystick.py reference_feature_actions[command_index, info['imitation_i']]",
+    "message": "Indexer must have integer or boolean type, got indexer with type float32",
+    "type": "TypeError"
+  },
+  "schema_version": "winner_v159.cadence_screen_invalidity.v1",
+  "selection_weight": 0,
+  "status": "PASS_WINNER_V159_CADENCE_INVALIDITY_ATTRIBUTION"
+}

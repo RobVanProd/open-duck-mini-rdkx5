@@ -1,0 +1,57 @@
+{
+  "status": "HOLD_ZERO_COMMAND_RECOVERY_NOT_DISTILLED",
+  "trigger": {
+    "candidate": "rate1p9",
+    "x008_full_gate": "PASS_8_OF_8",
+    "x0_full_gate": "HOLD_SEED5",
+    "seed5_samples": 43,
+    "seed5_mean_local_vx_m_s": -0.3468,
+    "seed5_base_height_min_m": 0.0575,
+    "seed5_max_tracking_p95_rad": 0.2106
+  },
+  "diagnostics": {
+    "zero_action_z0025_seed5": {
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 44,
+      "mean_local_vx_m_s": -0.3652,
+      "base_height_min_m": 0.0410
+    },
+    "zero_action_flat_seed5": {
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 48,
+      "mean_local_vx_m_s": -0.3322,
+      "base_height_min_m": 0.0420
+    },
+    "bestwalk_z0025_seed5": {
+      "status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+      "samples": 750,
+      "termination": "duration_complete",
+      "mean_local_vx_m_s": 0.0019,
+      "base_height_min_m": 0.1456,
+      "max_tracking_p95_rad": 0.0380,
+      "p95_velocity_excess_rad_s": 0.0,
+      "max_instantaneous_velocity_excess_rad_s": 2.9900
+    }
+  },
+  "distillation_attempts": {
+    "zero_action_relabel": {
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 44,
+      "mean_local_vx_m_s": -0.3620,
+      "base_height_min_m": 0.0441
+    },
+    "zero_action_relabel_weight20": {
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 43,
+      "mean_local_vx_m_s": -0.3501,
+      "base_height_min_m": 0.0569
+    },
+    "bestwalk_recovery_trace": {
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 48,
+      "mean_local_vx_m_s": -0.3100,
+      "base_height_min_m": 0.0588
+    }
+  },
+  "recommendation": "Treat x=0 seed-5 recovery as an active closed-loop stand-recovery representation/training problem, not a zero-action relabel problem."
+}

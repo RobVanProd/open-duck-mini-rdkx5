@@ -1,0 +1,117 @@
+{
+  "authority": {
+    "behavior_execution": false,
+    "behavior_preregistration": false,
+    "candidate_promotion": false,
+    "checkpoint_selection": false,
+    "colab": false,
+    "execute_one_cpu_graph_transform": true,
+    "gate5": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "causal_basis": {
+    "candidate_status": "diagnostic only; midpoint does not satisfy persistence",
+    "failed_cells": [
+      {
+        "checkpoint_id": "T78_JOINT_ADAPTER_HALF",
+        "command_x_m_s": 0.08,
+        "fit_id": "p31_34",
+        "samples": 228,
+        "termination_reason": "fall_or_nan"
+      },
+      {
+        "checkpoint_id": "T78_JOINT_ADAPTER_FINAL",
+        "command_x_m_s": 0.08,
+        "fit_id": "p30",
+        "samples": 502,
+        "termination_reason": "fall_or_nan"
+      }
+    ],
+    "green_cells": 14,
+    "interpretation": "half and final fail only x=.08 under opposite actuator fits"
+  },
+  "checks": {
+    "behavior_not_run": true,
+    "complementary_x008_failure_pair_exact": true,
+    "hosted_robot_and_gate5_zero": true,
+    "raw_half_and_final_exact": true,
+    "runner_and_test_present": true,
+    "t78_validation_green": true,
+    "t79_transform_green": true,
+    "t80_closed_at_exact_14_of_16": true,
+    "zero_scalar_or_checkpoint_search": true
+  },
+  "decision_rule": {
+    "candidate_promotion": false,
+    "fail_decision": "CLOSE_EXACT_T78_ADAPTER_MIDPOINT",
+    "pass": "Exactly five expected initializers differ; midpoint values match the frozen formula; every graph/deployment sub-contract passes with no behavior execution.",
+    "pass_decision": "EARN_T82_TWO_CELL_MIDPOINT_CROSSOVER_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "onnx_graphs_built": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "preregistered_contract_sha256": "873320f5847379b26023a6506cda6f3d06631d3100945fc6fbba4b2a01c966b9",
+  "question": "Does the exact arithmetic midpoint of T78 half/final's five trainable adapter initializers form a valid deployment graph, justifying a two-cell crossover falsifier without training?",
+  "schema_version": "open_duck.t81_t78_midpoint_preregistration.v1",
+  "sources": {
+    "final_raw": {
+      "bytes": 954952,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t78_extracted_20260728\\t78_endpoint_joint_adapter_continuation\\training\\2026_07_28_183936_2007040.onnx",
+      "sha256": "f63da30a9dc3ea1ab3ed45cde050566d19fa3599d715cb7e60050fbd8ed04472"
+    },
+    "half_raw": {
+      "bytes": 954952,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t78_extracted_20260728\\t78_endpoint_joint_adapter_continuation\\training\\2026_07_28_183419_1003520.onnx",
+      "sha256": "6e1d0cbbf9c81e431fc967645461912b7b99f84cece29857e84c6be9b4763ccd"
+    },
+    "runner": {
+      "bytes": 10072,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t81_t78_midpoint_transform.py",
+      "sha256": "ff49738be8d9ef6a2d6d97e8a7890a65991b9960d0abb3dbda108b3ed2908dfb"
+    },
+    "t78_validation": {
+      "bytes": 9095,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t78_recovered_training_validation.json",
+      "sha256": "8f638d7c640eca9b3df7cb1667c166b36ae5c01b975dc3d6491bcb2939279445"
+    },
+    "t79_transform": {
+      "bytes": 41567,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t79_t78_postexport_result.json",
+      "sha256": "20549fff7496c5496ad8ccdde15c46136095f73ad6fb400f0d6c498eef4e47a0"
+    },
+    "t80_result": {
+      "bytes": 123375,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t80_t78_nominal_matrix_result.json",
+      "sha256": "d12b30311dbf5b97a029ed4b8b095c3a7ad23ee05be9c13967c56a672f1f85f2"
+    },
+    "test": {
+      "bytes": 1828,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t81_t78_midpoint_transform.py",
+      "sha256": "09f7c6ab8493f5b29c117457d537c92ab08dc8bb901809cb551ec74f8bc070fa"
+    }
+  },
+  "status": "PREREGISTERED_T81_T78_EXACT_ADAPTER_MIDPOINT",
+  "transform": {
+    "all_other_initializers_bit_exact": true,
+    "coefficient": 0.5,
+    "coefficient_selected_by": "symmetry of the exact complementary endpoint failures",
+    "coefficient_sweep": false,
+    "deployment_chain": "exact frozen T31/T79 chain",
+    "formula": "float32((float64(half) + float64(final)) * 0.5)",
+    "graph_structure_bit_exact_to_half": true,
+    "initializers": [
+      "adapter_bias",
+      "adapter_hidden_bias",
+      "adapter_hidden_weight",
+      "adapter_obs_weight",
+      "adapter_weight"
+    ]
+  }
+}

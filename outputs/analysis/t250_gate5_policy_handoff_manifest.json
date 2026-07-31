@@ -1,0 +1,362 @@
+{
+  "action_contract": {
+    "absolute_target": "home_rad + 0.25 * final_action",
+    "envelope_monitor_rad_s": 3.75,
+    "inherited_absolute_target_slew_rad_s": 5.24,
+    "joint_order": [
+      "left_hip_yaw",
+      "left_hip_roll",
+      "left_hip_pitch",
+      "left_knee",
+      "left_ankle",
+      "right_hip_yaw",
+      "right_hip_roll",
+      "right_hip_pitch",
+      "right_knee",
+      "right_ankle",
+      "neck_yaw",
+      "head_pitch",
+      "head_roll",
+      "head_yaw"
+    ],
+    "normalized_action_shape": [
+      1,
+      14
+    ]
+  },
+  "authority": {
+    "gate5": false,
+    "grounded_replay": false,
+    "policy_binary_staging": false,
+    "robot_motion": false,
+    "versioned_runtime_integration_preregistration": true,
+    "x5_execution": false
+  },
+  "calibrator_abi": {
+    "dtype": "float32",
+    "inputs": {
+      "h_in": [
+        1,
+        64
+      ],
+      "obs": [
+        1,
+        115
+      ],
+      "previous_action": [
+        1,
+        14
+      ]
+    },
+    "outputs": {
+      "calibration_actions": [
+        1,
+        14
+      ],
+      "h_out": [
+        1,
+        64
+      ],
+      "previous_action_out": [
+        1,
+        14
+      ]
+    }
+  },
+  "deployment_selection": {
+    "checkpoint_id": "T247_HOME_NEGATIVE_HALF_ADAPTER_FINAL",
+    "metric_ranking_or_cherry_pick": false,
+    "persistence_witness": {
+      "bytes": 993875,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t247_home_negative_half_adapter_route_v1\\graphs\\1003520\\home_negative_half_adapter_route.onnx",
+      "sha256": "21c714b0cbe30e43233f6a29d6ccfa058c550f28fab3dd836a73a6015b73f8f2"
+    },
+    "persistence_witness_checkpoint_id": "T247_HOME_NEGATIVE_HALF_ADAPTER_HALF",
+    "policy": {
+      "bytes": 993875,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t247_home_negative_half_adapter_route_v1\\graphs\\2007040\\home_negative_half_adapter_route.onnx",
+      "sha256": "dadfb446ea7c720f274a15bc65e9171c2e74d715ccfaf58adbb408b6c1365a54"
+    },
+    "rule": "terminal checkpoint at the preregistered 2,007,040-step export",
+    "step": 2007040
+  },
+  "evidence_only_artifacts": {
+    "full_r2_result": {
+      "bytes": 17385,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t249b_reporter_recovery_result.json",
+      "sha256": "02bc02291d73777d6c6479b1d5b9a81471e7d585c347923c1f4cfa32416c06ba"
+    },
+    "golden_first_locomotion_trace": {
+      "bytes": 10773691,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t249_remaining_r2_v1\\20_KP_HI\\T247_HOME_NEGATIVE_HALF_ADAPTER_FINAL\\p30\\traces\\x0.074_seed167931544_home_negative_half_adapter_route.jsonl",
+      "sha256": "7a9fde23a6ab24049db73a35ea0747cd6d0c94fe088fdd2659a94ec23c235288"
+    },
+    "p31_34_physical_robustness_fit": {
+      "bytes": 18788,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p31_34_actuator_fit_20260712.json",
+      "sha256": "2740513f6bdeb4ad3cc5dd6dc1709319389a593fd153c1ce5abae03b66131a57"
+    }
+  },
+  "handoff_sha256": "2193553f414efd143426e1c2201fadbb790083df14762b163ff39567f92b2dac",
+  "observation_contract": [
+    {
+      "meaning": "body gyroscope rad/s",
+      "slice": [
+        0,
+        3
+      ]
+    },
+    {
+      "meaning": "body accelerometer m/s^2",
+      "slice": [
+        3,
+        6
+      ]
+    },
+    {
+      "meaning": "seven-value command",
+      "slice": [
+        6,
+        13
+      ]
+    },
+    {
+      "meaning": "joint position minus home rad",
+      "slice": [
+        13,
+        27
+      ]
+    },
+    {
+      "meaning": "joint velocity times 0.05",
+      "slice": [
+        27,
+        41
+      ]
+    },
+    {
+      "meaning": "final action t-2 during steady locomotion",
+      "slice": [
+        41,
+        55
+      ]
+    },
+    {
+      "meaning": "final action t-3 during steady locomotion",
+      "slice": [
+        55,
+        69
+      ]
+    },
+    {
+      "meaning": "final action t-4 during steady locomotion",
+      "slice": [
+        69,
+        83
+      ]
+    },
+    {
+      "meaning": "fixed-P30 observer realized absolute target rad",
+      "slice": [
+        83,
+        97
+      ]
+    },
+    {
+      "meaning": "left/right contacts",
+      "slice": [
+        97,
+        99
+      ]
+    },
+    {
+      "meaning": "cosine/sine phase",
+      "slice": [
+        99,
+        101
+      ]
+    },
+    {
+      "meaning": "projected reference action",
+      "slice": [
+        101,
+        115
+      ]
+    }
+  ],
+  "policy_abi": {
+    "continuous_actions_equals_previous_action_out": true,
+    "dtype": "float32",
+    "graph_action_is_authoritative": true,
+    "host_action_delta": "forbidden",
+    "inputs": {
+      "calibration_context": [
+        1,
+        64
+      ],
+      "h_in": [
+        1,
+        64
+      ],
+      "obs": [
+        1,
+        115
+      ],
+      "previous_action": [
+        1,
+        14
+      ]
+    },
+    "outputs": {
+      "continuous_actions": [
+        1,
+        14
+      ],
+      "h_out": [
+        1,
+        64
+      ],
+      "previous_action_out": [
+        1,
+        14
+      ]
+    }
+  },
+  "required_artifacts": {
+    "calibrator": {
+      "bytes": 55573,
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v96-response-conditioned-mechanics\\winner_v96_universal_calibrator.onnx",
+      "sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576"
+    },
+    "fixed_p30_runtime_observer_fit": {
+      "bytes": 18664,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "a58db8ffc505d2bb64cba7f5618d0e2c65904fc9f9ac37b560a1231e090f5f4f"
+    },
+    "projected_reference_table": {
+      "bytes": 259604,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+      "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+    }
+  },
+  "runtime_integration_boundary": {
+    "frozen_101d_v1_contract_changed": false,
+    "must_pass_no_motion_x5_cpu_inference_and_timing_before_gate5": true,
+    "must_pass_offline_runtime_equivalence_before_x5_staging": true,
+    "p31_34_used_to_switch_runtime_observer": false,
+    "policy_or_calibrator_binary_committed": false,
+    "versioned_115d_path_default_enabled": false
+  },
+  "schema_version": "open_duck.t250_gate5_policy_handoff_manifest.v1",
+  "status": "AUDITED_POLICY_HANDOFF",
+  "two_stage_handoff": {
+    "action_history": "preserve final three calibrator actions",
+    "calibration_context": "final calibrator h_out, immutable during locomotion",
+    "calibration_observation_command_6_13": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "calibration_observation_phase_99_101": [
+      1.0,
+      0.0
+    ],
+    "calibration_observation_reference_101_115": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "calibration_ticks": 250,
+    "first_locomotion_observation": "refresh after phase reset with preserved physical and observer state",
+    "fixed_p30_observer_state": "preserved",
+    "home_return_ticks": 0,
+    "locomotion_command": "operator-requested command",
+    "locomotion_hidden_h_in": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "locomotion_phase_99_101": [
+      1.0,
+      0.0
+    ],
+    "locomotion_previous_action": "final calibrator previous_action_out",
+    "physical_joint_sensor_contact_and_imu_state": "preserved"
+  }
+}

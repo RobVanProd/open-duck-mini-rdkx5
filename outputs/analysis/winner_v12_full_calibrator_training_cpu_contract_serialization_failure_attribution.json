@@ -1,0 +1,32 @@
+{
+  "authority": {
+    "formal_cpu_contract_passed": false,
+    "formal_support_cells": 0,
+    "full_calibrator_training_executed": false,
+    "locomotion_training_steps": 0,
+    "optimizer_updates": 0,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false
+  },
+  "attempt": {
+    "commit": "f9842806abb382189665a074abf3a8a88785cbce",
+    "conclusion": "failure",
+    "event": "push",
+    "github_job_id": 88558216077,
+    "github_run_id": 29806564376,
+    "observed_utc": "2026-07-21T06:19:10Z",
+    "url": "https://github.com/RobVanProd/open-duck-mini-rdkx5/actions/runs/29806564376"
+  },
+  "attribution": {
+    "exception": "TypeError: Object of type bool is not JSON serializable",
+    "failure_boundary": "The checker reached json.dumps(result, allow_nan=False) after both complete zero-update rollout stages and persistence checks. NumPy boolean scalars in the checks mapping were not converted to Python bool before strict JSON serialization.",
+    "fix_scope": "Convert only bool and numpy.bool_ check values to strict Python bool, reject every other check-value type, and rerun the same zero-update contract once under a newly hash-frozen package.",
+    "optimizer_fail_closed": "training.adam_step remained monkeypatched to raise before incrementing any model state; reaching result serialization proves no optimizer call occurred."
+  },
+  "decision": "AUTHORIZE_ONE_CORRECTED_ZERO_UPDATE_CPU_CONTRACT_RUN_ONLY",
+  "failed_checks": [
+    "formal_result_not_serialized",
+    "formal_cpu_contract_not_passed"
+  ],
+  "schema_version": "winner_v12.full_calibrator_training_cpu_contract_serialization_failure_attribution.v1",
+  "status": "INVALID_RESULT_SERIALIZATION_AFTER_ZERO_UPDATE_EXECUTION"
+}

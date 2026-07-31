@@ -1,0 +1,335 @@
+{
+  "analytic_objective": {
+    "analytic_episode_peak_excess_nm": 0.25,
+    "default_linear_scale": 0.0,
+    "default_scale": 0.0,
+    "disabled_costs": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "disabled_states": [
+      0.125,
+      0.125,
+      0.125,
+      0.125,
+      0.125,
+      0.125
+    ],
+    "dt_s": 0.019999999552965164,
+    "enabled_costs": [
+      0.0,
+      2.499997615814209,
+      0.0,
+      7.500004768371582,
+      0.0,
+      2.499997615814209
+    ],
+    "enabled_states": [
+      0.0,
+      0.04999995231628418,
+      0.04999995231628418,
+      0.20000004768371582,
+      0.20000004768371582,
+      0.25
+    ],
+    "integrated_increment_cost_nm": 0.24999999441206455,
+    "max_abs_error_nm": 5.587935447692871e-09,
+    "threshold_nm": 1.91229675
+  },
+  "authority": {
+    "behavior_evaluation_authorized": false,
+    "checkpoint_selection_authorized": false,
+    "colab_authorized": false,
+    "gate5_authorized": false,
+    "hosted_preregistration_authorized": true,
+    "hosted_training_authorized": false,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "both_deployed_initializers_finite": true,
+    "both_deployed_onnx_abis_exact": true,
+    "both_deployed_onnx_contracts_pass": true,
+    "both_final_projection_deltas_exact": true,
+    "both_raw_train_deltas_exact": true,
+    "cpu_only": true,
+    "default_off_scale_exact_zero": true,
+    "disabled_cost_exact_zero": true,
+    "disabled_state_bit_exact": true,
+    "enabled_initial_state_reset_zero": true,
+    "enabled_state_monotonic": true,
+    "episode_integral_equals_analytic_peak": true,
+    "every_policy_leaf_updated": true,
+    "exact_exports_0_and_1024": true,
+    "existing_linear_scale_default_zero": true,
+    "objective_metric_exact_steps": true,
+    "objective_metric_finite_nonzero": true,
+    "source_restore_parameters_bit_exact": true,
+    "source_restore_structure_exact": true,
+    "trained_structure_exact": true,
+    "trained_tree_all_finite": true,
+    "wall_seconds_at_most_1800": true
+  },
+  "deployed_onnx": [
+    {
+      "deployed_sha256": "d4f280e8ebb4accd5c5c983bbf83042ec0162647efb446f0f6c8bffda42bc17a",
+      "final_projection_delta_exact": true,
+      "graph_io": {
+        "inputs": {
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        }
+      },
+      "inference": {
+        "changed_projection_is_exercised": true,
+        "checks": {
+          "all_outputs_finite": true,
+          "changed_projection_is_exercised": true,
+          "cpu_provider_exact": true,
+          "g3_guard_preserved_in_consistent_chain": true,
+          "moving_rate_delta_enforced": true,
+          "realized_state_feedback_exact": true,
+          "recurrent_hidden_output_bit_exact": true,
+          "zero_action_exact": true,
+          "zero_previous_exact": true
+        },
+        "max_guard_excess_rad": 0.0,
+        "max_hidden_error": 0.0,
+        "max_moving_delta_excess": 2.2351741790771484e-08,
+        "max_state_error": 0.0,
+        "max_zero_action": 0.0,
+        "max_zero_previous": 0.0,
+        "pass": true
+      },
+      "initializers_finite": true,
+      "raw_sha256": "2d3cfb686a9c9643d9414a99a10e4db3aee7fc8f63cbc2fd81f107b487cf1311",
+      "raw_train_delta_exact": true,
+      "step": 0
+    },
+    {
+      "deployed_sha256": "ce4950b29737ae45020ad08e0310d38c4ea89fada94b6afcc574da0f814ebf3f",
+      "final_projection_delta_exact": true,
+      "graph_io": {
+        "inputs": {
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        }
+      },
+      "inference": {
+        "changed_projection_is_exercised": true,
+        "checks": {
+          "all_outputs_finite": true,
+          "changed_projection_is_exercised": true,
+          "cpu_provider_exact": true,
+          "g3_guard_preserved_in_consistent_chain": true,
+          "moving_rate_delta_enforced": true,
+          "realized_state_feedback_exact": true,
+          "recurrent_hidden_output_bit_exact": true,
+          "zero_action_exact": true,
+          "zero_previous_exact": true
+        },
+        "max_guard_excess_rad": 0.0,
+        "max_hidden_error": 0.0,
+        "max_moving_delta_excess": 2.2351741790771484e-08,
+        "max_state_error": 0.0,
+        "max_zero_action": 0.0,
+        "max_zero_previous": 0.0,
+        "pass": true
+      },
+      "initializers_finite": true,
+      "raw_sha256": "0a2c73c42aaf38467a239dd2fe8526a7c1f54b09ecdc4de21fa1ec18cf000f60",
+      "raw_train_delta_exact": true,
+      "step": 1024
+    }
+  ],
+  "execution": {
+    "colab_compute_units": 0,
+    "formal_behavior_cells": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "cpu_template": "16a867c653476d6829ddaf400e5f02fc21658a78d3efc5ddfd167cc497f3ac83",
+    "playground_manifest": "5a53d713e22035151f2f5aaa1a3ee57735a90296a15fe5f3336f13178fca8918",
+    "preregistration": "3617e52dc26a3a6db317473162077ece264af8aef8e3afc276a1925d33cabc89",
+    "source_checkpoint": "6f2d9856b5ab674f9f20f04c46be6dc00adc5eabc31826f16b4743c5172dfad8",
+    "v121_transform": "4bd5eab5343cd8401db1789773fa3cc345727d903cb31222e0ea9870f0e9e640"
+  },
+  "schema_version": "winner_v122.episode_peak_cpu_result.v1",
+  "status": "PASS_WINNER_V122_EPISODE_PEAK_CPU_SMOKE",
+  "training": {
+    "checkpoint_steps": [
+      0,
+      1024
+    ],
+    "command": [
+      "D:\\CodexArtifacts\\venvs\\open-duck-policy-py31213\\Scripts\\python.exe",
+      "playground/open_duck_mini_v2/runner.py",
+      "--task",
+      "flat_terrain_backlash",
+      "--env",
+      "joystick",
+      "--output_dir",
+      "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v122-episode-peak-cpu-smoke-20260724\\smoke",
+      "--num_timesteps",
+      "1024",
+      "--ppo_seed",
+      "100",
+      "--ppo_num_envs",
+      "4",
+      "--ppo_num_evals",
+      "2",
+      "--ppo_episode_length",
+      "64",
+      "--ppo_unroll_length",
+      "8",
+      "--ppo_batch_size",
+      "4",
+      "--ppo_num_minibatches",
+      "1",
+      "--ppo_num_updates_per_batch",
+      "2",
+      "--ppo_learning_rate",
+      "0.0003",
+      "--ppo_discounting",
+      "0.97",
+      "--ppo_entropy_cost",
+      "0.005",
+      "--policy_architecture",
+      "reference_residual_recurrent_adapter",
+      "--recurrent_hidden_size",
+      "64",
+      "--imitation_scale",
+      "1.0",
+      "--reference_feature_table_path",
+      "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+      "--nominal_reference_bootstrap",
+      "--ground_up_hard_vector_command_support",
+      "--ground_up_command_support_min_x",
+      "0.074",
+      "--ground_up_command_support_max_x",
+      "0.080",
+      "--ground_up_action_velocity_limits_rad_s",
+      "1.0,.75,1.4736209064722061,1.4300791546702385,1.3976470567286015,.5,.5,.5,.5,.5,.75,1.25,1.0,1.2215287424623966",
+      "--ground_up_measured_actuator_bridge",
+      "--ground_up_actuator_bridge_delay_ticks",
+      "3,3,3,3,3,3,2,3,3,3,2,3,2,3",
+      "--ground_up_actuator_bridge_tau_s",
+      ".015,.015,.005,.010,.010,.120,.120,.120,.120,.020,.035,.010,.030,.005",
+      "--ground_up_applied_target_observation",
+      "--ground_up_tracking_tail_exceedance_scale",
+      "-6572.254964031055",
+      "--ground_up_tracking_tail_threshold_rad",
+      "0.20",
+      "--ground_up_peak_torque_exceedance_scale",
+      "0",
+      "--ground_up_linear_peak_torque_exceedance_scale",
+      "0",
+      "--ground_up_episode_peak_torque_increment_scale",
+      "-307.48131091308585",
+      "--reference_start_phase",
+      "0",
+      "--ground_up_signed_progress_objective",
+      "--winner_v3_variable_configuration",
+      "--winner_v3_deviation_scale",
+      "1.0",
+      "--winner_v119_train_transition_match",
+      "--critic_observation",
+      "privileged_state",
+      "--restore_checkpoint_path",
+      "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v119-extracted-20260724\\winner_v119_transition_continuation\\training\\2026_07_24_193907_1003520"
+    ],
+    "elapsed_seconds": 248.6720000000205,
+    "event_sha256": "d23c081f2e49b0820a9f9448fd5fd1dc15d9512e574e09f242238158c397a8e0",
+    "final_checkpoint_sha256": "4bf823ee8f1905eb5bf414c7251e93a48cde6fd4d33e58a12907ea8e9f124c10",
+    "initial_checkpoint_sha256": "23b0abdf3f584e1aaaf027da7ba5a6756256b4535d99d72808a8d0bf5854a3e0",
+    "log_sha256": "66f9bfbdb74bd08422b28da32f5d43846ef85d9587181a198efb23de44e0ddab",
+    "objective_metric": {
+      "events": [
+        {
+          "step": 0,
+          "value": 1985.6881103515625
+        },
+        {
+          "step": 1024,
+          "value": 2869.7177734375
+        }
+      ],
+      "tag": "eval/episode_cost/episode_peak_torque_increment"
+    },
+    "onnx_steps": [
+      0,
+      1024
+    ],
+    "policy_leaf_deltas": {
+      "1/params/adapter_hidden_bias": 0.006247285753488541,
+      "1/params/adapter_hidden_projection/kernel": 0.010276846587657928,
+      "1/params/adapter_location/bias": 0.0063245780766010284,
+      "1/params/adapter_location/kernel": 0.00983368419110775,
+      "1/params/adapter_obs_projection/kernel": 0.011588215827941895,
+      "1/params/residual_location/bias": 0.006324611604213715,
+      "1/params/residual_location/kernel": 0.011351117864251137,
+      "1/params/residual_trunk/hidden_0/bias": 0.010190782137215137,
+      "1/params/residual_trunk/hidden_0/kernel": 0.010715000331401825,
+      "1/params/residual_trunk/hidden_1/bias": 0.007527533918619156,
+      "1/params/residual_trunk/hidden_1/kernel": 0.0114704929292202,
+      "1/params/residual_trunk/hidden_2/bias": 0.0061195008456707,
+      "1/params/residual_trunk/hidden_2/kernel": 0.010145924985408783,
+      "1/params/scale_logits/bias": 0.005251655355095863,
+      "1/params/scale_logits/kernel": 0.009425133466720581
+    }
+  }
+}

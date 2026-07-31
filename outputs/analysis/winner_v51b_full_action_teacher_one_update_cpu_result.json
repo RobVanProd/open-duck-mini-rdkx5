@@ -1,0 +1,434 @@
+{
+  "authority": {
+    "continuation_training_executed": false,
+    "formal_support_gate_executed": false,
+    "pass_authorizes_only": "a separate frozen bounded full-action continuation preregistration",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "checks": {
+    "all_14_teacher_actions_selected": true,
+    "all_combined_gradients_nonzero": true,
+    "all_frozen_parameter_leaves_bit_exact": true,
+    "all_parameters_optimizer_metrics_finite": true,
+    "all_trainable_leaves_changed": true,
+    "cpu_only_environment_exact": true,
+    "exact_22_teacher_rows_and_no_heldout": true,
+    "exact_80_episode_rollout_at_update_352": true,
+    "exactly_one_optimizer_update_352_to_353": true,
+    "formal_support_continuation_robot_zero": true,
+    "full_teacher_scale_exact": true,
+    "onnx_abi_exact": true,
+    "onnx_jax_chain_at_most_1e_7": true,
+    "onnx_previous_action_chain_exact": true,
+    "onnx_teacher_privileged_tokens_absent": true,
+    "onnx_training_only_tensors_absent": true,
+    "same_batch_full_teacher_loss_strictly_decreases": true,
+    "snapshot_readback_exact": true,
+    "source_state_unchanged_before_update": true,
+    "teacher_gradients_policy_only": true,
+    "v50_recomputation_checks_pass": true,
+    "winner_v46_final_source_and_teacher_exact": true,
+    "winner_v50c_authority_exact": true
+  },
+  "correction": {
+    "corrected_source_sha256": "e8deeb1cfafd2c7b045574a76b0c11efc9ea573712312b0079578842d8cd07a9",
+    "frozen_runner_lf_sha256": "fe7a27df3a8a866dbee6b22200633f23a8b71e4735f8ff4d0fd5a8703739ac75",
+    "identity": "WINNER_V51B_ONE_UPDATE_INDEXING_CORRECTION",
+    "invalid_invocation": {
+      "bytes": 1382,
+      "path": "outputs/analysis/winner_v51_full_action_teacher_one_update_invalid_invocation.json",
+      "sha256": "bc9c408ed4282d8e0d6ee3c885c4daccf39ecc4839d9cab67d9da63939b39f3b"
+    },
+    "new_fragment_sha256": "daf0cb3d68a58b1272ee025f4a3e4ce74853d2a0f6e3cc4a62a8ffc66f2315c4",
+    "old_fragment_sha256": "8ec7896b9326f71890b49451c634fe7e75ed84a5c760724dabb64f45c5bf74b4",
+    "optimizer_objective_artifact_or_gate_change": false,
+    "replacement_count": 1,
+    "semantic_change": "index objective_evidence['full_teacher_gradient_max_abs'] before policy/nonpolicy gradient checks"
+  },
+  "decision": "AUTHORIZE_BOUNDED_FULL_ACTION_TEACHER_CONTINUATION_PREREGISTRATION_ONLY",
+  "environment": {
+    "jax_backend": "cpu",
+    "jax_devices": [
+      "cpu"
+    ],
+    "mujoco_version": "3.9.0",
+    "numpy_version": "2.0.2"
+  },
+  "execution": {
+    "candidate_graph_exports": 1,
+    "continuation_training_updates": 0,
+    "formal_support_cells": 0,
+    "optimizer_updates": 1,
+    "robot_or_rdk_access": 0,
+    "rollout_episode_slots": 80,
+    "scheduled_rollout_ticks": 20000
+  },
+  "failed_checks": [],
+  "graph": {
+    "bytes": 54896,
+    "contract": {
+      "abi_exact": true,
+      "all_chain_outputs_finite": true,
+      "all_initializers_finite": true,
+      "bytes": 54896,
+      "chain_ticks": 250,
+      "forbidden_training_or_privileged_tokens": [],
+      "initializer_count": 9,
+      "inputs": [
+        {
+          "name": "obs",
+          "shape": [
+            1,
+            115
+          ]
+        },
+        {
+          "name": "previous_action",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "name": "h_in",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "jax_onnx_at_most_1e_7": true,
+      "jax_onnx_max_abs_error": 1.4551915228366852e-11,
+      "outputs": [
+        {
+          "name": "calibration_actions",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "name": "previous_action_out",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "name": "h_out",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v51b-full-action-one-update\\winner_v51_full_action_teacher_update_353.onnx",
+      "previous_action_out_equals_action_bit_exact": true,
+      "sha256": "6d300081d28c1f3c099f2dc8c2aa3b5e1a92b9e86bbdb68d9504323c5486eca2",
+      "training_only_tensors_absent": true
+    },
+    "forbidden_tokens_present": [],
+    "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v51b-full-action-one-update\\winner_v51_full_action_teacher_update_353.onnx",
+    "sha256": "6d300081d28c1f3c099f2dc8c2aa3b5e1a92b9e86bbdb68d9504323c5486eca2"
+  },
+  "objective": {
+    "baseline": "unchanged Winner-v46 PPO plus normalized predictor plus prefix anchor",
+    "combined_gradient": "baseline composed gradient plus frozen-scale full-14D teacher gradient",
+    "deployable_abi": {
+      "inputs": [
+        [
+          "obs",
+          [
+            1,
+            115
+          ]
+        ],
+        [
+          "previous_action",
+          [
+            1,
+            14
+          ]
+        ],
+        [
+          "h_in",
+          [
+            1,
+            64
+          ]
+        ]
+      ],
+      "outputs": [
+        [
+          "calibration_actions",
+          [
+            1,
+            14
+          ]
+        ],
+        [
+          "previous_action_out",
+          [
+            1,
+            14
+          ]
+        ],
+        [
+          "h_out",
+          [
+            1,
+            64
+          ]
+        ]
+      ]
+    },
+    "episode_slots": 80,
+    "heldout_teacher_configuration_ids_excluded": [
+      "HELDOUT_04",
+      "HELDOUT_07",
+      "HELDOUT_09",
+      "HELDOUT_15"
+    ],
+    "no_action_replacement": true,
+    "optimizer": "restore exact Winner-v46 Adam count 352 and execute one update to 353",
+    "post_update_gate": "same frozen-batch full-action teacher MSE must be finite and strictly lower",
+    "predictor_scale": 380.9135437011719,
+    "prefix_anchor_scale": 197.3112030029297,
+    "result_optimizer_count": 353,
+    "rollout_update_index": 352,
+    "source_checkpoint": {
+      "label": "winner_v46_final",
+      "update": 352
+    },
+    "teacher_action_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "teacher_checkpoint": {
+      "label": "winner_v22_final",
+      "update": 100
+    },
+    "teacher_configuration_ids": [
+      "COM_X_NEG",
+      "COM_CORNER_00",
+      "COM_CORNER_01",
+      "COM_CORNER_02",
+      "COM_CORNER_03",
+      "OPTIONAL_AGGREGATE_HEAVY_AFT",
+      "DISCOVERY_02",
+      "DISCOVERY_03",
+      "DISCOVERY_06",
+      "DISCOVERY_09",
+      "DISCOVERY_10"
+    ],
+    "teacher_configuration_rows": 22,
+    "teacher_scale": 136.35153198242188,
+    "ticks_per_slot": 250
+  },
+  "optimization": {
+    "combined_gradient_max_abs": {
+      "action_bias": 1.4540176391601562,
+      "action_weight": 1.4106006622314453,
+      "auxiliary_action_weight": 3.455322742462158,
+      "auxiliary_bias": 13.555295944213867,
+      "auxiliary_hidden_weight": 13.120641708374023,
+      "hidden_bias": 2.8399689197540283,
+      "hidden_weight": 2.7764344215393066,
+      "obs_weight": 27.048015594482422,
+      "previous_action_weight": 0.6869075298309326,
+      "training_only_log_std": 0.014324264600872993,
+      "training_only_value_bias": 12.212099075317383,
+      "training_only_value_weight": 11.813279151916504
+    },
+    "frozen_parameter_leaf_max_abs_delta": {},
+    "full_action_teacher_loss_after": 0.004095083102583885,
+    "full_action_teacher_loss_before": 0.004192190710455179,
+    "full_action_teacher_loss_delta": -9.710760787129402e-05,
+    "full_action_teacher_scale": 136.35153198242188,
+    "full_teacher_gradient_max_abs": {
+      "action_bias": 0.012416236102581024,
+      "action_weight": 0.012025447562336922,
+      "auxiliary_action_weight": 0.0,
+      "auxiliary_bias": 0.0,
+      "auxiliary_hidden_weight": 0.0,
+      "hidden_bias": 0.0002418818767182529,
+      "hidden_weight": 0.00023266125936061144,
+      "obs_weight": 0.0024090725928545,
+      "previous_action_weight": 6.264870171435177e-05,
+      "training_only_log_std": 0.0,
+      "training_only_value_bias": 0.0,
+      "training_only_value_weight": 0.0
+    },
+    "leaf_max_abs_delta": {
+      "action_bias": 8.231622632592916e-05,
+      "action_weight": 0.00021245749667286873,
+      "auxiliary_action_weight": 0.000340169295668602,
+      "auxiliary_bias": 0.00021226704120635986,
+      "auxiliary_hidden_weight": 0.00032157450914382935,
+      "hidden_bias": 0.00031036417931318283,
+      "hidden_weight": 0.00034956634044647217,
+      "obs_weight": 0.00038202106952667236,
+      "previous_action_weight": 0.00036493316292762756,
+      "training_only_log_std": 5.435943603515625e-05,
+      "training_only_value_bias": 0.00010445341467857361,
+      "training_only_value_weight": 0.00018677092157304287
+    },
+    "optimizer_count_after": 353,
+    "optimizer_count_before": 352,
+    "snapshot_readback_exact": true,
+    "source_state_unchanged_before_update": true
+  },
+  "rollout": {
+    "episode_receipts_sha256": "3e8900b067d05adf439cb92eb715526eb7e2471d9f9bd1cb5e436832b3412afd",
+    "episode_slots": 80,
+    "observations_sha256": "6ae0a87d6f8b3bb9f80daeac0a91a898775107a56404a23914ceb7ed4dac81b6",
+    "previous_actions_sha256": "58feb155fc6da9aa96b5765bfb9e52c8fa18423a7a1aafe52ee9376ab8071a90",
+    "roll_pitch_failure_count": 9,
+    "sampled_ticks": 18061,
+    "scheduled_ticks": 20000,
+    "update_index": 352,
+    "valid_transition_count": 18052
+  },
+  "schema_version": "winner_v51b.full_action_teacher_one_update_cpu_result.v1",
+  "snapshot": {
+    "bytes": 195419,
+    "completed_updates": 353,
+    "metadata_payload_sha256": "975f4b964090c83a13cb6a967807719c3dec4ed38e15a6e346e4f177c248e010",
+    "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v51b-full-action-one-update\\winner_v51_full_action_teacher_update_353.npz",
+    "sha256": "e0335fbcc91118b8163e1c6bd245caed2f44535e54bf35e2f07f6ea3e56a276e",
+    "state_payload_sha256": "330a5cb71c8f4ef1b3f4bf8757abd39b2207ce7d3dd00c2d1ee9ad10b333d408"
+  },
+  "source_identity": {
+    "completed_updates": 352,
+    "graph_sha256": "e3d209fd7ae8266c4b06a7080e89571c96d75e2263a8d721900f3308ccaa7d2d",
+    "snapshot_sha256": "e32a7d5ee7fa272639fb58a2b500e394d983d4a984fb1ace1f7d87058c86e0df",
+    "teacher_snapshot_sha256": "ddc8c4b905bb9acac2d7d48c3e9c1f0c0ca0173a1ba21f375740b051bc48c806"
+  },
+  "source_manifest_sha256": "eb75b860bd7a839b3aa75bfd6dcc4455f518a50c3e6cf6e5ed2f22ac5f44e032",
+  "sources": {
+    "backend_networks": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_decomposed_backend_networks.py",
+      "sha256": "f463223a33f80baf81b2604e0df22c647660f2752a7ca60b8c75a3441460d015"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v51_full_action_teacher_one_update_cpu_contract.py",
+      "sha256": "943462bc06f90ef793dfb23ff5d4157e4142f8bac22345a239f9f5485f62957c"
+    },
+    "canonical_p30_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "cpu_smoke": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "joint_mechanics": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v21_predictor_preserving_joint_support.py",
+      "sha256": "2d274c6c7c63fa2de5e3a7114ac047df1346189e66ec7bf8d83221e2f93aef0a"
+    },
+    "prefix_anchor": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v29_prefix_right_pitch_anchor.py",
+      "sha256": "7c01b3db8c359464d122fc4f915df02eb9833720ef65837a99c5838dd42db36f"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v51_full_action_teacher_one_update_cpu_proof.py",
+      "sha256": "fe7a27df3a8a866dbee6b22200633f23a8b71e4735f8ff4d0fd5a8703739ac75"
+    },
+    "snapshot_mechanics": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v21_predictor_preserving_joint_support_v2.py",
+      "sha256": "6613a52d099646c4603808e58088360166abefe9f504c5fafb8604266419bd20"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v51_full_action_teacher_one_update_cpu_proof.py",
+      "sha256": "b6f84635a069515f6247d63bb6da1a67fc958ea8365bccdfc0dd5ea675d43030"
+    },
+    "training_mechanics": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_calibrator_training.py",
+      "sha256": "f5736a357d73baedae2bba1d15254dd688bddf3761eb731d757a971783c77227"
+    },
+    "winner_v22_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v22_normalized_predictor_training_result.json",
+      "sha256": "10bae5bb32f32cc90e222eb1d6644d97e2a0253baa6ad1a37fe06fde48cf11c1"
+    },
+    "winner_v46_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v46_static_target_teacher_training_preregistration.json",
+      "sha256": "2104db32192eff8ac14f8be01c1abec0fddfad8ddbabab554183c3f668f9e7ce"
+    },
+    "winner_v46_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v46_static_target_teacher_training_result.json",
+      "sha256": "18f4eb5794cc29aae38167d0bd230a6001718f69f7408f08d425d7520d59941f"
+    },
+    "winner_v49_teacher": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v49_full_action_static_target_teacher.py",
+      "sha256": "cc51950e90ba221763304250a11500251d1df1b58586cb5da24f4d1621b67b26"
+    },
+    "winner_v50_contract": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v50_full_action_teacher_source_gradient_contract.json",
+      "sha256": "e40a047112c63074e4f2cd4df7b8d70785dc7e6f9d3bf81476742d549e8b4972"
+    },
+    "winner_v50_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v50_full_action_teacher_source_gradient_result.json",
+      "sha256": "37b80608ac5e60291a5f194345cdce9bbdda5607d6559e6be9dfc1e619b453b7"
+    },
+    "winner_v50_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v50_full_action_teacher_source_gradient_contract.py",
+      "sha256": "0c235e882922867f8b8998bdb902d170b964641503b574f289a5e30f68ab4a42"
+    },
+    "winner_v50c_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v50c_gradient_backward_error_attribution_result.json",
+      "sha256": "77a513cd1fd72f3b2f66782707065129597b5429149e8886eff88f966d990ef1"
+    },
+    "winner_v51_invalid_invocation": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v51_full_action_teacher_one_update_invalid_invocation.json",
+      "sha256": "bc9c408ed4282d8e0d6ee3c885c4daccf39ecc4839d9cab67d9da63939b39f3b"
+    },
+    "winner_v51b_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v51b_one_update_indexing_correction.py",
+      "sha256": "ed76362cb09413ff33e69710d898a5baae98f24a6da67383923d2952d0ed5498"
+    },
+    "winner_v51b_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v51b_one_update_indexing_correction.py",
+      "sha256": "c5b0ac0bd100b562bffd76bf6f957b63f03bac4009ebfbea415ddfb664e4f7f9"
+    },
+    "winner_v51b_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v51b_one_update_indexing_correction.py",
+      "sha256": "e2794ef20414beb3448ab3940abbd29b8870c27853e51b45897d33c3641194fa"
+    }
+  },
+  "status": "PASS_WINNER_V51B_FULL_ACTION_TEACHER_ONE_UPDATE_CPU_PROOF"
+}

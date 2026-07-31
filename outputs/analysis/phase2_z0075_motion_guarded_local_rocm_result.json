@@ -1,0 +1,119 @@
+{
+  "status": "HOLD_MOTION_GUARD_STILL_COLLAPSES",
+  "artifact": "outputs/analysis/PHASE2_Z0075_MOTION_GUARDED_LOCAL_ROCM_RESULT.md",
+  "offline_only": true,
+  "robot_touched": false,
+  "ssh_used": false,
+  "deployed": false,
+  "grounded_replay": false,
+  "source_recipe": "outputs/analysis/PHASE2_Z0075_MOTION_GUARDED_BEHAVIOR_PRIOR_RECIPE.md",
+  "training_run": {
+    "output_dir": "outputs/phase2_domain_randomization/stage_z0075_motion_guarded_behavior_prior_local_rocm/smoke_20260704T191811Z_gpu",
+    "manifest": "outputs/phase2_domain_randomization/stage_z0075_motion_guarded_behavior_prior_local_rocm/smoke_20260704T191811Z_gpu/smoke_manifest.final.json",
+    "manifest_sha256": "4699620ed84da3813b858d90203d523acce47262c8ea36f3cf550b1c3db431ce",
+    "status": "PASS_SMOKE_RUN",
+    "elapsed_s": 570.0265405199898,
+    "platform": "gpu",
+    "local_rocm_safe_env": true,
+    "reward_lines": [
+      {
+        "step": 0,
+        "reward": 46.72016143798828,
+        "reward_std": 62.91843032836914
+      },
+      {
+        "step": 40960,
+        "reward": 67.42513275146484,
+        "reward_std": 85.74930572509766
+      },
+      {
+        "step": 81920,
+        "reward": 58.98381423950195,
+        "reward_std": 77.01554870605469
+      },
+      {
+        "step": 122880,
+        "reward": 62.040462493896484,
+        "reward_std": 76.76188659667969
+      }
+    ],
+    "exports": [
+      {
+        "step": 40960,
+        "onnx": "outputs/phase2_domain_randomization/stage_z0075_motion_guarded_behavior_prior_local_rocm/smoke_20260704T191811Z_gpu/2026_07_04_152300_40960.onnx",
+        "sha256": "2f40ec66244e2f837952b583735a6e872ad2f85eee40ab4ca7d4eda2da87da04"
+      },
+      {
+        "step": 81920,
+        "onnx": "outputs/phase2_domain_randomization/stage_z0075_motion_guarded_behavior_prior_local_rocm/smoke_20260704T191811Z_gpu/2026_07_04_152547_81920.onnx",
+        "sha256": "c553b34229c4ad538ba9b8f325f4216fe5ca5c290b02ec273dd4e7176dca0157"
+      },
+      {
+        "step": 122880,
+        "onnx": "outputs/phase2_domain_randomization/stage_z0075_motion_guarded_behavior_prior_local_rocm/smoke_20260704T191811Z_gpu/2026_07_04_152655_122880.onnx",
+        "sha256": "e7de169d1a70c9b1a404868aa92cb03995977ef534a5c93330d60a857099e263"
+      }
+    ]
+  },
+  "screen": {
+    "markdown": "outputs/analysis/PHASE2_Z0075_MOTION_GUARDED_SEED0_SCREEN.md",
+    "json": "outputs/analysis/phase2_z0075_motion_guarded_seed0_screen.json",
+    "json_sha256": "8f48b3066b1ddffbc38368769acafb11e9db577552b7939f28cb3ada0ac96e85",
+    "settings": {
+      "command_x": 0.08,
+      "task": "rough_terrain_backlash",
+      "terrain_hfield_z_scale": 0.0075,
+      "bridge_mode": "fitted",
+      "jax_platform": "cpu",
+      "seed": 0,
+      "duration_s": 15.0,
+      "reset_mode": "home-support",
+      "reset_settle_ticks": 10,
+      "push_enabled": false
+    },
+    "results": [
+      {
+        "checkpoint": "step40960",
+        "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "samples": 750,
+        "termination": "duration_complete",
+        "mean_local_vx_m_s": 0.0022106945493020856,
+        "track_ratio": 0.02763368186627607,
+        "max_pitch_vel_p95_rad_s": 0.18580690026283264,
+        "max_vel_excess": 0.0,
+        "max_tracking_p95_rad": 0.04752593636512756,
+        "single_support_pct": 0.0,
+        "double_support_pct": 100.0
+      },
+      {
+        "checkpoint": "step81920",
+        "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "samples": 750,
+        "termination": "duration_complete",
+        "mean_local_vx_m_s": 0.00228688248781873,
+        "track_ratio": 0.028586031097734124,
+        "max_pitch_vel_p95_rad_s": 0.15795454382896423,
+        "max_vel_excess": 0.0,
+        "max_tracking_p95_rad": 0.04890623092651367,
+        "single_support_pct": 0.0,
+        "double_support_pct": 100.0
+      },
+      {
+        "checkpoint": "step122880",
+        "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "samples": 750,
+        "termination": "duration_complete",
+        "mean_local_vx_m_s": 0.002308914706959816,
+        "track_ratio": 0.028861433836997696,
+        "max_pitch_vel_p95_rad_s": 0.13814657926559448,
+        "max_vel_excess": 0.0,
+        "max_tracking_p95_rad": 0.047249984741210935,
+        "single_support_pct": 0.0,
+        "double_support_pct": 100.0
+      }
+    ]
+  },
+  "interpretation": "The motion guard did not preserve or recover the moving gait. The old PPO restore checkpoint plus behavior-prior reward plus command-progress failure still collapses to all-double-support standstill.",
+  "candidate_promoted": false,
+  "next_step": "Do not tune this same recipe. Preserve Iter21 motion more directly, either by producing a fidelity-matched PPO initialization or by live-oracle/DAgger-style relabeling before fine-tuning."
+}

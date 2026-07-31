@@ -1,0 +1,67 @@
+{
+  "authority": {
+    "behavior_screen_authorized": false,
+    "checkpoint_selection_authorized": false,
+    "gate5_authorized": false,
+    "hosted_training_authorized": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "v125_trace_analysis_authorized": true
+  },
+  "causal_basis": "V124 proved the exact bridge/torque/current model and local action reachability, but its constant-velocity q predictor produced 0.119-0.153 rad p99.9 errors on five pitch-chain joints. The unique next Taylor term uses measured acceleration from the existing velocity history and introduces no fitted scalar.",
+  "checks": {
+    "all_input_hashes_exact": true,
+    "v124_constant_velocity_box_failed_only_before_rollout": true,
+    "v124_hosted_compute_zero": true,
+    "v124_s3_not_authorized": true,
+    "v124_source_and_event_causality_passed": true
+  },
+  "decision_rule": {
+    "comparison_to_v124": "diagnostic only; no closest-result selection",
+    "fail": "close the low-order kinematic predictive-box family without rollout or Colab; do not try smoothing, clipping, coefficient search, or a third Taylor-order variant",
+    "pass": "all 14 reserve-aware half-widths are positive, every V121 event precursor has a nonempty robust intersection, the six passing cells have zero empty joint-tick intersections, and existing >2 A-equivalent dwell remains <=99 ticks",
+    "pass_authority": "authorize only a separate zero-credit uniform wrapper preregistration; no behavior execution yet"
+  },
+  "execution_now": {
+    "behavior_rollouts": 0,
+    "colab_compute_units": 0,
+    "robot_or_rdk_access": 0,
+    "training_steps": 0
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "bridge_model": "82184df17195cf7241a70e806741a0fdb4e49904fd12b4ee8fe7a38617602472",
+    "plant_preregistration": "c8f986ceb24863f33c1fc99170548d2e255cb6a26737d3f74762f8dcd4485a24",
+    "v121_transform": "4bd5eab5343cd8401db1789773fa3cc345727d903cb31222e0ea9870f0e9e640",
+    "v124_amendment": "46e6c08864ba143b724975528c942f4cc822955a5334407a526580be197290b6",
+    "v124_compact_result": "85f1313fe02a6feb2d4e34a94c07ff755c178c117470fe8e8b92cfe365b1bc29",
+    "v124_preregistration": "61364c864ef3bf97d13df92a79645140a3918ecc8923f52810dd360f16b8042f",
+    "v124_runner": "a04863a35e738c95613c09848a63c61f309be27e730ede8f8c296213ff6814ed"
+  },
+  "predictor": {
+    "clipping_or_tuned_smoothing": false,
+    "equation": "qhat=q_pre+h*qdot_pre+0.5*h^2*qddot_pre; qddot_pre=(qdot_pre-qdot_previous_pre)/0.02",
+    "fit_parameters": 0,
+    "horizon": "(delay_ticks+1)*0.02-0.002",
+    "initial_tick": "qddot_pre=0 when no previous velocity exists",
+    "inputs_runtime_available": [
+      "current measured position",
+      "current measured velocity",
+      "one previous measured velocity",
+      "sent-target history",
+      "dual frozen bridge state"
+    ],
+    "name": "backward_difference_constant_acceleration"
+  },
+  "schema_version": "winner_v125.second_order_predictor_preregistration.v1",
+  "status": "PREREGISTERED_WINNER_V125_SECOND_ORDER_PREDICTOR",
+  "unchanged_from_v124": {
+    "bridge_transition": "exact delayed/home-gain/lag/rate-clipped model",
+    "dwell_gate": "same strict >2 A maximum 99 consecutive ticks",
+    "reserve": "max(p99.9 passing prediction error, maximum V121-event precursor error) plus the same frozen measurement/goal floor",
+    "robust_fit_intersection": "same P30 and P31-34 intersection",
+    "supreme_constraints": "same [-1,1], G3=0.165 rad, and final rate box",
+    "torque_box": "same kp=17.11 and 1.91229675 N.m gate",
+    "trace_population": "same six moving V121-half cells and all 15 V121 event precursors"
+  }
+}

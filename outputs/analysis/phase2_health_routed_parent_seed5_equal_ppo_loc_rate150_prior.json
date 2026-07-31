@@ -1,0 +1,98 @@
+{
+  "status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+  "manifest": "outputs/analysis/phase2_health_routed_parent_seed5_augmented_manifest.json",
+  "samples": 6000,
+  "hidden_sizes": [
+    512,
+    256,
+    128
+  ],
+  "activation": "swish",
+  "saved_npz": "outputs/analysis/phase2_health_routed_parent_seed5_equal_ppo_loc_rate150_prior/candidate_mlp.npz",
+  "exported_onnx": "outputs/analysis/phase2_health_routed_parent_seed5_equal_ppo_loc_rate150_prior/candidate.onnx",
+  "train_metrics": {
+    "samples": 6000,
+    "mae": 0.0023406557405519224,
+    "rmse": 0.0030913334948747553,
+    "p50_abs_error": 0.0018523581964792896,
+    "p95_abs_error": 0.006227751668506245,
+    "p99_abs_error": 0.009080857909127436,
+    "max_abs_error": 0.034094747758637134,
+    "pred_action_saturation_pct": 0.0
+  },
+  "target_rate": {
+    "pair_count": 5992,
+    "p50_rad_s": 0.23792775140989925,
+    "p95_rad_s": 1.3875880505803497,
+    "p99_rad_s": 1.5034642112372174,
+    "max_rad_s": 1.5876660381030616
+  },
+  "sample_weight": {
+    "p50": 1.0,
+    "p95": 5.0,
+    "max": 5.0,
+    "weighted_samples": 8560.0
+  },
+  "loss_rows": [
+    {
+      "step": 1,
+      "loss": 0.10351879894733429
+    },
+    {
+      "step": 1000,
+      "loss": 4.6994602598715574e-05
+    },
+    {
+      "step": 2000,
+      "loss": 1.7893980839289725e-05
+    },
+    {
+      "step": 3000,
+      "loss": 1.5412730135722086e-05
+    },
+    {
+      "step": 4000,
+      "loss": 1.1883367733389605e-05
+    },
+    {
+      "step": 5000,
+      "loss": 9.014840543386526e-06
+    },
+    {
+      "step": 6000,
+      "loss": 7.891048880992457e-06
+    },
+    {
+      "step": 7000,
+      "loss": 8.969229384092614e-06
+    },
+    {
+      "step": 8000,
+      "loss": 1.6327661796822213e-05
+    },
+    {
+      "step": 9000,
+      "loss": 7.130491667339811e-06
+    },
+    {
+      "step": 10000,
+      "loss": 7.384868240478681e-06
+    }
+  ],
+  "onnx_verify": {
+    "path": "outputs/analysis/phase2_health_routed_parent_seed5_equal_ppo_loc_rate150_prior/candidate.onnx",
+    "samples_checked": 64,
+    "max_abs_error": 2.864271897440318e-07,
+    "p95_abs_error": 1.467311115110892e-07
+  },
+  "config": {
+    "steps": 10000,
+    "batch_size": 512,
+    "learning_rate": 0.0007,
+    "target_rate_scale": 0.08,
+    "target_rate_limit_rad_s": 1.5,
+    "action_scale_rad": 0.25,
+    "dt_s": 0.02,
+    "seed": 31
+  }
+}

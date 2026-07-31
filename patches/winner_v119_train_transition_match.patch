@@ -1,0 +1,124 @@
+diff --git a/playground/open_duck_mini_v2/joystick.py b/playground/open_duck_mini_v2/joystick.py
+index e27aeab..44a9f2d 100644
+--- a/playground/open_duck_mini_v2/joystick.py
++++ b/playground/open_duck_mini_v2/joystick.py
+@@ -44,6 +44,51 @@ USE_IMITATION_REWARD = True
+ USE_MOTOR_SPEED_LIMITS = True
+ GROUND_UP_PITCH_CHAIN_INDICES = (2, 3, 4, 11, 12, 13)
+ 
++WINNER_V119_RATE_LIMITS_RAD_S = np.asarray(
++    [
++        1.0, 0.75, 1.4736209064722061, 1.4300791546702385,
++        1.3976470567286015, 0.5, 0.5, 0.5, 0.5, 0.5, 0.75,
++        1.25, 1.0, 1.2215287424623966,
++    ],
++    dtype=np.float32,
++)
++WINNER_V119_PITCH_MASK = np.asarray(
++    [
++        False, False, True, True, True, False, False,
++        False, False, False, False, True, True, True,
++    ],
++    dtype=np.bool_,
++)
++WINNER_V119_GUARD_MARGIN_RAD = np.float32(0.165)
++
++
++def winner_v119_transition_match(
++    proposed_target: jax.Array,
++    previous_target: jax.Array,
++    actual_position: jax.Array,
++    velocity_limits_rad_s: jax.Array,
++    dt: float,
++    enabled: bool,
++) -> jax.Array:
++    """Match the deployed G3 then final rate-projection hierarchy."""
++    if not enabled:
++        return proposed_target
++    margin = jp.float32(WINNER_V119_GUARD_MARGIN_RAD)
++    guarded = jp.clip(
++        proposed_target,
++        actual_position - margin,
++        actual_position + margin,
++    )
++    guarded = jp.where(
++        jp.asarray(WINNER_V119_PITCH_MASK), guarded, proposed_target
++    )
++    maximum_step = jp.asarray(velocity_limits_rad_s) * dt
++    return jp.clip(
++        guarded,
++        previous_target - maximum_step,
++        previous_target + maximum_step,
++    )
++
+ 
+ def ground_up_tracking_tail_exceedance_cost(
+     sent_target: jax.Array,
+@@ -163,6 +180,7 @@ def default_config() -> config_dict.ConfigDict:
+         ground_up_signed_progress_objective=False,
+         winner_v3_variable_configuration=False,
+         winner_v3_deviation_scale=0.0,
++        winner_v119_train_transition_match=False,
+     )
+ 
+ 
+@@ -596,6 +614,15 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+                 prev_motor_targets
+                 + velocity_limits * self.dt,  # control dt
+             )
++
++        motor_targets = winner_v119_transition_match(
++            motor_targets,
++            state.info["motor_targets"],
++            self.get_actuator_joints_qpos(state.data.qpos),
++            self._config.ground_up_action_velocity_limits_rad_s,
++            self.dt,
++            self._config.winner_v119_train_transition_match,
++        )
+ 
+         applied_action = (
+             motor_targets - self._default_actuator
+diff --git a/playground/open_duck_mini_v2/runner.py b/playground/open_duck_mini_v2/runner.py
+index cdd0a1a..f92cdda 100644
+--- a/playground/open_duck_mini_v2/runner.py
++++ b/playground/open_duck_mini_v2/runner.py
+@@ -92,4 +92,7 @@ class OpenDuckMiniV2Runner(BaseRunner):
+         self.env_config.winner_v3_deviation_scale = args.winner_v3_deviation_scale
++        self.env_config.winner_v119_train_transition_match = (
++            args.winner_v119_train_transition_match
++        )
+         if args.nominal_reference_bootstrap:
+             self.env_config.noise_config.level = 0.0
+             self.env_config.noise_config.action_min_delay = 0
+@@ -116,12 +119,22 @@ class OpenDuckMiniV2Runner(BaseRunner):
+             ):
+                 raise ValueError("winner-v3 requires hard-vector, measured bridge and applied-target observation")
++            expected_limits = (
++                jp.asarray(
++                    joystick.WINNER_V119_RATE_LIMITS_RAD_S,
++                    dtype=jp.float32,
++                )
++                if args.winner_v119_train_transition_match
++                else winner_v3.CONSERVATIVE_VELOCITY_LIMITS_RAD_S
++            )
+             if not bool(
+                 jp.array_equal(
+                     jp.asarray(limits, dtype=jp.float32),
+-                    winner_v3.CONSERVATIVE_VELOCITY_LIMITS_RAD_S,
++                    expected_limits,
+                 )
+             ):
+-                raise ValueError("winner-v3 conservative all-joint velocity vector changed")
++                raise ValueError(
++                    "winner-v3 selected all-joint velocity vector changed"
++                )
+             self.env_config.noise_config.level = args.winner_v3_deviation_scale
+             self.env_config.noise_config.action_min_delay = 0
+             self.env_config.noise_config.action_max_delay = 3
+@@ -299,5 +312,6 @@ def main() -> None:
+     parser.add_argument("--ground_up_signed_progress_objective", action="store_true")
+     parser.add_argument("--winner_v3_variable_configuration", action="store_true")
++    parser.add_argument("--winner_v119_train_transition_match", action="store_true")
+     parser.add_argument(
+         "--winner_v3_deviation_scale",
+         type=float,

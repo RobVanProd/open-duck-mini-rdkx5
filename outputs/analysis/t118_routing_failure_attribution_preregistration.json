@@ -1,0 +1,128 @@
+{
+  "analysis_contract": {
+    "backward_motion_requires_negative_local_vx": true,
+    "backward_pitch_requires_negative_pitch": true,
+    "first_boundary_crossing_per_failed_trace": true,
+    "fixed_gate_dynamics_expected": {
+      "maximum_transitions_at_least": 20,
+      "negative_false_inactive_fraction_positive": true,
+      "nominal_false_active_fraction_positive": true
+    },
+    "moving_commands_only_for_failure_anatomy": true,
+    "phase_quadrants": 4,
+    "pitch_boundary_abs_rad": 0.25,
+    "routing_comparison_green_cells": {
+      "always_on": 6,
+      "always_on_trainthrough": 5,
+      "hard_gate": 9,
+      "soft_gate": 4
+    },
+    "simple_support_phase_mask_rejected_if": {
+      "left_single_support_crossings_at_least": 2,
+      "occupied_phase_quadrants_at_least": 3,
+      "right_single_support_crossings_at_least": 2
+    },
+    "single_support_family_must_be_closed": true,
+    "support_categories": [
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        0,
+        0
+      ]
+    ]
+  },
+  "authority": {
+    "colab": false,
+    "gate5": false,
+    "one_read_only_attribution": true,
+    "rdkx5_or_robot": false,
+    "successor_cpu_preregistration": false,
+    "training": false
+  },
+  "checks": {
+    "all_sources_present": true,
+    "analysis_only": true,
+    "no_behavior_training_colab_or_robot": true,
+    "t117_is_closed": true
+  },
+  "decision_rule": {
+    "behavior_rerun": false,
+    "gate5": false,
+    "hold_decision": "HOLD_FOR_DISTINCT_MECHANISM_REVIEW",
+    "hosted_training": false,
+    "pass_decision": "EARN_T119_JOINT_SOFT_ROUTER_EXPERT_CPU_PREREGISTRATION_ONLY"
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "always_on": {
+      "bytes": 120733,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t111_always_on_negative_endpoint_result.json",
+      "sha256": "728ecdaf531df5fe3348bacc00f9763091641e2f986f52a6e5228d303a139186"
+    },
+    "builder": {
+      "bytes": 6890,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t118_routing_failure_attribution_preregistration.py",
+      "sha256": "19882e1ce4e54f74fb0a5386e641442d5b81c89c4408c6a2b5c81c37964b951b"
+    },
+    "gate_dynamics": {
+      "bytes": 79379,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t104_t100c_gate_dynamics_result.json",
+      "sha256": "54a7c3cb784a4182f2915723b12d9a94650e9bac491b2afed0de658ee5fb0622"
+    },
+    "hard_gate": {
+      "bytes": 120754,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t103_t100c_negative_endpoint_result.json",
+      "sha256": "d801602acb8e3b147a64230f0526363a0e5c62a2d49fa951ceb6b8cf28966b24"
+    },
+    "runner": {
+      "bytes": 13810,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t118_routing_failure_attribution.py",
+      "sha256": "16c83eda161fb00d7e30224102642c70c4393dd6290a9ad99569c1fc85937851"
+    },
+    "single_support_cpu": {
+      "bytes": 76158,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t55_dynamic_single_support_cpu_result.json",
+      "sha256": "7b74d21d5fd864fab441112c1321808d862cafd1bfd6cdbf2d7471ad211376bb"
+    },
+    "single_support_family": {
+      "bytes": 61051,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t65_t62_midpoint_endpoint_screen_result.json",
+      "sha256": "74c2881b9e05747a9f7d78849d3f19fe18a40248a272b52c139a128bd3f8a951"
+    },
+    "single_support_nominal": {
+      "bytes": 120119,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t59_t56_nominal_matrix_result.json",
+      "sha256": "10be653d2b044ca01aa499b7083c59f5a592b1c0d65667ac656336238613f36a"
+    },
+    "soft_gate": {
+      "bytes": 120952,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t108_soft_gate_negative_endpoint_result.json",
+      "sha256": "09378e29421ecf4b8ca16b67388456cb591765b761a8538f071a3ce6993869a4"
+    },
+    "test": {
+      "bytes": 1311,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t118_routing_failure_attribution.py",
+      "sha256": "12c736717fd59f5fc94bd36096299a7054d0a8964b19a0cbc438b0c77ef46e11"
+    },
+    "trainthrough": {
+      "bytes": 120831,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t117_t113_negative_endpoint_result.json",
+      "sha256": "1c64aaa6634ab58e720de8e3cc637e10af8d305da222e8386595882c3f3d5443"
+    }
+  },
+  "preregistered_contract_sha256": "d2844b230eacb33fa7d01bcc9eec737afb52c048b6868d95b4e1d33752baea3f",
+  "question": "Do T103/T104/T108/T111/T117 and the earlier balance-first evidence isolate untrained state-dependent expert routing, rather than a one-foot/one-phase mask or a universal residual?",
+  "schema_version": "open_duck.t118_routing_failure_attribution_preregistration.v1",
+  "status": "PREREGISTERED_T118_ROUTING_FAILURE_ATTRIBUTION"
+}

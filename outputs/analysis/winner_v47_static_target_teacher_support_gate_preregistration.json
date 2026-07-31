@@ -1,0 +1,503 @@
+{
+  "authority": {
+    "pass_authorizes_only": "a separate response-conditioned locomotion-training preregistration",
+    "response_conditioned_locomotion_training_authorized": false,
+    "robot_clearance": false
+  },
+  "binding_change_only": "The reviewed Winner-v12 physical evaluator, populations, thresholds, seeds, constant baseline, and all-or-nothing half/final rule are unchanged. The verified Winner-v46 count-302/count-352 paths are bound read-only and the normalized auxiliary head is projected exactly into raw scoring coordinates.",
+  "decision": "AUTHORIZE_ONE_FROZEN_WINNER_V47_248_CELL_GATE_ONLY",
+  "execution_now": {
+    "formal_support_cells": 0,
+    "heldout_repeat_cells": 0,
+    "locomotion_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "future_frozen_support_gate": {
+    "all_cells_at_both_checkpoints_must_pass": true,
+    "cell_derivation": "56 model configurations x 2 actuator plants + 6 nominal-model sensor/transport conditions x 2 actuator plants",
+    "cells_per_checkpoint": 124,
+    "checkpoint_labels": [
+      "half",
+      "final"
+    ],
+    "duration_ticks": 250,
+    "executed_by_this_preregistration": false,
+    "gates": {
+      "duration_valid_ticks": 250,
+      "maximum_abs_roll_pitch_rad": 0.35,
+      "maximum_final_50_tick_gyro_xy_norm_rad_s": 0.05,
+      "minimum_base_z_m": 0.1,
+      "per_joint_peak_current_a_max": 2.5,
+      "per_joint_peak_torque_nm_max": 1.91229675,
+      "rated_current_p95_a": "0.65 diagnostic only; not candidate pass/fail",
+      "strict_overcurrent_max_consecutive_ticks": 99,
+      "strict_overcurrent_threshold_a": 2.0,
+      "two_foot_contact_failure_ticks": 0
+    },
+    "heldout_context_gate": {
+      "actions": "the checkpoint's bounded deployable calibrator actions",
+      "cells": "the existing 16 heldout configurations x 2 hidden plants within the 112 model/plant cells; no additional behavior cells",
+      "constant_baseline": "predict the frozen Stage-1 training target mean, equivalently zero in normalized target space, on the identical heldout rows",
+      "matched_plant_context_rule": "for every heldout configuration, start P30 and P31/34 from the same deterministic reset, initial observation, previous action, and h_in with no stochastic sensor perturbation; the deployable calibrator remains authoritative in each closed loop, and final h_out L-infinity separation must exceed 1e-7",
+      "normalization": "the frozen Stage-1 training normalization only",
+      "prediction_metric": "mean squared normalized next-response error over all 250 valid transitions using the frozen Stage-1 auxiliary predictor",
+      "repeat_rule": "repeat every heldout context cell from reset and require all actions, observations, predictions, and h_out values bit-exact",
+      "required_prediction_rule": "learned aggregate mean MSE must be strictly below the constant baseline separately for P30 and P31/34 at each checkpoint",
+      "stochastic_inputs": false,
+      "true_configuration_or_plant_label_enters_network": false
+    },
+    "pass_authorizes_only": "a separate response-conditioned locomotion-training preregistration; the calibrator checkpoint alone is not a deployable walking policy",
+    "predictor_scoring": {
+      "checkpoint_and_onnx_bytes_unchanged": true,
+      "constant_error": "mean(square((target_mean - target_raw) / target_std))",
+      "evaluated_coordinates": "raw through exact in-memory affine projection",
+      "head_output_coordinates": "normalized",
+      "learned_error": "mean(square((prediction_raw - target_raw) / target_std))",
+      "physical_support_population_thresholds_seeds_unchanged": true,
+      "projection": {
+        "auxiliary_action_weight": "normalized_weight * target_std",
+        "auxiliary_bias": "normalized_bias * target_std + target_mean",
+        "auxiliary_hidden_weight": "normalized_weight * target_std"
+      }
+    },
+    "selection_by_closest_result": false,
+    "sensor_noise_seed_derivation": "numpy SeedSequence([120120, 3, checkpoint_index, condition_index, plant_index]); checkpoint order half/final and plant order P30/P31-34",
+    "sensor_transport_population": [
+      {
+        "id": "NATIVE_INPUT_QUANTIZATION",
+        "native_quantization": true
+      },
+      {
+        "id": "DECLARED_SENSOR_NOISE",
+        "sensor_noise_scales": {
+          "accelerometer": 0.05,
+          "ankle_pos_rad": 0.08,
+          "gravity": 0.1,
+          "gyro_rad_s": 0.1,
+          "hip_pos_rad": 0.03,
+          "joint_vel_rad_s": 2.5,
+          "knee_pos_rad": 0.05,
+          "linvel_m_s": 0.1
+        }
+      },
+      {
+        "additional_action_delay_ticks": 1,
+        "id": "ACTION_DELAY_1"
+      },
+      {
+        "additional_action_delay_ticks": 2,
+        "id": "ACTION_DELAY_2"
+      },
+      {
+        "id": "IMU_DELAY_1",
+        "imu_delay_ticks": 1
+      },
+      {
+        "id": "IMU_DELAY_2",
+        "imu_delay_ticks": 2
+      }
+    ],
+    "sensor_transport_population_sha256": "de043aaf85b922df2677e300d952513f02dd87671846d50dbdb8d4bbe568cb7a"
+  },
+  "pass_rule": {
+    "all_124_main_cells_at_both_checkpoints": true,
+    "all_16_heldout_contexts_separate_at_both_checkpoints": true,
+    "all_32_heldout_repeats_at_both_checkpoints": true,
+    "closest_checkpoint_selection": false,
+    "learned_prediction_beats_constant_per_plant": true
+  },
+  "schema_version": "winner_v47.static_target_teacher_support_gate_preregistration.v1",
+  "source_manifest_sha256": "ab3d87182aba5f2a1ca542c1e98c87300d6d222471b077b837ba9d20c4a779db",
+  "sources": {
+    "anchor_mechanics": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v29_prefix_right_pitch_anchor.py",
+      "sha256": "7c01b3db8c359464d122fc4f915df02eb9833720ef65837a99c5838dd42db36f"
+    },
+    "base_gate_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_support_gate.py",
+      "sha256": "18873eee55c77a278fc065de64c0b912803bf29b4440cde7f3adaabe1297baca"
+    },
+    "baseline_mechanics": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v24_symmetric_support_failure_v2.py",
+      "sha256": "50be218d889ff37c5c8b59f75caf385db94f5b984a9894d0921adf369910fcb3"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v47_static_target_teacher_support_gate_preregistration.py",
+      "sha256": "d649e1f3536af0031101c167bcf9e1d88ce95e851d99b18914f3f2b779f91b47"
+    },
+    "calibrator_design": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_training_preregistration.json",
+      "sha256": "1ec76a587c6fa50b92866c1632a7046ae0c6687ed17b1636b664bf45c2e8ba34"
+    },
+    "canonical_p30_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "coordinate_adapter": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v22_normalized_support_gate.py",
+      "sha256": "2c13cdb767d222bed510c7d2f650b98566a107daa8f027373e001c5496e51f8a"
+    },
+    "coordinate_adapter_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v22_normalized_support_gate.py",
+      "sha256": "31b3ca211f1e8b3c35bec6ad6b617f825367fee6d1bcef0bc87ef0e2a747e221"
+    },
+    "cpu_smoke": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "deployable_network": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_decomposed_backend_networks.py",
+      "sha256": "f463223a33f80baf81b2604e0df22c647660f2752a7ca60b8c75a3441460d015"
+    },
+    "environment_preparation": {
+      "hash_mode": "lf",
+      "path": "tools/prepare_winner_v15_cpu_environment.py",
+      "sha256": "33e54c3a16d5684e2d2520270acf25a28df42dc89e9f302c1ef3bd5f37d867c2"
+    },
+    "explicit_gradient": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v22_normalized_predictor_v2.py",
+      "sha256": "2f67394c0fc7f5cec14370d38a6a860a9c7bb2ce409e8578466b278c7c8c5b2a"
+    },
+    "full_training_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_preregistration.json",
+      "sha256": "99500648d6683097a13f894b0949bf4b5494e5653f36878710817bd0952f71dd"
+    },
+    "gate_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v47_static_target_teacher_support_gate.py",
+      "sha256": "935bc03b854c6aae1c5deecb9d6dcaedb468fe8f5f13a730284628d12c75a32a"
+    },
+    "gate_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v47_static_target_teacher_support_gate.py",
+      "sha256": "e951b3cd96f4b4ed92fd08ffdfc1b10bb0f1744467886da1159e6cd879951008"
+    },
+    "joint_recurrent": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v21_predictor_preserving_joint_support.py",
+      "sha256": "2d274c6c7c63fa2de5e3a7114ac047df1346189e66ec7bf8d83221e2f93aef0a"
+    },
+    "objective_mechanics": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v24_symmetric_support_failure_v3.py",
+      "sha256": "337f93832a93c74425564b1ddf7c274426a2de0544b51a1c5de83922b287d787"
+    },
+    "pitch_margin": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v15_pitch_margin_support.py",
+      "sha256": "b2dfecf77971596e2c67a7185b1a9c1acea2d49ecbb04eaf846666239b3326e8"
+    },
+    "preregistration_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v47_static_target_teacher_support_gate_preregistration.py",
+      "sha256": "69117eca0fbc2f177e5868903bbb34183926f458792a78898ece24b8e4f35aa3"
+    },
+    "result_importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v47_static_target_teacher_support_gate_result.py",
+      "sha256": "afa3c5187d1c32f06f42f60a34233fdd3abfdbdb88c24da9eac4fac41192a4d5"
+    },
+    "result_importer_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v47_static_target_teacher_support_gate_import.py",
+      "sha256": "0a6e2a7b8a594ed0b8cab36dda53f109341473b6148f0d18c216b5357d99e53c"
+    },
+    "reviewed_result_importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v15_pitch_margin_support_gate_result.py",
+      "sha256": "1e06f1196d54f69e06eab14f99e11f5a9a07a63fb1f85cc784fa6929a385cd97"
+    },
+    "runtime_observer": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py",
+      "sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889"
+    },
+    "teacher_mechanics": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v43_static_target_teacher.py",
+      "sha256": "214df40f1b2033d190c4f601280679f7105267ddb8dbcd7a2fb0f6c3929242a3"
+    },
+    "training_importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v46_static_target_teacher_training.py",
+      "sha256": "fb0715a4be7a8ffb14b1d24c997e6f7000a82be6d5b87473227b8989811690a1"
+    },
+    "training_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v46_static_target_teacher_training_preregistration.json",
+      "sha256": "2104db32192eff8ac14f8be01c1abec0fddfad8ddbabab554183c3f668f9e7ce"
+    },
+    "training_primitives": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_calibrator_training.py",
+      "sha256": "f5736a357d73baedae2bba1d15254dd688bddf3761eb731d757a971783c77227"
+    },
+    "training_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v46_static_target_teacher_training_result.json",
+      "sha256": "18f4eb5794cc29aae38167d0bd230a6001718f69f7408f08d425d7520d59941f"
+    },
+    "training_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v46_static_target_teacher_training.py",
+      "sha256": "c2bfaec2298c8b97489278112d932c11fc5392fc3250da99ec3fc1379062c0d2"
+    },
+    "variable_configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v47-static-target-teacher-support-gate.yml",
+      "sha256": "1ddf37e65f873c613635b4b703e6f618d7e5a9e4da2c75b3bf76c3b74e35090d"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V47_STATIC_TARGET_TEACHER_SUPPORT_GATE",
+  "training_artifact": {
+    "final": {
+      "graph": {
+        "bytes": 54896,
+        "completed_updates": 352,
+        "contract": {
+          "abi_exact": true,
+          "all_chain_outputs_finite": true,
+          "all_initializers_finite": true,
+          "bytes": 54896,
+          "chain_ticks": 250,
+          "forbidden_training_or_privileged_tokens": [],
+          "initializer_count": 9,
+          "inputs": [
+            {
+              "name": "obs",
+              "shape": [
+                1,
+                115
+              ]
+            },
+            {
+              "name": "previous_action",
+              "shape": [
+                1,
+                14
+              ]
+            },
+            {
+              "name": "h_in",
+              "shape": [
+                1,
+                64
+              ]
+            }
+          ],
+          "jax_onnx_at_most_1e_7": true,
+          "jax_onnx_max_abs_error": 5.820766091346741e-11,
+          "outputs": [
+            {
+              "name": "calibration_actions",
+              "shape": [
+                1,
+                14
+              ]
+            },
+            {
+              "name": "previous_action_out",
+              "shape": [
+                1,
+                14
+              ]
+            },
+            {
+              "name": "h_out",
+              "shape": [
+                1,
+                64
+              ]
+            }
+          ],
+          "path": "/tmp/winner-v46-static-target-teacher-training-work/graphs/winner_v46_final.onnx",
+          "previous_action_out_equals_action_bit_exact": true,
+          "sha256": "e3d209fd7ae8266c4b06a7080e89571c96d75e2263a8d721900f3308ccaa7d2d",
+          "training_only_tensors_absent": true
+        },
+        "label": "final",
+        "path": "/tmp/winner-v46-static-target-teacher-training-work/graphs/winner_v46_final.onnx",
+        "sha256": "e3d209fd7ae8266c4b06a7080e89571c96d75e2263a8d721900f3308ccaa7d2d",
+        "v46_forbidden_tokens_present": []
+      },
+      "snapshot": {
+        "bytes": 195379,
+        "completed_updates": 352,
+        "metadata_payload_sha256": "310ff743e4a87c86948ad99d2d8a5757dc9878f3cf99eece75e7ad5f9fa9263d",
+        "path": "/tmp/winner-v46-static-target-teacher-training-work/snapshots/snapshot_static_target_teacher_update_352.npz",
+        "sha256": "e32a7d5ee7fa272639fb58a2b500e394d983d4a984fb1ace1f7d87058c86e0df",
+        "state_payload_sha256": "ca68aa084fb05cada0eaa383df06461ba229d3ef1d3da2926ecbb1065088b123"
+      }
+    },
+    "half": {
+      "graph": {
+        "bytes": 54896,
+        "completed_updates": 302,
+        "contract": {
+          "abi_exact": true,
+          "all_chain_outputs_finite": true,
+          "all_initializers_finite": true,
+          "bytes": 54896,
+          "chain_ticks": 250,
+          "forbidden_training_or_privileged_tokens": [],
+          "initializer_count": 9,
+          "inputs": [
+            {
+              "name": "obs",
+              "shape": [
+                1,
+                115
+              ]
+            },
+            {
+              "name": "previous_action",
+              "shape": [
+                1,
+                14
+              ]
+            },
+            {
+              "name": "h_in",
+              "shape": [
+                1,
+                64
+              ]
+            }
+          ],
+          "jax_onnx_at_most_1e_7": true,
+          "jax_onnx_max_abs_error": 0.0,
+          "outputs": [
+            {
+              "name": "calibration_actions",
+              "shape": [
+                1,
+                14
+              ]
+            },
+            {
+              "name": "previous_action_out",
+              "shape": [
+                1,
+                14
+              ]
+            },
+            {
+              "name": "h_out",
+              "shape": [
+                1,
+                64
+              ]
+            }
+          ],
+          "path": "/tmp/winner-v46-static-target-teacher-training-work/graphs/winner_v46_half.onnx",
+          "previous_action_out_equals_action_bit_exact": true,
+          "sha256": "b4326259930613ba6d39e04e9ad4f4de20c981f9618165b6a24b765fcfe41ac1",
+          "training_only_tensors_absent": true
+        },
+        "label": "half",
+        "path": "/tmp/winner-v46-static-target-teacher-training-work/graphs/winner_v46_half.onnx",
+        "sha256": "b4326259930613ba6d39e04e9ad4f4de20c981f9618165b6a24b765fcfe41ac1",
+        "v46_forbidden_tokens_present": []
+      },
+      "snapshot": {
+        "bytes": 195328,
+        "completed_updates": 302,
+        "metadata_payload_sha256": "2c2208d1b20fdad3acd1e7301700b40c2e25c846009de080892fdfba4b3a6136",
+        "path": "/tmp/winner-v46-static-target-teacher-training-work/snapshots/snapshot_static_target_teacher_update_302.npz",
+        "sha256": "d6067047fde9d21d0af9efeb5ef7da35a3b71a7270fd42427b140c43ff1d476b",
+        "state_payload_sha256": "bfc9bec3f8c4d2e837aada97dff909a86d8cc6ff53108a9a3549cdc624cd28a0"
+      }
+    },
+    "objective": {
+      "combined_gradient": "existing Winner-v32 gradient plus exact frozen-scale static-target-teacher gradient",
+      "ppo": "unchanged Winner-v32 recurrent PPO objective and failure transition shaping",
+      "predictor": "unchanged normalized successor predictor at scale 380.9135437011719",
+      "prefix_anchor": "unchanged Winner-v32 prefix right-pitch anchor at scale 197.3112030029297",
+      "static_target_teacher": {
+        "action_indices": [
+          2,
+          3,
+          4,
+          11,
+          12,
+          13
+        ],
+        "action_replacement": false,
+        "actor_input_added": false,
+        "candidate": "deterministic graph-authoritative bounded recurrent mean",
+        "configuration_ids": [
+          "COM_X_NEG",
+          "COM_CORNER_00",
+          "COM_CORNER_01",
+          "COM_CORNER_02",
+          "COM_CORNER_03",
+          "OPTIONAL_AGGREGATE_HEAVY_AFT",
+          "DISCOVERY_02",
+          "DISCOVERY_03",
+          "DISCOVERY_06",
+          "DISCOVERY_09",
+          "DISCOVERY_10"
+        ],
+        "configuration_plant_rows": 22,
+        "heldout_ids_excluded": [
+          "HELDOUT_04",
+          "HELDOUT_07",
+          "HELDOUT_09",
+          "HELDOUT_15"
+        ],
+        "loss": "pitch-mask mean squared error",
+        "scale": 58.436370849609375,
+        "table": "exact imported Winner-v42 selected shared two-plant targets",
+        "target": "stop-gradient graph-bounded static target relative to realized previous action"
+      }
+    },
+    "repository_attribution": {
+      "artifact_zip_bytes": 19252851,
+      "artifact_zip_sha256": "fb6edf2297ec949d21f3355d6074cc4ea2049417f5fe104c59a18ac0372e12c2",
+      "github_artifact_digest": "sha256:fb6edf2297ec949d21f3355d6074cc4ea2049417f5fe104c59a18ac0372e12c2",
+      "github_artifact_id": 8527007840,
+      "github_artifact_name": "winner-v46-static-target-teacher-training-29909100403",
+      "github_run_attempt": 1,
+      "github_run_head_sha": "1a1f6d1803b390168f0bf9b60c257e0180ba8484",
+      "github_run_id": 29909100403,
+      "importer_lf_sha256": "fb0715a4be7a8ffb14b1d24c997e6f7000a82be6d5b87473227b8989811690a1",
+      "raw_result_receipt_sha256": "ed0aba4faccb760c57b42895b5439474c794f23dc53c4b23a05b8db36cc7f7a3",
+      "raw_result_sha256": "5c3d3d99ced06d449637c2ea78e9960ed41f4a7b71fcf4ac7d5024d17c79412c",
+      "repository": "RobVanProd/open-duck-mini-rdkx5"
+    },
+    "source_graph": {
+      "bytes": 54896,
+      "completed_updates": 252,
+      "sha256": "8571f8271aeeecd5cc54bfc0fe8a24156b5cabd3efd0e57efecc75c9e490d242"
+    },
+    "source_snapshot": {
+      "bytes": 194856,
+      "completed_updates": 252,
+      "optimizer_count": 252,
+      "sha256": "72c2e0bf895e8968a0d851ee1079435daca6125a572943b557fe766fc6e4832b"
+    },
+    "teacher_snapshot": {
+      "bytes": 194808,
+      "completed_updates": 100,
+      "optimizer_count": 100,
+      "sha256": "ddc8c4b905bb9acac2d7d48c3e9c1f0c0ca0173a1ba21f375740b051bc48c806"
+    }
+  }
+}

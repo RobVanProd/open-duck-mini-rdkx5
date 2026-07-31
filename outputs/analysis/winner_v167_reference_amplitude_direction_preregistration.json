@@ -1,0 +1,310 @@
+{
+  "authority": {
+    "behavior": false,
+    "gate5": false,
+    "hosted_training": false,
+    "one_shadow_direction_screen": true,
+    "production_contract_change": false,
+    "rdkx5_or_robot": false,
+    "simulation": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "checks": {
+    "all_trace_hashes_exact": true,
+    "scale_derived_only_from_frozen_gate_and_worst_peak": true,
+    "scale_strictly_between_zero_and_one": true,
+    "selected_policy_exact": true,
+    "six_moving_trace_sources": true,
+    "twelve_actual_violation_precursors": true,
+    "v140_projection_green": true,
+    "v144_valid_shadow_event": true,
+    "v158_valid_shadow_events": true,
+    "v160_complete_shadow_census": true,
+    "v166_cadence_expansion_closed": true
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "runner": "d85019d74a62b586d64351cce0b54cf56f0d3e07555e04ca50b1644d06adb677",
+    "selected_policy": "ae87508d7bd25c7821cb167d7a61d8eeaa28d7d153be72dd9d537236ae5e92f6",
+    "v140_result": "44921665d80235246737b333a5149ceacb702d477dcc2c7496395bf0c42ba637",
+    "v144_result": "fee8bde0006f9b5501e7d6fd1b9a8e11e131d7002315d6ae38019a6440ac01d7",
+    "v158_result": "f43f4c2f7c21efd58e231ea00c88dc233852f7af54600f5cb220be2c09bfe8bb",
+    "v160_result": "bf50eade4c73a6f5769cb8dcda8f1d5138be085848446a83cf9bad990c74965f",
+    "v166_result": "b9a1db8b8243bae1fe9edc9ba3e01885e5b30f05f68bbef06579665f79d424e5"
+  },
+  "mechanism": {
+    "class": "reviewed projected-reference geometry expansion",
+    "contraction": 0.07518970576363238,
+    "derivation": "unchanged torque limit divided by the complete V140 moving-census worst peak",
+    "observed_worst_v140_peak_nm": 2.0677719116210938,
+    "operation": "multiply obs[101:115] by one fixed scale",
+    "production_115_adapter_contract_changed": false,
+    "runtime_101_observation_contract_changed": false,
+    "scale": 0.9248102942363676,
+    "torque_limit_nm": 1.91229675
+  },
+  "paths": {
+    "runner": "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\tools\\run_winner_v167_reference_amplitude_direction.py",
+    "selected_policy": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v140-preservation-projected-actor-20260725\\winner_v140_deployed_selected.onnx",
+    "v140_result": "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\outputs\\analysis\\winner_v140_preservation_projected_actor_result.json",
+    "v144_result": "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\outputs\\analysis\\winner_v144_shadow_oracle_result.json",
+    "v158_result": "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\outputs\\analysis\\winner_v158_x077_shadow_census_result.json",
+    "v160_result": "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\outputs\\analysis\\winner_v160_remaining_shadow_census_result.json",
+    "v166_result": "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\outputs\\analysis\\winner_v166_continuous_reference_result.json"
+  },
+  "schema_version": "winner_v167.reference_amplitude_direction_preregistration.v1",
+  "screen": {
+    "cpu_only": true,
+    "event_count": 12,
+    "green_followup": "one separately preregistered CPU-only worst-cell behavior screen; no training or production contract change",
+    "pass_rule": {
+      "all_oracle_deltas_nonzero": true,
+      "all_scaled_actions_strictly_reduce_oracle_action_error": true,
+      "all_scaled_deltas_nonzero": true,
+      "all_scaled_deltas_same_sign_as_oracle": true,
+      "original_graph_reproduction_linf": "<=1e-6",
+      "unity_reference_scale_bit_exact": true
+    },
+    "shadow_state": "original obs, recurrent h_in, and previous_action at each actual violation's exact oracle precursor tick",
+    "simulation": false,
+    "sources": [
+      {
+        "events": [
+          {
+            "joint": 13,
+            "oracle_action_delta": 0.002124011516571045,
+            "source_tick": 394,
+            "violation_tick": 397
+          }
+        ],
+        "identity": {
+          "calibration_ticks": 0,
+          "checkpoint_id": "V121_TRAIN_MATCHED_FINAL",
+          "command_x_m_s": 0.074,
+          "configuration": null,
+          "duration_ticks": 600,
+          "home_return_ticks": 0,
+          "oracle_schedule_ticks": null,
+          "plant": "P30_ALL_JOINT",
+          "policy_sha256": "bc54ea1bf39e617f76771e7416de91db2ccfe0b1bf903de08faaa64a67ce4aab",
+          "seed": 167931544,
+          "step": 2007040,
+          "transport": {
+            "additional_action_delay_ticks": 0,
+            "imu_delay_ticks": 0,
+            "native_quantization": false,
+            "sensor_noise_scales": null
+          }
+        },
+        "trace": {
+          "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v144-shadow-oracle-causal-20260725\\traces\\v144_shadow_p30_x0.074_seed167931544.jsonl",
+          "sha256": "eb432bdb64c251dcbb466bd795db381891837086dae9dcc7a2564a7f2a2930b5"
+        }
+      },
+      {
+        "events": [
+          {
+            "joint": 3,
+            "oracle_action_delta": 0.01920485496520996,
+            "source_tick": 27,
+            "violation_tick": 30
+          },
+          {
+            "joint": 13,
+            "oracle_action_delta": 0.011286139488220215,
+            "source_tick": 205,
+            "violation_tick": 208
+          }
+        ],
+        "identity": {
+          "calibration_ticks": 0,
+          "checkpoint_id": "V121_TRAIN_MATCHED_FINAL",
+          "command_x_m_s": 0.077,
+          "configuration": null,
+          "duration_ticks": 600,
+          "home_return_ticks": 0,
+          "oracle_schedule_ticks": null,
+          "plant": "P30_ALL_JOINT",
+          "policy_sha256": "bc54ea1bf39e617f76771e7416de91db2ccfe0b1bf903de08faaa64a67ce4aab",
+          "seed": 167931544,
+          "step": 2007040,
+          "transport": {
+            "additional_action_delay_ticks": 0,
+            "imu_delay_ticks": 0,
+            "native_quantization": false,
+            "sensor_noise_scales": null
+          }
+        },
+        "trace": {
+          "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v158-x077-shadow-census-20260725\\traces\\v158_v140_p30_x0.077_seed167931544.jsonl",
+          "sha256": "150f5fd6778cc8db172e3c9ba5f80f338412f339cfe4958eacedd034330bde65"
+        }
+      },
+      {
+        "events": [],
+        "identity": {
+          "calibration_ticks": 0,
+          "checkpoint_id": "V140_SELECTED_FINAL",
+          "command_x_m_s": 0.08,
+          "configuration": null,
+          "duration_ticks": 600,
+          "home_return_ticks": 0,
+          "oracle_schedule_ticks": null,
+          "plant": "P30_ALL_JOINT",
+          "policy_sha256": "ae87508d7bd25c7821cb167d7a61d8eeaa28d7d153be72dd9d537236ae5e92f6",
+          "seed": 167931544,
+          "step": 2007040,
+          "transport": {
+            "additional_action_delay_ticks": 0,
+            "imu_delay_ticks": 0,
+            "native_quantization": false,
+            "sensor_noise_scales": null
+          }
+        },
+        "trace": {
+          "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v160-remaining-shadow-census-20260725\\traces\\v160_v140_p30_all_joint_x0.080_seed167931544.jsonl",
+          "sha256": "dad303bec558df8dd6b721a7e7d7380fb453dcf77f9c2ed3b7601fbc57d41b34"
+        }
+      },
+      {
+        "events": [
+          {
+            "joint": 3,
+            "oracle_action_delta": 0.021749258041381836,
+            "source_tick": 26,
+            "violation_tick": 29
+          },
+          {
+            "joint": 3,
+            "oracle_action_delta": 0.0033113956451416016,
+            "source_tick": 27,
+            "violation_tick": 30
+          },
+          {
+            "joint": 13,
+            "oracle_action_delta": 0.031078755855560303,
+            "source_tick": 232,
+            "violation_tick": 235
+          },
+          {
+            "joint": 3,
+            "oracle_action_delta": 0.004426717758178711,
+            "source_tick": 461,
+            "violation_tick": 464
+          },
+          {
+            "joint": 13,
+            "oracle_action_delta": 0.0067581236362457275,
+            "source_tick": 583,
+            "violation_tick": 586
+          }
+        ],
+        "identity": {
+          "calibration_ticks": 0,
+          "checkpoint_id": "V140_SELECTED_FINAL",
+          "command_x_m_s": 0.074,
+          "configuration": null,
+          "duration_ticks": 600,
+          "home_return_ticks": 0,
+          "oracle_schedule_ticks": null,
+          "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+          "policy_sha256": "ae87508d7bd25c7821cb167d7a61d8eeaa28d7d153be72dd9d537236ae5e92f6",
+          "seed": 167931544,
+          "step": 2007040,
+          "transport": {
+            "additional_action_delay_ticks": 0,
+            "imu_delay_ticks": 0,
+            "native_quantization": false,
+            "sensor_noise_scales": null
+          }
+        },
+        "trace": {
+          "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v160-remaining-shadow-census-20260725\\traces\\v160_v140_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.jsonl",
+          "sha256": "d2bbc58750130937b7d2020ff6f432d373f89f527eb875b115ced36eedd8c85c"
+        }
+      },
+      {
+        "events": [
+          {
+            "joint": 3,
+            "oracle_action_delta": 0.022354841232299805,
+            "source_tick": 27,
+            "violation_tick": 30
+          },
+          {
+            "joint": 3,
+            "oracle_action_delta": 0.0026877522468566895,
+            "source_tick": 28,
+            "violation_tick": 31
+          }
+        ],
+        "identity": {
+          "calibration_ticks": 0,
+          "checkpoint_id": "V140_SELECTED_FINAL",
+          "command_x_m_s": 0.077,
+          "configuration": null,
+          "duration_ticks": 600,
+          "home_return_ticks": 0,
+          "oracle_schedule_ticks": null,
+          "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+          "policy_sha256": "ae87508d7bd25c7821cb167d7a61d8eeaa28d7d153be72dd9d537236ae5e92f6",
+          "seed": 167931544,
+          "step": 2007040,
+          "transport": {
+            "additional_action_delay_ticks": 0,
+            "imu_delay_ticks": 0,
+            "native_quantization": false,
+            "sensor_noise_scales": null
+          }
+        },
+        "trace": {
+          "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v160-remaining-shadow-census-20260725\\traces\\v160_v140_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.jsonl",
+          "sha256": "0fbd4b311883a12a1c65c1cc778105bcca7215d02cb27acb213ddf7e639f716f"
+        }
+      },
+      {
+        "events": [
+          {
+            "joint": 3,
+            "oracle_action_delta": 0.042320491746068,
+            "source_tick": 18,
+            "violation_tick": 21
+          },
+          {
+            "joint": 3,
+            "oracle_action_delta": 0.01181483268737793,
+            "source_tick": 348,
+            "violation_tick": 351
+          }
+        ],
+        "identity": {
+          "calibration_ticks": 0,
+          "checkpoint_id": "V140_SELECTED_FINAL",
+          "command_x_m_s": 0.08,
+          "configuration": null,
+          "duration_ticks": 600,
+          "home_return_ticks": 0,
+          "oracle_schedule_ticks": null,
+          "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+          "policy_sha256": "ae87508d7bd25c7821cb167d7a61d8eeaa28d7d153be72dd9d537236ae5e92f6",
+          "seed": 167931544,
+          "step": 2007040,
+          "transport": {
+            "additional_action_delay_ticks": 0,
+            "imu_delay_ticks": 0,
+            "native_quantization": false,
+            "sensor_noise_scales": null
+          }
+        },
+        "trace": {
+          "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v160-remaining-shadow-census-20260725\\traces\\v160_v140_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.jsonl",
+          "sha256": "bc3e0d69e70a9facdf0049e0780e4529dc95ad31fa7de08589ed359b08e77505"
+        }
+      }
+    ],
+    "stop_rule": "if any pass rule fails, close uniform projected-reference amplitude contraction; do not try another scale, joint subset, command subset, or simulator cell",
+    "training": false
+  },
+  "status": "PREREGISTERED_WINNER_V167_REFERENCE_AMPLITUDE_DIRECTION"
+}

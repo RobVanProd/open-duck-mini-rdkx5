@@ -1,0 +1,113 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "conditional_forward_path_transform_preregistration": true,
+    "gate5": false,
+    "rdkx5_or_robot": false,
+    "training": false
+  },
+  "checks": {
+    "both_raw_training_exports_always_on": true,
+    "formal_behavior_cells_zero": true,
+    "optimizer_colab_robot_zero": true,
+    "t128_contract_is_always_on": true,
+    "t129_preregistered_forward_path_always_on": true,
+    "t131_explicitly_restored_hard_gate": true,
+    "t141_all_twelve_moving_cells_fail_under_hard_gate": true
+  },
+  "classification": "T129_TRAINED_ALWAYS_ON_BUT_EVALUATED_HARD_GATED",
+  "decision": "EARN_T143_CALIBRATION_CONDITIONAL_FORWARD_PATH_TRANSFORM_PREREGISTRATION_ONLY",
+  "execution": {
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "onnx_graphs_read": 4,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "hard_gate_deployments": {
+    "1003520": {
+      "always_on_consumers": 0,
+      "consumers": [
+        {
+          "index": 37,
+          "inputs": [
+            "negative_com_gate",
+            "negative_adapter_location",
+            "zero_adapter_location"
+          ],
+          "name": "",
+          "op_type": "Where",
+          "outputs": [
+            "conditional_adapter_location"
+          ]
+        }
+      ],
+      "hard_gate_consumers": 1,
+      "node_count": 91
+    },
+    "2007040": {
+      "always_on_consumers": 0,
+      "consumers": [
+        {
+          "index": 37,
+          "inputs": [
+            "negative_com_gate",
+            "negative_adapter_location",
+            "zero_adapter_location"
+          ],
+          "name": "",
+          "op_type": "Where",
+          "outputs": [
+            "conditional_adapter_location"
+          ]
+        }
+      ],
+      "hard_gate_consumers": 1,
+      "node_count": 91
+    }
+  },
+  "moving_failure_count": 12,
+  "preregistered_contract_sha256": "5d6bc39fc0ad069b11cbbd58e94a32676dcc4fd1e1c0ec2b7354f71104729ffa",
+  "raw_training_graphs": {
+    "1003520": {
+      "always_on_consumers": 1,
+      "consumers": [
+        {
+          "index": 27,
+          "inputs": [
+            "negative_adapter_location"
+          ],
+          "name": "",
+          "op_type": "Identity",
+          "outputs": [
+            "conditional_adapter_location"
+          ]
+        }
+      ],
+      "hard_gate_consumers": 0,
+      "node_count": 37
+    },
+    "2007040": {
+      "always_on_consumers": 1,
+      "consumers": [
+        {
+          "index": 27,
+          "inputs": [
+            "negative_adapter_location"
+          ],
+          "name": "",
+          "op_type": "Identity",
+          "outputs": [
+            "conditional_adapter_location"
+          ]
+        }
+      ],
+      "hard_gate_consumers": 0,
+      "node_count": 37
+    }
+  },
+  "result_sha256": "87f30ea094deb35a1fd06f6479907bf67edec127118f0caec51cd8ca9f71d850",
+  "schema_version": "open_duck.t142_t129_forward_path_mismatch_result.v1",
+  "status": "PASS_T142_T129_FORWARD_PATH_MISMATCH_AUDIT"
+}

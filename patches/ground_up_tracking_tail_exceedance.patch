@@ -1,0 +1,78 @@
+--- a/playground/open_duck_mini_v2/joystick.py
++++ b/playground/open_duck_mini_v2/joystick.py
+@@ -45,6 +45,19 @@
+ # if set to false, won't require the reference data to be present and won't compute the reference motions polynoms for nothing
+ USE_IMITATION_REWARD = True
+ USE_MOTOR_SPEED_LIMITS = True
++GROUND_UP_PITCH_CHAIN_INDICES = (2, 3, 4, 11, 12, 13)
++
++
++def ground_up_tracking_tail_exceedance_cost(
++    sent_target: jax.Array,
++    actual_position: jax.Array,
++    threshold_rad: float,
++) -> jax.Array:
++    """Mean squared pitch-chain tracking excess above the frozen gate."""
++    indices = jp.asarray(GROUND_UP_PITCH_CHAIN_INDICES, dtype=jp.int32)
++    error = jp.abs(sent_target[indices] - actual_position[indices])
++    excess = jp.maximum(error - threshold_rad, 0.0)
++    return jp.mean(jp.square(excess))
+ 
+ 
+ def default_config() -> config_dict.ConfigDict:
+@@ -84,6 +97,7 @@
+                 stand_still=-0.2,  # was -1.0 TODO try to relax this a bit ?
+                 alive=20.0,
+                 imitation=1.0,
++                tracking_tail_exceedance=0.0,
+             ),
+             tracking_sigma=0.01,  # was working at 0.01
+         ),
+@@ -115,6 +129,7 @@
+         ],
+         ground_up_measured_actuator_bridge=False,
+         ground_up_applied_target_observation=False,
++        ground_up_tracking_tail_threshold_rad=0.20,
+         ground_up_actuator_bridge_delay_ticks=[
+             3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 2, 3, 2, 3,
+         ],
+@@ -814,6 +829,11 @@
+                 info["command"],
+                 USE_IMITATION_REWARD,
+             ),
++            "tracking_tail_exceedance": ground_up_tracking_tail_exceedance_cost(
++                info["motor_targets"],
++                self.get_actuator_joints_qpos(data.qpos),
++                self._config.ground_up_tracking_tail_threshold_rad,
++            ),
+             "stand_still": cost_stand_still(
+                 # info["command"], data.qpos[7:], data.qvel[6:], self._default_pose
+                 info["command"],
+--- a/playground/open_duck_mini_v2/runner.py
++++ b/playground/open_duck_mini_v2/runner.py
+@@ -54,6 +54,12 @@
+         self.env_config.ground_up_applied_target_observation = (
+             args.ground_up_applied_target_observation
+         )
++        self.env_config.reward_config.scales.tracking_tail_exceedance = (
++            args.ground_up_tracking_tail_exceedance_scale
++        )
++        self.env_config.ground_up_tracking_tail_threshold_rad = (
++            args.ground_up_tracking_tail_threshold_rad
++        )
+         delay_ticks = [
+             int(value)
+             for value in args.ground_up_actuator_bridge_delay_ticks.split(",")
+@@ -134,6 +140,12 @@
+     parser.add_argument("--ground_up_measured_actuator_bridge", action="store_true")
+     parser.add_argument("--ground_up_applied_target_observation", action="store_true")
+     parser.add_argument(
++        "--ground_up_tracking_tail_exceedance_scale", type=float, default=0.0
++    )
++    parser.add_argument(
++        "--ground_up_tracking_tail_threshold_rad", type=float, default=0.20
++    )
++    parser.add_argument(
+         "--ground_up_actuator_bridge_delay_ticks",
+         default="3,3,3,3,3,3,2,3,3,3,2,3,2,3",
+     )

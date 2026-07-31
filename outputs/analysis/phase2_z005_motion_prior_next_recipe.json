@@ -1,0 +1,55 @@
+{
+  "status": "PASS_Z005_MOTION_PRIOR_RECIPE_READY",
+  "stage": "stage_z005_motion_prior",
+  "supersedes_recipe": "phase2-z005-motion-floor",
+  "trigger": {
+    "previous_status": "HOLD_NO_PROMOTABLE_CHECKPOINT",
+    "previous_best_step": 81920,
+    "previous_best_track_ratio": 0.17296431412978563,
+    "previous_best_mean_vx_m_s": 0.013837145130382851,
+    "previous_best_max_pitch_sent_velocity_p95_rad_s": 1.4368674159049988,
+    "previous_best_max_pitch_tracking_p95_rad": 0.21301820874214156,
+    "previous_best_velocity_envelope_excess_rad_s": 0.0
+  },
+  "diagnosis": "z0.005 motion-floor was safe but under-moving; restore direct action-continuity pressure from the behavior-prior teacher used by the Phase A2 walking candidate.",
+  "behavior_prior": {
+    "enabled": true,
+    "mlp_npz": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz",
+    "scale": -0.25,
+    "huber_delta": 0.05
+  },
+  "command": [
+    "python3",
+    "tools/run_colab_cli_cuda_workflow.py",
+    "--workflow",
+    "phase2-z005-motion-floor",
+    "--session",
+    "open-duck-l4",
+    "--candidate-name",
+    "phase2_z005_motion_prior_cuda",
+    "--candidate-behavior-prior-mlp-npz",
+    "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz",
+    "--candidate-behavior-prior-scale",
+    "-0.25",
+    "--candidate-behavior-prior-huber-delta",
+    "0.05",
+    "--candidate-checkpoint-sweep",
+    "--candidate-checkpoint-sweep-commands",
+    "0.0,0.08",
+    "--candidate-checkpoint-sweep-duration",
+    "1.0",
+    "--candidate-checkpoint-sweep-jax-platform",
+    "cpu",
+    "--candidate-timeout-s",
+    "10800",
+    "--run"
+  ],
+  "gate": {
+    "x0_required_status": "PASS_CANDIDATE_SIM_GATE",
+    "x008_min_track_ratio": 0.25,
+    "x008_min_mean_vx_m_s": 0.02,
+    "max_velocity_envelope_excess_rad_s": 0.0,
+    "max_action_saturation_pct": 0.0
+  },
+  "robot_validation": "blocked"
+}

@@ -1,0 +1,98 @@
+{
+  "status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+  "manifest": "outputs/analysis/phase2_health_routed_parent_manifest.json",
+  "samples": 3750,
+  "hidden_sizes": [
+    512,
+    256,
+    128
+  ],
+  "activation": "swish",
+  "saved_npz": "outputs/analysis/phase2_health_routed_parent_ppo_loc/candidate_mlp.npz",
+  "exported_onnx": "outputs/analysis/phase2_health_routed_parent_ppo_loc/candidate.onnx",
+  "train_metrics": {
+    "samples": 3750,
+    "mae": 0.002641725739388825,
+    "rmse": 0.003366616350341671,
+    "p50_abs_error": 0.002178550075135857,
+    "p95_abs_error": 0.0066365401013313155,
+    "p99_abs_error": 0.00906224286731803,
+    "max_abs_error": 0.025347726707735246,
+    "pred_action_saturation_pct": 0.0
+  },
+  "target_rate": {
+    "pair_count": 3745,
+    "p50_rad_s": 0.39112895653506813,
+    "p95_rad_s": 1.4308662322965262,
+    "p99_rad_s": 1.546815698044606,
+    "max_rad_s": 1.8266376471237986
+  },
+  "sample_weight": {
+    "p50": 1.0,
+    "p95": 1.0,
+    "max": 1.0,
+    "weighted_samples": 3750.0
+  },
+  "loss_rows": [
+    {
+      "step": 1,
+      "loss": 0.17692947387695312
+    },
+    {
+      "step": 500,
+      "loss": 7.480589556507766e-05
+    },
+    {
+      "step": 1000,
+      "loss": 4.066485780640505e-05
+    },
+    {
+      "step": 1500,
+      "loss": 2.6604475351632573e-05
+    },
+    {
+      "step": 2000,
+      "loss": 2.3143711587181315e-05
+    },
+    {
+      "step": 2500,
+      "loss": 2.5620238375267945e-05
+    },
+    {
+      "step": 3000,
+      "loss": 1.7564616427989677e-05
+    },
+    {
+      "step": 3500,
+      "loss": 1.752073148963973e-05
+    },
+    {
+      "step": 4000,
+      "loss": 1.9076731405220926e-05
+    },
+    {
+      "step": 4500,
+      "loss": 1.3529521311284043e-05
+    },
+    {
+      "step": 5000,
+      "loss": 1.0927755283773877e-05
+    }
+  ],
+  "onnx_verify": {
+    "path": "outputs/analysis/phase2_health_routed_parent_ppo_loc/candidate.onnx",
+    "samples_checked": 64,
+    "max_abs_error": 3.089211426665628e-07,
+    "p95_abs_error": 1.5824139684705862e-07
+  },
+  "config": {
+    "steps": 5000,
+    "batch_size": 512,
+    "learning_rate": 0.001,
+    "target_rate_scale": 0.1,
+    "target_rate_limit_rad_s": 2.0,
+    "action_scale_rad": 0.25,
+    "dt_s": 0.02,
+    "seed": 0
+  }
+}

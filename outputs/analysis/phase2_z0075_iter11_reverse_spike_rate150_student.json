@@ -1,0 +1,112 @@
+{
+  "activation": "swish",
+  "config": {
+    "batch_size": 1024,
+    "learning_rate": 0.0007,
+    "seed": 15031,
+    "steps": 6000,
+    "target_rate_limit_rad_s": 1.5,
+    "target_rate_scale": 0.1
+  },
+  "context_hidden_sizes": [
+    64
+  ],
+  "context_indices": [
+    6,
+    99,
+    100
+  ],
+  "exported_onnx": "policy/candidates/phase2_z0075_iter11_reverse_spike_rate150_20260704/candidate.onnx",
+  "loss_rows": [
+    {
+      "loss": 0.1863647997379303,
+      "step": 1
+    },
+    {
+      "loss": 0.000781832670327276,
+      "step": 500
+    },
+    {
+      "loss": 0.0004894236335530877,
+      "step": 1000
+    },
+    {
+      "loss": 0.0003532464324962348,
+      "step": 1500
+    },
+    {
+      "loss": 0.0004175225330982357,
+      "step": 2000
+    },
+    {
+      "loss": 0.0003479911247268319,
+      "step": 2500
+    },
+    {
+      "loss": 0.00030953847453929484,
+      "step": 3000
+    },
+    {
+      "loss": 0.0002900635008700192,
+      "step": 3500
+    },
+    {
+      "loss": 0.00031155801843851805,
+      "step": 4000
+    },
+    {
+      "loss": 0.0003646635450422764,
+      "step": 4500
+    },
+    {
+      "loss": 0.00023606586910318583,
+      "step": 5000
+    },
+    {
+      "loss": 0.0002906272711697966,
+      "step": 5500
+    },
+    {
+      "loss": 0.00022959614580031484,
+      "step": 6000
+    }
+  ],
+  "manifest": "outputs/analysis/phase2_z0075_iter11_reverse_spike_merged_manifest.json",
+  "modulation_scale": 0.5,
+  "onnx_verify": {
+    "max_abs_error": 2.980232238769531e-07,
+    "p95_abs_error": 1.1920928955078125e-07,
+    "path": "policy/candidates/phase2_z0075_iter11_reverse_spike_rate150_20260704/candidate.onnx",
+    "samples_checked": 64
+  },
+  "sample_weight": {
+    "max": 6.0,
+    "p50": 3.0,
+    "p95": 5.0,
+    "weighted_samples": 157930.65625
+  },
+  "samples": 53386,
+  "saved_npz": "outputs/analysis/phase2_z0075_iter11_reverse_spike_rate150_candidate/candidate_mlp.npz",
+  "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+  "target_rate": {
+    "max_rad_s": 2.7435712814331055,
+    "p50_rad_s": 0.1793956458568573,
+    "p95_rad_s": 1.367100715637207,
+    "p99_rad_s": 1.5238005757331847,
+    "pair_count": 53301
+  },
+  "train_metrics": {
+    "mae": 0.00980684859116663,
+    "max_abs_error": 0.5041301846504211,
+    "p50_abs_error": 0.005859896540641785,
+    "p95_abs_error": 0.031527663581073284,
+    "p99_abs_error": 0.05990653748544582,
+    "pred_action_saturation_pct": 0.0,
+    "rmse": 0.016500662510320625,
+    "samples": 53386
+  },
+  "trunk_hidden_sizes": [
+    512,
+    256
+  ]
+}

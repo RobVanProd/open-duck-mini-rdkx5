@@ -1,0 +1,91 @@
+{
+  "artifact": {
+    "archive_digest": "sha256:02a2468f22ce5a94e8b552c20c40e42effa1e7cbd637fc516a5b6965dbcd6910",
+    "artifact_id": 8484153256,
+    "files": {
+      "fixed_target_p30_actuator_fit_lf.json": {
+        "bytes": 18138,
+        "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+      },
+      "winner-v10-contract.json": {
+        "bytes": 5353,
+        "sha256": "bc4d56570f7c9a270770226c947239b54548cc4e8fd2128581cf1c4c13c724db"
+      },
+      "winner-v10-contract.sha256": {
+        "bytes": 96,
+        "sha256": "85c64102fe47531d03d943fdf8609bfe48376cc7118fdc320f1ced30025b27b0"
+      },
+      "winner_v12_calibrator_after_smoke.onnx": {
+        "bytes": 54896,
+        "sha256": "9c0d018cd4d496abf9081584f969a917293ef72ecdcd6047483d6c553389aa4c"
+      },
+      "winner_v12_calibrator_smoke_checkpoint.npz": {
+        "bytes": 192458,
+        "sha256": "5748978f050c222f156d733f709b1ddc76e2b27bebaa00ed726ad53d9fca2288"
+      }
+    },
+    "name": "winner-v12-calibrator-cpu-smoke-29802206612",
+    "raw_result_present": false
+  },
+  "attribution": {
+    "cause": "observer_plant_canary called ActuatorBridgeModel.step(target) without the required dt_s argument for both hidden physical plants",
+    "failure_class": "post_update_canary_call_signature_error",
+    "github_error": "TypeError: ActuatorBridgeModel.step() missing 1 required positional argument: 'dt_s'",
+    "location": "tools/run_winner_v12_calibrator_cpu_smoke.py observer_plant_canary after checkpoint save/restore and ONNX export",
+    "policy_behavior_interpretation_permitted": false
+  },
+  "authority": {
+    "formal_support_cells": 0,
+    "full_calibrator_training": false,
+    "locomotion_behavior_evaluation": false,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "checkpoint_readback": {
+    "all_40_arrays_finite": true,
+    "array_count": 40,
+    "stage1_adam_count": 1,
+    "stage2_adam_count": 1
+  },
+  "decision": "STOP_EXACT_SMOKE_AND_PREREGISTER_READ_ONLY_ARTIFACT_RECOVERY_IF_PURSUED",
+  "execution": {
+    "checkpoint_written": true,
+    "onnx_written": true,
+    "raw_result_written": false,
+    "rollouts_and_candidate_updates_reached_checkpoint": true,
+    "smoke_optimizer_updates": {
+      "stage1": 1,
+      "stage2": 1
+    }
+  },
+  "frozen_run_sources": {
+    ".github/workflows/winner-v12-calibrator-cpu-smoke.yml": {
+      "hash_mode": "lf",
+      "sha256": "a58a3f17a7a654693320e27e6f40299db556e251bf8e0122b7552f16cf44c91c"
+    },
+    "outputs/analysis/winner_v12_calibrator_cpu_smoke_contract.json": {
+      "hash_mode": "lf",
+      "sha256": "fb3b3114486f3e7154115557a5131a1e26f6ea5f0e70a5a3d114ffb01707aad7"
+    },
+    "tools/run_winner_v12_calibrator_cpu_smoke.py": {
+      "hash_mode": "lf",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    }
+  },
+  "github": {
+    "commit": "0340ee946a8783434c919fea614b88f199b38a3b",
+    "conclusion": "failure",
+    "job_id": 88545315833,
+    "run_id": 29802206612,
+    "url": "https://github.com/RobVanProd/open-duck-mini-rdkx5/actions/runs/29802206612",
+    "workflow": "Winner v12 calibrator CPU smoke"
+  },
+  "recovery_boundary": {
+    "allowed_next_work": "a separately frozen read-only verifier may inspect the recovered checkpoint/ONNX and deterministically reconstruct evidence without creating or selecting a new checkpoint",
+    "new_optimizer_updates": 0,
+    "rerun_same_smoke": false,
+    "training_authorized": false
+  },
+  "schema_version": "winner_v12.calibrator_cpu_smoke_failure_attribution.v1",
+  "status": "HOLD_WINNER_V12_CALIBRATOR_CPU_SMOKE_NO_RESULT"
+}

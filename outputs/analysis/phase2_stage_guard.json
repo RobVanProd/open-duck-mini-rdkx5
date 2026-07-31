@@ -1,0 +1,149 @@
+{
+  "advance_requirements": [
+    "Next robustness screen x=0.08: 8/8 duration complete, zero falls, no corrected-envelope velocity excess, tracking p95 <= 0.20, forward motion preserved.",
+    "Companion x=0.0 screen: 8/8 duration complete, zero falls, no corrected-envelope velocity excess, |mean vx| <= 0.005.",
+    "z=0.005 no-push and gentle-push support gates remain passing.",
+    "z=0.0026 no-push and gentle-push regression gates remain passing.",
+    "Decision artifact explicitly records PASS or HOLD before any further escalation."
+  ],
+  "allowed_actions": [
+    "Review committed Phase 2 analysis artifacts and guard reports.",
+    "Run read-only report tools: report_phase2_curriculum_gate.py, report_phase2_artifact_manifest.py, and report_phase2_stage_guard.py.",
+    "Run the phase2-z005-support Colab workflow in plan-only mode to verify the package preflight and generated remote driver.",
+    "Run the phase2-z005-support Colab workflow with --package-only to build and hash local upload archives without contacting Colab.",
+    "Prepare or reconnect a Colab GPU session named open-duck-l4; A100/L4 is preferred, T4 is acceptable but slower.",
+    "Run the phase2-z005-support recipe only after the Colab session is active and still using the corrected bridge.",
+    "Run report_phase2_z005_post_training_gates.py on post-training seed-gate output.",
+    "Use local CPU only for reduced-horizon correctness checks; local ROCm GPU is not cleared for Phase 2 training.",
+    "Do not launch training yet from this host; Colab session open-duck-l4 is not active.",
+    "Run a local CPU stronger-push screen from the promoted rate150 parent.",
+    "Run a local CPU modest terrain-escalation screen from the promoted rate150 parent.",
+    "Record a hold if either screen exceeds the corrected actuator envelope, even without falls."
+  ],
+  "candidate": {
+    "exists": true,
+    "path": "policy/candidates/phase2_iter2_right_ankle_limit198_rate165_20260703/candidate.onnx",
+    "sha256": "eacc7c69e517b7cef32daeedeb6b110cd766e129183b071a7254f6fa0af5c1e2",
+    "size_bytes": 886302,
+    "status": "PRESENT_FILE"
+  },
+  "colab_hardware": null,
+  "colab_status": "HOLD_NO_ACTIVE_COLAB_SESSION",
+  "corrected_bridge": {
+    "exists": true,
+    "path": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+    "sha256": "3661543d0745073b561eb4fa2ae8f9616368ee8b72cb397f8b953dada532c8c0",
+    "size_bytes": 18363,
+    "status": "PRESENT_FILE"
+  },
+  "current_gate_status": "PASS_PHASE2_CURRICULUM_GATES_READY_TO_ADVANCE",
+  "current_stage": "stage_z005_stronger_push_or_terrain",
+  "deploy_performed": false,
+  "forbidden_actions": [
+    "No robot validation.",
+    "No SSH.",
+    "No deploy.",
+    "No grounded replay.",
+    "No direct BEST_WALK deployment.",
+    "No training from scratch; continue only from the Phase 2 warm-start checkpoint.",
+    "No old/asymmetric actuator bridge.",
+    "No promotion without PASS_PHASE2_Z005_POST_TRAINING_GATES.",
+    "No robot validation from the rate150 parent just because z=0.005 gentle-push passed.",
+    "No escalation by more than one robustness rung without a paired x=0.08/x=0.0 decision artifact.",
+    "No promotion of stronger-push or stronger-terrain results with any corrected-envelope target-velocity excess.",
+    "No local ROCm Phase 2 training launch while local backend status is HOLD_PLAYGROUND_GPU_STEP."
+  ],
+  "git_status": "PASS_GIT_REMOTE_READ_AUTH",
+  "held_gates": [],
+  "input_artifacts": {
+    "ledger": "outputs/analysis/phase2_curriculum_gate_ledger.json",
+    "local_rocm_isolation": "outputs/analysis/rocm_mjx_isolation_post_bios/rocm_mjx_runtime_isolation.json",
+    "manifest": "outputs/analysis/phase2_artifact_manifest.json",
+    "next_plan": "outputs/analysis/phase2_next_run_plan.json",
+    "package_manifest": "outputs/analysis/phase2_colab_package_manifest.json",
+    "recipe": "outputs/analysis/phase2_z005_support_next_recipe.json"
+  },
+  "launch_status": "HOLD_PHASE2_COLAB_GPU_SESSION_NOT_READY",
+  "local_backend": {
+    "basic_jax_gpu": "PASS",
+    "closed_loop_cpu": "PASS",
+    "closed_loop_gpu": "FAIL",
+    "gate_result": "HOLD_PLAYGROUND_GPU_STEP",
+    "launch_class": "HOLD_LOCAL_ROCM_GPU_CPU_CORRECTNESS_ONLY",
+    "minimal_mjx_gpu": "PASS",
+    "path": "outputs/analysis/rocm_mjx_isolation_post_bios/rocm_mjx_runtime_isolation.json",
+    "playground_step_gpu": "FAIL",
+    "smallest_failing_status": "TIMEOUT",
+    "smallest_failing_subtest": "default_gpu_playground_direct_mjx_step"
+  },
+  "missing_gates": [],
+  "next_recipe_status": "PASS_Z005_SUPPORT_RECIPE_READY",
+  "package_manifest_matches_workflow": true,
+  "package_manifest_status": "PASS_PHASE2_COLAB_PACKAGE_MANIFEST_READY",
+  "package_manifest_workflow": "phase2-z005-support",
+  "package_preflight": {
+    "excluded_by_tar_filter": [],
+    "items": [
+      {
+        "exists": true,
+        "included_by_tar_filter": true,
+        "path": "outputs/analysis/actuator_response_fit_corrected_knee.json"
+      },
+      {
+        "exists": true,
+        "included_by_tar_filter": true,
+        "path": "outputs/analysis/phase2_z005_support_next_recipe.json"
+      },
+      {
+        "exists": true,
+        "included_by_tar_filter": true,
+        "path": "tools/run_actuator_bridge_training_smoke.py"
+      },
+      {
+        "exists": true,
+        "included_by_tar_filter": true,
+        "path": "outputs/analysis/phase2_limit198_ppo_loc_warmstart_candidate/candidate_mlp.npz"
+      },
+      {
+        "exists": true,
+        "included_by_tar_filter": true,
+        "path": "outputs/analysis/phase2_limit198_ppo_loc_warmstart_candidate/candidate.onnx"
+      },
+      {
+        "exists": true,
+        "included_by_tar_filter": true,
+        "path": "outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0.onnx"
+      },
+      {
+        "exists": true,
+        "included_by_tar_filter": true,
+        "path": "outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_checkpoint"
+      },
+      {
+        "exists": true,
+        "included_by_tar_filter": true,
+        "path": "tools/report_phase2_z005_post_training_gates.py"
+      }
+    ],
+    "missing": [],
+    "status": "PASS_PACKAGE_PREFLIGHT",
+    "workflow": "phase2-z005-support"
+  },
+  "post_training_status": "PASS_PHASE2_Z005_POST_TRAINING_GATES",
+  "post_training_tool": "report_phase2_z005_post_training_gates.py",
+  "preferred_command": "python3 \\\n    tools/run_colab_cli_cuda_workflow.py \\\n    --workflow \\\n    phase2-z005-support \\\n    --session \\\n    open-duck-l4 \\\n    --candidate-name \\\n    phase2_z005_support_baseheight_cuda \\\n    --candidate-checkpoint-sweep \\\n    --candidate-checkpoint-sweep-commands \\\n    0.0,0.08 \\\n    --candidate-checkpoint-sweep-duration \\\n    1.0 \\\n    --candidate-checkpoint-sweep-jax-platform \\\n    cpu \\\n    --candidate-timeout-s \\\n    10800 \\\n    --phase2-restore-checkpoint-path \\\n    outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_checkpoint \\\n    --run",
+  "preferred_workflow": "phase2-z005-support",
+  "restore_checkpoint": {
+    "exists": true,
+    "file_count": 11,
+    "path": "outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_checkpoint",
+    "sha256": "65ceb849516fcf64d8b872a913068f68ed6a35e12980cd143823fc72696f7f4e",
+    "size_bytes": 1823760,
+    "status": "PRESENT_DIR"
+  },
+  "robot_touched": false,
+  "ssh_used": false,
+  "stage_strategy": "The current promoted parent has cleared z=0.005 no-push and gentle-push support gates plus z=0.0026 regressions. The next work is a one-rung offline robustness screen: stronger z=0.005 push or modestly higher terrain, followed by paired x=0.08/x=0.0 command gates before any training or robot validation.",
+  "status": "PASS_PHASE2_STAGE_GUARD_READY_FOR_NEXT_ROBUSTNESS_SCREEN",
+  "training_started": false
+}

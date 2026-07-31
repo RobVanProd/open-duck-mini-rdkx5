@@ -1,0 +1,25 @@
+{
+  "status": "HOLD_B0E_CUDA_WORKFLOW_TASK_MISMATCH_FIXED",
+  "robot_touched": false,
+  "ssh": false,
+  "deploy": false,
+  "grounded_replay": false,
+  "runtime_behavior_changed": false,
+  "policy_promoted": false,
+  "session": "open-duck-a100",
+  "hardware": "A100",
+  "verified": {
+    "jax": "0.7.2",
+    "jaxlib": "0.7.2",
+    "brax": "0.14.2",
+    "mujoco": "3.9.0",
+    "mujoco_mjx": "3.9.0",
+    "jax_backend": "gpu",
+    "jax_device": "cuda:0",
+    "policy_sim_contract": "PASS_POLICY_SIM_CONTRACT"
+  },
+  "failure": "No hfield size attribute found in scene_flat_terrain.xml",
+  "root_cause": "Phase 2 CUDA workflow omitted --task rough_terrain_backlash while applying --terrain-hfield-z-scale 0.002.",
+  "fix": "tools/run_colab_cli_cuda_workflow.py now passes --task rough_terrain_backlash for the Phase 2 B0D/B0E CUDA recipe.",
+  "trained_candidate": false
+}

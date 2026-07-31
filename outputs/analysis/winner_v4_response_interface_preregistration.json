@@ -1,0 +1,227 @@
+{
+  "authority": {
+    "gate5_or_deployment": false,
+    "gpu_or_igpu": false,
+    "hosted_compute": false,
+    "rdkx5_or_robot": false,
+    "runtime_implementation": false,
+    "runtime_review_only": true,
+    "serial_gpio_i2c": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "causal_hypothesis": "The broad recurrent adapter failed because the deployed policy had to infer episode dynamics only implicitly after control began. Supplying a deterministic, machine-collected pre-policy response context may make the supported configuration regime observable without a manual mass, COM, dimension, or component inventory.",
+  "decision": "REQUEST_RUNTIME_SCHEMA_REVIEW_NO_IMPLEMENTATION",
+  "falsification": "Before training, the exact runtime-equivalent simulator excitation must produce a deterministic 73-vector and the signed X endpoint pair must not collapse to an identical vector. Any schema mismatch, nondeterminism, context collapse, or default-off actor change closes this formulation before PPO.",
+  "policy_abi": {
+    "action_semantics_unchanged": true,
+    "canonical_observation_unchanged": true,
+    "contract_id": "winner-v4-response73-r64",
+    "inputs": [
+      {
+        "dtype": "float32",
+        "name": "obs",
+        "shape": [
+          1,
+          115
+        ]
+      },
+      {
+        "dtype": "float32",
+        "name": "previous_action",
+        "shape": [
+          1,
+          14
+        ]
+      },
+      {
+        "dtype": "float32",
+        "name": "h_in",
+        "shape": [
+          1,
+          64
+        ]
+      },
+      {
+        "dtype": "float32",
+        "name": "response_context",
+        "shape": [
+          1,
+          73
+        ]
+      }
+    ],
+    "observation_contract": "winner-v2-115d",
+    "outputs": [
+      {
+        "dtype": "float32",
+        "name": "action",
+        "shape": [
+          1,
+          14
+        ]
+      },
+      {
+        "dtype": "float32",
+        "name": "previous_action_out",
+        "shape": [
+          1,
+          14
+        ]
+      },
+      {
+        "dtype": "float32",
+        "name": "h_out",
+        "shape": [
+          1,
+          64
+        ]
+      }
+    ],
+    "phase_semantics_unchanged": true,
+    "response_context_is_constant_for_episode": true,
+    "response_context_is_separate_input": true,
+    "response_context_normalization": "inside ONNX initializers; runtime sends SI values"
+  },
+  "required_pretraining_cpu_contract": {
+    "default_off_protected_actor_action_and_state_bit_exact": true,
+    "formal_behavior_cells": 0,
+    "missing_nonfinite_wrong_order_context_rejected": true,
+    "no_true_configuration_or_manual_measurement_input": true,
+    "onnx_input_names_shapes_dtypes_exact": true,
+    "ppo_steps": 0,
+    "profile_reproduction_max_abs_error": 1e-09,
+    "repeat_contexts_bit_exact_for_same_model_and_seed": true,
+    "runtime_policy_flatteners_bit_exact_on_fixtures": true,
+    "runtime_review_commit_and_artifact_required": true,
+    "signed_x_endpoint_contexts_not_bit_identical": true
+  },
+  "response_context": {
+    "dimension": 73,
+    "dtype": "float32",
+    "fields_excluded": [
+      "mass",
+      "center_of_mass",
+      "inertia",
+      "component_inventory",
+      "scale_measurement",
+      "caliper_measurement"
+    ],
+    "flatten_order": [
+      "joint_response.left_hip_yaw.delay_ticks",
+      "joint_response.left_hip_yaw.gain_ratio",
+      "joint_response.left_hip_yaw.time_constant_s",
+      "joint_response.left_hip_yaw.tracking_p95_rad",
+      "joint_response.left_hip_yaw.current_p95_a",
+      "joint_response.left_hip_roll.delay_ticks",
+      "joint_response.left_hip_roll.gain_ratio",
+      "joint_response.left_hip_roll.time_constant_s",
+      "joint_response.left_hip_roll.tracking_p95_rad",
+      "joint_response.left_hip_roll.current_p95_a",
+      "joint_response.left_hip_pitch.delay_ticks",
+      "joint_response.left_hip_pitch.gain_ratio",
+      "joint_response.left_hip_pitch.time_constant_s",
+      "joint_response.left_hip_pitch.tracking_p95_rad",
+      "joint_response.left_hip_pitch.current_p95_a",
+      "joint_response.left_knee.delay_ticks",
+      "joint_response.left_knee.gain_ratio",
+      "joint_response.left_knee.time_constant_s",
+      "joint_response.left_knee.tracking_p95_rad",
+      "joint_response.left_knee.current_p95_a",
+      "joint_response.left_ankle.delay_ticks",
+      "joint_response.left_ankle.gain_ratio",
+      "joint_response.left_ankle.time_constant_s",
+      "joint_response.left_ankle.tracking_p95_rad",
+      "joint_response.left_ankle.current_p95_a",
+      "joint_response.neck_pitch.delay_ticks",
+      "joint_response.neck_pitch.gain_ratio",
+      "joint_response.neck_pitch.time_constant_s",
+      "joint_response.neck_pitch.tracking_p95_rad",
+      "joint_response.neck_pitch.current_p95_a",
+      "joint_response.head_pitch.delay_ticks",
+      "joint_response.head_pitch.gain_ratio",
+      "joint_response.head_pitch.time_constant_s",
+      "joint_response.head_pitch.tracking_p95_rad",
+      "joint_response.head_pitch.current_p95_a",
+      "joint_response.head_yaw.delay_ticks",
+      "joint_response.head_yaw.gain_ratio",
+      "joint_response.head_yaw.time_constant_s",
+      "joint_response.head_yaw.tracking_p95_rad",
+      "joint_response.head_yaw.current_p95_a",
+      "joint_response.head_roll.delay_ticks",
+      "joint_response.head_roll.gain_ratio",
+      "joint_response.head_roll.time_constant_s",
+      "joint_response.head_roll.tracking_p95_rad",
+      "joint_response.head_roll.current_p95_a",
+      "joint_response.right_hip_yaw.delay_ticks",
+      "joint_response.right_hip_yaw.gain_ratio",
+      "joint_response.right_hip_yaw.time_constant_s",
+      "joint_response.right_hip_yaw.tracking_p95_rad",
+      "joint_response.right_hip_yaw.current_p95_a",
+      "joint_response.right_hip_roll.delay_ticks",
+      "joint_response.right_hip_roll.gain_ratio",
+      "joint_response.right_hip_roll.time_constant_s",
+      "joint_response.right_hip_roll.tracking_p95_rad",
+      "joint_response.right_hip_roll.current_p95_a",
+      "joint_response.right_hip_pitch.delay_ticks",
+      "joint_response.right_hip_pitch.gain_ratio",
+      "joint_response.right_hip_pitch.time_constant_s",
+      "joint_response.right_hip_pitch.tracking_p95_rad",
+      "joint_response.right_hip_pitch.current_p95_a",
+      "joint_response.right_knee.delay_ticks",
+      "joint_response.right_knee.gain_ratio",
+      "joint_response.right_knee.time_constant_s",
+      "joint_response.right_knee.tracking_p95_rad",
+      "joint_response.right_knee.current_p95_a",
+      "joint_response.right_ankle.delay_ticks",
+      "joint_response.right_ankle.gain_ratio",
+      "joint_response.right_ankle.time_constant_s",
+      "joint_response.right_ankle.tracking_p95_rad",
+      "joint_response.right_ankle.current_p95_a",
+      "body_response.pitch_rate_p95_rad_s",
+      "body_response.roll_rate_p95_rad_s",
+      "body_response.acceleration_norm_p95_m_s2"
+    ],
+    "manual_measurements_used": false,
+    "required_profile_state": [
+      "raw trace, metadata, and duck_config hashes reproduce profile v4",
+      "physical profile was collected against the exact precommitted policy envelope",
+      "all timing, freshness, transaction, and telemetry-drop checks pass",
+      "all 73 values lie inside the selected policy's frozen response envelope"
+    ],
+    "runtime_failure_behavior": "missing, stale, nonfinite, unreproducible, wrong-order, or out-of-envelope context prevents policy arming",
+    "source_schema": "open_duck_x5.automatic_configuration_profile.v4",
+    "true_configuration_parameters_present": false
+  },
+  "runtime_review_questions": [
+    "Does the 73-field flatten order exactly match profile v4 production and validation?",
+    "Can runtime supply response_context as a separate immutable ONNX input without changing obs[115]?",
+    "Can the context be hash-bound to the raw automatic calibration evidence and selected policy envelope before arming?",
+    "Does any current runtime path silently reorder, scale, default, or substitute a context value?",
+    "Does the supported/benched collection posture make the profile unsuitable as a policy-conditioning input?",
+    "Are additional sign-preserving response fields required before a signed-X identifiability screen?"
+  ],
+  "schema_version": "open_duck_mini.winner_v4_response_interface_preregistration.v1",
+  "sources": {
+    "current_gate_application": {
+      "path": "outputs/analysis/winner_v3_current_gate_application_contract.json",
+      "sha256": "17e841450a2dde66182c3d41a06abf8d14366011f811bcde20adb1f1c8f68ddb"
+    },
+    "runtime": {
+      "automatic_configuration_support_md_sha256": "090770dfc9c062a9df5e5cad3ab55efbe6e4fa2a9633464238351b3d56290438",
+      "configuration_profile_py_sha256": "ea3262eac9a5a9f1d30ab8253ea758961a4525e65fab23c4e79c24f17b4bfc72",
+      "configuration_support_py_sha256": "f1d05e2fb1e82d242b29fef6e4796f01d81bd686c7a61666bad6590e0b870cd5",
+      "profile_schema": "open_duck_x5.automatic_configuration_profile.v4",
+      "repository": "https://github.com/RobVanProd/open-duck-mini-rdkx5-native-runtime.git",
+      "review_base_commit": "e9c3c12191953180bfccdacec0e1e30ba91f94f9"
+    }
+  },
+  "status": "PREREGISTERED_PENDING_RUNTIME_REVIEW",
+  "stop_rules": [
+    "do not train before runtime review and the pretraining CPU contract both pass",
+    "close this 73-D formulation if signed X endpoints collapse to an identical context",
+    "do not append true mass, COM, inertia, or component identity to rescue the screen",
+    "do not collect physical calibration evidence before a policy passes offline and publishes its envelope",
+    "do not change the completed winner-v3 result"
+  ]
+}

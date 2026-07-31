@@ -1,0 +1,52 @@
+{
+  "status": "PRE_REGISTERED_NOT_STARTED",
+  "workflow": "phase2-b0f",
+  "parent_restore_checkpoint": "outputs/phase2_domain_randomization/stage_b0c_rough_z002_push_tracking_margin_from_b0_gpu/smoke_20260629T062042Z_gpu/2026_06_29_022725_245760",
+  "purpose": "Local push-recovery adaptation from B0C with stronger behavior preservation after B0E regressed tracking.",
+  "recipe": {
+    "num_timesteps": 80000,
+    "ppo_num_envs": 64,
+    "ppo_batch_size": 512,
+    "learning_rate": 0.000003,
+    "ppo_clip": 0.02,
+    "max_grad_norm": 0.1,
+    "restore_policy_kl_scale": 5.0,
+    "behavior_prior_scale": -1.0,
+    "actuator_tracking_scale": -0.01,
+    "push_interval_s": [1.0, 2.0],
+    "push_magnitude": [0.03, 0.08],
+    "friction": [0.95, 1.05],
+    "mass_scale": [0.995, 1.005],
+    "torso_mass_delta": [-0.005, 0.005],
+    "com_jitter_m": 0.003,
+    "qpos_jitter_rad": 0.003,
+    "actuator_gain_scale": [0.995, 1.005],
+    "leg_geometry_jitter_scale": 0.001,
+    "noise_level": 0.25
+  },
+  "triage_gate": {
+    "commands": [0.0, 0.08],
+    "duration_s": 1,
+    "bridge": "corrected fitted bridge",
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.002
+  },
+  "full_gate_required_before_robot": [
+    "x=0.08 rough z=0.002 no push 8/8 pass",
+    "x=0.0 rough z=0.002 no push 8/8 pass",
+    "x=0.08 rough z=0.002 gentle push 8/8 pass",
+    "x=0.0 rough z=0.002 gentle push 8/8 pass"
+  ],
+  "stop_conditions": [
+    "short gate x=0.08 tracking >= 0.22 rad",
+    "track ratio below B0E's 0.31-0.35 range",
+    "no-push swing geometry regresses",
+    "fall-count improvement is caused by freezing"
+  ],
+  "robot_scope": "blocked",
+  "scale_probe": {
+    "a100_8_env_tiny_returncode": 0,
+    "a100_64_env_returncode": 0,
+    "decision": "Use 64 envs / batch 512 for B0F because 128-env launch died before writing normal runner artifacts."
+  }
+}

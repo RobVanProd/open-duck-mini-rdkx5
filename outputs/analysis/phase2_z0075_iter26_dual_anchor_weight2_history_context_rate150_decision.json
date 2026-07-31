@@ -1,0 +1,50 @@
+{
+  "status": "HOLD_ITER26_DUAL_ANCHOR_WEIGHT2_BROAD_REGRESSION",
+  "candidate": {
+    "path": "policy/candidates/phase2_z0075_iter26_dual_anchor_weight2_history_context_rate150_20260704/candidate.onnx",
+    "onnx_sha256": "c7e859c94cf1ff155927619b9c99481b71fe878f7174d27537a76fe94565dc53",
+    "npz_sha256": "47860855424eee2d2282a80d07d90e50fc5d37e00a7f7fa29e68832375fb9ba6",
+    "contract": "obs[1,101] -> continuous_actions[1,14]"
+  },
+  "inputs": {
+    "base_manifest": "outputs/analysis/live_oracle_dagger_phase_student/iter_024_history_context_resetsettle10_seed2_active/live_oracle_dagger_aggregate_manifest.json",
+    "dual_anchor_weighted_manifest": "outputs/analysis/phase2_z0075_iter24_dual_anchor_seed2_seed6_weight2_manifest.json",
+    "aggregate_manifest": "outputs/analysis/phase2_z0075_iter26_dual_anchor_weight2_aggregate_manifest.json",
+    "aggregate_manifest_sha256": "a26a8d0dd1dcdd4e0a244def7768e5ef0d74962c84880e2966bae8f2949f90ef",
+    "anchor_entry_sample_weight": 2.0
+  },
+  "fit_metrics": {
+    "samples": 68719,
+    "target_rate_p95_rad_s": 1.368372172117233,
+    "target_rate_max_rad_s": 9.230711936950684,
+    "training_status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE"
+  },
+  "gate": {
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0075,
+    "bridge_mode": "fitted",
+    "fit_json": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+    "reset_mode": "home-support",
+    "reset_settle_ticks": 10,
+    "pushes": {
+      "enabled": true,
+      "interval_s": [1.0, 1.5],
+      "magnitude": [0.075, 0.125],
+      "recovery_window_s": 1.2
+    },
+    "x008": {
+      "json": "outputs/analysis/phase2_z0075_iter26_dual_anchor_weight2_history_context_rate150_x008_seed0_1_2_6_7_screen.json",
+      "json_sha256": "d07e2d2c95b7c040a6c6e46e33a4b3506e9a9609e141b5e771d1750ae2d37c67",
+      "seeds": {
+        "0": {"status": "HOLD_CANDIDATE_FALL_OR_TERMINATION", "samples": 554, "termination": "fall_or_nan", "track_ratio": 0.7815, "mean_local_vx": 0.0625, "max_vel_excess": 0.0},
+        "1": {"status": "HOLD_CANDIDATE_FALL_OR_TERMINATION", "samples": 593, "termination": "fall_or_nan", "track_ratio": -0.0009, "mean_local_vx": -0.0001, "max_vel_excess": 0.0},
+        "2": {"status": "HOLD_CANDIDATE_FALL_OR_TERMINATION", "samples": 286, "termination": "fall_or_nan", "track_ratio": -0.5101, "mean_local_vx": -0.0408, "max_vel_excess": 0.0},
+        "6": {"status": "PASS_CANDIDATE_SIM_GATE", "samples": 750, "termination": "duration_complete", "track_ratio": 0.3491, "mean_local_vx": 0.0279, "max_vel_excess": 0.0},
+        "7": {"status": "HOLD_CANDIDATE_FALL_OR_TERMINATION", "samples": 397, "termination": "fall_or_nan", "track_ratio": 0.9271, "mean_local_vx": 0.0742, "max_vel_excess": 0.0}
+      }
+    }
+  },
+  "interpretation": "Weight2 produced a broad regression and rules out simple global dual-anchor sample weighting for the current BC student.",
+  "promotion": "not_promoted",
+  "next_recommendation": "Stop scalar anchor-weight sweeps; use iter24 as the latest useful live-oracle baseline and change the selection/training method."
+}

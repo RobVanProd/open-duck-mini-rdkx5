@@ -1,0 +1,50 @@
+{
+  "config": {
+    "batch_size": 16,
+    "learning_rate": 0.001,
+    "seed": 0,
+    "sequence_length": 16,
+    "steps": 80,
+    "target_rate_limit_rad_s": 3.75,
+    "target_rate_scale": 0.05
+  },
+  "exported_onnx": "outputs/analysis/recurrent_bc_student_smoke/candidate.onnx",
+  "hidden_dim": 32,
+  "loss_rows": [
+    {
+      "loss": 0.673647940158844,
+      "step": 1
+    },
+    {
+      "loss": 0.19606995582580566,
+      "step": 40
+    },
+    {
+      "loss": 0.10572637617588043,
+      "step": 80
+    }
+  ],
+  "manifest": "outputs/analysis/live_oracle_dagger_phase_student/iter_003/live_oracle_dagger_aggregate_manifest.json",
+  "no_deploy": true,
+  "no_robot_tests": true,
+  "onnx_verify": {
+    "max_action_error": 7.128789803190205e-07,
+    "max_hidden_error": 8.461241959301091e-07,
+    "path": "outputs/analysis/recurrent_bc_student_smoke/candidate.onnx",
+    "steps_checked": 32
+  },
+  "runtime_behavior_changed": false,
+  "samples": 11500,
+  "saved_npz": "outputs/analysis/recurrent_bc_student_smoke/candidate_rnn.npz",
+  "sequences": 18,
+  "status": "PASS_RECURRENT_BC_FIT_SMOKE",
+  "train_metrics": {
+    "mae": 0.19796606290658456,
+    "max_abs_error": 1.5889971097958409,
+    "p95_abs_error": 0.49364976330142163,
+    "p99_abs_error": 0.7742737696142267,
+    "samples": 11500,
+    "target_rate_max_rad_s": 18.663213449129813,
+    "target_rate_p95_rad_s": 4.4259674951921335
+  }
+}

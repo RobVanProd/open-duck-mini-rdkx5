@@ -1,0 +1,269 @@
+{
+  "generated_at": "2026-07-05T05:01:38Z",
+  "guardrails": [
+    "No robot tests.",
+    "No SSH.",
+    "No deploy.",
+    "No grounded replay.",
+    "No runtime behavior change.",
+    "Do not launch DR from a step-0 checkpoint that fails the task-matched gate."
+  ],
+  "iter24_live_oracle": {
+    "artifact": {
+      "exists": true,
+      "path": "outputs/analysis/phase2_z0075_iter24_live_oracle_seed2_active_history_context_rate150_decision.json",
+      "sha256": "8c2a8064b4d3c6a12515de571ed8085ea71461b6160b6e07f6e1c5c70a0237d5",
+      "size_bytes": 3774
+    },
+    "candidate": "policy/candidates/phase2_z0075_iter24_live_oracle_seed2_active_history_context_rate150_20260704/candidate.onnx",
+    "candidate_sha256": "31a5c2d20d0ae33733c82d0280ca8a297035d74b2a62cc35055b11ebeb152670",
+    "fall_count": 1,
+    "max_velocity_envelope_excess_rad_s": 0.0,
+    "pass_count": 4,
+    "recommended_next": null,
+    "seeds": [
+      {
+        "max_vel_excess": 0.0,
+        "mean_local_vx": 0.0261,
+        "samples": 750,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "termination": "duration_complete",
+        "track_ratio": 0.3256
+      },
+      {
+        "max_vel_excess": 0.0,
+        "mean_local_vx": 0.0287,
+        "samples": 750,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "termination": "duration_complete",
+        "track_ratio": 0.3584
+      },
+      {
+        "max_vel_excess": 0.0,
+        "mean_local_vx": 0.0262,
+        "samples": 750,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "termination": "duration_complete",
+        "track_ratio": 0.3278
+      },
+      {
+        "max_vel_excess": 0.0,
+        "mean_local_vx": -0.0453,
+        "samples": 250,
+        "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "termination": "fall_or_nan",
+        "track_ratio": -0.5659
+      },
+      {
+        "max_vel_excess": 0.0,
+        "mean_local_vx": 0.0275,
+        "samples": 750,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "termination": "duration_complete",
+        "track_ratio": 0.3437
+      }
+    ],
+    "status": "HOLD_ITER24_LIVE_ORACLE_SEED6_REGRESSION"
+  },
+  "iter27_live_oracle": {
+    "artifact": {
+      "exists": true,
+      "path": "outputs/analysis/phase2_z0075_iter27_live_oracle_seed6_active_history_context_rate150_decision.json",
+      "sha256": "bb311b897e099291ee74fe5e22e56dea28f1ba21603a71b61522b8d2dd31e0d4",
+      "size_bytes": 3918
+    },
+    "candidate": "policy/candidates/phase2_z0075_iter27_live_oracle_seed6_active_history_context_rate150_20260705/candidate.onnx",
+    "candidate_sha256": "e072b44e6e1f0e8be2487c1c79849f8decf325824ebec55c27859c5e54207d6a",
+    "fall_count": 3,
+    "max_velocity_envelope_excess_rad_s": 0.0,
+    "pass_count": 2,
+    "recommended_next": [
+      "Stop continuing this BC-only live-oracle rung as-is.",
+      "Use iter24 as the latest useful deployable baseline for analysis.",
+      "Change policy class or optimization objective before another expensive gate."
+    ],
+    "seeds": [
+      {
+        "base_height_min_m": 0.1587,
+        "body_pitch_p95_rad": 0.1793,
+        "max_pitch_vel_p95_rad_s": 1.5389,
+        "max_tracking_p95_rad": 0.1848,
+        "max_velocity_envelope_excess_rad_s": 0.0,
+        "mean_local_vx_m_s": 0.0272,
+        "samples": 750,
+        "seed": 0,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "termination": "duration_complete",
+        "track_ratio": 0.3395
+      },
+      {
+        "base_height_min_m": 0.1576,
+        "body_pitch_p95_rad": 0.1897,
+        "max_pitch_vel_p95_rad_s": 1.5272,
+        "max_tracking_p95_rad": 0.1843,
+        "max_velocity_envelope_excess_rad_s": 0.0,
+        "mean_local_vx_m_s": 0.0306,
+        "samples": 750,
+        "seed": 1,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "termination": "duration_complete",
+        "track_ratio": 0.383
+      },
+      {
+        "base_height_min_m": 0.0701,
+        "body_pitch_p95_rad": 0.1841,
+        "max_pitch_vel_p95_rad_s": 1.5546,
+        "max_tracking_p95_rad": 0.1753,
+        "max_velocity_envelope_excess_rad_s": 0.0,
+        "mean_local_vx_m_s": -0.0386,
+        "samples": 307,
+        "seed": 2,
+        "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "termination": "fall_or_nan",
+        "track_ratio": -0.4823
+      },
+      {
+        "base_height_min_m": 0.0005,
+        "body_pitch_p95_rad": 0.4099,
+        "max_pitch_vel_p95_rad_s": 1.5506,
+        "max_tracking_p95_rad": 0.1868,
+        "max_velocity_envelope_excess_rad_s": 0.0,
+        "mean_local_vx_m_s": 0.0776,
+        "samples": 390,
+        "seed": 6,
+        "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "termination": "fall_or_nan",
+        "track_ratio": 0.9697
+      },
+      {
+        "base_height_min_m": 0.0817,
+        "body_pitch_p95_rad": 0.2035,
+        "max_pitch_vel_p95_rad_s": 1.5395,
+        "max_tracking_p95_rad": 0.1827,
+        "max_velocity_envelope_excess_rad_s": 0.0,
+        "mean_local_vx_m_s": 0.0011,
+        "samples": 611,
+        "seed": 7,
+        "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "termination": "fall_or_nan",
+        "track_ratio": 0.0141
+      }
+    ],
+    "status": "HOLD_ITER27_LIVE_ORACLE_MULTI_SEED_REGRESSION"
+  },
+  "next_required": [
+    "Use Iter24 as the latest useful deployable analysis baseline, not Iter25/26/27.",
+    "Do not continue scalar anchor weighting or BC-only live-oracle relabeling as the next default branch.",
+    "Build a trainable policy class/objective that preserves the deployable baseline under the canonical z=0.0075 push gate before any DR escalation.",
+    "Acceptable next branches: recurrent/hidden-state actor with explicit export, validation-aware mixture/ensemble diagnostic, or PPO fine-tuning only after a task-matched behavior-preserving step-0 gate passes."
+  ],
+  "ppo_step0_trace": {
+    "artifact": {
+      "exists": true,
+      "path": "outputs/analysis/ppo_loc_iter24_step0_trace_failure_decision.json",
+      "sha256": "1d29e2f2a5b82ad4c0a3241e302580034554dc84dc31cea0b75061c8a16678b8",
+      "size_bytes": 3702
+    },
+    "decision": "Do not launch long PPO/domain-randomization training from this step-0 checkpoint as-is. The regression is a closed-loop stability/representation failure on well-covered states, not an OOD or local action-fit failure.",
+    "manifest": "outputs/analysis/live_oracle_dagger_phase_student/iter_024_history_context_resetsettle10_seed2_active/live_oracle_dagger_aggregate_manifest.json",
+    "nearest_action_l1_p95_max": 0.027115175581752707,
+    "nearest_distance_p95_max": 0.3356696694682808,
+    "policy": "outputs/analysis/ppo_loc_iter24_live_oracle_seed2_active_rate150_step0.onnx",
+    "seed_count": 4,
+    "status": "HOLD_PPO_LOC_STEP0_CLOSED_LOOP_INSTABILITY",
+    "trace_sweep": "outputs/analysis/ppo_loc_iter24_live_oracle_seed2_active_rate150_step0_trace_seed0_1_6_7.json"
+  },
+  "scope": "offline_phase2_trainable_policy_branch_decision",
+  "status": "HOLD_TASK_MATCHED_TRAINABLE_POLICY_MISSING",
+  "summary": "Phase 2 has in-envelope deployable walkers, but no trainable PPO/DR warm-start currently preserves the z=0.0075 rough+push behavior. BC-only live-oracle continuation is closed as-is, and long domain-randomization training should not launch until a task-matched step-0 trainable policy clears the gate.",
+  "trainable_warmstart_screen": {
+    "artifact": {
+      "exists": true,
+      "path": "outputs/analysis/ppo_trainable_warmstart_z0075_push_decision.json",
+      "sha256": "a9a82842042e0a77f0a1e57ccade19281904a6da2eea9493d87c61a00e9c3f30",
+      "size_bytes": 2811
+    },
+    "candidate_count": 3,
+    "candidates": {
+      "limit198_step0": {
+        "decision": "Not promotable. Safer but too slow under the current z0.0075 push gate and falls on seeds 6 and 7.",
+        "fall_count": 2,
+        "mean_vx_m_s": 0.013042972110627212,
+        "onnx": "outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0.onnx",
+        "pass_count": 0,
+        "sha256": "1dc894eebc144d790f1a6b4be6ada5a05e748f215f2053c72610347955deb3bb",
+        "total_count": 5,
+        "track_ratio_mean": 0.1630371513828402
+      },
+      "ppo_loc_iter24_step0": {
+        "decision": "Not promotable. Good action fidelity and close manifest coverage, but closed-loop seed stability regresses.",
+        "fall_count": null,
+        "mean_vx_m_s": null,
+        "onnx": "outputs/analysis/ppo_loc_iter24_live_oracle_seed2_active_rate150_step0.onnx",
+        "pass_count": 2,
+        "sha256": "de669ede7342797e07f0acd21f7b8a5be975af62bde0f07d9a1730918a454ee7",
+        "total_count": 5,
+        "track_ratio_mean": null
+      },
+      "rate165_step0": {
+        "decision": "Not promotable. Moves aggressively but falls early on seeds 0, 1, and 2.",
+        "fall_count": 3,
+        "mean_vx_m_s": 0.08812851143924558,
+        "onnx": "outputs/analysis/phase2_rate165_ppo_loc_warmstart_step0.onnx",
+        "pass_count": 0,
+        "sha256": "3aa2770022d2b5b0e6cf77df45d4ce1a2aeb2c86e80f57e3892a6ad9bd65ad5a",
+        "total_count": 5,
+        "track_ratio_mean": 1.1016063929905697
+      }
+    },
+    "decision": "No existing PPO-compatible step-0 checkpoint clears the current z0.0075 rough+push corrected-bridge screen. Future PPO/DR launches must first create a task-matched behavior-preserving warm-start.",
+    "gate": {
+      "bridge_mode": "fitted",
+      "command_x": 0.08,
+      "eval_push_enable": true,
+      "push_interval_s": [
+        1.0,
+        1.5
+      ],
+      "push_magnitude": [
+        0.075,
+        0.125
+      ],
+      "reset_mode": "home-support",
+      "reset_settle_ticks": 10,
+      "seeds": [
+        0,
+        1,
+        2,
+        6,
+        7
+      ],
+      "task": "rough_terrain_backlash",
+      "terrain_hfield_z_scale": 0.0075
+    },
+    "status": "HOLD_NO_TASK_MATCHED_TRAINABLE_WARMSTART"
+  },
+  "z0075_deployable_boundary": {
+    "artifact": {
+      "exists": true,
+      "path": "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z0075_intermediate_push_decision.json",
+      "sha256": "ba2f012eb2ee10a78533e1b9faaa1d511e991cf903dcb81f19d64cd4e0168326",
+      "size_bytes": 2414
+    },
+    "fall_count": 2,
+    "max_instant_velocity_excess_rad_s": 1.326827049255371,
+    "max_p95_velocity_excess_rad_s": 0.0,
+    "max_tracking_p95_rad": 0.20070266723632812,
+    "mean_vx_m_s": 0.04497848297617314,
+    "pass_count": 6,
+    "policy": "policy/candidates/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_20260703/candidate.onnx",
+    "screen_artifact": {
+      "exists": true,
+      "path": "outputs/analysis/phase2_limit198_transition_preserving_live_oracle_iter3_phase_modulated_rate150_z0075_x008_intermediate_push_screen.json",
+      "sha256": "697cb23f03ebc4285575d86678de3c2cd08a1e218e52d556a6f54de73e8f5af5",
+      "size_bytes": 58355
+    },
+    "status": "HOLD_PHASE2_Z0075_INTERMEDIATE_PUSH_STABILITY",
+    "track_ratio_mean": 0.5622310372021643
+  }
+}

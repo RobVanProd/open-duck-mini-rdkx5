@@ -1,0 +1,196 @@
+{
+  "authority": {
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "result_authorizes_only": "one separately preregistered CPU Adam update proof",
+    "robot_clearance": false,
+    "training_authorized": false
+  },
+  "causal_basis": {
+    "native_reset_labels_separable": true,
+    "v55_immediate_teacher_support_passes": 12,
+    "v55_one_graph_tick_support_passes": 4,
+    "v55b_result_sha256": "303fee53c378a11e54e7bd99edebb78f88747f0ca05d6f56c84570a72ad78e99"
+  },
+  "decision": "AUTHORIZE_ONE_ZERO_UPDATE_FIRST_TICK_GRADIENT_PROOF_ONLY",
+  "execution_now": {
+    "exports": 0,
+    "locomotion_steps": 0,
+    "optimizer_updates": 0,
+    "reset_rows": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_steps": 0
+  },
+  "gradient_contract": {
+    "default_off_gradients_bit_exact_zero": true,
+    "default_off_loss_bit_exact": true,
+    "expected_nonzero_leaves": [
+      "action_bias",
+      "action_weight",
+      "hidden_bias",
+      "obs_weight"
+    ],
+    "expected_zero_leaves": [
+      "auxiliary_action_weight",
+      "auxiliary_bias",
+      "auxiliary_hidden_weight",
+      "hidden_weight",
+      "previous_action_weight",
+      "training_only_log_std",
+      "training_only_value_bias",
+      "training_only_value_weight"
+    ],
+    "no_optimizer_update": true
+  },
+  "objective": {
+    "configuration_ids": [
+      "COM_X_NEG",
+      "COM_CORNER_00",
+      "COM_CORNER_01",
+      "COM_CORNER_02",
+      "COM_CORNER_03",
+      "OPTIONAL_AGGREGATE_HEAVY_AFT",
+      "DISCOVERY_02",
+      "DISCOVERY_03",
+      "DISCOVERY_06",
+      "DISCOVERY_09",
+      "DISCOVERY_10"
+    ],
+    "h_in": "zero",
+    "heldout_configuration_ids_forbidden": [
+      "HELDOUT_04",
+      "HELDOUT_07",
+      "HELDOUT_09",
+      "HELDOUT_15"
+    ],
+    "native_quantized_reset_rows": 22,
+    "plants": [
+      "P30_ALL_JOINT",
+      "P31_34_PITCH_WITH_P30_NONPITCH"
+    ],
+    "previous_action": "zero",
+    "raw_reset_rows": 22,
+    "scale": 136.35153198242188,
+    "scale_rule": "exactly equal to the frozen V52 full-action teacher scale so the mean reset loss receives one objective-term weight; no search",
+    "selected_elements": 616,
+    "teacher_action_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "total_rows": 44
+  },
+  "pass_rule": {
+    "default_off_exact": true,
+    "exact_44_rows_616_elements": true,
+    "gradient_leaf_locality_exact": true,
+    "heldout_labels_absent": true,
+    "jax_onnx_actions_at_most_1e_7": true,
+    "raw_and_quantized_inputs_distinct_per_configuration": true,
+    "scaled_loss_and_gradients_finite_nonzero": true,
+    "source_snapshot_and_onnx_exact": true,
+    "targets_obey_graph_boundary": true
+  },
+  "schema_version": "winner_v56.first_tick_teacher_gradient_contract.v1",
+  "source_checkpoint": {
+    "completed_updates": 453,
+    "label": "final",
+    "onnx_sha256": "b710e8c1578d5cd7261646daa54e3b8c8565c5a84fbf9f40fcfe5e86b53b618b",
+    "snapshot_sha256": "b7bfd05bb8af7a1085b91495d62273f238c71fbea6e1d9c6dbd64604ff4b7b60",
+    "v52_result_sha256": "a964b30f7a9958a7f6ed6db209fa11da8a36a118e59ffbbf2956a67d38b208b3"
+  },
+  "source_manifest_sha256": "62f890c52759d0e89c503e3325e2ea4496d40ed5e2ecc82358fa57f16eaea6b7",
+  "sources": {
+    "base_gate_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_preregistration.json",
+      "sha256": "99500648d6683097a13f894b0949bf4b5494e5653f36878710817bd0952f71dd"
+    },
+    "base_gate_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_support_gate.py",
+      "sha256": "18873eee55c77a278fc065de64c0b912803bf29b4440cde7f3adaabe1297baca"
+    },
+    "base_smoke_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v56_first_tick_teacher_gradient_contract.py",
+      "sha256": "1ed4a83db36f28b7fd20e173bab97a0c18fdaa4a4b91bba37b0c040a44d9015f"
+    },
+    "full_action_teacher": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v49_full_action_static_target_teacher.py",
+      "sha256": "cc51950e90ba221763304250a11500251d1df1b58586cb5da24f4d1621b67b26"
+    },
+    "mechanism": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v56_first_tick_teacher_mapping.py",
+      "sha256": "7ab0b28e5dd0fa228252c82faf7bf4d9cef921427916dde6017accaf518ae009"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v56_first_tick_teacher_gradient_contract.py",
+      "sha256": "adc58af002d9e3bb38b99ebe2ca144dc62dce35b1f5915f57d6d88d253f8cc97"
+    },
+    "teacher_table": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v42_static_target_teacher_table_result.json",
+      "sha256": "c465d9b3951941715ee0bb588a0ba24a9c4b15d7a2c99430340bcaea43964469"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v56_first_tick_teacher_gradient_contract.py",
+      "sha256": "daf435ab4a59ea1d635cbc4600960e92afb488887852c1f0fcf692bb26237a84"
+    },
+    "training_primitives": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_calibrator_training.py",
+      "sha256": "f5736a357d73baedae2bba1d15254dd688bddf3761eb731d757a971783c77227"
+    },
+    "v52_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v52_full_action_teacher_training_preregistration.json",
+      "sha256": "0a0d2a088be7b420b9d16f0af2d16f6ca173b4d8ee1662b484493ec2f3d143d2"
+    },
+    "v52_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v52_full_action_teacher_training_result.json",
+      "sha256": "1f7b146d169bc726eff1f4985866a65b530eeb27d1f4386040c43ee2e13a9b16"
+    },
+    "v54_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v54_residual_teacher_causal.py",
+      "sha256": "8a2b87a9b3832b9b73dbc53295f402bac0a007e5c6f83c7af9a3d487242850d1"
+    },
+    "v55_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v55_reset_label_handoff_result.json",
+      "sha256": "9053729f378add7edd9f7d7972012e8cbaade2e040849ce7391bc6d2fb06a8f1"
+    },
+    "v55b_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v55b_native_reset_quantization_result.json",
+      "sha256": "c3afe005532d761ed3dd698f6bc9f11092113a635c343796df936dc7dc75c522"
+    },
+    "variable_configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V56_FIRST_TICK_TEACHER_GRADIENT_CPU_CONTRACT"
+}

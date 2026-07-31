@@ -1,0 +1,102 @@
+{
+  "status": "HOLD_Z0026_INITIAL_SUPPORT_MANIFOLD",
+  "created_utc": "2026-07-03T02:22:52Z",
+  "policy": "outputs/analysis/colab_cli_downloads/extracted/open_duck_colab_cli_phase2-z002-teacher-continuity_20260701T223519Z/open_duck_colab_cli_phase2-z002-teacher-continuity_20260701T223519Z/open_duck_training_phase2_z002_teacher_continuity_cli/smoke_20260701T223737Z_gpu/2026_07_01_224518_81920.onnx",
+  "eval": {
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0026,
+    "command_x": 0.08,
+    "bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+    "jax_platform": "cpu",
+    "duration_s": 2.0
+  },
+  "source_artifacts": {
+    "seed0_vs_seed5_markdown": "outputs/analysis/PHASE2_Z0026_TC81920_SEED0_VS_SEED5_TRACE.md",
+    "seed0_vs_seed5_json": "outputs/analysis/phase2_z0026_tc81920_seed0_vs_seed5_trace.json",
+    "seed0_trace_jsonl": "outputs/analysis/phase2_z0026_tc81920_seed0_vs_seed5_trace/tc81920/seed_000/trace.jsonl",
+    "seed5_trace_jsonl": "outputs/analysis/phase2_z0026_tc81920_seed0_vs_seed5_trace/tc81920/seed_005/trace.jsonl",
+    "reset_settle_markdown": "outputs/analysis/PHASE2_Z0026_TC81920_SEED5_RESETSETTLE25_SHORT.md",
+    "reset_settle_json": "outputs/analysis/phase2_z0026_tc81920_seed5_resetsettle25_short.json"
+  },
+  "short_screen": {
+    "seed0": {
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "samples": 100,
+      "termination": "duration_complete",
+      "mean_local_vx_m_s": 0.0250,
+      "track_ratio": 0.3128,
+      "base_height_min_m": 0.1519,
+      "max_pitch_vel_p95_rad_s": 1.7138,
+      "p95_vel_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.2129,
+      "single_support_pct": 13.0,
+      "double_support_pct": 87.0
+    },
+    "seed5": {
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 65,
+      "termination": "fall_or_nan",
+      "mean_local_vx_m_s": -0.2279,
+      "track_ratio": -2.8483,
+      "base_height_min_m": 0.0667,
+      "max_pitch_vel_p95_rad_s": 1.8401,
+      "p95_vel_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.2022,
+      "single_support_pct": 9.2308,
+      "double_support_pct": 83.0769
+    }
+  },
+  "tick0_comparison": {
+    "seed0_contact": [0, 1],
+    "seed5_contact": [0, 0],
+    "seed0_left_foot_z_m": 0.0249,
+    "seed5_left_foot_z_m": 0.0235,
+    "seed0_right_foot_z_m": -0.0020,
+    "seed5_right_foot_z_m": 0.0553,
+    "right_foot_z_delta_seed5_minus_seed0_m": 0.0573,
+    "seed0_base_height_m": 0.1519,
+    "seed5_base_height_m": 0.1498,
+    "seed0_local_vx_m_s": -0.0374,
+    "seed5_local_vx_m_s": 0.0373,
+    "action_l2_delta": 0.2198,
+    "sent_target_l2_delta": 0.0436,
+    "actual_position_l2_delta": 0.8789,
+    "largest_actual_position_deltas_rad": {
+      "right_ankle": 0.5354,
+      "right_knee": 0.4809,
+      "left_ankle": -0.4302,
+      "right_hip_pitch": -0.1951,
+      "left_hip_pitch": 0.1713
+    }
+  },
+  "first_divergence_ticks": {
+    "contact_differs": 0,
+    "actual_joint_l2_gt_0p5": 0,
+    "local_vx_diff_gt_0p1": 1,
+    "seed5_local_vx_negative": 10,
+    "action_l2_gt_0p5": 35,
+    "sent_target_l2_gt_0p5": null,
+    "base_height_diff_gt_0p02": 60
+  },
+  "reset_settle_probe": {
+    "reset_settle_ticks": 25,
+    "seed": 5,
+    "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+    "samples": 18,
+    "termination": "fall_or_nan",
+    "mean_local_vx_m_s": -0.7045,
+    "track_ratio": -8.8068,
+    "base_height_min_m": 0.0768,
+    "p95_vel_excess_rad_s": 0.0,
+    "single_support_pct": 27.7778,
+    "double_support_pct": 72.2222
+  },
+  "decision": "Seed 5 starts outside the teacher-continuity parent policy's initial support/contact manifold before meaningful policy action. Passive reset settling worsens the failure. The next branch should target reset/contact-state recovery directly, not another scalar anti-reverse or base-height penalty.",
+  "closed_directions": [
+    "scalar anti-reverse/base-height escalation",
+    "passive reset-settle gate changes",
+    "promotion of the 40960/81920/122880 repair checkpoints",
+    "robot validation from this branch"
+  ],
+  "recommended_next": "reset/contact-state recovery or live-oracle relabeling on seed-5-like initial no-contact support states"
+}

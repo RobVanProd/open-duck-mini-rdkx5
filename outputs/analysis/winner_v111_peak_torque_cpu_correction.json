@@ -1,0 +1,53 @@
+{
+  "authority": {
+    "behavior_evaluation_authorized": false,
+    "checkpoint_selection_authorized": false,
+    "gate5_authorized": false,
+    "hosted_preregistration_authorized": true,
+    "hosted_training_authorized": false,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "no_policy_or_checkpoint_change": true,
+    "no_training_retry": true,
+    "objective_metric_tag_exact": true,
+    "objective_metric_values_finite": true,
+    "original_only_failed_stdout_metric_presence": true,
+    "original_result_hash_exact": true,
+    "tensorboard_event_hash_exact": true,
+    "training_log_hash_exact": true
+  },
+  "correction_scope": {
+    "checkpoint_change": false,
+    "classification": "reporting_only",
+    "correct_source": "TensorBoard scalar event stream",
+    "gate_change": false,
+    "original_check": "searched captured stdout for peak_torque_exceedance",
+    "policy_change": false,
+    "training_rerun": false
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "original_result": "e38f812b7691f499520a9ae2f1b95e9b4729d441061367c3b476c8c182856a03",
+    "tensorboard_event": "c8b26051aaf92f9d025678f55c5cc89b8c689125944f9f262f3249e1558493d4",
+    "training_log": "3567694c748dbbe31d6c665fb9dde06ba262aab22c7f749d3701e2f0ce56adf6"
+  },
+  "objective_metric_evidence": {
+    "events": [
+      {
+        "step": 0,
+        "value": 68.95680236816406
+      },
+      {
+        "step": 1024,
+        "value": 27.76718521118164
+      }
+    ],
+    "tag": "eval/episode_cost/peak_torque_exceedance"
+  },
+  "run_root": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v111-peak-torque-cpu-smoke-20260724",
+  "schema_version": "winner_v111.peak_torque_cpu_correction.v1",
+  "status": "PASS_WINNER_V111_PEAK_TORQUE_CPU_SMOKE_REPORTING_CORRECTED"
+}

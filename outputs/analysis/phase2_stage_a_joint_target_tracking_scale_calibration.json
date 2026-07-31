@@ -1,0 +1,37 @@
+{
+  "status": "PASS_DATA_CALIBRATED_SCALE",
+  "huber_delta": 0.03,
+  "pitch_joint_indices": [
+    2,
+    3,
+    4,
+    11,
+    12,
+    13
+  ],
+  "existing_bridge_tracking_scale": -0.04,
+  "rows": [
+    {
+      "label": "x0",
+      "trace_jsonl": "outputs/analysis/phase2_stage_a_joint_target_tracking_scale_calibration_x000/trace.jsonl",
+      "samples": 50,
+      "bridge_cost_mean": 0.00025040804723019234,
+      "pitch_joint_target_cost_mean": 0.0012719317092324835,
+      "pitch_to_bridge_ratio": 5.079436237379529,
+      "equal_magnitude_direct_scale": -0.007874889678827018
+    },
+    {
+      "label": "x008",
+      "trace_jsonl": "outputs/analysis/phase2_stage_a_joint_target_tracking_scale_calibration_x008/trace.jsonl",
+      "samples": 50,
+      "bridge_cost_mean": 0.0002743168131533944,
+      "pitch_joint_target_cost_mean": 0.0013793614575045858,
+      "pitch_to_bridge_ratio": 5.028351859473027,
+      "equal_magnitude_direct_scale": -0.007954892799445425
+    }
+  ],
+  "registered_direct_tracking_scale": -0.007914891239136222,
+  "scale_rule": "mean across the preregistered x=0 and x=0.08 compact traces of the scale that gives the new pitch-chain cost the same mean absolute reward contribution as the existing all-joint bridge-tracking cost",
+  "training_authorized": false,
+  "offline_only": true
+}

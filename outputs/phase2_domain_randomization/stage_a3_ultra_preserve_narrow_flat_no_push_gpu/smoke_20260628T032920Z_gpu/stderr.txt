@@ -1,0 +1,63 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1782617362.119811  379463 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1782617362.120127  379463 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1782617362.635421  379463 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1782617362.635606  379463 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+E0000 00:00:1782617362.995952  379463 cuda_platform.cc:52] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: UNKNOWN ERROR (303)
+/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast
+  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)
+/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast
+  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)
+F0627 23:30:03.459996  379463 rocm_context.cc:137] Check failed: ToStatus(wrap::hipCtxSetCurrent(context_), "Failed setting context") is OK (INTERNAL: Failed setting context: ROCM_ERROR_ILLEGAL_ADDRESS)
+[symbolize_elf.inc : 379] RAW: Unable to get high fd: rc=0, limit=1024
+*** Check failure stack trace: ***
+    @     0x779bb99357a4  absl::lts_20250814::log_internal::LogMessage::SendToLog()
+    @     0x779bb9935726  absl::lts_20250814::log_internal::LogMessage::Flush()
+    @     0x779bb7ebaa49  stream_executor::gpu::RocmContext::SetActive()
+    @     0x779bb7ec6e56  stream_executor::gpu::ScopedActivateContext::ScopedActivateContext()
+    @     0x779bb7b2f99c  stream_executor::gpu::RocmExecutor::Activate()
+    @     0x779bacae3da6  xla::StreamExecutorGpuClient::RunAsync()
+    @     0x779bacb08bb1  xla::PjRtStreamExecutorLoadedExecutable::EnqueueExecution()
+    @     0x779bacb0da97  xla::PjRtStreamExecutorLoadedExecutable::ExecuteHelper()
+    @     0x779bacb111c4  xla::PjRtStreamExecutorLoadedExecutable::Execute()
+    @     0x779bacabd0a9  pjrt::PJRT_LoadedExecutable_Execute()
+    @     0x779dce3cba7a  xla::PjRtCApiLoadedExecutable::Execute()
+    @     0x779dcac0b9ba  xla::ifrt::PjRtLoadedExecutable::Execute()
+    @     0x779dcaacdbce  jax::PyLoadedExecutable::ExecuteSharded()
+    @     0x779dcaad50c8  xla::ValueOrThrowWrapper<>::operator()()
+    @     0x779dcaad4f15  nanobind::detail::func_create<>()::{lambda()#1}::__invoke()
+    @     0x779dcab88131  nanobind::detail::nb_func_vectorcall_complex()
+    @          0x1816073  _PyEval_EvalFrameDefault
+    @          0x1891f60  _PyObject_Call_Prepend
+    @          0x1891e9a  slot_tp_call
+    @          0x18194c2  _PyEval_EvalFrameDefault
+    @          0x1955c3d  PyObject_Vectorcall
+    @     0x779dce347eb3  jax::(anonymous namespace)::PjitFunction::Call()
+    @     0x779dce3463bf  PjitFunction_tp_vectorcall
+    @          0x18193db  _PyEval_EvalFrameDefault
+    @          0x1926203  partial_vectorcall
+    @          0x182257b  _PyEval_EvalFrameDefault
+    @          0x18125a0  method_vectorcall.llvm.17011459520279195412
+    @          0x182257b  _PyEval_EvalFrameDefault
+    @          0x18503f4  PyObject_Call
+    @          0x1894fa4  partial_call
+    @          0x185321c  _PyObject_MakeTpCall
+    @          0x1816073  _PyEval_EvalFrameDefault
+    @          0x18503f4  PyObject_Call
+    @          0x1894fa4  partial_call
+    @          0x185321c  _PyObject_MakeTpCall
+    @          0x1816073  _PyEval_EvalFrameDefault
+    @          0x1897ea0  PyEval_EvalCode
+    @          0x18ac109  run_mod.llvm.15281556494959932569
+    @          0x1a2f8c5  pyrun_file
+    @          0x1a2f686  _PyRun_SimpleFileObject
+    @          0x1a2f40a  _PyRun_AnyFileObject
+    @          0x1a2f390  pymain_run_file_obj
+    @          0x1a2f29d  pymain_run_file
+    @          0x1ae2ca3  Py_RunMain.warm
+    @          0x198c198  pymain_main.llvm.11489439184168853189
+    @          0x198bfac  main
+    @     0x779e28e2a601  (unknown)
+    @     0x779e28e2a718  __libc_start_main
+    @          0x19a9269  _start

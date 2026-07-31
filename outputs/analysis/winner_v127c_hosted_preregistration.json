@@ -1,0 +1,70 @@
+{
+  "authority": {
+    "additional_training_or_retry": false,
+    "behavior_evaluation": false,
+    "gate5": false,
+    "one_corrected_hosted_continuation_after_package": true,
+    "rdkx5_or_robot": false
+  },
+  "checks": {
+    "both_postupdate_checkpoints_required": true,
+    "cpu_contract_green": true,
+    "no_training_retry_or_resume": true,
+    "only_driver_cwd_changed": true,
+    "pretraining_correction_green": true,
+    "prior_optimizer_steps_zero": true,
+    "prior_simulator_steps_zero": true,
+    "robot_surface_absent": true,
+    "single_continuation_only": true,
+    "training_command_and_objective_unchanged": true
+  },
+  "correction": {
+    "new": "subprocess.run(command, cwd=playground, ...)",
+    "old": "subprocess.run(command, cwd=bundle, ...)",
+    "package_assets_unchanged": true,
+    "training_command_unchanged": true,
+    "training_objective_unchanged": true,
+    "training_source_unchanged": true
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "composed_manifest": "3514416307e1f12e72feb4228f50a42ae02ca91b86d9dbc339448cf1b2ac6564",
+    "cpu_preregistration": "a77c677816714a0517c70f84c56d8c6a2b731ae135696c11b15ff51caf24bc34",
+    "cpu_result": "cd728eb3cf2900f038c4134e3f603106238e960046b3482d4cd2b695b5a76ed4",
+    "driver": "c12799e46b6f44382d4c9f1e3cd681452bf134a5bb691426b0bfb73973fdabc2",
+    "pretraining_launch_correction": "3ed76e4cda5bbfb45a2ac9d3696ca0b0f43b6a69782614f1af7be544f9aab497",
+    "reference_features": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212",
+    "source_checkpoint": "29b6d1d707784cc49050ab4b5513c06b020ebf7cf02dba3bee304a74477348f8"
+  },
+  "schema_version": "winner_v127c.hosted_preregistration.v1",
+  "status": "PREREGISTERED_WINNER_V127C_HOSTED_CONTINUATION",
+  "stop_rule": "either post-update checkpoint failing any nominal cell closes V127; no eta changes or additional continuation",
+  "training": {
+    "batch_size": 256,
+    "cost_discount": 1.0,
+    "dense_cost": "sum_j max(abs(actuator_force_nm[j])-1.91229675,0)",
+    "discounting": 0.97,
+    "dual_eta": "1/(ceil(K/4)*first_positive_batch_cost)",
+    "entropy_cost": 0.005,
+    "episode_length": 600,
+    "exports": [
+      0,
+      1003520,
+      2007040
+    ],
+    "learning_rate": 0.0003,
+    "num_envs": 256,
+    "num_minibatches": 4,
+    "num_updates_per_batch": 4,
+    "old_linear_torque_scale": 0.0,
+    "old_squared_torque_scale": 0.0,
+    "resume": false,
+    "retry": false,
+    "seed": 100,
+    "source": "exact_v121_half_raw_checkpoint",
+    "source_step": 1003520,
+    "timesteps": 2007040,
+    "tracking_tail_scale": -6572.254964031055,
+    "unroll_length": 20
+  }
+}

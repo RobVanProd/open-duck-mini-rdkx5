@@ -1,0 +1,58 @@
+{
+  "attribution": {
+    "cause": "The physical target begins at external action zero, but the source-coordinate target was initialized at source action zero. Under the support homeomorphism those are different points: external zero maps to inverse_action(0).",
+    "coherent_initial_source_action": [
+      0.0,
+      0.0,
+      0.3333333432674408,
+      -0.20000000298023224,
+      -0.20000000298023224,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      -0.3333333432674408,
+      -0.20000000298023224,
+      -0.20000000298023224
+    ],
+    "correction": "Initialize only the unscored prefix's internal source-target state to home + inverse_action(external_zero)*0.25. Keep the physical target at home and retain both frozen rate vectors.",
+    "hosted_compute_units": 0,
+    "maximum_coherent_initial_excess_normalized": 0.0,
+    "maximum_zero_initial_excess_joint": 11,
+    "maximum_zero_initial_excess_normalized": 0.16666701436042786,
+    "maximum_zero_initial_excess_rad": 0.041666753590106964,
+    "maximum_zero_initial_excess_tick": 0,
+    "measured_maximum_excess_rad": 0.0416666641831398,
+    "new_optimizer_steps_authorized": 0,
+    "robot_or_rdk_access": 0,
+    "t21_partial_or_policy_selection_weight": 0
+  },
+  "attribution_sha256": "43275fead7e3554e71fcbd71d9f7e3a374f501eec7352538476637104c57d142",
+  "checks": {
+    "all_external_and_reset_contracts_green": true,
+    "coherent_initial_is_inverse_of_external_home": true,
+    "coherent_source_initialization_removes_algebraic_excess": true,
+    "formal_hold_is_only_prefix_diagnostic": true,
+    "no_optimizer_hosted_or_robot_execution": true,
+    "sole_prefix_failure_is_source_rate": true,
+    "zero_source_initialization_predicts_measured_excess": true
+  },
+  "decision": "PREREGISTER_T21B_SOURCE_COORDINATE_INITIALIZATION",
+  "failed_checks": [],
+  "inputs": {
+    "t21_module": {
+      "bytes": 13453,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\patches\\t19_support_trainthrough.py",
+      "sha256": "177a1136935a7bc3d273885cdde4d38e21d97f073d78a1f9141f48845ee38f6e"
+    },
+    "t21_result": {
+      "bytes": 5518,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t21_two_rate_separation_cpu_result.json",
+      "sha256": "e6fa62c9a7beec147c489afc4065a266b963a4b184f629106a7c432c6516825f"
+    }
+  },
+  "schema_version": "open_duck.t21_source_initialization_audit.v1",
+  "status": "PASS_T21_SOURCE_INITIALIZATION_ATTRIBUTION"
+}

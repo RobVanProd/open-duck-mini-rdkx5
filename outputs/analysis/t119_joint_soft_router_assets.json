@@ -1,0 +1,103 @@
+{
+  "assets": {
+    "composed_manifest": {
+      "bytes": 5922,
+      "path": "D:\\CodexProjects\\Open_Duck_Playground-t119-joint-soft-router-v1\\T119_COMPOSED_SOURCE_MANIFEST.json",
+      "sha256": "cb25b4e1973b4521c279958cb70c9280c2b773d191db0d5426ba56c7accda95a"
+    },
+    "expanded_checkpoint": {
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t119_joint_soft_router_assets_v2\\expanded_checkpoint",
+      "sha256": "d4a2a3681bc574ae6bfa4e193bab272fc9ce0bb874080dea5f6b35c2403ee770"
+    },
+    "expected_soft_graph": {
+      "bytes": 960260,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t119_joint_soft_router_assets_v2\\t100c_half_expected_soft.onnx",
+      "sha256": "1a2443367996b13fdc72c39430f92b42b3df08db96df76dce0bb18e16bb65c62"
+    },
+    "step_zero_graph": {
+      "bytes": 960260,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t119_joint_soft_router_assets_v2\\t119_step_zero.onnx",
+      "sha256": "1a2443367996b13fdc72c39430f92b42b3df08db96df76dce0bb18e16bb65c62"
+    }
+  },
+  "checks": {
+    "cpu_only": true,
+    "exact_two_router_parameter_families_added": true,
+    "expanded_checkpoint_roundtrip_exact": true,
+    "formal_behavior_cells_zero": true,
+    "hosted_compute_zero": true,
+    "optimizer_steps_zero": true,
+    "robot_or_rdk_access_zero": true,
+    "router_deltas_exact_zero": true,
+    "source_actor_keys_preserved": true,
+    "source_checkpoint_restored": true,
+    "step_zero_export_stateful": true,
+    "step_zero_soft_formula_exact": true
+  },
+  "execution": {
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "expansion": {
+    "added_actor_parameter_families": [
+      "soft_router_coefficient_delta",
+      "soft_router_intercept_delta"
+    ],
+    "router_deltas_exact_zero": true,
+    "source_actor_keys_preserved": [
+      "adapter_hidden_bias",
+      "adapter_hidden_projection",
+      "adapter_location",
+      "adapter_obs_projection",
+      "negative_adapter_location",
+      "residual_location",
+      "residual_trunk",
+      "scale_logits"
+    ]
+  },
+  "failed_checks": [],
+  "parity": {
+    "chain_maximum_abs_errors": {
+      "continuous_actions": 0.0,
+      "h_out": 0.0,
+      "previous_action_out": 0.0
+    },
+    "chain_ticks": 256,
+    "maximum_abs_error": 0.0,
+    "trace_maximum_abs_errors": {
+      "continuous_actions": 0.0,
+      "h_out": 0.0,
+      "previous_action_out": 0.0
+    },
+    "trace_rows": 72
+  },
+  "result_sha256": "2ae7b2ed47c3a461d036a6cdee3c54e124f2d552c9e24f9070d242a4fcf9bb12",
+  "roundtrip": {
+    "maximum_abs_error": 0.0,
+    "structure_exact": true
+  },
+  "schema_version": "open_duck.t119_joint_soft_router_assets.v1",
+  "source": {
+    "checkpoint": {
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t100c_colab_extracted_20260728\\t78_endpoint_joint_adapter_continuation\\training\\2026_07_29_023820_1003520",
+      "sha256": "182ab64f15e02eb5103b38e75100045c4274a192331d3fc3df08d890f2b0e458"
+    },
+    "gate": {
+      "bytes": 8085,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t98_hidden_gate_asset.json",
+      "sha256": "11381bb2208d1eb40f826b069c68983fdab348277e46c63ffc1ddd46b579b6e3"
+    },
+    "raw_graph": {
+      "bytes": 960296,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t100c_colab_extracted_20260728\\t78_endpoint_joint_adapter_continuation\\training\\2026_07_29_023820_1003520.onnx",
+      "sha256": "fc4d0722b1d7a55eaf02badd9246438f38f08284ac0eb0a7196e63c1c8085e37"
+    },
+    "topology": {
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t98_hidden_expert_cpu_v1\\smoke\\2026_07_28_214028_1024",
+      "sha256": "1e45639bace9ff4f6a61f3e35396b9f20a51866098334bf2ba18e60ee5e97438"
+    }
+  },
+  "status": "PASS_T119_JOINT_SOFT_ROUTER_ASSETS"
+}

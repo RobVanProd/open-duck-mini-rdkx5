@@ -1,0 +1,175 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "gate5": false,
+    "one_cpu_graph_transform": true,
+    "positive_endpoint_preregistration": false,
+    "rdkx5_or_robot": false,
+    "training": false,
+    "two_calibration_only_prefixes": true
+  },
+  "calibration": {
+    "command_x_m_s": 0.074,
+    "diagnostic_behavior_ticks_per_fit": 1,
+    "override": {
+      "torso_com_offset_m": [
+        0.05,
+        0.0,
+        0.0
+      ]
+    },
+    "seed": 167931544,
+    "ticks_per_fit": 250
+  },
+  "calibrator": {
+    "bytes": 55573,
+    "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v96-response-conditioned-mechanics\\winner_v96_universal_calibrator.onnx",
+    "sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576"
+  },
+  "checks": {
+    "frozen_inputs_present": true,
+    "no_behavior_training_colab_or_robot": true,
+    "source_and_positive_graphs_present": true,
+    "t135b_context_basis_green": true,
+    "t143c_source_green": true,
+    "t151_first_failure_positive_com": true,
+    "t155_positive_training_green": true,
+    "two_expected_positive_context_hashes": true
+  },
+  "classifier": {
+    "minimum_margin": "strictly greater than zero",
+    "nonpositive_population": "four frozen T135B nominal/negative contexts",
+    "positive_population": "two +0.05m COM contexts",
+    "required_full_labels": "all six exact",
+    "required_leave_one_fit_out_labels": "all six exact",
+    "rule": "unit centroid direction with midpoint threshold",
+    "scalar_search": false
+  },
+  "decision_rule": {
+    "fail_decision": "CLOSE_POSITIVE_EXPERT_ROUTER",
+    "pass_decision": "EARN_T157_POSITIVE_COM_ENDPOINT_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "calibration_prefixes": 0,
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "expected_positive_context_hashes": {
+    "p30": "f909238864e73751895bb41f23aeab78aeba8a36465c249467671bfbf53de408",
+    "p31_34": "91cf671a23a3bffb006c30aadd5bf600acc559e60b2029aac23a3be4938e207a"
+  },
+  "failed_checks": [],
+  "fits": [
+    {
+      "bytes": 18664,
+      "fit_id": "p30",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "a58db8ffc505d2bb64cba7f5618d0e2c65904fc9f9ac37b560a1231e090f5f4f"
+    },
+    {
+      "bytes": 18788,
+      "fit_id": "p31_34",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p31_34_actuator_fit_20260712.json",
+      "sha256": "2740513f6bdeb4ad3cc5dd6dc1709319389a593fd153c1ce5abae03b66131a57"
+    }
+  ],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 8783,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t156_three_way_positive_router_preregistration.py",
+      "sha256": "9cee957ea3d8ae6d338dd0f2b052d3fbd7820482ce99facf639271d3564eb865"
+    },
+    "evaluator": {
+      "bytes": 7932,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\evaluate_t27_t23_robustness_condition.py",
+      "sha256": "93ff8c405d6bf1923cd8bea69ce5efde4cd97388f6b71a1d0f9ba5aa599b096c"
+    },
+    "runner": {
+      "bytes": 26177,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t156_three_way_positive_router_transform.py",
+      "sha256": "6e5e623269aa997a1f2cde40df8f49518273925f6bc91cb59b24b669345c243f"
+    },
+    "t135_preregistration": {
+      "bytes": 5644,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t135_calibration_context_router_preregistration.json",
+      "sha256": "d20e6695a340f61e2d744a4c8c840b2e216cc493d20fe62d661df1904f0b17d7"
+    },
+    "t135b_result": {
+      "bytes": 14765,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t135b_interrupted_calibration_context_router_recovery_result.json",
+      "sha256": "b01f711e751490fab17d327eebf770473636285dfbc97102478dc5328dfcd540"
+    },
+    "t143c_result": {
+      "bytes": 8412,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t143c_runner_receipt_recovery_result.json",
+      "sha256": "7a40d747ae4b700b21eb2545bc9f9992a7967539afc7b4fd83b8f45efb8b3504"
+    },
+    "t151_result": {
+      "bytes": 960097,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t151_command_plateau_full_r2_result.json",
+      "sha256": "a6ce9ab4ff0d366fde794dba306371ea2c13bc96c4ad66ef1246f0d3a5cd2496"
+    },
+    "t155_validation": {
+      "bytes": 9240,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t155_t154_recovered_training_validation.json",
+      "sha256": "6697af597ceeb8f8783b4f5f045f1e99e4eb71594dabbc03c13a938fb451c15c"
+    },
+    "test": {
+      "bytes": 1622,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t156_three_way_positive_router.py",
+      "sha256": "ef1c7b6c5014f6f4e77fd97d30e3eca1ebd3b74060ab92a47add9a0f0f058e98"
+    }
+  },
+  "playground": {
+    "manifest": {
+      "bytes": 5190,
+      "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v6\\T19_COMPOSED_SOURCE_MANIFEST.json",
+      "sha256": "d7c9b615c32f0e2c8434e958a900cc38485c0db6fea107b6115a69bbd2122a77"
+    },
+    "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v6"
+  },
+  "positive_graphs": {
+    "1003520": {
+      "bytes": 960257,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t154_colab_extracted_20260729\\t154_positive_only_expert_continuation\\training\\2026_07_29_183922_1003520.onnx",
+      "sha256": "60c5bfcb3e8afc7277c2181e85e657b086bfbccc4dc8d3a9793a26593a58b19f"
+    },
+    "2007040": {
+      "bytes": 960257,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t154_colab_extracted_20260729\\t154_positive_only_expert_continuation\\training\\2026_07_29_184434_2007040.onnx",
+      "sha256": "b8cb5e1c06e5c3396c7da8a769a14c9f42a00fae4f3ed877e7734caa22840878"
+    }
+  },
+  "preregistered_contract_sha256": "69f0f86f2ed1214bc334e3b7f6a931d9b8bf88e77760cd03adb0a2b58b26c4ab",
+  "question": "Can the learned positive-COM expert be selected only by the existing automatic calibration context while preserving T143C nominal/negative outputs exactly?",
+  "reference_feature_table": {
+    "bytes": 259604,
+    "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+    "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+  },
+  "schema_version": "open_duck.t156_three_way_positive_router_preregistration.v1",
+  "source_graphs": {
+    "1003520": {
+      "bytes": 975291,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t143c_conditional_forward_path_v1\\1003520\\conditional_forward_path.onnx",
+      "sha256": "82ab93eb97db602561b3525bb3551f4e94b87808320b8c944f6e0a9c8a4b6869"
+    },
+    "2007040": {
+      "bytes": 975291,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t143c_conditional_forward_path_v1\\2007040\\conditional_forward_path.onnx",
+      "sha256": "a43dbac7b4995a71f53cc3ee0145ad6e2698f624c4c02749c664a7a09c2be528"
+    }
+  },
+  "status": "PREREGISTERED_T156_THREE_WAY_POSITIVE_ROUTER_TRANSFORM",
+  "transform": {
+    "abi": "unchanged 115+14+64+64 to 14+14+64",
+    "checkpoints": [
+      1003520,
+      2007040
+    ],
+    "nominal_and_negative": "byte-exact T143C selected source outputs",
+    "positive": "T154 positive expert tensors through the unchanged T143C deployment chain"
+  }
+}

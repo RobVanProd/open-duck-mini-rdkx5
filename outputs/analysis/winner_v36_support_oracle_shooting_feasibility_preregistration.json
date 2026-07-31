@@ -1,0 +1,167 @@
+{
+  "authority": {
+    "pass_authorizes_only": "one separately frozen full-configuration CPU oracle feasibility screen",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "runtime_oracle_or_action_wrapper_authorized": false,
+    "training_authorized": false
+  },
+  "decision": "AUTHORIZE_ONE_CPU_ONLY_COM_X_NEG_SHOOTING_SCREEN",
+  "execution_now": {
+    "locomotion_training_steps": 0,
+    "optimizer_updates": 0,
+    "oracle_support_cells": 0,
+    "robot_or_rdk_access": 0
+  },
+  "interpretation": {
+    "hold": "This exact shooting controller is not a teacher. A hold does not prove the physical system uncontrollable and does not authorize parameter tuning.",
+    "pass": "The anchor is controllable by this bounded oracle; authorize only a separate 30-cell full-configuration feasibility preregistration."
+  },
+  "pass_rule": {
+    "all_cells_use_nonzero_control": true,
+    "all_selected_actions_graph_bounded": true,
+    "both_plants_pass_full_250_tick_support_gate": true,
+    "closest_result_selection": false
+  },
+  "question": "Can a deterministic receding-horizon oracle keep the canonical -0.05 m torso-X anchor support-valid for all 250 ticks under the exact graph action bounds and both measured actuator plants?",
+  "schema_version": "winner_v36.support_oracle_shooting_feasibility_preregistration.v1",
+  "screen": {
+    "action_block_ticks": 2,
+    "actuator_plants": [
+      "P30_ALL_JOINT",
+      "P31_34_PITCH_WITH_P30_NONPITCH"
+    ],
+    "configuration_ids": [
+      "COM_X_NEG"
+    ],
+    "constraints": "Every candidate and selected action passes through the exact stateful graph absolute/rate boundary and the unchanged P30 or P31/34 actuator bridge.",
+    "controlled_action_indices": [
+      2,
+      3,
+      4,
+      11,
+      12,
+      13
+    ],
+    "duration_ticks": 250,
+    "elites": 8,
+    "expected_cells": 2,
+    "horizon_ticks": 8,
+    "initial_std": 0.2,
+    "iterations": 4,
+    "minimum_std": 0.03,
+    "objective": "lexicographic(survival_ticks,-maximum_abs_tilt,+minimum_base_z,-final_abs_tilt,-final_gyro,-action_delta_energy,-action_energy)",
+    "parameter_provenance": "Reuse the prior reviewed oracle-shooting population/elites/iterations/horizon/block/std values without a search. Restrict control to the six pitch-chain indices selected by prior causal evidence.",
+    "population": 64,
+    "root_seed": 120120
+  },
+  "source_manifest_sha256": "069d78d7c0ef1c6f1e76b0dacb97b5b72901dab9c54221bd879cfd2c94681e84",
+  "source_result": {
+    "repository_attribution": {
+      "artifact_zip_bytes": 27001,
+      "artifact_zip_sha256": "ee461896246aebb90c3e8d19c0544e9e471d01296cdc90151ffc13ec9b0dc9fe",
+      "github_artifact_digest": "sha256:ee461896246aebb90c3e8d19c0544e9e471d01296cdc90151ffc13ec9b0dc9fe",
+      "github_artifact_id": 8520161927,
+      "github_artifact_name": "winner-v35-full-horizon-source-continuation-29896417197",
+      "github_run_attempt": 1,
+      "github_run_head_sha": "38063e251ac2756475409fa9411c1ee925c8ccd2",
+      "github_run_id": 29896417197,
+      "importer_lf_sha256": "bd5e6968a09eec62ceb2ffa9391c673d31737b1048bb54e265218e571433b622",
+      "preregistration_lf_sha256": "896ad99e46a5227927eb51608523643155b5abe0efc0a2a02f2cfc10cc27c21a",
+      "raw_result_receipt_sha256": "9c002e803964465925121e8c11b1b360076f94467ca597e56f407ec2278418f3",
+      "raw_result_sha256": "8e15dbe70b46c78fd472646fba1c30d1100367f8df937cdd1da04700032210fe",
+      "repository": "RobVanProd/open-duck-mini-rdkx5",
+      "runner_lf_sha256": "e420496c1527d58ca6723440a0f749726c23b89099bf4fd5e7a43b086d55de5d",
+      "workflow_lf_sha256": "18587f265bbe9fea1865b07812357aef951169a3439ff2e5760a716d722d8091"
+    },
+    "winner_v35_result_lf_sha256": "cda6e372d183c3fc89b2e71ff2cd9d107cdd0ea3d342e57cd9e4ecb85333db7d"
+  },
+  "sources": {
+    "base_gate_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_support_gate.py",
+      "sha256": "18873eee55c77a278fc065de64c0b912803bf29b4440cde7f3adaabe1297baca"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v36_support_oracle_shooting_feasibility_preregistration.py",
+      "sha256": "0dd9b3bc20209ff3f1f38d94aa1eb8d59be23a1f9bd8116c57505b53114b482f"
+    },
+    "calibrator_design": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_training_preregistration.json",
+      "sha256": "1ec76a587c6fa50b92866c1632a7046ae0c6687ed17b1636b664bf45c2e8ba34"
+    },
+    "canonical_p30_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "cpu_smoke": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "environment_preparation": {
+      "hash_mode": "lf",
+      "path": "tools/prepare_winner_v15_cpu_environment.py",
+      "sha256": "33e54c3a16d5684e2d2520270acf25a28df42dc89e9f302c1ef3bd5f37d867c2"
+    },
+    "preregistration_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v36_support_oracle_shooting_feasibility_preregistration.py",
+      "sha256": "0671a88db796f67d6a62814f0c59ce7dd7ab18f67fbe79f54c0bb7e587bf5c38"
+    },
+    "prior_oracle_shooting_probe": {
+      "hash_mode": "lf",
+      "path": "tools/probe_ground_up_oracle_shooting_mpc.py",
+      "sha256": "aa91db98bdb2cbf6f84ce92e84068a9fd8bbee7f6f5e9c0acad366302eeebcbe"
+    },
+    "result_importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v36_support_oracle_shooting_feasibility.py",
+      "sha256": "15ecf79a9f84cc59f945b447366261cc993636ca530d08c5cc59083a2594a892"
+    },
+    "result_importer_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v36_support_oracle_shooting_feasibility_import.py",
+      "sha256": "f76c774bacc32999ee8c0de96a99cb40e2fa8cffbd8943a372b9174df68a5806"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v36_support_oracle_shooting_feasibility.py",
+      "sha256": "cbf5ac6b8cb863d581ff699e2acbdb97615e99936ae5a7a0e553ef4caa522580"
+    },
+    "runner_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v36_support_oracle_shooting_feasibility.py",
+      "sha256": "f4eb39a6ae0f77c3c9b20100eff906ff0ccfe57123e9959ab04370a97b43dddf"
+    },
+    "runtime_observer": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py",
+      "sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889"
+    },
+    "winner_v35_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v35_full_horizon_source_continuation_result.json",
+      "sha256": "cda6e372d183c3fc89b2e71ff2cd9d107cdd0ea3d342e57cd9e4ecb85333db7d"
+    },
+    "winner_v35_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v35_full_horizon_source_continuation.py",
+      "sha256": "e420496c1527d58ca6723440a0f749726c23b89099bf4fd5e7a43b086d55de5d"
+    },
+    "workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v36-support-oracle-shooting-feasibility.yml",
+      "sha256": "943ad61f9517d375e7a64371c28d93034ce2cdbf93f0824a76c1ba32a7efe1fb"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V36_SUPPORT_ORACLE_SHOOTING_FEASIBILITY"
+}

@@ -1,0 +1,62 @@
+{
+  "authority": {
+    "behavior_beyond_one_shadow_cell": false,
+    "dagger_cpu_preregistration": false,
+    "gate5": false,
+    "hosted_training": false,
+    "one_cpu_shadow_cell": true,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "checks": {
+    "all_input_hashes_exact": true,
+    "composed_evaluator_green": true,
+    "one_frozen_cell_only": true,
+    "robot_surface_absent": true,
+    "shadow_oracle_does_not_apply_actions": true,
+    "training_not_authorized": true,
+    "v140_cpu_contract_green": true,
+    "v141_single_moving_miss_is_torque_only": true,
+    "v142_selects_torque_only_followup": true
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "base_preregistration": "c8f986ceb24863f33c1fc99170548d2e255cb6a26737d3f74762f8dcd4485a24",
+    "composed_evaluator": "43bf3373085ccddd6d56a0bc245e033dca67b15599baef6babc8abe24e118de1",
+    "composer": "0218f1104c4f62e7e54bf68938276a831015dffad5b47a734d019a8d65e3ae28",
+    "composition_manifest": "f07967333233c179145fc1b3232ca1d076bd55bbdeb1b0397381ed344298b05f",
+    "runner": "258873b83083503051307fe7a9da69da403490634b0dea6803f461f1fe528915",
+    "selected_policy": "ae87508d7bd25c7821cb167d7a61d8eeaa28d7d153be72dd9d537236ae5e92f6",
+    "source_trace": "10471d5a15ccf4f55d188778f9226e94f5c5a050061fcb703a7e2e22a0c7a532",
+    "two_fit_projector": "c9894fa982d0837fbd6281dc778248365c9079e60680c928fd34a50c2e55eb27",
+    "v126_preregistration": "eb40f17d9c08b8362f068567e1620bdafef21ad9123a633c9536f3637a31c899",
+    "v140_result": "44921665d80235246737b333a5149ceacb702d477dcc2c7496395bf0c42ba637",
+    "v141_preregistration": "40ac2e58d9a8058697e81011f66051840bcc3f81fe278f44e0356e2f532709a0",
+    "v141_result": "08ecfbeb87a09781228d0657e795e106a1f4fae0e60b844f7055dacead21929b",
+    "v142_attribution": "38049a224d0d6190b6415a5691ecbabd9e5915ac8a6b788245abdc08b2234181"
+  },
+  "matrix": {
+    "cells": 1,
+    "checkpoint": "V140 projected final",
+    "command_x_m_s": 0.074,
+    "plant": "P30_ALL_JOINT",
+    "seed": 167931544,
+    "ticks": 600
+  },
+  "method": {
+    "event_label": "each actual torque violation must have a non-empty, nonzero, safe oracle correction at its delay-aligned source tick",
+    "policy_action_committed": "unmodified V140 action",
+    "teacher_action": "two-fit exact torque projection computed and logged only",
+    "trajectory_identity": "action, force, qpos, qvel, and obs must reproduce the frozen V141 trace exactly"
+  },
+  "pass_rule": {
+    "failure": "same right-ankle peak at tick 397; torque only",
+    "oracle": "zero empty intersections and every actual violation has a safe nonzero delay-aligned precursor label",
+    "trace": "exact 600-tick source-trajectory reproduction"
+  },
+  "question": "Does the exact two-fit oracle directly label the controllable precursor of every torque event on the unmodified V140 closed-loop trajectory?",
+  "schema_version": "winner_v144.shadow_oracle_preregistration.v1",
+  "status": "PREREGISTERED_WINNER_V144_SHADOW_ORACLE_CAUSAL_SCREEN",
+  "stop_rule": "if the shadow computation changes the trajectory, misses the right-ankle precursor, or finds any unlabeled/empty event, close DAgger from V140; do not train"
+}

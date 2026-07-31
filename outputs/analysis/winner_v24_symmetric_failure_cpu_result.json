@@ -1,0 +1,229 @@
+{
+  "authority": {
+    "manual_mass_com_inertia_measurements_required": false,
+    "pass_authorizes_only": "a separate one-update symmetric-failure CPU-proof preregistration",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "training_authorized": false
+  },
+  "batch_evidence": {
+    "action_boundary": {
+      "attempted_samples": 17447,
+      "jax_expected_sha256": "3ef01b1110f282033825b7d39bc9cf35122ebd0fb8e680e5d0f038c5918b449a",
+      "maximum_numpy_jax_error": 0.0,
+      "maximum_realized_numpy_error": 0.0,
+      "numpy_equals_jax_bit_exact": true,
+      "numpy_expected_sha256": "3ef01b1110f282033825b7d39bc9cf35122ebd0fb8e680e5d0f038c5918b449a",
+      "previous_action_sha256": "f03644465bf5f88a7784cd9659cde5ee0d5cbb83f1306cc14ae25b96eb9b8d1b",
+      "raw_sha256": "dba2c38cc7305743dbb058061843b4dce4ae9c2746a824383b49477f4d54ee35",
+      "realized_action_sha256": "3ef01b1110f282033825b7d39bc9cf35122ebd0fb8e680e5d0f038c5918b449a",
+      "realized_equals_numpy_bit_exact": true
+    },
+    "all_other_rewards_bit_exact": true,
+    "baseline_advantage_replay_max_abs_error": 9.5367431640625e-07,
+    "baseline_advantages_sha256": "9ed13006e9f17bec8d69d998e8b269a7be728dfc55b3128a38a7be3ed9f3c0d0",
+    "baseline_return_replay_max_abs_error": 1.52587890625e-05,
+    "baseline_returns_sha256": "0e04cb77446acdc2b4e58fb850de70d2b110bd79795c1d56ddf116015424cd00",
+    "baseline_reward": {
+      "all_penalties_in_unit_interval": true,
+      "all_rewards_nonnegative": true,
+      "nonzero_penalty_count": 10645,
+      "only_zero_or_settled_bonus": true,
+      "penalty_formula_bit_exact": true,
+      "penalty_max": 0.9903455376625061,
+      "penalty_min": 0.0,
+      "reward_formula_bit_exact": true,
+      "reward_max_without_terminal_bonus": 1.0,
+      "reward_min": 0.009654462337493896,
+      "settled_bonus_count": 22,
+      "valid_transition_count": 17435
+    },
+    "baseline_rewards_sha256": "b1b049aedbc08c5da9b426d020556b02b67507376c236bf44176949195f3c2c6",
+    "changed_keys": [
+      "advantages",
+      "returns",
+      "rewards"
+    ],
+    "default_off_batch_bit_exact": true,
+    "disabled": {
+      "enabled": false,
+      "modified_batch_keys": [],
+      "penalty": -250.0,
+      "roll_pitch_failure_count": 12,
+      "roll_pitch_failure_mask_sha256": "418eb2e94416ea63155a78b37e6eeb950966745b75edfee63b7f5734a5069d6c"
+    },
+    "enabled": {
+      "enabled": true,
+      "modified_batch_keys": [
+        "advantages",
+        "returns",
+        "rewards"
+      ],
+      "penalty": -250.0,
+      "roll_pitch_failure_count": 12,
+      "roll_pitch_failure_mask_sha256": "418eb2e94416ea63155a78b37e6eeb950966745b75edfee63b7f5734a5069d6c"
+    },
+    "parameters_unchanged": true,
+    "symmetric_advantages_sha256": "5a9a541aa5c2438c273bf7269b531499fcb38b760e660e5f0997a9284c6470a2",
+    "symmetric_returns_sha256": "0994434d70a4b458bffc8218d1dfe83d88e8fa69035d3caaba26082aacc79531",
+    "symmetric_rewards_sha256": "5a89621725380576571c45f35f7e173a014c422170a442becf07075674ee6cfb",
+    "terminal_failure_penalty_exact": true
+  },
+  "checks": {
+    "action_boundary_exact": true,
+    "all_losses_metrics_and_gradients_finite": true,
+    "all_other_rewards_bit_exact": true,
+    "baseline_gae_replay_at_most_1e_6": false,
+    "baseline_pitch_margin_reward_exact": true,
+    "combined_delta_matches_ppo_delta_at_most_2e_6": true,
+    "default_off_batch_bit_exact": true,
+    "enabled_changes_only_rewards_returns_advantages": true,
+    "episode_receipts_exact": true,
+    "exact_80_episode_population": true,
+    "formal_support_cells_zero": true,
+    "locomotion_steps_zero": true,
+    "optimizer_updates_zero": true,
+    "parameters_unchanged_no_optimizer_step": true,
+    "ppo_action_head_gradient_changes": true,
+    "ppo_recurrent_gradient_changes": true,
+    "predictor_loss_and_gradients_bit_exact": true,
+    "robot_or_rdk_access_zero": true,
+    "roll_pitch_failures_and_settled_successes_both_present": true,
+    "source_final_snapshot_exact": true,
+    "terminal_failure_penalty_exact": true
+  },
+  "decision": "DO_NOT_RUN_WINNER_V24_OPTIMIZER_UPDATE",
+  "environment": {
+    "jax_backend": "cpu",
+    "jax_devices": [
+      "TFRT_CPU_0"
+    ]
+  },
+  "execution": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0,
+    "rollout_episode_slots": 80
+  },
+  "failed_checks": [
+    "baseline_gae_replay_at_most_1e_6"
+  ],
+  "gradient_evidence": {
+    "baseline_normalized_predictor_loss": 0.11871901154518127,
+    "baseline_ppo_gradient_max_abs": {
+      "action_bias": 0.91501384973526,
+      "action_weight": 0.808462381362915,
+      "auxiliary_action_weight": 0.0,
+      "auxiliary_bias": 0.0,
+      "auxiliary_hidden_weight": 0.0,
+      "hidden_bias": 0.2169848084449768,
+      "hidden_weight": 0.19156454503536224,
+      "obs_weight": 2.138888120651245,
+      "previous_action_weight": 0.022135864943265915,
+      "training_only_log_std": 0.018009521067142487,
+      "training_only_value_bias": 12.201784133911133,
+      "training_only_value_weight": 10.80290699005127
+    },
+    "baseline_ppo_loss": 319.54302978515625,
+    "combined_delta_minus_ppo_delta_max_abs_error": 3.8743019104003906e-07,
+    "combined_gradient_delta_max_abs": {
+      "action_bias": 0.9429214596748352,
+      "action_weight": 0.8374429047107697,
+      "auxiliary_action_weight": 0.0,
+      "auxiliary_bias": 0.0,
+      "auxiliary_hidden_weight": 0.0,
+      "hidden_bias": 0.03185024857521057,
+      "hidden_weight": 0.027979031205177307,
+      "obs_weight": 0.3080477714538574,
+      "previous_action_weight": 0.003277834504842758,
+      "training_only_log_std": 0.013955087400972843,
+      "training_only_value_bias": 1.4201908111572266,
+      "training_only_value_weight": 1.2559728622436523
+    },
+    "ppo_gradient_delta_max_abs": {
+      "action_bias": 0.9429214596748352,
+      "action_weight": 0.8374429047107697,
+      "auxiliary_action_weight": 0.0,
+      "auxiliary_bias": 0.0,
+      "auxiliary_hidden_weight": 0.0,
+      "hidden_bias": 0.03185024857521057,
+      "hidden_weight": 0.027979031205177307,
+      "obs_weight": 0.3080477714538574,
+      "previous_action_weight": 0.003277834504842758,
+      "training_only_log_std": 0.013955087400972843,
+      "training_only_value_bias": 1.4201908111572266,
+      "training_only_value_weight": 1.2559728622436523
+    },
+    "predictor_gradients_bit_exact": true,
+    "symmetric_normalized_predictor_loss": 0.11871901154518127,
+    "symmetric_ppo_gradient_max_abs": {
+      "action_bias": 0.9954631924629211,
+      "action_weight": 0.876737654209137,
+      "auxiliary_action_weight": 0.0,
+      "auxiliary_bias": 0.0,
+      "auxiliary_hidden_weight": 0.0,
+      "hidden_bias": 0.18513455986976624,
+      "hidden_weight": 0.16358551383018494,
+      "obs_weight": 1.8308403491973877,
+      "previous_action_weight": 0.018858030438423157,
+      "training_only_log_std": 0.022614942863583565,
+      "training_only_value_bias": 10.781593322753906,
+      "training_only_value_weight": 9.546934127807617
+    },
+    "symmetric_ppo_loss": 418.75701904296875
+  },
+  "objective": {
+    "changes_rollout_or_policy_action": false,
+    "combined_delta_tolerance": 2e-06,
+    "failure_selector": "terminal.checks.roll_pitch is false",
+    "modified_batch_keys": [
+      "advantages",
+      "returns",
+      "rewards"
+    ],
+    "reads_hidden_configuration": false,
+    "roll_pitch_failure_penalty": -250.0,
+    "settled_success_bonus": 250.0,
+    "source_rollout_update_index": 100
+  },
+  "population": {
+    "episode_receipts_sha256": "f6c63987647893b55ddf0e11650b92ffcb2a3a931daa7d4a7a0b310f30a44336",
+    "episode_slots": 80,
+    "roll_pitch_failure_count": 12,
+    "settled_success_count": 22
+  },
+  "repository_attribution": {
+    "artifact_zip_bytes": 3291,
+    "artifact_zip_sha256": "0fe26cbd69cb610ff322b04dc6d81d3a65f9f4ac8c25de10ab8f6de84bc64a9a",
+    "contract_lf_sha256": "d73649806384210951a1bf9c7bfdd25ee7fafb00ac1a7774347a714b49497b63",
+    "github_artifact_digest": "sha256:0fe26cbd69cb610ff322b04dc6d81d3a65f9f4ac8c25de10ab8f6de84bc64a9a",
+    "github_artifact_id": 8514244332,
+    "github_artifact_name": "winner-v24-symmetric-failure-cpu-contract-29879542867",
+    "github_run_attempt": 1,
+    "github_run_head_sha": "54bc93e9380500e7f72be36d20eac8c3722866fd",
+    "github_run_id": 29879542867,
+    "importer_lf_sha256": "75e047e1442bacee0b81a2768027be9017c31ca21a129370f99c9a4d2b314212",
+    "mechanics_lf_sha256": "98a149c6630a4a22837a98328989b572e9ace8a7fa889777b7b91d253abede9f",
+    "raw_result_receipt_sha256": "3287f3be4a74f100a3629d1ff1be00d0aa5547a6bf729f91598d64ab2d01c9b4",
+    "raw_result_sha256": "19f72587e5b946fca5784314ff1fcbf1707ba12bce2897d1e729c60fd8fd94ad",
+    "repository": "RobVanProd/open-duck-mini-rdkx5",
+    "runner_lf_sha256": "dfecb9453c49a472c03e5d2d9c0f94da85a80c5619af7f89b8ff005e329ca263",
+    "workflow_lf_sha256": "f1681eb107a996baa8b534fbd73b1f3aca57e87950a4b1e9c368a27841b6805e"
+  },
+  "schema_version": "winner_v24.symmetric_failure_cpu_result.v1",
+  "source_checkpoint": {
+    "bytes": 194808,
+    "completed_updates": 100,
+    "label": "final",
+    "sha256": "ddc8c4b905bb9acac2d7d48c3e9c1f0c0ca0173a1ba21f375740b051bc48c806"
+  },
+  "sources": {
+    "contract_lf_sha256": "d73649806384210951a1bf9c7bfdd25ee7fafb00ac1a7774347a714b49497b63",
+    "mechanics_lf_sha256": "98a149c6630a4a22837a98328989b572e9ace8a7fa889777b7b91d253abede9f",
+    "runner_lf_sha256": "dfecb9453c49a472c03e5d2d9c0f94da85a80c5619af7f89b8ff005e329ca263",
+    "v22_training_lf_sha256": "10bae5bb32f32cc90e222eb1d6644d97e2a0253baa6ad1a37fe06fde48cf11c1",
+    "v23_result_lf_sha256": "6d72fc306b3ea61e4ed9a1e2c6e7cb1f2bfc487d4140f649fced27f2a2149d95"
+  },
+  "status": "HOLD_WINNER_V24_SYMMETRIC_FAILURE_CPU_CONTRACT"
+}

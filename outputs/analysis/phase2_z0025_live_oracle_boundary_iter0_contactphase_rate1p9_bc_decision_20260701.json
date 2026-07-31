@@ -1,0 +1,117 @@
+{
+  "status": "PASS_RATE1P9_BOUNDARY_SUBSET",
+  "date": "2026-07-01",
+  "scope": "offline_supervised_bc_fit_and_cpu_sim_screen",
+  "no_robot": true,
+  "no_ssh": true,
+  "no_deploy": true,
+  "no_ppo_training": true,
+  "candidate": {
+    "manifest": "outputs/analysis/phase2_z0025_live_oracle_boundary_iter0/live_oracle_dagger_aggregate_manifest.json",
+    "manifest_dataset_id": "e1d14b2c3f81d443",
+    "manifest_samples": 10500,
+    "model": "contact_phase_modulated_feed_forward_bc",
+    "context_indices": [6, 97, 98, 99, 100],
+    "target_rate_scale": 1.5,
+    "target_rate_limit_rad_s": 1.9,
+    "onnx": "outputs/analysis/phase2_z0025_live_oracle_boundary_iter0_contactphase_rate1p9_bc_candidate/candidate.onnx",
+    "onnx_sha256": "f00ba8a89f4e24e7c393309acd434cbc95132473aa3df562dacf4fe527049822",
+    "npz": "outputs/analysis/phase2_z0025_live_oracle_boundary_iter0_contactphase_rate1p9_bc_candidate/candidate_mlp.npz",
+    "npz_sha256": "713c58e1600d6da4e7519c61e50ff0870166da88415b645cfd78c7436e188aeb"
+  },
+  "fit": {
+    "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+    "mae": 0.007882,
+    "p95_abs_error": 0.024644,
+    "max_abs_error": 0.527430,
+    "target_rate_p95_rad_s": 1.662375,
+    "target_rate_p99_rad_s": 1.874476,
+    "target_rate_max_rad_s": 2.037482,
+    "onnx_fidelity_p95_abs_error": 0.00000018,
+    "onnx_fidelity_max_abs_error": 0.00000048
+  },
+  "x008_boundary_screen": {
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0025,
+    "bridge_mode": "fitted",
+    "seeds": [0, 3, 4, 6],
+    "falls": 0,
+    "duration_complete": 4,
+    "passed": 4,
+    "track_ratio_mean": 0.3668,
+    "vx_mean_m_s": 0.0293,
+    "p95_velocity_excess_mean_rad_s": 0.0,
+    "max_instant_velocity_excess_mean_rad_s": 0.0,
+    "single_support_mean_pct": 21.5,
+    "double_support_mean_pct": 78.5,
+    "per_seed": [
+      {
+        "seed": 0,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "samples": 750,
+        "mean_local_vx_m_s": 0.0289,
+        "track_ratio": 0.3616,
+        "max_vel_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.1945
+      },
+      {
+        "seed": 3,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "samples": 750,
+        "mean_local_vx_m_s": 0.0255,
+        "track_ratio": 0.3184,
+        "max_vel_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.1945
+      },
+      {
+        "seed": 4,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "samples": 750,
+        "mean_local_vx_m_s": 0.0318,
+        "track_ratio": 0.3971,
+        "max_vel_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.1923
+      },
+      {
+        "seed": 6,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "samples": 750,
+        "mean_local_vx_m_s": 0.0312,
+        "track_ratio": 0.3903,
+        "max_vel_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.1917
+      }
+    ]
+  },
+  "x0_screen": {
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0025,
+    "bridge_mode": "fitted",
+    "seeds": [0, 1],
+    "falls": 0,
+    "duration_complete": 2,
+    "passed": 2,
+    "vx_mean_m_s": -0.0005,
+    "per_seed": [
+      {
+        "seed": 0,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "samples": 750,
+        "mean_local_vx_m_s": -0.0001,
+        "max_vel_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.0374
+      },
+      {
+        "seed": 1,
+        "status": "PASS_CANDIDATE_SIM_GATE",
+        "samples": 750,
+        "mean_local_vx_m_s": -0.0009,
+        "max_vel_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.0399
+      }
+    ]
+  },
+  "decision": "Clears the four z=0.0025 boundary seeds and preserves x=0.0, but requires full 8-seed gates before promotion.",
+  "recommended_next": "Run the full 8-seed x=0.08 gate and standard x=0.0 gate against the corrected bridge.",
+  "robot_validation": "blocked"
+}

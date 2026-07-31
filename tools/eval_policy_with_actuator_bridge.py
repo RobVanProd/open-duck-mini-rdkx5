@@ -41,9 +41,15 @@ from closed_loop_sim_eval import ClosedLoopConfig, run_closed_loop_sim
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_POLICY = ROOT / "policy" / "BEST_WALK_ONNX_2.onnx"
-DEFAULT_FIT_JSON = ROOT / "outputs" / "analysis" / "actuator_response_fit.json"
+DEFAULT_FIT_JSON = ROOT / "outputs" / "analysis" / "actuator_response_fit_corrected_knee.json"
 DEFAULT_OUTPUT_DIR = ROOT / "outputs" / "analysis"
 DEFAULT_PLAYGROUND_ROOT = ROOT.parent / "Open_Duck_Playground"
+
+
+def parse_name_list(text: str | None) -> tuple[str, ...]:
+    if text is None:
+        return ()
+    return tuple(part.strip() for part in text.split(",") if part.strip())
 
 
 def finite(value) -> bool:
@@ -82,6 +88,51 @@ def fmt(value, digits: int = 4) -> str:
     if value is None:
         return "NA"
     return f"{float(value):.{digits}f}"
+
+
+def load_reward_overrides(path: Path | None, phase_name: str | None) -> dict:
+    if path is None:
+        return {}
+    path = path.expanduser().resolve()
+    payload = json.loads(path.read_text())
+    selected = payload
+    if isinstance(payload, dict) and isinstance(payload.get("phases"), list):
+        phases = payload["phases"]
+        if phase_name:
+            matches = [phase for phase in phases if phase.get("name") == phase_name]
+            if not matches:
+                raise SystemExit(
+                    f"--reward-overrides-phase {phase_name!r} not found in {path}"
+                )
+            selected = matches[0]
+        elif phases:
+            selected = phases[0]
+    if isinstance(selected, dict) and isinstance(
+        selected.get("training_recipe_overrides"), dict
+    ):
+        selected = selected["training_recipe_overrides"]
+    if not isinstance(selected, dict):
+        raise SystemExit(f"reward override JSON did not contain an object: {path}")
+    return {
+        key: value
+        for key, value in selected.items()
+        if value is not None
+        and (
+            key.endswith("_scale")
+            or key.endswith("_huber_delta")
+            or key.startswith("command_progress_")
+            or key.startswith("forward_")
+            or key.startswith("reward_clip_")
+            or key
+            in {
+                "tracking_sigma",
+                "action_rate_huber_delta",
+                "action_magnitude_huber_delta",
+                "target_rate_huber_delta",
+                "actuator_tracking_huber_delta",
+            }
+        )
+    }
 
 
 def load_records(path: Path, startup_ticks: int) -> list[dict]:
@@ -302,6 +353,14 @@ def inspect_policy(
                 "output_name": outputs[0].name if outputs else None,
                 "output_shape": outputs[0].shape if outputs else None,
                 "output_type": outputs[0].type if outputs else None,
+                "inputs": [
+                    {"name": item.name, "shape": item.shape, "type": item.type}
+                    for item in inputs
+                ],
+                "outputs": [
+                    {"name": item.name, "shape": item.shape, "type": item.type}
+                    for item in outputs
+                ],
             }
         )
     except Exception as exc:  # pragma: no cover - environment-dependent
@@ -420,6 +479,34 @@ def run_telemetry_replay(args, fit: dict) -> dict:
     }
 
 
+def resolve_jax_platforms(jax_platform: str | None, jax_platforms: str | None) -> str | None:
+    if jax_platforms:
+        return str(jax_platforms)
+    if jax_platform == "cpu":
+        return "cpu"
+    return None
+
+
+def build_jax_env(jax_platform: str | None, jax_platforms: str | None) -> dict[str, str] | None:
+    resolved_platforms = resolve_jax_platforms(jax_platform, jax_platforms)
+    if not jax_platform and not resolved_platforms:
+        return None
+    env = os.environ.copy()
+    if jax_platform:
+        env["JAX_PLATFORM_NAME"] = str(jax_platform)
+    if resolved_platforms:
+        env["JAX_PLATFORMS"] = resolved_platforms
+    return env
+
+
+def apply_jax_platform_env(jax_platform: str | None, jax_platforms: str | None) -> None:
+    resolved_platforms = resolve_jax_platforms(jax_platform, jax_platforms)
+    if jax_platform:
+        os.environ["JAX_PLATFORM_NAME"] = str(jax_platform)
+    if resolved_platforms:
+        os.environ["JAX_PLATFORMS"] = resolved_platforms
+
+
 def run_closed_loop_worker(args) -> dict:
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -431,8 +518,11 @@ def run_closed_loop_worker(args) -> dict:
         delete=False,
     ) as tmp:
         worker_json = Path(tmp.name)
+    # Preserve virtualenv launcher/symlink semantics. Resolving this path can
+    # bypass the environment's site-packages and launch the bare base Python.
+    worker_python = Path(args.env_python).expanduser().absolute()
     cmd = [
-        sys.executable,
+        str(worker_python),
         str(Path(__file__).resolve()),
         "--mode",
         "closed-loop-sim",
@@ -446,8 +536,16 @@ def run_closed_loop_worker(args) -> dict:
         str(args.env_python),
         "--command-x",
         str(args.command_x),
+        "--command-y",
+        str(args.command_y),
+        "--command-yaw",
+        str(args.command_yaw),
         "--duration",
         str(args.duration),
+        "--task",
+        str(args.task),
+        "--seed",
+        str(args.seed),
         "--bridge-mode",
         str(args.bridge_mode),
         "--output-dir",
@@ -470,18 +568,106 @@ def run_closed_loop_worker(args) -> dict:
         str(args.eval_role),
         "--mjx-step-loop-mode",
         str(args.mjx_step_loop_mode),
+        "--policy-action-gain",
+        str(args.policy_action_gain),
+        "--forward-diagnostic-required-ratio",
+        str(args.forward_diagnostic_required_ratio),
+        "--forward-diagnostic-deadband",
+        str(args.forward_diagnostic_deadband),
+        "--sim-preflight-timeout-s",
+        str(args.sim_preflight_timeout_s),
         "--_closed-loop-worker",
         "--_closed-loop-worker-json",
         str(worker_json),
     ]
+    if args.reward_overrides_json:
+        cmd.extend(["--reward-overrides-json", str(args.reward_overrides_json)])
+    if args.reward_overrides_phase:
+        cmd.extend(["--reward-overrides-phase", str(args.reward_overrides_phase)])
+    if args.trace_jsonl:
+        cmd.extend(["--trace-jsonl", str(args.trace_jsonl)])
+    if args.trace_full_obs:
+        cmd.append("--trace-full-obs")
     if args.jax_platform:
         cmd.extend(["--jax-platform", str(args.jax_platform)])
+    if args.jax_platforms:
+        cmd.extend(["--jax-platforms", str(args.jax_platforms)])
+    if args.max_motor_velocity_override_rad_s is not None:
+        cmd.extend(
+            [
+                "--max-motor-velocity-override-rad-s",
+                str(args.max_motor_velocity_override_rad_s),
+            ]
+        )
+    if args.policy_action_rate_limit_rad_s is not None:
+        cmd.extend(
+            [
+                "--policy-action-rate-limit-rad-s",
+                str(args.policy_action_rate_limit_rad_s),
+                "--policy-action-rate-limit-joint-indices",
+                str(args.policy_action_rate_limit_joint_indices),
+            ]
+        )
+        if args.policy_action_rate_limit_values:
+            cmd.extend(["--policy-action-rate-limit-values", str(args.policy_action_rate_limit_values)])
+    if args.policy_phase_action_delta_json:
+        cmd.extend(
+            [
+                "--policy-phase-action-delta-json",
+                str(args.policy_phase_action_delta_json),
+                "--policy-phase-action-delta-scale",
+                str(args.policy_phase_action_delta_scale),
+                "--policy-phase-action-delta-min-command-x",
+                str(args.policy_phase_action_delta_min_command_x),
+            ]
+        )
     if args.inspect_policy_io:
         cmd.append("--inspect-policy-io")
-    env = None
-    if args.jax_platform:
-        env = os.environ.copy()
-        env["JAX_PLATFORM_NAME"] = str(args.jax_platform)
+    if args.policy_obs_input_name:
+        cmd.extend(["--policy-obs-input-name", str(args.policy_obs_input_name)])
+    if args.policy_action_output_name:
+        cmd.extend(["--policy-action-output-name", str(args.policy_action_output_name)])
+    if args.policy_state_input_names:
+        cmd.extend(["--policy-state-input-names", str(args.policy_state_input_names)])
+    if args.policy_state_output_names:
+        cmd.extend(["--policy-state-output-names", str(args.policy_state_output_names)])
+    if args.eval_push_enable:
+        cmd.append("--eval-push-enable")
+    if args.eval_push_interval_min_s is not None:
+        cmd.extend(["--eval-push-interval-min-s", str(args.eval_push_interval_min_s)])
+    if args.eval_push_interval_max_s is not None:
+        cmd.extend(["--eval-push-interval-max-s", str(args.eval_push_interval_max_s)])
+    if args.eval_push_magnitude_min is not None:
+        cmd.extend(["--eval-push-magnitude-min", str(args.eval_push_magnitude_min)])
+    if args.eval_push_magnitude_max is not None:
+        cmd.extend(["--eval-push-magnitude-max", str(args.eval_push_magnitude_max)])
+    cmd.extend(["--push-recovery-window-s", str(args.push_recovery_window_s)])
+    cmd.extend(
+        [
+            "--push-recovery-max-abs-pitch-rad",
+            str(args.push_recovery_max_abs_pitch_rad),
+        ]
+    )
+    cmd.extend(
+        [
+            "--push-recovery-min-base-height-m",
+            str(args.push_recovery_min_base_height_m),
+        ]
+    )
+    if args.terrain_hfield_z_scale is not None:
+        cmd.extend(["--terrain-hfield-z-scale", str(args.terrain_hfield_z_scale)])
+    if args.reset_settle_ticks:
+        cmd.extend(["--reset-settle-ticks", str(args.reset_settle_ticks)])
+    if args.reset_mode != "playground":
+        cmd.extend(["--reset-mode", args.reset_mode])
+    if args.bridge_reset_align_joint_indices:
+        cmd.extend(
+            [
+                "--bridge-reset-align-joint-indices",
+                args.bridge_reset_align_joint_indices,
+            ]
+        )
+    env = build_jax_env(args.jax_platform, args.jax_platforms)
     try:
         result = subprocess.run(
             cmd,
@@ -552,8 +738,15 @@ def build_markdown(payload: dict) -> str:
     lines.append(f"overall_status: `{payload['overall_status']}`")
     lines.append(f"policy: `{payload['policy'].get('path')}`")
     lines.append(f"fit_json: `{payload['fit_json']}`")
+    if payload.get("task") is not None:
+        lines.append(f"task: `{payload.get('task')}`")
     lines.append(f"command_x: `{payload['command_x']}`")
+    if payload.get("command_y") is not None:
+        lines.append(f"command_y: `{payload.get('command_y')}`")
+    if payload.get("command_yaw") is not None:
+        lines.append(f"command_yaw: `{payload.get('command_yaw')}`")
     lines.append(f"duration_s: `{payload['duration_s']}`")
+    lines.append(f"seed: `{payload.get('seed')}`")
     lines.append(f"eval_role: `{payload.get('eval_role')}`")
     lines.append(f"jax_platform_requested: `{payload.get('jax_platform')}`")
     lines.append("")
@@ -562,6 +755,10 @@ def build_markdown(payload: dict) -> str:
     lines.append(f"- policy_status: `{payload['policy'].get('status')}`")
     lines.append(f"- policy_input_shape: `{payload['policy'].get('input_shape')}`")
     lines.append(f"- policy_output_shape: `{payload['policy'].get('output_shape')}`")
+    if payload["policy"].get("inputs"):
+        lines.append(f"- policy_inputs: `{payload['policy'].get('inputs')}`")
+    if payload["policy"].get("outputs"):
+        lines.append(f"- policy_outputs: `{payload['policy'].get('outputs')}`")
     playground_static = payload["playground"].get("static", {})
     playground_instantiated = payload["playground"].get("instantiated", {})
     lines.append(f"- playground_static_path: `{playground_static.get('open_duck_dir')}`")
@@ -625,6 +822,10 @@ def build_markdown(payload: dict) -> str:
         lines.append(f"status: `{closed_loop.get('status')}`")
         if closed_loop.get("eval_role"):
             lines.append(f"eval_role: `{closed_loop.get('eval_role')}`")
+        if closed_loop.get("policy_action_gain") is not None:
+            lines.append(f"policy_action_gain: `{closed_loop.get('policy_action_gain')}`")
+        if closed_loop.get("policy_io"):
+            lines.append(f"policy_io: `{closed_loop.get('policy_io')}`")
         env = closed_loop.get("env", {})
         insertion = closed_loop.get("insertion_point", {})
         lines.append(f"env: `{env.get('env_class')}` / task `{env.get('task')}`")
@@ -633,9 +834,19 @@ def build_markdown(payload: dict) -> str:
         lines.append(f"ctrl_dt: `{env.get('ctrl_dt')}`")
         lines.append(f"sim_dt: `{env.get('sim_dt')}`")
         lines.append(f"mjx_step_loop_mode: `{env.get('mjx_step_loop_mode')}`")
+        lines.append(f"max_motor_velocity: `{env.get('max_motor_velocity')}`")
+        if env.get("max_motor_velocity_override_rad_s") is not None:
+            lines.append(
+                "max_motor_velocity_override_rad_s: "
+                f"`{env.get('max_motor_velocity_override_rad_s')}`"
+            )
         lines.append(f"jax: `{env.get('jax_backend')}` `{env.get('jax_devices')}`")
         lines.append(f"insertion_point: `{insertion.get('type')}`")
         lines.append(f"double_rate_limit: `{insertion.get('double_rate_limit')}`")
+        if insertion.get("push_config"):
+            lines.append(f"push_config: `{insertion.get('push_config')}`")
+        if insertion.get("terrain_override"):
+            lines.append(f"terrain_override: `{insertion.get('terrain_override')}`")
         if closed_loop.get("error"):
             lines.append(f"worker_error: `{closed_loop.get('error')}`")
         if closed_loop.get("worker_returncode") is not None:
@@ -684,21 +895,57 @@ def build_markdown(payload: dict) -> str:
                 "max_action_saturation_pct",
                 "max_pitch_tracking_p95_rad",
                 "max_sent_target_velocity_p95_rad_s",
+                "max_sent_target_velocity_limit_excess_rad_s",
+                "max_sent_target_velocity_max_limit_excess_rad_s",
                 "max_abs_body_pitch_p95_rad",
                 "min_base_height_m",
                 "min_reward_mean",
                 "min_forward_command_tracking_ratio",
                 "max_abs_forward_velocity_error_m_s",
+                "max_forward_shortfall_cost_mean",
             ]:
                 lines.append(
                     f"| `{key}` | {fmt(metrics.get(key))} | {fmt(thresholds.get(key))} |"
                 )
+            limits = thresholds.get("pitch_chain_velocity_limits_rad_s") or {}
+            if limits:
+                lines.append("")
+                lines.append("Corrected per-joint velocity limits:")
+                lines.append("")
+                lines.append("| joint | limit_rad_s |")
+                lines.append("|---|---:|")
+                for joint in PITCH_CHAIN_JOINTS:
+                    lines.append(f"| `{joint}` | {fmt(limits.get(joint))} |")
+            violations = metrics.get("pitch_chain_velocity_violations") or []
+            if violations:
+                lines.append("")
+                lines.append("Per-joint p95 target-velocity violations:")
+                lines.append("")
+                lines.append("| joint | p95_rad_s | limit_rad_s | excess_rad_s |")
+                lines.append("|---|---:|---:|---:|")
+                for item in violations:
+                    lines.append(
+                        f"| `{item.get('joint')}` | {fmt(item.get('velocity_p95_rad_s'))} | "
+                        f"{fmt(item.get('limit_rad_s'))} | {fmt(item.get('excess_rad_s'))} |"
+                    )
+            max_violations = metrics.get("pitch_chain_velocity_max_violations") or []
+            if max_violations:
+                lines.append("")
+                lines.append("Per-joint max target-velocity violations:")
+                lines.append("")
+                lines.append("| joint | max_rad_s | limit_rad_s | excess_rad_s |")
+                lines.append("|---|---:|---:|---:|")
+                for item in max_violations:
+                    lines.append(
+                        f"| `{item.get('joint')}` | {fmt(item.get('velocity_max_rad_s'))} | "
+                        f"{fmt(item.get('limit_rad_s'))} | {fmt(item.get('excess_rad_s'))} |"
+                    )
             lines.append("")
         lines.append("### Mode Summary")
         lines.append("")
         lines.append(
             "| mode | samples | termination | body_pitch_p95 | base_height_min | "
-            "mean_vx | track_ratio | reward_mean |"
+            "mean_local_vx | track_ratio | reward_mean |"
         )
         lines.append("|---|---:|---|---:|---:|---:|---:|---:|")
         for mode_name, mode in (closed_loop.get("modes") or {}).items():
@@ -714,6 +961,87 @@ def build_markdown(payload: dict) -> str:
                 f"{fmt(reward.get('mean'))} |"
             )
         lines.append("")
+        clearance_rows = []
+        for mode_name, mode in (closed_loop.get("modes") or {}).items():
+            clearance = mode.get("foot_clearance") or {}
+            support = clearance.get("support") or {}
+            feet = clearance.get("feet") or {}
+            for foot_name in ["left", "right"]:
+                foot = feet.get(foot_name) or {}
+                lift = foot.get("swing_lift_over_stance_m") or {}
+                clearance_rows.append(
+                    f"| {mode_name} | `{foot_name}` | "
+                    f"{fmt(foot.get('contact_pct'))} | "
+                    f"{fmt(foot.get('swing_peak_lift_over_stance_m'))} | "
+                    f"{fmt(lift.get('p95'))} | "
+                    f"{fmt(support.get('single_support_pct'))} | "
+                    f"{fmt(support.get('double_support_pct'))} | "
+                    f"{fmt(support.get('support_transition_count'), 0)} |"
+                )
+        if clearance_rows:
+            lines.append("### Foot Clearance / Support")
+            lines.append("")
+            lines.append(
+                "| mode | foot | contact_pct | swing_peak_lift | swing_lift_p95 | single_support_pct | double_support_pct | support_transitions |"
+            )
+            lines.append("|---|---|---:|---:|---:|---:|---:|---:|")
+            lines.extend(clearance_rows)
+            lines.append("")
+        reward_rows = []
+        for mode_name, mode in (closed_loop.get("modes") or {}).items():
+            for term_name, stats in (mode.get("reward_terms") or {}).items():
+                stats = stats or {}
+                reward_rows.append(
+                    f"| {mode_name} | `{term_name}` | {fmt(stats.get('mean'))} | "
+                    f"{fmt(stats.get('p95'))} | {fmt(stats.get('max'))} |"
+                )
+        if reward_rows:
+            lines.append("### Reward-Term Summary")
+            lines.append("")
+            lines.append("| mode | term | mean | p95 | max |")
+            lines.append("|---|---|---:|---:|---:|")
+            lines.extend(reward_rows)
+            lines.append("")
+        shortfall_rows = []
+        for mode_name, mode in (closed_loop.get("modes") or {}).items():
+            diag = mode.get("forward_shortfall_diagnostic") or {}
+            progress = diag.get("progress_ratio") or {}
+            shortfall = diag.get("normalized_shortfall") or {}
+            cost = diag.get("shortfall_cost") or {}
+            shortfall_rows.append(
+                f"| {mode_name} | `{diag.get('status')}` | "
+                f"{fmt(diag.get('required_ratio'))} | "
+                f"{fmt(progress.get('mean'))} | {fmt(progress.get('p95'))} | "
+                f"{fmt(shortfall.get('mean'))} | {fmt(cost.get('mean'))} |"
+            )
+        if shortfall_rows:
+            lines.append("### Forward Shortfall Diagnostic")
+            lines.append("")
+            lines.append(
+                "| mode | status | required_ratio | progress_ratio_mean | "
+                "progress_ratio_p95 | normalized_shortfall_mean | shortfall_cost_mean |"
+            )
+            lines.append("|---|---|---:|---:|---:|---:|---:|")
+            lines.extend(shortfall_rows)
+            lines.append("")
+        push_rows = []
+        for mode_name, mode in (closed_loop.get("modes") or {}).items():
+            push = mode.get("push_recovery") or {}
+            magnitude = push.get("push_magnitude") or {}
+            push_rows.append(
+                f"| {mode_name} | {push.get('event_count')} | "
+                f"{push.get('recovered_count')} | {fmt(push.get('success_rate'))} | "
+                f"{fmt(magnitude.get('mean'))} | {fmt(magnitude.get('max'))} |"
+            )
+        if push_rows:
+            lines.append("### Push Recovery")
+            lines.append("")
+            lines.append(
+                "| mode | events | recovered | success_rate | push_mag_mean | push_mag_max |"
+            )
+            lines.append("|---|---:|---:|---:|---:|---:|")
+            lines.extend(push_rows)
+            lines.append("")
         lines.append("### Pitch-Chain Summary")
         lines.append("")
         lines.append(
@@ -747,11 +1075,25 @@ def build_markdown(payload: dict) -> str:
     if payload.get("closed_loop_sim"):
         status = payload["closed_loop_sim"].get("status")
         if status == "PASS_CLOSED_LOOP_REPRODUCTION":
-            lines.append(
-                "- The fitted actuator bridge produces closed-loop degradation in "
-                "the same range as the real suspended x=0.08 evidence. Next step is "
-                "a training-time actuator wrapper, not robot motion."
-            )
+            modes = set((payload["closed_loop_sim"].get("modes") or {}).keys())
+            if modes == {"vanilla"}:
+                lines.append(
+                    "- Closed-loop vanilla sim eval completed for the requested "
+                    "policy, command, task, and horizon. Interpret this as an "
+                    "offline sim result only; it does not approve robot motion."
+                )
+            elif {"fitted", "stress"} & modes:
+                lines.append(
+                    "- The fitted/stress actuator bridge modes completed and can "
+                    "be compared against real suspended evidence. Next step is "
+                    "offline review, not robot motion."
+                )
+            else:
+                lines.append(
+                    "- Closed-loop sim reproduction completed for the requested "
+                    "mode set. Review the mode summary before choosing the next "
+                    "offline task."
+                )
         elif status == "HOLD_BRIDGE_INSERTION_UNCLEAR":
             lines.append(
                 "- The eval could not safely map the bridge insertion point. Add a "
@@ -792,8 +1134,15 @@ def write_outputs(payload: dict, output_dir: Path) -> None:
             "playground": payload["playground"],
             "sim_preflight": payload["sim_preflight"],
             "command_x": payload["command_x"],
+            "command_y": payload["command_y"],
+            "command_yaw": payload["command_yaw"],
+            "task": payload["task"],
             "duration_s": payload["duration_s"],
+            "seed": payload.get("seed"),
             "eval_role": payload.get("eval_role"),
+            "jax_platform": payload.get("jax_platform"),
+            "mjx_step_loop_mode": payload.get("mjx_step_loop_mode"),
+            "trace_full_obs": payload.get("trace_full_obs"),
             "telemetry_replay": None,
             "closed_loop_sim": payload["closed_loop_sim"],
         }
@@ -817,7 +1166,16 @@ def main() -> int:
     )
     parser.add_argument("--env-python", default=str(DEFAULT_ENV_PYTHON))
     parser.add_argument("--command-x", type=float, default=0.08)
+    parser.add_argument("--command-y", type=float, default=0.0)
+    parser.add_argument("--command-yaw", type=float, default=0.0)
+    parser.add_argument("--task", default="flat_terrain")
     parser.add_argument("--duration", type=float, default=15.0)
+    parser.add_argument(
+        "--seed",
+        type=int,
+        default=0,
+        help="JAX PRNG seed for closed-loop sim reset and delay sampling",
+    )
     parser.add_argument("--output-dir", default=str(DEFAULT_OUTPUT_DIR))
     parser.add_argument(
         "--mode",
@@ -855,6 +1213,39 @@ def main() -> int:
         help="query ONNX Runtime for model IO metadata; default uses audited contract",
     )
     parser.add_argument(
+        "--policy-obs-input-name",
+        default=None,
+        help=(
+            "Optional ONNX observation input name for stateful/recurrent eval. "
+            "Default uses the first input."
+        ),
+    )
+    parser.add_argument(
+        "--policy-action-output-name",
+        default=None,
+        help=(
+            "Optional ONNX action output name for stateful/recurrent eval. "
+            "Default uses the first output."
+        ),
+    )
+    parser.add_argument(
+        "--policy-state-input-names",
+        default=None,
+        help=(
+            "Comma-separated ONNX hidden-state input names. When set, "
+            "--policy-state-output-names must also be set. Hidden state is "
+            "initialized to zeros at rollout reset and carried tick to tick."
+        ),
+    )
+    parser.add_argument(
+        "--policy-state-output-names",
+        default=None,
+        help=(
+            "Comma-separated ONNX hidden-state output names matching "
+            "--policy-state-input-names by position."
+        ),
+    )
+    parser.add_argument(
         "--strict",
         action="store_true",
         help="return nonzero on HOLD status; default is report-only",
@@ -876,6 +1267,16 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--jax-platforms",
+        default=None,
+        help=(
+            "Optional JAX_PLATFORMS override for closed-loop worker subprocesses. "
+            "When omitted, `--jax-platform cpu` automatically uses "
+            "`JAX_PLATFORMS=cpu` so local CPU gates do not probe a broken GPU "
+            "backend."
+        ),
+    )
+    parser.add_argument(
         "--mjx-step-loop-mode",
         choices=["default", "scan", "python", "python_block_each"],
         default="default",
@@ -886,10 +1287,206 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--policy-action-gain",
+        type=float,
+        default=1.0,
+        help=(
+            "Eval-only multiplier applied to ONNX policy actions before the "
+            "sim step. Default 1.0 preserves the policy exactly; values below "
+            "1.0 approximate an ONNX output-damping wrapper and do not modify "
+            "the policy file or robot runtime."
+        ),
+    )
+    parser.add_argument(
+        "--max-motor-velocity-override-rad-s",
+        type=float,
+        default=None,
+        help=(
+            "Eval-only override for the Playground max_motor_velocity target "
+            "slew limit. Default None preserves the env/runtime value. Use this "
+            "only for offline diagnostics of lower target-rate limits."
+        ),
+    )
+    parser.add_argument(
+        "--policy-action-rate-limit-rad-s",
+        type=float,
+        default=None,
+        help=(
+            "Eval-only temporal rate bound applied to selected policy actions "
+            "before action history and delay. Omit to preserve the policy."
+        ),
+    )
+    parser.add_argument(
+        "--policy-phase-action-delta-json",
+        default=None,
+        help=(
+            "Eval-only JSON containing a 3x14 phase_action_coefficient_delta. "
+            "The correction uses [1, obs[99], obs[100]] and is default-off."
+        ),
+    )
+    parser.add_argument("--policy-phase-action-delta-scale", type=float, default=1.0)
+    parser.add_argument(
+        "--policy-phase-action-delta-min-command-x", type=float, default=0.02
+    )
+    parser.add_argument(
+        "--policy-action-rate-limit-joint-indices",
+        default="2,3,4,11,12,13",
+        help="Comma-separated action indices for the eval-only policy rate bound.",
+    )
+    parser.add_argument(
+        "--policy-action-rate-limit-values",
+        default=None,
+        help="Optional comma-separated per-index rad/s values; requires the scalar switch to enable.",
+    )
+    parser.add_argument(
+        "--forward-diagnostic-required-ratio",
+        type=float,
+        default=0.5,
+        help=(
+            "Reward-config-independent forward shortfall diagnostic ratio. "
+            "At command x, the diagnostic reports shortfall below "
+            "abs(command_x) * this ratio. It does not change policy or robot "
+            "behavior."
+        ),
+    )
+    parser.add_argument(
+        "--forward-diagnostic-deadband",
+        type=float,
+        default=0.02,
+        help=(
+            "Deadband for the reward-config-independent forward shortfall "
+            "diagnostic. Commands below this magnitude are treated as no "
+            "forward-progress requirement."
+        ),
+    )
+    parser.add_argument(
         "--sim-preflight-timeout-s",
         type=int,
         default=90,
         help="timeout for the Playground contract instantiation preflight",
+    )
+    parser.add_argument(
+        "--trace-jsonl",
+        default=None,
+        help=(
+            "Optional closed-loop per-tick trace output. This is intended for "
+            "small failure forensics; normal eval summaries stay compact."
+        ),
+    )
+    parser.add_argument(
+        "--trace-full-obs",
+        action="store_true",
+        help=(
+            "When --trace-jsonl is set, also write the full 101-element policy "
+            "observation as obs_state. Default off to keep traces compact."
+        ),
+    )
+    parser.add_argument(
+        "--reward-overrides-json",
+        default=None,
+        help=(
+            "Optional JSON file containing staged-curriculum phase reward "
+            "overrides. When provided, closed-loop eval replays the same reward "
+            "scales, command-progress failure settings, and reward clip bounds "
+            "used during training."
+        ),
+    )
+    parser.add_argument(
+        "--reward-overrides-phase",
+        default=None,
+        help=(
+            "Phase name to select from --reward-overrides-json when the file "
+            "contains a staged plan with a phases array. Defaults to the first "
+            "phase."
+        ),
+    )
+    parser.add_argument(
+        "--eval-push-enable",
+        action="store_true",
+        help=(
+            "Enable Playground push perturbations during closed-loop eval. "
+            "Default is off to preserve canonical corrected-bridge candidate gates."
+        ),
+    )
+    parser.add_argument(
+        "--eval-push-interval-min-s",
+        type=float,
+        default=None,
+        help="Minimum push interval in seconds for --eval-push-enable.",
+    )
+    parser.add_argument(
+        "--eval-push-interval-max-s",
+        type=float,
+        default=None,
+        help="Maximum push interval in seconds for --eval-push-enable.",
+    )
+    parser.add_argument(
+        "--eval-push-magnitude-min",
+        type=float,
+        default=None,
+        help="Minimum push velocity impulse magnitude for --eval-push-enable.",
+    )
+    parser.add_argument(
+        "--eval-push-magnitude-max",
+        type=float,
+        default=None,
+        help="Maximum push velocity impulse magnitude for --eval-push-enable.",
+    )
+    parser.add_argument(
+        "--push-recovery-window-s",
+        type=float,
+        default=0.5,
+        help="Window after each push used for push recovery success metrics.",
+    )
+    parser.add_argument(
+        "--push-recovery-max-abs-pitch-rad",
+        type=float,
+        default=0.8,
+        help="Push recovery fails if abs body pitch exceeds this value in the window.",
+    )
+    parser.add_argument(
+        "--push-recovery-min-base-height-m",
+        type=float,
+        default=0.08,
+        help="Push recovery fails if base height falls below this value in the window.",
+    )
+    parser.add_argument(
+        "--terrain-hfield-z-scale",
+        type=float,
+        default=None,
+        help=(
+            "Eval-only override for the hfield vertical scale in terrain XMLs. "
+            "Creates a temporary scene XML in the Playground xml directory and "
+            "does not modify checked-in Playground files."
+        ),
+    )
+    parser.add_argument(
+        "--reset-settle-ticks",
+        type=int,
+        default=0,
+        help=(
+            "Eval-only diagnostic: step reset physics under the reset motor "
+            "target for this many control ticks before starting the policy loop. "
+            "Default 0 preserves canonical gates."
+        ),
+    )
+    parser.add_argument(
+        "--reset-mode",
+        choices=["playground", "home-support"],
+        default="playground",
+        help=(
+            "Eval-only diagnostic reset override. 'playground' preserves the "
+            "environment's randomized reset. 'home-support' starts from sim "
+            "home qpos, zero qvel, and home ctrl before the policy loop."
+        ),
+    )
+    parser.add_argument(
+        "--bridge-reset-align-joint-indices",
+        default="",
+        help=(
+            "Default-off eval-only diagnostic. Comma-separated actuator indices "
+            "whose bridge initial applied target is set to measured reset position."
+        ),
     )
     parser.add_argument(
         "--_closed-loop-worker",
@@ -902,14 +1499,17 @@ def main() -> int:
         help=argparse.SUPPRESS,
     )
     args = parser.parse_args()
-    if args.jax_platform:
-        os.environ["JAX_PLATFORM_NAME"] = str(args.jax_platform)
+    apply_jax_platform_env(args.jax_platform, args.jax_platforms)
 
     policy_path = Path(args.policy).expanduser().resolve()
     fit_path = Path(args.fit_json).expanduser().resolve()
     playground_root = Path(args.playground_root).expanduser().resolve()
     env_python = Path(args.env_python).expanduser().absolute()
     fit = load_fit_json(fit_path)
+    reward_overrides = load_reward_overrides(
+        None if args.reward_overrides_json is None else Path(args.reward_overrides_json),
+        args.reward_overrides_phase,
+    )
 
     policy = inspect_policy(
         policy_path,
@@ -931,33 +1531,114 @@ def main() -> int:
     telemetry_replay = run_telemetry_replay(args, fit) if run_replay else None
     closed_loop_sim = None
     if args.mode == "closed-loop-sim":
-        if sim_preflight.get("status") not in {"HOLD_SIM_INTEGRATION_PENDING"} and str(
-            sim_preflight.get("status", "")
-        ).startswith("HOLD"):
-            closed_loop_sim = {
-                "status": sim_preflight["status"],
-                "error": sim_preflight.get("reason", "contract preflight failed"),
-            }
-        elif args._closed_loop_worker:
-            closed_loop_sim = run_closed_loop_sim(
-                ClosedLoopConfig(
-                    policy_path=policy_path,
-                    fit=fit,
-                    playground_root=playground_root,
-                    command_x=args.command_x,
-                    duration_s=args.duration,
-                    bridge_mode=args.bridge_mode,
-                    expected_observation_dim=args.expected_observation_dim,
-                    expected_action_dim=args.expected_action_dim,
-                    eval_role=args.eval_role,
-                    mjx_step_loop_mode=args.mjx_step_loop_mode,
+        preflight_status = str(sim_preflight.get("status", ""))
+        preflight_hold = (
+            sim_preflight.get("status") not in {"HOLD_SIM_INTEGRATION_PENDING"}
+            and preflight_status.startswith("HOLD")
+        )
+        if args._closed_loop_worker:
+            if preflight_hold:
+                closed_loop_sim = {
+                    "status": sim_preflight["status"],
+                    "error": sim_preflight.get("reason", "contract preflight failed"),
+                    "sim_preflight": sim_preflight,
+                }
+            else:
+                closed_loop_sim = run_closed_loop_sim(
+                    ClosedLoopConfig(
+                        policy_path=policy_path,
+                        fit=fit,
+                        playground_root=playground_root,
+                        command_x=args.command_x,
+                        command_y=args.command_y,
+                        command_yaw=args.command_yaw,
+                        duration_s=args.duration,
+                        task=args.task,
+                        seed=args.seed,
+                        bridge_mode=args.bridge_mode,
+                        expected_observation_dim=args.expected_observation_dim,
+                        expected_action_dim=args.expected_action_dim,
+                        eval_role=args.eval_role,
+                        mjx_step_loop_mode=args.mjx_step_loop_mode,
+                        policy_action_gain=args.policy_action_gain,
+                        policy_phase_action_delta_json=(
+                            None
+                            if args.policy_phase_action_delta_json is None
+                            else Path(args.policy_phase_action_delta_json)
+                        ),
+                        policy_phase_action_delta_scale=(
+                            args.policy_phase_action_delta_scale
+                        ),
+                        policy_phase_action_delta_min_command_x=(
+                            args.policy_phase_action_delta_min_command_x
+                        ),
+                        policy_action_rate_limit_rad_s=(
+                            args.policy_action_rate_limit_rad_s
+                        ),
+                        policy_action_rate_limit_joint_indices=tuple(
+                            int(item.strip())
+                            for item in args.policy_action_rate_limit_joint_indices.split(",")
+                            if item.strip()
+                        ),
+                        policy_action_rate_limit_values=tuple(
+                            float(item.strip())
+                            for item in (args.policy_action_rate_limit_values or "").split(",")
+                            if item.strip()
+                        ),
+                        max_motor_velocity_override_rad_s=(
+                            args.max_motor_velocity_override_rad_s
+                        ),
+                        forward_diagnostic_required_ratio=(
+                            args.forward_diagnostic_required_ratio
+                        ),
+                        forward_diagnostic_deadband=(
+                            args.forward_diagnostic_deadband
+                        ),
+                        reward_overrides=reward_overrides,
+                        trace_jsonl=(
+                            None if args.trace_jsonl is None else Path(args.trace_jsonl)
+                        ),
+                        trace_full_obs=args.trace_full_obs,
+                        policy_obs_input_name=args.policy_obs_input_name,
+                        policy_action_output_name=args.policy_action_output_name,
+                        policy_state_input_names=parse_name_list(
+                            args.policy_state_input_names
+                        ),
+                        policy_state_output_names=parse_name_list(
+                            args.policy_state_output_names
+                        ),
+                        eval_push_enable=args.eval_push_enable,
+                        eval_push_interval_min_s=args.eval_push_interval_min_s,
+                        eval_push_interval_max_s=args.eval_push_interval_max_s,
+                        eval_push_magnitude_min=args.eval_push_magnitude_min,
+                        eval_push_magnitude_max=args.eval_push_magnitude_max,
+                        push_recovery_window_s=args.push_recovery_window_s,
+                        push_recovery_max_abs_pitch_rad=(
+                            args.push_recovery_max_abs_pitch_rad
+                        ),
+                        push_recovery_min_base_height_m=(
+                            args.push_recovery_min_base_height_m
+                        ),
+                        terrain_hfield_z_scale=args.terrain_hfield_z_scale,
+                        reset_settle_ticks=args.reset_settle_ticks,
+                        reset_mode=args.reset_mode,
+                        bridge_reset_align_joint_indices=tuple(
+                            int(item.strip())
+                            for item in args.bridge_reset_align_joint_indices.split(",")
+                            if item.strip()
+                        ),
+                    )
                 )
-            )
             if args._closed_loop_worker_json:
                 Path(args._closed_loop_worker_json).write_text(
                     json.dumps(closed_loop_sim, indent=2) + "\n"
                 )
                 return 0
+        elif preflight_hold:
+            closed_loop_sim = {
+                "status": sim_preflight["status"],
+                "error": sim_preflight.get("reason", "contract preflight failed"),
+            }
         else:
             closed_loop_sim = run_closed_loop_worker(args)
 
@@ -980,10 +1661,31 @@ def main() -> int:
         "playground": playground,
         "sim_preflight": sim_preflight,
         "command_x": args.command_x,
+        "command_y": args.command_y,
+        "command_yaw": args.command_yaw,
+        "task": args.task,
         "duration_s": args.duration,
+        "seed": args.seed,
         "eval_role": args.eval_role,
         "jax_platform": args.jax_platform,
         "mjx_step_loop_mode": args.mjx_step_loop_mode,
+        "trace_full_obs": bool(args.trace_full_obs),
+        "reward_overrides_json": args.reward_overrides_json,
+        "reward_overrides_phase": args.reward_overrides_phase,
+        "reward_overrides": reward_overrides,
+        "eval_push": {
+            "enable": bool(args.eval_push_enable),
+            "interval_min_s": args.eval_push_interval_min_s,
+            "interval_max_s": args.eval_push_interval_max_s,
+            "magnitude_min": args.eval_push_magnitude_min,
+            "magnitude_max": args.eval_push_magnitude_max,
+            "recovery_window_s": args.push_recovery_window_s,
+            "recovery_max_abs_pitch_rad": args.push_recovery_max_abs_pitch_rad,
+            "recovery_min_base_height_m": args.push_recovery_min_base_height_m,
+        },
+        "terrain_hfield_z_scale": args.terrain_hfield_z_scale,
+        "policy_state_input_names": list(parse_name_list(args.policy_state_input_names)),
+        "policy_state_output_names": list(parse_name_list(args.policy_state_output_names)),
         "telemetry_replay": telemetry_replay,
         "closed_loop_sim": closed_loop_sim,
     }

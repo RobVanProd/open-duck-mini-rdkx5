@@ -1,0 +1,72 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "deployment_audit": false,
+    "gate5": false,
+    "hosted_compute": false,
+    "optimizer": false,
+    "policy_promotion": false,
+    "rdkx5_or_robot": false,
+    "t185b_preregistration_only": true
+  },
+  "classification": "PREOPTIMIZER_JAX_EAGER_VS_JIT_REFERENCE_PHASE_DIAGNOSTIC",
+  "correction": {
+    "comparison_tolerance": 0.0,
+    "mechanism_change": false,
+    "new_expected_phase_oracle": "the same jax.jit(jax.vmap(phase_vector)) execution used by the batched environment",
+    "old_expected_phase_oracle": "a Python loop invoking phase_vector eagerly for one scalar phase at a time",
+    "runner_output_isolation": "parameterize preregistration, result, markdown, and work-root paths so the recovery cannot overwrite T185 evidence",
+    "scientific_contract_change": false
+  },
+  "evidence": {
+    "enabled_contract": {
+      "bytes": 845,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t185_in_episode_single_support_cpu_v1\\enabled_contract.json",
+      "sha256": "8a7a93a798a0a4f3d49eff88f56b019a07cb01d6c10371e0221053be2f37040d"
+    },
+    "failed_checks": [
+      "reference_phase_vectors_exact"
+    ],
+    "maximum_eager_vs_jit_phase_vector_abs_error": 2.384185791015625e-07,
+    "passed_checks": [
+      "both_support_sides_sampled",
+      "cpu_only",
+      "observation_abi_115_and_finite",
+      "prefix_counter_exact",
+      "prefix_reward_is_support_only",
+      "prefix_stays_at_anchor_for_27_ticks",
+      "reference_anchors_exact",
+      "reference_contact_targets_exact",
+      "same_episode_locomotion_resume_exact"
+    ],
+    "process_stderr": {
+      "bytes": 3282,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t185_cpu_contract_process.stderr.log",
+      "sha256": "1dfb5cf9cb02267156a601933c1d9ffaa15a544683118c673fcc35436565a142"
+    },
+    "reference_phase_indices": {
+      "left": 2,
+      "right": 15
+    },
+    "sampled_support_sides": {
+      "left": 124,
+      "right": 132
+    },
+    "source_preregistered_contract_sha256": "8bdb8e9996ca7fa54cb1ec5a05d50b7c113405b088398ec633bbc985ce9176f3"
+  },
+  "execution": {
+    "environment_contract_transitions": 7168,
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "result_artifact_written": false,
+    "robot_or_rdk_access": 0
+  },
+  "invalidated_decision": "CLOSE_T185_IN_EPISODE_SINGLE_SUPPORT_PREFIX_AND_RETURN_TO_MECHANISM_SELECTION",
+  "reason": "The environment reset is batched and JIT compiled, while the diagnostic constructed its expected trigonometric phase vector through scalar eager calls. Both selected the exact preregistered phase indices and contact targets, but JAX execution modes differed by at most one small float32 rounding interval. The runner stopped before optimizer construction, so no policy outcome was measured.",
+  "result_sha256": "bd7f5c565239ea0579005e8a01665b9f2e0493a83cd18182ae98382c1865a23c",
+  "schema_version": "open_duck.t185_jit_phase_diagnostic_recovery.v1",
+  "status": "INVALIDATE_T185_PHASE_VECTOR_DIAGNOSTIC_BEFORE_OPTIMIZER"
+}

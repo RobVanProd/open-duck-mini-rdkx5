@@ -1,0 +1,85 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "gate5_authorized": false,
+    "hosted_training_authorized": false,
+    "minimal_extension_contract_authorized": false,
+    "protected_source_selected_for_extension": false,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "torque_or_motion": false
+  },
+  "cell_manifest_sha256": "0fb30edcd09bb7a77f3f07a787d19563ff705b993075ddbbe6d4454ce54851f0",
+  "cpu_environment": {
+    "device_platforms": [
+      "cpu"
+    ],
+    "device_strings": [
+      "TFRT_CPU_0"
+    ],
+    "jax_backend": "cpu"
+  },
+  "decision": {
+    "hosted_training_authorized": false,
+    "next_action": "do not train from this recurrent source; attribute the failed frozen metrics first",
+    "protected_source_selected_for_extension": false,
+    "status": "REJECT_RECURRENT_SOURCE"
+  },
+  "failed_validity_checks": [],
+  "input_hashes": {
+    "policies": {
+      "R64_RECURRENT_FINAL": "dfdd01bf4563e3d377ffcbe70515681e75a0d87797f3b6b9e4486d1b40ad569c",
+      "R64_RECURRENT_HALF": "c8e03dd4afed4e7a96507e5089116944a048ac1d682210408a68cca1b8b6af7c"
+    },
+    "preregistration": "b64578fa873d5397dfa96c4e089ec6757b255e30a69a90d2a353306d14933736",
+    "reference_features": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+  },
+  "per_checkpoint": [
+    {
+      "all_eight_cells_pass": false,
+      "cells": 8,
+      "checkpoint_id": "R64_RECURRENT_HALF",
+      "passing_cells": 2,
+      "step": 1003520,
+      "worst_peak_current_a": 2.914791211524534,
+      "worst_strict_over_2a_run_ticks": 9,
+      "worst_tracking_p95_rad": 0.1747111201286316
+    },
+    {
+      "all_eight_cells_pass": false,
+      "cells": 8,
+      "checkpoint_id": "R64_RECURRENT_FINAL",
+      "passing_cells": 2,
+      "step": 2007040,
+      "worst_peak_current_a": 2.9003766687857477,
+      "worst_strict_over_2a_run_ticks": 8,
+      "worst_tracking_p95_rad": 0.16880500018596645
+    }
+  ],
+  "run_root": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v109-recurrent-source-run-20260724",
+  "schema_version": "winner_v109.recurrent_source_result.v1",
+  "status": "PASS_WINNER_V109_RECURRENT_SOURCE_SCREEN",
+  "summary": {
+    "cells": 16,
+    "failures_by_reason": {
+      "current_peak_at_most_2p5": 12
+    },
+    "minimum_moving_mean_vx_m_s": 0.08581529135194918,
+    "passing_cells": 4,
+    "persistent_both_checkpoint_pass": false,
+    "worst_current_p95_a_diagnostic_only": 2.5296308125713076,
+    "worst_peak_current_a": 2.914791211524534,
+    "worst_strict_over_2a_run_ticks": 9,
+    "worst_tracking_p95_rad": 0.1747111201286316
+  },
+  "validity_checks": {
+    "all_cell_files_written": true,
+    "all_payloads_finite": true,
+    "cpu_environment_exact": true,
+    "matrix_16_exact": true,
+    "no_runner_exceptions": true,
+    "old_p95_current_not_used_for_pass_fail": true,
+    "policy_hashes_exact": true
+  },
+  "wall_seconds": 754.6841950416565
+}

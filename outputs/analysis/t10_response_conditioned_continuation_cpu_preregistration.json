@@ -1,0 +1,238 @@
+{
+  "assets": {
+    "calibrator": {
+      "bytes": 54896,
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v22\\training-extracted\\winner-v22-normalized-predictor-training-work\\graphs\\winner_v22_final.onnx",
+      "sha256": "cb3380ed99b3e9d7e9000904a210227aa397db2a064aa80d8f70e77c8339783b"
+    },
+    "expanded_checkpoint": {
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t10_response_conditioned_assets_v1\\expanded_checkpoint",
+      "sha256": "0862c655a0d988eacb16017ccbfb4d9f0f8c34df850040ecc279be974904a55c"
+    },
+    "step_zero_onnx": {
+      "bytes": 977568,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t10_response_conditioned_assets_v1\\t10_v121_half_step_zero.onnx",
+      "sha256": "c3a8386c2a15d05121920b6d17bfda1849f82b7ca752c20fc2567b77c29426c7"
+    },
+    "v121_half_policy": {
+      "bytes": 958446,
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v121-deployment-policies-20260724\\V121_DEPLOYMENT_1003520.onnx",
+      "sha256": "d4f280e8ebb4accd5c5c983bbf83042ec0162647efb446f0f6c8bffda42bc17a"
+    }
+  },
+  "authority": {
+    "cpu_optimizer_steps_authorized": 1024,
+    "formal_behavior_cells": 0,
+    "gate5": false,
+    "hosted_or_colab_compute": false,
+    "policy_checkpoint_selection": false,
+    "robot_clearance": false,
+    "robot_or_rdkx5_access": false,
+    "torque_or_motion": false
+  },
+  "causal_basis": {
+    "minimal_trainable_delta": "add only zero-initialized context-to-hidden and context-to-action kernels to the restored V121-half actor",
+    "t7": "universal support produces stable configuration-sensitive 64-D response context",
+    "t8": "state-coherent direct handoff passes every moving cell",
+    "t9": "command-aware x=0 bypass completes the 16/16 architecture"
+  },
+  "cpu_smoke": {
+    "batch_size": 4,
+    "device": "CPU only",
+    "discounting": 0.97,
+    "entropy_cost": 0.005,
+    "episode_length": 64,
+    "export_steps": [
+      0,
+      1024
+    ],
+    "learning_rate": 0.0003,
+    "maximum_wall_seconds": 3600,
+    "num_envs": 4,
+    "num_evals": 2,
+    "num_minibatches": 1,
+    "optimizer_steps_exact": 1024,
+    "required_checks": [
+      "expanded checkpoint restores bit exactly at step 0",
+      "all policy leaves update and remain finite",
+      "both new context parameter families update",
+      "critic updates and remains finite",
+      "step-0 export remains bit exact to frozen zero-update asset",
+      "step-1,024 graph has finite CPU inference",
+      "context changes both recurrent state and final action",
+      "x=0 remains exact zero",
+      "moving rate and state feedback remain graph-owned",
+      "moving and x=0 reset receipts match T9"
+    ],
+    "seed": 100,
+    "unroll_length": 8,
+    "updates_per_batch": 2
+  },
+  "decision_rule": {
+    "fail": "hold hosted continuation, file the exact software-contract failure, and spend no Colab credits",
+    "no_closest_result_promotion": true,
+    "partial_results_selection_weight": 0,
+    "pass": "every runner check and every independently recomputed audit check passes",
+    "pass_next_action": "earn only one separately preregistered hosted continuation from the expanded V121-half source; do not launch it yet"
+  },
+  "execution_now": {
+    "formal_behavior_cells": 0,
+    "hosted_or_colab_compute": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "preexecution_amendment": {
+    "authorized_change": "run reset-only environment construction from the frozen composed playground root",
+    "failed_attempt_stderr": {
+      "bytes": 1558,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t10_cpu_launcher_v1.stderr.log",
+      "sha256": "608817c6085a879ef7a448be47c4dcc465b60aa4a8245dee5246588c3ea7dc4f"
+    },
+    "failed_attempt_stdout": {
+      "bytes": 1627,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t10_cpu_launcher_v1.stdout.log",
+      "sha256": "d9171eed213336251e11045f83055ffc3aa1008d85e321536ee24597509fb69e"
+    },
+    "failure_class": "RESET_PREFLIGHT_RELATIVE_PATH",
+    "failure_point": "environment construction before either reset completed",
+    "formal_behavior_cells": 0,
+    "formal_optimizer_steps_observed": 0,
+    "hosted_or_colab_compute": 0,
+    "prior_contract_sha256": "01c4d7d5519c78a548285a6446957299035ae98d2e3e09cc253e8338aa3fae28",
+    "robot_or_rdk_access": 0,
+    "unchanged_decision_rule": true,
+    "unchanged_optimizer_steps_exact": 1024
+  },
+  "preregistered_contract_sha256": "e0b6f7f65f42434fcaabffb2ff00fdde31c678067aa24e522ba161007087b7de",
+  "question": "Can the T9-selected command-aware response architecture be expanded from V121-half, preserve the complete step-zero policy and recurrent state exactly, execute one finite 1,024-step CPU PPO smoke, update both context paths, and export the complete stateful V121 graph without spending hosted compute?",
+  "schema_version": "open_duck.t10_response_cpu_preregistration.v2",
+  "software_contract": {
+    "action_dim": 14,
+    "calibration_context_dim": 64,
+    "deployment_hierarchy": [
+      "raw recurrent response-conditioned actor",
+      "exact trained rate vector",
+      "0.165-rad actual-centered pitch guard",
+      "x=0 deadband",
+      "final exact trained rate projection",
+      "restored x=0 deadband",
+      "graph-owned previous_action_out"
+    ],
+    "moving_reset": {
+      "applied_target_slot": "exact bridge-applied target",
+      "home_return_ticks": 0,
+      "locomotion_hidden": "exact zero",
+      "phase": [
+        1.0,
+        0.0
+      ],
+      "previous_action": "realized final response action",
+      "universal_response_ticks": 250
+    },
+    "onnx_inputs_in_order": [
+      "obs",
+      "previous_action",
+      "h_in",
+      "calibration_context"
+    ],
+    "onnx_outputs_in_order": [
+      "continuous_actions",
+      "previous_action_out",
+      "h_out"
+    ],
+    "policy_observation_dim": 115,
+    "recurrent_state_dim": 64,
+    "runtime_observation_contract_dim": 101,
+    "source": "V121_TRAIN_MATCHED_HALF",
+    "source_step": 1003520,
+    "step_zero": {
+      "arbitrary_context_effect": "exact zero",
+      "complete_outputs": "bit exact to V121-half for 1,024 cases",
+      "context_kernels": "exact float32 zero",
+      "source_actor_and_normalizer": "bit exact"
+    },
+    "x0_reset": {
+      "context": "exact zero [64]",
+      "hidden": "exact zero [64]",
+      "phase": [
+        1.0,
+        0.0
+      ],
+      "previous_action": "exact zero [14]",
+      "universal_response_ticks": 0
+    }
+  },
+  "sources": {
+    "asset_builder": {
+      "bytes": 17954,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t10_response_conditioned_assets.py",
+      "sha256": "6d58b80f0066135c6bef494fd4f1444f285444eb50f0713cff25651c47d2da1b"
+    },
+    "asset_manifest": {
+      "bytes": 6325,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t10_response_conditioned_assets_v1\\manifest.json",
+      "sha256": "a034fff84ea63167335f60eb507683ad1e967eb7949ed254fa01b1e2da79202f"
+    },
+    "builder": {
+      "bytes": 14899,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t10_response_conditioned_cpu_preregistration.py",
+      "sha256": "fb4f0f7ab3453fa025fae9c6772c92fb1647a2ad58a8dc682c9a4ca4a9d889c7"
+    },
+    "composer": {
+      "bytes": 11572,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\compose_t10_response_conditioned_playground.py",
+      "sha256": "07f60c27ee1c914402e206ca98796611a2926de79c2ebd2de32d02b009096a39"
+    },
+    "independent_auditor": {
+      "bytes": 19023,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\audit_t10_response_conditioned_cpu_contract.py",
+      "sha256": "eb6a2a8532101e93b24bcdf8ed7337c8228c3c2ebd013681fff89782263c6fbb"
+    },
+    "network_source": {
+      "bytes": 28197,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\patches\\t10_response_conditioned_v121_networks.py",
+      "sha256": "cfafa8a31e1824e2c877e3d5e76af9e11056a7808e9434138483b181e29893e3"
+    },
+    "playground_manifest": {
+      "bytes": 2606,
+      "path": "D:\\CodexProjects\\Open_Duck_Playground-t10-response-conditioned-v2\\T10_COMPOSED_SOURCE_MANIFEST.json",
+      "sha256": "44c253a6824aadbe92f9cbadc7a02dcbc55330301bb82c0e3e7fe82f6aee3f4b"
+    },
+    "reference_features": {
+      "bytes": 259604,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+      "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+    },
+    "runner": {
+      "bytes": 36612,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t10_response_conditioned_cpu_contract.py",
+      "sha256": "6f3840e21523b83354be3553a551ce0ba16e84e671144d155620c0bfc544a503"
+    },
+    "t9_independent_audit": {
+      "bytes": 1061,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t9_command_aware_prefix_bypass_independent_audit_v2.json",
+      "sha256": "97ee2632a55026bcbd27a3e9a158dd8a2c4cd147b20bff210cd4116727f1f6d6"
+    },
+    "t9_result": {
+      "bytes": 14108,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t9_command_aware_prefix_bypass_result.json",
+      "sha256": "b5342eab2993f4c14a7aab62795ad211f131033ce926bd236c21237530b0cff4"
+    },
+    "v119_recovered_validation": {
+      "bytes": 7248,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\winner_v119_recovered_training_validation.json",
+      "sha256": "456121dc7680df6e66915fa67e59f088f718e08db1468d3523795f8dd56abb14"
+    },
+    "v121_deployment_contract": {
+      "bytes": 7974,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\winner_v121_deployment_transform_contract.json",
+      "sha256": "4bd5eab5343cd8401db1789773fa3cc345727d903cb31222e0ea9870f0e9e640"
+    },
+    "wrapper_source": {
+      "bytes": 11092,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\patches\\t10_command_aware_response_wrapper.py",
+      "sha256": "0507c454f284474ccbfae1edeed24150679eae5e474dbaf59b16ec248ba43a43"
+    }
+  },
+  "status": "PREREGISTERED_T10_RESPONSE_CONDITIONED_CPU_CONTRACT"
+}

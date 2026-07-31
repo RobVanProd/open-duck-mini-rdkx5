@@ -1,0 +1,38 @@
+{
+  "status": "HOLD_LIVE_ORACLE_RECOVERS_SEED7_REGRESSES_0_6",
+  "candidate": "policy/candidates/phase2_z0075_iter22_live_oracle_history_context_rate150_20260704/candidate.onnx",
+  "candidate_sha256": "f76a9db11a99dba8de5c01e2c3fe5c46b461209df449401046839cc3adc3f1e5",
+  "student_npz_sha256": "cd28c90f8a09460fad17c6eda2a933eca7fbf7ab5fb15fa19955ca670c4d4dca",
+  "aggregate_manifest": "outputs/analysis/live_oracle_dagger_phase_student/iter_022_history_context/live_oracle_dagger_aggregate_manifest.json",
+  "aggregate_manifest_sha256": "f948bbe63d927e55f7db4b13484df160f37bec3e98c2f1dd3bbfe9a6fff1703c",
+  "screen_json": "outputs/analysis/phase2_z0075_iter22_live_oracle_history_context_rate150_x008_seed0_1_2_6_7_screen.json",
+  "screen_json_sha256": "59f7723ee7eabfa4bdc8e34ee585ccc525de67cd5f1298f6c18f21d3e2a0182c",
+  "training_status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+  "onnx_max_abs_error": 0.00000024,
+  "compact_screen": {
+    "seeds": [0, 1, 2, 6, 7],
+    "falls": 2,
+    "duration_complete": 3,
+    "max_velocity_excess_rad_s": 0.0,
+    "failed_seeds": {
+      "0": {
+        "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "samples": 639,
+        "track_ratio": 0.0197,
+        "mean_local_vx_m_s": 0.0016,
+        "base_height_min_m": 0.0706
+      },
+      "6": {
+        "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "samples": 120,
+        "track_ratio": 2.0231,
+        "mean_local_vx_m_s": 0.1618,
+        "base_height_min_m": 0.0116
+      }
+    }
+  },
+  "promote": false,
+  "robot_validation_allowed": false,
+  "tooling_note": "Iter22 live-oracle rollout collection used reset_settle_ticks=0 because run_live_oracle_dagger_iteration.py did not expose the flag. The tool has been patched to forward --reset-settle-ticks before the next iteration.",
+  "next_step": "Rerun live-oracle DAgger with --reset-settle-ticks 10, retrain the deployable history-context student, and gate on seeds 0,1,2,6,7."
+}

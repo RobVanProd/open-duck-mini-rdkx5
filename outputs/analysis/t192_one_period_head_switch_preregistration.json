@@ -1,0 +1,307 @@
+{
+  "adapter_contract": {
+    "authorized_delta": "T192 only: switch from the primary ONNX session to one hash-frozen ABI-identical ONNX session at one exact scored tick",
+    "default_off": "all three switch fields default to None; the T27 path is otherwise unchanged",
+    "patch_count": 5,
+    "t192_patched_source_sha256": "42bef503391dc6b80b600fb97b15324a6675b3b7a12f872f94e8e2774a14021e",
+    "t27_patched_source_sha256": "dcb1313349d3488883040be07882cc28537b1e848ec29576e98ea8e1cedd516c"
+  },
+  "authority": {
+    "colab": false,
+    "full_r2": false,
+    "gate5": false,
+    "one_cpu_behavior_cell": true,
+    "robot_or_rdk": false,
+    "training": false
+  },
+  "authority_after_result": {
+    "behavior": false,
+    "checkpoint_consistency_teacher_preregistration": true,
+    "full_r2": false,
+    "gate5": false,
+    "robot_or_rdk": false,
+    "training": false
+  },
+  "behavior_contract": {
+    "interpretation": {
+      "core": "minimum physical/semantic validity; thresholds passed by the T4 baseline where comparable",
+      "evaluator_candidate_gate_status": "diagnostic only because T4 invalidated its use as an unqualified feasibility classifier",
+      "replacement_quality": "explicit stretch goals for replacing the behaviorally bad baseline; T4 showed the baseline can fail some of these"
+    },
+    "moving_core": {
+      "bilateral_transitions": true,
+      "maximum_action_saturation_pct": 1.0,
+      "maximum_body_pitch_p95_rad": 0.25,
+      "minimum_base_height_m": 0.12,
+      "minimum_track_ratio": 0.25,
+      "positive_mean_local_velocity": true,
+      "samples": 600
+    },
+    "moving_replacement_quality": {
+      "maximum_action_saturation_pct": 0.0,
+      "maximum_pitch_tracking_p95_rad": 0.2,
+      "maximum_rate_excess_rad_s": 0.0
+    },
+    "x0_core": {
+      "maximum_absolute_mean_local_vx_m_s": 0.02,
+      "maximum_action_saturation_pct": 1.0,
+      "maximum_body_pitch_p95_rad": 0.25,
+      "minimum_base_height_m": 0.12,
+      "samples": 600
+    },
+    "x0_replacement_quality": {
+      "maximum_action_saturation_pct": 0.0,
+      "maximum_pitch_tracking_p95_rad": 0.2,
+      "maximum_rate_excess_rad_s": 0.0
+    }
+  },
+  "calibrator": {
+    "bytes": 55573,
+    "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v96-response-conditioned-mechanics\\winner_v96_universal_calibrator.onnx",
+    "sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576"
+  },
+  "checks": {
+    "adapter_has_five_default_off_patches": true,
+    "condition_is_exact_y_negative": true,
+    "fit_is_exact_p31_34": true,
+    "no_training_colab_or_robot": true,
+    "one_fresh_cpu_cell_only": true,
+    "original_failure_exact": true,
+    "primary_and_switch_graphs_present": true,
+    "switch_tick_exactly_derived": true,
+    "t191_exact_and_earned": true
+  },
+  "commands_x_m_s": [
+    0.08
+  ],
+  "condition": {
+    "condition_index": 9,
+    "id": "TORSO_COM_Y_NEG",
+    "override": {
+      "torso_com_offset_m": [
+        0.0,
+        -0.05,
+        0.0
+      ]
+    }
+  },
+  "decision_rule": {
+    "behavior_fail": "CLOSE_LATE_HEAD_SWITCH_AND_SELECT_GAIT_STATE_DISTRIBUTION_CURRICULUM",
+    "integrity_fail": "HOLD_MECHANISM_SELECTION_AND_AUDIT_T192",
+    "pass": "EARN_T193_CHECKPOINT_CONSISTENCY_TEACHER_CONTRACT_PREREGISTRATION_ONLY",
+    "training_selection_weight": 0
+  },
+  "execution_contract": {
+    "behavior_cells": 1,
+    "duration_ticks": 600,
+    "fresh_cache": true,
+    "no_retry": true,
+    "pre_switch_common_fields_bit_exact_to_original_failure": true,
+    "primary_ticks": [
+      0,
+      519
+    ],
+    "recurrent_state_preserved_at_switch": true,
+    "switch_ticks": [
+      520,
+      599
+    ]
+  },
+  "execution_now": {
+    "behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "fit": {
+    "bytes": 18788,
+    "fit_id": "p31_34",
+    "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p31_34_actuator_fit_20260712.json",
+    "sha256": "2740513f6bdeb4ad3cc5dd6dc1709319389a593fd153c1ce5abae03b66131a57"
+  },
+  "frozen_inputs": {
+    "adapter": {
+      "bytes": 7171,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\t192_head_switch_eval_adapter.py",
+      "sha256": "2dab20e2230e0be15b1fd3e5969644a9ae12373f4245e024db1b402ebe66d17c"
+    },
+    "builder": {
+      "bytes": 8763,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t192_one_period_head_switch_preregistration.py",
+      "sha256": "5bd839074dc87b5f0319743c35f30cfc37575586609d7a674a7f4548e1d9e465"
+    },
+    "original_failure_trace": {
+      "bytes": 9819157,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t190_t186_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T186_COMPOSED_HALF\\p31_34\\traces\\x0.080_seed167931544_t186_composed.jsonl",
+      "sha256": "b71108078650ad1c114fe744c9f04e6e77c092de3e95769fe312d6a94ebdeee3"
+    },
+    "runner": {
+      "bytes": 11191,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t192_one_period_head_switch.py",
+      "sha256": "a59c38d9893621ef1bff474ad66af5476f6b24de17ad435b371833c7aff072dc"
+    },
+    "t165_basis": {
+      "bytes": 13824,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t165_composed_full_r2_preregistration.json",
+      "sha256": "4d59315aa94022c993cddcd54072978c8bd5bc3bb9711ea63983eafd27a06424"
+    },
+    "t188_composition": {
+      "bytes": 238140,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t188_t186_postexport_composition_result.json",
+      "sha256": "ab869ad651f73f946957911f19fbc1f1cc8335673be038c43e7b5bed76fc7b70"
+    },
+    "t191_preregistration": {
+      "bytes": 11067,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t191_t186_failure_exchange_autopsy_preregistration.json",
+      "sha256": "5ad123566b4c5c943698b778fb311a0a0f20d2a9f5a8b7f29a5026f473ab02fa"
+    },
+    "t191_result": {
+      "bytes": 15419,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t191_t186_failure_exchange_autopsy_result.json",
+      "sha256": "72781cca47d359fac2bb7f918f728adcb1c5328a43476a9a1f7efd5d072893e9"
+    },
+    "test": {
+      "bytes": 1776,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t192_one_period_head_switch.py",
+      "sha256": "d706098a4c7bdccfd980fd1c51d7056b24658f141ec7f8a6579aaca977e1cea4"
+    },
+    "worker": {
+      "bytes": 7838,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\evaluate_t192_head_switch_single_cell.py",
+      "sha256": "ed374f689cfe7d13555859f8c3f6ec874d216d704f4f214da7ed430a85aed9ff"
+    }
+  },
+  "original_failure_trace": {
+    "bytes": 9819157,
+    "path": "D:\\CodexArtifacts\\open-duck-policy\\t190_t186_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T186_COMPOSED_HALF\\p31_34\\traces\\x0.080_seed167931544_t186_composed.jsonl",
+    "sha256": "b71108078650ad1c114fe744c9f04e6e77c092de3e95769fe312d6a94ebdeee3"
+  },
+  "playground": {
+    "manifest": {
+      "bytes": 5190,
+      "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v6\\T19_COMPOSED_SOURCE_MANIFEST.json",
+      "sha256": "d7c9b615c32f0e2c8434e958a900cc38485c0db6fea107b6115a69bbd2122a77"
+    },
+    "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v6"
+  },
+  "policy": {
+    "bytes": 983104,
+    "checkpoint_id": "T186_COMPOSED_HALF",
+    "path": "D:\\CodexArtifacts\\open-duck-policy\\t188_t186_postexport_composition_v1\\1003520\\t186_composed.onnx",
+    "sha256": "2a64c41630ddded744efdf8556bed24258f45b95d35406fa7690a2d277e8662a",
+    "step": 1003520
+  },
+  "preregistered_contract_sha256": "d027c8ad6aa9b282c398085248f4cc0fd8d0b15f496c39db34ecbab33b82598a",
+  "protection_contract": {
+    "force_limit_tolerance_nm": 5e-06,
+    "instantaneous_stall_current_and_torque": "diagnostic_only",
+    "motor_constant_nm_per_a": 0.784532,
+    "overcurrent_threshold_a": 2.0,
+    "overload_threshold_nm": 1.5298374,
+    "pass_max_consecutive_ticks": 99,
+    "simulator_force_limit_abs_nm": 3.23,
+    "simulator_force_limit_hits": "diagnostic_only",
+    "source": "T5 manufacturer-derived duration rules",
+    "strict_comparison": true,
+    "trip_ticks": 100
+  },
+  "question": "If T186-half controls the exact failing cell through tick 519, can the ABI-compatible T186-final head recover it when switched for the final 27-tick gait period?",
+  "reference_feature_table": {
+    "bytes": 259604,
+    "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+    "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+  },
+  "repository_inputs": {
+    "adapter": {
+      "bytes": 8272,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\t27_state_coherent_eval_adapter.py",
+      "sha256": "e53d6e74bad78e6ffa0423807e6dbe168730e881a47017f5343a0391ac5836cb"
+    },
+    "base_evaluator": {
+      "bytes": 155236,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\closed_loop_sim_eval.py",
+      "sha256": "a5bff87f2cce5e5f5c661a9fe73dee9de77a4c356912279e4771025c3379a4ac"
+    },
+    "head_switch_adapter": {
+      "bytes": 7171,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\t192_head_switch_eval_adapter.py",
+      "sha256": "2dab20e2230e0be15b1fd3e5969644a9ae12373f4245e024db1b402ebe66d17c"
+    },
+    "r2_source": {
+      "bytes": 4221,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_robustness_r2_matrix_preregistration.json",
+      "sha256": "23ad95ed02d6302c321c8bd9f52b29512ee9c19a404a31eaf9fa0ca2807273b0"
+    },
+    "runner": {
+      "bytes": 21782,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t27_t23_robustness_matrix.py",
+      "sha256": "142668ac3dbe27f65ccb1d113c90d854b9ff76201a70120fa1bec722038b8ea3"
+    },
+    "t24_postexport_result": {
+      "bytes": 35792,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t24_t23_postexport_result.json",
+      "sha256": "accb2027b05b1d861f34d7844a81626eac5706887bef306a7f8858dc379604a1"
+    },
+    "t26_nominal_result": {
+      "bytes": 62433,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t26_t23_corrected_nominal_result.json",
+      "sha256": "015ae2652221d1926f21bb9b628b396bedde4e608bf722feb4147de93d1357cb"
+    },
+    "t27_runner_contract": {
+      "bytes": 7158,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t27_t23_robustness_runner_contract.json",
+      "sha256": "282d4e44616addba93639acbfd31c35d49134938d9847b3990930619837ab50a"
+    },
+    "t6_corrected_gate_preregistration": {
+      "bytes": 14401,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t6_corrected_robustness_screen_preregistration.json",
+      "sha256": "0b3417f03a3ead733424605c867020578cca660ab97636bb071981965b5af467"
+    },
+    "t6_helpers": {
+      "bytes": 29466,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t6_corrected_robustness_screen.py",
+      "sha256": "34d955a9443d8e0fba01a75b64243c865e5e78df23cadb43e871210cb9ba0e00"
+    },
+    "t8_helpers": {
+      "bytes": 27023,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t8_state_coherent_handoff.py",
+      "sha256": "a941d2f9cf0c9a9da8da7759bb98fd84ec41ef08c46ec0506c37d585b6a338da"
+    },
+    "t8_support_preregistration": {
+      "bytes": 19693,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t8_state_coherent_handoff_preregistration.json",
+      "sha256": "c4184d8bdba742034ec83fc30a6df4662d822150549298252e19bf19d58e19cd"
+    },
+    "worker": {
+      "bytes": 7838,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\evaluate_t192_head_switch_single_cell.py",
+      "sha256": "ed374f689cfe7d13555859f8c3f6ec874d216d704f4f214da7ed430a85aed9ff"
+    }
+  },
+  "schema_version": "open_duck.t192_one_period_head_switch_preregistration.v1",
+  "seed": 167931544,
+  "status": "PREREGISTERED_T192_ONE_PERIOD_HEAD_SWITCH",
+  "support_handoff": {
+    "context_input_name": "calibration_context",
+    "context_is_diagnostic_only": true,
+    "locomotion_hidden_zero": true,
+    "locomotion_phase_reset": [
+      1.0,
+      0.0
+    ],
+    "preserve_applied_target_observer_state": true,
+    "preserve_final_support_action_as_previous_action": true,
+    "source": "T22/T24 exact support-train-through deployment chain and green T27 one-tick runner contract",
+    "unscored_calibration_ticks": 250,
+    "unscored_home_return_ticks": 0
+  },
+  "switch_policy": {
+    "bytes": 983104,
+    "checkpoint_id": "T186_COMPOSED_FINAL",
+    "path": "D:\\CodexArtifacts\\open-duck-policy\\t188_t186_postexport_composition_v1\\2007040\\t186_composed.onnx",
+    "sha256": "8958548b8e838a8405c713e4db7a6b55419649f54cc127e0312bde8a52d1ad6d",
+    "step": 2007040
+  },
+  "switch_tick": 520
+}

@@ -1,0 +1,125 @@
+{
+  "date": "2026-07-02",
+  "status": "PASS_A100_STARTUP_MATRIX",
+  "session": "open-duck-a100-startup",
+  "hardware": "NVIDIA A100-SXM4-40GB",
+  "scope": "offline Colab/A100 startup diagnostics only",
+  "robot_touched": false,
+  "ssh_used": false,
+  "deploy_performed": false,
+  "grounded_replay_performed": false,
+  "summary": "Pinned JAX/JAXlib 0.7.2 with colab exec passed the A100 startup matrix, including restore/KL, behavior prior, combined restore+behavior, and combined restore+behavior with the smoke-runner actuator bridge enabled.",
+  "baseline_diagnostic": {
+    "status": "PASS",
+    "artifact": "outputs/analysis/colab_cli/open-duck-a100-startup-training-smoke-diagnostic-20260702T023805Z/open_duck_colab_cli_training-smoke-diagnostic_20260702T023813Z_artifacts.tar.gz",
+    "sha256": "08d2530b5bd3f41705e2b6932012c56d8e7c3f53203238d9a50e0b150ee013aa",
+    "jax": "0.7.2",
+    "jaxlib": "0.7.2",
+    "stages": [
+      {
+        "name": "00_python_jax_device",
+        "status": "PASS",
+        "returncode": 0,
+        "elapsed_s": 2.47
+      },
+      {
+        "name": "01_import_training_stack",
+        "status": "PASS",
+        "returncode": 0,
+        "elapsed_s": 37.33
+      },
+      {
+        "name": "02_smoke_dry_run",
+        "status": "PASS",
+        "returncode": 0,
+        "elapsed_s": 0.08
+      },
+      {
+        "name": "03_smoke_run",
+        "status": "PASS",
+        "returncode": 0,
+        "elapsed_s": 360.11
+      }
+    ]
+  },
+  "feature_probes": [
+    {
+      "name": "restore_kl",
+      "platform": "A100/CUDA",
+      "restore_checkpoint": true,
+      "restore_policy_kl": true,
+      "behavior_prior": false,
+      "bridge_enabled": false,
+      "status": "PASS_SMOKE_RUN",
+      "returncode": 0,
+      "elapsed_s": 480.03,
+      "artifact": "outputs/analysis/colab_cli/a100_restore_kl_probe_20260702T024631Z/a100_restore_kl_probe_artifacts.tar.gz",
+      "sha256": "1f392491704b6a920974e1bb8d0d5aae380fd7a48f9b490c409059200654ff57",
+      "onnx": "2026_07_02_025154_64.onnx",
+      "reward_line": "STEP: 64 reward: 21.338165283203125 reward_std: 8.167276382446289"
+    },
+    {
+      "name": "behavior_prior",
+      "platform": "A100/CUDA",
+      "restore_checkpoint": false,
+      "restore_policy_kl": false,
+      "behavior_prior": true,
+      "bridge_enabled": false,
+      "status": "PASS_SMOKE_RUN",
+      "returncode": 0,
+      "elapsed_s": 480.03,
+      "artifact": "outputs/analysis/colab_cli/a100_behavior_prior_probe_20260702T025500Z/a100_behavior_prior_probe_artifacts.tar.gz",
+      "sha256": "8cd6a88d9a1aeb37013efdbc509a3f3386ba9575ae7325bf8e20aa0c7a46f503",
+      "onnx": "2026_07_02_030016_64.onnx",
+      "reward_line": "STEP: 64 reward: 10.971935272216797 reward_std: 4.195501327514648"
+    },
+    {
+      "name": "restore_kl_behavior_prior",
+      "platform": "A100/CUDA",
+      "restore_checkpoint": true,
+      "restore_policy_kl": true,
+      "behavior_prior": true,
+      "bridge_enabled": false,
+      "status": "PASS_SMOKE_RUN",
+      "returncode": 0,
+      "elapsed_s": 150.01,
+      "artifact": "outputs/analysis/colab_cli/a100_restore_behavior_probe_20260702T030353Z/a100_restore_behavior_probe_artifacts.tar.gz",
+      "sha256": "d7b326e2da7e832d65d8a8f1c027911ef1d5fd95d2903024e43f9e0332bf8baf",
+      "onnx": "2026_07_02_030515_64.onnx",
+      "reward_line": "STEP: 64 reward: 21.361108779907227 reward_std: 8.162484169006348"
+    },
+    {
+      "name": "restore_kl_behavior_prior_bridge",
+      "platform": "A100/CUDA",
+      "restore_checkpoint": true,
+      "restore_policy_kl": true,
+      "behavior_prior": true,
+      "bridge_enabled": true,
+      "status": "PASS_SMOKE_RUN",
+      "returncode": 0,
+      "elapsed_s": 480.03,
+      "artifact": "outputs/analysis/colab_cli/a100_restore_behavior_bridge_probe_20260702T030645Z/a100_restore_behavior_bridge_probe_artifacts.tar.gz",
+      "sha256": "b2aead1e82bffb30600bd6e3f6c0aa7983630325afb62fe6ff0be090740f94d4",
+      "onnx": "2026_07_02_031205_64.onnx",
+      "reward_line": "STEP: 64 reward: 22.062255859375 reward_std: 8.9228515625"
+    }
+  ],
+  "bridge_probe_limitation": {
+    "candidate_gate": false,
+    "delay_ticks": "3-8",
+    "tau_s": "0.06-0.14",
+    "velocity_limit_rad_s": "2.5-4.7",
+    "per_joint_variation": 0.15,
+    "note": "This tests A100 startup/runtime survival only. Candidate promotion still requires corrected-bridge per-joint-envelope gates."
+  },
+  "interpretation": [
+    "The pinned colab exec path is usable for bounded Phase 2 A100 probes.",
+    "The earlier disappearing run is not reproduced by the current pinned exec path.",
+    "Startup smoke passes are not candidate-quality evidence."
+  ],
+  "recommended_next": [
+    "Increase one axis at a time from the passing startup shape.",
+    "Prefer a medium-scale A100 training probe with artifact capture before a full Phase 2 run.",
+    "Run corrected-bridge gates separately before any candidate promotion."
+  ]
+}

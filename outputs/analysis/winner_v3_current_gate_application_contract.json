@@ -1,0 +1,103 @@
+{
+  "conversion": {
+    "conversion_supported_by_primary_source": true,
+    "kgf_cm_to_nm": 0.0980665,
+    "manufacturer_motor_constant_kgf_cm_per_a": 8.0,
+    "manufacturer_motor_constant_nm_per_a": 0.784532,
+    "per_tick_current_estimate_a": "abs(MuJoCo data.actuator_force[joint] N.m) / 0.784532 N.m/A",
+    "runtime_telemetry_scale_a_per_count": 0.0065,
+    "voltage_specific": "7.4 V STS3215 operating point"
+  },
+  "decision": "AUTHORIZE_AUTOMATIC_RESPONSE_CONDITIONING_INTERFACE_PREREGISTRATION_ONLY",
+  "frozen_follow_up_order": [
+    "freeze and obtain runtime review of an automatic-response-conditioned interface",
+    "pass a CPU-only response-identifiability and default-off contract",
+    "only then preregister at most one training run and the complete behavior matrix"
+  ],
+  "manufacturer_evidence": {
+    "catalog_corroboration": {
+      "manufacturer": "Shenzhen FEETECH RC Model Co., Ltd.",
+      "model": "ST-3215-C001",
+      "rated_current_a_at_7p4v": 0.65,
+      "rated_torque_kgf_cm_at_7p4v": 5.0,
+      "stall_current_a_at_7p4v": 2.5,
+      "stall_torque_kgf_cm_at_7p4v": 19.5,
+      "url": "https://www.feetechrc.com/Data/feetechrc/upload/file/20240706/2024%E9%A3%9E%E7%89%B9%E5%AE%A3%E4%BC%A0%E5%86%8C.pdf"
+    },
+    "detailed_specification": {
+      "date": "2020-04-10",
+      "edition": "A/0",
+      "electrical_specification": {
+        "motor_constant_kgf_cm_per_a": 8.0,
+        "operating_voltage_v": [
+          4.0,
+          7.4
+        ],
+        "rated_current_a_at_7p4v": 0.65,
+        "rated_torque_kgf_cm_at_7p4v": 5.0,
+        "stall_current_a_at_7p4v": 2.5,
+        "stall_torque_kgf_cm_at_7p4v": 19.5
+      },
+      "electronic_protection": {
+        "overcurrent": "current greater than 2 A for 2 s disables output",
+        "overload": "blocked above 80% of stall for 2 s enters protection",
+        "overtemperature": "temperature greater than 70 C disables torque"
+      },
+      "manufacturer": "Shenzhen FEETECH RC Model Co., Ltd.",
+      "model": "STS3215",
+      "reliability_test": "greater than 100000 cycles at one-fifth stall torque with 0.25 s forward, 0.5 s stop, 0.25 s reverse, 0.5 s stop",
+      "url": "https://www.feetechrc.com/Data/feetechrc/upload/file/20200611/6372749961523760249976542.pdf"
+    }
+  },
+  "prospective_offline_candidate_gate": {
+    "all_joints_must_pass": true,
+    "early_terminated_population": "evaluate every recorded tick before termination",
+    "per_joint_peak_current_a_max": 2.5,
+    "per_joint_peak_torque_kgf_cm_max": 19.5,
+    "per_joint_peak_torque_nm_max": 1.91229675,
+    "rated_current_p95": {
+      "candidate_pass_fail": false,
+      "reason": "manufacturer evidence defines a rated operating point but does not define p95 over a 600-tick rollout as a safety or thermal rule",
+      "role": "reported diagnostic only",
+      "value_a": 0.65
+    },
+    "sample_clock": "exact simulator 50 Hz ticks",
+    "strict_overcurrent_max_consecutive_ticks": 99,
+    "strict_overcurrent_threshold_a": 2.0,
+    "strict_overcurrent_trip_duration_s": 2.0,
+    "strict_overcurrent_trip_ticks": 100
+  },
+  "prospective_runtime_telemetry_gate": {
+    "firmware_protection_remains_authoritative": true,
+    "overcurrent_duration_s": 2.0,
+    "overcurrent_threshold_a": 2.0,
+    "rated_current_a_reported_not_trip_rule": 0.65,
+    "requirements": [
+      "record raw current counts and converted amperes with monotonic timestamps",
+      "record temperature and device protection status",
+      "torque off on device protection, overtemperature, stale telemetry, or watchdog fault",
+      "do not infer a thermal duty limit from sparse round-robin current samples"
+    ],
+    "round_robin_samples_do_not_prove_continuous_sub_tick_current": true,
+    "stall_current_a": 2.5,
+    "temperature_shutdown_c": 70.0
+  },
+  "schema_version": "open_duck_mini.winner_v3_current_gate_application_contract.v1",
+  "scope": {
+    "completed_winner_v3_result_reclassified": false,
+    "hosted_compute_authorized": false,
+    "prospective_only": true,
+    "robot_or_rdkx5_authorized": false,
+    "runtime_change_authorized": false,
+    "torque_or_motion_authorized": false,
+    "training_authorized": false
+  },
+  "status": "PASS_PROSPECTIVE_CURRENT_GATE_APPLICATION_CONTRACT",
+  "superseded_interpretation": {
+    "source_audit_json_sha256": "aebccef11fa96d374d547a0362f4d6e490d843c9aa059ae86891ee7b7a724934",
+    "source_audit_md_sha256": "62ea1e318c29de8b70afa738f541d656262c7224fd91ab96809a75881c5264a6",
+    "source_result_commit": "5f329136597f61051852a0fc492c3549c7e8d5a4",
+    "source_result_unchanged": true,
+    "statement": "The corrected failure-attribution artifact said no manufacturer source supported the repository's exact 8 kgf.cm/A conversion. Feetech's 2020-04-10 STS3215 product specification explicitly reports Kt=8 kg.cm/A."
+  }
+}

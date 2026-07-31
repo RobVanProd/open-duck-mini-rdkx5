@@ -1,0 +1,481 @@
+{
+  "candidate": {
+    "artifact": {
+      "exists": true,
+      "path": "outputs/analysis/phase2_corrected_live_oracle_iter1_rate165_candidate_decision_20260703.json",
+      "sha256": "7ae5a3cab92d2d46b72e3319352dbdc34049ee113f1f9fcc5b043ef108571520",
+      "size_bytes": 2721
+    },
+    "candidate_dir": "policy/candidates/phase2_corrected_live_oracle_iter1_rate165_20260703",
+    "candidate_npz": "policy/candidates/phase2_corrected_live_oracle_iter1_rate165_20260703/candidate_mlp.npz",
+    "candidate_npz_sha256": "2a896d32b9e40565008073970cacc9d31c8543e5ee8f3ee44162c5ddcd73ed36",
+    "candidate_onnx": "policy/candidates/phase2_corrected_live_oracle_iter1_rate165_20260703/candidate.onnx",
+    "candidate_onnx_sha256": "e06643e5790217075d9c7a0d1e1ac262652058592b374ac0446bdd0426d0ea33",
+    "fit": {
+      "artifact_json": "outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter1_phase_contact_rate165_student.json",
+      "artifact_md": "outputs/analysis/PHASE2_Z0026_CORRECTED_SOURCE_LIVE_ORACLE_ITER1_PHASE_CONTACT_RATE165_STUDENT.md",
+      "context_indices": [
+        6,
+        97,
+        98,
+        99,
+        100
+      ],
+      "onnx_max_abs_error": 2.4e-07,
+      "onnx_p95_abs_error": 1.2e-07,
+      "p95_action_error": 0.017565,
+      "samples": 21000,
+      "target_rate_max_rad_s": 1.957195,
+      "target_rate_p95_rad_s": 1.42353
+    },
+    "scope": "Offline sim only. No robot test, SSH, deploy, grounded replay, or runtime behavior change.",
+    "status": "PASS_OFFLINE_CORRECTED_BRIDGE_CANDIDATE_READY",
+    "x008_gate": {
+      "artifact_json": "outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter1_phase_contact_rate165_x008_gate.json",
+      "artifact_md": "outputs/analysis/PHASE2_Z0026_CORRECTED_SOURCE_LIVE_ORACLE_ITER1_PHASE_CONTACT_RATE165_X008_GATE.md",
+      "base_height_min_m": 0.1523,
+      "body_pitch_p95_rad": 0.1324,
+      "double_support_pct": 77.4667,
+      "duration_complete": 8,
+      "falls": 0,
+      "max_pitch_vel_p95_rad_s": 1.641,
+      "max_tracking_p95_rad": 0.1827,
+      "max_vel_excess_rad_s": 0.0,
+      "mean_local_vx_m_s": 0.0272,
+      "p95_vel_excess_rad_s": 0.0,
+      "runs": 8,
+      "single_support_pct": 22.5333,
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "track_ratio": 0.34
+    },
+    "x0_gate": {
+      "artifact_json": "outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter1_phase_contact_rate165_x0_gate.json",
+      "artifact_md": "outputs/analysis/PHASE2_Z0026_CORRECTED_SOURCE_LIVE_ORACLE_ITER1_PHASE_CONTACT_RATE165_X0_GATE.md",
+      "base_height_min_m": 0.1523,
+      "body_pitch_p95_rad": 0.0118,
+      "duration_complete": 8,
+      "falls": 0,
+      "max_pitch_vel_p95_rad_s": 0.0642,
+      "max_tracking_p95_rad": 0.0317,
+      "max_vel_excess_rad_s": 0.0,
+      "mean_local_vx_m_s": 0.0,
+      "p95_vel_excess_rad_s": 0.0,
+      "runs": 8,
+      "status": "PASS_CANDIDATE_SIM_GATE"
+    }
+  },
+  "deploy_performed": false,
+  "generated_at": "2026-07-03T20:12:00Z",
+  "motion_preserve_result": {
+    "artifact": {
+      "elapsed_s": 236.6348011489972,
+      "manifest": "outputs/phase2_domain_randomization/stage_a_rate165_motion_preserve_cpu_smoke/smoke_20260703T130458Z_cpu/smoke_manifest.final.json",
+      "manifest_status": "HOLD_SMOKE_EXCEPTION",
+      "onnx": "outputs/phase2_domain_randomization/stage_a_rate165_motion_preserve_cpu_smoke/smoke_20260703T130458Z_cpu/2026_07_03_090613_2240.onnx",
+      "onnx_sha256": "6ec74a1e418e5725c351ffbb8dadc11b4f4619846d3c82be5c12048295cb157c"
+    },
+    "decision": "Do not scale this exact motion-preservation PPO recipe to a longer A100 run. It is stable because it collapses to planted double support.",
+    "report_artifact": {
+      "exists": true,
+      "path": "outputs/analysis/phase2_rate165_motion_preserve_cpu2240_result.json",
+      "sha256": "b839258e1890914daa3d0c950ef4fc3b21de846ce14542abcc2cbf0b65f38a01",
+      "size_bytes": 2124
+    },
+    "status": "HOLD_MOTION_PRESERVE_STANDSTILL_REGRESSION",
+    "summary": "Tiny local CPU motion-preservation PPO smoke exported an ONNX, but direct compact gates show x=0.08 regressed to planted double-support standstill.",
+    "x000_compact_gate": {
+      "double_support_pct": 100.0,
+      "duration_complete": 1,
+      "evidence_json": "outputs/analysis/phase2_rate165_motion_preserve_cpu2240_x0_compact_gate.json",
+      "evidence_md": "outputs/analysis/PHASE2_RATE165_MOTION_PRESERVE_CPU2240_X0_COMPACT_GATE.md",
+      "falls": 0,
+      "max_pitch_vel_p95_rad_s": 0.5342194437980651,
+      "max_tracking_p95_rad": 0.061269813776016216,
+      "max_velocity_excess_rad_s": 0.0,
+      "mean_local_vx_m_s": -0.002681973898015713,
+      "p95_velocity_excess_rad_s": 0.0,
+      "single_support_pct": 0.0,
+      "status": "PASS_CANDIDATE_SIM_GATE"
+    },
+    "x008_compact_gate": {
+      "double_support_pct": 100.0,
+      "duration_complete": 1,
+      "evidence_json": "outputs/analysis/phase2_rate165_motion_preserve_cpu2240_x008_compact_gate.json",
+      "evidence_md": "outputs/analysis/PHASE2_RATE165_MOTION_PRESERVE_CPU2240_X008_COMPACT_GATE.md",
+      "falls": 0,
+      "max_pitch_vel_p95_rad_s": 0.709642767906189,
+      "max_tracking_p95_rad": 0.09669770300388336,
+      "max_velocity_excess_rad_s": 0.0,
+      "mean_local_vx_m_s": 0.003150187880382873,
+      "p95_velocity_excess_rad_s": 0.0,
+      "single_support_pct": 0.0,
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "track_ratio": 0.039377348504785914
+    }
+  },
+  "next_action": "Use the promoted right-ankle-limit198 candidate as the deployable corrected-bridge baseline and use the PPO-loc limit198 step-0 checkpoint as the trainable warm-start for the next offline DR stage. Preserve nonzero x=0.08 single support, zero corrected velocity excess, and x=0.0 stillness.",
+  "ppo_warmstart_fidelity": {
+    "artifact": {
+      "exists": true,
+      "path": "outputs/analysis/phase2_rate165_ppo_loc_warmstart_step0_export_fidelity.json",
+      "sha256": "f541998aec1ec3d4d29ac588b39fb866cbad74a5bd21a97d0f40e89d143cf8f0",
+      "size_bytes": 1285
+    },
+    "bc_npz": "outputs/analysis/phase2_rate165_ppo_loc_warmstart_candidate/candidate_mlp.npz",
+    "fidelity": {
+      "mae": 4.5461781894573505e-08,
+      "max_abs_error": 2.682209014892578e-07,
+      "p50_abs_error": 3.3527612686157227e-08,
+      "p95_abs_error": 1.1920928955078125e-07,
+      "p99_abs_error": 1.7881393432617188e-07,
+      "rmse": 6.311164923999968e-08,
+      "samples": 2048
+    },
+    "manifest": "outputs/analysis/phase2_rate165_ppo_loc_warmstart_manifest.json",
+    "mapping": {
+      "bc_w0_b0": "policy.params.hidden_0",
+      "bc_w1_b1": "policy.params.hidden_1",
+      "bc_w2_b2": "policy.params.hidden_2",
+      "bc_w3_b3": "policy.params.hidden_3 columns 0:14",
+      "scale_logits": "policy.params.hidden_3 columns 14:28, constant",
+      "value_network": "fresh PPO initialization"
+    },
+    "output_checkpoint": "outputs/analysis/phase2_rate165_ppo_loc_warmstart_step0_checkpoint",
+    "output_onnx": "outputs/analysis/phase2_rate165_ppo_loc_warmstart_step0.onnx",
+    "pass_thresholds": {
+      "max_abs_error": 0.0001,
+      "p95_abs_error": 1e-05
+    },
+    "reference_onnx": "outputs/analysis/phase2_rate165_ppo_loc_warmstart_candidate/candidate.onnx",
+    "samples_checked": 2048,
+    "scale_logit": -2.0,
+    "scale_std": 0.1279280110429725,
+    "status": "PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY"
+  },
+  "rate165_live_oracle_iter2_result": {
+    "decision_artifact": {
+      "path": "outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_decision.json"
+    },
+    "status": "HOLD_ITER2_MAX_VELOCITY_EXCESS",
+    "aggregate_manifest": "outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_plan/live_oracle_dagger_aggregate_manifest.json",
+    "aggregate_samples": 28500,
+    "student": {
+      "candidate_onnx": "outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_student/candidate.onnx",
+      "candidate_onnx_sha256": "c476120f75ea38b16cfe2a1c0eee49adca648811e65691e374321b58372a8cd7",
+      "fit_status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+      "onnx_max_abs_error": 2.682209014892578e-07
+    },
+    "x008_gate": {
+      "artifact_json": "outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_student_x008_gate.json",
+      "artifact_md": "outputs/analysis/PHASE2_RATE165_SINGLE_SUPPORT_LIVE_ORACLE_ITER2_STUDENT_X008_GATE.md",
+      "status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+      "runs": 8,
+      "falls": 0,
+      "duration_complete": 8,
+      "mean_local_vx_m_s": 0.032378894074179695,
+      "track_ratio": 0.4047361759272462,
+      "single_support_pct": 27.200000000000003,
+      "double_support_pct": 72.8,
+      "max_pitch_vel_p95_rad_s": 1.7164087295532224,
+      "p95_velocity_excess_rad_s": 0.0,
+      "max_velocity_excess_rad_s": 0.014899253845214844,
+      "max_tracking_p95_rad": 0.1858822464942932
+    },
+    "x0_spot_gate": {
+      "artifact_json": "outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_student_x0_spot_gate.json",
+      "artifact_md": "outputs/analysis/PHASE2_RATE165_SINGLE_SUPPORT_LIVE_ORACLE_ITER2_STUDENT_X0_SPOT_GATE.md",
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "runs": 2,
+      "falls": 0,
+      "duration_complete": 2,
+      "mean_local_vx_m_s": 8.396759295313434e-06,
+      "p95_velocity_excess_rad_s": 0.0,
+      "max_velocity_excess_rad_s": 0.0
+    },
+    "decision": "Do not promote. Refit with tighter max-rate control while preserving iter2 motion and single support."
+  },
+  "rate160_live_oracle_iter2_screen": {
+    "decision_artifact": {
+      "path": "outputs/analysis/phase2_rate160_single_support_live_oracle_iter2_decision.json"
+    },
+    "status": "HOLD_RATE160_MAX_VELOCITY_SPIKE",
+    "student": {
+      "candidate_onnx": "outputs/analysis/phase2_rate160_single_support_live_oracle_iter2_student/candidate.onnx",
+      "candidate_onnx_sha256": "53d1694f964870f1bd2c51d5759234f088bc154c90eddb2db845ccbf55ee74af",
+      "fit_status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+      "onnx_max_abs_error": 3.5762786865234375e-07
+    },
+    "x008_seed0_screen": {
+      "artifact_json": "outputs/analysis/phase2_rate160_single_support_live_oracle_iter2_student_x008_seed0_screen.json",
+      "artifact_md": "outputs/analysis/PHASE2_RATE160_SINGLE_SUPPORT_LIVE_ORACLE_ITER2_STUDENT_X008_SEED0_SCREEN.md",
+      "status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+      "runs": 1,
+      "falls": 0,
+      "duration_complete": 1,
+      "mean_local_vx_m_s": 0.03225126916325822,
+      "track_ratio": 0.40314086454072773,
+      "single_support_pct": 26.266666666666666,
+      "double_support_pct": 73.73333333333333,
+      "max_pitch_vel_p95_rad_s": 1.6399571895599363,
+      "p95_velocity_excess_rad_s": 0.0,
+      "max_velocity_excess_rad_s": 0.2730363607406616,
+      "max_tracking_p95_rad": 0.18503864109516144
+    },
+    "decision": "Do not run the full gate. Scalar lower-rate refit alone worsened instantaneous max velocity excess; use an explicit max-velocity/spike guard next."
+  },
+  "current_offline_baseline": {
+    "status": "PASS_OFFLINE_CORRECTED_BRIDGE_CANDIDATE_READY",
+    "decision_artifact": {
+      "path": "outputs/analysis/phase2_iter2_right_ankle_limit198_rate165_candidate_decision.json"
+    },
+    "candidate": {
+      "candidate_dir": "policy/candidates/phase2_iter2_right_ankle_limit198_rate165_20260703",
+      "candidate_onnx": "policy/candidates/phase2_iter2_right_ankle_limit198_rate165_20260703/candidate.onnx",
+      "candidate_npz": "policy/candidates/phase2_iter2_right_ankle_limit198_rate165_20260703/candidate_mlp.npz",
+      "candidate_onnx_sha256": "eacc7c69e517b7cef32daeedeb6b110cd766e129183b071a7254f6fa0af5c1e2",
+      "candidate_npz_sha256": "053accd4d916c6ec0286ff1a4eadea3b285af4c8381b27689f39b10fcfbaa5ec"
+    },
+    "x008_gate": {
+      "artifact_json": "outputs/analysis/phase2_iter2_right_ankle_limit198_rate165_student_x008_gate.json",
+      "artifact_md": "outputs/analysis/PHASE2_ITER2_RIGHT_ANKLE_LIMIT198_RATE165_STUDENT_X008_GATE.md",
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "runs": 8,
+      "falls": 0,
+      "duration_complete": 8,
+      "mean_local_vx_m_s": 0.026153822287917138,
+      "track_ratio": 0.3269227785989642,
+      "single_support_pct": 25.2,
+      "double_support_pct": 74.8,
+      "max_pitch_vel_p95_rad_s": 1.7501713275909423,
+      "p95_velocity_excess_rad_s": 0.0,
+      "max_velocity_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.1891510248184204
+    },
+    "x0_gate": {
+      "artifact_json": "outputs/analysis/phase2_iter2_right_ankle_limit198_rate165_student_x0_gate.json",
+      "artifact_md": "outputs/analysis/PHASE2_ITER2_RIGHT_ANKLE_LIMIT198_RATE165_STUDENT_X0_GATE.md",
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "runs": 8,
+      "falls": 0,
+      "duration_complete": 8,
+      "mean_local_vx_m_s": 5.393375148503376e-05,
+      "single_support_pct": 0.0,
+      "double_support_pct": 100.0,
+      "max_pitch_vel_p95_rad_s": 0.05613151252269745,
+      "p95_velocity_excess_rad_s": 0.0,
+      "max_velocity_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.03204449750483037
+    },
+    "decision": "Current offline corrected-bridge baseline; use for staged domain-randomization robustness, not direct robot deployment."
+  },
+  "rate165_x008_gate": {
+    "artifact": {
+      "exists": true,
+      "path": "outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter1_phase_contact_rate165_x008_gate.json",
+      "sha256": "f7c20b8762414e658e2b5b9d983558d94c84b2039f2d564a73096a0c49522ad8",
+      "size_bytes": 50578
+    },
+    "bridge_mode": "fitted",
+    "command_x": 0.08,
+    "double_support_pct": 77.46666666666667,
+    "duration_complete_count": 8,
+    "duration_s": 15.0,
+    "fall_count": 0,
+    "max_pitch_vel_p95_rad_s": 1.6410061717033386,
+    "max_tracking_p95_rad": 0.18273870348930357,
+    "max_velocity_excess_rad_s": 0.0,
+    "mean_local_vx_m_s": 0.027203245410026285,
+    "p95_velocity_excess_rad_s": 0.0,
+    "pass_count": 8,
+    "reset_mode": "home-support",
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "single_support_pct": 22.53333333333333,
+    "status": "PASS_GATE",
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0026,
+    "total_count": 8,
+    "track_ratio_mean": 0.3400405676253285
+  },
+  "rate165_x0_gate": {
+    "artifact": {
+      "exists": true,
+      "path": "outputs/analysis/phase2_z0026_corrected_source_live_oracle_iter1_phase_contact_rate165_x0_gate.json",
+      "sha256": "6f01fdeeb5f6b54215fa61ff8d1612bbdc052ef571190fd663ef01b73c88f044",
+      "size_bytes": 48091
+    },
+    "bridge_mode": "fitted",
+    "command_x": 0.0,
+    "double_support_pct": 100.0,
+    "duration_complete_count": 8,
+    "duration_s": 15.0,
+    "fall_count": 0,
+    "max_pitch_vel_p95_rad_s": 0.0641961395740509,
+    "max_tracking_p95_rad": 0.03174679279327393,
+    "max_velocity_excess_rad_s": 0.0,
+    "mean_local_vx_m_s": -2.1916203921136912e-05,
+    "p95_velocity_excess_rad_s": 0.0,
+    "pass_count": 8,
+    "reset_mode": "home-support",
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "single_support_pct": 0.0,
+    "status": "PASS_GATE",
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0026,
+    "total_count": 8,
+    "track_ratio_mean": null
+  },
+  "robot_touched": false,
+  "ssh_used": false,
+  "stage_a_result": {
+    "artifact": {
+      "exists": true,
+      "path": "outputs/analysis/phase2_stage_a_rate165_narrow_flat_result.json",
+      "sha256": "cee6e88bfc85da71bfab468cfc11a617626a684dc4fd228de7334a367f877c4a",
+      "size_bytes": 3151
+    },
+    "checkpoint_triage_seed0": [
+      {
+        "double_support_pct": 100.0,
+        "mean_local_vx_m_s": 0.0005198046444062736,
+        "single_support_pct": 0.0,
+        "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "step": 655360,
+        "track_ratio": 0.00649755805507842
+      },
+      {
+        "double_support_pct": 100.0,
+        "mean_local_vx_m_s": 0.0005309219726930223,
+        "single_support_pct": 0.0,
+        "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "step": 1310720,
+        "track_ratio": 0.006636524658662779
+      },
+      {
+        "double_support_pct": 100.0,
+        "mean_local_vx_m_s": 0.0006087399087846279,
+        "single_support_pct": 0.0,
+        "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "step": 1966080,
+        "track_ratio": 0.007609248626045882
+      },
+      {
+        "double_support_pct": 100.0,
+        "mean_local_vx_m_s": 0.0006480675294995308,
+        "single_support_pct": 0.0,
+        "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "step": 2621440,
+        "track_ratio": 0.008100844118744135
+      },
+      {
+        "double_support_pct": 100.0,
+        "mean_local_vx_m_s": 0.0006769321672715455,
+        "single_support_pct": 0.0,
+        "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "step": 3276800,
+        "track_ratio": 0.008461652090894318
+      },
+      {
+        "double_support_pct": 100.0,
+        "mean_local_vx_m_s": 0.0007104244455695152,
+        "single_support_pct": 0.0,
+        "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "step": 3932160,
+        "track_ratio": 0.00888030556961894
+      },
+      {
+        "double_support_pct": 100.0,
+        "mean_local_vx_m_s": 0.00073082206170947,
+        "single_support_pct": 0.0,
+        "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "step": 4587520,
+        "track_ratio": 0.009135275771368375
+      }
+    ],
+    "status": "HOLD_STAGE_A_RATE165_STANDSTILL_REGRESSION",
+    "training": {
+      "behavior_prior_mlp_npz": "outputs/analysis/phase2_rate165_ppo_loc_warmstart_candidate/candidate_mlp.npz",
+      "downloaded_artifact_bundle_sha256": "2729b49a124b001f6389529daa818cb65c27dc02929caab1fed8858d70a4fcb1",
+      "elapsed_s": 810.073149308,
+      "final_onnx": "outputs/analysis/phase2_stage_a_rate165_narrow_flat_no_push_candidate/candidate.onnx",
+      "final_onnx_sha256": "7d83b2a24ca2874286d80eb27743fb5a5f498fa9ecb8bd1ad2effde7c0966982",
+      "final_step": 4587520,
+      "hardware": "Colab A100",
+      "remote_status": "PASS_SMOKE_RUN",
+      "source_checkpoint": "outputs/analysis/phase2_rate165_ppo_loc_warmstart_step0_checkpoint",
+      "stage": "stage_a_narrow_flat_no_push",
+      "task": "flat_terrain_backlash"
+    },
+    "x008_gate": {
+      "base_height_min_m": 0.15230579674243927,
+      "body_pitch_p95_rad": 0.030459442644968804,
+      "bridge_mode": "fitted",
+      "double_support_pct": 100.0,
+      "duration_complete": 8,
+      "falls": 0,
+      "max_pitch_vel_p95_rad_s": 0.08384913206100464,
+      "max_tracking_p95_rad": 0.03848867416381836,
+      "max_velocity_excess_rad_s": 0.0,
+      "mean_local_vx_m_s": 0.00073082206170947,
+      "p95_velocity_excess_rad_s": 0.0,
+      "reset_mode": "home-support",
+      "seeds": 8,
+      "single_support_pct": 0.0,
+      "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+      "task": "rough_terrain_backlash",
+      "terrain_hfield_z_scale": 0.0026,
+      "track_ratio": 0.009135275771368375
+    }
+  },
+  "status": "PASS_TRAINABLE_PHASE2_WARMSTART_READY",
+  "training_started": false,
+  "current_trainable_warmstart": {
+    "status": "PASS_TRAINABLE_PHASE2_WARMSTART_READY",
+    "decision_artifact": "outputs/analysis/phase2_limit198_ppo_loc_warmstart_decision.json",
+    "checkpoint": "outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0_checkpoint",
+    "step0_onnx": "outputs/analysis/phase2_limit198_ppo_loc_warmstart_step0.onnx",
+    "step0_onnx_sha256": "1dc894eebc144d790f1a6b4be6ada5a05e748f215f2053c72610347955deb3bb",
+    "ppo_loc_bc_onnx_sha256": "a48c82c0f5719016b3e8bfae7817351b5413fac0e1babcf70de05e1f3652c237",
+    "ppo_loc_bc_npz_sha256": "cfb62315014dfc83ef0c654a8386bc39eb0ec9f7305e10adfa10216827ab0d15",
+    "fidelity_status": "PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY",
+    "p95_abs_action_error": 1.4901161193847656e-07,
+    "max_abs_action_error": 3.8743019104003906e-07,
+    "x008_gate": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "pass_count": 8,
+      "total_count": 8,
+      "mean_local_vx_m_s": 0.03321039105321203,
+      "track_ratio": 0.4151298881651504,
+      "single_support_pct": 28.133333333333333,
+      "double_support_pct": 71.86666666666667,
+      "corrected_max_velocity_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.18227561116218566
+    },
+    "x0_gate": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "pass_count": 8,
+      "total_count": 8,
+      "mean_local_vx_m_s": 0.00011640891783780679,
+      "double_support_pct": 100.0,
+      "corrected_max_velocity_excess_rad_s": 0.0,
+      "max_tracking_p95_rad": 0.0321868896484375
+    }
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+  "manifest": "outputs/analysis/phase2_health_routed_pass_parent_aggregate_manifest.json",
+  "samples": 5250,
+  "hidden_sizes": [
+    512,
+    256,
+    128
+  ],
+  "activation": "swish",
+  "saved_npz": "outputs/analysis/phase2_health_routed_pass_parent_ppo_loc_rate150_prior/candidate_mlp.npz",
+  "exported_onnx": "outputs/analysis/phase2_health_routed_pass_parent_ppo_loc_rate150_prior/candidate.onnx",
+  "train_metrics": {
+    "samples": 5250,
+    "mae": 0.001966638332829326,
+    "rmse": 0.0027316001843089247,
+    "p50_abs_error": 0.0013206830165537545,
+    "p95_abs_error": 0.005764867989597225,
+    "p99_abs_error": 0.008376340366396461,
+    "max_abs_error": 0.024172009685211382,
+    "pred_action_saturation_pct": 0.0
+  },
+  "target_rate": {
+    "pair_count": 5243,
+    "p50_rad_s": 0.21103886814905193,
+    "p95_rad_s": 1.3688903718770178,
+    "p99_rad_s": 1.4920009049016036,
+    "max_rad_s": 1.5893589553105942
+  },
+  "sample_weight": {
+    "p50": 1.0,
+    "p95": 5.0,
+    "max": 5.0,
+    "weighted_samples": 7810.0
+  },
+  "loss_rows": [
+    {
+      "step": 1,
+      "loss": 0.1039850190281868
+    },
+    {
+      "step": 1000,
+      "loss": 2.8737455068039708e-05
+    },
+    {
+      "step": 2000,
+      "loss": 1.6658115782774985e-05
+    },
+    {
+      "step": 3000,
+      "loss": 1.3674338333657943e-05
+    },
+    {
+      "step": 4000,
+      "loss": 1.1450446436356287e-05
+    },
+    {
+      "step": 5000,
+      "loss": 7.801673746143933e-06
+    },
+    {
+      "step": 6000,
+      "loss": 1.2167237400717568e-05
+    },
+    {
+      "step": 7000,
+      "loss": 8.681736289872788e-06
+    },
+    {
+      "step": 8000,
+      "loss": 8.533454092685133e-06
+    },
+    {
+      "step": 9000,
+      "loss": 5.644016709993593e-06
+    },
+    {
+      "step": 10000,
+      "loss": 4.9499103624839336e-06
+    }
+  ],
+  "onnx_verify": {
+    "path": "outputs/analysis/phase2_health_routed_pass_parent_ppo_loc_rate150_prior/candidate.onnx",
+    "samples_checked": 64,
+    "max_abs_error": 2.765889096645324e-07,
+    "p95_abs_error": 1.4411947497385003e-07
+  },
+  "config": {
+    "steps": 10000,
+    "batch_size": 512,
+    "learning_rate": 0.0007,
+    "target_rate_scale": 0.08,
+    "target_rate_limit_rad_s": 1.5,
+    "action_scale_rad": 0.25,
+    "dt_s": 0.02,
+    "seed": 25
+  }
+}

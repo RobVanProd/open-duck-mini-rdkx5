@@ -1,0 +1,203 @@
+{
+  "authority": {
+    "manual_mass_com_inertia_measurements_required": false,
+    "pass_authorizes_only": "a separate two-update normalized-predictor CPU proof preregistration",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "winner_v22_training_authorized": false
+  },
+  "decision": "AUTHORIZE_ONE_ZERO_UPDATE_NORMALIZED_SEMANTICS_PROOF_ONLY",
+  "execution_now": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "frozen_cpu_proof": {
+    "optimizer_updates": 0,
+    "population": "exact 40 training configurations x 2 hidden plants",
+    "predictor_scale_evaluations": 1,
+    "requirements": [
+      "exact Stage-1 update-100 source and exact CPU software environment",
+      "old raw-coordinate formula reproduces completed Winner-v21 update-1 loss",
+      "corrected JAX loss matches an independent NumPy normalized-coordinate evaluator",
+      "constant contact target has exactly zero corrected error and exposes the old formula",
+      "stored-successor mask is exact and nonempty",
+      "corrected predictor gradients open recurrent plus auxiliary leaves only",
+      "one corrected head-gradient RMS scale is finite and strictly positive",
+      "all twelve combined gradients are finite and nonzero",
+      "all parameters remain bit-exact and optimizer updates remain zero"
+    ],
+    "rollout_update_index": 0,
+    "scale_sweep": false,
+    "ticks": 250,
+    "training_root_seed": 120120
+  },
+  "pass_rule": "Every proof check passes. A pass freezes the single corrected scale and authorizes only a separately preregistered two-update CPU proof.",
+  "pre_execution_stops": [
+    {
+      "cause": "synthetic float32 learned-error assertion tolerance was 2e-8 while observed maximum error was 2.45123497e-8",
+      "classified_as_policy_evidence": false,
+      "failed_stage": "Verify frozen Winner v22 package",
+      "formal_support_cells": 0,
+      "github_run_attempt": 1,
+      "github_run_head_sha": "ec88c60d6e0f6c489f0c378bcfcea02dbace8cca",
+      "github_run_id": 29870820100,
+      "locomotion_steps": 0,
+      "optimizer_updates": 0,
+      "robot_or_rdk_access": 0,
+      "simulation_executed": false,
+      "snapshot_recovered": false
+    },
+    {
+      "cause": "companion constant-error assertion retained the platform-sensitive 2e-8 tolerance; fixture replaced with exact binary values",
+      "classified_as_policy_evidence": false,
+      "failed_stage": "Verify frozen Winner v22 package",
+      "formal_support_cells": 0,
+      "github_run_attempt": 1,
+      "github_run_head_sha": "114921f238132a9d8851f8b9c8de0538a88c209b",
+      "github_run_id": 29870957518,
+      "locomotion_steps": 0,
+      "optimizer_updates": 0,
+      "robot_or_rdk_access": 0,
+      "simulation_executed": false,
+      "snapshot_recovered": false
+    }
+  ],
+  "schema_version": "winner_v22.normalized_predictor_cpu_contract.v1",
+  "single_correction": {
+    "flat_transport_equation_used": false,
+    "inherited_head_meaning": "normalized next-response coordinates",
+    "new_parameters": 0,
+    "onnx_abi_change": false,
+    "rejected_formula": "(prediction_normalized - next_response_raw) / target_std",
+    "required_evaluator": "learned=square(prediction_normalized-normalized_target); constant=square(normalized_target)",
+    "required_formula": "prediction_normalized - ((next_response_raw - target_mean) / target_std)",
+    "rollout_reward_population_seed_horizon_action_bound_change": false
+  },
+  "source_artifact": {
+    "artifact_zip_sha256": "b3ff19186ef39e8a72f9e43095d373840fb0b1562a2f7bed83a74c9f10cf6680",
+    "github_artifact_id": 8492593761,
+    "github_artifact_name": "winner-v13-normalized-response-stage1-v2-29822834921",
+    "github_run_attempt": 1,
+    "github_run_head_sha": "0b1dac9ea47a93861f72fa5dd393134f36d6db02",
+    "github_run_id": 29822834921,
+    "snapshot_bytes": 189027,
+    "snapshot_member": "winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_100.npz",
+    "snapshot_sha256": "8c1392c738eddfb098e61c1a6ae2f863eda883e1eba6ac546aef695da6f163af"
+  },
+  "source_manifest_sha256": "886cdecb6f3e8997dc9b4ebaeea38fac00e70457ca3f6feea46fc6e1cc238b1f",
+  "sources": {
+    "attribution": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v21_normalized_semantics_attribution.json",
+      "sha256": "b9f85f48d51c390a68256ba65bd150827bc13d728d676cdc477e9e061638ef5d"
+    },
+    "attribution_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v21_normalized_semantics_attribution.py",
+      "sha256": "44f9aba4f2e3d4d2fb263cca3152f52dce87766e339e19c28bde1c7f7b52197d"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v22_normalized_predictor_cpu_contract.py",
+      "sha256": "d1e3ebe0684fd9e7d69f0f172e6188aedddbde215ad507f60479b955ae29d28e"
+    },
+    "canonical_p30_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "contract_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v22_normalized_predictor_cpu_contract.py",
+      "sha256": "daf8e15bd039d3c114e245ac9d4fe30bf2ba33031aaabdab7148d3f6cc9dd664"
+    },
+    "cpu_smoke": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "environment_builder": {
+      "hash_mode": "lf",
+      "path": "tools/prepare_winner_v15_cpu_environment.py",
+      "sha256": "33e54c3a16d5684e2d2520270acf25a28df42dc89e9f302c1ef3bd5f37d867c2"
+    },
+    "full_training_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_preregistration.json",
+      "sha256": "99500648d6683097a13f894b0949bf4b5494e5653f36878710817bd0952f71dd"
+    },
+    "full_training_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_full_calibrator_training.py",
+      "sha256": "8cd2c9267f356adba1127f8fb837138bbe6e39b5c3326300eeed9fdd5b524610"
+    },
+    "mechanics": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v22_normalized_predictor.py",
+      "sha256": "cc8e0249033af7264ed7e6c6e3faa51e8dcef1471e0d2fdda5a89091e810ad17"
+    },
+    "mechanics_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v22_normalized_predictor.py",
+      "sha256": "2a044d29ee5cd3e13f11c9fa5bf4189462e6f82425dc688de70c74a1fac158fc"
+    },
+    "result_importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v22_normalized_predictor_cpu_result.py",
+      "sha256": "4e5f63f74a276c2ace72950d07043225a74e5cbfe89de7d6bcc2644f64a3b4bd"
+    },
+    "result_importer_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v22_normalized_predictor_cpu_import.py",
+      "sha256": "6d4de951e927232c2ca5d2577ef126e24384e14733173c34952cf79ed767a9c6"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v22_normalized_predictor_cpu_contract.py",
+      "sha256": "8af4d91e9d9ab0350c5ea23b3b1286daf416e8739c1d4ff32e69850e9e32137b"
+    },
+    "runtime_observer": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py",
+      "sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889"
+    },
+    "stage1_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v13_normalized_response_stage1_v2_result.json",
+      "sha256": "45e12b9993ce5c8f9811af7350ed3198f9376d0d4ea9b25de8b1aee608a5bcc7"
+    },
+    "training_primitives": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_calibrator_training.py",
+      "sha256": "f5736a357d73baedae2bba1d15254dd688bddf3761eb731d757a971783c77227"
+    },
+    "variable_configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "winner_v15_objective": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v15_pitch_margin_support.py",
+      "sha256": "b2dfecf77971596e2c67a7185b1a9c1acea2d49ecbb04eaf846666239b3326e8"
+    },
+    "winner_v20_mechanics": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v20_joint_recurrent_support.py",
+      "sha256": "276f0008049be9e28cbfc7cb430a5fec6c0a092c02e605f08f3ea95e2df942c7"
+    },
+    "winner_v21_mechanics": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v21_predictor_preserving_joint_support.py",
+      "sha256": "2d274c6c7c63fa2de5e3a7114ac047df1346189e66ec7bf8d83221e2f93aef0a"
+    },
+    "workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v22-normalized-predictor-cpu-contract.yml",
+      "sha256": "7d12bcb325bc4d34743943557ace04070944e58f67b234524f7a911f0ee23b07"
+    }
+  },
+  "status": "FROZEN_WINNER_V22_NORMALIZED_PREDICTOR_CPU_CONTRACT"
+}

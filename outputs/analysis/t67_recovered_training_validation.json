@@ -1,0 +1,209 @@
+{
+  "authority": {
+    "behavior_evaluation_authorized": false,
+    "checkpoint_selection_authorized": false,
+    "gate5_authorized": false,
+    "postexport_transform_preregistration_authorized": true,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "all_checkpoint_trees_finite": true,
+    "all_onnx_contracts_pass": true,
+    "archive_hash_matches_result_and_receipt": true,
+    "both_exports_only_update_recurrent_core_and_critic": true,
+    "checkpoint_hashes_match_hosted_result": true,
+    "cpu_only_validation": true,
+    "endpoint_strata_readback_exact": true,
+    "exact_local_exports": true,
+    "formal_behavior_cells_zero": true,
+    "hosted_artifact_passed_pending_cpu_validation": true,
+    "launch_receipt_complete": true,
+    "onnx_hashes_match_hosted_result": true,
+    "package_and_launch_contracts_green": true,
+    "preregistration_green_and_exact": true,
+    "result_hash_matches_receipt": true,
+    "source_checkpoint_exact": true,
+    "step_zero_raw_onnx_byte_exact": true,
+    "step_zero_tree_source_bit_exact": true,
+    "t66_cpu_authority_exact": true
+  },
+  "classification": {
+    "actor_update_scope": "recurrent_core_only",
+    "behavior_cells": 0,
+    "correction_method": "read-only CPU topology remap using frozen T66 template",
+    "endpoint_strata": 8,
+    "training_completed": true,
+    "training_resume": false,
+    "training_retry": false
+  },
+  "decision": "EARN_T68_EXACT_DEPLOYMENT_TRANSFORM_PREREGISTRATION",
+  "exports": {
+    "checkpoints": [
+      {
+        "directory_sha256": "7d4f65035f58f69a965992a2030de945f5501edadb7e0169e744bf9c3543e8f2",
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t67_extracted_20260728\\t67_endpoint_core_continuation\\training\\2026_07_28_152140_0",
+        "step": 0
+      },
+      {
+        "directory_sha256": "ace5a284b374d33389e495c6ca9ab0bb41668f4bceb06c4ba8232e308fc824c2",
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t67_extracted_20260728\\t67_endpoint_core_continuation\\training\\2026_07_28_152735_1003520",
+        "step": 1003520
+      },
+      {
+        "directory_sha256": "dc227d37834eb135af7bd86b7b1f8bba538c8b655b6629bf09c860af2763b229",
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t67_extracted_20260728\\t67_endpoint_core_continuation\\training\\2026_07_28_153302_2007040",
+        "step": 2007040
+      }
+    ],
+    "onnx": [
+      {
+        "abi_exact": true,
+        "chain_256_finite": true,
+        "cpu_provider_exact": true,
+        "initializers_finite": true,
+        "sha256": "b395a0299b7a35b3c35c0eb063135c4e08be527eac441de9215aeea22bb9157e",
+        "step": 0
+      },
+      {
+        "abi_exact": true,
+        "chain_256_finite": true,
+        "cpu_provider_exact": true,
+        "initializers_finite": true,
+        "sha256": "288845f1d6c053d90c84978d469dab4b8a8f4ce1c806f616b63f728f1c2f61e1",
+        "step": 1003520
+      },
+      {
+        "abi_exact": true,
+        "chain_256_finite": true,
+        "cpu_provider_exact": true,
+        "initializers_finite": true,
+        "sha256": "3c0ed2af1fa1e7cfac51fd45d4b87003b9906566097d4d1334c31b082b798d84",
+        "step": 2007040
+      }
+    ],
+    "updates": [
+      {
+        "all_core_groups_present": true,
+        "core_actor_leaf_deltas": {
+          "1/params/adapter_hidden_bias": 0.034739356487989426,
+          "1/params/adapter_hidden_projection/kernel": 0.046368539333343506,
+          "1/params/adapter_obs_projection/kernel": 0.05231064558029175
+        },
+        "critic_leaf_deltas": {
+          "2/params/hidden_0/bias": 0.00494036078453064,
+          "2/params/hidden_0/kernel": 0.01854126714169979,
+          "2/params/hidden_1/bias": 0.007379055023193359,
+          "2/params/hidden_1/kernel": 0.013761856593191624,
+          "2/params/hidden_2/bias": 0.0020662248134613037,
+          "2/params/hidden_2/kernel": 0.00703778862953186,
+          "2/params/hidden_3/bias": 0.002501972019672394,
+          "2/params/hidden_3/kernel": 0.0043867602944374084
+        },
+        "every_core_leaf_updated": true,
+        "every_critic_leaf_updated": true,
+        "every_frozen_actor_leaf_exact": true,
+        "frozen_actor_leaf_deltas": {
+          "1/params/adapter_location/bias": 0.0,
+          "1/params/adapter_location/kernel": 0.0,
+          "1/params/residual_location/bias": 0.0,
+          "1/params/residual_location/kernel": 0.0,
+          "1/params/residual_trunk/hidden_0/bias": 0.0,
+          "1/params/residual_trunk/hidden_0/kernel": 0.0,
+          "1/params/residual_trunk/hidden_1/bias": 0.0,
+          "1/params/residual_trunk/hidden_1/kernel": 0.0,
+          "1/params/residual_trunk/hidden_2/bias": 0.0,
+          "1/params/residual_trunk/hidden_2/kernel": 0.0,
+          "1/params/scale_logits/bias": 0.0,
+          "1/params/scale_logits/kernel": 0.0
+        },
+        "normalizer_exact": true,
+        "normalizer_leaf_deltas": {
+          "0/count/hi": 0.0,
+          "0/count/lo": 0.0,
+          "0/mean/policy_hidden": 0.0,
+          "0/mean/privileged_state": 0.0,
+          "0/mean/state": 0.0,
+          "0/std/policy_hidden": 0.0,
+          "0/std/privileged_state": 0.0,
+          "0/std/state": 0.0,
+          "0/std_eps": 0.0,
+          "0/summed_variance/policy_hidden": 0.0,
+          "0/summed_variance/privileged_state": 0.0,
+          "0/summed_variance/state": 0.0
+        },
+        "step": 1003520,
+        "structure_exact": true,
+        "tree_finite": true
+      },
+      {
+        "all_core_groups_present": true,
+        "core_actor_leaf_deltas": {
+          "1/params/adapter_hidden_bias": 0.051309049129486084,
+          "1/params/adapter_hidden_projection/kernel": 0.06911720335483551,
+          "1/params/adapter_obs_projection/kernel": 0.07178206741809845
+        },
+        "critic_leaf_deltas": {
+          "2/params/hidden_0/bias": 0.007668033242225647,
+          "2/params/hidden_0/kernel": 0.019415266811847687,
+          "2/params/hidden_1/bias": 0.007678002119064331,
+          "2/params/hidden_1/kernel": 0.021005956456065178,
+          "2/params/hidden_2/bias": 0.00255671888589859,
+          "2/params/hidden_2/kernel": 0.00949174165725708,
+          "2/params/hidden_3/bias": 0.0030079856514930725,
+          "2/params/hidden_3/kernel": 0.005342759191989899
+        },
+        "every_core_leaf_updated": true,
+        "every_critic_leaf_updated": true,
+        "every_frozen_actor_leaf_exact": true,
+        "frozen_actor_leaf_deltas": {
+          "1/params/adapter_location/bias": 0.0,
+          "1/params/adapter_location/kernel": 0.0,
+          "1/params/residual_location/bias": 0.0,
+          "1/params/residual_location/kernel": 0.0,
+          "1/params/residual_trunk/hidden_0/bias": 0.0,
+          "1/params/residual_trunk/hidden_0/kernel": 0.0,
+          "1/params/residual_trunk/hidden_1/bias": 0.0,
+          "1/params/residual_trunk/hidden_1/kernel": 0.0,
+          "1/params/residual_trunk/hidden_2/bias": 0.0,
+          "1/params/residual_trunk/hidden_2/kernel": 0.0,
+          "1/params/scale_logits/bias": 0.0,
+          "1/params/scale_logits/kernel": 0.0
+        },
+        "normalizer_exact": true,
+        "normalizer_leaf_deltas": {
+          "0/count/hi": 0.0,
+          "0/count/lo": 0.0,
+          "0/mean/policy_hidden": 0.0,
+          "0/mean/privileged_state": 0.0,
+          "0/mean/state": 0.0,
+          "0/std/policy_hidden": 0.0,
+          "0/std/privileged_state": 0.0,
+          "0/std/state": 0.0,
+          "0/std_eps": 0.0,
+          "0/summed_variance/policy_hidden": 0.0,
+          "0/summed_variance/privileged_state": 0.0,
+          "0/summed_variance/state": 0.0
+        },
+        "step": 2007040,
+        "structure_exact": true,
+        "tree_finite": true
+      }
+    ]
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "cpu_result": "d280a59f38b4fce79881276623104fa3ab757013efaf0d1f3a92c1285ecd4b4c",
+    "cpu_template": "18a2b9f549ec87f80f1ad99eb836780b8f1eaf0ff22ab8e525466fb2babdfb5d",
+    "hosted_result": "c01357f1b1fc26156664e5ec620d680eea7ffce958eaa1369311974e09534050",
+    "launch_contract": "ffa63903ff107c9186a46c568ca45a9a489aa8d216364fbc454fffeffcd6fa16",
+    "launch_receipt": "53c12e2f9f6182f67fcbbd413979e7b870b67a2f94e38a9632c508e7453e3631",
+    "package_contract": "91628f87a162db237f6ddf021c7b64b4780fddb9e39283f8fdcc4e599aef824b",
+    "preregistration": "40e7cf18e79b6f9dbaa5013d725471863f736ee5a16791fe1bd49365057bf43e",
+    "recovery_archive": "074db0d3d1d11809d46e9a88403dcc0f7dcd15249e4243278ede79a5d01aaad5",
+    "source_checkpoint": "8d71d0a1fe58a24b4dd0e249dad4e4a6e534972a271dbbf2a8af9d6727bb1fdd"
+  },
+  "schema_version": "open_duck.t67_recovered_training_validation.v1",
+  "status": "PASS_T67_RECOVERED_TRAINING_VALIDATION"
+}

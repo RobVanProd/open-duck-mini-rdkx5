@@ -1,0 +1,108 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "deployment_authorized": false,
+    "diagnostic_authorized": true,
+    "gate5_authorized": false,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "result_authorizes": "one separate mechanism proof preregistration only",
+    "robot_clearance": false,
+    "support_gate_authorized_now": false,
+    "training_authorized_now": false
+  },
+  "classification_rule": {
+    "endpoint_feasible": "both full-fit and aggregate leave-one-configuration-out bounded pitch MSE are strictly below that endpoint's unchanged source MSE",
+    "feasible_authority": "a separate exact fitted-head CPU proof only; this audit writes no snapshot or ONNX and runs no support cell",
+    "infeasible_authority": "a separate recurrent-representation diagnostic only",
+    "next_source": "half if feasible; otherwise final if feasible; otherwise none"
+  },
+  "decision": "AUTHORIZE_ONE_READ_ONLY_TWO_ENDPOINT_LINEAR_FEASIBILITY_AUDIT_ONLY",
+  "execution_now": {
+    "formal_support_cells": 0,
+    "least_squares_fits": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0,
+    "stage2_rollout_episodes": 0
+  },
+  "fit": {
+    "cross_validation": "leave one of the 16 teacher configuration IDs out, removing both plant episodes; fit on the other 15 and score only the held-out ID",
+    "cross_validation_fits_per_checkpoint": 16,
+    "deployed_precision_emulation": "cast fitted weights and bias to float32 before affine, tanh, and the unchanged graph-authoritative bounded_action",
+    "features": "frozen recurrent hidden[64] plus an intercept",
+    "full_fit_count_per_checkpoint": 1,
+    "hyperparameter_search": false,
+    "rcond": null,
+    "solver": "numpy.linalg.lstsq",
+    "targets": "float64 arctanh of the six static raw teacher actions"
+  },
+  "frozen_source": {
+    "checkpoint_labels_updates": {
+      "final": 755,
+      "half": 705
+    },
+    "pitch_indices": [
+      2,
+      3,
+      4,
+      11,
+      12,
+      13
+    ],
+    "teacher_configuration_count": 16,
+    "teacher_episodes_per_checkpoint": 32,
+    "teacher_table": "exact complete replay-bound Winner-v80/v84 table",
+    "training_population_episodes": 80,
+    "v86_result_sha256": "11225fed5b87a884fa149b1aa6f60ac904017e5ab35fac4587aa8a3f3b10a8d5"
+  },
+  "question": "Can the frozen 64-D recurrent hidden state represent the replay-bound six-pitch teacher through the existing affine-plus-tanh action head, or must the next mechanism change the recurrent representation?",
+  "required_checks": {
+    "all_targets_strictly_inside_tanh_domain": true,
+    "all_values_finite": true,
+    "exact_teacher_population_per_checkpoint": true,
+    "full_design_matrix_rank_and_singular_values_recorded": true,
+    "no_snapshot_or_onnx_written": true,
+    "repeat_solves_bit_exact": true,
+    "two_exact_80_episode_rollouts": true,
+    "two_exact_source_checkpoints": true
+  },
+  "schema_version": "winner_v87.pitch_head_linear_feasibility_preregistration.v1",
+  "source_manifest_sha256": "9002b96c41772c5349f3dcef3f5aa5aa5a3f0df60f1fe864e5fda8d09fcf27ea",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v87_pitch_head_linear_feasibility_preregistration.py",
+      "sha256": "2e4c86a943511130ce8193e1eb7eaf27de0e32ff98545b21a9a1953b071cf72c"
+    },
+    "recurrent_policy": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v29_prefix_right_pitch_anchor.py",
+      "sha256": "7c01b3db8c359464d122fc4f915df02eb9833720ef65837a99c5838dd42db36f"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v87_pitch_head_linear_feasibility.py",
+      "sha256": "ff4fd30434a5090cbb760eddf230b9c5082e0dbab4deed97c2d725155c0de730"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v87_pitch_head_linear_feasibility.py",
+      "sha256": "92be54372a9a893579189a61f5c0186fdf60169c28f0bfe60be1ed2fec3b2372"
+    },
+    "v80_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v80_pitch_action_head_step.py",
+      "sha256": "1666e7194a9615c9bad0850db21cef2218edb72cb328a7bdffd3ef01a2dd8826"
+    },
+    "v84_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v84_negative_gradient_pitch_head_continuation_result.json",
+      "sha256": "1a4f5da556c1d2cc64510da55f01136a157fd202ae22b5028b651396933e99ff"
+    },
+    "v86_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v86_residual_pitch_causal_result.json",
+      "sha256": "6c0789600dbd01db248b0856449e3a45bfd7820ee850cd9ff5a207b5010776ac"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V87_PITCH_HEAD_LINEAR_FEASIBILITY"
+}

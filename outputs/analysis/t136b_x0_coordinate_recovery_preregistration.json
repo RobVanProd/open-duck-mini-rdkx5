@@ -1,0 +1,95 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "gate5": false,
+    "negative_matrix": false,
+    "nominal_matrix_preregistration": false,
+    "one_read_only_cpu_recovery": true,
+    "rdkx5_or_robot": false,
+    "training": false
+  },
+  "checks": {
+    "frozen_inputs_present": true,
+    "no_behavior_training_colab_or_robot": true,
+    "recovery_is_read_only": true,
+    "source_and_transformed_graphs_present": true,
+    "t136_single_assertion_hold": true
+  },
+  "decision_rule": {
+    "fail_decision": "CLOSE_STATIC_CALIBRATION_ROUTER_TRANSFORM",
+    "pass_decision": "RECOVER_T136_AND_EARN_T137_STATIC_ROUTER_NOMINAL_MATRIX_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "x0_cpu_samples": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 5287,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t136b_x0_coordinate_recovery_preregistration.py",
+      "sha256": "88a721f90642c7a3428a5f66cf395888636a3527e9704f9bd6bc2cc11d326913"
+    },
+    "runner": {
+      "bytes": 8214,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t136b_x0_coordinate_recovery.py",
+      "sha256": "634dfe8d8096dc45c496867c7b9f55abd19ceb404f337447ac196880a6dedf31"
+    },
+    "t135b_result": {
+      "bytes": 14765,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t135b_interrupted_calibration_context_router_recovery_result.json",
+      "sha256": "b01f711e751490fab17d327eebf770473636285dfbc97102478dc5328dfcd540"
+    },
+    "t136_result": {
+      "bytes": 11134,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t136_static_calibration_router_result.json",
+      "sha256": "29eb2f93a6a80a5c9c035c6562da02f7616839abc3d1f3808cc6bfd46764479a"
+    },
+    "test": {
+      "bytes": 996,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t136b_x0_coordinate_recovery.py",
+      "sha256": "a6b11f62450c53a83bd7763cbcdd717fd0e17ae5d1ad3bebffe55a1f31346bc4"
+    }
+  },
+  "preregistered_contract_sha256": "6d065489808737e18ade0e86747c9e4cfefae7d07ecaef613935989920c25192",
+  "question": "Does every T136 graph preserve every frozen T131 output bit-exactly at x=0 in the external support-action coordinate domain for all four calibration contexts?",
+  "schema_version": "open_duck.t136b_x0_coordinate_recovery_preregistration.v1",
+  "source_graphs": {
+    "0": {
+      "bytes": 970391,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t131_t129_deployments_v1\\0\\deployment\\action_margin.onnx",
+      "sha256": "fcf4260ba6e866bba51d90a62d15027501098c693b1ca02fde6baf996e899564"
+    },
+    "1003520": {
+      "bytes": 970391,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t131_t129_deployments_v1\\1003520\\deployment\\action_margin.onnx",
+      "sha256": "de0e24e1d719b76b274beb5202355c3915670a6feb64ed2f618e29b1d12b4171"
+    },
+    "2007040": {
+      "bytes": 970391,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t131_t129_deployments_v1\\2007040\\deployment\\action_margin.onnx",
+      "sha256": "0676a0fd52c13f11cefe051f416c25baf74ffc05e942436570a3c512890a2c20"
+    }
+  },
+  "status": "PREREGISTERED_T136B_X0_COORDINATE_RECOVERY",
+  "transformed_graphs": {
+    "0": {
+      "bytes": 971154,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t136_t129_static_calibration_router_v1\\0\\static_calibration_router.onnx",
+      "sha256": "18978fe3bd09d6f0c11047c46f7c44d90237dbc17566f5e1600c7c501312aa9c"
+    },
+    "1003520": {
+      "bytes": 971154,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t136_t129_static_calibration_router_v1\\1003520\\static_calibration_router.onnx",
+      "sha256": "12c9608e844217f918fe68570e2fbc41562cab8a11d4b89505081654593b54b4"
+    },
+    "2007040": {
+      "bytes": 971154,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t136_t129_static_calibration_router_v1\\2007040\\static_calibration_router.onnx",
+      "sha256": "b1b23aea39f041d9a85ab7eed8181f49d531418d334ecedf2a131a5d7fa11c79"
+    }
+  }
+}

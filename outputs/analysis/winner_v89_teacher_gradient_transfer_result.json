@@ -1,0 +1,976 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "deployment_authorized": false,
+    "diagnostic_authorized": true,
+    "gate5_authorized": false,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "support_gate_authorized_now": false,
+    "training_authorized_now": false
+  },
+  "checks": {
+    "all_inactive_gradients_exact_zero": true,
+    "all_values_finite": true,
+    "exact_12_folds_both_endpoints": true,
+    "exact_24_teacher_episodes_both_endpoints": true,
+    "no_optimizer_step_or_parameter_commit": true,
+    "no_snapshot_or_onnx_written": true,
+    "two_exact_80_episode_rollouts": true
+  },
+  "classification": "STATIC_TEACHER_GRADIENT_NONTRANSFERABLE",
+  "decision": "PREREGISTER_OUTCOME_ALIGNED_MECHANISM_DIAGNOSTIC",
+  "endpoints": [
+    {
+      "all_inactive_gradients_exact_zero": true,
+      "all_values_finite": true,
+      "episode_receipt_sha256": "9f28a5d98b19a79b2ca6c3c65e4ecee4b44b0f3c4ffe53d9b1a531542c426821",
+      "folds": [
+        {
+          "groups": {
+            "action_head": {
+              "cosine": 0.49457593989983334,
+              "dot": 0.01671888613508685,
+              "elements": 910,
+              "heldout_norm": 0.51078915949212,
+              "strictly_positive_transfer": true,
+              "train_norm": 0.06618090220738412
+            },
+            "combined_policy": {
+              "cosine": 0.4867198078457284,
+              "dot": 0.01657308915483302,
+              "elements": 13326,
+              "heldout_norm": 0.5112209826874915,
+              "strictly_positive_transfer": true,
+              "train_norm": 0.06660637143553674
+            },
+            "recurrent_core": {
+              "cosine": -0.9233272180452682,
+              "dot": -0.00014579698025382745,
+              "elements": 12416,
+              "heldout_norm": 0.021007800582120827,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.007516441899286038
+            }
+          },
+          "heldout_configuration_id": "COM_X_NEG",
+          "heldout_loss": 0.007998144254088402,
+          "heldout_selected_elements": 3000,
+          "inactive_gradients_exact_zero": true,
+          "train_loss": 0.008200056850910187,
+          "train_selected_elements": 27060
+        },
+        {
+          "groups": {
+            "action_head": {
+              "cosine": 0.028327079040975214,
+              "dot": 0.0009122675127060012,
+              "elements": 910,
+              "heldout_norm": 0.3254952317903468,
+              "strictly_positive_transfer": true,
+              "train_norm": 0.09894088345819112
+            },
+            "combined_policy": {
+              "cosine": 0.029883618730191748,
+              "dot": 0.0009661445979406063,
+              "elements": 13326,
+              "heldout_norm": 0.32661911723434783,
+              "strictly_positive_transfer": true,
+              "train_norm": 0.09898453389824052
+            },
+            "recurrent_core": {
+              "cosine": 0.6770739313162331,
+              "dot": 5.387708523460498e-05,
+              "elements": 12416,
+              "heldout_norm": 0.027072159586798688,
+              "strictly_positive_transfer": true,
+              "train_norm": 0.002939308007775175
+            }
+          },
+          "heldout_configuration_id": "COM_CORNER_00",
+          "heldout_loss": 0.004377578850835562,
+          "heldout_selected_elements": 3000,
+          "inactive_gradients_exact_zero": true,
+          "train_loss": 0.008601449429988861,
+          "train_selected_elements": 27060
+        },
+        {
+          "groups": {
+            "action_head": {
+              "cosine": -0.15827484597520747,
+              "dot": -0.0074444206535947115,
+              "elements": 910,
+              "heldout_norm": 0.4787007740351582,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.09825504888734987
+            },
+            "combined_policy": {
+              "cosine": -0.19331468192429702,
+              "dot": -0.011707036878817467,
+              "elements": 13326,
+              "heldout_norm": 0.6123104446578902,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.09890323103219485
+            },
+            "recurrent_core": {
+              "cosine": -0.9876126334966772,
+              "dot": -0.004262616225222755,
+              "elements": 12416,
+              "heldout_norm": 0.38179791719610473,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.01130462191991377
+            }
+          },
+          "heldout_configuration_id": "COM_CORNER_01",
+          "heldout_loss": 0.012545572593808174,
+          "heldout_selected_elements": 504,
+          "inactive_gradients_exact_zero": true,
+          "train_loss": 0.008105460554361343,
+          "train_selected_elements": 29556
+        },
+        {
+          "groups": {
+            "action_head": {
+              "cosine": -0.8713047400018819,
+              "dot": -0.02396950445335075,
+              "elements": 910,
+              "heldout_norm": 0.21729357424540716,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.12660244562696424
+            },
+            "combined_policy": {
+              "cosine": -0.8638728579710542,
+              "dot": -0.023913683225929235,
+              "elements": 13326,
+              "heldout_norm": 0.21858224277266292,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.12664316777722717
+            },
+            "recurrent_core": {
+              "cosine": 0.7334340471284109,
+              "dot": 5.5821227421514813e-05,
+              "elements": 12416,
+              "heldout_norm": 0.02370019930682184,
+              "strictly_positive_transfer": true,
+              "train_norm": 0.0032113402065916475
+            }
+          },
+          "heldout_configuration_id": "COM_CORNER_02",
+          "heldout_loss": 0.0015045648906379938,
+          "heldout_selected_elements": 3000,
+          "inactive_gradients_exact_zero": true,
+          "train_loss": 0.008919966407120228,
+          "train_selected_elements": 27060
+        },
+        {
+          "groups": {
+            "action_head": {
+              "cosine": -0.16220608948804707,
+              "dot": -0.00814577306773439,
+              "elements": 910,
+              "heldout_norm": 0.5091784319216306,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.09862684790068352
+            },
+            "combined_policy": {
+              "cosine": -0.18663068214785286,
+              "dot": -0.010456720202680857,
+              "elements": 13326,
+              "heldout_norm": 0.5654321644027736,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.09909048053108682
+            },
+            "recurrent_core": {
+              "cosine": -0.9817014123853293,
+              "dot": -0.002310947134946466,
+              "elements": 12416,
+              "heldout_norm": 0.24586755989156936,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.009574351417048255
+            }
+          },
+          "heldout_configuration_id": "COM_CORNER_03",
+          "heldout_loss": 0.01278937328606844,
+          "heldout_selected_elements": 570,
+          "inactive_gradients_exact_zero": true,
+          "train_loss": 0.008090810850262642,
+          "train_selected_elements": 29490
+        },
+        {
+          "groups": {
+            "action_head": {
+              "cosine": -0.7198391802865355,
+              "dot": -0.05507762935738895,
+              "elements": 910,
+              "heldout_norm": 0.5425547218888447,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.14102503310789524
+            },
+            "combined_policy": {
+              "cosine": -0.7202242144380012,
+              "dot": -0.05526579926125712,
+              "elements": 13326,
+              "heldout_norm": 0.5432752102768538,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.1412436227068598
+            },
+            "recurrent_core": {
+              "cosine": -0.8564651407279551,
+              "dot": -0.00018816990386816922,
+              "elements": 12416,
+              "heldout_norm": 0.027970124373659713,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.00785499791691922
+            }
+          },
+          "heldout_configuration_id": "COM_CORNER_07",
+          "heldout_loss": 0.011946679092943668,
+          "heldout_selected_elements": 3000,
+          "inactive_gradients_exact_zero": true,
+          "train_loss": 0.0077623026445508,
+          "train_selected_elements": 27060
+        },
+        {
+          "groups": {
+            "action_head": {
+              "cosine": 0.2529330713324581,
+              "dot": 0.010282313472754372,
+              "elements": 910,
+              "heldout_norm": 0.6044221155738214,
+              "strictly_positive_transfer": true,
+              "train_norm": 0.0672581435231753
+            },
+            "combined_policy": {
+              "cosine": 0.21957421131524124,
+              "dot": 0.009193451079735853,
+              "elements": 13326,
+              "heldout_norm": 0.6095951388774448,
+              "strictly_positive_transfer": true,
+              "train_norm": 0.06868402582143664
+            },
+            "recurrent_core": {
+              "cosine": -0.9868915140813704,
+              "dot": -0.001088862393018519,
+              "elements": 12416,
+              "heldout_norm": 0.07924733148994487,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.013922554825021312
+            }
+          },
+          "heldout_configuration_id": "OPTIONAL_AGGREGATE_HEAVY_AFT",
+          "heldout_loss": 0.011980840004980564,
+          "heldout_selected_elements": 3000,
+          "inactive_gradients_exact_zero": true,
+          "train_loss": 0.007758515886962414,
+          "train_selected_elements": 27060
+        },
+        {
+          "groups": {
+            "action_head": {
+              "cosine": 0.48922984810540177,
+              "dot": 0.016598431765676276,
+              "elements": 910,
+              "heldout_norm": 0.5119235819061374,
+              "strictly_positive_transfer": true,
+              "train_norm": 0.06627488394355313
+            },
+            "combined_policy": {
+              "cosine": 0.4712393397759632,
+              "dot": 0.01621144920548211,
+              "elements": 13326,
+              "heldout_norm": 0.5135796267608844,
+              "strictly_positive_transfer": true,
+              "train_norm": 0.06698422140573798
+            },
+            "recurrent_core": {
+              "cosine": -0.9658550143323927,
+              "dot": -0.00038698256019417226,
+              "elements": 12416,
+              "heldout_norm": 0.041210184569346366,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.009722431568362397
+            }
+          },
+          "heldout_configuration_id": "DISCOVERY_02",
+          "heldout_loss": 0.007988542318344116,
+          "heldout_selected_elements": 3000,
+          "inactive_gradients_exact_zero": true,
+          "train_loss": 0.008201121352612972,
+          "train_selected_elements": 27060
+        },
+        {
+          "groups": {
+            "action_head": {
+              "cosine": 0.6591560571350978,
+              "dot": 0.025286892298211426,
+              "elements": 910,
+              "heldout_norm": 0.5126502193668812,
+              "strictly_positive_transfer": true,
+              "train_norm": 0.07483177797238776
+            },
+            "combined_policy": {
+              "cosine": 0.6526746119766735,
+              "dot": 0.025157717258876753,
+              "elements": 13326,
+              "heldout_norm": 0.5131116950848157,
+              "strictly_positive_transfer": true,
+              "train_norm": 0.07512121418642657
+            },
+            "recurrent_core": {
+              "cosine": -0.9012118381923235,
+              "dot": -0.00012917503933467114,
+              "elements": 12416,
+              "heldout_norm": 0.021756934892154887,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.006588006248800733
+            }
+          },
+          "heldout_configuration_id": "DISCOVERY_03",
+          "heldout_loss": 0.008257121779024601,
+          "heldout_selected_elements": 1986,
+          "inactive_gradients_exact_zero": true,
+          "train_loss": 0.008174443617463112,
+          "train_selected_elements": 28074
+        },
+        {
+          "groups": {
+            "action_head": {
+              "cosine": -0.1324574735908964,
+              "dot": -0.006255713962782417,
+              "elements": 910,
+              "heldout_norm": 0.4742729171971346,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.09957999266392722
+            },
+            "combined_policy": {
+              "cosine": -0.1315224123139112,
+              "dot": -0.006220680395241167,
+              "elements": 13326,
+              "heldout_norm": 0.47451554290482584,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.09967532961845368
+            },
+            "recurrent_core": {
+              "cosine": 0.5297801202914925,
+              "dot": 3.503356754124928e-05,
+              "elements": 12416,
+              "heldout_norm": 0.015172358800842852,
+              "strictly_positive_transfer": true,
+              "train_norm": 0.004358485470847594
+            }
+          },
+          "heldout_configuration_id": "DISCOVERY_06",
+          "heldout_loss": 0.00935725960880518,
+          "heldout_selected_elements": 3000,
+          "inactive_gradients_exact_zero": true,
+          "train_loss": 0.008049378171563148,
+          "train_selected_elements": 27060
+        },
+        {
+          "groups": {
+            "action_head": {
+              "cosine": -0.6264503316329987,
+              "dot": -0.029742963526047494,
+              "elements": 910,
+              "heldout_norm": 0.37330545850748775,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.12718422700069323
+            },
+            "combined_policy": {
+              "cosine": -0.6238645900222648,
+              "dot": -0.029689102098748806,
+              "elements": 13326,
+              "heldout_norm": 0.3740487669052675,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.1272267694447989
+            },
+            "recurrent_core": {
+              "cosine": 0.6946258368272272,
+              "dot": 5.386142729868708e-05,
+              "elements": 12416,
+              "heldout_norm": 0.023569358749560284,
+              "strictly_positive_transfer": true,
+              "train_norm": 0.0032898731884601845
+            }
+          },
+          "heldout_configuration_id": "DISCOVERY_09",
+          "heldout_loss": 0.0087275430560112,
+          "heldout_selected_elements": 3000,
+          "inactive_gradients_exact_zero": true,
+          "train_loss": 0.008119191974401474,
+          "train_selected_elements": 27060
+        },
+        {
+          "groups": {
+            "action_head": {
+              "cosine": -0.9291821032379598,
+              "dot": -0.073001031905799,
+              "elements": 910,
+              "heldout_norm": 0.5033025086734741,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.15609862143317021
+            },
+            "combined_policy": {
+              "cosine": -0.8878381384439403,
+              "dot": -0.07855698096348714,
+              "elements": 13326,
+              "heldout_norm": 0.5610296850798479,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.15771214795029936
+            },
+            "recurrent_core": {
+              "cosine": -0.9961105102992212,
+              "dot": -0.005555949057688136,
+              "elements": 12416,
+              "heldout_norm": 0.2478727340870325,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.02250204430181691
+            }
+          },
+          "heldout_configuration_id": "DISCOVERY_10",
+          "heldout_loss": 0.00807764008641243,
+          "heldout_selected_elements": 3000,
+          "inactive_gradients_exact_zero": true,
+          "train_loss": 0.008191242814064026,
+          "train_selected_elements": 27060
+        }
+      ],
+      "group_summaries": {
+        "action_head": {
+          "all_12_strictly_positive": false,
+          "cosine_mean": -0.1396243973916467,
+          "dot_sum": -0.13383824574226277,
+          "maximum_dot": 0.025286892298211426,
+          "minimum_dot": -0.073001031905799,
+          "nonpositive_folds": 7,
+          "strictly_positive_folds": 5
+        },
+        "combined_policy": {
+          "all_12_strictly_positive": false,
+          "cosine_mean": -0.14559799896812695,
+          "dot_sum": -0.14770815172929344,
+          "maximum_dot": 0.025157717258876753,
+          "minimum_dot": -0.07855698096348714,
+          "nonpositive_folds": 7,
+          "strictly_positive_folds": 5
+        },
+        "recurrent_core": {
+          "all_12_strictly_positive": false,
+          "cosine_mean": -0.41368844549976447,
+          "dot_sum": -0.01386990598703066,
+          "maximum_dot": 5.5821227421514813e-05,
+          "minimum_dot": -0.005555949057688136,
+          "nonpositive_folds": 8,
+          "strictly_positive_folds": 4
+        }
+      },
+      "label": "half",
+      "rollout_episodes": 80,
+      "selected_endpoint_mechanism": null,
+      "snapshot_sha256": "a39e76e0eaaeb795eb88ccd636e35fab073bcde4ebf19d6cc91a581b1849e05c",
+      "teacher_episodes": 24,
+      "update": 705
+    },
+    {
+      "all_inactive_gradients_exact_zero": true,
+      "all_values_finite": true,
+      "episode_receipt_sha256": "2ac42b8e03089b5e449a6350d02469a0110cf6342fd18e3660c63557e4b90cb1",
+      "folds": [
+        {
+          "groups": {
+            "action_head": {
+              "cosine": 0.509254096253415,
+              "dot": 0.024078179600495676,
+              "elements": 910,
+              "heldout_norm": 0.5056188283938478,
+              "strictly_positive_transfer": true,
+              "train_norm": 0.09351168455093198
+            },
+            "combined_policy": {
+              "cosine": 0.23716907115690122,
+              "dot": 0.016214066220899204,
+              "elements": 13326,
+              "heldout_norm": 0.5126505084633055,
+              "strictly_positive_transfer": true,
+              "train_norm": 0.13335598060367065
+            },
+            "recurrent_core": {
+              "cosine": -0.9775061577977124,
+              "dot": -0.007864113379596468,
+              "elements": 12416,
+              "heldout_norm": 0.08461763528555069,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.09507566678816179
+            }
+          },
+          "heldout_configuration_id": "COM_X_NEG",
+          "heldout_loss": 0.0083193089812994,
+          "heldout_selected_elements": 1788,
+          "inactive_gradients_exact_zero": true,
+          "train_loss": 0.008898640982806683,
+          "train_selected_elements": 26736
+        },
+        {
+          "groups": {
+            "action_head": {
+              "cosine": 0.17955178473336145,
+              "dot": 0.00796865567416256,
+              "elements": 910,
+              "heldout_norm": 0.45047684734561905,
+              "strictly_positive_transfer": true,
+              "train_norm": 0.09851964994786785
+            },
+            "combined_policy": {
+              "cosine": 0.4083621740006989,
+              "dot": 0.02521113472879827,
+              "elements": 13326,
+              "heldout_norm": 0.5354280679685298,
+              "strictly_positive_transfer": true,
+              "train_norm": 0.11530436602137524
+            },
+            "recurrent_core": {
+              "cosine": 0.9945168342166885,
+              "dot": 0.017242479054635718,
+              "elements": 12416,
+              "heldout_norm": 0.28940253277064526,
+              "strictly_positive_transfer": true,
+              "train_norm": 0.059908057869879704
+            }
+          },
+          "heldout_configuration_id": "COM_CORNER_00",
+          "heldout_loss": 0.008496744558215141,
+          "heldout_selected_elements": 3000,
+          "inactive_gradients_exact_zero": true,
+          "train_loss": 0.008905294351279736,
+          "train_selected_elements": 25524
+        },
+        {
+          "groups": {
+            "action_head": {
+              "cosine": -0.1548373747520024,
+              "dot": -0.008251919703627151,
+              "elements": 910,
+              "heldout_norm": 0.48421312523515375,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.110063327030853
+            },
+            "combined_policy": {
+              "cosine": -0.5376325388955575,
+              "dot": -0.05332221916501697,
+              "elements": 13326,
+              "heldout_norm": 0.687123871870785,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.1443403098330916
+            },
+            "recurrent_core": {
+              "cosine": -0.9899973628449501,
+              "dot": -0.045070299461389816,
+              "elements": 12416,
+              "heldout_norm": 0.48752114276685915,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.09338195267615888
+            }
+          },
+          "heldout_configuration_id": "COM_CORNER_01",
+          "heldout_loss": 0.012817390263080597,
+          "heldout_selected_elements": 468,
+          "inactive_gradients_exact_zero": true,
+          "train_loss": 0.00879635103046894,
+          "train_selected_elements": 28056
+        },
+        {
+          "groups": {
+            "action_head": {
+              "cosine": -0.34858982259592897,
+              "dot": -0.004512545160774275,
+              "elements": 910,
+              "heldout_norm": 0.10468211152947896,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.12366146402572119
+            },
+            "combined_policy": {
+              "cosine": -0.10780952379512382,
+              "dot": -0.0017997596880907599,
+              "elements": 13326,
+              "heldout_norm": 0.10903618226902859,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.15310407689884428
+            },
+            "recurrent_core": {
+              "cosine": 0.9851507195237471,
+              "dot": 0.0027127854726835144,
+              "elements": 12416,
+              "heldout_norm": 0.03050482862653964,
+              "strictly_positive_transfer": true,
+              "train_norm": 0.09027015386085528
+            }
+          },
+          "heldout_configuration_id": "COM_CORNER_02",
+          "heldout_loss": 0.0006260165246203542,
+          "heldout_selected_elements": 3000,
+          "inactive_gradients_exact_zero": true,
+          "train_loss": 0.009830392897129059,
+          "train_selected_elements": 25524
+        },
+        {
+          "groups": {
+            "action_head": {
+              "cosine": -0.15357104376638114,
+              "dot": -0.008232123925631852,
+              "elements": 910,
+              "heldout_norm": 0.4874870757891027,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.10996119665051071
+            },
+            "combined_policy": {
+              "cosine": -0.4490991705568239,
+              "dot": -0.037586763870468845,
+              "elements": 13326,
+              "heldout_norm": 0.5877303555582188,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.142401498875798
+            },
+            "recurrent_core": {
+              "cosine": -0.9882025068109576,
+              "dot": -0.029354639944836995,
+              "elements": 12416,
+              "heldout_norm": 0.32830370357822647,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.09048050681368672
+            }
+          },
+          "heldout_configuration_id": "COM_CORNER_03",
+          "heldout_loss": 0.012658457271754742,
+          "heldout_selected_elements": 450,
+          "inactive_gradients_exact_zero": true,
+          "train_loss": 0.00880147609859705,
+          "train_selected_elements": 28074
+        },
+        {
+          "groups": {
+            "action_head": {
+              "cosine": -0.828758871801848,
+              "dot": -0.07467711976044371,
+              "elements": 910,
+              "heldout_norm": 0.539265383905323,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.16709244939976545
+            },
+            "combined_policy": {
+              "cosine": -0.7666093849869797,
+              "dot": -0.08178661442182886,
+              "elements": 13326,
+              "heldout_norm": 0.5451219001884408,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.1957106543857034
+            },
+            "recurrent_core": {
+              "cosine": -0.8755282320738064,
+              "dot": -0.00710949466138516,
+              "elements": 12416,
+              "heldout_norm": 0.07969147875714816,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.10189589586272385
+            }
+          },
+          "heldout_configuration_id": "COM_CORNER_07",
+          "heldout_loss": 0.011716973967850208,
+          "heldout_selected_elements": 3000,
+          "inactive_gradients_exact_zero": true,
+          "train_loss": 0.008526801131665707,
+          "train_selected_elements": 25524
+        },
+        {
+          "groups": {
+            "action_head": {
+              "cosine": 0.06405649685999161,
+              "dot": 0.0035943600105229337,
+              "elements": 910,
+              "heldout_norm": 0.6161955929040717,
+              "strictly_positive_transfer": true,
+              "train_norm": 0.09106254878704306
+            },
+            "combined_policy": {
+              "cosine": -0.37789271218725856,
+              "dot": -0.04367874151673581,
+              "elements": 13326,
+              "heldout_norm": 0.7103057574687641,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.16272574386661082
+            },
+            "recurrent_core": {
+              "cosine": -0.9921060693651667,
+              "dot": -0.047273101527258755,
+              "elements": 12416,
+              "heldout_norm": 0.3533231670565552,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.13486022365897674
+            }
+          },
+          "heldout_configuration_id": "OPTIONAL_AGGREGATE_HEAVY_AFT",
+          "heldout_loss": 0.012361195869743824,
+          "heldout_selected_elements": 3000,
+          "inactive_gradients_exact_zero": true,
+          "train_loss": 0.008451081812381744,
+          "train_selected_elements": 25524
+        },
+        {
+          "groups": {
+            "action_head": {
+              "cosine": 0.28959088485537215,
+              "dot": 0.013118193180352202,
+              "elements": 910,
+              "heldout_norm": 0.5217241777295937,
+              "strictly_positive_transfer": true,
+              "train_norm": 0.08682567552772644
+            },
+            "combined_policy": {
+              "cosine": 0.02551401453786394,
+              "dot": 0.0018651872303572514,
+              "elements": 13326,
+              "heldout_norm": 0.5328742727030977,
+              "strictly_positive_transfer": true,
+              "train_norm": 0.13718887095156568
+            },
+            "recurrent_core": {
+              "cosine": -0.9769918749460984,
+              "dot": -0.011253005949994956,
+              "elements": 12416,
+              "heldout_norm": 0.10843833676903504,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.1062171755514112
+            }
+          },
+          "heldout_configuration_id": "DISCOVERY_02",
+          "heldout_loss": 0.00827879086136818,
+          "heldout_selected_elements": 3000,
+          "inactive_gradients_exact_zero": true,
+          "train_loss": 0.008930913172662258,
+          "train_selected_elements": 25524
+        },
+        {
+          "groups": {
+            "action_head": {
+              "cosine": 0.5083229854311003,
+              "dot": 0.023862177574005314,
+              "elements": 910,
+              "heldout_norm": 0.5027745637283687,
+              "strictly_positive_transfer": true,
+              "train_norm": 0.09336777882610126
+            },
+            "combined_policy": {
+              "cosine": 0.2296674129797574,
+              "dot": 0.015656693265344225,
+              "elements": 13326,
+              "heldout_norm": 0.5104443214590219,
+              "strictly_positive_transfer": true,
+              "train_norm": 0.13355258178495014
+            },
+            "recurrent_core": {
+              "cosine": -0.9747519312748623,
+              "dot": -0.008205484308661085,
+              "elements": 12416,
+              "heldout_norm": 0.08815408883035332,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.09549214616137827
+            }
+          },
+          "heldout_configuration_id": "DISCOVERY_03",
+          "heldout_loss": 0.008151410147547722,
+          "heldout_selected_elements": 1818,
+          "inactive_gradients_exact_zero": true,
+          "train_loss": 0.00891072303056717,
+          "train_selected_elements": 26706
+        },
+        {
+          "groups": {
+            "action_head": {
+              "cosine": 0.10755487733697949,
+              "dot": 0.0053733313046857275,
+              "elements": 910,
+              "heldout_norm": 0.5130001468938198,
+              "strictly_positive_transfer": true,
+              "train_norm": 0.09738588605854405
+            },
+            "combined_policy": {
+              "cosine": 0.33244534744024384,
+              "dot": 0.02232021884417876,
+              "elements": 13326,
+              "heldout_norm": 0.5837739358378916,
+              "strictly_positive_transfer": true,
+              "train_norm": 0.11500943984139081
+            },
+            "recurrent_core": {
+              "cosine": 0.9942049310075289,
+              "dot": 0.016946887539493038,
+              "elements": 12416,
+              "heldout_norm": 0.27860878925579863,
+              "strictly_positive_transfer": true,
+              "train_norm": 0.06118137338457494
+            }
+          },
+          "heldout_configuration_id": "DISCOVERY_06",
+          "heldout_loss": 0.011222545988857746,
+          "heldout_selected_elements": 3000,
+          "inactive_gradients_exact_zero": true,
+          "train_loss": 0.008584914728999138,
+          "train_selected_elements": 25524
+        },
+        {
+          "groups": {
+            "action_head": {
+              "cosine": -0.4031889684335513,
+              "dot": -0.020280276527685652,
+              "elements": 910,
+              "heldout_norm": 0.3845731514072707,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.13079353277052158
+            },
+            "combined_policy": {
+              "cosine": -0.03934442038645538,
+              "dot": -0.0027555311642638337,
+              "elements": 13326,
+              "heldout_norm": 0.48880854082826986,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.14327927977062602
+            },
+            "recurrent_core": {
+              "cosine": 0.9928915945781182,
+              "dot": 0.01752474536342182,
+              "elements": 12416,
+              "heldout_norm": 0.3017238485823465,
+              "strictly_positive_transfer": true,
+              "train_norm": 0.05849789566297081
+            }
+          },
+          "heldout_configuration_id": "DISCOVERY_09",
+          "heldout_loss": 0.0096432501450181,
+          "heldout_selected_elements": 3000,
+          "inactive_gradients_exact_zero": true,
+          "train_loss": 0.008770538493990898,
+          "train_selected_elements": 25524
+        },
+        {
+          "groups": {
+            "action_head": {
+              "cosine": -0.8624322139563231,
+              "dot": -0.07245430437428073,
+              "elements": 910,
+              "heldout_norm": 0.5027579609398475,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.16710146787965355
+            },
+            "combined_policy": {
+              "cosine": -0.4464555861161347,
+              "dot": -0.0619549222995119,
+              "elements": 13326,
+              "heldout_norm": 0.8239181672610195,
+              "strictly_positive_transfer": false,
+              "train_norm": 0.16842768378204293
+            },
+            "recurrent_core": {
+              "cosine": 0.7625146176421579,
+              "dot": 0.01049938207476885,
+              "elements": 12416,
+              "heldout_norm": 0.6527446507282646,
+              "strictly_positive_transfer": true,
+              "train_norm": 0.021094646160790646
+            }
+          },
+          "heldout_configuration_id": "DISCOVERY_10",
+          "heldout_loss": 0.008121132850646973,
+          "heldout_selected_elements": 3000,
+          "inactive_gradients_exact_zero": true,
+          "train_loss": 0.008949442766606808,
+          "train_selected_elements": 25524
+        }
+      ],
+      "group_summaries": {
+        "action_head": {
+          "all_12_strictly_positive": false,
+          "cosine_mean": -0.09108726415298458,
+          "dot_sum": -0.11041339210821895,
+          "maximum_dot": 0.024078179600495676,
+          "minimum_dot": -0.07467711976044371,
+          "nonpositive_folds": 6,
+          "strictly_positive_folds": 6
+        },
+        "combined_policy": {
+          "all_12_strictly_positive": false,
+          "cosine_mean": -0.12430710973407237,
+          "dot_sum": -0.20161725183633925,
+          "maximum_dot": 0.02521113472879827,
+          "minimum_dot": -0.08178661442182886,
+          "nonpositive_folds": 7,
+          "strictly_positive_folds": 5
+        },
+        "recurrent_core": {
+          "all_12_strictly_positive": false,
+          "cosine_mean": -0.17048378651210946,
+          "dot_sum": -0.0912038597281203,
+          "maximum_dot": 0.01752474536342182,
+          "minimum_dot": -0.047273101527258755,
+          "nonpositive_folds": 7,
+          "strictly_positive_folds": 5
+        }
+      },
+      "label": "final",
+      "rollout_episodes": 80,
+      "selected_endpoint_mechanism": null,
+      "snapshot_sha256": "45528bb25cd993406d5c5527d0391411274f6c657dc486d622e35bcad8c2de1e",
+      "teacher_episodes": 24,
+      "update": 755
+    }
+  ],
+  "execution": {
+    "formal_support_cells": 0,
+    "gradient_evaluations": 48,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0,
+    "snapshot_or_onnx_writes": 0,
+    "stage2_rollout_episodes": 160
+  },
+  "failed_checks": [],
+  "schema_version": "winner_v89.teacher_gradient_transfer_result.v1",
+  "selected_gradient_group_for_step_proof": null,
+  "selected_source_checkpoint_for_step_proof": null,
+  "source_manifest_sha256": "dfada352b065e98ae4da5e6cf7f5b7b2eaf89c7f18b6d38d66c6c0fec6c79552",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v89_teacher_gradient_transfer_preregistration.py",
+      "sha256": "0a6d4d6481579ae1d99efc72dac70dcf490e4e880ab99c0b482005a2358035db"
+    },
+    "joint_policy": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v21_predictor_preserving_joint_support.py",
+      "sha256": "2d274c6c7c63fa2de5e3a7114ac047df1346189e66ec7bf8d83221e2f93aef0a"
+    },
+    "recurrent_policy": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v20_joint_recurrent_support.py",
+      "sha256": "276f0008049be9e28cbfc7cb430a5fec6c0a092c02e605f08f3ea95e2df942c7"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v89_teacher_gradient_transfer.py",
+      "sha256": "ab8d714782bd8da81253973fc8708ded180631d6ebc835706e60a659dca20804"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v89_teacher_gradient_transfer.py",
+      "sha256": "b2a1051feebc827f983ef61eeb259a45b704ee5572e21bdf5581fbe0846844f0"
+    },
+    "v80_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v80_pitch_action_head_step.py",
+      "sha256": "1666e7194a9615c9bad0850db21cef2218edb72cb328a7bdffd3ef01a2dd8826"
+    },
+    "v88_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v88_flat_transport_representation_result.json",
+      "sha256": "b98983fe2217f94ca06939f17c376c80dd6d403221100a26f159a0147daef6eb"
+    }
+  },
+  "status": "PASS_WINNER_V89_TEACHER_GRADIENT_TRANSFER_DIAGNOSTIC"
+}

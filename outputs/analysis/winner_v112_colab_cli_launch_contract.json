@@ -1,0 +1,121 @@
+{
+  "authority": {
+    "additional_attempt": false,
+    "behavior_evaluation": false,
+    "checkpoint_selection": false,
+    "deployment": false,
+    "gate5": false,
+    "one_exact_cli_launch": true,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false
+  },
+  "checks": {
+    "executor_exact": true,
+    "hardware_or_robot_absent": true,
+    "l4_exact": true,
+    "launcher_exact": true,
+    "no_retry_or_resume": true,
+    "package_contract_exact": true,
+    "package_file_exact": true,
+    "pinned_software_exact": true,
+    "preregistration_exact": true,
+    "single_frozen_driver_exact": true,
+    "training_or_behavior_not_run": true
+  },
+  "commands": [
+    [
+      "colab",
+      "new",
+      "--session",
+      "winner-v112-peak-torque-20260724",
+      "--gpu",
+      "L4"
+    ],
+    [
+      "colab",
+      "upload",
+      "--session",
+      "winner-v112-peak-torque-20260724",
+      "<LOCAL_PACKAGE>",
+      "/content/winner-v112-peak-torque-hosted-20260724.tar.gz"
+    ],
+    [
+      "colab",
+      "upload",
+      "--session",
+      "winner-v112-peak-torque-20260724",
+      "<LOCAL_LAUNCHER>",
+      "/content/launch_winner_v112_peak_torque_colab.py"
+    ],
+    [
+      "colab",
+      "exec",
+      "--session",
+      "winner-v112-peak-torque-20260724",
+      "--file",
+      "<LOCAL_EXECUTOR>",
+      "--timeout",
+      "21600"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "winner-v112-peak-torque-20260724",
+      "/content/winner_v112_result.json",
+      "<LOCAL_RESULT>"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "winner-v112-peak-torque-20260724",
+      "/content/winner_v112_artifacts.tar.gz",
+      "<LOCAL_ARCHIVE>"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "winner-v112-peak-torque-20260724",
+      "/content/winner_v112_launch_receipt.json",
+      "<LOCAL_RECEIPT>"
+    ],
+    [
+      "colab",
+      "stop",
+      "--session",
+      "winner-v112-peak-torque-20260724"
+    ]
+  ],
+  "execution_now": {
+    "colab_sessions_opened": 0,
+    "formal_behavior_cells": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_locomotion_steps": 0
+  },
+  "failed_checks": [],
+  "hashes": {
+    "executor": "3486f558dacd9fc7c167da2eef04e73ce8ba08fd814ce483b9d2e8e5f24045bb",
+    "launcher": "6f4a1715b29bbf714de2ac48769702fe22f9b837e33ad5e6af6940b0824dc988",
+    "package": "f39bea69840436b5ca8cc2a3000b6006ceaac1fa403588c94024e6caa5709401",
+    "package_contract": "b22de9fca8044962b9f9d75709a5105a611db0e02f6c21a2951fc6e4422ae0f6",
+    "preregistration": "44feeb999de22ab7a4ad2438eeb1db27d1c2e683b0cee6f83030e78caa344817"
+  },
+  "package_bytes": 51971655,
+  "recovery": {
+    "download_result_archive_receipt_before_stop": true,
+    "resume": false,
+    "retry": false,
+    "stop_session_after_pass_or_hold": true
+  },
+  "schema_version": "winner_v112.colab_cli_launch_contract.v1",
+  "session": {
+    "accelerator": "L4",
+    "count": 1,
+    "max_wall_seconds": 21600,
+    "name": "winner-v112-peak-torque-20260724"
+  },
+  "status": "PASS_WINNER_V112_COLAB_CLI_LAUNCH_CONTRACT"
+}

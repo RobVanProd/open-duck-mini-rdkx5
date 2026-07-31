@@ -1,0 +1,16 @@
+{
+  "schema_version": "ground_up_reset_feasibility_audit_preregistration.v1",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "question": "Does a viable 16-tick action sequence exist in the frozen fixed/direct candidate set for seed 101?",
+  "seeds": [100, 101],
+  "command_x": 0.074,
+  "horizon_ticks": 16,
+  "action_block_ticks": 2,
+  "fixed_candidates": ["hold_reset_action", "home_action", "exact_reference", "executed_viability_prefix"],
+  "bank": {"per_family": 1024, "audit_rng_seed": 20260714, "families": ["reference_gaussian_sigma_0p20", "home_gaussian_sigma_0p20", "uniform_independent", "uniform_constant"]},
+  "viability": {"max_abs_roll_pitch_rad": 0.25, "min_height_m": 0.12, "max_abs_action_exclusive": 0.999, "no_fall": true},
+  "interpretation": {"any_seed101_feasible": "DISPROVES_RESET_LEVEL_INFEASIBILITY", "none_found": "NOT_PROOF_OF_INFEASIBILITY"},
+  "source_probe": "outputs/analysis/ground_up_oracle_viability_command_probe.json",
+  "source_probe_sha256": "41d0c2c963f60c92c532f3cb60f19744a8af738b760d3d30ecaffcea8784755a",
+  "authorization": {"training": false, "collection": false, "colab": false, "gpu": false, "rdk_x5": false, "robot": false}
+}

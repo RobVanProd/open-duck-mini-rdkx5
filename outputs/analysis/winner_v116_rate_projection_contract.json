@@ -1,0 +1,233 @@
+{
+  "authority": {
+    "behavior_evaluation_authorized": false,
+    "checkpoint_selection_authorized": false,
+    "full_matrix_authorized": false,
+    "gate5_authorized": false,
+    "nominal_behavior_preregistration_authorized": false,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "all_inference_contracts_pass": false,
+    "all_other_initializers_bit_exact": true,
+    "external_abi_exact": true,
+    "formal_behavior_cells_zero": true,
+    "graph_nodes_bit_exact": true,
+    "only_max_action_delta_changed": true,
+    "selected_delta_exact": true,
+    "source_hashes_exact": true,
+    "two_postupdate_policies_transformed": true
+  },
+  "failed_checks": [
+    "all_inference_contracts_pass"
+  ],
+  "formal_behavior_cells_executed": 0,
+  "policies": [
+    {
+      "all_other_initializers_bit_exact": true,
+      "changed_initializer_names": [
+        "max_action_delta"
+      ],
+      "graph_io": {
+        "inputs": {
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        }
+      },
+      "graph_nodes_bit_exact": true,
+      "id": "V116_RATE_PROJECTED_HALF",
+      "inference": {
+        "changed_projection_is_exercised": true,
+        "checks": {
+          "all_outputs_finite": true,
+          "changed_projection_is_exercised": true,
+          "cpu_provider_exact": true,
+          "recurrent_hidden_output_bit_exact": true,
+          "selected_rate_delta_enforced": false,
+          "unchanged_joint_actions_bit_exact": true,
+          "zero_action_exact": true,
+          "zero_previous_exact": true
+        },
+        "max_delta_excess": 1.9199999570846558,
+        "max_hidden_error": 0.0,
+        "max_unchanged_joint_error": 0.0,
+        "max_zero_action": 0.0,
+        "max_zero_previous": 0.0,
+        "pass": false
+      },
+      "output_bytes": 957344,
+      "output_path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v116-rate-projected-policies-20260724\\V116_RATE_PROJECTED_1003520.onnx",
+      "output_sha256": "644a66ca9ea2508fd63a6d930cd6abc30f1d73557aa6b027742703137e7eb9dc",
+      "selected_delta_exact": true,
+      "source_sha256": "711be4c4dcfd1992b822de541ec50ce0d9d22e43fe0a9749563eec09e8b0cb97",
+      "step": 1003520
+    },
+    {
+      "all_other_initializers_bit_exact": true,
+      "changed_initializer_names": [
+        "max_action_delta"
+      ],
+      "graph_io": {
+        "inputs": {
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        }
+      },
+      "graph_nodes_bit_exact": true,
+      "id": "V116_RATE_PROJECTED_FINAL",
+      "inference": {
+        "changed_projection_is_exercised": true,
+        "checks": {
+          "all_outputs_finite": true,
+          "changed_projection_is_exercised": true,
+          "cpu_provider_exact": true,
+          "recurrent_hidden_output_bit_exact": true,
+          "selected_rate_delta_enforced": false,
+          "unchanged_joint_actions_bit_exact": true,
+          "zero_action_exact": true,
+          "zero_previous_exact": true
+        },
+        "max_delta_excess": 1.9199999570846558,
+        "max_hidden_error": 0.0,
+        "max_unchanged_joint_error": 0.0,
+        "max_zero_action": 0.0,
+        "max_zero_previous": 0.0,
+        "pass": false
+      },
+      "output_bytes": 957344,
+      "output_path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v116-rate-projected-policies-20260724\\V116_RATE_PROJECTED_2007040.onnx",
+      "output_sha256": "62c8e182acccfa40ebfa1d01dd84c5a7ce8f4d60794aa082aabe3805376d6913",
+      "selected_delta_exact": true,
+      "source_sha256": "762e96c322e0d9824665f8743c0f85c5ffc5f36a18c9a05168d60ca6c6442cce",
+      "step": 2007040
+    }
+  ],
+  "projection": {
+    "affected_joints": [
+      "left_hip_pitch",
+      "left_knee",
+      "left_ankle",
+      "right_ankle"
+    ],
+    "apply_identically_to_both_checkpoints": true,
+    "candidate_vectors": 1,
+    "current_normalized_action_delta": [
+      0.07999999821186066,
+      0.05999999865889549,
+      0.11999999731779099,
+      0.11999999731779099,
+      0.11999999731779099,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.05999999865889549,
+      0.10000000149011612,
+      0.07999999821186066,
+      0.10000000149011612
+    ],
+    "current_rate_limit_rad_s": [
+      1.0,
+      0.75,
+      1.5,
+      1.5,
+      1.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.75,
+      1.25,
+      1.0,
+      1.25
+    ],
+    "formula": "L_selected[j] = L_current[j] * min(1, torque_limit / max_observed_torque[j]); affected float32 deltas move one ULP toward zero",
+    "scalar_search": false,
+    "selected_normalized_action_delta": [
+      0.07999999821186066,
+      0.05999999865889549,
+      0.11788967251777649,
+      0.11440633237361908,
+      0.11181176453828812,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.03999999910593033,
+      0.05999999865889549,
+      0.10000000149011612,
+      0.07999999821186066,
+      0.09772229939699173
+    ],
+    "selected_rate_limit_rad_s": [
+      0.9999999776482582,
+      0.7499999832361937,
+      1.4736209064722061,
+      1.4300791546702385,
+      1.3976470567286015,
+      0.4999999888241291,
+      0.4999999888241291,
+      0.4999999888241291,
+      0.4999999888241291,
+      0.4999999888241291,
+      0.7499999832361937,
+      1.2500000186264515,
+      0.9999999776482582,
+      1.2215287424623966
+    ]
+  },
+  "schema_version": "winner_v116.rate_projection_contract.v1",
+  "status": "HOLD_WINNER_V116_RATE_PROJECTION_CONTRACT"
+}

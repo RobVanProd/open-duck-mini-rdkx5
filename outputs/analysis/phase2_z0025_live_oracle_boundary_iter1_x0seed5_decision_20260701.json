@@ -1,0 +1,33 @@
+{
+  "status": "HOLD_ITER1_X0SEED5_CORRECTION_INSUFFICIENT",
+  "objective": "Patch the rate1p9 x=0.0 seed-5 reverse/collapse without disturbing the x=0.08 pass.",
+  "live_oracle_iteration": {
+    "status": "PASS_LIVE_ORACLE_DAGGER_ITERATION_DATA_READY",
+    "output_dir": "outputs/analysis/phase2_z0025_live_oracle_boundary_iter1_x0seed5",
+    "x008_preservation_seeds": [0, 3],
+    "x0_correction_seeds": [5],
+    "x0_teacher": "zero_action",
+    "aggregate_entries": 17,
+    "aggregate_samples": 12043
+  },
+  "candidate": {
+    "policy": "outputs/analysis/phase2_z0025_live_oracle_boundary_iter1_x0seed5_contactphase_rate1p9_bc_candidate/candidate.onnx",
+    "fit_p95_abs_error": 0.031287,
+    "fit_max_abs_error": 0.841390,
+    "fit_target_rate_p95_rad_s": 1.623082,
+    "fit_target_rate_max_rad_s": 2.956879
+  },
+  "targeted_screen": {
+    "command_x": 0.0,
+    "seed": 5,
+    "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+    "samples": 44,
+    "termination": "fall_or_nan",
+    "mean_local_vx_m_s": -0.3620,
+    "base_height_min_m": 0.0441,
+    "max_tracking_p95_rad": 0.2291,
+    "p95_velocity_excess_rad_s": 0.0,
+    "max_velocity_excess_rad_s": 0.0
+  },
+  "recommendation": "Do not full-gate or promote iter1. Use a stronger zero-command stabilization mechanism than one short failed-trace relabel."
+}

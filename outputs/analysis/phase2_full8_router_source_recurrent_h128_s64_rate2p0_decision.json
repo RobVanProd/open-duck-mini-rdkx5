@@ -1,0 +1,42 @@
+{
+  "candidate_npz_sha256": "9e88a21272d6621522eec6ed93595a7411cc24cbc13a88ce234c1bff50721765",
+  "candidate_onnx": "outputs/analysis/phase2_full8_router_source_recurrent_h128_s64_rate2p0/candidate.onnx",
+  "candidate_onnx_sha256": "6fe1713ab1de5c4480a964b4a2e9b3d119f9b905f235c97806a8298e6b8a6b56",
+  "decision": "Do not promote this recurrent student and do not launch Phase 2 domain randomization from it. Plain recurrent BC on the selected full-8 source is not the missing branch-preservation mechanism.",
+  "fit": {
+    "hidden_dim": 128,
+    "mae": 0.009000900349254302,
+    "onnx_max_action_error": 5.631225937080542e-7,
+    "onnx_max_hidden_error": 1.2435353017037354e-6,
+    "p95_abs_error": 0.02297626105137697,
+    "samples": 6000,
+    "sequence_length": 64,
+    "status": "PASS_RECURRENT_BC_FIT_SMOKE",
+    "target_rate_max_rad_s": 2.315069804724654,
+    "target_rate_p95_rad_s": 1.4556228173550352
+  },
+  "gate": {
+    "falls": 3,
+    "max_instant_velocity_excess_rad_s": 3.239999294281006,
+    "max_p95_velocity_excess_rad_s": 3.239999294281006,
+    "mean_track_ratio": -3.084873812822576,
+    "mean_vx_m_s": -0.24678990502580608,
+    "pass_count": 0,
+    "runs": 3,
+    "seeds": [
+      0,
+      5,
+      7
+    ]
+  },
+  "gate_json": "outputs/analysis/phase2_full8_router_source_recurrent_h128_s64_rate2p0_x008_seed0_5_7_gate.json",
+  "next_recommendation": "Move to an explicit branch-preserving wrapper/router or trainable mixture-of-experts objective with closed-loop validation pressure. Do not spend another run on supervised-only recurrent compression of this source.",
+  "no_deploy": true,
+  "no_grounded_replay": true,
+  "no_robot_tests": true,
+  "no_ssh": true,
+  "runtime_behavior_changed": false,
+  "source_manifest": "outputs/analysis/phase2_full8_router_source_selected_manifest.json",
+  "status": "HOLD_FULL8_RECURRENT_BC_REVERSES_AND_SATURATES",
+  "train_json": "outputs/analysis/phase2_full8_router_source_recurrent_h128_s64_rate2p0.json"
+}

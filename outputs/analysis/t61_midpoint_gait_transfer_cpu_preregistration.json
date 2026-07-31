@@ -1,0 +1,201 @@
+{
+  "assets": {
+    "cpu_topology_template": {
+      "kind": "directory",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v119-transition-cpu-smoke-20260724\\smoke\\2026_07_24_150649_0",
+      "sha256": "16a867c653476d6829ddaf400e5f02fc21658a78d3efc5ddfd167cc497f3ac83"
+    },
+    "reference_features": {
+      "bytes": 259604,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+      "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+    },
+    "t56_balance_final_checkpoint": {
+      "kind": "directory",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t56_extracted_20260728\\t56_dynamic_single_support_continuation\\balance_training\\2026_07_28_112206_1003520",
+      "sha256": "4d2c2098489bedebf637f72cb3f520a94b036af8989ddab9a568697ec1db07b8"
+    },
+    "t56_balance_final_onnx": {
+      "bytes": 954952,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t56_extracted_20260728\\t56_dynamic_single_support_continuation\\balance_training\\2026_07_28_112206_1003520.onnx",
+      "sha256": "908b67d42164e981733f9d9f5765260cf877f8ae36e8207e7cc5273d7623205d"
+    }
+  },
+  "authority": {
+    "behavior_matrix": false,
+    "checkpoint_selection": false,
+    "execute_one_2048_step_cpu_contract": true,
+    "gate5": false,
+    "hosted_preregistration": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false
+  },
+  "causal_basis": {
+    "final": "8/8 green",
+    "half": "x=0 2/2 green; moving 0/6 green",
+    "half_failure": "all six moving cells overshoot commanded mean velocity, then enter delayed positive-pitch collapse with tracking, rate, saturation, and contract checks green",
+    "selected_hypothesis": "abrupt transfer consolidation gap",
+    "t59": "10/16 green",
+    "transition": "T56 changes in one step from support-only reward to the complete clipped locomotion reward plus support"
+  },
+  "checks": {
+    "all_sources_and_assets_present": true,
+    "balance_final_checkpoint_exact": true,
+    "balance_final_onnx_exact": true,
+    "composed_manifest_exact": true,
+    "cpu_template_exact": true,
+    "no_behavior_hosted_or_robot_execution": true,
+    "t56_recovered_training_green": true,
+    "t60_earned_only_t61_cpu_preregistration": true
+  },
+  "cpu_contract": {
+    "exports_per_stage": [
+      0,
+      1024
+    ],
+    "full_transfer_simulator_steps": 1024,
+    "midpoint_simulator_steps": 1024,
+    "ppo_envs": 4,
+    "required_checks": [
+      "T56 balance-final restore exact",
+      "midpoint step-zero ONNX byte-exact source ONNX",
+      "T55/T61 default-off trajectories bit-exact",
+      "both support-side metrics positive and finite",
+      "both reward metrics positive and finite",
+      "all actor and critic leaves update in both stages",
+      "all trees and deployment graphs finite",
+      "no observation/action ABI change"
+    ]
+  },
+  "decision_rule": {
+    "fail": "Close this exact midpoint mechanism without changing its coefficient, duration, source, or stage order.",
+    "hosted_training_earned_now": false,
+    "pass": "Earn only a separately committed T62 hosted-training preregistration; do not launch compute."
+  },
+  "execution_now": {
+    "cpu_simulator_steps": 0,
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "mechanism": {
+    "deployment_graph_change": false,
+    "full_stage": "complete frozen locomotion reward plus support_reward",
+    "midpoint_derivation": "(0 balance locomotion weight + 1 full locomotion weight) / 2; fixed before execution",
+    "midpoint_stage": "support_reward + 0.5 * complete_frozen_locomotion_reward",
+    "policy_abi_change": false,
+    "runtime_change": false,
+    "scalar_sweep": false,
+    "source": "exact recovered T56 balance-final checkpoint"
+  },
+  "playground": {
+    "base_path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t55-v2",
+    "manifest_sha256": "e1a9c9475e5c548844278e3268ee4d0c54ad422d185c71b91bb5b1990058b046",
+    "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t61-v1",
+    "python_inventory": {
+      "playground/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "playground/common/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "playground/common/export_onnx.py": "30bc705bf59babb59c5ba3045b601c838db00ebb569bb9fc6aa520f1e61139cc",
+      "playground/common/onnx_infer.py": "e610c2b94d15cd0ea4be1c0cee8853dc33b10c3b440e6d9bb1b1bb73168f34f2",
+      "playground/common/phase_moe_networks.py": "6480f59f4039884be6743828ffed1c31f76896830b2b38689cad038200283cb7",
+      "playground/common/plot_saved_obs.py": "911fe1de5668c31fdc2a10a4285b8343c04fd4f662a38207d6f06a91fd4e0a8e",
+      "playground/common/poly_reference_motion.py": "cc2430d82a9e41bf2081a4a9bed45731a43aad8b860e5b168f5850eb3748cf21",
+      "playground/common/poly_reference_motion_numpy.py": "585e783722ffb403a14288aafc1fcdf86c8a5d1b39949171a3b2d918028c4406",
+      "playground/common/randomize.py": "c6e7a48f714a2267b3b19d75ffc9ce3938350aabceb3eda61727a3c48f2d6dd8",
+      "playground/common/recurrent_ppo_networks.py": "a501000c6f959276514ba56f935d027b05b171a9ea62bb6a2bc1ecdd2fe8cb4e",
+      "playground/common/reference_residual_ppo_networks.py": "eeb1b758f32bb8a7e53cf59b269bed7f97126cf37ccc4d11090a5f8312b380e6",
+      "playground/common/reference_residual_recurrent_adapter_ppo_networks.py": "ffd07d0a6e96d846aa1f62a8d131bf892f10db6b2a22710affe3946b7b145ebd",
+      "playground/common/rewards.py": "9c327866f2632265f14ef81318046f887aafa64384a06efa6cb264e144bbb1d3",
+      "playground/common/rewards_numpy.py": "f1dba8838b29fdc4701bc3759e2533fa9d51ec550c8f70b83a23d3de64b97f48",
+      "playground/common/runner.py": "cc33330735fb984c384f85e5b7fa63cc53b98e670773ba7a676fb7d76c5adec4",
+      "playground/common/t19_support_trainthrough.py": "dc6c4270a4a5569f4c82dc3f9d1f07c395512bea86c15cd62a634fe10c895057",
+      "playground/common/t55_dynamic_single_support_curriculum.py": "337595b55160869188bee07235ec7d514c96a75e8b1c449a677d5cea39a175aa",
+      "playground/common/t61_midpoint_gait_transfer.py": "7fcfb101acdbe751e1bdfd39becd73b88964e375e9df97f1e40acc7900a90c30",
+      "playground/common/utils.py": "dbeb9fd88bb41aaca5ab242a954cbae7ae9755b7f13ff2d7d2b27cc9094a284c",
+      "playground/common/winner_v127_constrained_ppo_losses.py": "996e292f76a4071f2c3117b0f1dacd9b1a3bf9e31d6d97128ce2f054f9bc6ff1",
+      "playground/common/winner_v127_constrained_ppo_train.py": "9ac5b96d2f810644b4ee2e019c1a8e4f2e5a92b5f1e6455298df5c1ecaa896c0",
+      "playground/common/winner_v171_gradient_geometry.py": "dfbadab3ef4021c71c27c358135bed87307c04f53310fdf9093f6436e00008c3",
+      "playground/common/winner_v173_lexicographic_tangent.py": "b7ff83f8d68f1034ab1ddb5562d4a32a384756a330bb150b8ca69d92a63f3841",
+      "playground/common/winner_v3_variable_configuration.py": "daab44325e6dd98b8b4054fc5c5fe7391ca9e358e7aca97999ef1a2441285ab7",
+      "playground/common/winner_v98_response_calibration_wrapper.py": "04339bf7bbe16f2721ce92bbe62c458e70c1c8a5e9bdfe02424478ebc066a7ba",
+      "playground/common/winner_v98_response_conditioned_export.py": "83c8667828a51bdb379091fbf657725410bae5e0d655273f63cf47bdc913f28c",
+      "playground/common/winner_v98_response_conditioned_ppo_networks.py": "767b0d4dc7d72d6c126eca9ed1f0497ca38214a9e2caa57c8a1e6b5cea3ad17a",
+      "playground/open_duck_mini_v2/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "playground/open_duck_mini_v2/base.py": "0e90b98b113c2e5ff4abd34b64482e3f1b3d365ef95481d1838f8b855de99988",
+      "playground/open_duck_mini_v2/constants.py": "8fafc240bfb8e70c93b722d89148cffb03688882fd4e6250735eccdf53363374",
+      "playground/open_duck_mini_v2/custom_rewards.py": "16fdf5ed409f9abcfa6f68465c4351081c0c255a6683c09aee110c557890cd0c",
+      "playground/open_duck_mini_v2/custom_rewards_numpy.py": "51422e858c4058f5c114004ab6ebd7900cbae544f09aaf430f9398adf9032333",
+      "playground/open_duck_mini_v2/joystick.py": "958d78f0d1a7b67c8b601e28cf90ab30b50494ebf80f6a780aa74c0f864e6cb6",
+      "playground/open_duck_mini_v2/mujoco_infer.py": "67a933e043fe54a3bf252524e71fbb8a7eff973e8bb693d9fe1f1d6f323b11ed",
+      "playground/open_duck_mini_v2/mujoco_infer_base.py": "4c8fd11e4659126d49985a9c048e1cb5a5cfde5f4d54cdfe433e4b165d3b0ab1",
+      "playground/open_duck_mini_v2/ref_motion_viewer.py": "78c267d86d7de9a942c9bd4007990369eb39a7dae7a410acaa316dd9da0a5322",
+      "playground/open_duck_mini_v2/runner.py": "aeabec56a2f98f65e893e943ba6ac953ca92bcacbc1bda55ff0b3baf1b3875b0",
+      "playground/open_duck_mini_v2/standing.py": "123419cb68f3dcf0908b3c77e4c98206de48d719058d38998ddcd69ef32dcdd6"
+    },
+    "python_inventory_sha256": "ed96a337427a8c38655fdd91a34623818f5bf61f1595908bdaa68dd11c20c5cd"
+  },
+  "preregistered_contract_sha256": "c7770fae9aed8ce894b46f2d8c06d97caf93ed24ba1db461473632295e04a838",
+  "question": "Does one fixed midpoint locomotion objective preserve the balance-first source through a 1,024-step CPU update and then restore the complete gait objective through a second exact 1,024-step CPU update?",
+  "schema_version": "open_duck.t61_midpoint_gait_transfer_cpu_preregistration.v1",
+  "sources": {
+    "composed_manifest": {
+      "bytes": 5589,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t61-v1\\T61_COMPOSED_SOURCE_MANIFEST.json",
+      "sha256": "e1a9c9475e5c548844278e3268ee4d0c54ad422d185c71b91bb5b1990058b046"
+    },
+    "composer": {
+      "bytes": 3791,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\compose_t61_midpoint_gait_transfer_playground.py",
+      "sha256": "368f1a97a3c38487e92d94e86acba9ca1878eed9f50564a00cc8d0fc5ad4e4f6"
+    },
+    "mechanics_test": {
+      "bytes": 1140,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t61_midpoint_gait_transfer.py",
+      "sha256": "60647d0cd32cd42bdbc37b507070fbc441542ed4a1f160034dcc15234a755561"
+    },
+    "module": {
+      "bytes": 882,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\patches\\t61_midpoint_gait_transfer.py",
+      "sha256": "7fcfb101acdbe751e1bdfd39becd73b88964e375e9df97f1e40acc7900a90c30"
+    },
+    "patch": {
+      "bytes": 5104,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\patches\\winner_t61_midpoint_gait_transfer.patch",
+      "sha256": "b28d9840f569151efddd15e98158fa0f68f498430345582762c2cd2fed831d63"
+    },
+    "result_test": {
+      "bytes": 2311,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t61_midpoint_gait_transfer_cpu_contract.py",
+      "sha256": "75f2b2bb255ee9336ce5ce608ed860e04386bab26d023e248bfd3a2a2113d852"
+    },
+    "runner": {
+      "bytes": 14935,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t61_midpoint_gait_transfer_cpu_contract.py",
+      "sha256": "39a020db93838b0fa527083728ee0060848bc71bc8fba969413082c32d4b0b57"
+    },
+    "t56_validation": {
+      "bytes": 13541,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t56_recovered_training_validation.json",
+      "sha256": "4ef3de9a2187e3242f855d11ef28e89922debe93177c69d82fff6ce03436a86f"
+    },
+    "t60_attribution": {
+      "bytes": 28823,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t60_t59_persistence_hold_attribution.json",
+      "sha256": "840bb26701cd33b40e51969e83e2a8a252bbcb213270d69d82c0c5651650a39e"
+    }
+  },
+  "status": "PREREGISTERED_T61_MIDPOINT_GAIT_TRANSFER_CPU_CONTRACT"
+}

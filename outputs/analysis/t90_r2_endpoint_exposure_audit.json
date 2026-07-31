@@ -1,0 +1,160 @@
+{
+  "authority": {
+    "additional_training": false,
+    "colab": false,
+    "deployment": false,
+    "gate5": false,
+    "rdkx5_or_robot": false,
+    "t91_com_endpoint_retention_diagnostic_preregistration": true
+  },
+  "checks": {
+    "broad_stratum_samples_continuously": true,
+    "exact_r2_coverage_is_eight_of_twenty": true,
+    "no_new_behavior_or_training": true,
+    "no_robot_or_rdk": true,
+    "post_t78_regressions_are_missing_exact_endpoints": true,
+    "source_green_conditions_one_through_six": true,
+    "t66_categories_exact": true,
+    "t78_population_exact": true
+  },
+  "classification": "POST_T78_REGRESSION_ALIGNS_WITH_MISSING_EXACT_ENDPOINT_REPLAY",
+  "decision": "EARN_T91_COM_ENDPOINT_RETENTION_DIAGNOSTIC_PREREGISTRATION_ONLY",
+  "execution": {
+    "hosted_compute_units": 0,
+    "new_behavior_cells": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "interpretation": {
+    "hosted_run_earned": false,
+    "not_yet_proven": "Exact endpoint replay is sufficient. T91 must first test whether the T84 pair retained the exact COM-X-negative endpoint that T78 explicitly trained.",
+    "supported": "T78 changed an actor that had passed R2 conditions 1-6 while exactly replaying nominal and COM endpoints but not the later failed friction-high and armature-high endpoints."
+  },
+  "post_t78_regressions": [
+    {
+      "cells": 16,
+      "checkpoint_scope": "T84 rolling half and final",
+      "condition": "JOINT_FRICTIONLOSS_HI",
+      "green_cells": 15
+    },
+    {
+      "cells": 8,
+      "checkpoint_scope": "T84 rolling final diagnostic",
+      "condition": "ARMATURE_HI",
+      "green_cells": 7
+    }
+  ],
+  "question": "Did T78 train the exact frozen R2 endpoints whose robustness later regressed, or only a continuous broad sample plus exact nominal and torso-COM strata?",
+  "r2_exact_exposure": {
+    "broad_endpoint_equality_probability": 0.0,
+    "condition_count": 20,
+    "exact_condition_count": 8,
+    "exact_condition_ids": [
+      "FLOOR_FRICTION_HI",
+      "ARMATURE_LO",
+      "TORSO_COM_X_NEG",
+      "TORSO_COM_X_POS",
+      "TORSO_COM_Y_NEG",
+      "TORSO_COM_Y_POS",
+      "TORSO_COM_Z_NEG",
+      "TORSO_COM_Z_POS"
+    ],
+    "missing_exact_condition_count": 12,
+    "missing_exact_condition_ids": [
+      "FLOOR_FRICTION_LO",
+      "JOINT_FRICTIONLOSS_LO",
+      "JOINT_FRICTIONLOSS_HI",
+      "ARMATURE_HI",
+      "ALL_LINK_MASS_LO",
+      "ALL_LINK_MASS_HI",
+      "TORSO_MASS_NEG",
+      "TORSO_MASS_POS",
+      "HOME_JOINT_OFFSET_NEG",
+      "HOME_JOINT_OFFSET_POS",
+      "KP_LO",
+      "KP_HI"
+    ],
+    "reason": "The broad stratum uses continuous uniform draws. Joint friction and armature are independently drawn per joint, whereas the R2 endpoint applies one exact scale to every controlled joint. Exact endpoint vectors therefore have measure zero in that stratum."
+  },
+  "repository_commit": "aac8340f941e143980749e3d9210861e09654f61",
+  "result_sha256": "f2c46e478bd055b9ff68b7afc2c24cff79c94544c3c02f915b8e006d196d3dde",
+  "schema_version": "open_duck.t90_r2_endpoint_exposure_audit.v1",
+  "source_green_before_t78": {
+    "conditions_1_to_4": {
+      "all_green": true,
+      "cells": 64,
+      "green_cells": 64
+    },
+    "conditions_5_to_6": {
+      "all_green": true,
+      "cells": 32,
+      "green_cells": 32
+    }
+  },
+  "source_receipts": {
+    "r2_basis": {
+      "bytes": 12988,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t41_uniform_normalizer_r2_preregistration.json",
+      "sha256": "f0f8337b90d97e08b98db669000ddb43080717f5fe90153ab569d08c0cbd25d3"
+    },
+    "t52_result": {
+      "bytes": 493380,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t52_uniform_half_head_qualification_result.json",
+      "sha256": "308e9fe8e39cc50220ba3c2fc8c3670335b2dd1df8867acd5651ff223d7b6854"
+    },
+    "t53_result": {
+      "bytes": 370013,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t53_uniform_half_head_r2_remainder_result.json",
+      "sha256": "514c53ffe212d8fd7f9afe41e750575f279b2035ceb4debabeb41d8364b9388c"
+    },
+    "t66_endpoint_module": {
+      "bytes": 5906,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\patches\\t66_endpoint_core_continuation.py",
+      "sha256": "a5627f0109b842f37be5d87c327cbb3efeface040a5632e84893cba73c8a321f"
+    },
+    "t66_preregistration": {
+      "bytes": 12303,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t66_endpoint_core_cpu_preregistration.json",
+      "sha256": "2f7eac7c3efcfe86cef902ef2e0102c714865b25cc9560bf11d1c2dbbe935456"
+    },
+    "t78_preregistration": {
+      "bytes": 27840,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t78_endpoint_joint_adapter_hosted_preregistration.json",
+      "sha256": "50f45ef0b6e65072213a2b5bf4da5de37413687bc5d22c4248d669c4d068d77f"
+    },
+    "t86_result": {
+      "bytes": 491351,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t86_rolling_midpoint_r2_result.json",
+      "sha256": "8fe4405334def7d2a871f3aae3a4968e28fe928bc5db1902dcd640c2077fb53f"
+    },
+    "t89_result": {
+      "bytes": 129588,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t89_terminal_final_r2_remainder_result.json",
+      "sha256": "7fa33ec6534f8e2b5a6b25471b29f44a71ab9a370ef2aadd3eb98bbe139bde6b"
+    },
+    "variable_configuration_source": {
+      "bytes": 16910,
+      "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t77-v1\\playground\\common\\winner_v3_variable_configuration.py",
+      "sha256": "daab44325e6dd98b8b4054fc5c5fe7391ca9e358e7aca97999ef1a2441285ab7"
+    }
+  },
+  "status": "PASS_T90_R2_ENDPOINT_EXPOSURE_AUDIT",
+  "training_population": {
+    "broad_strata": 1,
+    "categories": [
+      "broad_random",
+      "nominal",
+      "torso_com_x_neg",
+      "torso_com_x_pos",
+      "torso_com_y_neg",
+      "torso_com_y_pos",
+      "torso_com_z_neg",
+      "torso_com_z_pos"
+    ],
+    "environments": 256,
+    "environments_per_stratum": 32,
+    "exact_nominal_or_com_strata": 7,
+    "strata": 8
+  }
+}

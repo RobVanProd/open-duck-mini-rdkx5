@@ -1,0 +1,38 @@
+{
+  "status": "HOLD_Z005_SEED5_SUPPORT_NOT_SOLVED",
+  "scope": "offline_source_generation_diagnostic",
+  "robot_touched": false,
+  "training_performed": false,
+  "task": "rough_terrain_backlash",
+  "terrain_hfield_z_scale": 0.005,
+  "seed": 5,
+  "duration_target_s": 2.0,
+  "probes": {
+    "home_hold": {
+      "report": "outputs/analysis/FOOT_PLACEMENT_MPC_Z005_SEED5_HOME_HOLD.md",
+      "json": "outputs/analysis/foot_placement_mpc_z005_seed5_home_hold.json",
+      "samples": 43,
+      "termination": "fall_or_nan",
+      "mean_vx_m_s": -0.37363246321504895,
+      "body_pitch_abs_p95_rad": 1.400724462279257,
+      "base_height_min_m": 0.041452556848526
+    },
+    "support_grid": {
+      "report": "outputs/analysis/FOOT_PLACEMENT_MPC_Z005_SEED5_SUPPORT_GRID.md",
+      "json": "outputs/analysis/foot_placement_mpc_z005_seed5_support_grid.json",
+      "candidate_count": 24,
+      "best_samples": 44,
+      "best_termination": "fall_or_nan",
+      "best_mean_vx_m_s": -0.3423501673069867,
+      "best_body_pitch_abs_p95_rad": 1.3137837046051095,
+      "best_base_height_min_m": 0.06133825331926346
+    }
+  },
+  "decision": "Do not use these traces as source data and do not run live-oracle DAgger iteration 1 from this source.",
+  "interpretation": "Seed 5 on z=0.005 is a support/reset-source design problem before it is a student fitting problem.",
+  "next": [
+    "inspect seed-5 terrain contact geometry at reset and compare z=0.002 vs z=0.005",
+    "test a reset/support pose or terrain curriculum rung that first holds seed 5 upright for >=2s without envelope excess",
+    "reintroduce walking/source motion only after seed-5 support survives"
+  ]
+}

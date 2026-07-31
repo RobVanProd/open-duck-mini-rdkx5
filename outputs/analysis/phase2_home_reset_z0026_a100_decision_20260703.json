@@ -1,0 +1,91 @@
+{
+  "status": "HOLD_A100_CONTINUATION_REGRESSED",
+  "source_candidate": "policy/candidates/corrected_bridge_cmd_conditioned_rate175_20260627/candidate.onnx",
+  "source_candidate_sha256": "63506567f7a973be0ff6b2b222bba41736409da713466db442067c0f2a91415e",
+  "warm_start_checkpoint": "outputs/analysis/phase2_restore_checkpoints/ppo_bc_command_conditioned_rate175_step0_checkpoint",
+  "colab_hardware": "A100",
+  "jax_pin": "0.7.2",
+  "task": "rough_terrain_backlash",
+  "terrain_hfield_z_scale": 0.0026,
+  "reset_contract": "home-support local gate; zero reset randomization during training",
+  "robot_tests": false,
+  "grounded_replay": false,
+  "deploy": false,
+  "latest_exec_full_gate": {
+    "policy_sha256": "5f0c208f989fbf17abae913d94ab8c44fdd7b1e057be837ce0bb9b041aa0a841",
+    "command_x": 0.08,
+    "duration_s": 15.0,
+    "seeds": "0-7",
+    "falls": 0,
+    "duration_complete": 8,
+    "mean_vx_m_s": 0.012150021153366348,
+    "track_ratio_mean": 0.15187526441707935,
+    "max_pitch_vel_p95_rad_s": 3.7343454360961896,
+    "p95_velocity_excess_rad_s": 1.4843454360961896,
+    "max_tracking_p95_rad": 0.21085246801376334,
+    "single_support_pct": 6.666666666666667,
+    "double_support_pct": 93.33333333333333,
+    "artifact_json": "outputs/analysis/phase2_home_reset_z0026_from_rate175_a100_exec_x008_home_support_gate.json"
+  },
+  "checkpoint_screen": {
+    "artifact_json": "outputs/analysis/phase2_home_reset_z0026_from_rate175_a100_checkpoint_screen_x008_5s.json",
+    "rows": [
+      {
+        "candidate": "detached_40960",
+        "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "sha256": "eca50b0dfca0876673eca67b7739d821c608ed1047378c1dda2b3cfa069c3763",
+        "mean_vx_m_s": 0.0041,
+        "track_ratio": 0.0507,
+        "max_pitch_vel_p95_rad_s": 1.8848,
+        "p95_velocity_excess_rad_s": 0.0
+      },
+      {
+        "candidate": "detached_81920",
+        "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "sha256": "8dcdfb6aca7fd667d88aea4ff4bd31e76dc8f593cbac9b49ff0577004e311588",
+        "mean_vx_m_s": 0.2235,
+        "track_ratio": 2.7935,
+        "max_pitch_vel_p95_rad_s": 5.24,
+        "p95_velocity_excess_rad_s": 2.99
+      },
+      {
+        "candidate": "detached_122880",
+        "status": "HOLD_CANDIDATE_ACTION_SATURATION",
+        "sha256": "b25a7b6d366d45a535e02f2a267d7a3ccc3c5ffec86fec8c528c8395c25dc407",
+        "mean_vx_m_s": 0.0393,
+        "track_ratio": 0.4915,
+        "max_pitch_vel_p95_rad_s": 5.24,
+        "p95_velocity_excess_rad_s": 2.99
+      },
+      {
+        "candidate": "exec_40960",
+        "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "sha256": "42a755ca3cb23fa7ceca8f768157b1dcc3816ac759b51610983ad86148899816",
+        "mean_vx_m_s": 0.0036,
+        "track_ratio": 0.0455,
+        "max_pitch_vel_p95_rad_s": 2.0724,
+        "p95_velocity_excess_rad_s": 0.0
+      },
+      {
+        "candidate": "exec_81920",
+        "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "sha256": "d010c5664466d0f60bb1ebc95ea79551b2874263af25e81eeba1e42fe280d49c",
+        "mean_vx_m_s": 0.2256,
+        "track_ratio": 2.82,
+        "max_pitch_vel_p95_rad_s": 5.24,
+        "p95_velocity_excess_rad_s": 2.99
+      },
+      {
+        "candidate": "exec_122880",
+        "status": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "sha256": "5f0c208f989fbf17abae913d94ab8c44fdd7b1e057be837ce0bb9b041aa0a841",
+        "mean_vx_m_s": 0.011,
+        "track_ratio": 0.1373,
+        "max_pitch_vel_p95_rad_s": 3.3742,
+        "p95_velocity_excess_rad_s": 1.1242
+      }
+    ]
+  },
+  "decision": "Do not promote any checkpoint from this run.",
+  "next_recommendation": "Do not repeat this continuation unchanged; add a single-support swing/advance objective or repair labels/oracle before PPO continuation."
+}

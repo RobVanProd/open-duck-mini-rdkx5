@@ -1,0 +1,42 @@
+# Candidate Seed Sweep
+
+Offline multi-seed closed-loop candidate gate. This does not SSH, deploy,
+train, or touch the robot.
+
+command_x: `0.0`
+task: `flat_terrain_backlash`
+bridge_mode: `fitted`
+reward_overrides_json: `None`
+reward_overrides_phase: `None`
+duration_s: `15.0`
+seeds: `[0, 1, 2, 3, 4, 5, 6, 7]`
+trace_seeds: `[]`
+trace_full_obs: `False`
+run: `True`
+
+## Per-Seed Results
+
+| policy | seed | status | samples | termination | mean_local_vx | track_ratio | body_pitch_p95 | base_height_min | max_pitch_vel_p95 | max_tracking_p95 |
+|---|---:|---|---:|---|---:|---:|---:|---:|---:|---:|
+| `live_oracle_dagger_iter0` | 0 | `HOLD_CANDIDATE_TRACKING` | 750 | `duration_complete` | 0.0465 | NA | 0.1009 | 0.1520 | 3.7183 | 0.2565 |
+| `live_oracle_dagger_iter0` | 1 | `HOLD_CANDIDATE_TRACKING` | 750 | `duration_complete` | 0.0443 | NA | 0.0950 | 0.1556 | 3.7185 | 0.2594 |
+| `live_oracle_dagger_iter0` | 2 | `HOLD_CANDIDATE_TRACKING` | 750 | `duration_complete` | 0.0473 | NA | 0.0983 | 0.1509 | 3.7047 | 0.2606 |
+| `live_oracle_dagger_iter0` | 3 | `HOLD_CANDIDATE_TRACKING` | 750 | `duration_complete` | 0.0421 | NA | 0.0988 | 0.1550 | 3.6735 | 0.2615 |
+| `live_oracle_dagger_iter0` | 4 | `HOLD_CANDIDATE_TRACKING` | 750 | `duration_complete` | 0.0436 | NA | 0.0954 | 0.1506 | 3.7364 | 0.2609 |
+| `live_oracle_dagger_iter0` | 5 | `HOLD_CANDIDATE_TRACKING` | 750 | `duration_complete` | 0.0434 | NA | 0.0963 | 0.1462 | 3.7090 | 0.2678 |
+| `live_oracle_dagger_iter0` | 6 | `HOLD_CANDIDATE_TRACKING` | 750 | `duration_complete` | 0.0420 | NA | 0.0958 | 0.1557 | 3.7130 | 0.2595 |
+| `live_oracle_dagger_iter0` | 7 | `HOLD_CANDIDATE_TRACKING` | 750 | `duration_complete` | 0.0439 | NA | 0.0983 | 0.1559 | 3.7365 | 0.2661 |
+
+## Distribution Summary
+
+| policy | runs | falls | duration_complete | samples_mean | samples_min | samples_max | track_ratio_mean | vx_mean | body_pitch_p95_mean | base_height_min_mean |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| `live_oracle_dagger_iter0` | 8 | 0 | 8 | 750.0000 | 750 | 750 | NA | 0.0441 | 0.0974 | 0.1527 |
+
+## Interpretation
+
+- Treat this as a stability distribution, not a deployability approval.
+- A candidate still needs the standard full-duration x=0.0 and x=0.08
+  gates reviewed before any robot-side validation.
+- If fall samples vary widely across seeds, grade later recipes by
+  distribution shift, not by a single lucky rollout.

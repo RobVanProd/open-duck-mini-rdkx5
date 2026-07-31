@@ -1,0 +1,136 @@
+{
+  "activation": "swish",
+  "config": {
+    "batch_size": 512,
+    "learning_rate": 0.001,
+    "seed": 44,
+    "steps": 9000,
+    "target_rate_limit_rad_s": 3.75,
+    "target_rate_scale": 0.1
+  },
+  "context_hidden_sizes": [
+    64
+  ],
+  "context_indices": [
+    6,
+    99,
+    100
+  ],
+  "exported_onnx": "outputs/analysis/phase2_seed4_weighted_knee_ankle_leftknee_limit_phasecmd_seed4x25_bc_student/candidate.onnx",
+  "loss_rows": [
+    {
+      "loss": 0.15015563368797302,
+      "step": 1
+    },
+    {
+      "loss": 5.0423306674929336e-05,
+      "step": 500
+    },
+    {
+      "loss": 2.4845299776643515e-05,
+      "step": 1000
+    },
+    {
+      "loss": 2.8635311537072994e-05,
+      "step": 1500
+    },
+    {
+      "loss": 2.7574686100706458e-05,
+      "step": 2000
+    },
+    {
+      "loss": 2.0931924154865555e-05,
+      "step": 2500
+    },
+    {
+      "loss": 1.9878312741639093e-05,
+      "step": 3000
+    },
+    {
+      "loss": 1.3974594367027748e-05,
+      "step": 3500
+    },
+    {
+      "loss": 1.676990905252751e-05,
+      "step": 4000
+    },
+    {
+      "loss": 7.289272161870031e-06,
+      "step": 4500
+    },
+    {
+      "loss": 9.816248166316655e-06,
+      "step": 5000
+    },
+    {
+      "loss": 7.063992597977631e-06,
+      "step": 5500
+    },
+    {
+      "loss": 9.918492651195265e-06,
+      "step": 6000
+    },
+    {
+      "loss": 7.916262802609708e-06,
+      "step": 6500
+    },
+    {
+      "loss": 8.58207840792602e-06,
+      "step": 7000
+    },
+    {
+      "loss": 7.620971700816881e-06,
+      "step": 7500
+    },
+    {
+      "loss": 6.945379027456511e-06,
+      "step": 8000
+    },
+    {
+      "loss": 1.1064134923799429e-05,
+      "step": 8500
+    },
+    {
+      "loss": 4.817468834517058e-06,
+      "step": 9000
+    }
+  ],
+  "manifest": "outputs/analysis/phase2_seed4_weighted_knee_ankle_leftknee_limit_command_seed4x25_manifest.json",
+  "modulation_scale": 0.75,
+  "onnx_verify": {
+    "max_abs_error": 2.384185791015625e-07,
+    "p95_abs_error": 1.1920928955078125e-07,
+    "path": "outputs/analysis/phase2_seed4_weighted_knee_ankle_leftknee_limit_phasecmd_seed4x25_bc_student/candidate.onnx",
+    "samples_checked": 64
+  },
+  "sample_weight": {
+    "max": 5.0,
+    "p50": 2.5,
+    "p95": 5.0,
+    "weighted_samples": 1861.0
+  },
+  "samples": 750,
+  "saved_npz": "outputs/analysis/phase2_seed4_weighted_knee_ankle_leftknee_limit_phasecmd_seed4x25_bc_student/candidate_mlp.npz",
+  "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+  "target_rate": {
+    "max_rad_s": 2.889129638671875,
+    "p50_rad_s": 0.21158736944198608,
+    "p95_rad_s": 1.687813669443129,
+    "p99_rad_s": 2.2763191819190984,
+    "pair_count": 747
+  },
+  "train_metrics": {
+    "mae": 0.001992021882621048,
+    "max_abs_error": 0.01175302267074585,
+    "p50_abs_error": 0.0015174750005826354,
+    "p95_abs_error": 0.005491234362125391,
+    "p99_abs_error": 0.007873403280973435,
+    "pred_action_saturation_pct": 0.0,
+    "rmse": 0.002641067659407361,
+    "samples": 750
+  },
+  "trunk_hidden_sizes": [
+    512,
+    256
+  ]
+}

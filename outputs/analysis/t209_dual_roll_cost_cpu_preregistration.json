@@ -1,0 +1,251 @@
+{
+  "assets": {
+    "composed_source_manifest": {
+      "bytes": 7126,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t209_dual_roll_cost_cpu_source_v3\\T209_COMPOSED_SOURCE_MANIFEST.json",
+      "sha256": "6c2298f083691c9d3527b8e5c2b72f5f833ee7407429e17f27d69b867feb5f37"
+    },
+    "cpu_topology_template": {
+      "kind": "directory",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t128_negative_only_expert_cpu_v1\\t100c_half_cpu_remap",
+      "sha256": "224bda78ae19081a1ea409e31b49e37c2641e2354d6263e81bc8ec56039ee9d2"
+    },
+    "hidden_gate_static_asset": {
+      "bytes": 8085,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t98_hidden_gate_asset.json",
+      "sha256": "11381bb2208d1eb40f826b069c68983fdab348277e46c63ffc1ddd46b579b6e3"
+    },
+    "reference_features": {
+      "bytes": 259604,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+      "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+    },
+    "source_checkpoint": {
+      "kind": "directory",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t203_colab_recovery_20260730\\extracted\\t203_predicted_roll_risk_continuation\\training\\2026_07_30_125443_1003520",
+      "sha256": "9833415ac7bbb5f545832087c7f6d46af0b7f0955dcc283fbeec82903eb23c6c"
+    },
+    "source_raw_onnx": {
+      "bytes": 960296,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t203_colab_recovery_20260730\\extracted\\t203_predicted_roll_risk_continuation\\training\\2026_07_30_125443_1003520.onnx",
+      "sha256": "d1117fdd74a57b537fd97a1dd27c414eff237be06fe8146d91859cc5c0dd1d51"
+    },
+    "t204_source_validation": {
+      "bytes": 9905,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t204_t203_recovered_training_validation.json",
+      "sha256": "64da6ed7c0db18708e940f1ea59439ed2eda8e1d07ec3bec2fffaeb9c23af7e9"
+    },
+    "t208_selection_result": {
+      "bytes": 14512,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t208_t203_persistence_autopsy_result.json",
+      "sha256": "a4e11ecda5f2e6bd0b6c21b5887e5d39bbbf4690b3c2cfde23c0778eb4881aa6"
+    },
+    "v127_engine_cpu_result": {
+      "bytes": 12031,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\winner_v127_constrained_cpu_result.json",
+      "sha256": "cd728eb3cf2900f038c4134e3f603106238e960046b3482d4cd2b695b5a76ed4"
+    },
+    "v128_old_objective_closure": {
+      "bytes": 3247,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\winner_v128_nominal_behavior_result.json",
+      "sha256": "c703a5024dee3bcd32fb549e3c561c09d164d1f766c91ebc882fab7173c0e35a"
+    }
+  },
+  "authority": {
+    "behavior_evaluation": false,
+    "deployment_audit": false,
+    "execute_one_cpu_contract": true,
+    "gate5": false,
+    "hosted_preregistration": false,
+    "hosted_training": false,
+    "policy_promotion": false,
+    "rdkx5_or_robot": false
+  },
+  "checks": {
+    "composed_manifest_and_inventory_present": true,
+    "cost_is_dense_unscaled_squared_roll_excess": true,
+    "deployment_graph_is_unchanged": true,
+    "fixed_t202_reward_cost_is_disabled": true,
+    "t203_half_is_exact_green_source": true,
+    "t208_earns_only_t209_cpu_preregistration": true,
+    "validated_v127_engine_is_reused_not_old_objective": true
+  },
+  "decision_rule": {
+    "fail": "CLOSE_T209_DUAL_ROLL_COST_WITHOUT_HOSTED_TRAINING",
+    "no_hosted_run_from_preregistration_alone": true,
+    "pass": "EARN_T210_DUAL_ROLL_COST_HOSTED_PREREGISTRATION_ONLY"
+  },
+  "environment_contract": {
+    "default_off_steps": 8,
+    "enabled_seed": 209,
+    "enabled_source_policy_ticks": 108,
+    "formal_behavior_cells": 0,
+    "metric_error_tolerance": 1e-07,
+    "reward_must_remain_bit_equal_to_original_clip": true,
+    "synthetic_roll_rate_rad_s": 10.0
+  },
+  "execution_now": {
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "expected_runner_readback": "T209_DUAL_ROLL_COST=horizon_s=0.08,envelope_rad=0.3541802655745987,cost=unscaled_squared_excess,reward_channel=unchanged,cost_critic=separate,cost_discount=1.0,actor_advantage=(A_R-lambda*A_C)/(1+lambda),dual_eta=1/(ceil(K/4)*J_C0),deployment_graph=unchanged",
+  "failed_checks": [],
+  "mechanism": {
+    "actor_advantage": "(A_R-lambda*A_C)/(1+lambda)",
+    "cost": "square(max(0, risk - envelope))",
+    "cost_channel": "separate_unclipped_training_only",
+    "cost_critic": "separate",
+    "cost_critic_trainable": true,
+    "cost_discount": 1.0,
+    "cost_gae_lambda": "frozen_T203_reward_GAE_lambda",
+    "cost_scale": 1.0,
+    "deployment_graph_change": false,
+    "dual_eta": "1/(ceil(K/4)*J_C0)",
+    "dual_initial_lambda": 0.0,
+    "dual_update": "lambda=max(0,lambda+eta*J_C)",
+    "passing_envelope_rad": 0.3541802655745987,
+    "policy_abi_change": false,
+    "prediction_horizon_s": 0.08,
+    "protected": [
+      "mature actor outside negative_adapter_location",
+      "observation normalizer",
+      "policy ABI",
+      "deployment action graph"
+    ],
+    "reward_channel": "unchanged_original_clipped_reward",
+    "reward_critic_trainable": true,
+    "risk": "abs(body_roll_rad + 0.08 * body_roll_rate_rad_s)",
+    "scalar_sweep": false,
+    "source": "T203_HALF",
+    "trainable_actor_groups": [
+      "negative_adapter_location"
+    ]
+  },
+  "playground": {
+    "base_path": "D:\\CodexArtifacts\\open-duck-policy\\t202_predicted_roll_risk_cpu_source_v1",
+    "path": "D:\\CodexArtifacts\\open-duck-policy\\t209_dual_roll_cost_cpu_source_v3",
+    "python_inventory": {
+      "playground/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "playground/common/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "playground/common/export_onnx.py": "30bc705bf59babb59c5ba3045b601c838db00ebb569bb9fc6aa520f1e61139cc",
+      "playground/common/onnx_infer.py": "e610c2b94d15cd0ea4be1c0cee8853dc33b10c3b440e6d9bb1b1bb73168f34f2",
+      "playground/common/phase_moe_networks.py": "6480f59f4039884be6743828ffed1c31f76896830b2b38689cad038200283cb7",
+      "playground/common/plot_saved_obs.py": "911fe1de5668c31fdc2a10a4285b8343c04fd4f662a38207d6f06a91fd4e0a8e",
+      "playground/common/poly_reference_motion.py": "cc2430d82a9e41bf2081a4a9bed45731a43aad8b860e5b168f5850eb3748cf21",
+      "playground/common/poly_reference_motion_numpy.py": "585e783722ffb403a14288aafc1fcdf86c8a5d1b39949171a3b2d918028c4406",
+      "playground/common/randomize.py": "c6e7a48f714a2267b3b19d75ffc9ce3938350aabceb3eda61727a3c48f2d6dd8",
+      "playground/common/recurrent_ppo_networks.py": "a501000c6f959276514ba56f935d027b05b171a9ea62bb6a2bc1ecdd2fe8cb4e",
+      "playground/common/reference_residual_ppo_networks.py": "eeb1b758f32bb8a7e53cf59b269bed7f97126cf37ccc4d11090a5f8312b380e6",
+      "playground/common/reference_residual_recurrent_adapter_ppo_networks.py": "ffd07d0a6e96d846aa1f62a8d131bf892f10db6b2a22710affe3946b7b145ebd",
+      "playground/common/rewards.py": "9c327866f2632265f14ef81318046f887aafa64384a06efa6cb264e144bbb1d3",
+      "playground/common/rewards_numpy.py": "f1dba8838b29fdc4701bc3759e2533fa9d51ec550c8f70b83a23d3de64b97f48",
+      "playground/common/runner.py": "337b65d156e59dc8cd70abfe23f07c636ef1464df6635e94857388c6e5700664",
+      "playground/common/t19_support_trainthrough.py": "dc6c4270a4a5569f4c82dc3f9d1f07c395512bea86c15cd62a634fe10c895057",
+      "playground/common/t202_predicted_roll_risk.py": "c04f9f10b3d16d19cdc4a2aa685e0c7f7bd67edcf44746b474d375e700891bab",
+      "playground/common/t37_frozen_observation_normalizer.py": "324cb669821cd2964b62bdd1c2241a3bd6108c0ce37d34792f4e0adf8a75eab6",
+      "playground/common/t66_endpoint_core_continuation.py": "a5627f0109b842f37be5d87c327cbb3efeface040a5632e84893cba73c8a321f",
+      "playground/common/t77_endpoint_joint_adapter_continuation.py": "c8379e949967d877b919f96d5e6beab2c75f74056eba2941ba44a84fc73632bf",
+      "playground/common/t98_hidden_expert_continuation.py": "d11c96efd74d355de76684ce5d69ba18f3fa2ca54cacc7060536be7bd64f7492",
+      "playground/common/t98_hidden_expert_ppo_networks.py": "3d3228b3ab0ea8d8c3719cc578998d6264534d354759e53141e386b1a873ea06",
+      "playground/common/utils.py": "dbeb9fd88bb41aaca5ab242a954cbae7ae9755b7f13ff2d7d2b27cc9094a284c",
+      "playground/common/winner_v127_constrained_ppo_losses.py": "996e292f76a4071f2c3117b0f1dacd9b1a3bf9e31d6d97128ce2f054f9bc6ff1",
+      "playground/common/winner_v127_constrained_ppo_train.py": "b749d956c4651e5a9037b542e946fcc81425915c17495e1b68ee27f4a7435615",
+      "playground/common/winner_v171_gradient_geometry.py": "dfbadab3ef4021c71c27c358135bed87307c04f53310fdf9093f6436e00008c3",
+      "playground/common/winner_v173_lexicographic_tangent.py": "b7ff83f8d68f1034ab1ddb5562d4a32a384756a330bb150b8ca69d92a63f3841",
+      "playground/common/winner_v3_variable_configuration.py": "daab44325e6dd98b8b4054fc5c5fe7391ca9e358e7aca97999ef1a2441285ab7",
+      "playground/common/winner_v98_response_calibration_wrapper.py": "04339bf7bbe16f2721ce92bbe62c458e70c1c8a5e9bdfe02424478ebc066a7ba",
+      "playground/common/winner_v98_response_conditioned_export.py": "83c8667828a51bdb379091fbf657725410bae5e0d655273f63cf47bdc913f28c",
+      "playground/common/winner_v98_response_conditioned_ppo_networks.py": "767b0d4dc7d72d6c126eca9ed1f0497ca38214a9e2caa57c8a1e6b5cea3ad17a",
+      "playground/open_duck_mini_v2/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "playground/open_duck_mini_v2/base.py": "0e90b98b113c2e5ff4abd34b64482e3f1b3d365ef95481d1838f8b855de99988",
+      "playground/open_duck_mini_v2/constants.py": "8fafc240bfb8e70c93b722d89148cffb03688882fd4e6250735eccdf53363374",
+      "playground/open_duck_mini_v2/custom_rewards.py": "16fdf5ed409f9abcfa6f68465c4351081c0c255a6683c09aee110c557890cd0c",
+      "playground/open_duck_mini_v2/custom_rewards_numpy.py": "51422e858c4058f5c114004ab6ebd7900cbae544f09aaf430f9398adf9032333",
+      "playground/open_duck_mini_v2/joystick.py": "4cc1f0611564a0e1fb8f3f2b326f858a9b9abf4b10841a6363e8f9dda1bbeeba",
+      "playground/open_duck_mini_v2/mujoco_infer.py": "67a933e043fe54a3bf252524e71fbb8a7eff973e8bb693d9fe1f1d6f323b11ed",
+      "playground/open_duck_mini_v2/mujoco_infer_base.py": "4c8fd11e4659126d49985a9c048e1cb5a5cfde5f4d54cdfe433e4b165d3b0ab1",
+      "playground/open_duck_mini_v2/ref_motion_viewer.py": "78c267d86d7de9a942c9bd4007990369eb39a7dae7a410acaa316dd9da0a5322",
+      "playground/open_duck_mini_v2/runner.py": "d2427a9f1dc9df0d9b5e1b01490e5ebdb46e30ac903231847d49d10931daf3ef",
+      "playground/open_duck_mini_v2/standing.py": "123419cb68f3dcf0908b3c77e4c98206de48d719058d38998ddcd69ef32dcdd6"
+    },
+    "python_inventory_sha256": "45185bbdd5b93a737d0a253ce8b72687401f75373afd35e55518aab3c32e5d4e"
+  },
+  "preregistered_contract_sha256": "277f1a3993e48d5902b053e300dbb23dac7922ab8d64cbfddf9bd13ad64f113e",
+  "schema_version": "open_duck.t209_dual_roll_cost_cpu_preregistration.v1",
+  "sources": {
+    "builder": {
+      "bytes": 13345,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t209_dual_roll_cost_cpu_preregistration.py",
+      "sha256": "fa05a23e227df4353ecf804f2b5b202ff5b9d8a9fb4fb80380b8a275e417f87c"
+    },
+    "composer": {
+      "bytes": 5392,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\compose_t209_dual_roll_cost_playground.py",
+      "sha256": "d1b5113342e19558fe743191f39df0eadcf0c5529262be05bf619efef3b6b5d1"
+    },
+    "constrained_loss_engine": {
+      "bytes": 15471,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t209_dual_roll_cost_cpu_source_v3\\playground\\common\\winner_v127_constrained_ppo_losses.py",
+      "sha256": "996e292f76a4071f2c3117b0f1dacd9b1a3bf9e31d6d97128ce2f054f9bc6ff1"
+    },
+    "constrained_train_engine": {
+      "bytes": 35438,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t209_dual_roll_cost_cpu_source_v3\\playground\\common\\winner_v127_constrained_ppo_train.py",
+      "sha256": "b749d956c4651e5a9037b542e946fcc81425915c17495e1b68ee27f4a7435615"
+    },
+    "environment_worker": {
+      "bytes": 10752,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t209_environment_contract_worker.py",
+      "sha256": "e5c2ca55e31956245f0ef6708c36e2ea16d58f47f25a7c9d2b84c907349ead35"
+    },
+    "runner": {
+      "bytes": 21880,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t209_dual_roll_cost_cpu_contract.py",
+      "sha256": "933a48672619205c623403dbd3596d5ca9b153a2d5f76f069433201e1f374841"
+    },
+    "source_patch": {
+      "bytes": 5922,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\patches\\winner_t209_dual_roll_cost.patch",
+      "sha256": "0cab4e92a41f012db4d5a86cdf6c04ec7f0614d5a2a7b01dc2075ff53a345b17"
+    },
+    "unit_test": {
+      "bytes": 2221,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t209_dual_roll_cost.py",
+      "sha256": "9e19f085f43e2ad9b8ab3bc56cea917830e13247eb9aa81af178898fb0a82d21"
+    }
+  },
+  "status": "PREREGISTERED_T209_DUAL_ROLL_COST_CPU_CONTRACT",
+  "training_smoke": {
+    "all_nonconstraint_PPO_values": "bit_exact_T203",
+    "environments_per_stratum": 1,
+    "export_steps": [
+      0,
+      1024
+    ],
+    "num_envs": 8,
+    "removed_closed_constraint_reward_terms": [
+      "T202 fixed predicted-roll price",
+      "legacy torque reward penalties"
+    ],
+    "source_checkpoint": "D:\\CodexArtifacts\\open-duck-policy\\t203_colab_recovery_20260730\\extracted\\t203_predicted_roll_risk_continuation\\training\\2026_07_30_125443_1003520",
+    "timesteps": 1024
+  }
+}

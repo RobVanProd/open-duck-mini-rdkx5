@@ -58,19 +58,49 @@ reviewed sim-side gates:
 | gate | required result |
 |---|---|
 | contract | `state[101] -> action[14]` |
+| model variant | task/XML named explicitly; do not mix `flat_terrain` and `flat_terrain_backlash` claims |
 | actuator bridge | enabled with reviewed ranges |
 | action saturation | no sustained bursts |
 | target velocity | p95/p99 reduced versus `BEST_WALK_ONNX_2` x=0.08 baseline |
 | simulated pitch tracking | p95 preferably `<0.05 rad`, acceptable `<0.08 rad` |
 | post-startup tracking | no sustained pitch-chain error `>0.10 rad` |
-| forward command tracking | mean forward velocity tracks at least part of nonzero `x` command |
+| forward command tracking | mean local-base-x velocity tracks at least part of nonzero `x` command |
 | gait stability | stable at `x=0.00`, `x=0.04`, and `x=0.08` in sim |
 | reward | no obvious frozen or collapsed gait exploit |
-| metadata | ONNX hash, config, seed, and eval summary saved |
+| metadata | ONNX hash, config, seed set, and eval summary saved |
 
 The offline candidate gate currently holds nonzero commands when the measured
 forward command tracking ratio is below `0.25`. This prevents a policy from
 passing by standing still with smooth, easy-to-track actions.
+
+Forward command tracking is measured in the robot local base-x frame via
+`env.get_local_linvel(...)`, not by world `base_x` displacement. The Playground
+reset randomizes yaw, so world-frame displacement can have the wrong sign for a
+valid forward command.
+
+Model variant is now a required part of every gate report. The current
+command-conditioned pitch-rate-limited warm start exposed a hard model-variant
+split:
+
+```text
+flat_terrain, x=0.0, 10 s, seeds 1 and 7:
+  both seeds fall
+
+flat_terrain_backlash, x=0.0, 15 s, seeds 1 and 7:
+  both seeds pass
+```
+
+Reference:
+`outputs/analysis/CMD_PITCH_RL_2P25_MODEL_VARIANT_X0_HARD_SEED_DECISION.md`.
+
+Canonical-model decision:
+`docs/CANONICAL_SIM_MODEL_GATE_DECISION.md`.
+
+Current recommendation: use `flat_terrain_backlash` as the canonical offline
+promotion model and treat `flat_terrain` as a stress/ablation gate unless the
+team explicitly changes the canonical model. A candidate that passes
+`flat_terrain_backlash` has not passed `flat_terrain` unless that exact gate was
+run.
 
 ## Required Offline Artifacts
 
@@ -105,7 +135,8 @@ python3 tools/package_candidate_policy.py \
   --candidate-name open_duck_mini_actuator_bridge_<date>_<shortsha> \
   --training-manifest path/to/smoke_or_training_manifest.json \
   --contract-audit outputs/analysis/<candidate>_contract.md \
-  --actuator-bridge-eval outputs/analysis/<candidate>_candidate_gate_x008.md \
+  --candidate-gate-x0 outputs/analysis/<candidate>_candidate_gate_x0.md \
+  --candidate-gate-x008 outputs/analysis/<candidate>_candidate_gate_x008.md \
   --output-md outputs/analysis/<candidate>_policy_package.md \
   --output-json outputs/analysis/<candidate>_policy_metadata.json
 ```
@@ -125,7 +156,7 @@ The tool checks:
 - training manifest presence
 - sim-gate evidence presence
 - optional target-velocity summary presence
-- candidate sim-gate status when an actuator bridge eval report is supplied
+- candidate sim-gate status for both `x=0.0` and `x=0.08`
 
 Use the closed-loop eval helper in candidate mode before considering any
 robot-side validation:
@@ -148,6 +179,35 @@ robot-side validation:
 Run at least `x=0.0` and `x=0.08`. Package metadata should point at the
 `x=0.08` candidate gate so nonzero-command failures are not hidden by a
 zero-command pass.
+
+For nonzero command promotion, a single seed is not enough. The V7/V9 baseline
+showed the same policy can lunge, buckle, or stand still depending on reset
+seed. Use the seed-sweep helper before treating a candidate as a robot-side
+candidate:
+
+```bash
+python3 tools/run_candidate_seed_sweep.py \
+  --policies path/to/candidate.onnx \
+  --seeds 0-7 \
+  --command-x 0.08 \
+  --duration 15 \
+  --bridge-mode fitted \
+  --jax-platform cpu \
+  --run \
+  --output-dir outputs/analysis/<candidate>_seed_sweep_x008
+```
+
+Grade new candidates against the current baseline:
+
+```text
+V7/V9 baseline at x=0.08 fitted bridge:
+  fall rate: 5/8
+  standstill duration-complete rate: 3/8
+  mean lifetime: about 312 samples
+```
+
+A meaningful candidate should shift that distribution, not merely pass one
+lucky seed.
 
 Candidate mode reports `PASS_CANDIDATE_SIM_GATE` only when the policy survives
 the requested horizon with low action saturation, trackable pitch-chain targets,
@@ -175,7 +235,7 @@ Record:
 - source RDK tools commit
 - training command
 - config overrides
-- seed
+- seed set
 - ONNX SHA256
 
 ## Robot-Side Validation Order

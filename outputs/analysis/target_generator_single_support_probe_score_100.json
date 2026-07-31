@@ -1,0 +1,2615 @@
+{
+  "status": "HOLD_NO_SEED_ROBUST_TARGETS",
+  "trace_globs": [
+    "outputs/analysis/target_generator_single_support_probe_traces/*/seed_*.jsonl"
+  ],
+  "trace_files": 64,
+  "required_seeds": [
+    0,
+    2
+  ],
+  "window_samples": 100,
+  "stride_samples": 5,
+  "criteria": {
+    "min_mean_vx": 0.04,
+    "min_forward_displacement_m": 0.004,
+    "max_vy_abs_p95": 0.12,
+    "max_contact_dominance_pct": 95.0,
+    "max_double_support_pct": 75.0,
+    "max_no_support_pct": 100.0,
+    "min_single_support_pct": 20.0,
+    "min_each_single_support_pct": 5.0,
+    "max_pitch_abs_p95": 0.35,
+    "min_base_height": 0.145,
+    "max_sent_velocity_p95": 3.75,
+    "max_tracking_p95": 0.12,
+    "min_done_margin": 50,
+    "min_contact_transitions": 2,
+    "min_foot_site_z_p95": -1.0
+  },
+  "reason_counts": {
+    "double_support_dominates": 31,
+    "low_forward_velocity": 18,
+    "single_support_not_balanced": 31,
+    "too_little_single_support": 31,
+    "single_contact_pattern_dominates": 13,
+    "high_body_pitch": 19,
+    "low_base_height": 24,
+    "short_done_margin": 16,
+    "missing_seed_trace_or_window": 33,
+    "high_lateral_velocity": 12
+  },
+  "seed_reason_counts": {
+    "seed_000": {
+      "double_support_dominates": 11,
+      "low_forward_velocity": 8,
+      "single_support_not_balanced": 11,
+      "too_little_single_support": 11,
+      "high_body_pitch": 6,
+      "low_base_height": 9,
+      "short_done_margin": 5,
+      "missing_seed_trace_or_window": 21,
+      "single_contact_pattern_dominates": 4,
+      "high_lateral_velocity": 1
+    },
+    "seed_002": {
+      "double_support_dominates": 20,
+      "low_forward_velocity": 10,
+      "single_contact_pattern_dominates": 9,
+      "single_support_not_balanced": 20,
+      "too_little_single_support": 20,
+      "high_body_pitch": 13,
+      "high_lateral_velocity": 11,
+      "low_base_height": 15,
+      "short_done_margin": 11,
+      "missing_seed_trace_or_window": 12
+    }
+  },
+  "mode_count": 32,
+  "robust_mode_count": 0,
+  "results": [
+    {
+      "mode": "primitive_p0p65_hrb0_hra0p032_hrphm0p8_hb0p08_h0p032_kb0p06_k0p16_ab0p04_a0_ph0p37_ld0p24_ls1_sp0p02_sas0p2",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -0.9228499740487314,
+      "min_seed_score": -0.9228499740487314,
+      "mean_seed_score": -0.9121628247089393,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 100,
+          "start_tick": 0,
+          "end_tick": 99,
+          "start_index": 0,
+          "end_index": 99,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.021905558439029846,
+          "forward_displacement_m": 0.04381111687805969,
+          "world_x_displacement_m": -0.0202975831925869,
+          "vy_abs_p95_m_s": 0.09293097332119936,
+          "body_pitch_abs_p95_rad": 0.31305038773894966,
+          "base_height_min_m": 0.14539101719856262,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4719942808151245,
+          "joint_tracking_p95_rad": 0.07231090664863586,
+          "contact_pct": {
+            "01": 5.0,
+            "11": 95.0
+          },
+          "contact_dominance_pct": 95.0,
+          "double_support_pct": 95.0,
+          "no_support_pct": 0.0,
+          "single_support_pct": 5.0,
+          "support_a_only_pct": 0.0,
+          "support_b_only_pct": 5.0,
+          "min_single_support_side_pct": 0.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.016509986296296124,
+          "score": -0.9228499740487314,
+          "forward_bonus": 0.021905558439029846,
+          "penalty_total": 0.9447555324877612,
+          "penalties": {
+            "forward_shortfall": 0.14475553248776124,
+            "forward_displacement": 0.0,
+            "lateral": 0.0,
+            "contact": 0.0,
+            "double_support": 0.4,
+            "no_support": 0.0,
+            "single_support": 0.3,
+            "single_support_balance": 0.1,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "double_support_dominates",
+            "low_forward_velocity",
+            "single_support_not_balanced",
+            "too_little_single_support"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 100,
+          "start_tick": 0,
+          "end_tick": 99,
+          "start_index": 0,
+          "end_index": 99,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.026502702736761422,
+          "forward_displacement_m": 0.053005405473522844,
+          "world_x_displacement_m": -0.03559144679456949,
+          "vy_abs_p95_m_s": 0.11137829348444929,
+          "body_pitch_abs_p95_rad": 0.31410208562232084,
+          "base_height_min_m": 0.14576438069343567,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4719942808151245,
+          "joint_tracking_p95_rad": 0.07161282300949096,
+          "contact_pct": {
+            "01": 2.0,
+            "10": 2.0,
+            "11": 96.0
+          },
+          "contact_dominance_pct": 96.0,
+          "double_support_pct": 96.0,
+          "no_support_pct": 0.0,
+          "single_support_pct": 4.0,
+          "support_a_only_pct": 2.0,
+          "support_b_only_pct": 2.0,
+          "min_single_support_side_pct": 2.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.015434188954532154,
+          "score": -0.9014756753691472,
+          "forward_bonus": 0.026502702736761422,
+          "penalty_total": 0.9279783781059087,
+          "penalties": {
+            "forward_shortfall": 0.10797837810590863,
+            "forward_displacement": 0.0,
+            "lateral": 0.0,
+            "contact": 0.02,
+            "double_support": 0.42,
+            "no_support": 0.0,
+            "single_support": 0.32,
+            "single_support_balance": 0.06,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "double_support_dominates",
+            "low_forward_velocity",
+            "single_contact_pattern_dominates",
+            "single_support_not_balanced",
+            "too_little_single_support"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p65_hrb0_hra0p032_hrphm0p8_hb0p08_h0p032_kb0p06_k0p16_ab0p04_a0p0064_ph0p37_ld0p24_ls1_sp0p02_sas0p2",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -0.9229563222144497,
+      "min_seed_score": -0.9229563222144497,
+      "mean_seed_score": -0.9115518099899054,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 100,
+          "start_tick": 0,
+          "end_tick": 99,
+          "start_index": 0,
+          "end_index": 99,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.0220434857980581,
+          "forward_displacement_m": 0.0440869715961162,
+          "world_x_displacement_m": -0.020611856132745743,
+          "vy_abs_p95_m_s": 0.09293097332119936,
+          "body_pitch_abs_p95_rad": 0.32433334755410453,
+          "base_height_min_m": 0.14483153820037842,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4719942808151245,
+          "joint_tracking_p95_rad": 0.07231683731079099,
+          "contact_pct": {
+            "01": 5.0,
+            "11": 95.0
+          },
+          "contact_dominance_pct": 95.0,
+          "double_support_pct": 95.0,
+          "no_support_pct": 0.0,
+          "single_support_pct": 5.0,
+          "support_a_only_pct": 0.0,
+          "support_b_only_pct": 5.0,
+          "min_single_support_side_pct": 0.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.017032498493790627,
+          "score": -0.9229563222144497,
+          "forward_bonus": 0.0220434857980581,
+          "penalty_total": 0.9449998080125078,
+          "penalties": {
+            "forward_shortfall": 0.1436521136155352,
+            "forward_displacement": 0.0,
+            "lateral": 0.0,
+            "contact": 0.0,
+            "double_support": 0.4,
+            "no_support": 0.0,
+            "single_support": 0.3,
+            "single_support_balance": 0.1,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0013476943969725763,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "double_support_dominates",
+            "low_base_height",
+            "low_forward_velocity",
+            "single_support_not_balanced",
+            "too_little_single_support"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 100,
+          "start_tick": 0,
+          "end_tick": 99,
+          "start_index": 0,
+          "end_index": 99,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.026650300248293207,
+          "forward_displacement_m": 0.053300600496586414,
+          "world_x_displacement_m": -0.03563164547085762,
+          "vy_abs_p95_m_s": 0.11137829348444929,
+          "body_pitch_abs_p95_rad": 0.3186573338013413,
+          "base_height_min_m": 0.145185187458992,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4719942808151245,
+          "joint_tracking_p95_rad": 0.07158045172691345,
+          "contact_pct": {
+            "01": 2.0,
+            "10": 2.0,
+            "11": 96.0
+          },
+          "contact_dominance_pct": 96.0,
+          "double_support_pct": 96.0,
+          "no_support_pct": 0.0,
+          "single_support_pct": 4.0,
+          "support_a_only_pct": 2.0,
+          "support_b_only_pct": 2.0,
+          "min_single_support_side_pct": 2.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.015687715448439127,
+          "score": -0.9001472977653612,
+          "forward_bonus": 0.026650300248293207,
+          "penalty_total": 0.9267975980136544,
+          "penalties": {
+            "forward_shortfall": 0.10679759801365435,
+            "forward_displacement": 0.0,
+            "lateral": 0.0,
+            "contact": 0.02,
+            "double_support": 0.42,
+            "no_support": 0.0,
+            "single_support": 0.32,
+            "single_support_balance": 0.06,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "double_support_dominates",
+            "low_forward_velocity",
+            "single_contact_pattern_dominates",
+            "single_support_not_balanced",
+            "too_little_single_support"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p65_hrb0_hra0p032_hrphm0p8_hb0p08_h0p032_kb0p06_k0p16_ab0p04_a0p0064_ph0p52_ld0p24_ls1_sp0p02_sas0p2",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -1.0491733737126925,
+      "min_seed_score": -1.0491733737126925,
+      "mean_seed_score": -0.9751367471949197,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 100,
+          "start_tick": 0,
+          "end_tick": 99,
+          "start_index": 0,
+          "end_index": 99,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.0214835013798438,
+          "forward_displacement_m": 0.0429670027596876,
+          "world_x_displacement_m": -0.01912388950586319,
+          "vy_abs_p95_m_s": 0.09260895475745196,
+          "body_pitch_abs_p95_rad": 0.32770505594707,
+          "base_height_min_m": 0.14468438923358917,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4640154540538788,
+          "joint_tracking_p95_rad": 0.07192185521125793,
+          "contact_pct": {
+            "01": 3.0,
+            "11": 97.0
+          },
+          "contact_dominance_pct": 97.0,
+          "double_support_pct": 97.0,
+          "no_support_pct": 0.0,
+          "single_support_pct": 3.0,
+          "support_a_only_pct": 0.0,
+          "support_b_only_pct": 3.0,
+          "min_single_support_side_pct": 0.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.01722073163837195,
+          "score": -1.0491733737126925,
+          "forward_bonus": 0.0214835013798438,
+          "penalty_total": 1.0706568750925363,
+          "penalties": {
+            "forward_shortfall": 0.1481319889612496,
+            "forward_displacement": 0.0,
+            "lateral": 0.0,
+            "contact": 0.04,
+            "double_support": 0.44,
+            "no_support": 0.0,
+            "single_support": 0.34,
+            "single_support_balance": 0.1,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.002524886131286541,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "double_support_dominates",
+            "low_base_height",
+            "low_forward_velocity",
+            "single_contact_pattern_dominates",
+            "single_support_not_balanced",
+            "too_little_single_support"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 100,
+          "start_tick": 0,
+          "end_tick": 99,
+          "start_index": 0,
+          "end_index": 99,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.026544431035872548,
+          "forward_displacement_m": 0.053088862071745097,
+          "world_x_displacement_m": -0.03583424352109432,
+          "vy_abs_p95_m_s": 0.11139764226973047,
+          "body_pitch_abs_p95_rad": 0.31729381477081464,
+          "base_height_min_m": 0.1456684172153473,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4640154540538788,
+          "joint_tracking_p95_rad": 0.07383437752723694,
+          "contact_pct": {
+            "01": 2.0,
+            "10": 2.0,
+            "11": 96.0
+          },
+          "contact_dominance_pct": 96.0,
+          "double_support_pct": 96.0,
+          "no_support_pct": 0.0,
+          "single_support_pct": 4.0,
+          "support_a_only_pct": 2.0,
+          "support_b_only_pct": 2.0,
+          "min_single_support_side_pct": 2.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.01595463193953037,
+          "score": -0.9011001206771471,
+          "forward_bonus": 0.026544431035872548,
+          "penalty_total": 0.9276445517130196,
+          "penalties": {
+            "forward_shortfall": 0.10764455171301962,
+            "forward_displacement": 0.0,
+            "lateral": 0.0,
+            "contact": 0.02,
+            "double_support": 0.42,
+            "no_support": 0.0,
+            "single_support": 0.32,
+            "single_support_balance": 0.06,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "double_support_dominates",
+            "low_forward_velocity",
+            "single_contact_pattern_dominates",
+            "single_support_not_balanced",
+            "too_little_single_support"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p65_hrb0_hra0p032_hrphm0p8_hb0p08_h0p032_kb0p06_k0p16_ab0p04_a0_ph0p52_ld0p24_ls1_sp0p02_sas0p4",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -1.0497030679521222,
+      "min_seed_score": -1.0497030679521222,
+      "mean_seed_score": -1.02542762709346,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 100,
+          "start_tick": 0,
+          "end_tick": 99,
+          "start_index": 0,
+          "end_index": 99,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.02300733843789203,
+          "forward_displacement_m": 0.04601467687578406,
+          "world_x_displacement_m": -0.02043278142809868,
+          "vy_abs_p95_m_s": 0.09266779571771615,
+          "body_pitch_abs_p95_rad": 0.35350839623680685,
+          "base_height_min_m": 0.14465805888175964,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4640154540538788,
+          "joint_tracking_p95_rad": 0.07438522577285767,
+          "contact_pct": {
+            "01": 3.0,
+            "11": 97.0
+          },
+          "contact_dominance_pct": 97.0,
+          "double_support_pct": 97.0,
+          "no_support_pct": 0.0,
+          "single_support_pct": 3.0,
+          "support_a_only_pct": 0.0,
+          "support_b_only_pct": 3.0,
+          "min_single_support_side_pct": 0.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.01790757477283478,
+          "score": -1.0497030679521222,
+          "forward_bonus": 0.02300733843789203,
+          "penalty_total": 1.0727104063900141,
+          "penalties": {
+            "forward_shortfall": 0.13594129249686376,
+            "forward_displacement": 0.0,
+            "lateral": 0.0,
+            "contact": 0.04,
+            "double_support": 0.44,
+            "no_support": 0.0,
+            "single_support": 0.34,
+            "single_support_balance": 0.1,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.014033584947227506,
+            "height": 0.0027355289459227716,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "double_support_dominates",
+            "high_body_pitch",
+            "low_base_height",
+            "low_forward_velocity",
+            "single_contact_pattern_dominates",
+            "single_support_not_balanced",
+            "too_little_single_support"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 100,
+          "start_tick": 0,
+          "end_tick": 99,
+          "start_index": 0,
+          "end_index": 99,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.03182255051418906,
+          "forward_displacement_m": 0.06364510102837813,
+          "world_x_displacement_m": -0.03972238954156637,
+          "vy_abs_p95_m_s": 0.14362763315439214,
+          "body_pitch_abs_p95_rad": 0.35325470611692344,
+          "base_height_min_m": 0.1443105936050415,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4640154540538788,
+          "joint_tracking_p95_rad": 0.07730465531349182,
+          "contact_pct": {
+            "01": 3.0,
+            "10": 2.0,
+            "11": 95.0
+          },
+          "contact_dominance_pct": 95.0,
+          "double_support_pct": 95.0,
+          "no_support_pct": 0.0,
+          "single_support_pct": 5.0,
+          "support_a_only_pct": 2.0,
+          "support_b_only_pct": 3.0,
+          "min_single_support_side_pct": 2.0,
+          "contact_transitions": 5,
+          "foot_site_z_p95_m": 0.018860172480344772,
+          "score": -1.0011521862347974,
+          "forward_bonus": 0.03182255051418906,
+          "penalty_total": 1.0329747367489865,
+          "penalties": {
+            "forward_shortfall": 0.06541959588648755,
+            "forward_displacement": 0.0,
+            "lateral": 0.18902106523513718,
+            "contact": 0.0,
+            "double_support": 0.4,
+            "no_support": 0.0,
+            "single_support": 0.3,
+            "single_support_balance": 0.06,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.013018824467693868,
+            "height": 0.005515251159667889,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "double_support_dominates",
+            "high_body_pitch",
+            "high_lateral_velocity",
+            "low_base_height",
+            "low_forward_velocity",
+            "single_support_not_balanced",
+            "too_little_single_support"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p65_hrb0_hra0p032_hrphm0p8_hb0p08_h0p032_kb0p06_k0p16_ab0p04_a0_ph0p52_ld0p24_ls1_sp0p02_sas0p2",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -1.0499911652266747,
+      "min_seed_score": -1.0499911652266747,
+      "mean_seed_score": -0.9763417392622795,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 100,
+          "start_tick": 0,
+          "end_tick": 99,
+          "start_index": 0,
+          "end_index": 99,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.021112092752591707,
+          "forward_displacement_m": 0.04222418550518341,
+          "world_x_displacement_m": -0.018849939107894897,
+          "vy_abs_p95_m_s": 0.09260895475745196,
+          "body_pitch_abs_p95_rad": 0.31761505007909274,
+          "base_height_min_m": 0.14506031572818756,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4640154540538788,
+          "joint_tracking_p95_rad": 0.0720522403717041,
+          "contact_pct": {
+            "01": 3.0,
+            "11": 97.0
+          },
+          "contact_dominance_pct": 97.0,
+          "double_support_pct": 97.0,
+          "no_support_pct": 0.0,
+          "single_support_pct": 3.0,
+          "support_a_only_pct": 0.0,
+          "support_b_only_pct": 3.0,
+          "min_single_support_side_pct": 0.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.01697992403060198,
+          "score": -1.0499911652266747,
+          "forward_bonus": 0.021112092752591707,
+          "penalty_total": 1.0711032579792663,
+          "penalties": {
+            "forward_shortfall": 0.15110325797926635,
+            "forward_displacement": 0.0,
+            "lateral": 0.0,
+            "contact": 0.04,
+            "double_support": 0.44,
+            "no_support": 0.0,
+            "single_support": 0.34,
+            "single_support_balance": 0.1,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "double_support_dominates",
+            "low_forward_velocity",
+            "single_contact_pattern_dominates",
+            "single_support_not_balanced",
+            "too_little_single_support"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 100,
+          "start_tick": 0,
+          "end_tick": 99,
+          "start_index": 0,
+          "end_index": 99,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.026367520744679497,
+          "forward_displacement_m": 0.052735041489358994,
+          "world_x_displacement_m": -0.035695016384124756,
+          "vy_abs_p95_m_s": 0.11139764226973047,
+          "body_pitch_abs_p95_rad": 0.31413954379971765,
+          "base_height_min_m": 0.1459316462278366,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4640154540538788,
+          "joint_tracking_p95_rad": 0.07336755990982056,
+          "contact_pct": {
+            "01": 2.0,
+            "10": 2.0,
+            "11": 96.0
+          },
+          "contact_dominance_pct": 96.0,
+          "double_support_pct": 96.0,
+          "no_support_pct": 0.0,
+          "single_support_pct": 4.0,
+          "support_a_only_pct": 2.0,
+          "support_b_only_pct": 2.0,
+          "min_single_support_side_pct": 2.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.015815486200153828,
+          "score": -0.9026923132978845,
+          "forward_bonus": 0.026367520744679497,
+          "penalty_total": 0.929059834042564,
+          "penalties": {
+            "forward_shortfall": 0.10905983404256403,
+            "forward_displacement": 0.0,
+            "lateral": 0.0,
+            "contact": 0.02,
+            "double_support": 0.42,
+            "no_support": 0.0,
+            "single_support": 0.32,
+            "single_support_balance": 0.06,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "double_support_dominates",
+            "low_forward_velocity",
+            "single_contact_pattern_dominates",
+            "single_support_not_balanced",
+            "too_little_single_support"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p65_hrb0_hra0p032_hrphm0p8_hb0p08_h0p032_kb0p06_k0p16_ab0p04_a0_ph0p37_ld0p24_ls1_sp0p02_sas0p4",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -1.1331234770533598,
+      "min_seed_score": -1.1331234770533598,
+      "mean_seed_score": -1.0150103191675137,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 100,
+          "start_tick": 0,
+          "end_tick": 99,
+          "start_index": 0,
+          "end_index": 99,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 29,
+          "mean_vx_m_s": 0.033727788999676704,
+          "forward_displacement_m": 0.06745557799935341,
+          "world_x_displacement_m": -0.033810894936323166,
+          "vy_abs_p95_m_s": 0.09443887770175928,
+          "body_pitch_abs_p95_rad": 0.3741488680309841,
+          "base_height_min_m": 0.1437402367591858,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4719942808151245,
+          "joint_tracking_p95_rad": 0.07701226472854612,
+          "contact_pct": {
+            "01": 5.0,
+            "11": 95.0
+          },
+          "contact_dominance_pct": 95.0,
+          "double_support_pct": 95.0,
+          "no_support_pct": 0.0,
+          "single_support_pct": 5.0,
+          "support_a_only_pct": 0.0,
+          "support_b_only_pct": 5.0,
+          "min_single_support_side_pct": 0.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.021227892860770228,
+          "score": -1.1331234770533598,
+          "forward_bonus": 0.033727788999676704,
+          "penalty_total": 1.1668512660530366,
+          "penalties": {
+            "forward_shortfall": 0.050177688002586374,
+            "forward_displacement": 0.0,
+            "lateral": 0.0,
+            "contact": 0.0,
+            "double_support": 0.4,
+            "no_support": 0.0,
+            "single_support": 0.3,
+            "single_support_balance": 0.1,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.0965954721239366,
+            "height": 0.010078105926513592,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.21
+          },
+          "hard_failures": [
+            "double_support_dominates",
+            "high_body_pitch",
+            "low_base_height",
+            "low_forward_velocity",
+            "short_done_margin",
+            "single_support_not_balanced",
+            "too_little_single_support"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 100,
+          "start_tick": 0,
+          "end_tick": 99,
+          "start_index": 0,
+          "end_index": 99,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.02701142652425915,
+          "forward_displacement_m": 0.0540228530485183,
+          "world_x_displacement_m": -0.036331125535070896,
+          "vy_abs_p95_m_s": 0.11136297807097426,
+          "body_pitch_abs_p95_rad": 0.3253410598137597,
+          "base_height_min_m": 0.14514976739883423,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4719942808151245,
+          "joint_tracking_p95_rad": 0.0719482421875,
+          "contact_pct": {
+            "01": 2.0,
+            "10": 2.0,
+            "11": 96.0
+          },
+          "contact_dominance_pct": 96.0,
+          "double_support_pct": 96.0,
+          "no_support_pct": 0.0,
+          "single_support_pct": 4.0,
+          "support_a_only_pct": 2.0,
+          "support_b_only_pct": 2.0,
+          "min_single_support_side_pct": 2.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.01574425231665373,
+          "score": -0.8968971612816676,
+          "forward_bonus": 0.02701142652425915,
+          "penalty_total": 0.9239085878059268,
+          "penalties": {
+            "forward_shortfall": 0.1039085878059268,
+            "forward_displacement": 0.0,
+            "lateral": 0.0,
+            "contact": 0.02,
+            "double_support": 0.42,
+            "no_support": 0.0,
+            "single_support": 0.32,
+            "single_support_balance": 0.06,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "double_support_dominates",
+            "low_forward_velocity",
+            "single_contact_pattern_dominates",
+            "single_support_not_balanced",
+            "too_little_single_support"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p65_hrb0_hra0p032_hrphm0p8_hb0p08_h0p032_kb0p06_k0p16_ab0p04_a0_ph0p52_ld0p32_ls1_sp0p02_sas0p4",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -1.3201424012245555,
+      "min_seed_score": -1.3201424012245555,
+      "mean_seed_score": -1.1488692084929646,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 100,
+          "start_tick": 0,
+          "end_tick": 99,
+          "start_index": 0,
+          "end_index": 99,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 22,
+          "mean_vx_m_s": 0.0400975705467863,
+          "forward_displacement_m": 0.0801951410935726,
+          "world_x_displacement_m": -0.04273056611418724,
+          "vy_abs_p95_m_s": 0.09366389662027352,
+          "body_pitch_abs_p95_rad": 0.4162212070560709,
+          "base_height_min_m": 0.14308060705661774,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4912912845611572,
+          "joint_tracking_p95_rad": 0.07716096043586729,
+          "contact_pct": {
+            "01": 5.0,
+            "11": 95.0
+          },
+          "contact_dominance_pct": 95.0,
+          "double_support_pct": 95.0,
+          "no_support_pct": 0.0,
+          "single_support_pct": 5.0,
+          "support_a_only_pct": 0.0,
+          "support_b_only_pct": 5.0,
+          "min_single_support_side_pct": 0.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.022903434000909335,
+          "score": -1.3201424012245555,
+          "forward_bonus": 0.0400975705467863,
+          "penalty_total": 1.3602399717713418,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "forward_displacement": 0.0,
+            "lateral": 0.0,
+            "contact": 0.0,
+            "double_support": 0.4,
+            "no_support": 0.0,
+            "single_support": 0.3,
+            "single_support_balance": 0.1,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.2648848282242837,
+            "height": 0.015355143547058026,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.28
+          },
+          "hard_failures": [
+            "double_support_dominates",
+            "high_body_pitch",
+            "low_base_height",
+            "short_done_margin",
+            "single_support_not_balanced",
+            "too_little_single_support"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 100,
+          "start_tick": 0,
+          "end_tick": 99,
+          "start_index": 0,
+          "end_index": 99,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.02733903833781369,
+          "forward_displacement_m": 0.05467807667562738,
+          "world_x_displacement_m": -0.034338412806391716,
+          "vy_abs_p95_m_s": 0.11185531020164481,
+          "body_pitch_abs_p95_rad": 0.34734593995708435,
+          "base_height_min_m": 0.1445440798997879,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4912912845611572,
+          "joint_tracking_p95_rad": 0.07211784720420837,
+          "contact_pct": {
+            "01": 2.0,
+            "10": 1.0,
+            "11": 97.0
+          },
+          "contact_dominance_pct": 97.0,
+          "double_support_pct": 97.0,
+          "no_support_pct": 0.0,
+          "single_support_pct": 3.0,
+          "support_a_only_pct": 1.0,
+          "support_b_only_pct": 2.0,
+          "min_single_support_side_pct": 1.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.01705501712858677,
+          "score": -0.9775960157613736,
+          "forward_bonus": 0.02733903833781369,
+          "penalty_total": 1.0049350540991873,
+          "penalties": {
+            "forward_shortfall": 0.10128769329749049,
+            "forward_displacement": 0.0,
+            "lateral": 0.0,
+            "contact": 0.04,
+            "double_support": 0.44,
+            "no_support": 0.0,
+            "single_support": 0.34,
+            "single_support_balance": 0.08,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0036473608016966974,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "double_support_dominates",
+            "low_base_height",
+            "low_forward_velocity",
+            "single_contact_pattern_dominates",
+            "single_support_not_balanced",
+            "too_little_single_support"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p65_hrb0_hra0p032_hrphm0p8_hb0p08_h0p032_kb0p06_k0p16_ab0p04_a0p0064_ph0p52_ld0p24_ls1_sp0p02_sas0p4",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -2.031400561412223,
+      "min_seed_score": -2.031400561412223,
+      "mean_seed_score": -1.525550283515801,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 100,
+          "start_tick": 0,
+          "end_tick": 99,
+          "start_index": 0,
+          "end_index": 99,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 12,
+          "mean_vx_m_s": 0.06350584863394033,
+          "forward_displacement_m": 0.12701169726788067,
+          "world_x_displacement_m": -0.06722356751561165,
+          "vy_abs_p95_m_s": 0.11861514970660207,
+          "body_pitch_abs_p95_rad": 0.5475810063084086,
+          "base_height_min_m": 0.1348654329776764,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4640154540538788,
+          "joint_tracking_p95_rad": 0.07854294776916503,
+          "contact_pct": {
+            "01": 3.0,
+            "10": 1.0,
+            "11": 96.0
+          },
+          "contact_dominance_pct": 96.0,
+          "double_support_pct": 96.0,
+          "no_support_pct": 0.0,
+          "single_support_pct": 4.0,
+          "support_a_only_pct": 1.0,
+          "support_b_only_pct": 3.0,
+          "min_single_support_side_pct": 1.0,
+          "contact_transitions": 5,
+          "foot_site_z_p95_m": 0.02889958173036576,
+          "score": -2.031400561412223,
+          "forward_bonus": 0.06,
+          "penalty_total": 2.091400561412223,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "forward_displacement": 0.0,
+            "lateral": 0.0,
+            "contact": 0.02,
+            "double_support": 0.42,
+            "no_support": 0.0,
+            "single_support": 0.32,
+            "single_support_balance": 0.08,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.7903240252336343,
+            "height": 0.08107653617858879,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.38
+          },
+          "hard_failures": [
+            "double_support_dominates",
+            "high_body_pitch",
+            "low_base_height",
+            "short_done_margin",
+            "single_contact_pattern_dominates",
+            "single_support_not_balanced",
+            "too_little_single_support"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 100,
+          "start_tick": 0,
+          "end_tick": 99,
+          "start_index": 0,
+          "end_index": 99,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.030298882387287448,
+          "forward_displacement_m": 0.0605977647745749,
+          "world_x_displacement_m": -0.03783301077783108,
+          "vy_abs_p95_m_s": 0.14362763315439214,
+          "body_pitch_abs_p95_rad": 0.35416601030243333,
+          "base_height_min_m": 0.1441618949174881,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4640154540538788,
+          "joint_tracking_p95_rad": 0.07764036655426025,
+          "contact_pct": {
+            "01": 3.0,
+            "10": 2.0,
+            "11": 95.0
+          },
+          "contact_dominance_pct": 95.0,
+          "double_support_pct": 95.0,
+          "no_support_pct": 0.0,
+          "single_support_pct": 5.0,
+          "support_a_only_pct": 2.0,
+          "support_b_only_pct": 3.0,
+          "min_single_support_side_pct": 2.0,
+          "contact_transitions": 5,
+          "foot_site_z_p95_m": 0.018334577418863775,
+          "score": -1.0197000056193788,
+          "forward_bonus": 0.030298882387287448,
+          "penalty_total": 1.0499988880066662,
+          "penalties": {
+            "forward_shortfall": 0.07760894090170042,
+            "forward_displacement": 0.0,
+            "lateral": 0.18902106523513718,
+            "contact": 0.0,
+            "double_support": 0.4,
+            "no_support": 0.0,
+            "single_support": 0.3,
+            "single_support_balance": 0.06,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.016664041209733416,
+            "height": 0.006704840660095135,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "double_support_dominates",
+            "high_body_pitch",
+            "high_lateral_velocity",
+            "low_base_height",
+            "low_forward_velocity",
+            "single_support_not_balanced",
+            "too_little_single_support"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p65_hrb0_hra0p032_hrphm0p8_hb0p08_h0p032_kb0p06_k0p16_ab0p04_a0p0064_ph0p52_ld0p32_ls1_sp0p02_sas0p2",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -3.1412568328037613,
+      "min_seed_score": -3.1412568328037613,
+      "mean_seed_score": -2.0698676595492733,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 100,
+          "start_tick": 0,
+          "end_tick": 99,
+          "start_index": 0,
+          "end_index": 99,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 36,
+          "mean_vx_m_s": 0.03042137916527281,
+          "forward_displacement_m": 0.06084275833054562,
+          "world_x_displacement_m": -0.03006214275956154,
+          "vy_abs_p95_m_s": 0.09304781444370738,
+          "body_pitch_abs_p95_rad": 0.36627805708920647,
+          "base_height_min_m": 0.14410516619682312,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4912912845611572,
+          "joint_tracking_p95_rad": 0.07554548382759092,
+          "contact_pct": {
+            "01": 5.0,
+            "10": 1.0,
+            "11": 94.0
+          },
+          "contact_dominance_pct": 94.0,
+          "double_support_pct": 94.0,
+          "no_support_pct": 0.0,
+          "single_support_pct": 6.0,
+          "support_a_only_pct": 1.0,
+          "support_b_only_pct": 5.0,
+          "min_single_support_side_pct": 1.0,
+          "contact_transitions": 5,
+          "foot_site_z_p95_m": 0.019385452009737496,
+          "score": -0.9984784862947857,
+          "forward_bonus": 0.03042137916527281,
+          "penalty_total": 1.0288998654600585,
+          "penalties": {
+            "forward_shortfall": 0.07662896667781752,
+            "forward_displacement": 0.0,
+            "lateral": 0.0,
+            "contact": 0.0,
+            "double_support": 0.38,
+            "no_support": 0.0,
+            "single_support": 0.28,
+            "single_support_balance": 0.08,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.06511222835682595,
+            "height": 0.007158670425414959,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.14
+          },
+          "hard_failures": [
+            "double_support_dominates",
+            "high_body_pitch",
+            "low_base_height",
+            "low_forward_velocity",
+            "short_done_margin",
+            "single_support_not_balanced",
+            "too_little_single_support"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 100,
+          "start_tick": 0,
+          "end_tick": 99,
+          "start_index": 0,
+          "end_index": 99,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 7,
+          "mean_vx_m_s": 0.09357185069544358,
+          "forward_displacement_m": 0.18714370139088715,
+          "world_x_displacement_m": -0.10685236379504204,
+          "vy_abs_p95_m_s": 0.17182063683867455,
+          "body_pitch_abs_p95_rad": 0.6979839106712429,
+          "base_height_min_m": 0.11690548807382584,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4912912845611572,
+          "joint_tracking_p95_rad": 0.07917087674140928,
+          "contact_pct": {
+            "00": 1.0,
+            "01": 3.0,
+            "10": 2.0,
+            "11": 94.0
+          },
+          "contact_dominance_pct": 94.0,
+          "double_support_pct": 94.0,
+          "no_support_pct": 1.0,
+          "single_support_pct": 5.0,
+          "support_a_only_pct": 2.0,
+          "support_b_only_pct": 3.0,
+          "min_single_support_side_pct": 2.0,
+          "contact_transitions": 6,
+          "foot_site_z_p95_m": 0.03581636361777783,
+          "score": -3.1412568328037613,
+          "forward_bonus": 0.06,
+          "penalty_total": 3.2012568328037614,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "forward_displacement": 0.0,
+            "lateral": 0.4145650947093964,
+            "contact": 0.0,
+            "double_support": 0.38,
+            "no_support": 0.0,
+            "single_support": 0.3,
+            "single_support_balance": 0.06,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 1.3919356426849716,
+            "height": 0.22475609540939323,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.43
+          },
+          "hard_failures": [
+            "double_support_dominates",
+            "high_body_pitch",
+            "high_lateral_velocity",
+            "low_base_height",
+            "short_done_margin",
+            "single_support_not_balanced",
+            "too_little_single_support"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p65_hrb0_hra0p032_hrphm0p8_hb0p08_h0p032_kb0p06_k0p16_ab0p04_a0p0064_ph0p37_ld0p24_ls1_sp0p02_sas0p4",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -3.2493443483384428,
+      "min_seed_score": -3.2493443483384428,
+      "mean_seed_score": -2.072877454751409,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 100,
+          "start_tick": 0,
+          "end_tick": 99,
+          "start_index": 0,
+          "end_index": 99,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 6,
+          "mean_vx_m_s": 0.09249451410461916,
+          "forward_displacement_m": 0.18498902820923832,
+          "world_x_displacement_m": -0.10098015144467354,
+          "vy_abs_p95_m_s": 0.18833826780319213,
+          "body_pitch_abs_p95_rad": 0.700410676456292,
+          "base_height_min_m": 0.11487556248903275,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4719942808151245,
+          "joint_tracking_p95_rad": 0.07667115330696105,
+          "contact_pct": {
+            "01": 5.0,
+            "10": 2.0,
+            "11": 93.0
+          },
+          "contact_dominance_pct": 93.0,
+          "double_support_pct": 93.0,
+          "no_support_pct": 0.0,
+          "single_support_pct": 7.0,
+          "support_a_only_pct": 2.0,
+          "support_b_only_pct": 5.0,
+          "min_single_support_side_pct": 2.0,
+          "contact_transitions": 7,
+          "foot_site_z_p95_m": 0.03631528746336699,
+          "score": -3.2493443483384428,
+          "forward_bonus": 0.06,
+          "penalty_total": 3.309344348338443,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "forward_displacement": 0.0,
+            "lateral": 0.5467061424255371,
+            "contact": 0.0,
+            "double_support": 0.36,
+            "no_support": 0.0,
+            "single_support": 0.26,
+            "single_support_balance": 0.06,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 1.401642705825168,
+            "height": 0.24099550008773796,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.44
+          },
+          "hard_failures": [
+            "double_support_dominates",
+            "high_body_pitch",
+            "high_lateral_velocity",
+            "low_base_height",
+            "short_done_margin",
+            "single_support_not_balanced",
+            "too_little_single_support"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 100,
+          "start_tick": 0,
+          "end_tick": 99,
+          "start_index": 0,
+          "end_index": 99,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.02728186177322641,
+          "forward_displacement_m": 0.05456372354645282,
+          "world_x_displacement_m": -0.03655917290598154,
+          "vy_abs_p95_m_s": 0.11136297807097426,
+          "body_pitch_abs_p95_rad": 0.3314583437888962,
+          "base_height_min_m": 0.14475658535957336,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4719942808151245,
+          "joint_tracking_p95_rad": 0.07165840864181516,
+          "contact_pct": {
+            "01": 2.0,
+            "10": 2.0,
+            "11": 96.0
+          },
+          "contact_dominance_pct": 96.0,
+          "double_support_pct": 96.0,
+          "no_support_pct": 0.0,
+          "single_support_pct": 4.0,
+          "support_a_only_pct": 2.0,
+          "support_b_only_pct": 2.0,
+          "min_single_support_side_pct": 2.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.016082873754203322,
+          "score": -0.8964105611643752,
+          "forward_bonus": 0.02728186177322641,
+          "penalty_total": 0.9236924229376017,
+          "penalties": {
+            "forward_shortfall": 0.10174510581418872,
+            "forward_displacement": 0.0,
+            "lateral": 0.0,
+            "contact": 0.02,
+            "double_support": 0.42,
+            "no_support": 0.0,
+            "single_support": 0.32,
+            "single_support_balance": 0.06,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.001947317123413006,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "double_support_dominates",
+            "low_base_height",
+            "low_forward_velocity",
+            "single_contact_pattern_dominates",
+            "single_support_not_balanced",
+            "too_little_single_support"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p65_hrb0_hra0p032_hrphm0p8_hb0p08_h0p032_kb0p06_k0p16_ab0p04_a0_ph0p52_ld0p32_ls1_sp0p02_sas0p2",
+      "worst_seed": "seed_002",
+      "worst_seed_score": -3.8836657337505986,
+      "min_seed_score": -3.8836657337505986,
+      "mean_seed_score": -2.3747999900206533,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "samples": 100,
+          "start_tick": 0,
+          "end_tick": 99,
+          "start_index": 0,
+          "end_index": 99,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": null,
+          "mean_vx_m_s": 0.021829350976040586,
+          "forward_displacement_m": 0.04365870195208117,
+          "world_x_displacement_m": -0.020599301904439926,
+          "vy_abs_p95_m_s": 0.09304793700575821,
+          "body_pitch_abs_p95_rad": 0.3321928082497192,
+          "base_height_min_m": 0.14470019936561584,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4912912845611572,
+          "joint_tracking_p95_rad": 0.07150871753692625,
+          "contact_pct": {
+            "01": 5.0,
+            "10": 1.0,
+            "11": 94.0
+          },
+          "contact_dominance_pct": 94.0,
+          "double_support_pct": 94.0,
+          "no_support_pct": 0.0,
+          "single_support_pct": 6.0,
+          "support_a_only_pct": 1.0,
+          "support_b_only_pct": 5.0,
+          "min_single_support_side_pct": 1.0,
+          "contact_transitions": 5,
+          "foot_site_z_p95_m": 0.017023433744907383,
+          "score": -0.8659342462907079,
+          "forward_bonus": 0.021829350976040586,
+          "penalty_total": 0.8877635972667485,
+          "penalties": {
+            "forward_shortfall": 0.14536519219167532,
+            "forward_displacement": 0.0,
+            "lateral": 0.0,
+            "contact": 0.0,
+            "double_support": 0.38,
+            "no_support": 0.0,
+            "single_support": 0.28,
+            "single_support_balance": 0.08,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.0,
+            "height": 0.0023984050750731623,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.0
+          },
+          "hard_failures": [
+            "double_support_dominates",
+            "low_base_height",
+            "low_forward_velocity",
+            "single_support_not_balanced",
+            "too_little_single_support"
+          ],
+          "passes_curation": false
+        },
+        "seed_002": {
+          "samples": 100,
+          "start_tick": 0,
+          "end_tick": 99,
+          "start_index": 0,
+          "end_index": 99,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 5,
+          "mean_vx_m_s": 0.10876510468195193,
+          "forward_displacement_m": 0.21753020936390385,
+          "world_x_displacement_m": -0.12022991850972176,
+          "vy_abs_p95_m_s": 0.20539393573999404,
+          "body_pitch_abs_p95_rad": 0.782291540606801,
+          "base_height_min_m": 0.1023314893245697,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4912912845611572,
+          "joint_tracking_p95_rad": 0.07731726169586181,
+          "contact_pct": {
+            "00": 1.0,
+            "01": 3.0,
+            "10": 2.0,
+            "11": 94.0
+          },
+          "contact_dominance_pct": 94.0,
+          "double_support_pct": 94.0,
+          "no_support_pct": 1.0,
+          "single_support_pct": 5.0,
+          "support_a_only_pct": 2.0,
+          "support_b_only_pct": 3.0,
+          "min_single_support_side_pct": 2.0,
+          "contact_transitions": 6,
+          "foot_site_z_p95_m": 0.039314323291182535,
+          "score": -3.8836657337505986,
+          "forward_bonus": 0.06,
+          "penalty_total": 3.9436657337505987,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "forward_displacement": 0.0,
+            "lateral": 0.6831514859199523,
+            "contact": 0.0,
+            "double_support": 0.38,
+            "no_support": 0.0,
+            "single_support": 0.3,
+            "single_support_balance": 0.06,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 1.729166162427204,
+            "height": 0.3413480854034423,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.45
+          },
+          "hard_failures": [
+            "double_support_dominates",
+            "high_body_pitch",
+            "high_lateral_velocity",
+            "low_base_height",
+            "short_done_margin",
+            "single_support_not_balanced",
+            "too_little_single_support"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p65_hrb0_hra0p032_hrphm0p8_hb0p08_h0p032_kb0p06_k0p16_ab0p04_a0p0064_ph0p37_ld0p32_ls1_sp0p02_sas0p4",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -999.0,
+      "min_seed_score": -999.0,
+      "mean_seed_score": -500.1285841497025,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "score": -999.0,
+          "passes_curation": false,
+          "hard_failures": [
+            "missing_seed_trace_or_window"
+          ]
+        },
+        "seed_002": {
+          "samples": 100,
+          "start_tick": 0,
+          "end_tick": 99,
+          "start_index": 0,
+          "end_index": 99,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 23,
+          "mean_vx_m_s": 0.04253403468810575,
+          "forward_displacement_m": 0.0850680693762115,
+          "world_x_displacement_m": -0.05282068997621536,
+          "vy_abs_p95_m_s": 0.1116862278431653,
+          "body_pitch_abs_p95_rad": 0.39910434476709317,
+          "base_height_min_m": 0.1433393806219101,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.49350112676620483,
+          "joint_tracking_p95_rad": 0.0746348142623901,
+          "contact_pct": {
+            "01": 2.0,
+            "10": 2.0,
+            "11": 96.0
+          },
+          "contact_dominance_pct": 96.0,
+          "double_support_pct": 96.0,
+          "no_support_pct": 0.0,
+          "single_support_pct": 4.0,
+          "support_a_only_pct": 2.0,
+          "support_b_only_pct": 2.0,
+          "min_single_support_side_pct": 2.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.02200069706887007,
+          "score": -1.2571682994049862,
+          "forward_bonus": 0.04253403468810575,
+          "penalty_total": 1.299702334093092,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "forward_displacement": 0.0,
+            "lateral": 0.0,
+            "contact": 0.02,
+            "double_support": 0.42,
+            "no_support": 0.0,
+            "single_support": 0.32,
+            "single_support_balance": 0.06,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.19641737906837275,
+            "height": 0.013284955024719158,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.27
+          },
+          "hard_failures": [
+            "double_support_dominates",
+            "high_body_pitch",
+            "low_base_height",
+            "short_done_margin",
+            "single_contact_pattern_dominates",
+            "single_support_not_balanced",
+            "too_little_single_support"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p65_hrb0_hra0p032_hrphm0p8_hb0p08_h0p032_kb0p06_k0p16_ab0p04_a0_ph0p37_ld0p32_ls1_sp0p02_sas0p4",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -999.0,
+      "min_seed_score": -999.0,
+      "mean_seed_score": -500.15223854538175,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "score": -999.0,
+          "passes_curation": false,
+          "hard_failures": [
+            "missing_seed_trace_or_window"
+          ]
+        },
+        "seed_002": {
+          "samples": 100,
+          "start_tick": 0,
+          "end_tick": 99,
+          "start_index": 0,
+          "end_index": 99,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 26,
+          "mean_vx_m_s": 0.039110262292379044,
+          "forward_displacement_m": 0.0782205245847581,
+          "world_x_displacement_m": -0.04793665520264767,
+          "vy_abs_p95_m_s": 0.14407460018992418,
+          "body_pitch_abs_p95_rad": 0.38346097414872327,
+          "base_height_min_m": 0.14374640583992004,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.49350112676620483,
+          "joint_tracking_p95_rad": 0.07862111330032348,
+          "contact_pct": {
+            "01": 3.0,
+            "10": 2.0,
+            "11": 95.0
+          },
+          "contact_dominance_pct": 95.0,
+          "double_support_pct": 95.0,
+          "no_support_pct": 0.0,
+          "single_support_pct": 5.0,
+          "support_a_only_pct": 2.0,
+          "support_b_only_pct": 3.0,
+          "min_single_support_side_pct": 2.0,
+          "contact_transitions": 5,
+          "foot_site_z_p95_m": 0.02159125003963709,
+          "score": -1.3044770907635148,
+          "forward_bonus": 0.039110262292379044,
+          "penalty_total": 1.343587353055894,
+          "penalties": {
+            "forward_shortfall": 0.0071179016609676515,
+            "forward_displacement": 0.0,
+            "lateral": 0.1925968015193935,
+            "contact": 0.0,
+            "double_support": 0.4,
+            "no_support": 0.0,
+            "single_support": 0.3,
+            "single_support_balance": 0.06,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.13384389659489315,
+            "height": 0.010028753280639569,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.24
+          },
+          "hard_failures": [
+            "double_support_dominates",
+            "high_body_pitch",
+            "high_lateral_velocity",
+            "low_base_height",
+            "low_forward_velocity",
+            "short_done_margin",
+            "single_support_not_balanced",
+            "too_little_single_support"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p65_hrb0_hra0p032_hrphm0p8_hb0p08_h0p032_kb0p06_k0p16_ab0p04_a0p0064_ph0p52_ld0p32_ls1_sp0p02_sas0p4",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -999.0,
+      "min_seed_score": -999.0,
+      "mean_seed_score": -500.195985253157,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "score": -999.0,
+          "passes_curation": false,
+          "hard_failures": [
+            "missing_seed_trace_or_window"
+          ]
+        },
+        "seed_002": {
+          "samples": 100,
+          "start_tick": 0,
+          "end_tick": 99,
+          "start_index": 0,
+          "end_index": 99,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 22,
+          "mean_vx_m_s": 0.0433865780121414,
+          "forward_displacement_m": 0.0867731560242828,
+          "world_x_displacement_m": -0.05196642084047198,
+          "vy_abs_p95_m_s": 0.11185531020164481,
+          "body_pitch_abs_p95_rad": 0.41030122042997524,
+          "base_height_min_m": 0.14323097467422485,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.4912912845611572,
+          "joint_tracking_p95_rad": 0.07547089457511899,
+          "contact_pct": {
+            "01": 2.0,
+            "10": 1.0,
+            "11": 97.0
+          },
+          "contact_dominance_pct": 97.0,
+          "double_support_pct": 97.0,
+          "no_support_pct": 0.0,
+          "single_support_pct": 3.0,
+          "support_a_only_pct": 1.0,
+          "support_b_only_pct": 2.0,
+          "min_single_support_side_pct": 1.0,
+          "contact_transitions": 3,
+          "foot_site_z_p95_m": 0.021928186155855657,
+          "score": -1.391970506313961,
+          "forward_bonus": 0.0433865780121414,
+          "penalty_total": 1.4353570843261023,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "forward_displacement": 0.0,
+            "lateral": 0.0,
+            "contact": 0.04,
+            "double_support": 0.44,
+            "no_support": 0.0,
+            "single_support": 0.34,
+            "single_support_balance": 0.08,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.24120488171990107,
+            "height": 0.014152202606201092,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.28
+          },
+          "hard_failures": [
+            "double_support_dominates",
+            "high_body_pitch",
+            "low_base_height",
+            "short_done_margin",
+            "single_contact_pattern_dominates",
+            "single_support_not_balanced",
+            "too_little_single_support"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p65_hrb0_hra0p032_hrphm0p8_hb0p08_h0p032_kb0p06_k0p16_ab0p04_a0_ph0p37_ld0p32_ls1_sp0p02_sas0p2",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -999.0,
+      "min_seed_score": -999.0,
+      "mean_seed_score": -500.57530704562015,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "score": -999.0,
+          "passes_curation": false,
+          "hard_failures": [
+            "missing_seed_trace_or_window"
+          ]
+        },
+        "seed_002": {
+          "samples": 100,
+          "start_tick": 0,
+          "end_tick": 99,
+          "start_index": 0,
+          "end_index": 99,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 11,
+          "mean_vx_m_s": 0.06756075484445319,
+          "forward_displacement_m": 0.13512150968890638,
+          "world_x_displacement_m": -0.08032674342393875,
+          "vy_abs_p95_m_s": 0.14420561939477913,
+          "body_pitch_abs_p95_rad": 0.5461567387190934,
+          "base_height_min_m": 0.1347072273492813,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.49350112676620483,
+          "joint_tracking_p95_rad": 0.08009752631187439,
+          "contact_pct": {
+            "01": 3.0,
+            "10": 2.0,
+            "11": 95.0
+          },
+          "contact_dominance_pct": 95.0,
+          "double_support_pct": 95.0,
+          "no_support_pct": 0.0,
+          "single_support_pct": 5.0,
+          "support_a_only_pct": 2.0,
+          "support_b_only_pct": 3.0,
+          "min_single_support_side_pct": 2.0,
+          "contact_transitions": 5,
+          "foot_site_z_p95_m": 0.02942652143537999,
+          "score": -2.150614091240356,
+          "forward_bonus": 0.06,
+          "penalty_total": 2.2106140912403562,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "forward_displacement": 0.0,
+            "lateral": 0.1936449551582331,
+            "contact": 0.0,
+            "double_support": 0.4,
+            "no_support": 0.0,
+            "single_support": 0.3,
+            "single_support_balance": 0.06,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 0.7846269548763738,
+            "height": 0.08234218120574943,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.39
+          },
+          "hard_failures": [
+            "double_support_dominates",
+            "high_body_pitch",
+            "high_lateral_velocity",
+            "low_base_height",
+            "short_done_margin",
+            "single_support_not_balanced",
+            "too_little_single_support"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p65_hrb0_hra0p032_hrphm0p8_hb0p08_h0p032_kb0p06_k0p16_ab0p04_a0_ph0p37_ld0p24_ls1_sp0p04_sas0p2",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -999.0,
+      "min_seed_score": -999.0,
+      "mean_seed_score": -501.35132299946014,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "score": -999.0,
+          "passes_curation": false,
+          "hard_failures": [
+            "missing_seed_trace_or_window"
+          ]
+        },
+        "seed_002": {
+          "samples": 100,
+          "start_tick": 0,
+          "end_tick": 99,
+          "start_index": 0,
+          "end_index": 99,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 5,
+          "mean_vx_m_s": 0.10388835485955497,
+          "forward_displacement_m": 0.20777670971910994,
+          "world_x_displacement_m": -0.11815115809440613,
+          "vy_abs_p95_m_s": 0.21179493740200994,
+          "body_pitch_abs_p95_rad": 0.7451326125177828,
+          "base_height_min_m": 0.10778049379587173,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.5168784409761429,
+          "joint_tracking_p95_rad": 0.07386385202407837,
+          "contact_pct": {
+            "01": 3.0,
+            "10": 3.0,
+            "11": 94.0
+          },
+          "contact_dominance_pct": 94.0,
+          "double_support_pct": 94.0,
+          "no_support_pct": 0.0,
+          "single_support_pct": 6.0,
+          "support_a_only_pct": 3.0,
+          "support_b_only_pct": 3.0,
+          "min_single_support_side_pct": 3.0,
+          "contact_transitions": 6,
+          "foot_site_z_p95_m": 0.038731316849589366,
+          "score": -3.702645998920237,
+          "forward_bonus": 0.06,
+          "penalty_total": 3.762645998920237,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "forward_displacement": 0.0,
+            "lateral": 0.7343594992160796,
+            "contact": 0.0,
+            "double_support": 0.38,
+            "no_support": 0.0,
+            "single_support": 0.28,
+            "single_support_balance": 0.04,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 1.5805304500711315,
+            "height": 0.29775604963302604,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.45
+          },
+          "hard_failures": [
+            "double_support_dominates",
+            "high_body_pitch",
+            "high_lateral_velocity",
+            "low_base_height",
+            "short_done_margin",
+            "single_support_not_balanced",
+            "too_little_single_support"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p65_hrb0_hra0p032_hrphm0p8_hb0p08_h0p032_kb0p06_k0p16_ab0p04_a0p0064_ph0p37_ld0p32_ls1_sp0p02_sas0p2",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -999.0,
+      "min_seed_score": -999.0,
+      "mean_seed_score": -501.54604865138776,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "score": -999.0,
+          "passes_curation": false,
+          "hard_failures": [
+            "missing_seed_trace_or_window"
+          ]
+        },
+        "seed_002": {
+          "samples": 100,
+          "start_tick": 0,
+          "end_tick": 99,
+          "start_index": 0,
+          "end_index": 99,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 4,
+          "mean_vx_m_s": 0.11467887700302526,
+          "forward_displacement_m": 0.22935775400605052,
+          "world_x_displacement_m": -0.12730653956532478,
+          "vy_abs_p95_m_s": 0.21572891026735305,
+          "body_pitch_abs_p95_rad": 0.8088500461232966,
+          "base_height_min_m": 0.0961417704820633,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.49350112676620483,
+          "joint_tracking_p95_rad": 0.07727931737899779,
+          "contact_pct": {
+            "00": 1.0,
+            "01": 4.0,
+            "10": 2.0,
+            "11": 93.0
+          },
+          "contact_dominance_pct": 93.0,
+          "double_support_pct": 93.0,
+          "no_support_pct": 1.0,
+          "single_support_pct": 6.0,
+          "support_a_only_pct": 2.0,
+          "support_b_only_pct": 4.0,
+          "min_single_support_side_pct": 2.0,
+          "contact_transitions": 9,
+          "foot_site_z_p95_m": 0.04148560650646688,
+          "score": -4.092097302775505,
+          "forward_bonus": 0.06,
+          "penalty_total": 4.152097302775505,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "forward_displacement": 0.0,
+            "lateral": 0.7658312821388245,
+            "contact": 0.0,
+            "double_support": 0.36,
+            "no_support": 0.0,
+            "single_support": 0.28,
+            "single_support_balance": 0.06,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 1.8354001844931864,
+            "height": 0.3908658361434936,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.46
+          },
+          "hard_failures": [
+            "double_support_dominates",
+            "high_body_pitch",
+            "high_lateral_velocity",
+            "low_base_height",
+            "short_done_margin",
+            "single_support_not_balanced",
+            "too_little_single_support"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p65_hrb0_hra0p032_hrphm0p8_hb0p08_h0p032_kb0p06_k0p16_ab0p04_a0_ph0p52_ld0p24_ls1_sp0p04_sas0p2",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -999.0,
+      "min_seed_score": -999.0,
+      "mean_seed_score": -501.56914603507613,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "score": -999.0,
+          "passes_curation": false,
+          "hard_failures": [
+            "missing_seed_trace_or_window"
+          ]
+        },
+        "seed_002": {
+          "samples": 100,
+          "start_tick": 0,
+          "end_tick": 99,
+          "start_index": 0,
+          "end_index": 99,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 4,
+          "mean_vx_m_s": 0.1156562018673867,
+          "forward_displacement_m": 0.2313124037347734,
+          "world_x_displacement_m": -0.12852899730205536,
+          "vy_abs_p95_m_s": 0.22174750640988347,
+          "body_pitch_abs_p95_rad": 0.8170189808611885,
+          "base_height_min_m": 0.09547048807144165,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.6265304982662201,
+          "joint_tracking_p95_rad": 0.07503265142440795,
+          "contact_pct": {
+            "01": 4.0,
+            "10": 3.0,
+            "11": 93.0
+          },
+          "contact_dominance_pct": 93.0,
+          "double_support_pct": 93.0,
+          "no_support_pct": 0.0,
+          "single_support_pct": 7.0,
+          "support_a_only_pct": 3.0,
+          "support_b_only_pct": 4.0,
+          "min_single_support_side_pct": 3.0,
+          "contact_transitions": 8,
+          "foot_site_z_p95_m": 0.04125725496560337,
+          "score": -4.138292070152289,
+          "forward_bonus": 0.06,
+          "penalty_total": 4.198292070152289,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "forward_displacement": 0.0,
+            "lateral": 0.8139800512790678,
+            "contact": 0.0,
+            "double_support": 0.36,
+            "no_support": 0.0,
+            "single_support": 0.26,
+            "single_support_balance": 0.04,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 1.8680759234447541,
+            "height": 0.3962360954284667,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.46
+          },
+          "hard_failures": [
+            "double_support_dominates",
+            "high_body_pitch",
+            "high_lateral_velocity",
+            "low_base_height",
+            "short_done_margin",
+            "single_support_not_balanced",
+            "too_little_single_support"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p65_hrb0_hra0p032_hrphm0p8_hb0p08_h0p032_kb0p06_k0p16_ab0p04_a0p0064_ph0p37_ld0p24_ls1_sp0p04_sas0p2",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -999.0,
+      "min_seed_score": -999.0,
+      "mean_seed_score": -501.7897154442723,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "score": -999.0,
+          "passes_curation": false,
+          "hard_failures": [
+            "missing_seed_trace_or_window"
+          ]
+        },
+        "seed_002": {
+          "samples": 100,
+          "start_tick": 0,
+          "end_tick": 99,
+          "start_index": 0,
+          "end_index": 99,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 2,
+          "mean_vx_m_s": 0.1325939384265803,
+          "forward_displacement_m": 0.2651878768531606,
+          "world_x_displacement_m": -0.1416677013039589,
+          "vy_abs_p95_m_s": 0.22506517320871353,
+          "body_pitch_abs_p95_rad": 0.9051489206282128,
+          "base_height_min_m": 0.07521077245473862,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.5168784409761429,
+          "joint_tracking_p95_rad": 0.07391009926795959,
+          "contact_pct": {
+            "00": 1.0,
+            "01": 5.0,
+            "10": 4.0,
+            "11": 90.0
+          },
+          "contact_dominance_pct": 90.0,
+          "double_support_pct": 90.0,
+          "no_support_pct": 1.0,
+          "single_support_pct": 9.0,
+          "support_a_only_pct": 4.0,
+          "support_b_only_pct": 5.0,
+          "min_single_support_side_pct": 4.0,
+          "contact_transitions": 10,
+          "foot_site_z_p95_m": 0.046681161411106606,
+          "score": -4.579430888544651,
+          "forward_bonus": 0.06,
+          "penalty_total": 4.63943088854465,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "forward_displacement": 0.0,
+            "lateral": 0.8405213856697082,
+            "contact": 0.0,
+            "double_support": 0.3,
+            "no_support": 0.0,
+            "single_support": 0.22,
+            "single_support_balance": 0.02,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 2.2205956825128514,
+            "height": 0.558313820362091,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.48
+          },
+          "hard_failures": [
+            "double_support_dominates",
+            "high_body_pitch",
+            "high_lateral_velocity",
+            "low_base_height",
+            "short_done_margin",
+            "single_support_not_balanced",
+            "too_little_single_support"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p65_hrb0_hra0p032_hrphm0p8_hb0p08_h0p032_kb0p06_k0p16_ab0p04_a0p0064_ph0p52_ld0p24_ls1_sp0p04_sas0p2",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -999.0,
+      "min_seed_score": -999.0,
+      "mean_seed_score": -501.82325020031567,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "score": -999.0,
+          "passes_curation": false,
+          "hard_failures": [
+            "missing_seed_trace_or_window"
+          ]
+        },
+        "seed_002": {
+          "samples": 100,
+          "start_tick": 0,
+          "end_tick": 99,
+          "start_index": 0,
+          "end_index": 99,
+          "done_inside_window": false,
+          "ticks_until_done_after_window": 2,
+          "mean_vx_m_s": 0.1340094417182263,
+          "forward_displacement_m": 0.2680188834364526,
+          "world_x_displacement_m": -0.14290183037519455,
+          "vy_abs_p95_m_s": 0.22636213898658752,
+          "body_pitch_abs_p95_rad": 0.9207309637290035,
+          "base_height_min_m": 0.07341507077217102,
+          "action_saturation_pct": 0.0,
+          "sent_target_velocity_p95_rad_s": 0.6265304982662201,
+          "joint_tracking_p95_rad": 0.075539630651474,
+          "contact_pct": {
+            "01": 4.0,
+            "10": 6.0,
+            "11": 90.0
+          },
+          "contact_dominance_pct": 90.0,
+          "double_support_pct": 90.0,
+          "no_support_pct": 0.0,
+          "single_support_pct": 10.0,
+          "support_a_only_pct": 6.0,
+          "support_b_only_pct": 4.0,
+          "min_single_support_side_pct": 4.0,
+          "contact_transitions": 9,
+          "foot_site_z_p95_m": 0.046799011528492,
+          "score": -4.646500400631346,
+          "forward_bonus": 0.06,
+          "penalty_total": 4.706500400631346,
+          "penalties": {
+            "forward_shortfall": 0.0,
+            "forward_displacement": 0.0,
+            "lateral": 0.8508971118927002,
+            "contact": 0.0,
+            "double_support": 0.3,
+            "no_support": 0.0,
+            "single_support": 0.2,
+            "single_support_balance": 0.02,
+            "contact_transitions": 0.0,
+            "foot_clearance": 0.0,
+            "pitch": 2.2829238549160142,
+            "height": 0.5726794338226318,
+            "saturation": 0.0,
+            "target_velocity": 0.0,
+            "tracking": 0.0,
+            "done_margin": 0.48
+          },
+          "hard_failures": [
+            "double_support_dominates",
+            "high_body_pitch",
+            "high_lateral_velocity",
+            "low_base_height",
+            "short_done_margin",
+            "single_support_not_balanced",
+            "too_little_single_support"
+          ],
+          "passes_curation": false
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p65_hrb0_hra0p032_hrphm0p8_hb0p08_h0p032_kb0p06_k0p16_ab0p04_a0_ph0p37_ld0p24_ls1_sp0p04_sas0p4",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -999.0,
+      "min_seed_score": -999.0,
+      "mean_seed_score": -999.0,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "score": -999.0,
+          "passes_curation": false,
+          "hard_failures": [
+            "missing_seed_trace_or_window"
+          ]
+        },
+        "seed_002": {
+          "score": -999.0,
+          "passes_curation": false,
+          "hard_failures": [
+            "missing_seed_trace_or_window"
+          ]
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p65_hrb0_hra0p032_hrphm0p8_hb0p08_h0p032_kb0p06_k0p16_ab0p04_a0_ph0p37_ld0p32_ls1_sp0p04_sas0p2",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -999.0,
+      "min_seed_score": -999.0,
+      "mean_seed_score": -999.0,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "score": -999.0,
+          "passes_curation": false,
+          "hard_failures": [
+            "missing_seed_trace_or_window"
+          ]
+        },
+        "seed_002": {
+          "score": -999.0,
+          "passes_curation": false,
+          "hard_failures": [
+            "missing_seed_trace_or_window"
+          ]
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p65_hrb0_hra0p032_hrphm0p8_hb0p08_h0p032_kb0p06_k0p16_ab0p04_a0_ph0p37_ld0p32_ls1_sp0p04_sas0p4",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -999.0,
+      "min_seed_score": -999.0,
+      "mean_seed_score": -999.0,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "score": -999.0,
+          "passes_curation": false,
+          "hard_failures": [
+            "missing_seed_trace_or_window"
+          ]
+        },
+        "seed_002": {
+          "score": -999.0,
+          "passes_curation": false,
+          "hard_failures": [
+            "missing_seed_trace_or_window"
+          ]
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p65_hrb0_hra0p032_hrphm0p8_hb0p08_h0p032_kb0p06_k0p16_ab0p04_a0_ph0p52_ld0p24_ls1_sp0p04_sas0p4",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -999.0,
+      "min_seed_score": -999.0,
+      "mean_seed_score": -999.0,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "score": -999.0,
+          "passes_curation": false,
+          "hard_failures": [
+            "missing_seed_trace_or_window"
+          ]
+        },
+        "seed_002": {
+          "score": -999.0,
+          "passes_curation": false,
+          "hard_failures": [
+            "missing_seed_trace_or_window"
+          ]
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p65_hrb0_hra0p032_hrphm0p8_hb0p08_h0p032_kb0p06_k0p16_ab0p04_a0_ph0p52_ld0p32_ls1_sp0p04_sas0p2",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -999.0,
+      "min_seed_score": -999.0,
+      "mean_seed_score": -999.0,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "score": -999.0,
+          "passes_curation": false,
+          "hard_failures": [
+            "missing_seed_trace_or_window"
+          ]
+        },
+        "seed_002": {
+          "score": -999.0,
+          "passes_curation": false,
+          "hard_failures": [
+            "missing_seed_trace_or_window"
+          ]
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p65_hrb0_hra0p032_hrphm0p8_hb0p08_h0p032_kb0p06_k0p16_ab0p04_a0_ph0p52_ld0p32_ls1_sp0p04_sas0p4",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -999.0,
+      "min_seed_score": -999.0,
+      "mean_seed_score": -999.0,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "score": -999.0,
+          "passes_curation": false,
+          "hard_failures": [
+            "missing_seed_trace_or_window"
+          ]
+        },
+        "seed_002": {
+          "score": -999.0,
+          "passes_curation": false,
+          "hard_failures": [
+            "missing_seed_trace_or_window"
+          ]
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p65_hrb0_hra0p032_hrphm0p8_hb0p08_h0p032_kb0p06_k0p16_ab0p04_a0p0064_ph0p37_ld0p24_ls1_sp0p04_sas0p4",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -999.0,
+      "min_seed_score": -999.0,
+      "mean_seed_score": -999.0,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "score": -999.0,
+          "passes_curation": false,
+          "hard_failures": [
+            "missing_seed_trace_or_window"
+          ]
+        },
+        "seed_002": {
+          "score": -999.0,
+          "passes_curation": false,
+          "hard_failures": [
+            "missing_seed_trace_or_window"
+          ]
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p65_hrb0_hra0p032_hrphm0p8_hb0p08_h0p032_kb0p06_k0p16_ab0p04_a0p0064_ph0p37_ld0p32_ls1_sp0p04_sas0p2",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -999.0,
+      "min_seed_score": -999.0,
+      "mean_seed_score": -999.0,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "score": -999.0,
+          "passes_curation": false,
+          "hard_failures": [
+            "missing_seed_trace_or_window"
+          ]
+        },
+        "seed_002": {
+          "score": -999.0,
+          "passes_curation": false,
+          "hard_failures": [
+            "missing_seed_trace_or_window"
+          ]
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p65_hrb0_hra0p032_hrphm0p8_hb0p08_h0p032_kb0p06_k0p16_ab0p04_a0p0064_ph0p37_ld0p32_ls1_sp0p04_sas0p4",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -999.0,
+      "min_seed_score": -999.0,
+      "mean_seed_score": -999.0,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "score": -999.0,
+          "passes_curation": false,
+          "hard_failures": [
+            "missing_seed_trace_or_window"
+          ]
+        },
+        "seed_002": {
+          "score": -999.0,
+          "passes_curation": false,
+          "hard_failures": [
+            "missing_seed_trace_or_window"
+          ]
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p65_hrb0_hra0p032_hrphm0p8_hb0p08_h0p032_kb0p06_k0p16_ab0p04_a0p0064_ph0p52_ld0p24_ls1_sp0p04_sas0p4",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -999.0,
+      "min_seed_score": -999.0,
+      "mean_seed_score": -999.0,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "score": -999.0,
+          "passes_curation": false,
+          "hard_failures": [
+            "missing_seed_trace_or_window"
+          ]
+        },
+        "seed_002": {
+          "score": -999.0,
+          "passes_curation": false,
+          "hard_failures": [
+            "missing_seed_trace_or_window"
+          ]
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p65_hrb0_hra0p032_hrphm0p8_hb0p08_h0p032_kb0p06_k0p16_ab0p04_a0p0064_ph0p52_ld0p32_ls1_sp0p04_sas0p2",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -999.0,
+      "min_seed_score": -999.0,
+      "mean_seed_score": -999.0,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "score": -999.0,
+          "passes_curation": false,
+          "hard_failures": [
+            "missing_seed_trace_or_window"
+          ]
+        },
+        "seed_002": {
+          "score": -999.0,
+          "passes_curation": false,
+          "hard_failures": [
+            "missing_seed_trace_or_window"
+          ]
+        }
+      }
+    },
+    {
+      "mode": "primitive_p0p65_hrb0_hra0p032_hrphm0p8_hb0p08_h0p032_kb0p06_k0p16_ab0p04_a0p0064_ph0p52_ld0p32_ls1_sp0p04_sas0p4",
+      "worst_seed": "seed_000",
+      "worst_seed_score": -999.0,
+      "min_seed_score": -999.0,
+      "mean_seed_score": -999.0,
+      "pass_seed_count": 0,
+      "pass_seeds": [],
+      "passes_all_seeds": false,
+      "seeds": {
+        "seed_000": {
+          "score": -999.0,
+          "passes_curation": false,
+          "hard_failures": [
+            "missing_seed_trace_or_window"
+          ]
+        },
+        "seed_002": {
+          "score": -999.0,
+          "passes_curation": false,
+          "hard_failures": [
+            "missing_seed_trace_or_window"
+          ]
+        }
+      }
+    }
+  ]
+}

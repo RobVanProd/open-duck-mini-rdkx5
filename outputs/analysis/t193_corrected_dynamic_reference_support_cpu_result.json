@@ -1,0 +1,397 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "deployment_audit": false,
+    "gate5": false,
+    "hosted_preregistration": false,
+    "hosted_training": false,
+    "policy_promotion": false,
+    "rdkx5_or_robot": false
+  },
+  "checks": {
+    "both_checkpoint_trees_finite": true,
+    "cpu_only": true,
+    "default_off_observation_abi_and_finiteness_exact": true,
+    "default_off_trajectory_bit_exact": true,
+    "enabled_environment_contract_green": true,
+    "every_critic_leaf_changes": true,
+    "graph_abi_and_cpu_chain_exact": true,
+    "no_formal_behavior_hosted_or_hardware": true,
+    "normalizer_bit_exact": true,
+    "only_t170_negative_adapter_head_changes": true,
+    "runner_readback_exact": true,
+    "source_cpu_remap_exact": true,
+    "step_zero_raw_onnx_byte_exact": true,
+    "step_zero_tree_exact": true,
+    "training_metrics_finite_and_bilateral": false,
+    "update_structure_exact": true
+  },
+  "decision": "CLOSE_T193_CORRECTED_DYNAMIC_REFERENCE_SUPPORT_AND_RETURN_TO_MECHANISM_SELECTION",
+  "default_off": {
+    "base": {
+      "finite": true,
+      "mode": "default_off",
+      "observation_shape": [
+        115
+      ],
+      "platforms": [
+        "cpu"
+      ],
+      "playground": "D:\\CodexArtifacts\\open-duck-policy\\t100c_original_driver_wrapper_package_v1\\t100c_original_driver_wrapper_bundle\\playground",
+      "trajectory_digests": [
+        "97f13c3b2a8193730b98e8d29f5c7eae04023c12e64da7331cbf744cd532de57",
+        "6d93710a31520236a6a45dbf397c52ab8d4cc023d849159e45ee06af79ca0dc4",
+        "5544268fcfd34b2cadf8a7bea5817cf722f7efe700cc1fe787ba211d9251671d",
+        "76739cd4557c93843a794433abfb0167449ff0bd2e56a5c7bd8378b98385d341",
+        "31abd7dfee411bdbebbf536e25bd6f5fa3a09eeb0c83b4010601896ed24f2059",
+        "6ba7032a2a1d76389763ca9f6933b9f4b95363056860a869a906762c1e57117b",
+        "0d44ff27683670b42393921278b5b6ffdaf588467aa09576d9ab480c697c950a",
+        "1032af2da26031bf349ef07e659212928c09cd8a89f13b3580df280ae3c6bdbd",
+        "b18ee9b74b187beb3463a6ba70ace3b2dd3d4532b36db26438f2426c5de7b433"
+      ]
+    },
+    "composed": {
+      "finite": true,
+      "mode": "default_off",
+      "observation_shape": [
+        115
+      ],
+      "platforms": [
+        "cpu"
+      ],
+      "playground": "D:\\CodexArtifacts\\open-duck-policy\\t193_corrected_dynamic_reference_support_cpu_source_v1",
+      "trajectory_digests": [
+        "97f13c3b2a8193730b98e8d29f5c7eae04023c12e64da7331cbf744cd532de57",
+        "6d93710a31520236a6a45dbf397c52ab8d4cc023d849159e45ee06af79ca0dc4",
+        "5544268fcfd34b2cadf8a7bea5817cf722f7efe700cc1fe787ba211d9251671d",
+        "76739cd4557c93843a794433abfb0167449ff0bd2e56a5c7bd8378b98385d341",
+        "31abd7dfee411bdbebbf536e25bd6f5fa3a09eeb0c83b4010601896ed24f2059",
+        "6ba7032a2a1d76389763ca9f6933b9f4b95363056860a869a906762c1e57117b",
+        "0d44ff27683670b42393921278b5b6ffdaf588467aa09576d9ab480c697c950a",
+        "1032af2da26031bf349ef07e659212928c09cd8a89f13b3580df280ae3c6bdbd",
+        "b18ee9b74b187beb3463a6ba70ace3b2dd3d4532b36db26438f2426c5de7b433"
+      ]
+    }
+  },
+  "environment_contract": {
+    "checks": {
+      "cpu_only": true,
+      "environment_metric_matches_module_exact": true,
+      "objective_addition_exact": true,
+      "observation_abi_115": true,
+      "reference_requests_both_support_sides": true,
+      "source_policy_matches_both_support_sides": true,
+      "source_policy_survives_contract_window": true,
+      "support_reward_positive": true,
+      "trajectory_finite": true
+    },
+    "done_ticks": [],
+    "failed_checks": [],
+    "first_command": [
+      0.07935924828052521,
+      0.0,
+      0.0
+    ],
+    "last_command": [
+      0.07935924828052521,
+      0.0,
+      0.0
+    ],
+    "matched_support_counts": {
+      "left": 25,
+      "right": 22
+    },
+    "maximum_metric_error": 0.0,
+    "maximum_objective_addition_error": 0.0,
+    "mode": "enabled",
+    "platforms": [
+      "cpu"
+    ],
+    "playground": "D:\\CodexArtifacts\\open-duck-policy\\t193_corrected_dynamic_reference_support_cpu_source_v1",
+    "reference_requested_counts": {
+      "left": 36,
+      "right": 32
+    },
+    "seed": 193,
+    "simulator_transitions": 108,
+    "source_onnx": "D:\\CodexArtifacts\\open-duck-policy\\t170_colab_recovery_20260729\\extracted\\t170_eight_stratum_head_continuation\\training\\2026_07_30_003907_1003520.onnx",
+    "support_reward_sum": 17.619674026966095,
+    "ticks": 108
+  },
+  "execution": {
+    "environment_contract_transitions": 108,
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 1024,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [
+    "training_metrics_finite_and_bilateral"
+  ],
+  "preregistered_contract_sha256": "e53d0b97e498f6231d17cdd5dca0a226c16604bc6294bcc8a684d301ef5ff5fa",
+  "repository_commit": "fed8484f134c43a80024f764f1cf7572d15c8379",
+  "result_sha256": "5ff3fc91d98999e77c059290b41d06acbcafda2db1cc34f88c7e990eab78bcb5",
+  "schema_version": "open_duck.t193_corrected_dynamic_reference_support_cpu_result.v1",
+  "source_remap": {
+    "cpu_remap": {
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t193_corrected_dynamic_reference_support_cpu_v1\\t170_half_cpu_remap",
+      "sha256": "6639f037e3fee50a6d6b3d7faeef936c1b1e6630b2099ce16e6dd82a38132623"
+    },
+    "maximum_abs_error": 0.0,
+    "source": {
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t170_colab_recovery_20260729\\extracted\\t170_eight_stratum_head_continuation\\training\\2026_07_30_003907_1003520",
+      "sha256": "a71eb0dfd57af17ec79e5a2c297fa0a98c7f262b8eb6f36ce66c808a8f2cd0ec"
+    },
+    "structure_exact": true,
+    "topology": {
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t128_negative_only_expert_cpu_v1\\t100c_half_cpu_remap",
+      "sha256": "224bda78ae19081a1ea409e31b49e37c2641e2354d6263e81bc8ec56039ee9d2"
+    },
+    "tree_finite": true
+  },
+  "status": "HOLD_T193_CORRECTED_DYNAMIC_REFERENCE_SUPPORT_CPU_CONTRACT",
+  "training": {
+    "command": [
+      "D:\\CodexArtifacts\\venvs\\open-duck-policy-py31213\\Scripts\\python.exe",
+      "playground/open_duck_mini_v2/runner.py",
+      "--task",
+      "flat_terrain_backlash",
+      "--env",
+      "joystick",
+      "--output_dir",
+      "D:\\CodexArtifacts\\open-duck-policy\\t193_corrected_dynamic_reference_support_cpu_v1\\smoke",
+      "--num_timesteps",
+      "1024",
+      "--ppo_seed",
+      "100",
+      "--ppo_num_envs",
+      "8",
+      "--ppo_num_evals",
+      "2",
+      "--ppo_episode_length",
+      "64",
+      "--ppo_unroll_length",
+      "8",
+      "--ppo_batch_size",
+      "8",
+      "--ppo_num_minibatches",
+      "1",
+      "--ppo_num_updates_per_batch",
+      "2",
+      "--ppo_learning_rate",
+      "0.0003",
+      "--ppo_discounting",
+      "0.97",
+      "--ppo_entropy_cost",
+      "0.005",
+      "--policy_architecture",
+      "reference_residual_recurrent_adapter",
+      "--recurrent_hidden_size",
+      "64",
+      "--imitation_scale",
+      "1.0",
+      "--reference_feature_table_path",
+      "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+      "--nominal_reference_bootstrap",
+      "--ground_up_hard_vector_command_support",
+      "--ground_up_command_support_min_x",
+      "0.074",
+      "--ground_up_command_support_max_x",
+      "0.080",
+      "--ground_up_action_velocity_limits_rad_s",
+      "1.0,.75,1.4736209064722061,1.4300791546702385,1.3976470567286015,.5,.5,.5,.5,.5,.75,1.25,1.0,1.2215287424623966",
+      "--ground_up_measured_actuator_bridge",
+      "--ground_up_actuator_bridge_delay_ticks",
+      "3,3,3,3,3,3,2,3,3,3,2,3,2,3",
+      "--ground_up_actuator_bridge_tau_s",
+      ".015,.015,.005,.010,.010,.120,.120,.120,.120,.020,.035,.010,.030,.005",
+      "--ground_up_applied_target_observation",
+      "--ground_up_tracking_tail_exceedance_scale",
+      "-6572.254964031055",
+      "--ground_up_tracking_tail_threshold_rad",
+      "0.20",
+      "--ground_up_peak_torque_exceedance_scale",
+      "0",
+      "--ground_up_linear_peak_torque_exceedance_scale",
+      "-307.48131091308585",
+      "--reference_start_phase",
+      "0",
+      "--ground_up_signed_progress_objective",
+      "--winner_v3_variable_configuration",
+      "--winner_v3_deviation_scale",
+      "1.0",
+      "--winner_v119_train_transition_match",
+      "--winner_t19_support_trainthrough",
+      "--winner_t31_action_margin_trainthrough",
+      "--winner_t37_freeze_observation_normalizer",
+      "--winner_t98_hidden_expert_continuation",
+      "--winner_t193_corrected_dynamic_reference_support",
+      "--winner_t98_hidden_gate_asset_path",
+      "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t98_hidden_gate_asset.json",
+      "--critic_observation",
+      "privileged_state",
+      "--restore_checkpoint_path",
+      "D:\\CodexArtifacts\\open-duck-policy\\t193_corrected_dynamic_reference_support_cpu_v1\\t170_half_cpu_remap"
+    ],
+    "elapsed_seconds": 655.4060000000172,
+    "event_file": {
+      "bytes": 6879,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t193_corrected_dynamic_reference_support_cpu_v1\\smoke\\events.out.tfevents.1785405719.WinLSD",
+      "sha256": "cb31417559caa209ccc6b9cf9a0ecac625d6ed4324c93d2c6b4149db09acfe9b"
+    },
+    "final_checkpoint": {
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t193_corrected_dynamic_reference_support_cpu_v1\\smoke\\2026_07_30_060928_1024",
+      "sha256": "7aa102ded5970c94d5cdd3e48041d6c81e5ee40574c17953b8fb938577c6e7a1"
+    },
+    "graphs": {
+      "0": {
+        "chain": {
+          "finite": true,
+          "maximum_abs_action": 1.0,
+          "maximum_abs_hidden": 1.0,
+          "steps": 256
+        },
+        "io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          },
+          "providers": [
+            "CPUExecutionProvider"
+          ]
+        },
+        "receipt": {
+          "bytes": 960296,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t193_corrected_dynamic_reference_support_cpu_v1\\smoke\\2026_07_30_060813_0.onnx",
+          "sha256": "c37af0b0539da7d02b93d708091cdfe07f8e77f37e8d655d8fc9a22d3832338f"
+        }
+      },
+      "1024": {
+        "chain": {
+          "finite": true,
+          "maximum_abs_action": 1.0,
+          "maximum_abs_hidden": 1.0,
+          "steps": 256
+        },
+        "io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          },
+          "providers": [
+            "CPUExecutionProvider"
+          ]
+        },
+        "receipt": {
+          "bytes": 960296,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t193_corrected_dynamic_reference_support_cpu_v1\\smoke\\2026_07_30_060928_1024.onnx",
+          "sha256": "c062f81d21f417dc01cd9fcfbd44ec5bdedd31b75a0e69cdba9d50757b4388d4"
+        }
+      }
+    },
+    "initial_checkpoint": {
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t193_corrected_dynamic_reference_support_cpu_v1\\smoke\\2026_07_30_060813_0",
+      "sha256": "2f4f6a5bcaf088ab9dac0699f19f80b9f3091b27437adfa0166fdde15817a55b"
+    },
+    "log": {
+      "bytes": 5275,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t193_corrected_dynamic_reference_support_cpu_v1\\training.log",
+      "sha256": "963250f9d8451e785e3ef8dcfc4ce9fccb5489e53cdd35ffd64346c21dcd83d3"
+    }
+  },
+  "tree_contract": {
+    "critic_leaf_deltas": {
+      "2/params/hidden_0/bias": 0.006960675120353699,
+      "2/params/hidden_0/kernel": 0.00836530327796936,
+      "2/params/hidden_1/bias": 0.00602363608777523,
+      "2/params/hidden_1/kernel": 0.008365370333194733,
+      "2/params/hidden_2/bias": 0.005443103611469269,
+      "2/params/hidden_2/kernel": 0.007693219929933548,
+      "2/params/hidden_3/bias": 0.003253452479839325,
+      "2/params/hidden_3/kernel": 0.00383150577545166
+    },
+    "normalizer_leaf_deltas": {
+      "0/count/hi": 0.0,
+      "0/count/lo": 0.0,
+      "0/mean/policy_hidden": 0.0,
+      "0/mean/privileged_state": 0.0,
+      "0/mean/state": 0.0,
+      "0/std/policy_hidden": 0.0,
+      "0/std/privileged_state": 0.0,
+      "0/std/state": 0.0,
+      "0/std_eps": 0.0,
+      "0/summed_variance/policy_hidden": 0.0,
+      "0/summed_variance/privileged_state": 0.0,
+      "0/summed_variance/state": 0.0
+    },
+    "protected_actor_leaf_deltas": {
+      "1/params/adapter_hidden_bias": 0.0,
+      "1/params/adapter_hidden_projection/kernel": 0.0,
+      "1/params/adapter_location/bias": 0.0,
+      "1/params/adapter_location/kernel": 0.0,
+      "1/params/adapter_obs_projection/kernel": 0.0,
+      "1/params/residual_location/bias": 0.0,
+      "1/params/residual_location/kernel": 0.0,
+      "1/params/residual_trunk/hidden_0/bias": 0.0,
+      "1/params/residual_trunk/hidden_0/kernel": 0.0,
+      "1/params/residual_trunk/hidden_1/bias": 0.0,
+      "1/params/residual_trunk/hidden_1/kernel": 0.0,
+      "1/params/residual_trunk/hidden_2/bias": 0.0,
+      "1/params/residual_trunk/hidden_2/kernel": 0.0,
+      "1/params/scale_logits/bias": 0.0,
+      "1/params/scale_logits/kernel": 0.0
+    },
+    "trainable_head_leaf_deltas": {
+      "1/params/negative_adapter_location/bias": 0.0037544332444667816,
+      "1/params/negative_adapter_location/kernel": 0.006889466196298599
+    }
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "authority": {
+    "additional_attempt": false,
+    "behavior_evaluation": false,
+    "checkpoint_selection": false,
+    "deployment": false,
+    "gate5": false,
+    "one_exact_cli_launch": true,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false
+  },
+  "checks": {
+    "exact_training_driver_reused": true,
+    "executor_exact": true,
+    "hardware_or_robot_absent": true,
+    "hosted_import_preflight_exact": true,
+    "l4_exact": true,
+    "launcher_exact": true,
+    "no_retry_or_resume": true,
+    "package_contract_exact": true,
+    "preregistration_exact": true,
+    "training_or_behavior_not_run": true
+  },
+  "commands": [
+    [
+      "colab",
+      "new",
+      "--session",
+      "winner-v105-response-20260723",
+      "--gpu",
+      "L4"
+    ],
+    [
+      "colab",
+      "upload",
+      "--session",
+      "winner-v105-response-20260723",
+      "<LOCAL_PACKAGE>",
+      "/content/winner-v105-response-conditioned-hosted-20260723.tar.gz"
+    ],
+    [
+      "colab",
+      "upload",
+      "--session",
+      "winner-v105-response-20260723",
+      "<LOCAL_LAUNCHER>",
+      "/content/launch_winner_v105_response_conditioned_colab.py"
+    ],
+    [
+      "colab",
+      "exec",
+      "--session",
+      "winner-v105-response-20260723",
+      "--file",
+      "<LOCAL_EXECUTOR>",
+      "--timeout",
+      "21600"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "winner-v105-response-20260723",
+      "/content/winner_v105_result.json",
+      "<LOCAL_RESULT>"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "winner-v105-response-20260723",
+      "/content/winner_v105_artifacts.tar.gz",
+      "<LOCAL_ARCHIVE>"
+    ],
+    [
+      "colab",
+      "download",
+      "--session",
+      "winner-v105-response-20260723",
+      "/content/winner_v105_launch_receipt.json",
+      "<LOCAL_RECEIPT>"
+    ],
+    [
+      "colab",
+      "stop",
+      "--session",
+      "winner-v105-response-20260723"
+    ]
+  ],
+  "execution_now": {
+    "colab_sessions_opened": 0,
+    "formal_behavior_cells": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_locomotion_steps": 0
+  },
+  "failed_checks": [],
+  "hashes": {
+    "executor": "4be9e5e8e5e658c0b1666e1c34669a85f9c79230fbcc1b02194c15e87b9f8edc",
+    "launcher": "292a1cc152d9d2762b26c5d490388f7c35d8b5514959bbc950cc76cf9e10e122",
+    "package": "30db9b47433543eeeff6e4db6548cd6479916a803891d3aafacd1b63f105be70",
+    "package_contract": "f243d3e682532a8858b584e84de1211aaed5abab1039e2d0918a84677434d935",
+    "preregistration": "5cf5a4b449ec9673d2f65122a7a26b957b7240c79d5fb5945b5cf68cb01e279c"
+  },
+  "package_bytes": 59201279,
+  "recovery": {
+    "download_result_archive_receipt_before_stop": true,
+    "resume": false,
+    "retry": false,
+    "stop_session_after_pass_or_hold": true
+  },
+  "schema_version": "winner_v105.colab_cli_launch_contract.v1",
+  "session": {
+    "accelerator": "L4",
+    "count": 1,
+    "max_wall_seconds": 21600,
+    "name": "winner-v105-response-20260723"
+  },
+  "status": "PASS_WINNER_V105_COLAB_CLI_LAUNCH_CONTRACT"
+}

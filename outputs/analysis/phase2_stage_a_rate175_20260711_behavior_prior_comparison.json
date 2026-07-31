@@ -1,0 +1,122 @@
+{
+  "status": "PASS_POLICY_TEACHER_CLOSE",
+  "manifest": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_manifest.json",
+  "manifest_status": "PASS_BC_TRACE_MANIFEST_READY",
+  "dataset_id": "7877cd6345c6e333",
+  "behavior_prior_npz": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate_mlp.npz",
+  "samples": 10322,
+  "thresholds": {
+    "teacher_delta_p95_warn": 0.08
+  },
+  "policies": [
+    {
+      "policy": "outputs/analysis/command_conditioned_hard_seed_recovery_dagger_seed5_x0_rate175_candidate/candidate.onnx",
+      "policy_name": "candidate",
+      "samples": 10322,
+      "teacher_delta_abs": {
+        "mean": 5.048198405160857e-08,
+        "p50": 3.929959276061101e-08,
+        "p95": 1.359997682470748e-07,
+        "p99": 1.9566029288431417e-07,
+        "max": 5.042201358107512e-07
+      },
+      "manifest_delta_abs": {
+        "mean": 0.010691170514476885,
+        "p50": 0.005291864275932312,
+        "p95": 0.04017079118639228,
+        "p99": 0.0886581785023212,
+        "max": 0.2449905276298523
+      },
+      "action_abs": {
+        "mean": 0.2694381419765959,
+        "p50": 0.22286688536405563,
+        "p95": 0.7491114318370818,
+        "p99": 0.8198869222402573,
+        "max": 0.917560875415802
+      },
+      "action_saturation_pct": 0.0
+    },
+    {
+      "policy": "outputs/analysis/colab_cli_stage_a_rate175_prior/open-duck-t4-stagea-phase2-stage-a-narrow-20260711T020114Z/artifact/open_duck_colab_cli_phase2-stage-a-narrow_20260711T020137Z/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260711T020210Z_gpu/2026_07_11_021243_81920.onnx",
+      "policy_name": "2026_07_11_021243_81920",
+      "samples": 10322,
+      "teacher_delta_abs": {
+        "mean": 0.025243330361429082,
+        "p50": 0.01931786094093895,
+        "p95": 0.0640978287636379,
+        "p99": 0.08610112883944752,
+        "max": 0.19477038319208678
+      },
+      "manifest_delta_abs": {
+        "mean": 0.028276034410724807,
+        "p50": 0.020833373069763184,
+        "p95": 0.07507789134979241,
+        "p99": 0.1257375711947679,
+        "max": 0.2772039473056793
+      },
+      "action_abs": {
+        "mean": 0.26810222936571504,
+        "p50": 0.21103210002183914,
+        "p95": 0.7708303779363632,
+        "p99": 0.8268248152732849,
+        "max": 0.9359934329986572
+      },
+      "action_saturation_pct": 0.0
+    },
+    {
+      "policy": "outputs/analysis/colab_cli_stage_a_rate175_prior/open-duck-t4-stagea-phase2-stage-a-narrow-20260711T020114Z/artifact/open_duck_colab_cli_phase2-stage-a-narrow_20260711T020137Z/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260711T020210Z_gpu/2026_07_11_021603_163840.onnx",
+      "policy_name": "2026_07_11_021603_163840",
+      "samples": 10322,
+      "teacher_delta_abs": {
+        "mean": 0.016960907371377797,
+        "p50": 0.01214477275580117,
+        "p95": 0.04820200869516713,
+        "p99": 0.0734214916805629,
+        "max": 0.16142119024248425
+      },
+      "manifest_delta_abs": {
+        "mean": 0.020629630836782983,
+        "p50": 0.01294068992137909,
+        "p95": 0.06626786030828949,
+        "p99": 0.11940328711867325,
+        "max": 0.29134804010391235
+      },
+      "action_abs": {
+        "mean": 0.2686917928798762,
+        "p50": 0.2225295677781105,
+        "p95": 0.754776021838188,
+        "p99": 0.82292815387249,
+        "max": 0.9317272901535034
+      },
+      "action_saturation_pct": 0.0
+    },
+    {
+      "policy": "outputs/analysis/colab_cli_stage_a_rate175_prior/open-duck-t4-stagea-phase2-stage-a-narrow-20260711T020114Z/artifact/open_duck_colab_cli_phase2-stage-a-narrow_20260711T020137Z/open_duck_training_phase2_stage_a_narrow_cli/smoke_20260711T020210Z_gpu/2026_07_11_021632_245760.onnx",
+      "policy_name": "2026_07_11_021632_245760",
+      "samples": 10322,
+      "teacher_delta_abs": {
+        "mean": 0.016669857515495073,
+        "p50": 0.01238108505888583,
+        "p95": 0.0469315323711826,
+        "p99": 0.07431974204318237,
+        "max": 0.14770714598605905
+      },
+      "manifest_delta_abs": {
+        "mean": 0.020624207382328837,
+        "p50": 0.013247042894363403,
+        "p95": 0.0662635772489011,
+        "p99": 0.12076429356336585,
+        "max": 0.29706600308418274
+      },
+      "action_abs": {
+        "mean": 0.2702161149526654,
+        "p50": 0.22718261927366257,
+        "p95": 0.751808676123619,
+        "p99": 0.8232023149728771,
+        "max": 0.9236515760421753
+      },
+      "action_saturation_pct": 0.0
+    }
+  ],
+  "interpretation": "The compared policies remain close to the behavior-prior teacher on the teacher dataset; gate regression is more likely closed-loop instability than offline teacher mismatch."
+}

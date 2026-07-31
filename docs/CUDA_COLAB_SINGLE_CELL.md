@@ -1,6 +1,6 @@
 # CUDA / Colab Single Cell
 
-Last updated: 2026-06-22
+Last updated: 2026-06-24
 
 ## Purpose
 
@@ -16,18 +16,166 @@ This path is offline-only:
 - no overwrite of `policy/BEST_WALK_ONNX_2.onnx`
 - no robot-side validation approval
 
-If either GitHub repo is private, the generated cell prompts:
+For headless/private-repo runs, prefer the Colab CLI tarball workflow in
+`tools/run_colab_cli_cuda_workflow.py`. It uploads the local RDK and Playground
+worktrees directly and does not require a GitHub token inside the notebook.
 
-```text
-GitHub token for private repos, or press Enter if public:
+The copy-paste notebook cell can still clone repos from GitHub. If either repo
+is private, set `GITHUB_TOKEN` or `GH_TOKEN` in the Colab environment before
+running the generated `%%bash` cell. The cell uses `GIT_ASKPASS` for
+clone/fetch/pull and does not write the token into git remotes. It no longer
+tries an interactive password prompt because Colab `%%bash` cells can fail on
+`getpass`/TTY input. Do not hard-code tokens into committed docs.
+
+## Preferred Headless Colab CLI Path
+
+When `google-colab-cli` is authenticated and an `open-duck-l4` session is
+running, use the local tarball workflow instead of cloning private repos from
+inside the notebook:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py --workflow eval --run
 ```
 
-Paste a temporary GitHub token into that hidden prompt. The cell uses
-`GIT_ASKPASS` for clone/fetch/pull and does not write the token into git
-remotes. Do not hard-code tokens into the generated notebook or committed docs.
-If a token was pasted into chat/logs, revoke or rotate it after the run.
+Then run the smoke/candidate stages only after the previous gate passes:
 
-## Generate The Cell
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py --workflow smoke --run
+python3 tools/run_colab_cli_cuda_workflow.py --workflow candidate-only --run
+```
+
+### Candidate Checkpoint Sweep
+
+Use this after a training sequence produces multiple preserved candidate
+checkpoints and the final checkpoint may not be the best behavior. The workflow
+uploads the local RDK and Playground worktrees, runs
+`tools/sweep_candidate_checkpoints.py` on the CUDA session, and bundles only the
+small sweep report artifacts. It does not train, deploy, SSH, or touch the
+robot.
+
+Plan first:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py --workflow checkpoint-sweep
+```
+
+Run on the connected Colab CUDA session:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py \
+  --workflow checkpoint-sweep \
+  --session open-duck-l4 \
+  --checkpoint-sweep-commands 0.08 \
+  --checkpoint-sweep-duration 5 \
+  --checkpoint-sweep-bridge-mode fitted \
+  --run
+```
+
+Default policies are the preserved V7, V8, and V9 candidate ONNX files. Override
+them with `--checkpoint-sweep-policies` when testing phase checkpoints or a new
+candidate set.
+
+If candidate training finishes but the Colab session disconnects during one of
+the sim gates, do not rerun training just to recover the missing gate. Use the
+eval-only workflow with the local ONNX downloaded from the partial artifact:
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py \
+  --workflow candidate-eval-only \
+  --candidate-existing-policy path/to/candidate.onnx \
+  --candidate-training-manifest path/to/smoke_manifest.final.json \
+  --candidate-name open_duck_mini_actuator_bridge_<run> \
+  --run
+```
+
+This uploads only the local worktrees plus the selected ONNX/manifest, then
+runs the `x=0.0` and `x=0.08` candidate gates. It does not train.
+
+### Phase 2 B0E Motion-Preserving Tracking-Margin Continuation
+
+Use this when the local ROCm path is unstable and the next required training run
+is the B0E continuation from the B0C corrected-bridge checkpoint. B0E keeps the
+B0C parent, uses a milder actuator-tracking penalty than B0D, and preserves
+forward-progress pressure so it can test the narrow tracking miss without
+repeating B0D's compact-motion regression. This workflow runs the fixed B0E
+recipe on CUDA with the pinned dependency stack and bundles the resulting
+ONNX/checkpoint artifacts. It does not approve robot validation and does not
+replace the strict local review gates.
+
+First verify which Colab session is actually visible to `google-colab-cli`:
+
+```bash
+python3 tools/report_colab_session_status.py
+```
+
+If the report returns `HOLD_NO_ACTIVE_COLAB_SESSION`, do not launch B0E yet.
+Reconnect or create the Colab runtime, rerun the status report, then use the
+visible session name in the command below. The historical default
+`open-duck-l4` is only a placeholder.
+
+```bash
+python3 tools/run_colab_cli_cuda_workflow.py \
+  --workflow phase2-b0e \
+  --session <visible-colab-session> \
+  --candidate-name phase2_b0e_motion_preserving_tracking_cuda \
+  --candidate-timeout-s 10800 \
+  --candidate-checkpoint-sweep \
+  --candidate-checkpoint-sweep-commands 0.0,0.08 \
+  --candidate-checkpoint-sweep-duration 1.0 \
+  --candidate-checkpoint-sweep-jax-platform cpu \
+  --candidate-checkpoint-sweep-timeout-s 7200 \
+  --run
+```
+
+After the artifact bundle is imported, run the standard corrected-bridge
+rough-terrain gentle-push 8-seed gate locally against the selected ONNX before
+packaging or promoting anything.
+
+The CLI workflow uploads local RDK/Playground tarballs, pins
+`jax/jaxlib==0.7.2`, writes a remote log/artifact bundle, downloads the bundle,
+and does not require a GitHub token in Colab. This is the preferred route for
+agents and unattended runs.
+
+## Browser Notebook Fallback
+
+Use this path when a Colab notebook is connected in the browser but
+`google-colab-cli` cannot see an active session.
+
+The next recommended fallback is diagnostic-only:
+
+```bash
+python3 tools/print_cuda_colab_cell.py \
+  --training-smoke-diagnostic \
+  --rdk-branch codex/colab-cli-cuda-workflow \
+  --playground-branch codex/forward-progress-reward \
+  --handoff-dir /home/lsd/robots/cuda_colab_diagnostic_handoff
+```
+
+Upload/open:
+
+```text
+/home/lsd/robots/cuda_colab_diagnostic_handoff/open_duck_cuda_smoke.ipynb
+```
+
+Then run its single cell in the manually authenticated CUDA/Colab notebook. It
+runs only:
+
+```text
+00_python_jax_device
+01_import_training_stack
+02_smoke_dry_run
+03_smoke_run
+```
+
+and skips baseline eval and candidate training.
+
+The cell writes diagnostic output under:
+
+```text
+outputs/analysis/cuda_manual/training_smoke_startup_diagnostic
+```
+
+and packages it into the downloadable artifact bundle.
 
 From the RDK repo:
 
@@ -39,7 +187,8 @@ The generated cell runs:
 
 1. GPU/JAX visibility check
 2. RDK and Playground fork checkout
-3. CUDA dependency install, including `playground==0.0.5`
+3. CUDA dependency install, including `jax/jaxlib==0.7.2` and
+   `playground==0.0.5`
 4. `mujoco_playground._src.collision` import check
 5. training environment check
 6. policy/sim contract audit
@@ -55,6 +204,48 @@ To include the first candidate-training shape in the generated cell:
 ```bash
 python3 tools/print_cuda_colab_cell.py --run-candidate
 ```
+
+### V21 Staged-Curriculum Cell
+
+When `google-colab-cli` cannot see an active session but a browser Colab
+notebook is already authenticated, generate a V21-specific one-cell handoff:
+
+```bash
+python3 tools/print_cuda_colab_cell.py \
+  --staged-curriculum-v21 \
+  --rdk-branch codex/colab-cli-cuda-workflow \
+  --playground-branch codex/forward-progress-reward \
+  --handoff-dir /home/lsd/robots/cuda_colab_handoff_v21
+```
+
+This writes:
+
+```text
+/home/lsd/robots/cuda_colab_handoff_v21/open_duck_cuda_v21_staged.ipynb
+/home/lsd/robots/cuda_colab_handoff_v21/open_duck_cuda_v21_staged_cell.txt
+/home/lsd/robots/cuda_colab_handoff_v21/CUDA_COLAB_HANDOFF.md
+```
+
+The V21 cell runs the explicit weak-soft-prior staged planner:
+
+```bash
+python3 tools/plan_staged_curriculum_training.py \
+  --run \
+  --recipe movement_bootstrap_v21 \
+  --platform gpu \
+  --jax-platforms cuda \
+  --phase-gate-freeze-check \
+  --phase-gate-command-x 0.04 \
+  --phase-gate-bridge-mode vanilla \
+  --phase-gate-platform gpu \
+  --phase-gate-jax-platforms cuda \
+  --phase-gate-seeds 0-3
+```
+
+It skips the older baseline eval/smoke/candidate flow and bundles small V21
+plan, gate, manifest, stdout/stderr, and ONNX artifacts from
+`/content/open_duck_staged_runs`. This is still offline-only for the robot:
+no SSH, deploy, robot test, or policy overwrite is approved by the cell.
 
 If uploading a notebook is easier than copy/pasting a long cell, generate a
 one-code-cell notebook:
@@ -93,6 +284,21 @@ That candidate shape now includes opt-in reward and command-curriculum
 overrides intended to avoid the smooth stand-still behavior seen in the local
 CPU pilots.
 
+The generated candidate recipe currently uses:
+
+```text
+tracking_sigma=0.0025
+forward_progress_scale=2.0
+tracking_lin_vel_scale=12.0
+tracking_ang_vel_scale=0.0
+target_rate_scale=-0.001
+action_rate_scale=-0.1
+action_magnitude_scale=-0.05
+alive_scale=0.5
+imitation_scale=0.25
+lin_vel_x=[0.04, 0.12]
+```
+
 ## Why This Exists
 
 The browser automation path for Google login was blocked by Google's
@@ -110,11 +316,14 @@ import mujoco_playground._src.collision
 The generated cell pins:
 
 ```text
+jax[cuda12]==0.7.2
+jaxlib==0.7.2
 playground==0.0.5
 ```
 
-because the successful CUDA path used that dependency and verified the
-`collision.py` import before running the Open Duck eval.
+because the successful CUDA path used that stack. A newer unpinned JAX install
+completed environment setup but broke Brax training through a removed
+`jax.device_put_replicated` API.
 
 The generated cell also defines `PYTHON_BIN` once near the top and passes that
 same interpreter to every subprocess via `--env-python`. On Colab it prefers
@@ -200,14 +409,14 @@ those commands are available.
 Import it locally with:
 
 ```bash
-python3 tools/import_cuda_artifact_bundle.py \
-  /path/to/open_duck_cuda_artifacts_<timestamp>.tar.gz
+python3 tools/ingest_latest_cuda_artifact.py
 ```
 
-If the `.sha256` file is next to the bundle, the importer verifies it
-automatically. If the sidecar was downloaded somewhere else, pass
-`--expected-sha256-file /path/to/open_duck_cuda_artifacts_<timestamp>.tar.gz.sha256`.
-If no sidecar is available, pass `--expected-sha256 <CUDA_ARTIFACT_BUNDLE_SHA256>`.
+The helper searches common download locations for the newest
+`open_duck_cuda_artifacts_*.tar.gz`, verifies the neighboring `.sha256` sidecar
+when present, skips bundles already imported by SHA256, and writes the review
+summary under `outputs/analysis/cuda_imports/`. If the bundle is elsewhere,
+pass `--bundle /path/to/open_duck_cuda_artifacts_<timestamp>.tar.gz`.
 
 That writes:
 
@@ -220,12 +429,17 @@ Start review from `CUDA_ARTIFACT_IMPORT_SUMMARY.md`. Its review gate reports:
 
 ```text
 READY_FOR_SIM_GATE_REVIEW
+READY_FOR_STAGED_GATE_REVIEW
 INFO_SMOKE_ONLY
 INFO_BASELINE_EVAL_ONLY
+INFO_STAGED_RUN_NO_PHASE_GATE
+INFO_STAGED_PLAN_ONLY
 HOLD_CUDA_CELL_FAILED
+HOLD_STAGED_NO_ONNX
 HOLD_NO_CANDIDATE_PACKAGE
 HOLD_MISSING_CANDIDATE_GATE_X0
 HOLD_MISSING_CANDIDATE_GATE_X008
+or the staged phase gate HOLD_* status
 or the candidate package/gate HOLD_* status
 ```
 

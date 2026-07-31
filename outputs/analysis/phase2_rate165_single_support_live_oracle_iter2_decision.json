@@ -1,0 +1,84 @@
+{
+  "status": "HOLD_ITER2_MAX_VELOCITY_EXCESS",
+  "scope": {
+    "offline_only": true,
+    "robot_tests": false,
+    "ssh": false,
+    "deploy": false,
+    "grounded_replay": false,
+    "ppo_training": false,
+    "domain_randomization_training": false,
+    "runtime_behavior_changes": false
+  },
+  "baseline": {
+    "candidate_onnx": "policy/candidates/phase2_corrected_live_oracle_iter1_rate165_20260703/candidate.onnx",
+    "candidate_onnx_sha256": "e06643e5790217075d9c7a0d1e1ac262652058592b374ac0446bdd0426d0ea33",
+    "x008": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "mean_local_vx_m_s": 0.0272,
+      "track_ratio": 0.34,
+      "single_support_pct": 22.5333,
+      "max_tracking_p95_rad": 0.1827,
+      "p95_velocity_excess_rad_s": 0.0,
+      "max_velocity_excess_rad_s": 0.0
+    }
+  },
+  "live_oracle_iteration_2": {
+    "iteration_status": "PASS_LIVE_ORACLE_DAGGER_ITERATION_DATA_READY",
+    "iteration_artifact_md": "outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_plan/LIVE_ORACLE_DAGGER_ITERATION.md",
+    "iteration_artifact_json": "outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_plan/live_oracle_dagger_iteration.json",
+    "aggregate_manifest": "outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_plan/live_oracle_dagger_aggregate_manifest.json",
+    "aggregate_status": "PASS_FILTERED_BC_MANIFEST_READY",
+    "kept_entries": 38,
+    "samples": 28500,
+    "rejected_entries": 0
+  },
+  "student": {
+    "fit_status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+    "fit_artifact_md": "outputs/analysis/PHASE2_RATE165_SINGLE_SUPPORT_LIVE_ORACLE_ITER2_STUDENT.md",
+    "fit_artifact_json": "outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_student.json",
+    "candidate_onnx": "outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_student/candidate.onnx",
+    "candidate_onnx_sha256": "c476120f75ea38b16cfe2a1c0eee49adca648811e65691e374321b58372a8cd7",
+    "candidate_npz_sha256": "020cb7737e6a92ed84dd1ab03fa8b7bc725f0c863489a5ac3cbada607d2718b7",
+    "samples": 28500,
+    "p95_action_error": 0.021781116724014282,
+    "target_rate_p95_rad_s": 1.425471,
+    "target_rate_max_rad_s": 1.893847,
+    "onnx_max_abs_error": 2.682209014892578e-7
+  },
+  "x008_gate": {
+    "artifact_md": "outputs/analysis/PHASE2_RATE165_SINGLE_SUPPORT_LIVE_ORACLE_ITER2_STUDENT_X008_GATE.md",
+    "artifact_json": "outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_student_x008_gate.json",
+    "status": "HOLD_CANDIDATE_TARGET_VELOCITY",
+    "runs": 8,
+    "falls": 0,
+    "duration_complete": 8,
+    "mean_local_vx_m_s": 0.032378894074179695,
+    "track_ratio": 0.4047361759272462,
+    "single_support_pct": 27.200000000000003,
+    "double_support_pct": 72.8,
+    "max_pitch_vel_p95_rad_s": 1.7164087295532224,
+    "p95_velocity_excess_rad_s": 0.0,
+    "max_velocity_excess_rad_s": 0.014899253845214844,
+    "max_tracking_p95_rad": 0.1858822464942932
+  },
+  "x0_spot_gate": {
+    "artifact_md": "outputs/analysis/PHASE2_RATE165_SINGLE_SUPPORT_LIVE_ORACLE_ITER2_STUDENT_X0_SPOT_GATE.md",
+    "artifact_json": "outputs/analysis/phase2_rate165_single_support_live_oracle_iter2_student_x0_spot_gate.json",
+    "status": "PASS_CANDIDATE_SIM_GATE",
+    "runs": 2,
+    "falls": 0,
+    "duration_complete": 2,
+    "mean_local_vx_m_s": 0.000008396759295313434,
+    "single_support_pct": 0.0,
+    "double_support_pct": 100.0,
+    "p95_velocity_excess_rad_s": 0.0,
+    "max_velocity_excess_rad_s": 0.0,
+    "max_tracking_p95_rad": 0.031500238180160525
+  },
+  "decision": {
+    "promote": false,
+    "reason": "Iter2 student improves forward progress and single support but violates the strict corrected max velocity envelope at x=0.08.",
+    "next_action": "Refit from the iter2 aggregate manifest with tighter max-rate control or an explicit max-velocity guard; do not resume scalar PPO/domain randomization until the corrected bridge gate passes with nonzero single support."
+  }
+}

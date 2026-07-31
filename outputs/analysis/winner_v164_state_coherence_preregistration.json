@@ -1,0 +1,214 @@
+{
+  "authority": {
+    "cpu_state_and_behavior_contract": true,
+    "full_robustness": false,
+    "gate5": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "checks": {
+    "alpha_is_inverse_block_iterations": true,
+    "cpu_only_no_new_update": true,
+    "fourteen_equal_blocks_land_on_final_export": true,
+    "moving_matrix_exact_six": true,
+    "seven_equal_blocks_land_on_half_export": true,
+    "source_and_proposal_hashes_match_v127": true,
+    "source_is_exact_green_v121_half": true,
+    "v163_earned_state_contract_only": true
+  },
+  "decision_rule": {
+    "failure_closes": "actor-only/frozen-normalizer state rule; no alpha or block length retry",
+    "hosted_training_authorized": false,
+    "pass": "state composition/export is exact, optimizer reset is finite and zero-moment, all six moving cells plus both x0 invariants pass, and worst torque is strictly below the source",
+    "pass_earns": "one separate V165 trainer-integration CPU smoke only"
+  },
+  "failed_checks": [],
+  "gate": {
+    "conversion_nm_per_a": 0.784532,
+    "noncurrent_behavior": "unchanged 600-tick candidate, gait, forward-motion, tracking, saturation, rate, envelope, x=0, trace, readback, and CPU checks",
+    "per_joint_peak_current_a_max": 2.5,
+    "per_joint_peak_torque_nm_max": 1.91229675,
+    "rated_current_p95_a": 0.65,
+    "rated_current_p95_role": "reported diagnostic only",
+    "strict_overcurrent_max_consecutive_ticks": 99,
+    "strict_overcurrent_threshold_a": 2.0
+  },
+  "input_hashes": {
+    "base_preregistration": "c8f986ceb24863f33c1fc99170548d2e255cb6a26737d3f74762f8dcd4485a24",
+    "builder": "29da14aa474973098463753dc783d699cfcd62d07077ad9bb46a59134dd85d44",
+    "cell_runner": "41cc51abb21dde2fde8fa4cbf36ad50212794fea0a38eb73b2c3705ee96ac034",
+    "composed_evaluator": "1539ba18b5b207a15538a8a8611475f5c73bcd7164f2fe039cad8b279a587e43",
+    "composition_manifest": "39e842470828208dfea08b17d936d3f0e6f0d45b8f9813a1edd139692e4a6f74",
+    "deployer": "ca59440ded91cf70d96cc02a6a5e53c5700ccf3cc31084bf6b177ad3311cd0cc",
+    "proposal_aux": "3629bf003496e88e71d32342191c8cff635edd8cd002ba1f3d6c316251e1cf8d",
+    "proposal_checkpoint": "f65225628fa708fce89150759f633c4eaf5edd71f480c919860fa9394bc74942",
+    "proposal_cost_checkpoint": "591fe99b5f80d9935102fd3e6c154db862fa0ea8dfa9f0b9589b6f1142a3224b",
+    "proposal_raw": "2fbb837b23ed35c460f877ff9c5189b819572b8cd8dc5258b2cb4578ce4b8a90",
+    "runner": "6eda72a2e0c04b6a9d3675c0d50c273d5c120af169ef121488826b3d572f60ce",
+    "source_checkpoint": "b8f007e69f3ba54ed1d07fe2cbe9da96f6701b3e619284f9f75ccc64cab41677",
+    "source_raw": "2d3cfb686a9c9643d9414a99a10e4db3aee7fc8f63cbc2fd81f107b487cf1311",
+    "state_module": "ea8d61ccfcd02f7ad64453bb02ad3bfdd5348be43ca4ff408999e4da11a7ba3d",
+    "v121_preregistration": "9c10dc3de6ea4b5f0f5fe00b287a53e7dc17f1e77b34da84916f90ba285770f5",
+    "v121_result": "8bdefb90032facb4a3f3f7c833e608d2b35dac958ac0fcc2bbbd393ddcbb6047",
+    "v126_preregistration": "eb40f17d9c08b8362f068567e1620bdafef21ad9123a633c9536f3637a31c899",
+    "v127_preregistration": "a77c677816714a0517c70f84c56d8c6a2b731ae135696c11b15ff51caf24bc34",
+    "v127_result": "cd728eb3cf2900f038c4134e3f603106238e960046b3482d4cd2b695b5a76ed4",
+    "v163_result": "df771a2ad5343e1ed54b1229fb4600fc7e9e3b6cd5cfd3d0f63dacdf24a6960c"
+  },
+  "matrix": {
+    "moving_cells": 6,
+    "rows_in_source_margin_risk_order": [
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V121_TRAIN_MATCHED_HALF",
+        "command_x_m_s": 0.08,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "policy_sha256": "d4f280e8ebb4accd5c5c983bbf83042ec0162647efb446f0f6c8bffda42bc17a",
+        "seed": 167931544,
+        "step": 1003520,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V121_TRAIN_MATCHED_HALF",
+        "command_x_m_s": 0.074,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "policy_sha256": "d4f280e8ebb4accd5c5c983bbf83042ec0162647efb446f0f6c8bffda42bc17a",
+        "seed": 167931544,
+        "step": 1003520,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V121_TRAIN_MATCHED_HALF",
+        "command_x_m_s": 0.08,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "d4f280e8ebb4accd5c5c983bbf83042ec0162647efb446f0f6c8bffda42bc17a",
+        "seed": 167931544,
+        "step": 1003520,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V121_TRAIN_MATCHED_HALF",
+        "command_x_m_s": 0.077,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "d4f280e8ebb4accd5c5c983bbf83042ec0162647efb446f0f6c8bffda42bc17a",
+        "seed": 167931544,
+        "step": 1003520,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V121_TRAIN_MATCHED_HALF",
+        "command_x_m_s": 0.077,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "policy_sha256": "d4f280e8ebb4accd5c5c983bbf83042ec0162647efb446f0f6c8bffda42bc17a",
+        "seed": 167931544,
+        "step": 1003520,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "V121_TRAIN_MATCHED_HALF",
+        "command_x_m_s": 0.074,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "d4f280e8ebb4accd5c5c983bbf83042ec0162647efb446f0f6c8bffda42bc17a",
+        "seed": 167931544,
+        "step": 1003520,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      }
+    ],
+    "x0_basis": "source x0 cells passed and unchanged final deadband makes the accepted graph exactly zero at x=0",
+    "x0_cells_reused": 2
+  },
+  "paths": {
+    "base_preregistration": "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\outputs\\analysis\\winner_v3_variable_configuration_replacement_preregistration.json",
+    "builder": "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\tools\\build_winner_v164_state_coherence_preregistration.py",
+    "cell_runner": "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\tools\\run_winner_v141_projected_final_behavior.py",
+    "composed_evaluator": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v136-warm-start-evaluator-20260725\\closed_loop_sim_eval_v136_warm_start.py",
+    "composition_manifest": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v136-warm-start-evaluator-20260725\\composition_manifest.json",
+    "deployer": "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\tools\\run_winner_v129_oracle_teacher_cpu_contract.py",
+    "playground": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v127-constrained-playground-v3-20260724",
+    "proposal_aux": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v127-constrained-cpu-contract-20260724\\smoke\\2026_07_24_205801_1024_v127_aux.json",
+    "proposal_checkpoint": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v127-constrained-cpu-contract-20260724\\smoke\\2026_07_24_205800_1024",
+    "proposal_cost_checkpoint": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v127-constrained-cpu-contract-20260724\\smoke\\2026_07_24_205801_1024_v127_cost_value",
+    "proposal_raw": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v127-constrained-cpu-contract-20260724\\smoke\\2026_07_24_205800_1024.onnx",
+    "runner": "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\tools\\run_winner_v164_state_coherence.py",
+    "source_checkpoint": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v127-constrained-cpu-contract-20260724\\smoke\\2026_07_24_205710_0",
+    "source_raw": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v127-constrained-cpu-contract-20260724\\smoke\\2026_07_24_205710_0.onnx",
+    "state_module": "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\training\\winner_v164_feasibility_preserving_state.py",
+    "v121_preregistration": "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\outputs\\analysis\\winner_v121_nominal_behavior_preregistration.json",
+    "v121_result": "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\outputs\\analysis\\winner_v121_nominal_behavior_result.json",
+    "v126_preregistration": "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\outputs\\analysis\\winner_v126_all_tick_supreme_clip_preregistration.json",
+    "v127_preregistration": "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\outputs\\analysis\\winner_v127_constrained_cpu_preregistration.json",
+    "v127_result": "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\outputs\\analysis\\winner_v127_constrained_cpu_result.json",
+    "v163_result": "C:\\Users\\usa50\\AppData\\Local\\Temp\\open-duck-mini-rdkx5-policy-sparse\\outputs\\analysis\\winner_v163_feasibility_preserving_falsifier_result.json"
+  },
+  "schema_version": "winner_v164.state_coherence_preregistration.v1",
+  "source_worst_peak_torque_nm": 1.909637451171875,
+  "state_rule": {
+    "accepted_alpha": 0.03571428571428571,
+    "actor": "source + alpha * (proposal - source)",
+    "block_iterations": 28,
+    "blocks_to_final_export": 14,
+    "blocks_to_half_export": 7,
+    "cost_critic": "proposal exact",
+    "dual_state": "proposal exact",
+    "environment": "fresh deterministic reset after backtracking",
+    "normalizer": "source exact and frozen",
+    "optimizer": "fresh zero-moment Adam after backtracking",
+    "reward_critic": "proposal exact"
+  },
+  "status": "PREREGISTERED_WINNER_V164_STATE_COHERENCE"
+}

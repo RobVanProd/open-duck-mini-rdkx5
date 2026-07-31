@@ -16,12 +16,13 @@ RUNTIME_ROOT = SCRIPT_DIR.parent
 sys.path.insert(0, str(RUNTIME_ROOT / "mini_bdx_runtime"))
 sys.path.insert(0, str(SCRIPT_DIR))
 
-from mini_bdx_runtime.telemetry import (
+from mini_bdx_runtime.telemetry import (  # noqa: E402
     SCHEMA_VERSION,
     JsonlTelemetryLogger,
     default_telemetry_path,
     extract_onnx_obs_normalization,
     normalize_observation,
+    require_onnx_obs_normalization,
     sha256_file,
     utc_timestamp,
 )
@@ -220,6 +221,9 @@ def make_record(
             "write_error_count": None
             if hwi is None
             else getattr(hwi, "write_error_count", None),
+            "transport_reset_count": None
+            if hwi is None
+            else getattr(hwi, "transport_reset_count", None),
             "last_error": None if hwi is None else getattr(hwi, "last_error", None),
         },
     }
@@ -293,6 +297,7 @@ def cmd_home_pose_log_test(args):
     imu = Imu(args.control_freq, upside_down=cfg.imu_upside_down)
     feet = FeetContacts()
     norm = extract_onnx_obs_normalization(args.onnx_model_path)
+    require_onnx_obs_normalization(norm, args.onnx_model_path)
     logger = make_logger(args.telemetry_path, "home_pose_log_test")
     try:
         hwi.turn_on()
@@ -316,6 +321,7 @@ def cmd_imu_tilt_test(args):
     imu = Imu(args.control_freq, upside_down=cfg.imu_upside_down)
     feet = FeetContacts()
     norm = extract_onnx_obs_normalization(args.onnx_model_path)
+    require_onnx_obs_normalization(norm, args.onnx_model_path)
     logger = make_logger(args.telemetry_path, "imu_tilt_test")
     home = None if hwi is None else np.asarray(list(hwi.init_pos.values()), dtype=float)
     zeros = np.zeros(14)
@@ -496,6 +502,15 @@ def cmd_policy_replay(args):
         "fixed_command_x": args.command_x,
         "max_runtime_seconds": args.duration,
         "force_unpaused": False,
+        "kp_overrides": {
+            name: value
+            for name, value in (
+                ("left_hip_pitch", args.left_hip_pitch_kp),
+                ("left_knee", args.left_knee_kp),
+            )
+            if value is not None
+        },
+        "motor_velocity_limits_rad_s": args.motor_velocity_limits_rad_s,
     }
     required_telemetry_args = {
         "log_telemetry",
@@ -645,8 +660,16 @@ def main():
         p.add_argument("--command-x", type=float, default=0.0)
         p.add_argument("--action_scale", type=float, default=0.25)
         p.add_argument("--max_motor_velocity", type=float, default=5.24)
+        p.add_argument(
+            "--motor-velocity-limits-rad-s",
+            dest="motor_velocity_limits_rad_s",
+            type=lambda text: [float(item.strip()) for item in text.split(",")],
+            default=None,
+        )
         p.add_argument("--telemetry-read-voltage", action="store_true")
         p.add_argument("--telemetry-every-n", type=int, default=1)
+        p.add_argument("--left-hip-pitch-kp", type=float, default=None)
+        p.add_argument("--left-knee-kp", type=float, default=None)
         p.add_argument("--i-understand-this-moves-the-robot", action="store_true")
         p.set_defaults(func=cmd_policy_replay, mode=name)
 

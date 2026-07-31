@@ -1,0 +1,304 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "gate5": false,
+    "hosted_preregistration": true,
+    "hosted_training": false,
+    "policy_promotion": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "all_four_joint_adapter_groups_present": true,
+    "command_exact_flags": true,
+    "every_base_actor_leaf_bit_exact": true,
+    "every_critic_leaf_updated": true,
+    "every_joint_adapter_leaf_updated": true,
+    "no_behavior_hosted_or_robot_execution": true,
+    "normalizer_bit_exact": true,
+    "runner_endpoint_readback_exact": true,
+    "source_restore_bit_exact": true,
+    "source_restore_structure_exact": true,
+    "step_1024_graph_contract": true,
+    "step_zero_graph_contract": true,
+    "step_zero_raw_onnx_byte_exact": true,
+    "trees_finite": true,
+    "update_structure_exact": true
+  },
+  "decision": "EARN_T78_ENDPOINT_JOINT_ADAPTER_HOSTED_PREREGISTRATION_ONLY",
+  "execution": {
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 1024,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "preregistered_contract_sha256": "f5563c62e588d4cdceae8875437cbba40083baf91f6f9c943021e6a822e61a28",
+  "repository_commit": "0ce3f8069a40fc9d7bb24ce53685dd2a2ac8beca",
+  "result_sha256": "3dd3693fb8bbbbc01bb06bd8a9e59df687e510b379e30d0991d870e1740ef1de",
+  "schema_version": "open_duck.t77_endpoint_joint_adapter_cpu_result.v1",
+  "status": "PASS_T77_ENDPOINT_JOINT_ADAPTER_CPU_CONTRACT",
+  "training": {
+    "command": [
+      "D:\\CodexArtifacts\\venvs\\open-duck-policy-py31213\\Scripts\\python.exe",
+      "playground/open_duck_mini_v2/runner.py",
+      "--task",
+      "flat_terrain_backlash",
+      "--env",
+      "joystick",
+      "--output_dir",
+      "D:\\CodexArtifacts\\open-duck-policy\\t77_endpoint_joint_adapter_cpu_v1\\smoke",
+      "--num_timesteps",
+      "1024",
+      "--ppo_seed",
+      "100",
+      "--ppo_num_envs",
+      "8",
+      "--ppo_num_evals",
+      "2",
+      "--ppo_episode_length",
+      "64",
+      "--ppo_unroll_length",
+      "8",
+      "--ppo_batch_size",
+      "8",
+      "--ppo_num_minibatches",
+      "1",
+      "--ppo_num_updates_per_batch",
+      "2",
+      "--ppo_learning_rate",
+      "0.0003",
+      "--ppo_discounting",
+      "0.97",
+      "--ppo_entropy_cost",
+      "0.005",
+      "--policy_architecture",
+      "reference_residual_recurrent_adapter",
+      "--recurrent_hidden_size",
+      "64",
+      "--imitation_scale",
+      "1.0",
+      "--reference_feature_table_path",
+      "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+      "--nominal_reference_bootstrap",
+      "--ground_up_hard_vector_command_support",
+      "--ground_up_command_support_min_x",
+      "0.074",
+      "--ground_up_command_support_max_x",
+      "0.080",
+      "--ground_up_action_velocity_limits_rad_s",
+      "1.0,.75,1.4736209064722061,1.4300791546702385,1.3976470567286015,.5,.5,.5,.5,.5,.75,1.25,1.0,1.2215287424623966",
+      "--ground_up_measured_actuator_bridge",
+      "--ground_up_actuator_bridge_delay_ticks",
+      "3,3,3,3,3,3,2,3,3,3,2,3,2,3",
+      "--ground_up_actuator_bridge_tau_s",
+      ".015,.015,.005,.010,.010,.120,.120,.120,.120,.020,.035,.010,.030,.005",
+      "--ground_up_applied_target_observation",
+      "--ground_up_tracking_tail_exceedance_scale",
+      "-6572.254964031055",
+      "--ground_up_tracking_tail_threshold_rad",
+      "0.20",
+      "--ground_up_peak_torque_exceedance_scale",
+      "0",
+      "--ground_up_linear_peak_torque_exceedance_scale",
+      "-307.48131091308585",
+      "--reference_start_phase",
+      "0",
+      "--ground_up_signed_progress_objective",
+      "--winner_v3_variable_configuration",
+      "--winner_v3_deviation_scale",
+      "1.0",
+      "--winner_v119_train_transition_match",
+      "--winner_t19_support_trainthrough",
+      "--winner_t31_action_margin_trainthrough",
+      "--winner_t37_freeze_observation_normalizer",
+      "--winner_t77_endpoint_joint_adapter_continuation",
+      "--critic_observation",
+      "privileged_state",
+      "--restore_checkpoint_path",
+      "D:\\CodexArtifacts\\open-duck-policy\\t55_dynamic_single_support_cpu_v2\\t52_half_materialized_checkpoint"
+    ],
+    "elapsed_seconds": 493.3279999999795,
+    "final_checkpoint": {
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t77_endpoint_joint_adapter_cpu_v1\\smoke\\2026_07_28_140308_1024",
+      "sha256": "738905c974c70f1bb7cca9162504e32209b4451368cd7c7665519756c90358ba"
+    },
+    "graphs": {
+      "0": {
+        "io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          },
+          "providers": [
+            "CPUExecutionProvider"
+          ]
+        },
+        "output_shapes": [
+          [
+            1,
+            14
+          ],
+          [
+            1,
+            14
+          ],
+          [
+            1,
+            64
+          ]
+        ],
+        "outputs_finite": true,
+        "providers": [
+          "CPUExecutionProvider"
+        ],
+        "receipt": {
+          "bytes": 954952,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t77_endpoint_joint_adapter_cpu_v1\\smoke\\2026_07_28_140214_0.onnx",
+          "sha256": "b395a0299b7a35b3c35c0eb063135c4e08be527eac441de9215aeea22bb9157e"
+        }
+      },
+      "1024": {
+        "io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          },
+          "providers": [
+            "CPUExecutionProvider"
+          ]
+        },
+        "output_shapes": [
+          [
+            1,
+            14
+          ],
+          [
+            1,
+            14
+          ],
+          [
+            1,
+            64
+          ]
+        ],
+        "outputs_finite": true,
+        "providers": [
+          "CPUExecutionProvider"
+        ],
+        "receipt": {
+          "bytes": 954952,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t77_endpoint_joint_adapter_cpu_v1\\smoke\\2026_07_28_140308_1024.onnx",
+          "sha256": "2acbb379bd0bd3dc8ce9b652f73cb9d5892e5f9d287066dc8622aabed98fab95"
+        }
+      }
+    },
+    "initial_checkpoint": {
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t77_endpoint_joint_adapter_cpu_v1\\smoke\\2026_07_28_140214_0",
+      "sha256": "06b846274428b25031a929c4f923777e0c58193403f56a89de23bd0f7a8bdd4b"
+    },
+    "log": {
+      "bytes": 5004,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t77_endpoint_joint_adapter_cpu_v1\\training.log",
+      "sha256": "21a380c0273a7dec18e7ce5d25e366a7a47dc59fcfb19a30091ed317a0100cf2"
+    }
+  },
+  "tree_contract": {
+    "critic_leaf_deltas": {
+      "2/params/hidden_0/bias": 0.005480039864778519,
+      "2/params/hidden_0/kernel": 0.00783955305814743,
+      "2/params/hidden_1/bias": 0.004288045689463615,
+      "2/params/hidden_1/kernel": 0.008130381815135479,
+      "2/params/hidden_2/bias": 0.0026113614439964294,
+      "2/params/hidden_2/kernel": 0.0055704861879348755,
+      "2/params/hidden_3/bias": 0.0007764920592308044,
+      "2/params/hidden_3/kernel": 0.0027062147855758667
+    },
+    "frozen_base_actor_leaf_deltas": {
+      "1/params/residual_location/bias": 0.0,
+      "1/params/residual_location/kernel": 0.0,
+      "1/params/residual_trunk/hidden_0/bias": 0.0,
+      "1/params/residual_trunk/hidden_0/kernel": 0.0,
+      "1/params/residual_trunk/hidden_1/bias": 0.0,
+      "1/params/residual_trunk/hidden_1/kernel": 0.0,
+      "1/params/residual_trunk/hidden_2/bias": 0.0,
+      "1/params/residual_trunk/hidden_2/kernel": 0.0,
+      "1/params/scale_logits/bias": 0.0,
+      "1/params/scale_logits/kernel": 0.0
+    },
+    "joint_adapter_actor_leaf_deltas": {
+      "1/params/adapter_hidden_bias": 0.006129065528512001,
+      "1/params/adapter_hidden_projection/kernel": 0.007507242262363434,
+      "1/params/adapter_location/bias": 0.004201678559184074,
+      "1/params/adapter_location/kernel": 0.007233641110360622,
+      "1/params/adapter_obs_projection/kernel": 0.008449122309684753
+    },
+    "normalizer_leaf_deltas": {
+      "0/count/hi": 0.0,
+      "0/count/lo": 0.0,
+      "0/mean/policy_hidden": 0.0,
+      "0/mean/privileged_state": 0.0,
+      "0/mean/state": 0.0,
+      "0/std/policy_hidden": 0.0,
+      "0/std/privileged_state": 0.0,
+      "0/std/state": 0.0,
+      "0/std_eps": 0.0,
+      "0/summed_variance/policy_hidden": 0.0,
+      "0/summed_variance/privileged_state": 0.0,
+      "0/summed_variance/state": 0.0
+    },
+    "source": {
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t55_dynamic_single_support_cpu_v2\\t52_half_materialized_checkpoint",
+      "sha256": "8d71d0a1fe58a24b4dd0e249dad4e4a6e534972a271dbbf2a8af9d6727bb1fdd"
+    },
+    "source_restore_maximum_abs_error": 0.0
+  }
+}

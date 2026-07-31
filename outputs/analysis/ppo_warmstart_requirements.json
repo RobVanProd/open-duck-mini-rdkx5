@@ -1,0 +1,42 @@
+{
+  "status": "PLAN_PPO_WARMSTART_PLUMBING",
+  "scope": {
+    "offline_only": true,
+    "robot_tests": false,
+    "ssh": false,
+    "deploy": false,
+    "runtime_behavior_changes": false,
+    "training_started": false
+  },
+  "latest_candidate": {
+    "onnx": "outputs/analysis/source_vx_selector_trace_dagger3_mlp128_rate_reg_candidate/candidate.onnx",
+    "npz": "outputs/analysis/source_vx_selector_trace_dagger3_mlp128_rate_reg_candidate/candidate_mlp.npz",
+    "validation": "outputs/analysis/DAGGER3_RATE_REG_POLICY_VALIDATION.md",
+    "status": "HOLD_DAGGER3_TRACKING_RATE_REGRESSION"
+  },
+  "runner_contract": {
+    "restore_checkpoint_path": "Orbax/Brax PPO checkpoint path",
+    "direct_onnx_warmstart_supported": false,
+    "direct_npz_warmstart_supported": false
+  },
+  "technical_blocker": "BC/ONNX/NPZ student weights are not yet loadable as PPO initial params.",
+  "preferred_paths": [
+    "Convert saved BC MLP NPZ into PPO policy-network params and write an Orbax checkpoint.",
+    "Add a runner option to initialize PPO policy params from BC MLP NPZ before train starts.",
+    "Add a training-side auxiliary imitation loss that queries the BC candidate during PPO."
+  ],
+  "required_step0_gate": [
+    "load initialized PPO params",
+    "export step-0 ONNX",
+    "compare step-0 ONNX actions against source BC candidate on held-out observations",
+    "run task-matched fitted x=0.08 seed sweep",
+    "confirm behavior is close to the BC candidate before PPO updates"
+  ],
+  "stop_rules": [
+    "Do not start PPO from scratch for this branch.",
+    "Do not treat ONNX as directly restorable by the current runner.",
+    "Do not train unless step-0 warm-start fidelity is verified.",
+    "Do not relax the actuator envelope.",
+    "Do not run stress or robot gates until fitted tracking improves."
+  ]
+}

@@ -1,0 +1,145 @@
+{
+  "authority": {
+    "next_condition_or_stage_execution": false,
+    "one_cpu_condition_run": true,
+    "robot_clearance": false,
+    "runtime_robot_torque_motion_gate5": false,
+    "training_gpu_colab": false
+  },
+  "behavior_gates": {
+    "moving": {
+      "bilateral_transitions": true,
+      "candidate_gate_status": "PASS_CANDIDATE_SIM_GATE",
+      "maximum_action_saturation_pct": 0.0,
+      "maximum_pitch_tracking_p95_rad": 0.2,
+      "maximum_rate_excess_rad_s": 0.0,
+      "positive_mean_local_velocity": true,
+      "samples": 600,
+      "termination_reason": "duration_complete"
+    },
+    "x0": {
+      "candidate_gate_status": "PASS_CANDIDATE_SIM_GATE",
+      "maximum_absolute_mean_local_velocity_m_s": 0.02,
+      "maximum_action_saturation_pct": 0.0,
+      "maximum_body_pitch_p95_rad": 0.25,
+      "maximum_pitch_tracking_p95_rad": 0.2,
+      "maximum_rate_excess_rad_s": 0.0,
+      "minimum_base_height_m": 0.12,
+      "samples": 600,
+      "termination_reason": "duration_complete"
+    }
+  },
+  "causal_question": "Does Winner-v10 preserve its complete behavior and protection gate at isolated R2 condition 3, JOINT_FRICTIONLOSS_LO?",
+  "condition": {
+    "id": "JOINT_FRICTIONLOSS_LO",
+    "override": {
+      "joint_frictionloss_scale": 0.9
+    }
+  },
+  "condition_index": 2,
+  "input_hashes": {
+    "actuator_model": "82184df17195cf7241a70e806741a0fdb4e49904fd12b4ee8fe7a38617602472",
+    "aggregator": "e584d4c69aef918914679078b6ae024e13b578d5d7cc74ca93a8b2c6adde5f67",
+    "builder": "d13bbf0c48359f677b3840e723b89159028249c66ad3ab597328a39d82a0d78a",
+    "closed_loop": "4e14624d2fbf5d641936986fc231ec6c4f9dbb9a6c284571419e3aff85675b41",
+    "current_contract": "17e841450a2dde66182c3d41a06abf8d14366011f811bcde20adb1f1c8f68ddb",
+    "evaluator": "e9fd1a434ccaa647efc0ed1ce8fddafca9a0fd753c37a2d7d050975d9deb0227",
+    "fit_p30": "a58db8ffc505d2bb64cba7f5618d0e2c65904fc9f9ac37b560a1231e090f5f4f",
+    "fit_p31_34": "2740513f6bdeb4ad3cc5dd6dc1709319389a593fd153c1ce5abae03b66131a57",
+    "importer": "4c88af8bb60f398a9ed7f50677beb2ac7e6e0bfaadf46959b198200caf62688e",
+    "previous_result": "5331657f05402126dd77e13283d60389c59fccefda869cb57a298882197382af",
+    "r2_evaluator_contract": "9853ded9d9df4619093708442c070166c90044b2403f929352036fb15d65540d",
+    "r2_matrix": "23ad95ed02d6302c321c8bd9f52b29512ee9c19a404a31eaf9fa0ca2807273b0",
+    "r2_reporting_contract": "0bd91d9e64a8d6f77d7d5a381da83476e89fab94e9177571f410fd97abcf776a",
+    "reference_feature_table": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212",
+    "runner": "c8086ae9d134c6e756b2eca9e3961d3a5f93252dbf44883cad2451717886b08d",
+    "v10_nominal_result": "eae89e89eb4b92c0414ee7e69c1b8e633d3408495216e55bf1d80bb467642690",
+    "v10_nominal_runner": "74e691763f55a7c0c290dd65ebced5ba6d4b6565eec02197fd3692ad0e0ef7a5",
+    "v7_readback_helper": "b904e80d4a692282b8c47a82726538d3b9b905d60f7853c850b2fb9578587241",
+    "v9_nominal_helper": "9ed13a68ff2573f74d995321431ed555c8d13c1ce091c211809d063eaadfcc23"
+  },
+  "matrix": {
+    "checkpoints": [
+      "half",
+      "final"
+    ],
+    "commands_x": [
+      0.0,
+      0.074,
+      0.077,
+      0.08
+    ],
+    "duration_ticks": 600,
+    "fits": [
+      "p30",
+      "p31_34"
+    ],
+    "frequency_hz": 50,
+    "seed": 167931544,
+    "total_cells": 16
+  },
+  "next_condition": {
+    "id": "JOINT_FRICTIONLOSS_HI",
+    "override": {
+      "joint_frictionloss_scale": 1.1
+    }
+  },
+  "no_retry_or_tuning": "A failed result stops Winner-v10 R2 at condition 3. Do not change policy, XML, fit, command, seed, duration, endpoint, gate, tolerance, simulator, or population.",
+  "pass_authorizes_only": "write a separate condition-4 preregistration",
+  "pass_rule": [
+    "the prior imported condition result exactly authorizes this preregistration and run",
+    "all frozen inputs, unchanged policy hashes, and the one-step-inward physical Playground are exact",
+    "exactly 16 complete 600-tick cells cover both checkpoints, both measured fits, and all four commands",
+    "all x=0 and moving behavior gates and all current, torque, duration, and measured-rate gates pass",
+    "every evaluation requests only the exact frozen condition override and returns a nonempty exact readback",
+    "CPU only; no later condition, training, GPU, runtime, robot, torque, motion, or Gate 5 work occurs"
+  ],
+  "playground": {
+    "required_commit": "b9be205ac64488c23504ca42e5ec790337adeec3",
+    "required_file_hashes": {
+      "playground/common/phase_moe_networks.py": "e57f417358afd8fdc5daa0126da8d3216b6ac6c1c1871d46f92afbcb6f4a44e7",
+      "playground/common/recurrent_ppo_networks.py": "e68d12fc01a89876930d35fd39f6c9da45345dbf1962f2ebbf11f89478881b8b",
+      "playground/common/reference_residual_ppo_networks.py": "546f375fa3c2f34158f49f1ac07cdc5ff6dc41d1a94322f4334bd48835911630",
+      "playground/common/rewards.py": "cfd5ba21a0f0c6fa98cb4485dd7bfc724693df1841fe4bd6dd7bf9023c5a997a",
+      "playground/common/runner.py": "815658c9ba4a8e5d953540bba64e57095b1011dc3cfa728e2145df2b9b1d46f0",
+      "playground/open_duck_mini_v2/custom_rewards.py": "f0ae6e50c379626d43c7eaa317c4395e219288456a50f6a8097bfd1ea2399b32",
+      "playground/open_duck_mini_v2/joystick.py": "edcedfa787a48c4f1af4316a5140a87eca5072bf3b223f6d87a4a656630a6904",
+      "playground/open_duck_mini_v2/runner.py": "d116dabf84a0623313ea63ef4cb4cad6347e7f94bfd2e70b15b4901889e7e8dc",
+      "playground/open_duck_mini_v2/xmls/open_duck_mini_v2_backlash.xml": "660fa8e4ac0d977806e881d008090e7153cd0608dbee05b88f957a91bde6f655",
+      "playground/open_duck_mini_v2/xmls/scene_flat_terrain_backlash.xml": "65324e27a3a84e2e42d1073bfc636f9cdbf6bef7b1f20c1b5a886b8fd58fcc71"
+    },
+    "reset_mode": "home-support",
+    "task": "flat_terrain_backlash"
+  },
+  "policy_hashes": {
+    "final": "d52b63241340d9d56671b95c58bb0fc72af0998fd47d4684719f6cd44f244a10",
+    "half": "cf001269908d86e47eaa145ffda1d87e946a314ecf51056dc086c4cf10164ab6"
+  },
+  "previous_result": {
+    "path": "outputs/analysis/winner_v10_r2_condition2_result.json",
+    "required_decision": "AUTHORIZE_WINNER_V10_R2_CONDITION3_PREREGISTRATION_ONLY",
+    "required_status": "PASS_WINNER_V10_R2_CONDITION2_FLOOR_FRICTION_HI",
+    "sha256": "5331657f05402126dd77e13283d60389c59fccefda869cb57a298882197382af"
+  },
+  "protection_gate": {
+    "all_joints_must_pass": true,
+    "full_measured_vector_excess_rad_s_max": 0.0,
+    "per_joint_peak_current_a_max": 2.5,
+    "per_joint_peak_torque_nm_max": 1.91229675,
+    "population": "every recorded joint tick including early termination",
+    "rated_current_p95_a": 0.65,
+    "rated_current_p95_role": "diagnostic only",
+    "strict_overcurrent_max_consecutive_ticks": 99,
+    "strict_overcurrent_threshold_a": 2.0
+  },
+  "result_decision": {
+    "hold": "STOP_WINNER_V10_R2_AT_FIRST_FAILED_CONDITION",
+    "pass": "AUTHORIZE_WINNER_V10_R2_CONDITION4_PREREGISTRATION_ONLY"
+  },
+  "result_status": {
+    "hold": "HOLD_WINNER_V10_R2_CONDITION3_JOINT_FRICTIONLOSS_LO",
+    "pass": "PASS_WINNER_V10_R2_CONDITION3_JOINT_FRICTIONLOSS_LO"
+  },
+  "schema_version": "open_duck_mini.winner_v10_r2_condition_preregistration.v1",
+  "status": "FROZEN_WINNER_V10_R2_CONDITION3_NOT_RUN"
+}

@@ -1,0 +1,146 @@
+{
+  "authority": {
+    "adapter_route_preregistration": false,
+    "gate5": false,
+    "hosted": false,
+    "rdkx5_or_robot": false,
+    "run_read_only_autopsy": true,
+    "training": false
+  },
+  "checks": {
+    "home_negative_context_available": true,
+    "moving_trace_receipts_present": true,
+    "t245_split_is_exact_half_pass_final_failure": true,
+    "two_complete_graphs_present": true,
+    "zero_behavior_optimizer_hosted_or_robot": true
+  },
+  "contract": {
+    "cpu_only": true,
+    "expected_different_initializers": [
+      "nominal_condition_negative_adapter_bias",
+      "nominal_condition_negative_adapter_weight"
+    ],
+    "expected_different_nodes": [],
+    "final_moving_rows": 231,
+    "final_trace_source_replay_exact": true,
+    "half_adapter_counterfactual_action_sensitive": true,
+    "half_moving_rows": 600,
+    "within_checkpoint_three_command_trajectories_exact": true
+  },
+  "decision_rule": {
+    "fail": "RETURN_TO_HOME_OFFSET_MECHANISM_SELECTION",
+    "no_behavior_now": true,
+    "pass": "EARN_T247_HOME_NEGATIVE_HALF_ADAPTER_ROUTE_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "onnx_inferences": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_steps": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 7283,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t246_checkpoint_adapter_autopsy_preregistration.py",
+      "sha256": "1ad9b150a7c0cb4510124a67edafd328088475624538ef06cfa80a9da05952bf"
+    },
+    "runner": {
+      "bytes": 11350,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t246_checkpoint_adapter_autopsy.py",
+      "sha256": "0ee2d56dd63c62004060354055c044af3337a058a78da2c615af6434bfa706ce"
+    },
+    "t243_contract": {
+      "bytes": 104086,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t243_home_negative_low_command_floor_preregistration.json",
+      "sha256": "4258a9d13c598c951ae8c771ad1ae9f83f4dd1107e0df68aa847a594bb4bd9a5"
+    },
+    "t243b_graph_result": {
+      "bytes": 112286,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t243b_abi_helper_recovery_result.json",
+      "sha256": "56db55f904c61e88d86dcdb1da19fc4f8e5dbb7cc2f01a58f06264e382b9b3fb"
+    },
+    "t245_behavior": {
+      "bytes": 92787,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t245_home_negative_floor_remaining_matrix_result.json",
+      "sha256": "e0342dce0e2dea8a7fa5200d6a3e6d962a9a0add0fe70ef403b06bb0003a5b7a"
+    },
+    "test": {
+      "bytes": 1845,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t246_checkpoint_adapter_autopsy.py",
+      "sha256": "beaf7b6946b1d5c3a0488c4c0907ff21e646b7c379dc0712832711da34ff521d"
+    }
+  },
+  "graphs": {
+    "final": {
+      "bytes": 989748,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t243b_abi_helper_recovery_v1\\graphs\\2007040\\home_negative_low_command_floor.onnx",
+      "sha256": "4f782cfbe62c5fca4f77e0fca0c11b4e69bb73fe2a66f73fa844ff5e4c70e4a4"
+    },
+    "half": {
+      "bytes": 989748,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t243_home_negative_low_command_floor_v1\\graphs\\1003520\\home_negative_low_command_floor.onnx",
+      "sha256": "3d64d2d99bb6ea5246bed39b9e7836bf7c75977210f79d8f378c85e0c0b3b68d"
+    }
+  },
+  "preregistered_contract_sha256": "38b8813e0dcfe3d2cbb20dd8dac992f966f8b64443593ba135ad36ae0c9c758c",
+  "question": "Are T243 half and final structurally identical except for the two nominal-adapter tensors, with those tensors causally accounting for the 600-tick half versus 231-tick final split?",
+  "schema_version": "open_duck.t246_checkpoint_adapter_autopsy_preregistration.v1",
+  "status": "PREREGISTERED_T246_CHECKPOINT_ADAPTER_AUTOPSY",
+  "traces": {
+    "final": [
+      {
+        "command_x_m_s": 0.074,
+        "trace": {
+          "bytes": 4142470,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t245_home_negative_floor_remaining_matrix_v1\\17_HOME_JOINT_OFFSET_NEG\\T243_HOME_NEGATIVE_FLOOR_FINAL\\p30\\traces\\x0.074_seed167931544_home_negative_low_command_floor.jsonl",
+          "sha256": "588f3d8e6a8ad3cf0dbf49405fb67e734c36d37015ef9455bb4847943f11d030"
+        }
+      },
+      {
+        "command_x_m_s": 0.077,
+        "trace": {
+          "bytes": 4142472,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t245_home_negative_floor_remaining_matrix_v1\\17_HOME_JOINT_OFFSET_NEG\\T243_HOME_NEGATIVE_FLOOR_FINAL\\p30\\traces\\x0.077_seed167931544_home_negative_low_command_floor.jsonl",
+          "sha256": "50b80251fc6da72be4a52b7d9c0f3217f87b22ca76f4326c69578e18e37c778e"
+        }
+      },
+      {
+        "command_x_m_s": 0.08,
+        "trace": {
+          "bytes": 4142206,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t245_home_negative_floor_remaining_matrix_v1\\17_HOME_JOINT_OFFSET_NEG\\T243_HOME_NEGATIVE_FLOOR_FINAL\\p30\\traces\\x0.080_seed167931544_home_negative_low_command_floor.jsonl",
+          "sha256": "920ecc81c4ae1a6cce48f7138cb8020e59f96aebac489ae1c3ad2e26401313ff"
+        }
+      }
+    ],
+    "half": [
+      {
+        "command_x_m_s": 0.074,
+        "trace": {
+          "bytes": 10770936,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t244_home_negative_low_command_behavior_v1\\traces\\x0.074_seed167931544_home_negative_low_command_floor.jsonl",
+          "sha256": "9fe65c74aa6938d76d16100424c6f223f6619b7bd32fc64639557a57b8f3edbf"
+        }
+      },
+      {
+        "command_x_m_s": 0.077,
+        "trace": {
+          "bytes": 10770945,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t242_bounded_router_home_offset_v1\\17_HOME_JOINT_OFFSET_NEG\\T241_BOUNDED_ROUTER_HALF\\p30\\traces\\x0.077_seed167931544_bounded_router.jsonl",
+          "sha256": "d19c809613eeed2a545bb14903298fd95fb0ee8726d7cf7825137ecdd742531f"
+        }
+      },
+      {
+        "command_x_m_s": 0.08,
+        "trace": {
+          "bytes": 10770312,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t242_bounded_router_home_offset_v1\\17_HOME_JOINT_OFFSET_NEG\\T241_BOUNDED_ROUTER_HALF\\p30\\traces\\x0.080_seed167931544_bounded_router.jsonl",
+          "sha256": "2af238b59fefe03d95733d5a16e878741d870fce17f5bc3cd4f35340874a110b"
+        }
+      }
+    ]
+  }
+}

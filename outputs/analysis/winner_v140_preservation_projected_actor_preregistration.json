@@ -1,0 +1,62 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "behavior_preregistration": false,
+    "checkpoint_selection": false,
+    "cpu_projection_audit": true,
+    "gate5": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "checks": {
+    "all_input_hashes_exact": true,
+    "alpha_uses_preservation_only": true,
+    "constraint_projection_is_distinct_from_optimizer_retry": true,
+    "corrected_error_has_zero_selection_weight": true,
+    "fixed_twenty_step_bisection": true,
+    "reference_redirection_closed": true,
+    "robot_surface_absent": true,
+    "training_and_behavior_not_authorized": true,
+    "v134_closed_only_on_preservation": true
+  },
+  "failed_checks": [],
+  "green_followup": "a pass earns only preregistration of one dual-checkpoint CPU behavior screen using frozen V121 half and the projected final",
+  "input_hashes": {
+    "candidate_raw": "5e50991556f13aaf2148a782de23341b549e58079ad62c02c77d8fe8bd307e87",
+    "runner": "db60701cde771326a96d2a0c4bbfd12c63c21527bcd8a67ca8ffbc827bd35271",
+    "source_raw": "a8f883e8b087e940647fa62e5b79f4e7961db0ecb5bd36fc3bd88411b6e7bdce",
+    "teacher_loader": "632a2e12ae10d940be38858c52e738281ca6a2de1736d1be90b8adcbdbd8baa8",
+    "v121_transform": "4bd5eab5343cd8401db1789773fa3cc345727d903cb31222e0ea9870f0e9e640",
+    "v131_behavior_result": "ab1535e11287f191e8ee6b4be5c020c44726c6263465c7cb760892387b07c9ea",
+    "v134_cpu_result": "e25691c219eec4b76dea0f18b14e47b6fd840b6c0bc53c6c1817cdd5fbf3f387",
+    "v139_reference_result": "1407587ad6ee15d44220a17860411f55d4f4988118d2f7cb191b4b91225dee0b"
+  },
+  "mechanism": {
+    "alpha": "largest feasible value under the existing full-dataset 1% preservation boundary",
+    "direction": "V134 two-update raw actor minus source actor",
+    "operation": "interpolate every changed floating ONNX initializer by one shared alpha",
+    "source": "V134 raw step 0 / frozen V121 final actor",
+    "why_distinct": "the optimizer and its constants are not retried; the already observed update direction is projected onto an explicit behavior-preservation constraint"
+  },
+  "pass_rule": {
+    "alpha": "strictly between 0 and 1",
+    "exports": "source, full, and selected deployment contracts pass",
+    "full_update": "reproduces preservation ratio >0.01",
+    "selected_correction": "<=0.95 times source on all 71 corrections",
+    "selected_preservation": "<=0.01",
+    "source": "reproduces all recorded base actions <=1e-6",
+    "x0": "exact zero"
+  },
+  "schema_version": "winner_v140.preservation_projected_actor_preregistration.v1",
+  "selection": {
+    "bisection_steps": 20,
+    "corrected_error_selection_weight": 0,
+    "parameter_search": false,
+    "population": "all 4,729 V131 non-correction rows",
+    "preservation_limit": 0.01
+  },
+  "status": "PREREGISTERED_WINNER_V140_PRESERVATION_PROJECTED_ACTOR",
+  "stop_rule": "if any pass rule fails, close preservation-projected actor; do not alter the boundary, interpolation path, bisection count, or use corrected error to select alpha"
+}

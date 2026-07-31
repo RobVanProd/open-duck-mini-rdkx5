@@ -1,0 +1,77 @@
+{
+  "status": "PASS_BC_TRACE_ACTION_RATE_LIMIT_READY",
+  "trace_globs": [
+    "outputs/analysis/phase2_transition_action_space_compare_seed2/transition_protected_seed4w/seed_*/trace.jsonl",
+    "outputs/analysis/phase2_transition_action_space_compare_seed4/transition_protected_seed4w/seed_*/trace.jsonl"
+  ],
+  "output_trace_dir": "outputs/analysis/phase2_seed4_weighted_right_knee_limited_traces",
+  "settings": {
+    "joints": [
+      "right_knee"
+    ],
+    "max_target_velocity_rad_s": 2.25,
+    "action_scale": 0.25,
+    "dt_s": 0.02,
+    "max_action_delta": 0.18,
+    "output_mode": "seed4_weighted_right_knee_limited",
+    "source_parent_depth": 3
+  },
+  "summary": {
+    "traces": 2,
+    "samples_out": 500,
+    "changed_ticks": 130,
+    "changed_contact_counts": {
+      "01": 2,
+      "10": 28,
+      "11": 100
+    }
+  },
+  "traces": [
+    {
+      "source_trace": "outputs/analysis/phase2_transition_action_space_compare_seed2/transition_protected_seed4w/seed_002/trace.jsonl",
+      "output_trace": "outputs/analysis/phase2_seed4_weighted_right_knee_limited_traces/phase2_transition_action_space_compare_seed2/transition_protected_seed4w/seed_002/trace.jsonl",
+      "samples_in": 250,
+      "samples_out": 250,
+      "changed_ticks": 62,
+      "changed_contact_counts": {
+        "01": 1,
+        "10": 16,
+        "11": 45
+      },
+      "per_joint": {
+        "right_knee": {
+          "changed_ticks": 62,
+          "original_target_velocity_p95_rad_s": 2.9950098460540167,
+          "original_target_velocity_max_rad_s": 3.5937611013650894,
+          "limited_target_velocity_p95_rad_s": 2.25,
+          "limited_target_velocity_max_rad_s": 2.25,
+          "action_delta_removed_p95": 0.15719225001335144,
+          "action_delta_removed_max": 0.2884136199951172
+        }
+      }
+    },
+    {
+      "source_trace": "outputs/analysis/phase2_transition_action_space_compare_seed4/transition_protected_seed4w/seed_004/trace.jsonl",
+      "output_trace": "outputs/analysis/phase2_seed4_weighted_right_knee_limited_traces/phase2_transition_action_space_compare_seed4/transition_protected_seed4w/seed_004/trace.jsonl",
+      "samples_in": 250,
+      "samples_out": 250,
+      "changed_ticks": 68,
+      "changed_contact_counts": {
+        "01": 1,
+        "10": 12,
+        "11": 55
+      },
+      "per_joint": {
+        "right_knee": {
+          "changed_ticks": 68,
+          "original_target_velocity_p95_rad_s": 2.8551921620965004,
+          "original_target_velocity_max_rad_s": 3.408042248338461,
+          "limited_target_velocity_p95_rad_s": 2.25,
+          "limited_target_velocity_max_rad_s": 2.25,
+          "action_delta_removed_p95": 0.14020613074302674,
+          "action_delta_removed_max": 0.2505351066589356
+        }
+      }
+    }
+  ]
+}

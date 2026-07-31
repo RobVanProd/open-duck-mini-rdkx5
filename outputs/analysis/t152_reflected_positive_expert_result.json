@@ -1,0 +1,136 @@
+{
+  "authority": {
+    "gate5": false,
+    "hosted_training": false,
+    "policy_promotion": false,
+    "positive_endpoint_execution": false,
+    "positive_endpoint_preregistration": false,
+    "positive_only_training_contract": false,
+    "rdkx5_or_robot": false
+  },
+  "checks": {
+    "both_graphs_transformed": true,
+    "forced_branch_context_invariant": true,
+    "graph_structure_exact": true,
+    "hidden_state_path_unchanged": true,
+    "no_behavior_optimizer_hosted_or_hardware": true,
+    "reflected_actions_finite_and_bound": false,
+    "x0_exact_zero_and_feedback": false
+  },
+  "cpu_contracts": {
+    "1003520": {
+      "finite": true,
+      "maximum_context_dependence_error": 0.0,
+      "maximum_hidden_state_error": 0.0,
+      "maximum_x0_action_abs": 0.7591784596443176,
+      "moving_action_changed_fraction": 0.0,
+      "moving_action_changed_steps": 0,
+      "providers": [
+        "CPUExecutionProvider"
+      ],
+      "steps": 256,
+      "x0_action_feedback_exact": true,
+      "x0_hidden_output_exact": true,
+      "x0_samples": 64
+    },
+    "2007040": {
+      "finite": true,
+      "maximum_context_dependence_error": 0.0,
+      "maximum_hidden_state_error": 0.0,
+      "maximum_x0_action_abs": 0.7591784596443176,
+      "moving_action_changed_fraction": 0.0,
+      "moving_action_changed_steps": 0,
+      "providers": [
+        "CPUExecutionProvider"
+      ],
+      "steps": 256,
+      "x0_action_feedback_exact": true,
+      "x0_hidden_output_exact": true,
+      "x0_samples": 64
+    }
+  },
+  "decision": "CLOSE_REFLECTED_POSITIVE_EXPERT",
+  "execution": {
+    "behavior_cells": 0,
+    "environment_steps": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [
+    "reflected_actions_finite_and_bound",
+    "x0_exact_zero_and_feedback"
+  ],
+  "graphs": {
+    "1003520": {
+      "abi_exact": true,
+      "all_nodes_exact_except_selector_input": true,
+      "bias_reflection_delta_linf": 0.04211008129641414,
+      "initializer_count_delta": 1,
+      "new_force_initializer_exact": true,
+      "node_count_exact": true,
+      "reflected_bias_bit_exact": true,
+      "reflected_weight_bit_exact": true,
+      "selector_forced_exact": true,
+      "source": {
+        "bytes": 975291,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t143c_conditional_forward_path_v1\\1003520\\conditional_forward_path.onnx",
+        "sha256": "82ab93eb97db602561b3525bb3551f4e94b87808320b8c944f6e0a9c8a4b6869"
+      },
+      "transformed": {
+        "bytes": 975325,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t152_reflected_positive_expert_v1\\1003520\\reflected_positive_expert.onnx",
+        "sha256": "047134f085cb78f5f945da879ba7f60e3ebe7a02b8d8233e93cfc735afa1990f"
+      },
+      "unchanged_initializers_bit_exact": true,
+      "weight_reflection_delta_linf": 0.04814895335584879
+    },
+    "2007040": {
+      "abi_exact": true,
+      "all_nodes_exact_except_selector_input": true,
+      "bias_reflection_delta_linf": 0.052474445663392544,
+      "initializer_count_delta": 1,
+      "new_force_initializer_exact": true,
+      "node_count_exact": true,
+      "reflected_bias_bit_exact": true,
+      "reflected_weight_bit_exact": true,
+      "selector_forced_exact": true,
+      "source": {
+        "bytes": 975291,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t143c_conditional_forward_path_v1\\2007040\\conditional_forward_path.onnx",
+        "sha256": "a43dbac7b4995a71f53cc3ee0145ad6e2698f624c4c02749c664a7a09c2be528"
+      },
+      "transformed": {
+        "bytes": 975325,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t152_reflected_positive_expert_v1\\2007040\\reflected_positive_expert.onnx",
+        "sha256": "4e70755f5848cc503a3fbab5eb63a5689fe108c9e136468914474b2e29b83a8a"
+      },
+      "unchanged_initializers_bit_exact": true,
+      "weight_reflection_delta_linf": 0.06458623707294464
+    }
+  },
+  "mechanism": {
+    "action_pipeline": "unchanged",
+    "derived_scalar_search": false,
+    "endpoint_screen_branch": "force_reflected_expert_for_positive_endpoint_only",
+    "external_input_abi": "unchanged_115_14_64_plus_context",
+    "negative_endpoint_m": -0.05,
+    "nominal_endpoint_m": 0.0,
+    "positive_endpoint_m": 0.05,
+    "recurrent_state": "unchanged",
+    "reflection_formula": "positive=2*nominal-negative",
+    "reflection_scale": -1.0,
+    "runtime_change": false,
+    "safety_pipeline": "unchanged",
+    "training": false,
+    "transformed_tensors": [
+      "negative_adapter_weight",
+      "negative_adapter_bias"
+    ]
+  },
+  "preregistered_contract_sha256": "afe73129dae00b3436a02a9558316ba26da449934aaba231fedcc8a53026bc14",
+  "repository_commit": "65e91f09466308147059643d15e0c025477c7316",
+  "result_sha256": "26b00376f856e1bda18bdbeb04f72ad756fee0b4944421a91df557fb0fca231f",
+  "schema_version": "open_duck.t152_reflected_positive_expert_result.v1",
+  "status": "HOLD_T152_REFLECTED_POSITIVE_EXPERT"
+}

@@ -1,0 +1,367 @@
+{
+  "authority": {
+    "behavior_evaluation_authorized": false,
+    "checkpoint_selection_authorized": false,
+    "gate5_authorized": false,
+    "postexport_transform_preregistration_authorized": true,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "all_balance_actor_and_critic_leaves_updated": true,
+    "all_checkpoint_hashes_match_hosted_result": true,
+    "all_checkpoint_trees_finite": true,
+    "all_onnx_contracts_pass": true,
+    "all_onnx_hashes_match_hosted_result": true,
+    "all_transfer_actor_and_critic_leaves_updated": true,
+    "archive_hash_matches_result_and_receipt": true,
+    "balance_local_exact_exports": true,
+    "balance_step_zero_source_bit_exact": true,
+    "bilateral_support_metrics_positive_at_every_export": true,
+    "cpu_only_validation": true,
+    "cpu_template_exact": true,
+    "formal_behavior_cells_zero": true,
+    "hosted_artifact_passed_pending_cpu_validation": true,
+    "hosted_inputs_match_preregistration": true,
+    "hosted_package_contract_exact": true,
+    "hosted_preregistration_exact": true,
+    "launch_contract_exact": true,
+    "launch_receipt_complete": true,
+    "result_hash_matches_receipt": true,
+    "source_checkpoint_exact": true,
+    "t55_cpu_authority_exact": true,
+    "training_metrics_all_finite": true,
+    "training_metrics_have_exact_export_steps": true,
+    "transfer_local_exact_exports": true,
+    "transfer_step_zero_balance_final_bit_exact": true
+  },
+  "classification": {
+    "balance_first": true,
+    "behavior_cells": 0,
+    "correction_method": "read-only CPU topology remap using the frozen CPU template",
+    "gait_transfer": true,
+    "manual_mass_com_or_foot_measurement": false,
+    "training_completed": true,
+    "training_resume": false,
+    "training_retry": false
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "cpu_template": "16a867c653476d6829ddaf400e5f02fc21658a78d3efc5ddfd167cc497f3ac83",
+    "hosted_preregistration": "6bcf02722b73bcca9727391f30261345baba94789c822f4225927d2915400a0d",
+    "hosted_result": "11eb99f44cc11b0be4cc642b5ef1e352146db2d738369d0885bd139102bb3e5c",
+    "launch_contract": "6b209c5e0455ff6aa3f6dc9451ec295e153a68fe17643688fba23c259cc5beb6",
+    "launch_receipt": "adb486d6ff549a3be57410bc4e6aade0e2ea76871669176e2f9eb266eac5c1bc",
+    "package_contract": "e61dd670dab8eafa2b7152d25c2a49bb82640fcb383dc932eac1b3dadd52d15d",
+    "recovery_archive": "5abc8b422287dcaad7d7a82b601389d99b491c9161863d9f5079b71e28eb1294",
+    "source_checkpoint": "8d71d0a1fe58a24b4dd0e249dad4e4a6e534972a271dbbf2a8af9d6727bb1fdd",
+    "t55_result": "7b74d21d5fd864fab441112c1321808d862cafd1bfd6cdbf2d7471ad211376bb"
+  },
+  "schema_version": "open_duck.t56_recovered_training_validation.v1",
+  "stages": {
+    "balance": {
+      "checkpoints": [
+        {
+          "directory_sha256": "1e88df54d627bfe86d0f9ce17a35904623fc24315e6beb6960fb1ea5b9c70fb2",
+          "step": 0
+        },
+        {
+          "directory_sha256": "4d2c2098489bedebf637f72cb3f520a94b036af8989ddab9a568697ec1db07b8",
+          "step": 1003520
+        }
+      ],
+      "onnx": [
+        {
+          "abi_exact": true,
+          "chain_256_finite": true,
+          "cpu_provider_exact": true,
+          "initializers_finite": true,
+          "sha256": "b395a0299b7a35b3c35c0eb063135c4e08be527eac441de9215aeea22bb9157e",
+          "step": 0
+        },
+        {
+          "abi_exact": true,
+          "chain_256_finite": true,
+          "cpu_provider_exact": true,
+          "initializers_finite": true,
+          "sha256": "908b67d42164e981733f9d9f5765260cf877f8ae36e8207e7cc5273d7623205d",
+          "step": 1003520
+        }
+      ],
+      "trained_checkpoints": [
+        {
+          "critic_leaf_deltas": {
+            "2/params/hidden_0/bias": 0.02342051826417446,
+            "2/params/hidden_0/kernel": 0.08154822885990143,
+            "2/params/hidden_1/bias": 0.023310959339141846,
+            "2/params/hidden_1/kernel": 0.07924608886241913,
+            "2/params/hidden_2/bias": 0.01274590939283371,
+            "2/params/hidden_2/kernel": 0.0963931679725647,
+            "2/params/hidden_3/bias": 0.010676249861717224,
+            "2/params/hidden_3/kernel": 0.01771947368979454
+          },
+          "every_critic_leaf_updated": true,
+          "every_policy_leaf_updated": true,
+          "policy_leaf_deltas": {
+            "1/params/adapter_hidden_bias": 0.009270405396819115,
+            "1/params/adapter_hidden_projection/kernel": 0.03418909013271332,
+            "1/params/adapter_location/bias": 0.011170610785484314,
+            "1/params/adapter_location/kernel": 0.026575833559036255,
+            "1/params/adapter_obs_projection/kernel": 0.036953702569007874,
+            "1/params/residual_location/bias": 0.011170594021677971,
+            "1/params/residual_location/kernel": 0.03097403608262539,
+            "1/params/residual_trunk/hidden_0/bias": 0.02131107822060585,
+            "1/params/residual_trunk/hidden_0/kernel": 0.2695162296295166,
+            "1/params/residual_trunk/hidden_1/bias": 0.015210360288619995,
+            "1/params/residual_trunk/hidden_1/kernel": 0.03929511830210686,
+            "1/params/residual_trunk/hidden_2/bias": 0.011807233095169067,
+            "1/params/residual_trunk/hidden_2/kernel": 0.03731532394886017,
+            "1/params/scale_logits/bias": 0.015708088874816895,
+            "1/params/scale_logits/kernel": 0.0401463583111763
+          },
+          "step": 1003520,
+          "structure_exact": true,
+          "tree_finite": true
+        }
+      ],
+      "training_metric_evidence": {
+        "eval/avg_episode_length": [
+          {
+            "step": 0,
+            "value": 531.6875
+          },
+          {
+            "step": 1003520,
+            "value": 483.546875
+          }
+        ],
+        "eval/episode_reward": [
+          {
+            "step": 0,
+            "value": 36.793235778808594
+          },
+          {
+            "step": 1003520,
+            "value": 60.08668518066406
+          }
+        ],
+        "eval/episode_reward/t55_left_support_match": [
+          {
+            "step": 0,
+            "value": 55.828125
+          },
+          {
+            "step": 1003520,
+            "value": 102.2890625
+          }
+        ],
+        "eval/episode_reward/t55_right_support_match": [
+          {
+            "step": 0,
+            "value": 50.8125
+          },
+          {
+            "step": 1003520,
+            "value": 77.9140625
+          }
+        ],
+        "eval/episode_reward/t55_single_support_balance": [
+          {
+            "step": 0,
+            "value": 36.793235778808594
+          },
+          {
+            "step": 1003520,
+            "value": 60.08668518066406
+          }
+        ]
+      }
+    },
+    "transfer": {
+      "checkpoints": [
+        {
+          "directory_sha256": "313af2557f43aacead3e86f2a925b666634355c40019e251136f83e6ebe78369",
+          "step": 0
+        },
+        {
+          "directory_sha256": "7a2b0a8d671e772920a767dbf3e629654fb77f64b9627d32a54959669511ba7f",
+          "step": 1003520
+        },
+        {
+          "directory_sha256": "3cd397b205d9691593710b275a0cfe9b0cc403458a3146d4d631ab497e483aab",
+          "step": 2007040
+        }
+      ],
+      "onnx": [
+        {
+          "abi_exact": true,
+          "chain_256_finite": true,
+          "cpu_provider_exact": true,
+          "initializers_finite": true,
+          "sha256": "908b67d42164e981733f9d9f5765260cf877f8ae36e8207e7cc5273d7623205d",
+          "step": 0
+        },
+        {
+          "abi_exact": true,
+          "chain_256_finite": true,
+          "cpu_provider_exact": true,
+          "initializers_finite": true,
+          "sha256": "701014a5afc13b9dfe26b60bf211ee2ab735ff3b3b767d8396c435ecc813428b",
+          "step": 1003520
+        },
+        {
+          "abi_exact": true,
+          "chain_256_finite": true,
+          "cpu_provider_exact": true,
+          "initializers_finite": true,
+          "sha256": "0f75e72deea9e835dbfa40e947bb62ed1f6dce636b7221b1e86a5a200b02223f",
+          "step": 2007040
+        }
+      ],
+      "trained_checkpoints": [
+        {
+          "critic_leaf_deltas": {
+            "2/params/hidden_0/bias": 0.018915440887212753,
+            "2/params/hidden_0/kernel": 0.056665219366550446,
+            "2/params/hidden_1/bias": 0.03110240399837494,
+            "2/params/hidden_1/kernel": 0.05370467156171799,
+            "2/params/hidden_2/bias": 0.03314647823572159,
+            "2/params/hidden_2/kernel": 0.0699956864118576,
+            "2/params/hidden_3/bias": 0.014072157442569733,
+            "2/params/hidden_3/kernel": 0.05282518267631531
+          },
+          "every_critic_leaf_updated": true,
+          "every_policy_leaf_updated": true,
+          "policy_leaf_deltas": {
+            "1/params/adapter_hidden_bias": 0.009634111076593399,
+            "1/params/adapter_hidden_projection/kernel": 0.031386226415634155,
+            "1/params/adapter_location/bias": 0.007230306044220924,
+            "1/params/adapter_location/kernel": 0.033328909426927567,
+            "1/params/adapter_obs_projection/kernel": 0.030760467052459717,
+            "1/params/residual_location/bias": 0.007230306044220924,
+            "1/params/residual_location/kernel": 0.026554888114333153,
+            "1/params/residual_trunk/hidden_0/bias": 0.014876739121973515,
+            "1/params/residual_trunk/hidden_0/kernel": 0.2688429057598114,
+            "1/params/residual_trunk/hidden_1/bias": 0.013574361801147461,
+            "1/params/residual_trunk/hidden_1/kernel": 0.03289166837930679,
+            "1/params/residual_trunk/hidden_2/bias": 0.014880098402500153,
+            "1/params/residual_trunk/hidden_2/kernel": 0.030619030818343163,
+            "1/params/scale_logits/bias": 0.007697834633290768,
+            "1/params/scale_logits/kernel": 0.025836065411567688
+          },
+          "step": 1003520,
+          "structure_exact": true,
+          "tree_finite": true
+        },
+        {
+          "critic_leaf_deltas": {
+            "2/params/hidden_0/bias": 0.024401552975177765,
+            "2/params/hidden_0/kernel": 0.09198106825351715,
+            "2/params/hidden_1/bias": 0.02760903537273407,
+            "2/params/hidden_1/kernel": 0.07277688384056091,
+            "2/params/hidden_2/bias": 0.038324467837810516,
+            "2/params/hidden_2/kernel": 0.09614884853363037,
+            "2/params/hidden_3/bias": 0.016117990016937256,
+            "2/params/hidden_3/kernel": 0.06346291303634644
+          },
+          "every_critic_leaf_updated": true,
+          "every_policy_leaf_updated": true,
+          "policy_leaf_deltas": {
+            "1/params/adapter_hidden_bias": 0.014579817652702332,
+            "1/params/adapter_hidden_projection/kernel": 0.047025416046381,
+            "1/params/adapter_location/bias": 0.010335062630474567,
+            "1/params/adapter_location/kernel": 0.04662567377090454,
+            "1/params/adapter_obs_projection/kernel": 0.0457715280354023,
+            "1/params/residual_location/bias": 0.010335061699151993,
+            "1/params/residual_location/kernel": 0.03897203505039215,
+            "1/params/residual_trunk/hidden_0/bias": 0.02894369512796402,
+            "1/params/residual_trunk/hidden_0/kernel": 0.5213274359703064,
+            "1/params/residual_trunk/hidden_1/bias": 0.01988266408443451,
+            "1/params/residual_trunk/hidden_1/kernel": 0.05444645881652832,
+            "1/params/residual_trunk/hidden_2/bias": 0.023579619824886322,
+            "1/params/residual_trunk/hidden_2/kernel": 0.046450175344944,
+            "1/params/scale_logits/bias": 0.014513760805130005,
+            "1/params/scale_logits/kernel": 0.03870624303817749
+          },
+          "step": 2007040,
+          "structure_exact": true,
+          "tree_finite": true
+        }
+      ],
+      "training_metric_evidence": {
+        "eval/avg_episode_length": [
+          {
+            "step": 0,
+            "value": 475.71875
+          },
+          {
+            "step": 1003520,
+            "value": 512.65625
+          },
+          {
+            "step": 2007040,
+            "value": 536.546875
+          }
+        ],
+        "eval/episode_reward": [
+          {
+            "step": 0,
+            "value": 282.7405090332031
+          },
+          {
+            "step": 1003520,
+            "value": 315.106201171875
+          },
+          {
+            "step": 2007040,
+            "value": 337.89715576171875
+          }
+        ],
+        "eval/episode_reward/t55_left_support_match": [
+          {
+            "step": 0,
+            "value": 100.375
+          },
+          {
+            "step": 1003520,
+            "value": 125.0703125
+          },
+          {
+            "step": 2007040,
+            "value": 144.7265625
+          }
+        ],
+        "eval/episode_reward/t55_right_support_match": [
+          {
+            "step": 0,
+            "value": 75.0234375
+          },
+          {
+            "step": 1003520,
+            "value": 98.375
+          },
+          {
+            "step": 2007040,
+            "value": 110.3515625
+          }
+        ],
+        "eval/episode_reward/t55_single_support_balance": [
+          {
+            "step": 0,
+            "value": 58.23194885253906
+          },
+          {
+            "step": 1003520,
+            "value": 76.89222717285156
+          },
+          {
+            "step": 2007040,
+            "value": 88.93768310546875
+          }
+        ]
+      }
+    }
+  },
+  "status": "PASS_T56_RECOVERED_TRAINING_VALIDATION"
+}

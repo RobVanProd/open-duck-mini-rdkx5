@@ -1,0 +1,45 @@
+[colab] Creating session 'ground-up-calibration'...
+[colab] Session READY (ground-up-calibration). Executing tools/colab_ground_up_control_calibration.py...
+[0;31m---------------------------------------------------------------------------[0m[0;31mTimeoutExpired[0m                            Traceback (most recent call last)[0;32m/tmp/ipykernel_1260/3432120981.py[0m in [0;36m<cell line: 0>[0;34m()[0m
+[1;32m    116[0m [0;34m[0m[0m
+[1;32m    117[0m [0;32mif[0m [0m__name__[0m [0;34m==[0m [0;34m"__main__"[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 118[0;31m     [0;32mraise[0m [0mSystemExit[0m[0;34m([0m[0mmain[0m[0;34m([0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[0;32m/tmp/ipykernel_1260/3432120981.py[0m in [0;36mmain[0;34m()[0m
+[1;32m     78[0m     [0mOUT[0m[0;34m.[0m[0mmkdir[0m[0;34m([0m[0mparents[0m[0;34m=[0m[0;32mTrue[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     79[0m     [0mtraining_started[0m [0;34m=[0m [0mtime[0m[0;34m.[0m[0mmonotonic[0m[0;34m([0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 80[0;31m     training = run(
+[0m[1;32m     81[0m         [
+[1;32m     82[0m             [0msys[0m[0;34m.[0m[0mexecutable[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
+[0;32m/tmp/ipykernel_1260/3432120981.py[0m in [0;36mrun[0;34m(command, cwd, timeout, capture)[0m
+[1;32m     22[0m [0;34m[0m[0m
+[1;32m     23[0m [0;32mdef[0m [0mrun[0m[0;34m([0m[0mcommand[0m[0;34m:[0m [0mlist[0m[0;34m[[0m[0mstr[0m[0;34m][0m[0;34m,[0m [0;34m*[0m[0;34m,[0m [0mcwd[0m[0;34m:[0m [0mPath[0m [0;34m|[0m [0;32mNone[0m [0;34m=[0m [0;32mNone[0m[0;34m,[0m [0mtimeout[0m[0;34m:[0m [0mint[0m [0;34m=[0m [0;36m600[0m[0;34m,[0m [0mcapture[0m[0;34m:[0m [0mbool[0m [0;34m=[0m [0;32mFalse[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 24[0;31m     return subprocess.run(
+[0m[1;32m     25[0m         [0mcommand[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     26[0m         [0mcwd[0m[0;34m=[0m[0mcwd[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
+[0;32m/usr/lib/python3.12/subprocess.py[0m in [0;36mrun[0;34m(input, capture_output, timeout, check, *popenargs, **kwargs)[0m
+[1;32m    548[0m     [0;32mwith[0m [0mPopen[0m[0;34m([0m[0;34m*[0m[0mpopenargs[0m[0;34m,[0m [0;34m**[0m[0mkwargs[0m[0;34m)[0m [0;32mas[0m [0mprocess[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    549[0m         [0;32mtry[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 550[0;31m             [0mstdout[0m[0;34m,[0m [0mstderr[0m [0;34m=[0m [0mprocess[0m[0;34m.[0m[0mcommunicate[0m[0;34m([0m[0minput[0m[0;34m,[0m [0mtimeout[0m[0;34m=[0m[0mtimeout[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    551[0m         [0;32mexcept[0m [0mTimeoutExpired[0m [0;32mas[0m [0mexc[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    552[0m             [0mprocess[0m[0;34m.[0m[0mkill[0m[0;34m([0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m/usr/lib/python3.12/subprocess.py[0m in [0;36mcommunicate[0;34m(self, input, timeout)[0m
+[1;32m   1207[0m [0;34m[0m[0m
+[1;32m   1208[0m             [0;32mtry[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m-> 1209[0;31m                 [0mstdout[0m[0;34m,[0m [0mstderr[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_communicate[0m[0;34m([0m[0minput[0m[0;34m,[0m [0mendtime[0m[0;34m,[0m [0mtimeout[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m   1210[0m             [0;32mexcept[0m [0mKeyboardInterrupt[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m   1211[0m                 [0;31m# https://bugs.python.org/issue25942[0m[0;34m[0m[0;34m[0m[0m
+[0;32m/usr/lib/python3.12/subprocess.py[0m in [0;36m_communicate[0;34m(self, input, endtime, orig_timeout)[0m
+[1;32m   2114[0m [0;34m[0m[0m
+[1;32m   2115[0m                     [0mready[0m [0;34m=[0m [0mselector[0m[0;34m.[0m[0mselect[0m[0;34m([0m[0mtimeout[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m-> 2116[0;31m                     [0mself[0m[0;34m.[0m[0m_check_timeout[0m[0;34m([0m[0mendtime[0m[0;34m,[0m [0morig_timeout[0m[0;34m,[0m [0mstdout[0m[0;34m,[0m [0mstderr[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m   2117[0m [0;34m[0m[0m
+[1;32m   2118[0m                     [0;31m# XXX Rewrite these to use non-blocking I/O on the file[0m[0;34m[0m[0;34m[0m[0m
+[0;32m/usr/lib/python3.12/subprocess.py[0m in [0;36m_check_timeout[0;34m(self, endtime, orig_timeout, stdout_seq, stderr_seq, skip_check_and_raise)[0m
+[1;32m   1251[0m             [0;32mreturn[0m[0;34m[0m[0;34m[0m[0m
+[1;32m   1252[0m         [0;32mif[0m [0mskip_check_and_raise[0m [0;32mor[0m [0m_time[0m[0;34m([0m[0;34m)[0m [0;34m>[0m [0mendtime[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m-> 1253[0;31m             raise TimeoutExpired(
+[0m[1;32m   1254[0m                     [0mself[0m[0;34m.[0m[0margs[0m[0;34m,[0m [0morig_timeout[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
+[1;32m   1255[0m                     [0moutput[0m[0;34m=[0m[0;34mb''[0m[0;34m.[0m[0mjoin[0m[0;34m([0m[0mstdout_seq[0m[0;34m)[0m [0;32mif[0m [0mstdout_seq[0m [0;32melse[0m [0;32mNone[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
+[0;31mTimeoutExpired[0m: Command '['/usr/bin/python3', 'playground/open_duck_mini_v2/runner.py', '--task', 'flat_terrain_backlash', '--num_timesteps', '1000000', '--output_dir', '/content/ground_up_calibration']' timed out after 900 seconds
+[colab] Stopping session 'ground-up-calibration'...
+[colab] Session terminated.

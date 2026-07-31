@@ -1,0 +1,46 @@
+{
+  "artifact": {
+    "digest": "sha256:32c51203ef47140f00478a31dc6380bae52e7d0b7526bc21d21f99e9454aafc4",
+    "github_artifact_id": 8486094989,
+    "name": "winner-v12-full-calibrator-training-29807546004",
+    "size_in_bytes": 1367
+  },
+  "attempt": {
+    "commit": "011e68cbc7b687654e502130257ad5b8e7eb0fee",
+    "conclusion": "failure",
+    "github_job_id": 88561148628,
+    "github_run_attempt": 1,
+    "github_run_id": 29807546004,
+    "training_step_started_utc": "2026-07-21T06:37:20Z",
+    "url": "https://github.com/RobVanProd/open-duck-mini-rdkx5/actions/runs/29807546004"
+  },
+  "attribution": {
+    "exception": "TypeError: ufunc 'isfinite' not supported for the input types",
+    "failure_boundary": "The first Stage-1 rollout returned, then the pre-loss finite-data guard passed the mixed-type normalization receipt to finite_tree. Descriptive population, dtype, and SHA-256 strings reached numpy.isfinite. The traceback precedes stage1_loss_grad, training.adam_step, persist_update, and every immutable snapshot.",
+    "fix_scope": "Validate the numeric batch with finite_tree and validate the complete normalization receipt with a dedicated schema, independent float64 recomputation, hashes, float32 arrays, finiteness, and floor checks.",
+    "recovery_state": "No committed snapshot exists. The uploaded work root contains only the exact launch-claim receipt, so no completed update can be resumed or replayed."
+  },
+  "decision": "AUTHORIZE_CORRECTED_RUNNER_AND_NEW_ZERO_UPDATE_CPU_CONTRACT_ONLY",
+  "evidence": {
+    "authorization_receipt_bytes": 484,
+    "authorization_receipt_sha256": "82a49cc2d9d59e9c318956fa41389aa788a6a577d0bb0f46223b8296d23acef3",
+    "committed_snapshots": 0,
+    "result_written": false,
+    "training_log_bytes": 1373,
+    "training_log_sha256": "e39afc3ebb6f3375a206bfae8d1912b5aff6a01adc365720515e57d372425025"
+  },
+  "execution": {
+    "formal_support_cells": 0,
+    "locomotion_training_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0,
+    "stage1_rollout_calls": 1,
+    "stage2_rollout_calls": 0
+  },
+  "failed_checks": [
+    "mixed_type_normalization_receipt_rejected_by_generic_finite_tree",
+    "full_calibrator_training_not_started"
+  ],
+  "schema_version": "winner_v12.full_calibrator_training_preupdate_failure_attribution.v1",
+  "status": "INVALID_PREUPDATE_STAGE1_NORMALIZATION_VALIDATION"
+}

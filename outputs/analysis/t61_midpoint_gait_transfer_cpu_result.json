@@ -1,0 +1,2776 @@
+{
+  "authority": {
+    "behavior_matrix": false,
+    "checkpoint_selection": false,
+    "gate5": false,
+    "hosted_preregistration": true,
+    "hosted_training": false,
+    "policy_deployment": false,
+    "robot_or_rdk": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "all_deployment_contracts_green": true,
+    "both_stage_reward_metrics_nonzero_and_finite": true,
+    "both_stage_support_metrics_nonzero_and_finite": true,
+    "both_stage_trees_finite": true,
+    "commands_use_exact_mutually_exclusive_stages": true,
+    "cpu_only": true,
+    "default_off_shapes_and_finiteness_exact": true,
+    "default_off_trajectory_bit_exact": true,
+    "formal_behavior_cells_zero": true,
+    "hosted_compute_zero": true,
+    "midpoint_all_actor_and_critic_leaves_update": true,
+    "midpoint_exercises_both_support_sides": true,
+    "midpoint_source_restore_exact": true,
+    "midpoint_step_zero_onnx_byte_exact_source": true,
+    "robot_access_zero": true,
+    "transfer_all_actor_and_critic_leaves_update": true,
+    "transfer_exercises_both_support_sides": true,
+    "transfer_source_restore_exact": true
+  },
+  "decision": "EARN_T62_MIDPOINT_GAIT_TRANSFER_HOSTED_PREREGISTRATION",
+  "default_off": {
+    "base": {
+      "finite": true,
+      "mode": "default_off",
+      "observation_shape": [
+        115
+      ],
+      "platforms": [
+        "cpu"
+      ],
+      "playground": "D:\\CodexProjects\\Open_Duck_Playground-composed-t55-v2",
+      "trajectory_digests": [
+        "a099729417dc45ece703c123bbae402754853ded8a2602f49aaff18dc6286334",
+        "1b32e4876418b4f3f187dad2904fecd29d05af146648a5c27a5fc6b7a9bb2709",
+        "8e3103a190260ec5e9d149e9b607b73dfe4b942d38bb2cef772dd4623e80437f",
+        "40c2342386b30974ce72931ce74e589a6af89b6b049effbe264426a8fd5aa078",
+        "b568557934d58b1d3903fe1e15329b8e6908ad44808b64c88c135bfd14922d85",
+        "a227253b374eaabb72a55c26681eb4df6959132597e2f5c371e3630de2e6fe8f",
+        "258fec335c606436c4600fa16f373d7596c3d5688128c9d9d9634f1f2c64b26d",
+        "4f06c0bd71e21a46cdc1e8074dd8519f5f7c462df970dada053d5a140d1f92af",
+        "9558cdfc117506b9863dc7f6cd20527d9e73c21e4e19142b692b5ad50808f5d2"
+      ]
+    },
+    "composed": {
+      "finite": true,
+      "mode": "default_off",
+      "observation_shape": [
+        115
+      ],
+      "platforms": [
+        "cpu"
+      ],
+      "playground": "D:\\CodexProjects\\Open_Duck_Playground-composed-t61-v1",
+      "trajectory_digests": [
+        "a099729417dc45ece703c123bbae402754853ded8a2602f49aaff18dc6286334",
+        "1b32e4876418b4f3f187dad2904fecd29d05af146648a5c27a5fc6b7a9bb2709",
+        "8e3103a190260ec5e9d149e9b607b73dfe4b942d38bb2cef772dd4623e80437f",
+        "40c2342386b30974ce72931ce74e589a6af89b6b049effbe264426a8fd5aa078",
+        "b568557934d58b1d3903fe1e15329b8e6908ad44808b64c88c135bfd14922d85",
+        "a227253b374eaabb72a55c26681eb4df6959132597e2f5c371e3630de2e6fe8f",
+        "258fec335c606436c4600fa16f373d7596c3d5688128c9d9d9634f1f2c64b26d",
+        "4f06c0bd71e21a46cdc1e8074dd8519f5f7c462df970dada053d5a140d1f92af",
+        "9558cdfc117506b9863dc7f6cd20527d9e73c21e4e19142b692b5ad50808f5d2"
+      ]
+    }
+  },
+  "deployments": {
+    "midpoint_1024": {
+      "context_abi": {
+        "bytes": 958485,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\deployment\\midpoint_1024\\pre_margin\\context_abi.onnx",
+        "sha256": "e399d6c73a54e34d497602836c3660d6b54f9b0bc645115907cd1eac71f01fd7"
+      },
+      "context_io": {
+        "inputs": {
+          "calibration_context": [
+            1,
+            64
+          ],
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        },
+        "providers": [
+          "CPUExecutionProvider"
+        ]
+      },
+      "context_parity": {
+        "all_outputs_bit_exact": true,
+        "context_is_diagnostic_only": true,
+        "maximum_abs_errors": {
+          "continuous_actions": 0.0,
+          "h_out": 0.0,
+          "previous_action_out": 0.0
+        },
+        "source_io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          }
+        },
+        "ticks": 1024,
+        "wrapped_io": {
+          "inputs": {
+            "calibration_context": [
+              1,
+              64
+            ],
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          }
+        },
+        "zero_command_actions_exact_zero": true
+      },
+      "margin_contract": {
+        "changed_action_values": 110,
+        "checks": {
+          "action_clip_bit_exact": true,
+          "all_outputs_finite": true,
+          "cpu_provider": true,
+          "hidden_output_bit_exact": true,
+          "previous_action_clip_bit_exact": true,
+          "realized_feedback_bit_exact": true,
+          "strict_margin": true
+        },
+        "pass": true
+      },
+      "pre_margin_wrapped": {
+        "bytes": 964682,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\deployment\\midpoint_1024\\pre_margin\\rate_coherent_support.onnx",
+        "sha256": "f992261358328b0dbeb2a6654912ffae04eb96e00a9511a5431d3f71a681fa3f"
+      },
+      "pre_margin_wrapped_io": {
+        "inputs": {
+          "calibration_context": [
+            1,
+            64
+          ],
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        },
+        "providers": [
+          "CPUExecutionProvider"
+        ]
+      },
+      "raw": {
+        "bytes": 954952,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\midpoint_smoke\\2026_07_28_083211_1024.onnx",
+        "sha256": "1e332db27cd91bbd06426ee7243e19997e063b61c109072c98e81f916dd1ab49"
+      },
+      "raw_io": {
+        "inputs": {
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        },
+        "providers": [
+          "CPUExecutionProvider"
+        ]
+      },
+      "source_deployed": {
+        "bytes": 958446,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\deployment\\midpoint_1024\\pre_margin\\v121_source_deployed.onnx",
+        "sha256": "9522ab869c8e2c10f76d5481015dc60bf58254b88ca43907d15d9cb940d3972f"
+      },
+      "source_deployed_io": {
+        "inputs": {
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        },
+        "providers": [
+          "CPUExecutionProvider"
+        ]
+      },
+      "source_deployment": {
+        "inference": {
+          "changed_projection_is_exercised": true,
+          "checks": {
+            "all_outputs_finite": true,
+            "changed_projection_is_exercised": true,
+            "cpu_provider_exact": true,
+            "g3_guard_preserved_in_consistent_chain": true,
+            "moving_rate_delta_enforced": true,
+            "realized_state_feedback_exact": true,
+            "recurrent_hidden_output_bit_exact": true,
+            "zero_action_exact": true,
+            "zero_previous_exact": true
+          },
+          "max_guard_excess_rad": 0.0,
+          "max_hidden_error": 0.0,
+          "max_moving_delta_excess": 2.2351741790771484e-08,
+          "max_state_error": 0.0,
+          "max_zero_action": 0.0,
+          "max_zero_previous": 0.0,
+          "pass": true
+        },
+        "io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          },
+          "providers": [
+            "CPUExecutionProvider"
+          ]
+        },
+        "node_counts": {
+          "deadbanded": 47,
+          "deployed": 56,
+          "guarded": 42,
+          "raw": 29
+        },
+        "receipt": {
+          "bytes": 958446,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\deployment\\midpoint_1024\\pre_margin\\v121_source_deployed.onnx",
+          "sha256": "9522ab869c8e2c10f76d5481015dc60bf58254b88ca43907d15d9cb940d3972f"
+        }
+      },
+      "verification": {
+        "cases": 256,
+        "contract_tolerance": 3.814697265625e-06,
+        "inputs_exact": true,
+        "maximum_action_error": 0.0,
+        "maximum_hidden_error": 0.0,
+        "maximum_normalized_rate_excess": 2.9802322387695312e-08,
+        "maximum_previous_action_error": 0.0,
+        "output_bounds_exact": true,
+        "outputs_exact": true,
+        "previous_action_out_equals_action_bit_exact": true,
+        "provider": "CPUExecutionProvider",
+        "seed": 20260726,
+        "x0_output_equals_support_action_bit_exact": true
+      },
+      "wrapped": {
+        "bytes": 965047,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\deployment\\midpoint_1024\\action_margin.onnx",
+        "sha256": "dfeaad5964635f3e8e9fbe9b73abb121ede566c4eb0d795f9c5d685cdec7b1b3"
+      },
+      "wrapped_io": {
+        "inputs": {
+          "calibration_context": [
+            1,
+            64
+          ],
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        },
+        "providers": [
+          "CPUExecutionProvider"
+        ]
+      },
+      "wrapper": {
+        "base": {
+          "bytes": 963849,
+          "home_action_rad": [
+            0.0020000000949949026,
+            0.05299999937415123,
+            -0.6299999952316284,
+            1.3680000305175781,
+            -0.7839999794960022,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            -0.003000000026077032,
+            -0.06499999761581421,
+            0.6349999904632568,
+            1.378999948501587,
+            -0.7960000038146973
+          ],
+          "inputs": {
+            "calibration_context": [
+              1,
+              64
+            ],
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "output_path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\deployment\\midpoint_1024\\pre_margin\\base\\support_homeomorphism.onnx",
+          "output_sha256": "6d144898ac8511f721a3330e8b9f0a92f37bd44afcc10c24f1acd12374a8da47",
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          },
+          "source_path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\deployment\\midpoint_1024\\pre_margin\\context_abi.onnx",
+          "source_sha256": "e399d6c73a54e34d497602836c3660d6b54f9b0bc645115907cd1eac71f01fd7",
+          "support_action": [
+            0.0,
+            0.0,
+            -0.5,
+            0.25,
+            0.25,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.5,
+            0.25,
+            0.25
+          ]
+        },
+        "bytes": 964682,
+        "inputs": {
+          "calibration_context": [
+            1,
+            64
+          ],
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "maximum_action_delta": [
+          0.07999999821186066,
+          0.05999999865889549,
+          0.11999999731779099,
+          0.11999999731779099,
+          0.11999999731779099,
+          0.03999999910593033,
+          0.03999999910593033,
+          0.03999999910593033,
+          0.03999999910593033,
+          0.03999999910593033,
+          0.05999999865889549,
+          0.09999999403953552,
+          0.07999999821186066,
+          0.09999999403953552
+        ],
+        "output_path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\deployment\\midpoint_1024\\pre_margin\\rate_coherent_support.onnx",
+        "output_sha256": "f992261358328b0dbeb2a6654912ffae04eb96e00a9511a5431d3f71a681fa3f",
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        },
+        "rate_limits_rad_s": [
+          1.0,
+          0.75,
+          1.5,
+          1.5,
+          1.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.75,
+          1.25,
+          1.0,
+          1.25
+        ],
+        "source_path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\deployment\\midpoint_1024\\pre_margin\\context_abi.onnx",
+        "source_sha256": "e399d6c73a54e34d497602836c3660d6b54f9b0bc645115907cd1eac71f01fd7",
+        "support_action": [
+          0.0,
+          0.0,
+          -0.5,
+          0.25,
+          0.25,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.5,
+          0.25,
+          0.25
+        ]
+      }
+    },
+    "source": {
+      "context_abi": {
+        "bytes": 958485,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\deployment\\source\\pre_margin\\context_abi.onnx",
+        "sha256": "9eacfddbfa366baa2ccf344002444bd53080c13da5f8ff6ccc4895196c5fc546"
+      },
+      "context_io": {
+        "inputs": {
+          "calibration_context": [
+            1,
+            64
+          ],
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        },
+        "providers": [
+          "CPUExecutionProvider"
+        ]
+      },
+      "context_parity": {
+        "all_outputs_bit_exact": true,
+        "context_is_diagnostic_only": true,
+        "maximum_abs_errors": {
+          "continuous_actions": 0.0,
+          "h_out": 0.0,
+          "previous_action_out": 0.0
+        },
+        "source_io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          }
+        },
+        "ticks": 1024,
+        "wrapped_io": {
+          "inputs": {
+            "calibration_context": [
+              1,
+              64
+            ],
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          }
+        },
+        "zero_command_actions_exact_zero": true
+      },
+      "margin_contract": {
+        "changed_action_values": 108,
+        "checks": {
+          "action_clip_bit_exact": true,
+          "all_outputs_finite": true,
+          "cpu_provider": true,
+          "hidden_output_bit_exact": true,
+          "previous_action_clip_bit_exact": true,
+          "realized_feedback_bit_exact": true,
+          "strict_margin": true
+        },
+        "pass": true
+      },
+      "pre_margin_wrapped": {
+        "bytes": 964682,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\deployment\\source\\pre_margin\\rate_coherent_support.onnx",
+        "sha256": "6f82e1b671ea92c80028cf6b46cf5da70536071eb110e39809245a7dc510a584"
+      },
+      "pre_margin_wrapped_io": {
+        "inputs": {
+          "calibration_context": [
+            1,
+            64
+          ],
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        },
+        "providers": [
+          "CPUExecutionProvider"
+        ]
+      },
+      "raw": {
+        "bytes": 954952,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\midpoint_smoke\\2026_07_28_083105_0.onnx",
+        "sha256": "908b67d42164e981733f9d9f5765260cf877f8ae36e8207e7cc5273d7623205d"
+      },
+      "raw_io": {
+        "inputs": {
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        },
+        "providers": [
+          "CPUExecutionProvider"
+        ]
+      },
+      "source_deployed": {
+        "bytes": 958446,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\deployment\\source\\pre_margin\\v121_source_deployed.onnx",
+        "sha256": "a4cf9c1fa9374de78f96512fcd0fae95f0a74b607eb4256252c35fff7246fbec"
+      },
+      "source_deployed_io": {
+        "inputs": {
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        },
+        "providers": [
+          "CPUExecutionProvider"
+        ]
+      },
+      "source_deployment": {
+        "inference": {
+          "changed_projection_is_exercised": true,
+          "checks": {
+            "all_outputs_finite": true,
+            "changed_projection_is_exercised": true,
+            "cpu_provider_exact": true,
+            "g3_guard_preserved_in_consistent_chain": true,
+            "moving_rate_delta_enforced": true,
+            "realized_state_feedback_exact": true,
+            "recurrent_hidden_output_bit_exact": true,
+            "zero_action_exact": true,
+            "zero_previous_exact": true
+          },
+          "max_guard_excess_rad": 0.0,
+          "max_hidden_error": 0.0,
+          "max_moving_delta_excess": 2.2351741790771484e-08,
+          "max_state_error": 0.0,
+          "max_zero_action": 0.0,
+          "max_zero_previous": 0.0,
+          "pass": true
+        },
+        "io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          },
+          "providers": [
+            "CPUExecutionProvider"
+          ]
+        },
+        "node_counts": {
+          "deadbanded": 47,
+          "deployed": 56,
+          "guarded": 42,
+          "raw": 29
+        },
+        "receipt": {
+          "bytes": 958446,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\deployment\\source\\pre_margin\\v121_source_deployed.onnx",
+          "sha256": "a4cf9c1fa9374de78f96512fcd0fae95f0a74b607eb4256252c35fff7246fbec"
+        }
+      },
+      "verification": {
+        "cases": 256,
+        "contract_tolerance": 3.814697265625e-06,
+        "inputs_exact": true,
+        "maximum_action_error": 0.0,
+        "maximum_hidden_error": 0.0,
+        "maximum_normalized_rate_excess": 2.9802322387695312e-08,
+        "maximum_previous_action_error": 0.0,
+        "output_bounds_exact": true,
+        "outputs_exact": true,
+        "previous_action_out_equals_action_bit_exact": true,
+        "provider": "CPUExecutionProvider",
+        "seed": 20260726,
+        "x0_output_equals_support_action_bit_exact": true
+      },
+      "wrapped": {
+        "bytes": 965047,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\deployment\\source\\action_margin.onnx",
+        "sha256": "da71c32ddf2e3f7ff8cd8f3eac33604b664ab82339d47b0bcde24882a353cdd5"
+      },
+      "wrapped_io": {
+        "inputs": {
+          "calibration_context": [
+            1,
+            64
+          ],
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        },
+        "providers": [
+          "CPUExecutionProvider"
+        ]
+      },
+      "wrapper": {
+        "base": {
+          "bytes": 963849,
+          "home_action_rad": [
+            0.0020000000949949026,
+            0.05299999937415123,
+            -0.6299999952316284,
+            1.3680000305175781,
+            -0.7839999794960022,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            -0.003000000026077032,
+            -0.06499999761581421,
+            0.6349999904632568,
+            1.378999948501587,
+            -0.7960000038146973
+          ],
+          "inputs": {
+            "calibration_context": [
+              1,
+              64
+            ],
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "output_path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\deployment\\source\\pre_margin\\base\\support_homeomorphism.onnx",
+          "output_sha256": "3f81b60de88191c6487a95330055088f25242a94f92f5c614b9d6b6da0ad9e76",
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          },
+          "source_path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\deployment\\source\\pre_margin\\context_abi.onnx",
+          "source_sha256": "9eacfddbfa366baa2ccf344002444bd53080c13da5f8ff6ccc4895196c5fc546",
+          "support_action": [
+            0.0,
+            0.0,
+            -0.5,
+            0.25,
+            0.25,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.5,
+            0.25,
+            0.25
+          ]
+        },
+        "bytes": 964682,
+        "inputs": {
+          "calibration_context": [
+            1,
+            64
+          ],
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "maximum_action_delta": [
+          0.07999999821186066,
+          0.05999999865889549,
+          0.11999999731779099,
+          0.11999999731779099,
+          0.11999999731779099,
+          0.03999999910593033,
+          0.03999999910593033,
+          0.03999999910593033,
+          0.03999999910593033,
+          0.03999999910593033,
+          0.05999999865889549,
+          0.09999999403953552,
+          0.07999999821186066,
+          0.09999999403953552
+        ],
+        "output_path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\deployment\\source\\pre_margin\\rate_coherent_support.onnx",
+        "output_sha256": "6f82e1b671ea92c80028cf6b46cf5da70536071eb110e39809245a7dc510a584",
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        },
+        "rate_limits_rad_s": [
+          1.0,
+          0.75,
+          1.5,
+          1.5,
+          1.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.75,
+          1.25,
+          1.0,
+          1.25
+        ],
+        "source_path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\deployment\\source\\pre_margin\\context_abi.onnx",
+        "source_sha256": "9eacfddbfa366baa2ccf344002444bd53080c13da5f8ff6ccc4895196c5fc546",
+        "support_action": [
+          0.0,
+          0.0,
+          -0.5,
+          0.25,
+          0.25,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.5,
+          0.25,
+          0.25
+        ]
+      }
+    },
+    "transfer_1024": {
+      "context_abi": {
+        "bytes": 958485,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\deployment\\transfer_1024\\pre_margin\\context_abi.onnx",
+        "sha256": "24e32880c40f1078f263dc06dc1b279185db8280fed6b72bade4ba892ca85e77"
+      },
+      "context_io": {
+        "inputs": {
+          "calibration_context": [
+            1,
+            64
+          ],
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        },
+        "providers": [
+          "CPUExecutionProvider"
+        ]
+      },
+      "context_parity": {
+        "all_outputs_bit_exact": true,
+        "context_is_diagnostic_only": true,
+        "maximum_abs_errors": {
+          "continuous_actions": 0.0,
+          "h_out": 0.0,
+          "previous_action_out": 0.0
+        },
+        "source_io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          }
+        },
+        "ticks": 1024,
+        "wrapped_io": {
+          "inputs": {
+            "calibration_context": [
+              1,
+              64
+            ],
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          }
+        },
+        "zero_command_actions_exact_zero": true
+      },
+      "margin_contract": {
+        "changed_action_values": 110,
+        "checks": {
+          "action_clip_bit_exact": true,
+          "all_outputs_finite": true,
+          "cpu_provider": true,
+          "hidden_output_bit_exact": true,
+          "previous_action_clip_bit_exact": true,
+          "realized_feedback_bit_exact": true,
+          "strict_margin": true
+        },
+        "pass": true
+      },
+      "pre_margin_wrapped": {
+        "bytes": 964682,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\deployment\\transfer_1024\\pre_margin\\rate_coherent_support.onnx",
+        "sha256": "99ca026b74b384d0e1474198195289c24b63f1ac216c7baf2c681bade5568abc"
+      },
+      "pre_margin_wrapped_io": {
+        "inputs": {
+          "calibration_context": [
+            1,
+            64
+          ],
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        },
+        "providers": [
+          "CPUExecutionProvider"
+        ]
+      },
+      "raw": {
+        "bytes": 954952,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\transfer_smoke\\2026_07_28_084015_1024.onnx",
+        "sha256": "30b285d32621b32d0fc012482eb6f1b02f07dbfd09d38f205d10e6327b689b99"
+      },
+      "raw_io": {
+        "inputs": {
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        },
+        "providers": [
+          "CPUExecutionProvider"
+        ]
+      },
+      "source_deployed": {
+        "bytes": 958446,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\deployment\\transfer_1024\\pre_margin\\v121_source_deployed.onnx",
+        "sha256": "1828317360cc01e1b05be825b1f93e49ea89758108628595a868f8e82cc57fcb"
+      },
+      "source_deployed_io": {
+        "inputs": {
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        },
+        "providers": [
+          "CPUExecutionProvider"
+        ]
+      },
+      "source_deployment": {
+        "inference": {
+          "changed_projection_is_exercised": true,
+          "checks": {
+            "all_outputs_finite": true,
+            "changed_projection_is_exercised": true,
+            "cpu_provider_exact": true,
+            "g3_guard_preserved_in_consistent_chain": true,
+            "moving_rate_delta_enforced": true,
+            "realized_state_feedback_exact": true,
+            "recurrent_hidden_output_bit_exact": true,
+            "zero_action_exact": true,
+            "zero_previous_exact": true
+          },
+          "max_guard_excess_rad": 0.0,
+          "max_hidden_error": 0.0,
+          "max_moving_delta_excess": 2.2351741790771484e-08,
+          "max_state_error": 0.0,
+          "max_zero_action": 0.0,
+          "max_zero_previous": 0.0,
+          "pass": true
+        },
+        "io": {
+          "inputs": {
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          },
+          "providers": [
+            "CPUExecutionProvider"
+          ]
+        },
+        "node_counts": {
+          "deadbanded": 47,
+          "deployed": 56,
+          "guarded": 42,
+          "raw": 29
+        },
+        "receipt": {
+          "bytes": 958446,
+          "path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\deployment\\transfer_1024\\pre_margin\\v121_source_deployed.onnx",
+          "sha256": "1828317360cc01e1b05be825b1f93e49ea89758108628595a868f8e82cc57fcb"
+        }
+      },
+      "verification": {
+        "cases": 256,
+        "contract_tolerance": 3.814697265625e-06,
+        "inputs_exact": true,
+        "maximum_action_error": 0.0,
+        "maximum_hidden_error": 0.0,
+        "maximum_normalized_rate_excess": 2.9802322387695312e-08,
+        "maximum_previous_action_error": 0.0,
+        "output_bounds_exact": true,
+        "outputs_exact": true,
+        "previous_action_out_equals_action_bit_exact": true,
+        "provider": "CPUExecutionProvider",
+        "seed": 20260726,
+        "x0_output_equals_support_action_bit_exact": true
+      },
+      "wrapped": {
+        "bytes": 965047,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\deployment\\transfer_1024\\action_margin.onnx",
+        "sha256": "17df06c396c74ca6f5aa0da8f6feb377d80f1f1448181570db8206e984a2076e"
+      },
+      "wrapped_io": {
+        "inputs": {
+          "calibration_context": [
+            1,
+            64
+          ],
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        },
+        "providers": [
+          "CPUExecutionProvider"
+        ]
+      },
+      "wrapper": {
+        "base": {
+          "bytes": 963849,
+          "home_action_rad": [
+            0.0020000000949949026,
+            0.05299999937415123,
+            -0.6299999952316284,
+            1.3680000305175781,
+            -0.7839999794960022,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            -0.003000000026077032,
+            -0.06499999761581421,
+            0.6349999904632568,
+            1.378999948501587,
+            -0.7960000038146973
+          ],
+          "inputs": {
+            "calibration_context": [
+              1,
+              64
+            ],
+            "h_in": [
+              1,
+              64
+            ],
+            "obs": [
+              1,
+              115
+            ],
+            "previous_action": [
+              1,
+              14
+            ]
+          },
+          "output_path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\deployment\\transfer_1024\\pre_margin\\base\\support_homeomorphism.onnx",
+          "output_sha256": "7b0a2ce62eeee5d5f7d5735bba172617574914f5a31eec10fdad907fe0acc39a",
+          "outputs": {
+            "continuous_actions": [
+              1,
+              14
+            ],
+            "h_out": [
+              1,
+              64
+            ],
+            "previous_action_out": [
+              1,
+              14
+            ]
+          },
+          "source_path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\deployment\\transfer_1024\\pre_margin\\context_abi.onnx",
+          "source_sha256": "24e32880c40f1078f263dc06dc1b279185db8280fed6b72bade4ba892ca85e77",
+          "support_action": [
+            0.0,
+            0.0,
+            -0.5,
+            0.25,
+            0.25,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.5,
+            0.25,
+            0.25
+          ]
+        },
+        "bytes": 964682,
+        "inputs": {
+          "calibration_context": [
+            1,
+            64
+          ],
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "maximum_action_delta": [
+          0.07999999821186066,
+          0.05999999865889549,
+          0.11999999731779099,
+          0.11999999731779099,
+          0.11999999731779099,
+          0.03999999910593033,
+          0.03999999910593033,
+          0.03999999910593033,
+          0.03999999910593033,
+          0.03999999910593033,
+          0.05999999865889549,
+          0.09999999403953552,
+          0.07999999821186066,
+          0.09999999403953552
+        ],
+        "output_path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\deployment\\transfer_1024\\pre_margin\\rate_coherent_support.onnx",
+        "output_sha256": "99ca026b74b384d0e1474198195289c24b63f1ac216c7baf2c681bade5568abc",
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        },
+        "rate_limits_rad_s": [
+          1.0,
+          0.75,
+          1.5,
+          1.5,
+          1.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.75,
+          1.25,
+          1.0,
+          1.25
+        ],
+        "source_path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\deployment\\transfer_1024\\pre_margin\\context_abi.onnx",
+        "source_sha256": "24e32880c40f1078f263dc06dc1b279185db8280fed6b72bade4ba892ca85e77",
+        "support_action": [
+          0.0,
+          0.0,
+          -0.5,
+          0.25,
+          0.25,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.5,
+          0.25,
+          0.25
+        ]
+      }
+    }
+  },
+  "execution": {
+    "cpu_simulator_steps": 2048,
+    "formal_behavior_cells": 0,
+    "hosted_or_colab_compute": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "preregistered_contract_sha256": "c7770fae9aed8ce894b46f2d8c06d97caf93ed24ba1db461473632295e04a838",
+  "result_sha256": "9326ca45befa23d33c7fdce56fe0383bd54c7e0109a10c16fe2abafbaee18df4",
+  "schema_version": "open_duck.t61_midpoint_gait_transfer_cpu_result.v1",
+  "stages": {
+    "midpoint": {
+      "all_critic_leaves_updated": true,
+      "all_policy_leaves_updated": true,
+      "command": [
+        "D:\\CodexArtifacts\\venvs\\open-duck-policy-py31213\\Scripts\\python.exe",
+        "playground/open_duck_mini_v2/runner.py",
+        "--task",
+        "flat_terrain_backlash",
+        "--env",
+        "joystick",
+        "--output_dir",
+        "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\midpoint_smoke",
+        "--num_timesteps",
+        "1024",
+        "--ppo_seed",
+        "100",
+        "--ppo_num_envs",
+        "4",
+        "--ppo_num_evals",
+        "2",
+        "--ppo_episode_length",
+        "64",
+        "--ppo_unroll_length",
+        "8",
+        "--ppo_batch_size",
+        "4",
+        "--ppo_num_minibatches",
+        "1",
+        "--ppo_num_updates_per_batch",
+        "2",
+        "--ppo_learning_rate",
+        "0.0003",
+        "--ppo_discounting",
+        "0.97",
+        "--ppo_entropy_cost",
+        "0.005",
+        "--policy_architecture",
+        "reference_residual_recurrent_adapter",
+        "--recurrent_hidden_size",
+        "64",
+        "--imitation_scale",
+        "1.0",
+        "--reference_feature_table_path",
+        "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+        "--nominal_reference_bootstrap",
+        "--ground_up_hard_vector_command_support",
+        "--ground_up_command_support_min_x",
+        "0.074",
+        "--ground_up_command_support_max_x",
+        "0.080",
+        "--ground_up_action_velocity_limits_rad_s",
+        "1.0,.75,1.4736209064722061,1.4300791546702385,1.3976470567286015,.5,.5,.5,.5,.5,.75,1.25,1.0,1.2215287424623966",
+        "--ground_up_measured_actuator_bridge",
+        "--ground_up_actuator_bridge_delay_ticks",
+        "3,3,3,3,3,3,2,3,3,3,2,3,2,3",
+        "--ground_up_actuator_bridge_tau_s",
+        ".015,.015,.005,.010,.010,.120,.120,.120,.120,.020,.035,.010,.030,.005",
+        "--ground_up_applied_target_observation",
+        "--ground_up_tracking_tail_exceedance_scale",
+        "-6572.254964031055",
+        "--ground_up_tracking_tail_threshold_rad",
+        "0.20",
+        "--ground_up_peak_torque_exceedance_scale",
+        "0",
+        "--ground_up_linear_peak_torque_exceedance_scale",
+        "-307.48131091308585",
+        "--reference_start_phase",
+        "0",
+        "--ground_up_signed_progress_objective",
+        "--winner_v3_variable_configuration",
+        "--winner_v3_deviation_scale",
+        "1.0",
+        "--winner_v119_train_transition_match",
+        "--winner_t19_support_trainthrough",
+        "--winner_t31_action_margin_trainthrough",
+        "--winner_t61_midpoint_transfer_stage",
+        "--critic_observation",
+        "privileged_state",
+        "--restore_checkpoint_path",
+        "D:\\CodexArtifacts\\open-duck-policy\\t56_extracted_20260728\\t56_dynamic_single_support_continuation\\balance_training\\2026_07_28_112206_1003520"
+      ],
+      "critic_leaf_deltas": {
+        "2/params/hidden_0/bias": 0.008950039744377136,
+        "2/params/hidden_0/kernel": 0.013119000010192394,
+        "2/params/hidden_1/bias": 0.010249865241348743,
+        "2/params/hidden_1/kernel": 0.01314565446227789,
+        "2/params/hidden_2/bias": 0.010251802392303944,
+        "2/params/hidden_2/kernel": 0.012517936527729034,
+        "2/params/hidden_3/bias": 0.006923198699951172,
+        "2/params/hidden_3/kernel": 0.010334894061088562
+      },
+      "elapsed_seconds": 609.9379999999946,
+      "event_file": {
+        "bytes": 5543,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\midpoint_smoke\\events.out.tfevents.1785241501.WinLSD",
+        "sha256": "6bf95a8763d7ddf00053a4ec584d77dfd2009822c44c2a402847c5cda00035b1"
+      },
+      "events": {
+        "eval/avg_episode_length": [
+          {
+            "step": 0,
+            "value": 62.4453125
+          },
+          {
+            "step": 1024,
+            "value": 60.84375
+          }
+        ],
+        "eval/episode_cost/action_rate": [
+          {
+            "step": 0,
+            "value": 1.6369094848632812
+          },
+          {
+            "step": 1024,
+            "value": 1.5731860399246216
+          }
+        ],
+        "eval/episode_cost/action_rate_std": [
+          {
+            "step": 0,
+            "value": 0.2557474672794342
+          },
+          {
+            "step": 1024,
+            "value": 0.3052181601524353
+          }
+        ],
+        "eval/episode_cost/linear_peak_torque_exceedance": [
+          {
+            "step": 0,
+            "value": 17.220108032226562
+          },
+          {
+            "step": 1024,
+            "value": 11.055273056030273
+          }
+        ],
+        "eval/episode_cost/linear_peak_torque_exceedance_std": [
+          {
+            "step": 0,
+            "value": 28.147977828979492
+          },
+          {
+            "step": 1024,
+            "value": 15.707754135131836
+          }
+        ],
+        "eval/episode_cost/stand_still": [
+          {
+            "step": 0,
+            "value": 0.0
+          },
+          {
+            "step": 1024,
+            "value": 0.0
+          }
+        ],
+        "eval/episode_cost/stand_still_std": [
+          {
+            "step": 0,
+            "value": 0.0
+          },
+          {
+            "step": 1024,
+            "value": 0.0
+          }
+        ],
+        "eval/episode_cost/torques": [
+          {
+            "step": 0,
+            "value": 0.23690417408943176
+          },
+          {
+            "step": 1024,
+            "value": 0.22954913973808289
+          }
+        ],
+        "eval/episode_cost/torques_std": [
+          {
+            "step": 0,
+            "value": 0.06538663804531097
+          },
+          {
+            "step": 1024,
+            "value": 0.05873187631368637
+          }
+        ],
+        "eval/episode_cost/tracking_tail_exceedance": [
+          {
+            "step": 0,
+            "value": 1.2811072735985363e-07
+          },
+          {
+            "step": 1024,
+            "value": 0.0
+          }
+        ],
+        "eval/episode_cost/tracking_tail_exceedance_std": [
+          {
+            "step": 0,
+            "value": 1.4437341633311007e-06
+          },
+          {
+            "step": 1024,
+            "value": 0.0
+          }
+        ],
+        "eval/episode_reward": [
+          {
+            "step": 0,
+            "value": 17.98921012878418
+          },
+          {
+            "step": 1024,
+            "value": 16.56175994873047
+          }
+        ],
+        "eval/episode_reward/alive": [
+          {
+            "step": 0,
+            "value": 1248.90625
+          },
+          {
+            "step": 1024,
+            "value": 1216.875
+          }
+        ],
+        "eval/episode_reward/alive_std": [
+          {
+            "step": 0,
+            "value": 191.19378662109375
+          },
+          {
+            "step": 1024,
+            "value": 228.75254821777344
+          }
+        ],
+        "eval/episode_reward/imitation": [
+          {
+            "step": 0,
+            "value": 77.41216278076172
+          },
+          {
+            "step": 1024,
+            "value": 56.00148010253906
+          }
+        ],
+        "eval/episode_reward/imitation_std": [
+          {
+            "step": 0,
+            "value": 15.825559616088867
+          },
+          {
+            "step": 1024,
+            "value": 24.944881439208984
+          }
+        ],
+        "eval/episode_reward/t55_left_support_match": [
+          {
+            "step": 0,
+            "value": 5.296875
+          },
+          {
+            "step": 1024,
+            "value": 4.0625
+          }
+        ],
+        "eval/episode_reward/t55_left_support_match_std": [
+          {
+            "step": 0,
+            "value": 3.231580972671509
+          },
+          {
+            "step": 1024,
+            "value": 3.234941005706787
+          }
+        ],
+        "eval/episode_reward/t55_right_support_match": [
+          {
+            "step": 0,
+            "value": 4.84375
+          },
+          {
+            "step": 1024,
+            "value": 4.3359375
+          }
+        ],
+        "eval/episode_reward/t55_right_support_match_std": [
+          {
+            "step": 0,
+            "value": 2.8734710216522217
+          },
+          {
+            "step": 1024,
+            "value": 2.9242448806762695
+          }
+        ],
+        "eval/episode_reward/t55_single_support_balance": [
+          {
+            "step": 0,
+            "value": 3.3490188121795654
+          },
+          {
+            "step": 1024,
+            "value": 2.5074565410614014
+          }
+        ],
+        "eval/episode_reward/t55_single_support_balance_std": [
+          {
+            "step": 0,
+            "value": 1.8012810945510864
+          },
+          {
+            "step": 1024,
+            "value": 1.9382209777832031
+          }
+        ],
+        "eval/episode_reward/tracking_ang_vel": [
+          {
+            "step": 0,
+            "value": 90.54606628417969
+          },
+          {
+            "step": 1024,
+            "value": 84.26066589355469
+          }
+        ],
+        "eval/episode_reward/tracking_ang_vel_std": [
+          {
+            "step": 0,
+            "value": 26.870220184326172
+          },
+          {
+            "step": 1024,
+            "value": 26.86504364013672
+          }
+        ],
+        "eval/episode_reward/tracking_lin_vel": [
+          {
+            "step": 0,
+            "value": 66.24858856201172
+          },
+          {
+            "step": 1024,
+            "value": 61.14415740966797
+          }
+        ],
+        "eval/episode_reward/tracking_lin_vel_std": [
+          {
+            "step": 0,
+            "value": 26.79564094543457
+          },
+          {
+            "step": 1024,
+            "value": 33.714298248291016
+          }
+        ],
+        "eval/episode_reward_std": [
+          {
+            "step": 0,
+            "value": 3.358940601348877
+          },
+          {
+            "step": 1024,
+            "value": 3.864453077316284
+          }
+        ],
+        "eval/episode_swing_peak": [
+          {
+            "step": 0,
+            "value": 0.09384679794311523
+          },
+          {
+            "step": 1024,
+            "value": 0.0921243205666542
+          }
+        ],
+        "eval/episode_swing_peak_std": [
+          {
+            "step": 0,
+            "value": 0.0714622512459755
+          },
+          {
+            "step": 1024,
+            "value": 0.1056753471493721
+          }
+        ],
+        "eval/epoch_eval_time": [
+          {
+            "step": 0,
+            "value": 190.5498046875
+          },
+          {
+            "step": 1024,
+            "value": 170.8683319091797
+          }
+        ],
+        "eval/sps": [
+          {
+            "step": 0,
+            "value": 42.99138259887695
+          },
+          {
+            "step": 1024,
+            "value": 47.9433479309082
+          }
+        ],
+        "eval/std_episode_length": [
+          {
+            "step": 0,
+            "value": 9.559687614440918
+          },
+          {
+            "step": 1024,
+            "value": 11.437627792358398
+          }
+        ],
+        "eval/walltime": [
+          {
+            "step": 0,
+            "value": 190.5498046875
+          },
+          {
+            "step": 1024,
+            "value": 361.41815185546875
+          }
+        ],
+        "training/entropy_loss": [
+          {
+            "step": 1024,
+            "value": -0.002755426336079836
+          }
+        ],
+        "training/kl_mean": [
+          {
+            "step": 1024,
+            "value": 0.007692194078117609
+          }
+        ],
+        "training/learning_rate": [
+          {
+            "step": 1024,
+            "value": 0.00029999998514540493
+          }
+        ],
+        "training/policy_dist_max_loc": [
+          {
+            "step": 1024,
+            "value": 1.5951787233352661
+          }
+        ],
+        "training/policy_dist_max_std": [
+          {
+            "step": 1024,
+            "value": 1.317108392715454
+          }
+        ],
+        "training/policy_dist_mean_loc": [
+          {
+            "step": 1024,
+            "value": 0.037037428468465805
+          }
+        ],
+        "training/policy_dist_mean_std": [
+          {
+            "step": 1024,
+            "value": 0.48994481563568115
+          }
+        ],
+        "training/policy_dist_min_loc": [
+          {
+            "step": 1024,
+            "value": -1.1896891593933105
+          }
+        ],
+        "training/policy_dist_min_std": [
+          {
+            "step": 1024,
+            "value": 0.09038101136684418
+          }
+        ],
+        "training/policy_loss": [
+          {
+            "step": 1024,
+            "value": -0.047110557556152344
+          }
+        ],
+        "training/sps": [
+          {
+            "step": 1024,
+            "value": 37.076236724853516
+          }
+        ],
+        "training/total_loss": [
+          {
+            "step": 1024,
+            "value": 0.18395774066448212
+          }
+        ],
+        "training/v_loss": [
+          {
+            "step": 1024,
+            "value": 0.2338237315416336
+          }
+        ],
+        "training/walltime": [
+          {
+            "step": 1024,
+            "value": 27.6187686920166
+          }
+        ]
+      },
+      "final_checkpoint": {
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\midpoint_smoke\\2026_07_28_083211_1024",
+        "sha256": "40e396348a387b467d6c94986104f4d7fb55a3f4aa381c96e41600c266bdaab6"
+      },
+      "initial_checkpoint": {
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\midpoint_smoke\\2026_07_28_083105_0",
+        "sha256": "f2ec0a9ba983e8cfb72d7b4b708b57eb677af8a2d5049e582fc4307f3ebcb849"
+      },
+      "policy_leaf_deltas": {
+        "1/params/adapter_hidden_bias": 0.007730692625045776,
+        "1/params/adapter_hidden_projection/kernel": 0.009976044297218323,
+        "1/params/adapter_location/bias": 0.0050198957324028015,
+        "1/params/adapter_location/kernel": 0.009577643126249313,
+        "1/params/adapter_obs_projection/kernel": 0.00971454381942749,
+        "1/params/residual_location/bias": 0.005019893869757652,
+        "1/params/residual_location/kernel": 0.008976999670267105,
+        "1/params/residual_trunk/hidden_0/bias": 0.008141763508319855,
+        "1/params/residual_trunk/hidden_0/kernel": 0.010865479707717896,
+        "1/params/residual_trunk/hidden_1/bias": 0.006779294461011887,
+        "1/params/residual_trunk/hidden_1/kernel": 0.012006065808236599,
+        "1/params/residual_trunk/hidden_2/bias": 0.006903596222400665,
+        "1/params/residual_trunk/hidden_2/kernel": 0.011467799544334412,
+        "1/params/scale_logits/bias": 0.00701436772942543,
+        "1/params/scale_logits/kernel": 0.009451985359191895
+      },
+      "source_restore_maximum_abs_error": 0.0,
+      "source_restore_structure_exact": true,
+      "tree_finite": true,
+      "update_structure_exact": true
+    },
+    "transfer": {
+      "all_critic_leaves_updated": true,
+      "all_policy_leaves_updated": true,
+      "command": [
+        "D:\\CodexArtifacts\\venvs\\open-duck-policy-py31213\\Scripts\\python.exe",
+        "playground/open_duck_mini_v2/runner.py",
+        "--task",
+        "flat_terrain_backlash",
+        "--env",
+        "joystick",
+        "--output_dir",
+        "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\transfer_smoke",
+        "--num_timesteps",
+        "1024",
+        "--ppo_seed",
+        "100",
+        "--ppo_num_envs",
+        "4",
+        "--ppo_num_evals",
+        "2",
+        "--ppo_episode_length",
+        "64",
+        "--ppo_unroll_length",
+        "8",
+        "--ppo_batch_size",
+        "4",
+        "--ppo_num_minibatches",
+        "1",
+        "--ppo_num_updates_per_batch",
+        "2",
+        "--ppo_learning_rate",
+        "0.0003",
+        "--ppo_discounting",
+        "0.97",
+        "--ppo_entropy_cost",
+        "0.005",
+        "--policy_architecture",
+        "reference_residual_recurrent_adapter",
+        "--recurrent_hidden_size",
+        "64",
+        "--imitation_scale",
+        "1.0",
+        "--reference_feature_table_path",
+        "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+        "--nominal_reference_bootstrap",
+        "--ground_up_hard_vector_command_support",
+        "--ground_up_command_support_min_x",
+        "0.074",
+        "--ground_up_command_support_max_x",
+        "0.080",
+        "--ground_up_action_velocity_limits_rad_s",
+        "1.0,.75,1.4736209064722061,1.4300791546702385,1.3976470567286015,.5,.5,.5,.5,.5,.75,1.25,1.0,1.2215287424623966",
+        "--ground_up_measured_actuator_bridge",
+        "--ground_up_actuator_bridge_delay_ticks",
+        "3,3,3,3,3,3,2,3,3,3,2,3,2,3",
+        "--ground_up_actuator_bridge_tau_s",
+        ".015,.015,.005,.010,.010,.120,.120,.120,.120,.020,.035,.010,.030,.005",
+        "--ground_up_applied_target_observation",
+        "--ground_up_tracking_tail_exceedance_scale",
+        "-6572.254964031055",
+        "--ground_up_tracking_tail_threshold_rad",
+        "0.20",
+        "--ground_up_peak_torque_exceedance_scale",
+        "0",
+        "--ground_up_linear_peak_torque_exceedance_scale",
+        "-307.48131091308585",
+        "--reference_start_phase",
+        "0",
+        "--ground_up_signed_progress_objective",
+        "--winner_v3_variable_configuration",
+        "--winner_v3_deviation_scale",
+        "1.0",
+        "--winner_v119_train_transition_match",
+        "--winner_t19_support_trainthrough",
+        "--winner_t31_action_margin_trainthrough",
+        "--winner_t55_transfer_stage",
+        "--critic_observation",
+        "privileged_state",
+        "--restore_checkpoint_path",
+        "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\midpoint_smoke\\2026_07_28_083211_1024"
+      ],
+      "critic_leaf_deltas": {
+        "2/params/hidden_0/bias": 0.008386477828025818,
+        "2/params/hidden_0/kernel": 0.012037627398967743,
+        "2/params/hidden_1/bias": 0.010512273758649826,
+        "2/params/hidden_1/kernel": 0.014766501262784004,
+        "2/params/hidden_2/bias": 0.011421343311667442,
+        "2/params/hidden_2/kernel": 0.0129806287586689,
+        "2/params/hidden_3/bias": 0.005193591117858887,
+        "2/params/hidden_3/kernel": 0.011474385857582092
+      },
+      "elapsed_seconds": 441.5,
+      "event_file": {
+        "bytes": 5543,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\transfer_smoke\\events.out.tfevents.1785242111.WinLSD",
+        "sha256": "4f385314868e99cafcf9a0a8843e7ca651208dd8b6d2241b7228fea399d0ef15"
+      },
+      "events": {
+        "eval/avg_episode_length": [
+          {
+            "step": 0,
+            "value": 61.2109375
+          },
+          {
+            "step": 1024,
+            "value": 59.8125
+          }
+        ],
+        "eval/episode_cost/action_rate": [
+          {
+            "step": 0,
+            "value": 1.578683614730835
+          },
+          {
+            "step": 1024,
+            "value": 1.5572760105133057
+          }
+        ],
+        "eval/episode_cost/action_rate_std": [
+          {
+            "step": 0,
+            "value": 0.271407812833786
+          },
+          {
+            "step": 1024,
+            "value": 0.3156058192253113
+          }
+        ],
+        "eval/episode_cost/linear_peak_torque_exceedance": [
+          {
+            "step": 0,
+            "value": 9.743487358093262
+          },
+          {
+            "step": 1024,
+            "value": 6.386016368865967
+          }
+        ],
+        "eval/episode_cost/linear_peak_torque_exceedance_std": [
+          {
+            "step": 0,
+            "value": 15.627813339233398
+          },
+          {
+            "step": 1024,
+            "value": 10.68557071685791
+          }
+        ],
+        "eval/episode_cost/stand_still": [
+          {
+            "step": 0,
+            "value": 0.0
+          },
+          {
+            "step": 1024,
+            "value": 0.0
+          }
+        ],
+        "eval/episode_cost/stand_still_std": [
+          {
+            "step": 0,
+            "value": 0.0
+          },
+          {
+            "step": 1024,
+            "value": 0.0
+          }
+        ],
+        "eval/episode_cost/torques": [
+          {
+            "step": 0,
+            "value": 0.23148956894874573
+          },
+          {
+            "step": 1024,
+            "value": 0.23151111602783203
+          }
+        ],
+        "eval/episode_cost/torques_std": [
+          {
+            "step": 0,
+            "value": 0.05708853527903557
+          },
+          {
+            "step": 1024,
+            "value": 0.05982380732893944
+          }
+        ],
+        "eval/episode_cost/tracking_tail_exceedance": [
+          {
+            "step": 0,
+            "value": 0.0
+          },
+          {
+            "step": 1024,
+            "value": 1.0589237717795186e-05
+          }
+        ],
+        "eval/episode_cost/tracking_tail_exceedance_std": [
+          {
+            "step": 0,
+            "value": 0.0
+          },
+          {
+            "step": 1024,
+            "value": 0.00011933463247260079
+          }
+        ],
+        "eval/episode_reward": [
+          {
+            "step": 0,
+            "value": 30.756000518798828
+          },
+          {
+            "step": 1024,
+            "value": 27.9775447845459
+          }
+        ],
+        "eval/episode_reward/alive": [
+          {
+            "step": 0,
+            "value": 1224.21875
+          },
+          {
+            "step": 1024,
+            "value": 1196.25
+          }
+        ],
+        "eval/episode_reward/alive_std": [
+          {
+            "step": 0,
+            "value": 204.01670837402344
+          },
+          {
+            "step": 1024,
+            "value": 234.71722412109375
+          }
+        ],
+        "eval/episode_reward/imitation": [
+          {
+            "step": 0,
+            "value": 55.601051330566406
+          },
+          {
+            "step": 1024,
+            "value": 32.398399353027344
+          }
+        ],
+        "eval/episode_reward/imitation_std": [
+          {
+            "step": 0,
+            "value": 25.735347747802734
+          },
+          {
+            "step": 1024,
+            "value": 26.534263610839844
+          }
+        ],
+        "eval/episode_reward/t55_left_support_match": [
+          {
+            "step": 0,
+            "value": 4.484375
+          },
+          {
+            "step": 1024,
+            "value": 3.328125
+          }
+        ],
+        "eval/episode_reward/t55_left_support_match_std": [
+          {
+            "step": 0,
+            "value": 3.8466389179229736
+          },
+          {
+            "step": 1024,
+            "value": 3.300353527069092
+          }
+        ],
+        "eval/episode_reward/t55_right_support_match": [
+          {
+            "step": 0,
+            "value": 4.140625
+          },
+          {
+            "step": 1024,
+            "value": 2.5234375
+          }
+        ],
+        "eval/episode_reward/t55_right_support_match_std": [
+          {
+            "step": 0,
+            "value": 3.03812837600708
+          },
+          {
+            "step": 1024,
+            "value": 2.186481237411499
+          }
+        ],
+        "eval/episode_reward/t55_single_support_balance": [
+          {
+            "step": 0,
+            "value": 2.523742198944092
+          },
+          {
+            "step": 1024,
+            "value": 1.4027342796325684
+          }
+        ],
+        "eval/episode_reward/t55_single_support_balance_std": [
+          {
+            "step": 0,
+            "value": 2.1380746364593506
+          },
+          {
+            "step": 1024,
+            "value": 1.405899167060852
+          }
+        ],
+        "eval/episode_reward/tracking_ang_vel": [
+          {
+            "step": 0,
+            "value": 82.87664031982422
+          },
+          {
+            "step": 1024,
+            "value": 76.99906921386719
+          }
+        ],
+        "eval/episode_reward/tracking_ang_vel_std": [
+          {
+            "step": 0,
+            "value": 25.194915771484375
+          },
+          {
+            "step": 1024,
+            "value": 24.28312110900879
+          }
+        ],
+        "eval/episode_reward/tracking_lin_vel": [
+          {
+            "step": 0,
+            "value": 60.47013854980469
+          },
+          {
+            "step": 1024,
+            "value": 31.267940521240234
+          }
+        ],
+        "eval/episode_reward/tracking_lin_vel_std": [
+          {
+            "step": 0,
+            "value": 36.79759216308594
+          },
+          {
+            "step": 1024,
+            "value": 63.237709045410156
+          }
+        ],
+        "eval/episode_reward_std": [
+          {
+            "step": 0,
+            "value": 5.956664085388184
+          },
+          {
+            "step": 1024,
+            "value": 6.456052780151367
+          }
+        ],
+        "eval/episode_swing_peak": [
+          {
+            "step": 0,
+            "value": 0.10510823130607605
+          },
+          {
+            "step": 1024,
+            "value": 0.08039963245391846
+          }
+        ],
+        "eval/episode_swing_peak_std": [
+          {
+            "step": 0,
+            "value": 0.12125840783119202
+          },
+          {
+            "step": 1024,
+            "value": 0.10158369690179825
+          }
+        ],
+        "eval/epoch_eval_time": [
+          {
+            "step": 0,
+            "value": 124.17401123046875
+          },
+          {
+            "step": 1024,
+            "value": 129.30088806152344
+          }
+        ],
+        "eval/sps": [
+          {
+            "step": 0,
+            "value": 65.97193908691406
+          },
+          {
+            "step": 1024,
+            "value": 63.35609817504883
+          }
+        ],
+        "eval/std_episode_length": [
+          {
+            "step": 0,
+            "value": 10.200836181640625
+          },
+          {
+            "step": 1024,
+            "value": 11.735862731933594
+          }
+        ],
+        "eval/walltime": [
+          {
+            "step": 0,
+            "value": 124.17401123046875
+          },
+          {
+            "step": 1024,
+            "value": 253.4748992919922
+          }
+        ],
+        "training/entropy_loss": [
+          {
+            "step": 1024,
+            "value": 0.002019523410126567
+          }
+        ],
+        "training/kl_mean": [
+          {
+            "step": 1024,
+            "value": 0.05330653861165047
+          }
+        ],
+        "training/learning_rate": [
+          {
+            "step": 1024,
+            "value": 0.00029999998514540493
+          }
+        ],
+        "training/policy_dist_max_loc": [
+          {
+            "step": 1024,
+            "value": 1.822925329208374
+          }
+        ],
+        "training/policy_dist_max_std": [
+          {
+            "step": 1024,
+            "value": 1.8351032733917236
+          }
+        ],
+        "training/policy_dist_mean_loc": [
+          {
+            "step": 1024,
+            "value": 0.05650172382593155
+          }
+        ],
+        "training/policy_dist_mean_std": [
+          {
+            "step": 1024,
+            "value": 0.5315054655075073
+          }
+        ],
+        "training/policy_dist_min_loc": [
+          {
+            "step": 1024,
+            "value": -1.3794124126434326
+          }
+        ],
+        "training/policy_dist_min_std": [
+          {
+            "step": 1024,
+            "value": 0.06372398138046265
+          }
+        ],
+        "training/policy_loss": [
+          {
+            "step": 1024,
+            "value": -0.0409499853849411
+          }
+        ],
+        "training/sps": [
+          {
+            "step": 1024,
+            "value": 74.75547790527344
+          }
+        ],
+        "training/total_loss": [
+          {
+            "step": 1024,
+            "value": 0.818974494934082
+          }
+        ],
+        "training/v_loss": [
+          {
+            "step": 1024,
+            "value": 0.8579049110412598
+          }
+        ],
+        "training/walltime": [
+          {
+            "step": 1024,
+            "value": 13.697992324829102
+          }
+        ]
+      },
+      "final_checkpoint": {
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\transfer_smoke\\2026_07_28_084015_1024",
+        "sha256": "533feb6a920e9961a0b00c88ed53dd4e4850ba96608b219c313ef3597c21c87b"
+      },
+      "initial_checkpoint": {
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t61_midpoint_gait_transfer_cpu_v1\\transfer_smoke\\2026_07_28_083940_0",
+        "sha256": "0e87c3cbdcab438f45b34c309c6a12103a0e58d4f1cbc5446c96ed36b9af2179"
+      },
+      "policy_leaf_deltas": {
+        "1/params/adapter_hidden_bias": 0.00739949569106102,
+        "1/params/adapter_hidden_projection/kernel": 0.009788796305656433,
+        "1/params/adapter_location/bias": 0.005560113117098808,
+        "1/params/adapter_location/kernel": 0.008533040061593056,
+        "1/params/adapter_obs_projection/kernel": 0.010237414389848709,
+        "1/params/residual_location/bias": 0.005560103803873062,
+        "1/params/residual_location/kernel": 0.008193636313080788,
+        "1/params/residual_trunk/hidden_0/bias": 0.007240945473313332,
+        "1/params/residual_trunk/hidden_0/kernel": 0.011753283441066742,
+        "1/params/residual_trunk/hidden_1/bias": 0.007892470806837082,
+        "1/params/residual_trunk/hidden_1/kernel": 0.01436801627278328,
+        "1/params/residual_trunk/hidden_2/bias": 0.00778433121740818,
+        "1/params/residual_trunk/hidden_2/kernel": 0.011326301842927933,
+        "1/params/scale_logits/bias": 0.005787231028079987,
+        "1/params/scale_logits/kernel": 0.010420791804790497
+      },
+      "source_restore_maximum_abs_error": 0.0,
+      "source_restore_structure_exact": true,
+      "tree_finite": true,
+      "update_structure_exact": true
+    }
+  },
+  "status": "PASS_T61_MIDPOINT_GAIT_TRANSFER_CPU_CONTRACT"
+}

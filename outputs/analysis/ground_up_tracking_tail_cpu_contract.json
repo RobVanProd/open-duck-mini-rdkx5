@@ -1,0 +1,168 @@
+{
+  "authority": {
+    "gpu_authorized": false,
+    "robot_or_rdk_authorized": false,
+    "training_authorized": false
+  },
+  "checks": {
+    "above_threshold_matches_analytic_0p21": true,
+    "above_threshold_matches_analytic_0p25": true,
+    "at_threshold_is_zero": true,
+    "below_threshold_is_zero": true,
+    "default_scale_is_zero": true,
+    "default_threshold_is_0p20": true,
+    "enabled_reward_delta_equals_negative_scaled_cost": true,
+    "jax_backend_is_cpu": true,
+    "monotonic_above_threshold": true,
+    "pitch_chain_indices_match_gate": true,
+    "tail_scale_does_not_change_dynamics_or_observation": true,
+    "trace_corpus_has_3600_rows": true,
+    "trace_jax_matches_independent_numpy": true,
+    "trace_values_are_finite": true,
+    "transition_probe_reaches_nonzero_tail_cost": true
+  },
+  "definition": {
+    "cost": "mean(square(max(abs(sent_target-actual_position)-threshold,0)))",
+    "default_scale": 0.0,
+    "pitch_chain_indices": [
+      2,
+      3,
+      4,
+      11,
+      12,
+      13
+    ],
+    "threshold_rad": 0.2
+  },
+  "execution": {
+    "colab_access": false,
+    "gpu_access": false,
+    "jax_backend": "cpu",
+    "jax_devices": [
+      "TFRT_CPU_0"
+    ],
+    "rdk_access": false,
+    "robot_access": false
+  },
+  "failed_checks": [],
+  "inputs": {
+    "checkout": "/tmp/ground_up_applied_target_state_contract_20260714",
+    "patch": {
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/patches/ground_up_tracking_tail_exceedance.patch",
+      "sha256": "9f716243e0c4ef487ef4227ef0cb9f389ed43c0456435987ac0846e1b629811e"
+    },
+    "reference_table": {
+      "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_projected_reference_feature_table.npz",
+      "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+    },
+    "traces": [
+      {
+        "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_applied_target_horizon_traces/1M/x0.074_seed100_2026_07_14_173159_1003520.jsonl",
+        "rows": 600,
+        "sha256": "25acb9b5e9851db2ad405dc3df77115dac19c73f10031de94362695ec9234b1b"
+      },
+      {
+        "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_applied_target_horizon_traces/1M/x0.077_seed100_2026_07_14_173159_1003520.jsonl",
+        "rows": 600,
+        "sha256": "6382f3a0b150751389012955cfd9a309d78f8f7f8ad0d27b392428ca5b8bf2db"
+      },
+      {
+        "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_applied_target_horizon_traces/1M/x0.080_seed100_2026_07_14_173159_1003520.jsonl",
+        "rows": 600,
+        "sha256": "5fccdf1bc1243c0d2934f4461646e3870b29a4fe0ec8c6c6595ac1eb27dac834"
+      },
+      {
+        "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_applied_target_horizon_traces/2M/x0.074_seed100_2026_07_14_173626_2007040.jsonl",
+        "rows": 600,
+        "sha256": "46026677307c705ca223cafdc77f375aee663099de9aed16fd7dc183597a67b3"
+      },
+      {
+        "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_applied_target_horizon_traces/2M/x0.077_seed100_2026_07_14_173626_2007040.jsonl",
+        "rows": 600,
+        "sha256": "b880df3acc3d40fc759a1dd41ee7f369ec4d4dea17522f000d7533e4f53d5494"
+      },
+      {
+        "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_applied_target_horizon_traces/2M/x0.080_seed100_2026_07_14_173626_2007040.jsonl",
+        "rows": 600,
+        "sha256": "5d9c05404592dfcb213636aa7879230c376b675b6ae226894098c959aadeb8df"
+      }
+    ]
+  },
+  "schema_version": "ground_up_tracking_tail_cpu_contract.v1",
+  "status": "PASS_TRACKING_TAIL_CPU_CONTRACT",
+  "synthetic": {
+    "above_0p21": 1.6666635929141194e-05,
+    "above_0p25": 0.00041666661854833364,
+    "at": 0.0,
+    "below": 0.0
+  },
+  "trace_contract": {
+    "groups": {
+      "1M": {
+        "files": [
+          {
+            "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_applied_target_horizon_traces/1M/x0.074_seed100_2026_07_14_173159_1003520.jsonl",
+            "rows": 600,
+            "sha256": "25acb9b5e9851db2ad405dc3df77115dac19c73f10031de94362695ec9234b1b"
+          },
+          {
+            "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_applied_target_horizon_traces/1M/x0.077_seed100_2026_07_14_173159_1003520.jsonl",
+            "rows": 600,
+            "sha256": "6382f3a0b150751389012955cfd9a309d78f8f7f8ad0d27b392428ca5b8bf2db"
+          },
+          {
+            "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_applied_target_horizon_traces/1M/x0.080_seed100_2026_07_14_173159_1003520.jsonl",
+            "rows": 600,
+            "sha256": "5fccdf1bc1243c0d2934f4461646e3870b29a4fe0ec8c6c6595ac1eb27dac834"
+          }
+        ],
+        "max_raw_tail_cost": 0.0006525659532077079,
+        "mean_raw_tail_cost": 1.2092883729440577e-05,
+        "mean_scaled_action_rate_cost": 0.07947751512026621,
+        "nonzero_fraction": 0.1322222222222222,
+        "p95_raw_tail_cost": 6.950158049858594e-05,
+        "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_applied_target_horizon_traces/1M",
+        "rows": 1800
+      },
+      "2M": {
+        "files": [
+          {
+            "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_applied_target_horizon_traces/2M/x0.074_seed100_2026_07_14_173626_2007040.jsonl",
+            "rows": 600,
+            "sha256": "46026677307c705ca223cafdc77f375aee663099de9aed16fd7dc183597a67b3"
+          },
+          {
+            "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_applied_target_horizon_traces/2M/x0.077_seed100_2026_07_14_173626_2007040.jsonl",
+            "rows": 600,
+            "sha256": "b880df3acc3d40fc759a1dd41ee7f369ec4d4dea17522f000d7533e4f53d5494"
+          },
+          {
+            "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_applied_target_horizon_traces/2M/x0.080_seed100_2026_07_14_173626_2007040.jsonl",
+            "rows": 600,
+            "sha256": "5d9c05404592dfcb213636aa7879230c376b675b6ae226894098c959aadeb8df"
+          }
+        ],
+        "max_raw_tail_cost": 0.0007903485361272067,
+        "mean_raw_tail_cost": 2.251924484564678e-05,
+        "mean_scaled_action_rate_cost": 0.08548242755751644,
+        "nonzero_fraction": 0.185,
+        "p95_raw_tail_cost": 0.00014456420380999646,
+        "path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/ground_up_applied_target_horizon_traces/2M",
+        "rows": 1800
+      }
+    },
+    "jax_numpy_max_abs_error": 9.953746843687633e-11,
+    "max_raw_cost": 0.0007903484511189163,
+    "mean_raw_cost": 1.7306059817201458e-05,
+    "nonzero_fraction": 0.15861111111111112,
+    "nonzero_rows": 571,
+    "p95_raw_cost": 0.00011366292164893821,
+    "rows": 3600
+  },
+  "transition_contract": {
+    "maximum_reward_contract_error": 3.083143383264501e-08,
+    "maximum_state_or_observation_error": 0.0,
+    "nonzero_cost_steps": 18,
+    "ticks": 64
+  }
+}

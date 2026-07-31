@@ -1,0 +1,181 @@
+{
+  "authority": {
+    "formal_support_gate_authorized": false,
+    "pass_authorizes_only": "a separate unchanged 124-cell support/context gate preregistration",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "causal_hypothesis": "Replacing only the sparse flat valid-transition reward with the bounded one-sided negative-pitch margin gives the existing response-conditioned support head early credit on the persistent negative-COM-X pitch failures.",
+  "decision": "AUTHORIZE_ONE_100_UPDATE_PITCH_MARGIN_SUPPORT_RUN_ONLY",
+  "execution_now": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "robot_or_rdk_access": 0,
+    "stage2_optimizer_updates": 0
+  },
+  "frozen_training": {
+    "environments_per_update": 80,
+    "failure_transition_reward": 0.0,
+    "frozen_leaves": [
+      "obs_weight",
+      "previous_action_weight",
+      "hidden_weight",
+      "hidden_bias",
+      "auxiliary_hidden_weight",
+      "auxiliary_action_weight",
+      "auxiliary_bias"
+    ],
+    "learning_rate": 0.0001,
+    "objective": "one_sided_negative_pitch_margin",
+    "objective_scale": null,
+    "optimizer_updates": 100,
+    "persistent_checkpoints": {
+      "final": 100,
+      "half": 50
+    },
+    "persistent_snapshots": "atomic readback-verified snapshot after every update",
+    "pitch_boundary_rad": 0.35,
+    "scheduled_episode_slots": 2000000,
+    "settled_terminal_bonus": 250.0,
+    "source_stage1_snapshot_bytes": 189027,
+    "source_stage1_snapshot_sha256": "8c1392c738eddfb098e61c1a6ae2f863eda883e1eba6ac546aef695da6f163af",
+    "ticks_per_environment": 250,
+    "trainable_leaves": [
+      "action_bias",
+      "action_weight",
+      "training_only_log_std",
+      "training_only_value_bias",
+      "training_only_value_weight"
+    ],
+    "training_root_seed": 120120
+  },
+  "future_gate": {
+    "cells_per_checkpoint": 124,
+    "checkpoints": [
+      "half",
+      "final"
+    ],
+    "executed_now": false,
+    "heldout_repeats_per_checkpoint": 32,
+    "pass_rule": "all unchanged cells at both checkpoints pass; no closest selection"
+  },
+  "schema_version": "winner_v15.pitch_margin_support_training_preregistration.v1",
+  "single_change": {
+    "from": "valid transition reward = 1.0",
+    "no_scale_search": true,
+    "to": "1 - square(clip(max(0, -next_pitch_rad) / 0.35, 0, 1))",
+    "unchanged": "Stage-1 snapshot, initialization, optimizer, population, seeds, dynamics, observation, action, graph, masks, failure reward, terminal bonus, checkpoint boundaries, and future gate"
+  },
+  "source_artifact": {
+    "artifact_zip_sha256": "b3ff19186ef39e8a72f9e43095d373840fb0b1562a2f7bed83a74c9f10cf6680",
+    "github_artifact_id": 8492593761,
+    "github_run_attempt": 1,
+    "github_run_id": 29822834921,
+    "snapshot_member": "winner-v13-normalized-response-stage1-v2-work/snapshots/snapshot_stage1_update_100.npz"
+  },
+  "source_manifest_sha256": "91500fb06e8a481f4da4d303159ff57e63d9aa25751a78cab8754ba12260f7eb",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v15_pitch_margin_support_training_preregistration.py",
+      "sha256": "c3e5d406e44509e599f4f2bfa5df3415234e2a4015d9c3b06c0240da0c056d85"
+    },
+    "calibrator_design": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_training_preregistration.json",
+      "sha256": "1ec76a587c6fa50b92866c1632a7046ae0c6687ed17b1636b664bf45c2e8ba34"
+    },
+    "canonical_p30_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "cpu_contract": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v15_pitch_margin_cpu_contract.json",
+      "sha256": "c7d5729938ecf01594147f6880c380d2951f560d1de69b4babd3f776dbb7e041"
+    },
+    "cpu_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v15_pitch_margin_cpu_result.json",
+      "sha256": "750c741f14d73387d3dc3dcbc017d2c56b30d755d2e0517492a61d08abc0098f"
+    },
+    "cpu_smoke": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "deployable_network": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_decomposed_backend_networks.py",
+      "sha256": "f463223a33f80baf81b2604e0df22c647660f2752a7ca60b8c75a3441460d015"
+    },
+    "environment_builder": {
+      "hash_mode": "lf",
+      "path": "tools/prepare_winner_v15_cpu_environment.py",
+      "sha256": "33e54c3a16d5684e2d2520270acf25a28df42dc89e9f302c1ef3bd5f37d867c2"
+    },
+    "full_training_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_preregistration.json",
+      "sha256": "99500648d6683097a13f894b0949bf4b5494e5653f36878710817bd0952f71dd"
+    },
+    "full_training_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_full_calibrator_training.py",
+      "sha256": "8cd2c9267f356adba1127f8fb837138bbe6e39b5c3326300eeed9fdd5b524610"
+    },
+    "objective": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v15_pitch_margin_support.py",
+      "sha256": "b2dfecf77971596e2c67a7185b1a9c1acea2d49ecbb04eaf846666239b3326e8"
+    },
+    "objective_attribution": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v15_pitch_margin_objective_attribution.json",
+      "sha256": "d506ef221c6bb042e87e2c5c85900675301c8cdad6035b60a00cd8fa1917fa09"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v15_pitch_margin_support_training.py",
+      "sha256": "2843817edec648b6c7021bc2b1bacd11814c3b67d8672ce257128e911a27ac0a"
+    },
+    "runtime_observer": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py",
+      "sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889"
+    },
+    "stage1_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v13_normalized_response_stage1_v2_result.json",
+      "sha256": "45e12b9993ce5c8f9811af7350ed3198f9376d0d4ea9b25de8b1aee608a5bcc7"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v15_pitch_margin_support_training.py",
+      "sha256": "ced1f34785978077b65eb520bb668919c949d9d4f5329e6391badf102031670e"
+    },
+    "v12_training_primitives": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_calibrator_training.py",
+      "sha256": "f5736a357d73baedae2bba1d15254dd688bddf3761eb731d757a971783c77227"
+    },
+    "winner_v14_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v14_support_action_diagnostic_result.json",
+      "sha256": "41b586b604e5ca34578f905f6ce5e85df4b91e460027b836ad18daa07465d1e4"
+    },
+    "workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v15-pitch-margin-support-training.yml",
+      "sha256": "6fe69a62c9b49117cb3d5534ac5573b017080dd39c0410db059f016696130ed5"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V15_PITCH_MARGIN_SUPPORT_TRAINING",
+  "training_success_rule": "Exact 100 finite updates; every reward proof and action boundary exact; Stage-1 bit-exact; every Stage-2 leaf changes; all snapshots and both 115/14/64 ONNX checkpoints validate. Training metrics do not select a checkpoint."
+}

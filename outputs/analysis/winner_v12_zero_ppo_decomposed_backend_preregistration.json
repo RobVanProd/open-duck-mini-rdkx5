@@ -1,0 +1,329 @@
+{
+  "authority": {
+    "colab_hosted_gpu_or_igpu": false,
+    "formal_behavior_cells": 0,
+    "gate5_deployment_or_robot_clearance": false,
+    "one_exact_cpu_only_run": true,
+    "optimizer_steps": 0,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "runtime_implementation": false,
+    "training_or_ppo": false
+  },
+  "closed_winner_v11": {
+    "old_full_protected_jax_onnx_quantity": "record only; never gating",
+    "remains_closed": true,
+    "rerun_or_reclassification": false,
+    "result_sha256_lf": "f946b79b16a6769c87ebf31e4134d1c80c83bc6071bbeb5d61ecade387895a0a",
+    "status": "HOLD_WINNER_V11_ZERO_PPO_CPU_MECHANICS"
+  },
+  "contract_id": "winner-v12-decomposed-backend-r64",
+  "decision": "AUTHORIZE_ONE_EXACT_WINNER_V12_DECOMPOSED_BACKEND_CPU_RUN",
+  "distinct_change": {
+    "checker_only_debug_output": "v6_adapter_delta",
+    "complete_action_authority": "ONNX Runtime CPU output",
+    "debug_output_is_deployable": false,
+    "new_branch_tolerance": 1e-07,
+    "new_gated_quantity": "checker-only response hidden state and response delta",
+    "protected_policy_changed": false,
+    "runtime_or_deployable_abi_changed": false,
+    "tolerance_changed": false
+  },
+  "expected_abi": {
+    "calibrator": {
+      "inputs": [
+        {
+          "dtype": "float32",
+          "name": "obs",
+          "shape": [
+            1,
+            115
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "previous_action",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "h_in",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "dtype": "float32",
+          "name": "calibration_actions",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "previous_action_out",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "h_out",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ]
+    },
+    "locomotion": {
+      "inputs": [
+        {
+          "dtype": "float32",
+          "name": "obs",
+          "shape": [
+            1,
+            115
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "previous_action",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "h_in",
+          "shape": [
+            1,
+            64
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "calibration_context",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "dtype": "float32",
+          "name": "continuous_actions",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "previous_action_out",
+          "shape": [
+            1,
+            14
+          ]
+        },
+        {
+          "dtype": "float32",
+          "name": "h_out",
+          "shape": [
+            1,
+            64
+          ]
+        }
+      ]
+    }
+  },
+  "expected_result_checks": [
+    "frozen_source_hashes_exact",
+    "protected_winner_v10_hashes_exact",
+    "protected_stored_and_inward_boundaries_exact",
+    "deployable_exports_byte_exact_to_winner_v11",
+    "calibrator_abi_exact",
+    "deployable_locomotion_abis_exact",
+    "debug_output_absent_from_deployable_abi",
+    "jax_cpu_only",
+    "onnxruntime_cpu_only",
+    "calibrator_step_zero_and_chain_within_1e_7",
+    "calibrator_response_encoder_trainable",
+    "calibration_sequence_handoff_and_fail_closed_exact",
+    "protected_default_off_identity_bit_exact",
+    "x0_exact_zero_and_identity",
+    "default_response_branch_within_1e_7",
+    "enabled_response_branch_within_1e_7",
+    "full_authoritative_onnx_bounds_hold",
+    "physical_onnx_chains_exact_and_bounded",
+    "recurrent_previous_action_precondition_held",
+    "frozen_population_exact_for_both_checkpoints",
+    "no_configuration_or_debug_tensor_in_deployable_inputs",
+    "zero_optimizer_steps_and_behavior_cells"
+  ],
+  "explicit_non_gate": {
+    "quantity": "full protected-policy JAX transcription versus ONNX",
+    "reason": "Winner-v11 already closed this over-coupled quantity; deployment uses the exact protected ONNX graph and byte-exact ONNX wrapper",
+    "still_recorded": true
+  },
+  "hypothesis": "The exact Winner-v11 deployable ONNX wrapper can remain byte-identical while backend agreement is decomposed: only the new calibrator and response-branch tensors are gated at the unchanged 1e-7 tolerance, and the complete authoritative ONNX action is gated by the unchanged stored and inward-rounded physical action boundaries.",
+  "no_retry_or_tuning": "A failed formal run is recorded as a Winner-v12 hold. Do not change seeds, populations, tolerance, graph ABI, protected hashes, bounds, or pass rules and rerun.",
+  "pass_authorizes_only": "write and review a separate Winner-v12 calibrator-training preregistration; no optimizer step or behavior evaluation",
+  "pass_rule": [
+    "all frozen source and exact Winner-v10 policy hashes match",
+    "both deployable exports are byte-identical to the Winner-v11 exporter outputs",
+    "the checker-only response-delta tensor is absent from each deployable ABI",
+    "calibrator step-zero and 250-tick chain agree across JAX and ONNX within the unchanged 1e-7 tolerance",
+    "default and enabled new response-branch hidden/delta tensors agree across JAX and ONNX within the unchanged 1e-7 tolerance",
+    "default-off actions and recurrent state remain bit-exact to both protected ONNX checkpoints and exact zero at x=0",
+    "all complete authoritative ONNX outputs obey the unchanged stored and inward-rounded physical boundaries",
+    "all 32-tick physical chains preserve phase, t-2/t-3/t-4 action history, P30 applied target, projected reference, and recurrent preconditions",
+    "the exact population runs CPU-only with zero optimizer steps and zero behavior cells"
+  ],
+  "protected_policies": {
+    "final": {
+      "committed_binary": false,
+      "role": "exact Winner-v10 protected final checkpoint",
+      "sha256": "d52b63241340d9d56671b95c58bb0fc72af0998fd47d4684719f6cd44f244a10"
+    },
+    "half": {
+      "committed_binary": false,
+      "role": "exact Winner-v10 protected half checkpoint",
+      "sha256": "cf001269908d86e47eaa145ffda1d87e946a314ecf51056dc086c4cf10164ab6"
+    }
+  },
+  "schema_version": "winner_v12.zero_ppo_decomposed_backend_preregistration.v1",
+  "sources": {
+    "base_v6_checker": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "tools/check_winner_v6_zero_ppo_cpu_contract.py",
+      "sha256": "191f326129240c573e93ddcc2de56c93020589fb701cb4a311ce9742f86b77ef"
+    },
+    "base_v6_network_source": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "patches/winner_v6_dynamic_calibration_networks.py",
+      "sha256": "cfff280a1c592043d7e1849c68a3c99b05574814180506e6608f17877a5dbb90"
+    },
+    "builder": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "tools/build_winner_v12_zero_ppo_decomposed_backend_contract.py",
+      "sha256": "a95994639894a17a6119bb82e285b0d9be381b40788cfa3732be38ad54b2923f"
+    },
+    "checker": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "tools/check_winner_v12_zero_ppo_decomposed_backend.py",
+      "sha256": "a834bcb93e610544bbe01f0b54d30d702aa0255294d8f935c52f22f9e4cdb2cd"
+    },
+    "closed_winner_v11_result": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "outputs/analysis/winner_v11_zero_ppo_cpu_mechanics_result.json",
+      "sha256": "f946b79b16a6769c87ebf31e4134d1c80c83bc6071bbeb5d61ecade387895a0a"
+    },
+    "importer": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "tools/import_winner_v12_zero_ppo_decomposed_backend.py",
+      "sha256": "429936ef7c95a8b7d1a463c465f0dbe59b1cdb6012cee7f0b23ee0776d76001e"
+    },
+    "network_source": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "patches/winner_v12_decomposed_backend_networks.py",
+      "sha256": "f463223a33f80baf81b2604e0df22c647660f2752a7ca60b8c75a3441460d015"
+    },
+    "runtime_rereview_receipt": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "outputs/analysis/winner_v11_runtime_rereview_receipt.json",
+      "sha256": "66a625180cf4a03470fa58e40c839c4a40a93c2ace5aa128f4aca2d3b9d17bb1"
+    },
+    "winner_v11_checker": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "tools/check_winner_v11_zero_ppo_cpu_mechanics.py",
+      "sha256": "719318fe9f439a91272179bbe96cd3f1c26984b58dfee5c866dec32556aa9f1e"
+    },
+    "winner_v11_network_source": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "patches/winner_v11_dynamic_calibration_networks.py",
+      "sha256": "3ac1166920ec1a3fbcfbca5a85870c6afc1dc0e5062023801edbed09fcdc4809"
+    },
+    "winner_v11_numeric_attribution": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "outputs/analysis/winner_v11_numeric_hold_attribution.json",
+      "sha256": "e1ab186678e19ac36a029db9bba25126ea2b080f5c728fc4bc275ff03e017683"
+    },
+    "winner_v11_preregistration": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "outputs/analysis/winner_v11_zero_ppo_cpu_mechanics_preregistration.json",
+      "sha256": "adac3d194d6751b1f8a8119f3d77d4e97603834d782a477c3c88137e523162ca"
+    },
+    "winner_v2_golden_evidence": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/golden_evidence.json",
+      "sha256": "3e9d501e087e8ef415beb2a8f0462f5ac1f1852a61aa968e490e8a65f0442a3f"
+    },
+    "winner_v2_handoff_manifest": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/manifest.json",
+      "sha256": "d771d188218152c782c7d688440e2dd2083b47fd9b883749123f89226c6827c5"
+    },
+    "winner_v2_handoff_readme": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/README.md",
+      "sha256": "2c0854ad8c13afb903e5ea85e1b9d03996fcd0745d2f13d3c0898b1693b36042"
+    },
+    "winner_v2_observation_map": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observation_map.json",
+      "sha256": "f0b78431a3a98d418fbe04eebeb0316538121d1199d35f38dbdd0528ee1917a7"
+    },
+    "winner_v2_observer_source": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py",
+      "sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889"
+    },
+    "winner_v2_p30_fit": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/p30_actuator_fit.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "winner_v2_policy_contract": {
+      "hash_mode": "sha256 after CRLF-to-LF normalization",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/policy_contract.json",
+      "sha256": "58831a252c43ba9577b9b743e69e0e3d739992d6e1fbae0ee1caba615014eba4"
+    },
+    "winner_v2_reference_table": {
+      "hash_mode": "raw sha256",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/reference/ground_up_projected_reference_feature_table.npz",
+      "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+    }
+  },
+  "status": "PREREGISTERED_NOT_RUN",
+  "test_population": {
+    "action_history_lags": [
+      2,
+      3,
+      4
+    ],
+    "applied_target_source": "exact frozen P30 forward observer",
+    "calibration_ticks": 250,
+    "default_off_identity_cases_per_checkpoint": 66,
+    "default_off_x0_ticks_per_checkpoint": 32,
+    "default_response_cases_per_checkpoint": 66,
+    "enabled_full_graph_cases_per_checkpoint": 256,
+    "enabled_response_cases_per_checkpoint": 256,
+    "formal_behavior_cells": 0,
+    "invalid_policy_handoff_cases": 9,
+    "new_branch_numeric_tolerance": 1e-07,
+    "optimizer_steps": 0,
+    "phase_period_ticks": 27,
+    "physical_chain_ticks_per_checkpoint": 32,
+    "step_zero_cases": 66
+  }
+}

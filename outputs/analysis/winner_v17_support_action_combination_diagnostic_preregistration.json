@@ -1,0 +1,449 @@
+{
+  "advancement_rule": "Only a combination passing all 12 cells at both checkpoints advances. Select fewest active axes, then minimum maximum action deviation, then minimum mean-squared deviation, then frozen intervention order. No closest failing combination advances.",
+  "authority": {
+    "pass_authorizes_only": "a separate CPU-only selected-combination contract preregistration",
+    "robot_clearance": false,
+    "training_authorized": false
+  },
+  "baseline_reproduction": {
+    "all_other_compared_fields": "exact",
+    "derived_float_fields": [
+      "terminal",
+      "episode"
+    ],
+    "finite_absolute_tolerance": 1e-12,
+    "observation_action_prediction_hidden_trace_hashes": "exact"
+  },
+  "causal_basis": {
+    "ANKLE_POS": {
+      "compared_cells": 24,
+      "desired_minus_baseline_tick_range": [
+        8,
+        219
+      ],
+      "desired_minus_opposite_tick_range": [
+        14,
+        228
+      ],
+      "desired_outlives_baseline_cells": 24,
+      "desired_outlives_opposite_cells": 24,
+      "opposite": "ANKLE_NEG",
+      "opposite_minus_baseline_tick_range": [
+        -36,
+        -6
+      ],
+      "opposite_shortens_baseline_cells": 24
+    },
+    "HIP_MAG_NEG": {
+      "compared_cells": 24,
+      "desired_minus_baseline_tick_range": [
+        3,
+        36
+      ],
+      "desired_minus_opposite_tick_range": [
+        8,
+        50
+      ],
+      "desired_outlives_baseline_cells": 24,
+      "desired_outlives_opposite_cells": 24,
+      "opposite": "HIP_MAG_POS",
+      "opposite_minus_baseline_tick_range": [
+        -29,
+        -4
+      ],
+      "opposite_shortens_baseline_cells": 24
+    },
+    "KNEE_POS": {
+      "compared_cells": 24,
+      "desired_minus_baseline_tick_range": [
+        6,
+        205
+      ],
+      "desired_minus_opposite_tick_range": [
+        12,
+        225
+      ],
+      "desired_outlives_baseline_cells": 24,
+      "desired_outlives_opposite_cells": 24,
+      "opposite": "KNEE_NEG",
+      "opposite_minus_baseline_tick_range": [
+        -36,
+        -5
+      ],
+      "opposite_shortens_baseline_cells": 24
+    }
+  },
+  "decision": "AUTHORIZE_ONE_CPU_ONLY_SIGN_CONSISTENT_COMBINATION_DIAGNOSTIC",
+  "execution_now": {
+    "diagnostic_cells": 0,
+    "locomotion_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "frozen_screen": {
+    "cells_per_checkpoint_intervention": 12,
+    "checkpoint_labels": [
+      "half",
+      "final"
+    ],
+    "duration_ticks": 250,
+    "failure_configuration_ids": [
+      "COM_CORNER_01",
+      "COM_CORNER_03",
+      "COM_X_NEG",
+      "DISCOVERY_03",
+      "HELDOUT_04",
+      "HELDOUT_09"
+    ],
+    "interventions": [
+      {
+        "axis": null,
+        "direction": 0,
+        "id": "BASELINE"
+      },
+      {
+        "axis": [
+          "HIP_MAG_NEG"
+        ],
+        "direction": 1,
+        "id": "HIP_MAG_NEG"
+      },
+      {
+        "axis": [
+          "KNEE_POS"
+        ],
+        "direction": 1,
+        "id": "KNEE_POS"
+      },
+      {
+        "axis": [
+          "ANKLE_POS"
+        ],
+        "direction": 1,
+        "id": "ANKLE_POS"
+      },
+      {
+        "axis": [
+          "HIP_MAG_NEG",
+          "KNEE_POS"
+        ],
+        "direction": 1,
+        "id": "HIP_NEG_KNEE_POS"
+      },
+      {
+        "axis": [
+          "HIP_MAG_NEG",
+          "ANKLE_POS"
+        ],
+        "direction": 1,
+        "id": "HIP_NEG_ANKLE_POS"
+      },
+      {
+        "axis": [
+          "KNEE_POS",
+          "ANKLE_POS"
+        ],
+        "direction": 1,
+        "id": "KNEE_POS_ANKLE_POS"
+      },
+      {
+        "axis": [
+          "HIP_MAG_NEG",
+          "KNEE_POS",
+          "ANKLE_POS"
+        ],
+        "direction": 1,
+        "id": "HIP_NEG_KNEE_POS_ANKLE_POS"
+      }
+    ],
+    "normalized_offset_per_active_axis": 0.12,
+    "optimizer_updates": 0,
+    "plants": [
+      "P30_ALL_JOINT",
+      "P31_34_PITCH_WITH_P30_NONPITCH"
+    ],
+    "target_offset_per_active_axis_rad": 0.03,
+    "total_cells": 192
+  },
+  "hypothesis": "The unanimous hip-negative, knee-positive, and ankle-positive survival directions interact additively enough that at least one nonempty subset passes all negative-X cells at both frozen checkpoints.",
+  "schema_version": "winner_v17.support_action_combination_diagnostic_preregistration.v1",
+  "source_manifest_sha256": "1c2c3ae8c1fd7c712d9080dbe82452ecb6c08089c388a848e1d2f154ca9247de",
+  "sources": {
+    "base_direction_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v16_support_action_direction_diagnostic.py",
+      "sha256": "5109283507d8aec463a5bbfb735ce8ade1fda5bbcc728b9a2a18e383c7180aa4"
+    },
+    "base_gate_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_support_gate.py",
+      "sha256": "18873eee55c77a278fc065de64c0b912803bf29b4440cde7f3adaabe1297baca"
+    },
+    "baseline_comparator_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v16_support_action_direction_diagnostic_v2.py",
+      "sha256": "210c5696936389c8616ed38da2589c668429254d293c73f766d0103d5b393194"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v17_support_action_combination_diagnostic_preregistration.py",
+      "sha256": "afdc9457df8f05ed21d522ce08d3b8665d444d678d2139de53a1261d0b1b96dd"
+    },
+    "calibrator_design_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_training_preregistration.json",
+      "sha256": "1ec76a587c6fa50b92866c1632a7046ae0c6687ed17b1636b664bf45c2e8ba34"
+    },
+    "combination": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v17_support_action_combination.py",
+      "sha256": "a2dd14a03ccae7d7ccc55f0c37899a9e356e84b205a95998d97cb49061b2f837"
+    },
+    "combination_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v17_support_action_combination.py",
+      "sha256": "e444787d9fa68abcada7889b29af36afcfed76b615da4f89dabf7bb5b00cff5a"
+    },
+    "deployable_network": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_decomposed_backend_networks.py",
+      "sha256": "f463223a33f80baf81b2604e0df22c647660f2752a7ca60b8c75a3441460d015"
+    },
+    "direction_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v16_support_action_direction_diagnostic_v2_result.json",
+      "sha256": "622113f9854a05db2d90cb3aa63a936ed024cfd8ffcde0e12a776084062a3999"
+    },
+    "direction_transform": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v16_support_action_direction.py",
+      "sha256": "1b34b8d26743904e005d844e5f7e07e53f78a555a8a99f0035d3f0a778352c33"
+    },
+    "environment_preparation": {
+      "hash_mode": "lf",
+      "path": "tools/prepare_winner_v15_cpu_environment.py",
+      "sha256": "33e54c3a16d5684e2d2520270acf25a28df42dc89e9f302c1ef3bd5f37d867c2"
+    },
+    "formal_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v15_pitch_margin_support_gate_result.json",
+      "sha256": "37b8dbcf043f5917de61bcc18a892e1ebad6e8ab02e2b2450a0461252f8e241d"
+    },
+    "hold_attribution": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v16_support_action_direction_hold_attribution.json",
+      "sha256": "7bd7f91780e8a91eb8e420563a0c5f9bbe0add2973c3085811b67bfc79476ef5"
+    },
+    "normalized_training": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v13_normalized_calibrator_training.py",
+      "sha256": "b57ae2823cff90bfd8d78317adb1dfe9607bcae069a4d985863144b4e12ec3ca"
+    },
+    "preregistration_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v17_support_action_combination_diagnostic_preregistration.py",
+      "sha256": "44ee7098ad605a1cc9c1d053a145e105c86be3013f83ad1964391fc6a36208c0"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v17_support_action_combination_diagnostic.py",
+      "sha256": "858d1f8c1fc20d2440cdba5abaa6d502f6e161f4642ca067f00dc56c55a105b0"
+    },
+    "runner_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v17_support_action_combination_diagnostic.py",
+      "sha256": "b054c28c45339ea9e4339eb9d2710272ae0446b956f20d5ae792c7d997d4c760"
+    },
+    "training_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v15_pitch_margin_support_training_result.json",
+      "sha256": "6014e6cf3492855f7c61aaa83a57e8058543237dd9ac0509149a0a20236b7980"
+    },
+    "v14_diagnostic_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v14_support_action_diagnostic.py",
+      "sha256": "70f40d3ddf739daade3fb433cd131f39f9bf7d689af930d517b403ced431de53"
+    },
+    "v14_transform": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v14_support_action_diagnostic.py",
+      "sha256": "bd5c101b17444c6450134918a2021b462da05558ecbabb63ee50ff47b8b90b10"
+    },
+    "v15_gate_adapter": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v15_pitch_margin_support_gate.py",
+      "sha256": "49002e26a9f55e26199cf789c72192c1258944f4b4f736841db047c9d32ba380"
+    },
+    "variable_configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v17-support-action-combination-diagnostic.yml",
+      "sha256": "efe0ce5e887bb2170d14566d080708e4600871187e82674b23ca5fd6faf0e788"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V17_SUPPORT_ACTION_COMBINATION_DIAGNOSTIC",
+  "training_artifact": {
+    "final": {
+      "graph": {
+        "abi_exact": true,
+        "all_chain_outputs_finite": true,
+        "all_initializers_finite": true,
+        "bytes": 54896,
+        "chain_ticks": 250,
+        "forbidden_training_or_privileged_tokens": [],
+        "initializer_count": 9,
+        "inputs": [
+          {
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "jax_onnx_at_most_1e_7": true,
+        "jax_onnx_max_abs_error": 8.731149137020111e-11,
+        "outputs": [
+          {
+            "name": "calibration_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "path": "/tmp/winner-v15-pitch-margin-training-work/graphs/winner_v15_pitch_margin_final.onnx",
+        "previous_action_out_equals_action_bit_exact": true,
+        "sha256": "3448e653b829930675ac5d68b19cee03d9a0c228729a58bb190093c2a7c93e43",
+        "training_only_tensors_absent": true
+      },
+      "snapshot": {
+        "array_count": 26,
+        "bit_exact_readback": true,
+        "bytes": 128528,
+        "path": "/tmp/winner-v15-pitch-margin-training-work/snapshots/snapshot_stage2_update_100.npz",
+        "sha256": "6697a242eb9137c49824023df3c6ed2a513f704ac7d5e1da3a956109f3183562"
+      }
+    },
+    "half": {
+      "graph": {
+        "abi_exact": true,
+        "all_chain_outputs_finite": true,
+        "all_initializers_finite": true,
+        "bytes": 54896,
+        "chain_ticks": 250,
+        "forbidden_training_or_privileged_tokens": [],
+        "initializer_count": 9,
+        "inputs": [
+          {
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "jax_onnx_at_most_1e_7": true,
+        "jax_onnx_max_abs_error": 5.820766091346741e-11,
+        "outputs": [
+          {
+            "name": "calibration_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "path": "/tmp/winner-v15-pitch-margin-training-work/graphs/winner_v15_pitch_margin_half.onnx",
+        "previous_action_out_equals_action_bit_exact": true,
+        "sha256": "eb819b9e1b4124d51619a423ef427d73770641ee8c6305299dfcc646354db8c3",
+        "training_only_tensors_absent": true
+      },
+      "snapshot": {
+        "array_count": 26,
+        "bit_exact_readback": true,
+        "bytes": 104195,
+        "path": "/tmp/winner-v15-pitch-margin-training-work/snapshots/snapshot_stage2_update_050.npz",
+        "sha256": "d14cf7b075af24dec117d797a31c75f8e014af2d0a85d78f607357ec87808018"
+      }
+    },
+    "repository_attribution": {
+      "artifact_zip_bytes": 10235954,
+      "artifact_zip_sha256": "b88b74f3e3b2aa1ad03daaf1ca1f9626f41658838b8362f9c4bcbf018f7c9638",
+      "github_artifact_digest": "sha256:b88b74f3e3b2aa1ad03daaf1ca1f9626f41658838b8362f9c4bcbf018f7c9638",
+      "github_artifact_id": 8500649657,
+      "github_artifact_name": "winner-v15-pitch-margin-training-29837713102",
+      "github_run_attempt": 1,
+      "github_run_head_sha": "3213b81bba16ef266639cd9763a4a240ea71d7a5",
+      "github_run_id": 29837713102,
+      "importer_lf_sha256": "09b2ab4ff8caf26885f865adf645ebeedeeaae4836b3d7215b15cd0f016af437",
+      "preregistration_lf_sha256": "2486c3afd4f5ecb5ee6f3d819b9a15d6dc6f69a9b76fea81f2d1be07f8e28b93",
+      "raw_result_receipt_sha256": "83ea3f54666b3903213704c5c5a6ffbaa738230793da13baacaec805ea16ced0",
+      "raw_result_sha256": "dbb29a6158835593df728c55050ee959f076de11327e443901acee4b990790f9",
+      "repository": "RobVanProd/open-duck-mini-rdkx5",
+      "runner_lf_sha256": "2843817edec648b6c7021bc2b1bacd11814c3b67d8672ce257128e911a27ac0a",
+      "workflow_lf_sha256": "6fe69a62c9b49117cb3d5534ac5573b017080dd39c0410db059f016696130ed5"
+    }
+  },
+  "validity_rule": "The baseline must reproduce all 24 exact trace hashes and gate-setting fields under the reviewed derived-float tolerance. All 192 cells must preserve exact combination math, graph bounds, finite values, and zero optimizer/robot access."
+}

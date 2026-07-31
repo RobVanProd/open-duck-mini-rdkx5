@@ -1,0 +1,72 @@
+{
+  "authority": {
+    "authorizes_only": "one separately frozen CPU mechanics contract",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "support_training_authorized": false
+  },
+  "decision": "PREREGISTER_ONE_SIDED_NEGATIVE_PITCH_MARGIN_CPU_CONTRACT",
+  "deferred_architecture": {
+    "flat_long_range_kernel": "not selected",
+    "reason": "Every nonzero scale preserves all 16 heldout contexts and failures occur within 28-71 ticks, so evidence does not identify long-range transport."
+  },
+  "diagnosis": {
+    "all_action_deltas_within_graph_bounds": true,
+    "all_five_scales_failed": true,
+    "all_nonzero_scales_preserve_heldout_context": true,
+    "all_repeats_bit_exact": true,
+    "causal_interpretation": "The action head receives stable, distinct response context and stays within its graph bounds, yet repeatedly crosses only the negative-pitch support boundary within 28-71 ticks, including four configurations used during training. Fixed inference amplitude and information transport are not selected causes; the sparse alive/terminal support objective is.",
+    "corrected_predictor_beats_constant_at_every_scale_checkpoint": true,
+    "failure_pitch_rad_range": [
+      -0.3836970013028062,
+      -0.35016071580508107
+    ],
+    "failure_tick_range": [
+      28,
+      71
+    ],
+    "persistent_failure_configurations": [
+      "COM_CORNER_01",
+      "COM_CORNER_03",
+      "COM_X_NEG",
+      "DISCOVERY_03",
+      "HELDOUT_09"
+    ],
+    "persistent_failures_present_in_training_population": [
+      "COM_CORNER_01",
+      "COM_CORNER_03",
+      "COM_X_NEG",
+      "DISCOVERY_03"
+    ],
+    "terminal_failed_check_counts": {
+      "roll_pitch": 110
+    }
+  },
+  "execution_now": {
+    "locomotion_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0,
+    "support_cells": 0
+  },
+  "reviewed_source_objective": {
+    "failure_transition_reward": 0.0,
+    "pitch_boundary_rad": 0.35,
+    "settled_terminal_bonus": 250.0,
+    "valid_transition_reward": 1.0
+  },
+  "schema_version": "winner_v15.pitch_margin_objective_attribution.v1",
+  "selected_single_change": {
+    "failure_transition_reward": 0.0,
+    "scope": "training reward only; observation, action, graph, plant, population, seeds, and gates unchanged",
+    "settled_terminal_bonus": 250.0,
+    "source_checkpoint": "restart from the exact passing Winner-v13 Stage-1 snapshot; do not continue failed Stage-2 weights",
+    "valid_transition_reward": "1 - square(clip(max(0, -next_pitch_rad) / 0.35, 0, 1))",
+    "why_no_tunable_scale": "The penalty is dimensionless, normalized by the existing frozen 0.35-rad failure boundary, and bounded in [0,1], exactly the original alive-reward range."
+  },
+  "sources": {
+    "configuration_domain_lf_sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b",
+    "reviewed_smoke_lf_sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87",
+    "winner_v14_import_lf_sha256": "41b586b604e5ca34578f905f6ce5e85df4b91e460027b836ad18daa07465d1e4"
+  },
+  "status": "PASS_WINNER_V15_PITCH_MARGIN_OBJECTIVE_ATTRIBUTION"
+}

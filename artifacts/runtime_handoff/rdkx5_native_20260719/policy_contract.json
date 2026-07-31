@@ -1,0 +1,411 @@
+{
+  "action_contract": {
+    "action_scale_rad": 0.25,
+    "authoritative_layer": "final ONNX output",
+    "deadband": {
+      "absolute_threshold": 0.009999999776482582,
+      "obs_index": 6,
+      "zeroes_action_and_state": true
+    },
+    "extra_filter": "forbidden",
+    "head_overlay": "disabled and forbidden; head commands must be zero",
+    "home_rad": [
+      0.0020000000949949026,
+      0.05299999937415123,
+      -0.6299999952316284,
+      1.3680000305175781,
+      -0.7839999794960022,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      -0.003000000026077032,
+      -0.06499999761581421,
+      0.6349999904632568,
+      1.378999948501587,
+      -0.7960000038146973
+    ],
+    "host_5p24_limiter": "permitted only as an asserted identity/no-op; any changed target is a contract failure",
+    "joint_order": [
+      "left_hip_yaw",
+      "left_hip_roll",
+      "left_hip_pitch",
+      "left_knee",
+      "left_ankle",
+      "neck_pitch",
+      "head_pitch",
+      "head_yaw",
+      "head_roll",
+      "right_hip_yaw",
+      "right_hip_roll",
+      "right_hip_pitch",
+      "right_knee",
+      "right_ankle"
+    ],
+    "left_ankle_repair": {
+      "initializer": "max_action_delta[0,4]",
+      "joint_index": 4,
+      "joint_name": "left_ankle",
+      "prior_rate_rad_s": 1.75,
+      "rate_rad_s": 1.5,
+      "value_normalized_per_tick": 0.11999999731779099
+    },
+    "max_action_delta_normalized_per_tick": [
+      0.41919997334480286,
+      0.41919997334480286,
+      0.11999999731779099,
+      0.11999999731779099,
+      0.11999999731779099,
+      0.41919997334480286,
+      0.41919997334480286,
+      0.41919997334480286,
+      0.41919997334480286,
+      0.41919997334480286,
+      0.41919997334480286,
+      0.09999999403953552,
+      0.07999999821186066,
+      0.09999999403953552
+    ],
+    "measured_rate_limits_rad_s": [
+      5.24,
+      5.24,
+      1.5,
+      1.5,
+      1.5,
+      5.24,
+      5.24,
+      5.24,
+      5.24,
+      5.24,
+      5.24,
+      1.25,
+      1.0,
+      1.25
+    ],
+    "output_semantics": "final normalized absolute home-offset action",
+    "target_equation": "logical_target_rad=home_rad+continuous_actions*0.25"
+  },
+  "authority": {
+    "gate5": false,
+    "gpu_or_igpu": false,
+    "robot_clearance": false,
+    "robot_or_rdk_x5": false,
+    "runtime_deployment": false,
+    "training_or_hosted_compute": false
+  },
+  "disposition": "REQUIRES_REVIEWED_115_RUNTIME_V2",
+  "graph_internal_transforms": {
+    "P30_delay_tau_observer": false,
+    "actual_centered_pitch_guard": true,
+    "conservative_left_ankle_repair": true,
+    "measured_hard_vector_projection": true,
+    "normalization": true,
+    "reference_residual_composition": true,
+    "zero_command_deadband": true
+  },
+  "phase_command_reset": {
+    "commands": [
+      0.0,
+      0.074,
+      0.077,
+      0.08
+    ],
+    "contacts": [
+      1.0,
+      1.0
+    ],
+    "control_dt_s": 0.02,
+    "initial_index": 0,
+    "moving_support_m_s": [
+      0.074,
+      0.08
+    ],
+    "ordering": "observe current phase, infer, advance once for next tick",
+    "other_command_axes": "must be exactly zero",
+    "period_ticks": 27,
+    "physics_dt_s": 0.002,
+    "physics_substeps": 10,
+    "representation": "[cos(2*pi*index/27), sin(2*pi*index/27)]",
+    "reset_ctrl_rad": [
+      0.0020000000949949026,
+      0.05299999937415123,
+      -0.6299999952316284,
+      1.3680000305175781,
+      -0.7839999794960022,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      -0.003000000026077032,
+      -0.06499999761581421,
+      0.6349999904632568,
+      1.378999948501587,
+      -0.7960000038146973
+    ],
+    "reset_qpos": [
+      0.0,
+      0.0,
+      0.15000000596046448,
+      1.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0020000000949949026,
+      0.0,
+      0.05299999937415123,
+      0.0,
+      -0.6299999952316284,
+      0.0,
+      1.3680000305175781,
+      0.0,
+      -0.7839999794960022,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      -0.003000000026077032,
+      0.0,
+      -0.06499999761581421,
+      0.0,
+      0.6349999904632568,
+      0.0,
+      1.378999948501587,
+      0.0,
+      -0.7960000038146973,
+      0.0
+    ],
+    "reset_qvel": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "tick0_phase": [
+      1.0,
+      0.0
+    ],
+    "zero_command_behavior": "deadband emits exact zero action and state for 600 ticks"
+  },
+  "policy_candidates": [
+    {
+      "bytes": 906951,
+      "checkpoint_step": 512000,
+      "initializers": 24,
+      "inputs": [
+        {
+          "dimensions": [
+            1,
+            115
+          ],
+          "dtype": "float",
+          "name": "obs",
+          "rank": 2
+        },
+        {
+          "dimensions": [
+            1,
+            14
+          ],
+          "dtype": "float",
+          "name": "previous_action",
+          "rank": 2
+        }
+      ],
+      "nodes": 40,
+      "onnx_ir_version": 10,
+      "opsets": [
+        {
+          "domain": "",
+          "version": 12
+        }
+      ],
+      "outputs": [
+        {
+          "dimensions": [
+            1,
+            14
+          ],
+          "dtype": "float",
+          "name": "continuous_actions",
+          "rank": 2
+        },
+        {
+          "dimensions": [
+            1,
+            14
+          ],
+          "dtype": "float",
+          "name": "previous_action_out",
+          "rank": 2
+        }
+      ],
+      "path": "policies/T2_EQUAL_512000.onnx",
+      "producer_name": "open-duck-playground-ground-up",
+      "producer_version": "",
+      "role": "selected_runtime_v2_review_checkpoint",
+      "sha256": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de"
+    },
+    {
+      "bytes": 906951,
+      "checkpoint_step": 1024000,
+      "initializers": 24,
+      "inputs": [
+        {
+          "dimensions": [
+            1,
+            115
+          ],
+          "dtype": "float",
+          "name": "obs",
+          "rank": 2
+        },
+        {
+          "dimensions": [
+            1,
+            14
+          ],
+          "dtype": "float",
+          "name": "previous_action",
+          "rank": 2
+        }
+      ],
+      "nodes": 40,
+      "onnx_ir_version": 10,
+      "opsets": [
+        {
+          "domain": "",
+          "version": 12
+        }
+      ],
+      "outputs": [
+        {
+          "dimensions": [
+            1,
+            14
+          ],
+          "dtype": "float",
+          "name": "continuous_actions",
+          "rank": 2
+        },
+        {
+          "dimensions": [
+            1,
+            14
+          ],
+          "dtype": "float",
+          "name": "previous_action_out",
+          "rank": 2
+        }
+      ],
+      "path": "policies/T2_EQUAL_1024000.onnx",
+      "producer_name": "open-duck-playground-ground-up",
+      "producer_version": "",
+      "role": "persistent_audit_sibling_not_selected_for_runtime",
+      "sha256": "0dfc24bde5d839e4d346dd8c08d9a7d0222a3847764ec6738bfc7f8d947f4ece"
+    }
+  ],
+  "policy_handoff_status": "BLOCKED",
+  "schema_version": "winner_v2_rdkx5_native_handoff.v1.1",
+  "selected_onnx_sha256": "99d3afce0dfac127816c6327665c35b3c403e005f25cd0a505dfcb37f01304de",
+  "selection_reason": "Both persistence checkpoints passed the prospectively frozen native-representation matrix. The first ranking criterion selected 512000 on lower worst tracking p95; training and simulator reward had no weight.",
+  "single_selected_deployment_checkpoint": 512000,
+  "state_contract": {
+    "dtype": "float32",
+    "initial_value": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "input": "previous_action",
+    "joint_order": [
+      "left_hip_yaw",
+      "left_hip_roll",
+      "left_hip_pitch",
+      "left_knee",
+      "left_ankle",
+      "neck_pitch",
+      "head_pitch",
+      "head_yaw",
+      "head_roll",
+      "right_hip_yaw",
+      "right_hip_roll",
+      "right_hip_pitch",
+      "right_knee",
+      "right_ankle"
+    ],
+    "output": "previous_action_out",
+    "shape": [
+      1,
+      14
+    ],
+    "units": "normalized final action",
+    "update_order": [
+      "compose obs[t] with current phase and preceding P30 observer value",
+      "infer(obs[t], previous_action[t])",
+      "use continuous_actions[t] as final normalized action",
+      "store previous_action_out[t] as previous_action[t+1]",
+      "send home + action*0.25 after proving host 5.24 limiter is identity",
+      "advance P30 observer exactly once from the confirmed sent target",
+      "advance phase exactly once for obs[t+1]"
+    ]
+  },
+  "transform_artifacts": {
+    "P30_fit_sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b",
+    "actual_centered_guard": {
+      "composer_sha256": "078ed5a0396fda357083e5a90d7237f39d8f1c889e0cc2db71d119c6e5ab0259",
+      "contract_sha256": "fccc6fa0127ab11f7044b9623709a5b0efda9447c972bc3b0ed699d3ec07a882"
+    },
+    "conservative_left_ankle_envelope": {
+      "composer_sha256": "e61bb0d5484251b0b29cbe099743e8c236b8ffb00539480c2b1bb4f954648455",
+      "contract_sha256": "b52f98d2810678b3b7cc4fa47352432991eb180c9326133af05b0647434d716d"
+    },
+    "reference_composer_sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889",
+    "zero_command_deadband": {
+      "composer_sha256": "37264573cc86fc31df4caf97b65ac7ba503049bd1d89979ed437957a52274451",
+      "contract_sha256": "e91a775c213d16d0fbe48ee218ea55ea06f099021e89d382cea7479799c6720d"
+    }
+  },
+  "unresolved_blockers": [
+    "No single deployment checkpoint is selected; both graphs are persistence evidence.",
+    "The reviewed native runtime is the frozen 101-D v1 contract; a reviewed 115-D v2 implementation is absent.",
+    "The real-build torso COM/inertia audit is incomplete (46 required inputs missing), so robot clearance remains NO."
+  ]
+}

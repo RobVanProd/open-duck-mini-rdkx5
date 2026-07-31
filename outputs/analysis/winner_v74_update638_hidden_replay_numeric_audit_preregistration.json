@@ -1,0 +1,147 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "continuation_authorized": false,
+    "deployment_authorized": false,
+    "diagnostic_authorized": true,
+    "formal_support_gate_authorized": false,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "causal_question": "Does count 638 reproduce the previously proven eager-versus-lax.scan float32 execution-order drift while eager replay remains bit-exact and every frozen downstream policy/PPO effect remains within the V59 functional bounds?",
+  "decision": "AUTHORIZE_ONE_ZERO_UPDATE_UPDATE638_HIDDEN_REPLAY_NUMERIC_AUDIT_ONLY",
+  "diagnostic": {
+    "attempted_optimizer_count": 638,
+    "environments": 80,
+    "rollout_update_index": 637,
+    "source_optimizer_count": 637,
+    "ticks_per_environment": 250
+  },
+  "execution_now": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "functional_thresholds": {
+    "eager_hidden_max_abs_error": 0.0,
+    "log_probability_max_abs_delta": 0.0001,
+    "mean_action_max_abs_delta": 1e-06,
+    "ppo_loss_abs_delta": 0.0001,
+    "probability_ratio_max_abs_delta": 0.0001,
+    "value_max_abs_delta": 1e-05
+  },
+  "prior_invocation": {
+    "attempted_optimizer_count": 638,
+    "durable_graph_count": 1,
+    "durable_snapshot_count": 35,
+    "exception": "ValueError: Winner-v71 replay/teacher contract changed at 638",
+    "last_durable_optimizer_count": 637,
+    "result_written": false,
+    "status": "STOPPED_WINNER_V71B_REPLAY_TEACHER_CONTRACT_AT_638"
+  },
+  "schema_version": "winner_v74.update638_hidden_replay_numeric_audit_preregistration.v1",
+  "source_checkpoint": {
+    "completed_updates": 637,
+    "graph": {
+      "bytes": 54896,
+      "completed_updates": 605,
+      "label": "half",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v71b-fresh-moment-safeguarded-continuation\\graphs\\winner_v71_half.onnx",
+      "sha256": "e2b97fe6b18c09c69fd9a9d8a1fe9e39cfa6b2a806f20bd05a215253830d5eab"
+    },
+    "optimizer_count": 637,
+    "snapshot": {
+      "bytes": 195327,
+      "completed_updates": 637,
+      "optimizer_count": 637,
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v71b-fresh-moment-safeguarded-continuation\\snapshots\\snapshot_fresh_moment_safeguarded_update_637.npz",
+      "sha256": "ab653455ee3d79b053d3f242192de02536e838accd5ba872042a959dde231d5b"
+    }
+  },
+  "source_manifest_sha256": "ec25b4de720bee9baefcd9811bd32166afcd19b3001c1f2c8036bb1e26ba8118",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v74_update638_hidden_replay_numeric_audit.py",
+      "sha256": "3bf6528c8f8db565d91e5292d865b66d676cca0b2756dabfccd66db6433548ad"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v74_update638_hidden_replay_numeric_audit.py",
+      "sha256": "2f465748719157529b18fc5ed3eff617e5e33843649bff8b11ebc10a61ec8e31"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v74_update638_hidden_replay_numeric_audit.py",
+      "sha256": "7b0c005798170e33d6eb324438d61a6a46b2d961abf3df59c0abbd9999ef9d30"
+    },
+    "v59_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v59_hidden_replay_numeric_attribution_preregistration.json",
+      "sha256": "2b6047e2f43ac123d4eaf90da601a632f87afb62a49fa80f3ee4b27c982b8597"
+    },
+    "v59_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v59_hidden_replay_numeric_attribution_result.json",
+      "sha256": "35480a277f3b98c80eaaf2383e221c84556b215dd9112495c658eaff1c8ff09d"
+    },
+    "v73_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v73_update638_contract_attribution_preregistration.json",
+      "sha256": "d88e9f870425d6d1a0bde173be7148aa3e96ec6a10db10dd2a441e90f54e041d"
+    },
+    "v73_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v73_update638_contract_attribution_result.json",
+      "sha256": "ae49c8189fe494a45b482e6423c6c158bdf9e844f1854071ecdbdd7b4e623fdf"
+    },
+    "v73b_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v73b_empty_directory_check_correction.py",
+      "sha256": "529689f1ba12a40f75235fbcba8240974870ba157d43315fe3fede864c6bbf9a"
+    },
+    "v73b_correction": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v73b_empty_directory_check_correction.json",
+      "sha256": "47c76e5f988bc3ff182550345d1e1e702440813fa3f715eb83dd4717976a9dc2"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V74_UPDATE638_HIDDEN_REPLAY_NUMERIC_AUDIT",
+  "teacher_checkpoint": {
+    "completed_updates": 100,
+    "optimizer_count": 100,
+    "snapshot": {
+      "bytes": 194808,
+      "completed_updates": 100,
+      "optimizer_count": 100,
+      "path": null,
+      "sha256": "ddc8c4b905bb9acac2d7d48c3e9c1f0c0ca0173a1ba21f375740b051bc48c806"
+    }
+  },
+  "threshold_basis": {
+    "coefficient_or_threshold_search": false,
+    "downstream": "all fixed action/value/log-probability/ratio/PPO bounds must pass",
+    "eager_hidden": "must remain bit-exact to the stored rollout",
+    "scan_hidden_2e_6": "reproduced and reported but not enlarged or searched",
+    "source": "unchanged preregistered Winner-v59 functional bounds"
+  },
+  "transformation": {
+    "transformed_source_sha256": "7e1bfb936772cd5babe9030c76465b70d9226f469fb636569f85526d6b2bd584",
+    "v73b_corrected_source_sha256": "22662c9d217456f1a34fa873ddd94eda1903e682f1870b8ea8dec084f0b6d559"
+  },
+  "v59_numeric_precedent": {
+    "bytes": 20730,
+    "classification": "EAGER_SCAN_FLOAT32_NUMERIC_DRIFT_WITH_BOUNDED_POLICY_EFFECT",
+    "path": "outputs/analysis/winner_v59_hidden_replay_numeric_attribution_result.json",
+    "sha256": "2bc025115d2c2d4eba2aca7e8d0670b2c9e6f90fc2d96507d38034cbc946c39b"
+  },
+  "v73_result": {
+    "bytes": 6111,
+    "failed_checks": [
+      "sampled_hidden_replay_at_most_2e_6"
+    ],
+    "path": "outputs/analysis/winner_v73_update638_contract_attribution_result.json",
+    "sha256": "7d3a0dd6a528e18d7a1f6503abdae1b13864e4a013ea7bd981605096565b1a18"
+  }
+}

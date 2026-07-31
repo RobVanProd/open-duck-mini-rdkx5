@@ -1,0 +1,60 @@
+{
+  "authority": {
+    "hosted_or_colab": false,
+    "optimizer_authorized_now": false,
+    "rdkx5_or_robot": false,
+    "retry_authorized_now": false,
+    "robot_clearance": false,
+    "torque_or_motion": false
+  },
+  "decision": "AUTHORIZE_EXACT_CHECKER_AND_SERIALIZATION_CORRECTION_PREREGISTRATION_ONLY",
+  "execution_boundary": {
+    "automatic_calibration_ticks_completed": 250,
+    "home_return_ticks_completed": 250,
+    "manual_post_reset_steps_completed": 1,
+    "optimizer_steps": 0,
+    "ppo_locomotion_steps": 0,
+    "ppo_subprocess_started": false,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": {
+    "expanded_checkpoint_round_trip_exact": {
+      "cause": "the expansion stored a Flax FrozenDict while Orbax restored the same numeric mapping as dict, so tree-container identity failed before numeric equality was evaluated",
+      "correction": "store the expanded actor as the checkpoint-native dict type"
+    },
+    "initial_graph_rate_boundary_within_1e_6": {
+      "cases_above_1e_6": 40,
+      "cause": "the synthetic joint offsets were not physically coherent with the previous action; the selected graph applies its actual-centered guard after the rate stage, so the final guard correction is not itself a second rate-limited value",
+      "correction": "verify the exact graph hierarchy and initializers on synthetic cases, and reserve final-action envelope checks for coherent golden/behavior traces",
+      "maximum_reported_excess": 1.2207298278808594,
+      "population": 64
+    },
+    "initial_jax_onnx_within_1e_6": {
+      "cases_above_1e_6": 1,
+      "cause": "one deliberately unstructured synthetic observation saturated the graph at exactly 1.0; the PPO tanh-location representation is frozen at 0.9999899864, while all nonsaturated cases were within 5.97e-8",
+      "correction": "compare ONNX against the module's exact pre-location bounded action; retain the PPO-mode discrepancy as explicit saturation telemetry",
+      "maximum_abs_error": 1.0013580322265625e-05,
+      "population": 64
+    }
+  },
+  "preregistration_sha256": "f847c533020f0d9b8643bbbadad5dae0ab34f38c1ae206867967e2a4c4ee8ea0",
+  "preserved_pretraining_evidence": {
+    "calibrator_or_policy_math_failure_observed": false,
+    "expanded_checkpoint_directory_sha256": "76033b069f8ae0d12ec6df49349128871912a157d820944074d131d918918d8b",
+    "step_zero_golden_ticks_checked_before_failure": 1200,
+    "step_zero_onnx_sha256": "0076e743edb67bc8139d6c70ed6ee2973945c483640180b9de90da190a5a038e",
+    "step_zero_x0_exact_before_failure": true
+  },
+  "prospective_correction": {
+    "actor_math_changed": false,
+    "behavior_gate_changed": false,
+    "calibrator_math_changed": false,
+    "expose_exact_pre_location_action_for_graph_parity": true,
+    "new_run_requires_new_preregistration": true,
+    "replace_invalid_final-rate assertion_with_graph_hierarchy_identity": true,
+    "store_checkpoint_native_container": true,
+    "training_hyperparameters_changed": false
+  },
+  "schema_version": "winner_v99.preoptimizer_contract_attribution.v1",
+  "status": "HOLD_WINNER_V99_PREOPTIMIZER_CHECKER_CONTRACT"
+}

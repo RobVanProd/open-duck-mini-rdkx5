@@ -1,0 +1,97 @@
+diff --git a/playground/open_duck_mini_v2/joystick.py b/playground/open_duck_mini_v2/joystick.py
+--- a/playground/open_duck_mini_v2/joystick.py
++++ b/playground/open_duck_mini_v2/joystick.py
+@@ -124,6 +124,29 @@ def ground_up_linear_peak_torque_exceedance_cost(
+     return jp.mean(excess)
+ 
+ 
++def ground_up_episode_peak_torque_increment_cost(
++    actuator_force_nm: jax.Array,
++    previous_peak_excess_nm: jax.Array,
++    threshold_nm: float,
++    dt: float,
++    enabled: bool,
++) -> tuple[jax.Array, jax.Array]:
++    """Return a cost rate whose episode integral is global peak excess."""
++    if not enabled:
++        return jp.zeros(()), previous_peak_excess_nm
++    instantaneous_excess = jp.maximum(
++        jp.max(jp.abs(actuator_force_nm)) - threshold_nm,
++        0.0,
++    )
++    peak_excess = jp.maximum(
++        previous_peak_excess_nm,
++        instantaneous_excess,
++    )
++    increment_rate = (peak_excess - previous_peak_excess_nm) / dt
++    return increment_rate, peak_excess
++
++
+ def default_config() -> config_dict.ConfigDict:
+@@ -164,6 +187,7 @@ def default_config() -> config_dict.ConfigDict:
+                 tracking_tail_exceedance=0.0,
+                 peak_torque_exceedance=0.0,
+                 linear_peak_torque_exceedance=0.0,
++                episode_peak_torque_increment=0.0,
+             ),
+             tracking_sigma=0.01,  # was working at 0.01
+@@ -424,6 +448,8 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+                 max(self._config.ground_up_actuator_bridge_delay_ticks) + 1,
+             ),
+             "ground_up_actuator_bridge_applied_targets": self._default_actuator,
++            "ground_up_episode_peak_torque_excess_nm": jp.zeros(()),
++            "ground_up_episode_peak_torque_increment_cost": jp.zeros(()),
+             "feet_air_time": jp.zeros(2),
+             "last_contact": jp.zeros(2, dtype=bool),
+@@ -681,6 +707,17 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+         p_fz = p_f[..., -1]
+         state.info["swing_peak"] = jp.maximum(state.info["swing_peak"], p_fz)
+ 
++        peak_increment, peak_excess = (
++            ground_up_episode_peak_torque_increment_cost(
++                data.actuator_force,
++                state.info["ground_up_episode_peak_torque_excess_nm"],
++                self._config.ground_up_peak_torque_threshold_nm,
++                self.dt,
++                self._config.reward_config.scales.episode_peak_torque_increment
++                != 0.0,
++            )
++        )
++        state.info["ground_up_episode_peak_torque_excess_nm"] = peak_excess
++        state.info["ground_up_episode_peak_torque_increment_cost"] = peak_increment
++
+         done = self._get_termination(data)
+ 
+         rewards = self._get_reward(
+@@ -971,6 +1008,9 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+                 data.actuator_force,
+                 self._config.ground_up_peak_torque_threshold_nm,
+             ),
++            "episode_peak_torque_increment": info[
++                "ground_up_episode_peak_torque_increment_cost"
++            ],
+             "stand_still": cost_stand_still(
+                 # info["command"], data.qpos[7:], data.qvel[6:], self._default_pose
+diff --git a/playground/open_duck_mini_v2/runner.py b/playground/open_duck_mini_v2/runner.py
+--- a/playground/open_duck_mini_v2/runner.py
++++ b/playground/open_duck_mini_v2/runner.py
+@@ -73,6 +73,9 @@ class OpenDuckMiniV2Runner(BaseRunner):
+         self.env_config.reward_config.scales.linear_peak_torque_exceedance = (
+             args.ground_up_linear_peak_torque_exceedance_scale
+         )
++        self.env_config.reward_config.scales.episode_peak_torque_increment = (
++            args.ground_up_episode_peak_torque_increment_scale
++        )
+         self.env_config.ground_up_peak_torque_threshold_nm = 1.91229675
+         delay_ticks = [
+@@ -304,6 +307,11 @@ def main() -> None:
+         type=float,
+         default=0.0,
+     )
++    parser.add_argument(
++        "--ground_up_episode_peak_torque_increment_scale",
++        type=float,
++        default=0.0,
++    )
+     parser.add_argument(
+         "--ground_up_actuator_bridge_delay_ticks",

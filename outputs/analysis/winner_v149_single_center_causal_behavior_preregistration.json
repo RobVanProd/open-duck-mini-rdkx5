@@ -1,0 +1,70 @@
+{
+  "authority": {
+    "additional_behavior": false,
+    "behavior_cells": 1,
+    "gate5": false,
+    "hosted_training": false,
+    "policy_deployment": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "causal_contract": {
+    "activation": "the local graph gate fires only at tick 394",
+    "intervention": "only action index 13 changes at tick 394 and matches the frozen exact-oracle target within 1e-7",
+    "outcome": "all frozen gait, duration, tracking, torque, current, saturation, guard, and rate gates pass",
+    "prefix": "obs, h_in, and actions remain exact to the V144 source through the tick-394 precursor"
+  },
+  "checks": {
+    "all_input_hashes_exact": true,
+    "one_cell_only": true,
+    "robot_surface_absent": true,
+    "selected_cell_is_exact_v141_torque_only_failure": true,
+    "source_cell_other_gates_green": true,
+    "stop_after_cell": true,
+    "training_and_oracle_disabled": true,
+    "v148_graph_contract_green": true
+  },
+  "failed_checks": [],
+  "green_followup": "earn only a preregistration for the remaining dual-checkpoint offline matrix; no deployment or Gate 5",
+  "input_hashes": {
+    "base_preregistration": "c8f986ceb24863f33c1fc99170548d2e255cb6a26737d3f74762f8dcd4485a24",
+    "composed_evaluator": "1539ba18b5b207a15538a8a8611475f5c73bcd7164f2fe039cad8b279a587e43",
+    "composition_manifest": "39e842470828208dfea08b17d936d3f0e6f0d45b8f9813a1edd139692e4a6f74",
+    "local_raw": "d60b9c59710bd8f636a6cbe28086fb702a6d15aaf3b249668ada7631a5aca214",
+    "runner": "4103c421022964df2e69892d89fba4cbae04081e98bf7616eafcefbcef2340f1",
+    "selected_policy": "4d5e3a69ce33fcdce6e714c180f8533b551d604aee5edb8d0b0b143a1a0f1f4b",
+    "shadow_trace": "eb432bdb64c251dcbb466bd795db381891837086dae9dcc7a2564a7f2a2930b5",
+    "v126_preregistration": "eb40f17d9c08b8362f068567e1620bdafef21ad9123a633c9536f3637a31c899",
+    "v141_behavior_result": "08ecfbeb87a09781228d0657e795e106a1f4fae0e60b844f7055dacead21929b",
+    "v141_runner": "41cc51abb21dde2fde8fa4cbf36ad50212794fea0a38eb73b2c3705ee96ac034",
+    "v148_residual_result": "a7c0087dc18db1b4371b3ea7598bf768bb55fef881b57b0732e97e766be72d3d"
+  },
+  "matrix": {
+    "reason": "the exact P30 x=.074 seed cell that isolated V140's sole right-ankle torque failure",
+    "row": {
+      "calibration_ticks": 0,
+      "checkpoint_id": "V121_TRAIN_MATCHED_FINAL",
+      "command_x_m_s": 0.074,
+      "configuration": null,
+      "duration_ticks": 600,
+      "home_return_ticks": 0,
+      "oracle_schedule_ticks": null,
+      "plant": "P30_ALL_JOINT",
+      "policy_sha256": "bc54ea1bf39e617f76771e7416de91db2ccfe0b1bf903de08faaa64a67ce4aab",
+      "seed": 167931544,
+      "step": 2007040,
+      "transport": {
+        "additional_action_delay_ticks": 0,
+        "imu_delay_ticks": 0,
+        "native_quantization": false,
+        "sensor_noise_scales": null
+      }
+    },
+    "rows": 1
+  },
+  "pass_rule": "the one causal cell and every causal-contract check pass",
+  "schema_version": "winner_v149.single_center_causal_behavior_preregistration.v1",
+  "status": "PREREGISTERED_WINNER_V149_SINGLE_CENTER_CAUSAL_BEHAVIOR",
+  "stop_rule": "any failure closes the single-center local residual; do not change its center, radius, correction, or feature"
+}

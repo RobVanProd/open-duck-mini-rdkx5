@@ -1,0 +1,108 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "gate5": false,
+    "one_cpu_coordinate_contract": true,
+    "positive_endpoint_preregistration": false,
+    "rdkx5_or_robot": false,
+    "training": false
+  },
+  "checks": {
+    "frozen_inputs_present": true,
+    "mechanics_and_graphs_green": true,
+    "no_graph_change_behavior_training_colab_or_robot": true,
+    "source_and_transformed_graphs_present": true,
+    "t156b_source_green": true,
+    "t159_hold_is_x0_validator_only": true
+  },
+  "correction": {
+    "correct_requirement": "all three transformed outputs are bit-exact to the unmodified T156B graph at source command x=0",
+    "graph_or_mechanics_change": false,
+    "invalid_requirement": "wrapped external action and feedback equal literal zero",
+    "reason_invalid": "T17 uses an invertible action-coordinate wrapper; the external tensor is not the source action tensor"
+  },
+  "decision_rule": {
+    "fail_decision": "CLOSE_MECHANICS_COMPENSATION_X0_PRESERVATION",
+    "pass_decision": "EARN_T160_MECHANICS_COMPENSATED_POSITIVE_ENDPOINT_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "formal_behavior_cells": 0,
+    "graphs_changed": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 6539,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t159b_x0_coordinate_contract_preregistration.py",
+      "sha256": "8fa17b1d9995df286680e432f58fdb4d76ecf3e9109bb83abe6c34388df1d381"
+    },
+    "runner": {
+      "bytes": 8486,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t159b_x0_coordinate_contract.py",
+      "sha256": "0e22ac95b34b424ef539268413e42eff404bc29b826046b833fc54fe7d5e33ee"
+    },
+    "t135b_result": {
+      "bytes": 14765,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t135b_interrupted_calibration_context_router_recovery_result.json",
+      "sha256": "b01f711e751490fab17d327eebf770473636285dfbc97102478dc5328dfcd540"
+    },
+    "t156_result": {
+      "bytes": 20763,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t156_three_way_positive_router_result.json",
+      "sha256": "1cdff585ee5a6d92ce873a9bb6c438e518743e4e614f12337bb78556a2635f35"
+    },
+    "t156b_result": {
+      "bytes": 9964,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t156b_positive_router_gap_midpoint_result.json",
+      "sha256": "71157ac21cf03da1030ce17e0249bc8e3c9dff4b7f3859201fa0ca1338d63956"
+    },
+    "t159_result": {
+      "bytes": 11203,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t159_mechanics_sagittal_compensation_result.json",
+      "sha256": "51b78447c86f38b30ceafc6cb0e48946cd84a77059bc90d8287057c870ba1250"
+    },
+    "test": {
+      "bytes": 1464,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t159b_x0_coordinate_contract.py",
+      "sha256": "b3cb0d088ba5ee8d0933c7c78e2132d4c6dc561521b4bf48d1f6c9c6b95f7b01"
+    }
+  },
+  "preregistered_contract_sha256": "937646b271e80508037cd97a74c96aba01f42f2b4a1710ec6e388e86874c4487",
+  "question": "At x=0, is the transformed wrapped-ABI output bit-exact to its T156B source for every frozen calibration context?",
+  "samples": {
+    "command_source_observation_index": 6,
+    "command_x_m_s": 0.0,
+    "contexts": 6,
+    "random_states_per_context_per_checkpoint": 64,
+    "total": 768
+  },
+  "schema_version": "open_duck.t159b_x0_coordinate_contract_preregistration.v1",
+  "source_graphs": {
+    "1003520": {
+      "bytes": 980016,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t156b_positive_router_gap_midpoint_v1\\1003520\\three_way_positive_router.onnx",
+      "sha256": "c64bc7c2cd03da8cddf87d2a15c0d964d7b19c946d20171b8fed966970e604fd"
+    },
+    "2007040": {
+      "bytes": 980016,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t156b_positive_router_gap_midpoint_v1\\2007040\\three_way_positive_router.onnx",
+      "sha256": "d84f1fb6cc3182c493405f9c6df85cda38ea385e4af71eae86a3b714a838f819"
+    }
+  },
+  "status": "PREREGISTERED_T159B_X0_COORDINATE_CONTRACT",
+  "transformed_graphs": {
+    "1003520": {
+      "bytes": 980649,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t159_mechanics_sagittal_compensation_v1\\1003520\\mechanics_compensated_router.onnx",
+      "sha256": "bea70343d81c034b0c6b93421d92aa955d1607a471a09579752b1c49d05e5ee9"
+    },
+    "2007040": {
+      "bytes": 980649,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t159_mechanics_sagittal_compensation_v1\\2007040\\mechanics_compensated_router.onnx",
+      "sha256": "df580fcf167453198c114010150dd27b8f4e3f1740a755c676f3925242e30e68"
+    }
+  }
+}

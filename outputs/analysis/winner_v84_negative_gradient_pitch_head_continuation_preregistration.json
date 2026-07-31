@@ -1,0 +1,238 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "continuation_authorized": true,
+    "deployment_authorized": false,
+    "gate5_authorized": false,
+    "pass_authorizes_only": "the unchanged persistence gate for counts 705 and 755",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "support_gate_authorized_now": false
+  },
+  "continuation": {
+    "acceptance_rule": "first strict same-batch pitch-teacher-loss descent",
+    "direction_each_update": "instantaneous negative projected pitch-teacher gradient",
+    "direction_l2_norm_each_update": "match that update's inherited Adam full parameter-delta L2 norm",
+    "environments_per_update": 80,
+    "final_optimizer_count": 755,
+    "fractions_largest_first": [
+      1.0,
+      0.5,
+      0.25,
+      0.125,
+      0.0625,
+      0.03125,
+      0.015625,
+      0.0078125,
+      0.00390625,
+      0.001953125,
+      0.0009765625,
+      0.00048828125,
+      0.000244140625
+    ],
+    "graphs_only_at_counts": [
+      705,
+      755
+    ],
+    "half_optimizer_count": 705,
+    "mutable_parameter_slices": [
+      "action_weight[:, [2,3,4,11,12,13]]",
+      "action_bias[[2,3,4,11,12,13]]"
+    ],
+    "optimizer_count_transition": [
+      675,
+      755
+    ],
+    "optimizer_m_and_v_transition": "all elements bit-exact preserved across all updates",
+    "optimizer_updates": 80,
+    "persistent_checkpoints": [
+      705,
+      755
+    ],
+    "snapshot_every_accepted_update": true,
+    "source_optimizer_count": 675,
+    "ticks_per_environment": 250
+  },
+  "decision": "AUTHORIZE_ONE_80_UPDATE_NEGATIVE_GRADIENT_PITCH_HEAD_CONTINUATION_ONLY",
+  "execution_now": {
+    "formal_support_cells": 0,
+    "locomotion_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "objective": {
+    "attention_or_flat_transport_added": false,
+    "coefficient_or_training_length_search": false,
+    "heldout_teacher_labels_forbidden": true,
+    "pitch_teacher_scale": 58.436370849609375,
+    "ppo_predictor_anchor_first_tick_gradient_scale": 0.0,
+    "supervised_action_indices": [
+      2,
+      3,
+      4,
+      11,
+      12,
+      13
+    ],
+    "teacher_configuration_ids": [
+      "COM_X_NEG",
+      "COM_CORNER_00",
+      "COM_CORNER_01",
+      "COM_CORNER_02",
+      "COM_CORNER_03",
+      "COM_CORNER_07",
+      "OPTIONAL_AGGREGATE_HEAVY_AFT",
+      "DISCOVERY_02",
+      "DISCOVERY_03",
+      "DISCOVERY_06",
+      "DISCOVERY_09",
+      "DISCOVERY_10"
+    ]
+  },
+  "pass_rule": {
+    "all_80_snapshots_digest_readback_exact": true,
+    "all_optimizer_m_and_v_elements_bit_exact": true,
+    "all_unselected_parameter_elements_bit_exact": true,
+    "every_update_first_strict_same_batch_descent": true,
+    "exact_80_updates_676_through_755": true,
+    "half_and_final_stateful_onnx_contracts_exact": true,
+    "no_posthoc_fraction_length_or_checkpoint_change": true,
+    "same_batch_predictor_loss_bit_exact_every_update": true
+  },
+  "schema_version": "winner_v84.negative_gradient_pitch_head_continuation_preregistration.v1",
+  "source": {
+    "graph": {
+      "bytes": 54896,
+      "completed_updates": 675,
+      "contract": {
+        "abi_exact": true,
+        "all_chain_outputs_finite": true,
+        "all_initializers_finite": true,
+        "bytes": 54896,
+        "chain_ticks": 250,
+        "forbidden_training_or_privileged_tokens": [],
+        "initializer_count": 9,
+        "inputs": [
+          {
+            "name": "obs",
+            "shape": [
+              1,
+              115
+            ]
+          },
+          {
+            "name": "previous_action",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_in",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "jax_onnx_at_most_1e_7": true,
+        "jax_onnx_max_abs_error": 8.731149137020111e-11,
+        "outputs": [
+          {
+            "name": "calibration_actions",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "previous_action_out",
+            "shape": [
+              1,
+              14
+            ]
+          },
+          {
+            "name": "h_out",
+            "shape": [
+              1,
+              64
+            ]
+          }
+        ],
+        "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v83-count675-negative-gradient-step\\graphs\\winner_v83_negative_gradient_update_675.onnx",
+        "previous_action_out_equals_action_bit_exact": true,
+        "sha256": "e1bc9fc02aab6253ab9d8c08b158cacd7bbbd96adab96a73dade90a229103539",
+        "training_only_tensors_absent": true
+      },
+      "label": "proof",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v83-count675-negative-gradient-step\\graphs\\winner_v83_negative_gradient_update_675.onnx",
+      "sha256": "e1bc9fc02aab6253ab9d8c08b158cacd7bbbd96adab96a73dade90a229103539",
+      "v46_forbidden_tokens_present": []
+    },
+    "optimizer_count": 675,
+    "result_sha256": "1ac6326f6a9b0a703e5035aec186d4bf4601774008ea8b7029629b8f0d22a98d",
+    "snapshot": {
+      "bytes": 196179,
+      "completed_updates": 675,
+      "metadata_payload_sha256": "87fd9aad611a96a80cacb6d45d4f5466b81808bcf92e0030e626cc8b3d212c9f",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v83-count675-negative-gradient-step\\snapshots\\snapshot_negative_gradient_pitch_head_update_675.npz",
+      "sha256": "cae62d8f50005b30367ebef46ecbdc66d74c17b2b258f4991e2f8a8abf469827",
+      "state_payload_sha256": "9478f8640827047f67dd707fd76e930da0736864e1fff15de6e6c7cdbf18b778"
+    }
+  },
+  "source_manifest_sha256": "c5aeca7f1693d573147c146c20146c9af59e47897ab63173ad0776fe0b1f1de5",
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v84_negative_gradient_pitch_head_continuation_preregistration.py",
+      "sha256": "c67b6cc2db71dcd3160794363c8a8c7ac31a4f00c2b8def9abe8a2e36ca7dec5"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v84_negative_gradient_pitch_head_continuation.py",
+      "sha256": "8c194b206f0b6ef72875184283552fc3e38a1e764908c2cb8a0f0eefb0220b62"
+    },
+    "snapshot_abi": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v22_normalized_predictor_v2.py",
+      "sha256": "2f67394c0fc7f5cec14370d38a6a860a9c7bb2ce409e8578466b278c7c8c5b2a"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v84_negative_gradient_pitch_head_continuation.py",
+      "sha256": "3adf70252b568dd2ae3af9a0f8a10ee0149f4f26e489d26c6d557eba09433a29"
+    },
+    "v46_graph_receipt": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v46_static_target_teacher_training.py",
+      "sha256": "c2bfaec2298c8b97489278112d932c11fc5392fc3250da99ec3fc1379062c0d2"
+    },
+    "v81_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v81_pitch_action_head_continuation.py",
+      "sha256": "7bdedcb448c262d85032c83ac0e213de106e7380b99960753f91fd1f745f9c07"
+    },
+    "v82_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v82_count675_direction_precision_attribution.py",
+      "sha256": "02479e549b0f4cf84e32640b9d5c8cf212ba9e4c695b4e65a4fbce34fb207ce8"
+    },
+    "v83_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v83_count675_negative_gradient_step_preregistration.json",
+      "sha256": "8ea37b040b2774b8cd12dee157bea20911831e8b20d673f140688892fb43d988"
+    },
+    "v83_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v83_count675_negative_gradient_step_result.json",
+      "sha256": "165c376c6024dc51a304f265088f2388023850af4dd9b3e5f3b91f133908cbd7"
+    },
+    "v83_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v83_count675_negative_gradient_step.py",
+      "sha256": "58c2b4fdef1bdced283cf91c100f778045139ff31541875b847dadfdb67ffc73"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V84_NEGATIVE_GRADIENT_PITCH_HEAD_CONTINUATION"
+}

@@ -1,0 +1,122 @@
+name: Winner v35 full horizon source continuation
+
+on:
+  push:
+    branches:
+      - codex/winner-v4-response-contract
+    paths:
+      - outputs/analysis/winner_v35_full_horizon_source_continuation_preregistration.json
+      - outputs/analysis/WINNER_V35_FULL_HORIZON_SOURCE_CONTINUATION_PREREGISTRATION_20260722.md
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: winner-v35-full-horizon-source-continuation
+  cancel-in-progress: false
+
+jobs:
+  diagnostic:
+    name: One zero-update full-horizon source continuation
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - name: Reject workflow reruns
+        run: test "${{ github.run_attempt }}" = "1"
+      - name: Checkout frozen diagnostic
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up exact Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12.13"
+      - name: Install exact CPU environment
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            "jax[cpu]==0.7.2" "jaxlib==0.7.2" "mujoco==3.9.0" \
+            "numpy==2.0.2" "onnx==1.22.0" "onnxruntime==1.27.0" "pytest==8.4.2"
+      - name: Verify frozen diagnostic package
+        run: |
+          python -m pytest -q \
+            tests/test_winner_v35_full_horizon_source_continuation.py \
+            tests/test_winner_v35_full_horizon_source_continuation_preregistration.py \
+            tests/test_winner_v35_full_horizon_source_continuation_import.py
+      - name: Resolve exact imported training artifacts
+        id: sources
+        shell: bash
+        run: |
+          python - <<'PY' >>"$GITHUB_OUTPUT"
+          import hashlib, json
+          from pathlib import Path
+          value=json.loads(Path("outputs/analysis/winner_v35_full_horizon_source_continuation_preregistration.json").read_text())
+          if value["status"] != "PREREGISTERED_WINNER_V35_FULL_HORIZON_SOURCE_CONTINUATION" or any(value["execution_now"].values()):
+              raise SystemExit("Winner-v35 authority changed")
+          sources=value["sources"]
+          for name,item in sources.items():
+              observed=hashlib.sha256(Path(item["path"]).read_bytes().replace(b"\r\n",b"\n")).hexdigest()
+              if item["hash_mode"] != "lf" or observed != item["sha256"]:
+                  raise SystemExit(f"Winner-v35 source changed: {name}")
+          canonical=hashlib.sha256(json.dumps(sources,sort_keys=True,separators=(",",":")).encode()).hexdigest()
+          if canonical != value["source_manifest_sha256"]:
+              raise SystemExit("Winner-v35 manifest changed")
+          old=value["artifact_inputs"]["winner_v22_training"]
+          new=value["artifact_inputs"]["winner_v32_training"]
+          print(f"v22_run_id={old['github_run_id']}")
+          print(f"v22_artifact_name={old['github_artifact_name']}")
+          print(f"v32_run_id={new['github_run_id']}")
+          print(f"v32_artifact_name={new['github_artifact_name']}")
+          PY
+      - name: Download exact Winner-v22 training artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ steps.sources.outputs.v22_artifact_name }}
+          path: /tmp/winner-v22-training-artifact
+          repository: RobVanProd/open-duck-mini-rdkx5
+          run-id: ${{ steps.sources.outputs.v22_run_id }}
+          github-token: ${{ github.token }}
+      - name: Download exact Winner-v32 training artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ steps.sources.outputs.v32_artifact_name }}
+          path: /tmp/winner-v32-training-artifact
+          repository: RobVanProd/open-duck-mini-rdkx5
+          run-id: ${{ steps.sources.outputs.v32_run_id }}
+          github-token: ${{ github.token }}
+      - name: Prepare exact reviewed simulation environment
+        run: |
+          git clone --quiet https://github.com/RobVanProd/Open_Duck_Playground.git /tmp/playground-source
+          python tools/prepare_winner_v15_cpu_environment.py \
+            --source-repository /tmp/playground-source \
+            --output-root /tmp/pg115-v35-source-continuation \
+            --work-root /tmp/winner-v35-source-continuation-environment \
+            --fit-output /tmp/fixed_target_p30_actuator_fit_lf.json
+      - name: Run exactly one zero-update full-horizon source continuation
+        run: |
+          python tools/run_winner_v35_full_horizon_source_continuation.py \
+            --v22-training-work-root /tmp/winner-v22-training-artifact/winner-v22-normalized-predictor-training-work \
+            --v32-training-work-root /tmp/winner-v32-training-artifact/winner-v32-prefix-anchor-training-work \
+            --playground-root /tmp/pg115-v35-source-continuation \
+            --canonical-fit /tmp/fixed_target_p30_actuator_fit_lf.json \
+            --output /tmp/winner-v35-full-horizon-source-continuation-result.json \
+            --offline-cpu-only --read-only-diagnostic-authorized
+      - name: Hash diagnostic result
+        if: always()
+        run: |
+          result=/tmp/winner-v35-full-horizon-source-continuation-result.json
+          if test -f "$result"; then
+            sha256sum "$result" | tee /tmp/winner-v35-full-horizon-source-continuation-result.sha256
+          fi
+      - name: Upload only diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: winner-v35-full-horizon-source-continuation-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 14
+          compression-level: 6
+          path: |
+            /tmp/winner-v35-full-horizon-source-continuation-result.json
+            /tmp/winner-v35-full-horizon-source-continuation-result.sha256

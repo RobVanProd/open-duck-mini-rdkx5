@@ -10,9 +10,26 @@ candidate policy.
 The initial mission was to prove the deployed robot's sensor observations,
 policy actions, joint commands, and real joint movement matched the policy and
 simulation contract closely enough to rerun the known baseline responsibly.
-That evidence has now shifted the project into the offline actuator-bridge
-training phase: generate a CUDA-backed candidate policy, review its `x=0.0`
-and `x=0.08` sim gates, and only then request robot-side suspended validation.
+That evidence has now shifted the project into an offline root-cause and
+gate-reconciliation phase. T1 has reported, T2 is held by unavailable raw
+evidence, and T4 is complete and independently audited. T5 proved that the
+instantaneous stall-torque/current rule wrongly rejected at least three
+complete policy matrices. T6 has now evaluated all four reopened frozen policy
+pairs under the first previously failed configuration endpoint and found no
+robust survivor. T7 has now passed the prospective automatic-response support
+falsifier on the exact current stack: the frozen universal target holds
+nominal and both signed COM endpoints for 600 ticks and produces a repeatable,
+configuration-sensitive context. A hosted training run remains unearned until
+the command-aware x=0 startup branch and its subsequent response-conditioned
+CPU contract pass. T8 proved the direct state-coherent handoff works in all
+`12/12` moving cells, but its four x=0 cells each violate the frozen rate
+envelope on the first scored tick when exact-zero deadband action follows the
+universal support action. T8 therefore holds `12/16`. T9 resolves exactly that
+startup branch: all four new x=0 cells pass and the combined command-aware
+architecture is `16/16`. Hosted training remains unearned until the
+response-conditioned continuation CPU contract passes.
+Only a policy that clears the reviewed offline gates can be prepared for
+robot-side suspended validation.
 
 The repository itself is part of the robot state. Keep documentation, evidence manifests, snapshots, runbooks, and status notes current whenever the board runtime, robot config, diagnostic results, or recommended next gate changes.
 
@@ -34,10 +51,84 @@ The repository itself is part of the robot state. Keep documentation, evidence m
 
 The original unresolved question was whether this came from policy behavior or
 from deployed observations/actions differing from the sim and policy contract.
-The current evidence no longer points first at gross IMU, foot-contact, joint
-order, or policy-file mismatch. It points to actuator dynamics: the `x=0.08`
-policy target waveform is much faster than the real pitch-chain actuator path
-can track.
+The completed 440-cell T1 accelerometer-bias dose-response now proves that the
+absolute attitude input is behaviorally first-order. With the unmodified
+baseline policy and no actuator bridge, adding `+1.6 m/s^2` to `obs[3]` at
+`x=0.08` reduced mean forward velocity from `0.0652339` to `0.00886518 m/s`,
+an `86.41%` degradation against the preregistered `40%` trigger. All 16
+primary cells completed without a fall. Mean body pitch shifted by only
+`-0.00445 rad`, so T1 establishes propulsion collapse but does not by itself
+reproduce or explain the direction of the physical forward lean.
+
+The actuator bridge also independently degrades the baseline and remains a
+real contributor. Its relative importance versus a static posture/IMU offset
+is unresolved because the exact T2 corrected-replay raw JSONL is unavailable.
+The preregistered T4 baseline-versus-all-gates matrix is now complete. All
+`32/32` cells finish without a fall, and an independent audit reproduced every
+cell contract, raw result hash, condition aggregate, gate row, and result hash.
+The baseline nevertheless fails `13` current gate rows: its fitted-bridge
+`x=0.08` mean track ratio is `0.474323`, its worst pitch-chain tracking p95 is
+`0.266879 rad`, its worst p95 velocity-limit excess is `2.489999 rad/s`, and
+its worst instantaneous excess is `3.239999 rad/s`. T4 therefore requires
+those baseline-failed criteria to be relaxed to measured baseline evidence or
+explicitly relabeled as stretch goals before they are used as feasibility
+boundaries. It does not choose the replacement values automatically.
+
+T5 independently found that the policy campaign's instantaneous protection
+constraint was mis-specified. The V10 reference peak was the explicitly
+configured MuJoCo force clamp (`1.9122966527938843 N.m`), and the old decimal
+gate (`1.91229675 N.m`) lies below the next representable float32 value. No
+float32 actuator-force value can exist strictly between them. Feetech's
+documented protection is duration-triggered: current greater than `2 A` for
+`2 s`, and overload above `80%` of stall for `2 s`. Replaying the immutable
+V121, V123, and V128 traces with those two 100-tick rules changes all three to
+complete `16/16` passes; post-handoff V177 also becomes `16/16`. This reopens
+the affected closures but does not select a deployment policy.
+
+T6 prospectively selected the existing R2 `TORSO_COM_X_NEG` (`-0.05 m`)
+condition because it was the first failure after six prior R2 passes. It then
+ran both checkpoints, both measured actuator fits, and all four commands for
+V121, V123, V128, and V177: `64/64` cells in total. No frozen pair survives.
+V121, V123, and V128 have `0/16` green cells; V177 has `1/16`. Worst moving
+velocity is negative for every candidate (`-0.3216` to `-0.4140 m/s`), while
+the longest corrected servo-protection run is only `5` ticks. This localizes
+the blocker to configuration/support response rather than the old
+instantaneous current/torque rule. A runner-independent audit reproduced all
+source hashes, readbacks, trace metrics, classifications, aggregates, and the
+zero-survivor decision with no issue.
+
+T7 audited the prior response-conditioned pipeline and found that its training
+wrapper used the V91 universal support action while the formal V103 evaluator
+ran the calibrator action head. The old negative-X prefix failure therefore
+did not falsify the mechanism used during training. A new preregistered
+current-stack screen ran nominal and `±0.05 m` torso-COM, both measured
+actuator fits, and two independent repeats. All `12/12` cells complete 600
+ticks with minimum base height at least `0.151467 m`, worst pitch p95
+`0.077343 rad`, zero rate excess, zero saturation, and zero corrected
+over-current/overload runs. Repeats are bit-exact, and signed context
+separation is `0.156809`/`0.156854` against the frozen `0.15` threshold. The
+independent audit found zero issues. This establishes a stable automatic
+excitation and observable response signal, not yet a locomotion policy.
+
+T8 then preserved the final support action, the applied-target observer, the
+64-D context, phase reset, and both recurrent chains while starting V121
+locomotion directly. Both checkpoints and both actuator fits pass every moving
+command (`12/12`). All four x=0 cells also remain upright, stationary, and
+within tracking and servo-duration gates, but exact-zero policy action follows
+the universal support vector at scored tick 0 and creates a single six-joint
+rate excess up to `3.989999 rad/s`. No later tick exceeds. The corrected
+independent audit reproduces `12/16` with zero issues. Direct unconditional
+handoff is closed; the next zero-training falsifier bypasses response
+excitation while paused/x=0 and preserves the successful direct handoff only
+for moving commands.
+
+T9 passes that command-aware falsifier. Both checkpoints and both fits hold
+x=0 from home for 600 ticks with immutable zero context, exact-zero action,
+zero rate excess, tracking p95 `0.030258 rad`, and zero corrected protection
+runs. The corrected independent audit reproduces all four new cells and the
+twelve reused T8 moving cells with zero issues. The architecture is now
+`16/16`, which earns only a response-conditioned continuation CPU software
+contract—not a hosted optimizer run.
 
 ## Known Policy Contract
 
@@ -84,19 +175,31 @@ Runtime then applies rate limiting before sending servo targets.
 
 ## Current Root-Cause Ranking
 
-1. Dynamic actuator bandwidth / delay mismatch between sim and the real
-   pitch-chain joints.
-2. Policy target waveform too sharp for the measured effective velocity limits.
-3. Sim actuator model and training reward did not penalize target rate enough.
-4. Servo bus CRC/read retries are a watch item, but not the leading cause
+1. Absolute pitch-reference mismatch: the real upright `accel_x` is about
+   `+1.6 m/s^2` relative to the policy's near-zero training center, and T1
+   shows this perturbation collapses vanilla-sim propulsion by `86.41%`.
+2. Dynamic actuator bandwidth / delay mismatch between sim and the real
+   pitch-chain joints. This remains independently supported, but is no longer
+   ranked ahead of the measured observation mismatch.
+3. Response-conditioned continuation software fidelity is now the leading
+   offline replacement-policy blocker. T7 proves a stable
+   configuration-sensitive response; T8 proves the moving physical/recurrent
+   handoff; and T9 proves the command-aware x=0 branch. The next contract must
+   combine those mechanisms with exact V121 restore/update/export behavior
+   before any hosted optimizer run is earned.
+4. Policy target waveform and training objective remain possible contributors,
+   but no new optimizer run is earned until that mechanism passes a
+   prospective CPU-only falsifier.
+5. Servo bus CRC/read retries are a watch item, but not the leading cause
    unless they correlate with control damage.
-5. Ground contact/load dynamics remain untested with a new candidate.
-6. Contact/friction and TPU effects come later, after suspended candidate gates
+6. Ground contact/load dynamics remain untested with a new candidate.
+7. Contact/friction and TPU effects come later, after suspended candidate gates
    pass.
 
-Previously suspected gross IMU frame, foot-contact polarity, joint identity, and
-zero-command policy explosion are now downranked by home pose, IMU tilt, foot
-contact, joint identity, and suspended replay evidence.
+Gross IMU frame, foot-contact polarity, joint identity, and zero-command policy
+explosion remain downranked by home pose, IMU tilt, foot contact, joint
+identity, and suspended replay evidence. The newly promoted issue is a
+constant accelerometer offset within the otherwise-correct IMU frame.
 
 ## Definition Of Done
 
@@ -124,7 +227,8 @@ The sim-to-real bridge is done when:
 
 ## Non-Goals For Now
 
-- No retraining.
+- No retraining before the T9-earned response-conditioned continuation CPU
+  contract explicitly earns a hosted continuation.
 - No gain tuning.
 - No joint offset edits.
 - No IMU remap edits.

@@ -1,0 +1,247 @@
+{
+  "config": {
+    "policies": [
+      "outputs/analysis/phase2_seed5_neighbor_recovery_command_gated_x0safe_candidate/candidate.onnx"
+    ],
+    "policy_labels": [
+      "gated"
+    ],
+    "seeds": [
+      5
+    ],
+    "command_x": 0.0,
+    "task": "rough_terrain_backlash",
+    "duration_s": 5.0,
+    "bridge_mode": "fitted",
+    "policy_action_gain": 1.0,
+    "reward_overrides_json": null,
+    "reward_overrides_phase": null,
+    "policy_obs_input_name": null,
+    "policy_action_output_name": null,
+    "policy_state_input_names": null,
+    "policy_state_output_names": null,
+    "eval_push_enable": false,
+    "eval_push_interval_min_s": null,
+    "eval_push_interval_max_s": null,
+    "eval_push_magnitude_min": null,
+    "eval_push_magnitude_max": null,
+    "push_recovery_window_s": 0.5,
+    "push_recovery_max_abs_pitch_rad": 0.8,
+    "push_recovery_min_base_height_m": 0.08,
+    "terrain_hfield_z_scale": 0.002,
+    "min_swing_segments_per_foot": null,
+    "min_swing_rel_x_range_p95_m": null,
+    "min_swing_peak_lift_m": null,
+    "jax_platform": "cpu",
+    "run": true,
+    "trace_seeds": [],
+    "trace_full_obs": false
+  },
+  "results": [
+    {
+      "policy": "outputs/analysis/phase2_seed5_neighbor_recovery_command_gated_x0safe_candidate/candidate.onnx",
+      "policy_label": "gated",
+      "seed": 5,
+      "output_dir": "outputs/analysis/phase2_seed5_neighbor_recovery_command_gated_x0safe_x0_seed5_rough_z002_gate_cpu/gated/seed_005",
+      "command": [
+        "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python",
+        "/home/lsd/robots/open-duck-mini-rdkx5/tools/eval_policy_with_actuator_bridge.py",
+        "--mode",
+        "closed-loop-sim",
+        "--eval-role",
+        "candidate",
+        "--policy",
+        "outputs/analysis/phase2_seed5_neighbor_recovery_command_gated_x0safe_candidate/candidate.onnx",
+        "--fit-json",
+        "outputs/analysis/actuator_response_fit_corrected_knee.json",
+        "--playground-path",
+        "../Open_Duck_Playground",
+        "--env-python",
+        "../envs/open-duck-playground/bin/python",
+        "--command-x",
+        "0.0",
+        "--task",
+        "rough_terrain_backlash",
+        "--duration",
+        "5.0",
+        "--seed",
+        "5",
+        "--bridge-mode",
+        "fitted",
+        "--policy-action-gain",
+        "1.0",
+        "--jax-platform",
+        "cpu",
+        "--sim-preflight-timeout-s",
+        "600",
+        "--closed-loop-timeout-s",
+        "600",
+        "--output-dir",
+        "outputs/analysis/phase2_seed5_neighbor_recovery_command_gated_x0safe_x0_seed5_rough_z002_gate_cpu/gated/seed_005",
+        "--push-recovery-window-s",
+        "0.5",
+        "--push-recovery-max-abs-pitch-rad",
+        "0.8",
+        "--push-recovery-min-base-height-m",
+        "0.08",
+        "--terrain-hfield-z-scale",
+        "0.002"
+      ],
+      "command_shell": "/home/lsd/robots/open-duck-mini-rdkx5/../envs/open-duck-playground/bin/python /home/lsd/robots/open-duck-mini-rdkx5/tools/eval_policy_with_actuator_bridge.py --mode closed-loop-sim --eval-role candidate --policy outputs/analysis/phase2_seed5_neighbor_recovery_command_gated_x0safe_candidate/candidate.onnx --fit-json outputs/analysis/actuator_response_fit_corrected_knee.json --playground-path ../Open_Duck_Playground --env-python ../envs/open-duck-playground/bin/python --command-x 0.0 --task rough_terrain_backlash --duration 5.0 --seed 5 --bridge-mode fitted --policy-action-gain 1.0 --jax-platform cpu --sim-preflight-timeout-s 600 --closed-loop-timeout-s 600 --output-dir outputs/analysis/phase2_seed5_neighbor_recovery_command_gated_x0safe_x0_seed5_rough_z002_gate_cpu/gated/seed_005 --push-recovery-window-s 0.5 --push-recovery-max-abs-pitch-rad 0.8 --push-recovery-min-base-height-m 0.08 --terrain-hfield-z-scale 0.002",
+      "returncode": 0,
+      "stdout_tail": "outputs/analysis/phase2_seed5_neighbor_recovery_command_gated_x0safe_x0_seed5_rough_z002_gate_cpu/gated/seed_005/SIM_ACTUATOR_BRIDGE_EVAL.md\noutputs/analysis/phase2_seed5_neighbor_recovery_command_gated_x0safe_x0_seed5_rough_z002_gate_cpu/gated/seed_005/sim_actuator_bridge_eval.json\noutputs/analysis/phase2_seed5_neighbor_recovery_command_gated_x0safe_x0_seed5_rough_z002_gate_cpu/gated/seed_005/CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md\noutputs/analysis/phase2_seed5_neighbor_recovery_command_gated_x0safe_x0_seed5_rough_z002_gate_cpu/gated/seed_005/closed_loop_actuator_bridge_eval.json\n",
+      "result_json": "outputs/analysis/phase2_seed5_neighbor_recovery_command_gated_x0safe_x0_seed5_rough_z002_gate_cpu/gated/seed_005/closed_loop_actuator_bridge_eval.json",
+      "summary": {
+        "overall_status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "candidate_gate_status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "samples": 82,
+        "termination_reason": "fall_or_nan",
+        "elapsed_s": 1.62,
+        "mean_local_vx_m_s": -0.18006487153385334,
+        "track_ratio": null,
+        "body_pitch_p95_rad": 0.1183699015249992,
+        "base_height_min_m": 0.06434422731399536,
+        "max_pitch_vel_p95_rad_s": 1.4306506514549255,
+        "max_pitch_vel_limit_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.1574087738990784,
+        "action_saturation_pct": 0.0,
+        "push_event_count": 0,
+        "push_recovered_count": 0,
+        "push_success_rate": null,
+        "left_swing_lift_p95_m": 0.03158683702349663,
+        "right_swing_lift_p95_m": 0.04146624878048897,
+        "left_swing_peak_lift_m": 0.032157428562641144,
+        "right_swing_peak_lift_m": 0.045789312571287155,
+        "min_swing_peak_lift_m": 0.032157428562641144,
+        "left_swing_segment_count": 1,
+        "right_swing_segment_count": 3,
+        "min_swing_segment_count": 1,
+        "left_swing_rel_x_range_p95_m": 0.0036290399730205536,
+        "right_swing_rel_x_range_p95_m": 0.008368631079792976,
+        "min_swing_rel_x_range_p95_m": 0.0036290399730205536,
+        "single_support_pct": 4.878048780487805,
+        "double_support_pct": 90.2439024390244,
+        "no_contact_pct": 4.878048780487805
+      },
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "terrain_swing_gate": {
+        "enabled": false,
+        "checks": []
+      }
+    }
+  ],
+  "aggregate": {
+    "gated": {
+      "runs": 1,
+      "fall_count": 1,
+      "duration_complete_count": 0,
+      "samples": {
+        "min": 82.0,
+        "mean": 82.0,
+        "p50": 82.0,
+        "p95": 82.0,
+        "max": 82.0
+      },
+      "track_ratio": null,
+      "mean_local_vx_m_s": {
+        "min": -0.18006487153385334,
+        "mean": -0.18006487153385334,
+        "p50": -0.18006487153385334,
+        "p95": -0.18006487153385334,
+        "max": -0.18006487153385334
+      },
+      "body_pitch_p95_rad": {
+        "min": 0.1183699015249992,
+        "mean": 0.1183699015249992,
+        "p50": 0.1183699015249992,
+        "p95": 0.1183699015249992,
+        "max": 0.1183699015249992
+      },
+      "base_height_min_m": {
+        "min": 0.06434422731399536,
+        "mean": 0.06434422731399536,
+        "p50": 0.06434422731399536,
+        "p95": 0.06434422731399536,
+        "max": 0.06434422731399536
+      },
+      "max_pitch_vel_p95_rad_s": {
+        "min": 1.4306506514549255,
+        "mean": 1.4306506514549255,
+        "p50": 1.4306506514549255,
+        "p95": 1.4306506514549255,
+        "max": 1.4306506514549255
+      },
+      "max_pitch_vel_limit_excess_rad_s": {
+        "min": 0.0,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "max_tracking_p95_rad": {
+        "min": 0.1574087738990784,
+        "mean": 0.1574087738990784,
+        "p50": 0.1574087738990784,
+        "p95": 0.1574087738990784,
+        "max": 0.1574087738990784
+      },
+      "push_event_count": {
+        "min": 0.0,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "push_success_rate": null,
+      "left_swing_lift_p95_m": {
+        "min": 0.03158683702349663,
+        "mean": 0.03158683702349663,
+        "p50": 0.03158683702349663,
+        "p95": 0.03158683702349663,
+        "max": 0.03158683702349663
+      },
+      "right_swing_lift_p95_m": {
+        "min": 0.04146624878048897,
+        "mean": 0.04146624878048897,
+        "p50": 0.04146624878048897,
+        "p95": 0.04146624878048897,
+        "max": 0.04146624878048897
+      },
+      "min_swing_peak_lift_m": {
+        "min": 0.032157428562641144,
+        "mean": 0.032157428562641144,
+        "p50": 0.032157428562641144,
+        "p95": 0.032157428562641144,
+        "max": 0.032157428562641144
+      },
+      "min_swing_segment_count": {
+        "min": 1.0,
+        "mean": 1.0,
+        "p50": 1.0,
+        "p95": 1.0,
+        "max": 1.0
+      },
+      "min_swing_rel_x_range_p95_m": {
+        "min": 0.0036290399730205536,
+        "mean": 0.0036290399730205536,
+        "p50": 0.0036290399730205536,
+        "p95": 0.0036290399730205536,
+        "max": 0.0036290399730205536
+      },
+      "single_support_pct": {
+        "min": 4.878048780487805,
+        "mean": 4.878048780487805,
+        "p50": 4.878048780487805,
+        "p95": 4.878048780487805,
+        "max": 4.878048780487805
+      },
+      "double_support_pct": {
+        "min": 90.2439024390244,
+        "mean": 90.2439024390244,
+        "p50": 90.2439024390244,
+        "p95": 90.2439024390244,
+        "max": 90.2439024390244
+      }
+    }
+  }
+}

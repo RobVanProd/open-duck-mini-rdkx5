@@ -1,0 +1,106 @@
+{
+  "adopt_colab_command": "python3 tools/launch_phase2_stage_a_rate175_colab.py --adopt-existing-session --no-create --run-workflow --output-dir outputs/analysis/phase2_stage_a_rate175_colab_adopt_existing",
+  "colab_sessions": [],
+  "colab_sessions_result": {
+    "command": [
+      "colab",
+      "sessions"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "[colab] No active sessions found on server.\n",
+    "timed_out": false
+  },
+  "colab_status_result": {
+    "command": [
+      "colab",
+      "status"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "[colab] No active sessions.\n",
+    "timed_out": false
+  },
+  "decision": "No adoptable Colab session is visible and local ROCm has active GPU owner processes. Do not start Stage A until one runtime is free.",
+  "deploy_performed": false,
+  "generated_at": "2026-07-06T10:41:27Z",
+  "grounded_replay_performed": false,
+  "local_gpu_blockers": [
+    {
+      "exists": true,
+      "pid": 2081956,
+      "ps": "2081956    2924 Rl      04:54:49  118  2.4 /home/lsd/robots/envs/lerobot-so101/bin/python train_dreamer.py --logdir /home/lsd/robots/so101_dreamer_ue/training/runs/run11_20260706_continued",
+      "result": {
+        "command": [
+          "ps",
+          "-p",
+          "2081956",
+          "-o",
+          "pid=,ppid=,stat=,etime=,pcpu=,pmem=,cmd="
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stdout": "2081956    2924 Rl      04:54:49  118  2.4 /home/lsd/robots/envs/lerobot-so101/bin/python train_dreamer.py --logdir /home/lsd/robots/so101_dreamer_ue/training/runs/run11_20260706_continued\n",
+        "timed_out": false
+      }
+    }
+  ],
+  "offline_only": true,
+  "robot_touched": false,
+  "rocm_pids": [
+    2081956
+  ],
+  "rocm_processes": [
+    {
+      "exists": true,
+      "pid": 2081956,
+      "ps": "2081956    2924 Rl      04:54:49  118  2.4 /home/lsd/robots/envs/lerobot-so101/bin/python train_dreamer.py --logdir /home/lsd/robots/so101_dreamer_ue/training/runs/run11_20260706_continued",
+      "result": {
+        "command": [
+          "ps",
+          "-p",
+          "2081956",
+          "-o",
+          "pid=,ppid=,stat=,etime=,pcpu=,pmem=,cmd="
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stdout": "2081956    2924 Rl      04:54:49  118  2.4 /home/lsd/robots/envs/lerobot-so101/bin/python train_dreamer.py --logdir /home/lsd/robots/so101_dreamer_ue/training/runs/run11_20260706_continued\n",
+        "timed_out": false
+      }
+    }
+  ],
+  "rocm_result": {
+    "command": [
+      "rocm-smi",
+      "--showuse",
+      "--showmemuse",
+      "--showpidgpus"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "\n\n============================ ROCm System Management Interface ============================\n=================================== % time GPU is busy ===================================\nGPU[0]\t\t: GPU use (%): 13\nGPU[1]\t\t: GPU use (%): 0\n==========================================================================================\n=================================== Current Memory Use ===================================\nGPU[0]\t\t: GPU Memory Allocated (VRAM%): 12\nGPU[0]\t\t: GPU Memory Read/Write Activity (%): 0\nGPU[0]\t\t: Memory Activity: N/A\nGPU[0]\t\t: Avg. Memory Bandwidth: 0\nGPU[1]\t\t: GPU Memory Allocated (VRAM%): 49\nGPU[1]\t\t: Memory Activity: N/A\nGPU[1]\t\t: Not supported on the given system\n==========================================================================================\n================================== GPUs Indexed by PID ===================================\nPID 2081956 is using 1 DRM device(s):\n0 \n==========================================================================================\n================================== End of ROCm SMI Log ===================================\n",
+    "timed_out": false
+  },
+  "ssh_used": false,
+  "stage_a_checkpoint_count": 0,
+  "stage_a_postrun_status": {
+    "artifact_root": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/colab_cli_stage_a_rate175_prior",
+    "artifact_root_exists": true,
+    "checkpoint_count": 0,
+    "checkpoints": [],
+    "deploy_performed": false,
+    "generated_at": "2026-07-06T10:40:08Z",
+    "grounded_replay_performed": false,
+    "offline_only": true,
+    "robot_touched": false,
+    "selected_checkpoint_files": [],
+    "ssh_used": false,
+    "status": "HOLD_STAGE_A_CHECKPOINTS_MISSING",
+    "sweep_command": [],
+    "sweep_command_shell": null,
+    "training_result_promoted": false
+  },
+  "status": "HOLD_GPU_RUNTIME_UNAVAILABLE",
+  "wait_adopt_colab_command": "python3 tools/launch_phase2_stage_a_rate175_colab.py --adopt-existing-session --wait-for-existing-session --wait-timeout-s 3600 --wait-interval-s 30 --no-create --run-workflow --output-dir outputs/analysis/phase2_stage_a_rate175_colab_wait_adopt"
+}

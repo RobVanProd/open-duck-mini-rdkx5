@@ -1,0 +1,209 @@
+{
+  "config": {
+    "policies": [
+      "outputs/analysis/source_vx_selector_trace_dagger6_recovery_mlp128_rate_reg_candidate/candidate.onnx"
+    ],
+    "policy_labels": [
+      "dagger6"
+    ],
+    "seeds": [
+      1,
+      7
+    ],
+    "command_x": 0.08,
+    "task": "flat_terrain",
+    "duration_s": 10.0,
+    "bridge_mode": "fitted",
+    "reward_overrides_json": null,
+    "reward_overrides_phase": null,
+    "jax_platform": "cpu",
+    "run": true,
+    "trace_seeds": [
+      1,
+      7
+    ],
+    "trace_full_obs": true
+  },
+  "results": [
+    {
+      "policy": "outputs/analysis/source_vx_selector_trace_dagger6_recovery_mlp128_rate_reg_candidate/candidate.onnx",
+      "policy_label": "dagger6",
+      "seed": 1,
+      "output_dir": "outputs/analysis/dagger6_targeted_recovery_trace_x008_fitted_10s/dagger6/seed_001",
+      "command": [
+        "/usr/bin/python3",
+        "/home/lsd/robots/open-duck-mini-rdkx5/tools/eval_policy_with_actuator_bridge.py",
+        "--mode",
+        "closed-loop-sim",
+        "--eval-role",
+        "candidate",
+        "--policy",
+        "outputs/analysis/source_vx_selector_trace_dagger6_recovery_mlp128_rate_reg_candidate/candidate.onnx",
+        "--fit-json",
+        "outputs/analysis/actuator_response_fit.json",
+        "--playground-path",
+        "../Open_Duck_Playground",
+        "--env-python",
+        "../envs/open-duck-playground/bin/python",
+        "--command-x",
+        "0.08",
+        "--task",
+        "flat_terrain",
+        "--duration",
+        "10.0",
+        "--seed",
+        "1",
+        "--bridge-mode",
+        "fitted",
+        "--jax-platform",
+        "cpu",
+        "--sim-preflight-timeout-s",
+        "600",
+        "--closed-loop-timeout-s",
+        "1800",
+        "--output-dir",
+        "outputs/analysis/dagger6_targeted_recovery_trace_x008_fitted_10s/dagger6/seed_001",
+        "--trace-jsonl",
+        "outputs/analysis/dagger6_targeted_recovery_trace_x008_fitted_10s/dagger6/seed_001/trace.jsonl",
+        "--trace-full-obs"
+      ],
+      "command_shell": "/usr/bin/python3 /home/lsd/robots/open-duck-mini-rdkx5/tools/eval_policy_with_actuator_bridge.py --mode closed-loop-sim --eval-role candidate --policy outputs/analysis/source_vx_selector_trace_dagger6_recovery_mlp128_rate_reg_candidate/candidate.onnx --fit-json outputs/analysis/actuator_response_fit.json --playground-path ../Open_Duck_Playground --env-python ../envs/open-duck-playground/bin/python --command-x 0.08 --task flat_terrain --duration 10.0 --seed 1 --bridge-mode fitted --jax-platform cpu --sim-preflight-timeout-s 600 --closed-loop-timeout-s 1800 --output-dir outputs/analysis/dagger6_targeted_recovery_trace_x008_fitted_10s/dagger6/seed_001 --trace-jsonl outputs/analysis/dagger6_targeted_recovery_trace_x008_fitted_10s/dagger6/seed_001/trace.jsonl --trace-full-obs",
+      "returncode": 0,
+      "stdout_tail": "outputs/analysis/dagger6_targeted_recovery_trace_x008_fitted_10s/dagger6/seed_001/SIM_ACTUATOR_BRIDGE_EVAL.md\noutputs/analysis/dagger6_targeted_recovery_trace_x008_fitted_10s/dagger6/seed_001/sim_actuator_bridge_eval.json\noutputs/analysis/dagger6_targeted_recovery_trace_x008_fitted_10s/dagger6/seed_001/CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md\noutputs/analysis/dagger6_targeted_recovery_trace_x008_fitted_10s/dagger6/seed_001/closed_loop_actuator_bridge_eval.json\n",
+      "result_json": "outputs/analysis/dagger6_targeted_recovery_trace_x008_fitted_10s/dagger6/seed_001/closed_loop_actuator_bridge_eval.json",
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "summary": {
+        "overall_status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "candidate_gate_status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "samples": 32,
+        "termination_reason": "fall_or_nan",
+        "elapsed_s": 0.62,
+        "mean_local_vx_m_s": 0.010755576364317676,
+        "track_ratio": 0.13444470455397095,
+        "body_pitch_p95_rad": 0.00042967976450715775,
+        "base_height_min_m": 0.0774519294500351,
+        "max_pitch_vel_p95_rad_s": 3.65732729434967,
+        "max_tracking_p95_rad": 0.3234207570552825,
+        "action_saturation_pct": 0.0
+      }
+    },
+    {
+      "policy": "outputs/analysis/source_vx_selector_trace_dagger6_recovery_mlp128_rate_reg_candidate/candidate.onnx",
+      "policy_label": "dagger6",
+      "seed": 7,
+      "output_dir": "outputs/analysis/dagger6_targeted_recovery_trace_x008_fitted_10s/dagger6/seed_007",
+      "command": [
+        "/usr/bin/python3",
+        "/home/lsd/robots/open-duck-mini-rdkx5/tools/eval_policy_with_actuator_bridge.py",
+        "--mode",
+        "closed-loop-sim",
+        "--eval-role",
+        "candidate",
+        "--policy",
+        "outputs/analysis/source_vx_selector_trace_dagger6_recovery_mlp128_rate_reg_candidate/candidate.onnx",
+        "--fit-json",
+        "outputs/analysis/actuator_response_fit.json",
+        "--playground-path",
+        "../Open_Duck_Playground",
+        "--env-python",
+        "../envs/open-duck-playground/bin/python",
+        "--command-x",
+        "0.08",
+        "--task",
+        "flat_terrain",
+        "--duration",
+        "10.0",
+        "--seed",
+        "7",
+        "--bridge-mode",
+        "fitted",
+        "--jax-platform",
+        "cpu",
+        "--sim-preflight-timeout-s",
+        "600",
+        "--closed-loop-timeout-s",
+        "1800",
+        "--output-dir",
+        "outputs/analysis/dagger6_targeted_recovery_trace_x008_fitted_10s/dagger6/seed_007",
+        "--trace-jsonl",
+        "outputs/analysis/dagger6_targeted_recovery_trace_x008_fitted_10s/dagger6/seed_007/trace.jsonl",
+        "--trace-full-obs"
+      ],
+      "command_shell": "/usr/bin/python3 /home/lsd/robots/open-duck-mini-rdkx5/tools/eval_policy_with_actuator_bridge.py --mode closed-loop-sim --eval-role candidate --policy outputs/analysis/source_vx_selector_trace_dagger6_recovery_mlp128_rate_reg_candidate/candidate.onnx --fit-json outputs/analysis/actuator_response_fit.json --playground-path ../Open_Duck_Playground --env-python ../envs/open-duck-playground/bin/python --command-x 0.08 --task flat_terrain --duration 10.0 --seed 7 --bridge-mode fitted --jax-platform cpu --sim-preflight-timeout-s 600 --closed-loop-timeout-s 1800 --output-dir outputs/analysis/dagger6_targeted_recovery_trace_x008_fitted_10s/dagger6/seed_007 --trace-jsonl outputs/analysis/dagger6_targeted_recovery_trace_x008_fitted_10s/dagger6/seed_007/trace.jsonl --trace-full-obs",
+      "returncode": 0,
+      "stdout_tail": "outputs/analysis/dagger6_targeted_recovery_trace_x008_fitted_10s/dagger6/seed_007/SIM_ACTUATOR_BRIDGE_EVAL.md\noutputs/analysis/dagger6_targeted_recovery_trace_x008_fitted_10s/dagger6/seed_007/sim_actuator_bridge_eval.json\noutputs/analysis/dagger6_targeted_recovery_trace_x008_fitted_10s/dagger6/seed_007/CLOSED_LOOP_ACTUATOR_BRIDGE_EVAL.md\noutputs/analysis/dagger6_targeted_recovery_trace_x008_fitted_10s/dagger6/seed_007/closed_loop_actuator_bridge_eval.json\n",
+      "result_json": "outputs/analysis/dagger6_targeted_recovery_trace_x008_fitted_10s/dagger6/seed_007/closed_loop_actuator_bridge_eval.json",
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "summary": {
+        "overall_status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "candidate_gate_status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+        "samples": 33,
+        "termination_reason": "fall_or_nan",
+        "elapsed_s": 0.64,
+        "mean_local_vx_m_s": 0.026436148542967258,
+        "track_ratio": 0.3304518567870907,
+        "body_pitch_p95_rad": 0.01834765378071781,
+        "base_height_min_m": 0.07295819371938705,
+        "max_pitch_vel_p95_rad_s": 3.100624084472656,
+        "max_tracking_p95_rad": 0.3052642345428465,
+        "action_saturation_pct": 0.0
+      }
+    }
+  ],
+  "aggregate": {
+    "dagger6": {
+      "runs": 2,
+      "fall_count": 2,
+      "duration_complete_count": 0,
+      "samples": {
+        "min": 32.0,
+        "mean": 32.5,
+        "p50": 32.5,
+        "p95": 32.95,
+        "max": 33.0
+      },
+      "track_ratio": {
+        "min": 0.13444470455397095,
+        "mean": 0.23244828067053083,
+        "p50": 0.23244828067053083,
+        "p95": 0.32065149917543473,
+        "max": 0.3304518567870907
+      },
+      "mean_local_vx_m_s": {
+        "min": 0.010755576364317676,
+        "mean": 0.01859586245364247,
+        "p50": 0.01859586245364247,
+        "p95": 0.025652119934034778,
+        "max": 0.026436148542967258
+      },
+      "body_pitch_p95_rad": {
+        "min": 0.00042967976450715775,
+        "mean": 0.009388666772612483,
+        "p50": 0.009388666772612483,
+        "p95": 0.017451755079907275,
+        "max": 0.01834765378071781
+      },
+      "base_height_min_m": {
+        "min": 0.07295819371938705,
+        "mean": 0.07520506158471107,
+        "p50": 0.07520506158471107,
+        "p95": 0.0772272426635027,
+        "max": 0.0774519294500351
+      },
+      "max_pitch_vel_p95_rad_s": {
+        "min": 3.100624084472656,
+        "mean": 3.378975689411163,
+        "p50": 3.378975689411163,
+        "p95": 3.6294921338558193,
+        "max": 3.65732729434967
+      },
+      "max_tracking_p95_rad": {
+        "min": 0.3052642345428465,
+        "mean": 0.3143424957990645,
+        "p50": 0.3143424957990645,
+        "p95": 0.3225129309296607,
+        "max": 0.3234207570552825
+      }
+    }
+  }
+}

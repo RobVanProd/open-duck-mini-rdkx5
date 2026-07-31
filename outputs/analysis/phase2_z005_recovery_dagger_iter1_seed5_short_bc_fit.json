@@ -1,0 +1,104 @@
+{
+  "activation": "swish",
+  "config": {
+    "batch_size": 256,
+    "learning_rate": 0.001,
+    "seed": 5,
+    "steps": 5000,
+    "target_rate_limit_rad_s": 2.0,
+    "target_rate_scale": 0.05
+  },
+  "context_hidden_sizes": [
+    32
+  ],
+  "context_indices": [
+    6,
+    99,
+    100
+  ],
+  "exported_onnx": "outputs/analysis/phase2_z005_recovery_dagger_iter1_seed5_short_student/candidate.onnx",
+  "loss_rows": [
+    {
+      "loss": 0.39942434430122375,
+      "step": 1
+    },
+    {
+      "loss": 0.0006767543964087963,
+      "step": 500
+    },
+    {
+      "loss": 0.0003708707226905972,
+      "step": 1000
+    },
+    {
+      "loss": 0.0002398783981334418,
+      "step": 1500
+    },
+    {
+      "loss": 0.00022710733173880726,
+      "step": 2000
+    },
+    {
+      "loss": 0.00014599841961171478,
+      "step": 2500
+    },
+    {
+      "loss": 0.00014631675730925053,
+      "step": 3000
+    },
+    {
+      "loss": 0.00023299660824704915,
+      "step": 3500
+    },
+    {
+      "loss": 0.0001104127659345977,
+      "step": 4000
+    },
+    {
+      "loss": 0.00010806570935528725,
+      "step": 4500
+    },
+    {
+      "loss": 0.00011911663750652224,
+      "step": 5000
+    }
+  ],
+  "manifest": "outputs/analysis/phase2_z005_recovery_dagger_iter1_seed5_short/live_oracle_dagger_aggregate_manifest.json",
+  "modulation_scale": 0.5,
+  "onnx_verify": {
+    "max_abs_error": 2.980232238769531e-07,
+    "p95_abs_error": 1.1920928955078125e-07,
+    "path": "outputs/analysis/phase2_z005_recovery_dagger_iter1_seed5_short_student/candidate.onnx",
+    "samples_checked": 64
+  },
+  "sample_weight": {
+    "max": 5.0,
+    "p50": 1.0,
+    "p95": 1.0,
+    "weighted_samples": 6557.0
+  },
+  "samples": 6117,
+  "saved_npz": "outputs/analysis/phase2_z005_recovery_dagger_iter1_seed5_short_student/candidate_mlp.npz",
+  "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+  "target_rate": {
+    "max_rad_s": 2.7887203693389893,
+    "p50_rad_s": 0.43220269680023193,
+    "p95_rad_s": 1.816269946098327,
+    "p99_rad_s": 2.0568440318107606,
+    "pair_count": 6107
+  },
+  "train_metrics": {
+    "mae": 0.006735897829060606,
+    "max_abs_error": 0.33530092239379883,
+    "p50_abs_error": 0.004708677530288696,
+    "p95_abs_error": 0.019629803299903853,
+    "p99_abs_error": 0.036055831238627545,
+    "pred_action_saturation_pct": 0.0,
+    "rmse": 0.01029272953987908,
+    "samples": 6117
+  },
+  "trunk_hidden_sizes": [
+    128,
+    64
+  ]
+}

@@ -1,0 +1,48 @@
+# Candidate Seed Sweep
+
+Offline multi-seed closed-loop candidate gate. This does not SSH, deploy,
+train, or touch the robot.
+
+command_x: `0.08`
+task: `rough_terrain_backlash`
+bridge_mode: `fitted`
+policy_action_gain: `1.0`
+reward_overrides_json: `None`
+reward_overrides_phase: `None`
+duration_s: `15.0`
+seeds: `[0, 6, 7]`
+eval_push_enable: `True`
+eval_push_interval_s: `1.0`-`1.5`
+eval_push_magnitude: `0.075`-`0.125`
+push_recovery_window_s: `1.2`
+terrain_hfield_z_scale: `0.0075`
+reset_settle_ticks: `10`
+reset_mode: `home-support`
+min_swing_segments_per_foot: `None`
+min_swing_rel_x_range_p95_m: `None`
+min_swing_peak_lift_m: `None`
+trace_seeds: `[]`
+trace_full_obs: `False`
+run: `True`
+
+## Per-Seed Results
+
+| policy | seed | status | samples | termination | mean_local_vx | track_ratio | body_pitch_p95 | base_height_min | max_pitch_vel_p95 | p95_vel_excess | max_vel_excess | max_tracking_p95 | min_swing_peak | min_swing_segments | min_rel_x_range_p95 | single_support | double_support | push_events | push_success |
+|---|---:|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| `iter21_balanced_seed67_w2` | 0 | `PASS_CANDIDATE_SIM_GATE` | 750 | `duration_complete` | 0.0289 | 0.3618 | 0.1813 | 0.1582 | 1.5992 | 0.0000 | 0.0000 | 0.1842 | 0.0155 | 14 | 0.0158 | 24.4000 | 75.6000 | 12 | 0.9167 |
+| `iter21_balanced_seed67_w2` | 6 | `PASS_CANDIDATE_SIM_GATE` | 750 | `duration_complete` | 0.0275 | 0.3438 | 0.1889 | 0.1580 | 1.6013 | 0.0000 | 0.0000 | 0.1853 | 0.0150 | 10 | 0.0233 | 24.1333 | 75.8667 | 13 | 0.9231 |
+| `iter21_balanced_seed67_w2` | 7 | `PASS_CANDIDATE_SIM_GATE` | 750 | `duration_complete` | 0.0281 | 0.3514 | 0.1612 | 0.1582 | 1.6103 | 0.0000 | 0.0000 | 0.1876 | 0.0177 | 15 | 0.0227 | 24.8000 | 75.2000 | 10 | 0.9000 |
+
+## Distribution Summary
+
+| policy | runs | falls | duration_complete | samples_mean | samples_min | samples_max | track_ratio_mean | vx_mean | body_pitch_p95_mean | base_height_min_mean | p95_vel_excess_mean | max_vel_excess_mean | min_swing_peak_mean | min_swing_segments_mean | min_rel_x_range_p95_mean | single_support_mean | double_support_mean | push_events_mean | push_success_mean |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| `iter21_balanced_seed67_w2` | 3 | 0 | 3 | 750.0000 | 750 | 750 | 0.3524 | 0.0282 | 0.1771 | 0.1581 | 0.0000 | 0.0000 | 0.0161 | 13.0000 | 0.0206 | 24.4444 | 75.5556 | 11.6667 | 0.9132 |
+
+## Interpretation
+
+- Treat this as a stability distribution, not a deployability approval.
+- A candidate still needs the standard full-duration x=0.0 and x=0.08
+  gates reviewed before any robot-side validation.
+- If fall samples vary widely across seeds, grade later recipes by
+  distribution shift, not by a single lucky rollout.

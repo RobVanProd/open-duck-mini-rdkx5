@@ -1,0 +1,36 @@
+{
+  "status": "HOLD_POST_PUSH_RECOVERY_STATE_MISMATCH",
+  "scope": "offline_analysis_only",
+  "candidate": "policy/candidates/phase2_z0075_iter21_early_lunge_gain095_rate150_20260704/candidate.onnx",
+  "candidate_sha256": "72aa93c2ab249d2e9b22bb5415ef6c96c7407833fbfd21233892b6daa6afda14",
+  "corrected_bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+  "corrected_bridge_sha256": "3661543d0745073b561eb4fa2ae8f9616368ee8b72cb397f8b953dada532c8c0",
+  "gate_json": "outputs/analysis/phase2_z0075_iter21_resetsettle10_seed0_5_fullobs_push_contrast_gate.json",
+  "gate_json_sha256": "49f2f621f2657b4728019adfe2cb9a4c801bb8e0bf1d92f2766cefa012b3381d",
+  "contrast_json": "outputs/analysis/phase2_z0075_iter21_resetsettle10_seed5_push_contrast.json",
+  "contrast_json_sha256": "5e3ebe82f6e10c1a41c4517acb76939850e108279ebba069afb6dbc004ea40e7",
+  "gate_reproduction": {
+    "seed0": {
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "samples": 750,
+      "track_ratio": 0.3391,
+      "max_vel_excess": 0.0,
+      "push_success": 0.9167
+    },
+    "seed5": {
+      "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+      "samples": 599,
+      "track_ratio": -0.0672,
+      "max_vel_excess": 0.0,
+      "push_success": 0.9
+    }
+  },
+  "classification": {
+    "not_startup_spike": true,
+    "not_target_velocity_violation": true,
+    "first_push_windows_similar": true,
+    "late_post_push_failure": true,
+    "failure_mode": "backward_pitch_collapse_after_late_push"
+  },
+  "next_recommendation": "state-conditioned post-push recovery mapping using seed5 late failure-window coverage; do not continue startup relabel, global gain, global rate cleanup, or behavior-prior reward tuning"
+}

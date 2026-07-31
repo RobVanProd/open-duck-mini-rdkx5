@@ -50,12 +50,14 @@ class JointActuatorParams:
     delay_ticks: int = 0
     tau_s: float = 0.0
     velocity_limit_rad_s: float = math.inf
+    gain_ratio: float = 1.0
 
     def normalized(self) -> "JointActuatorParams":
         return JointActuatorParams(
             delay_ticks=max(0, int(self.delay_ticks)),
             tau_s=max(0.0, float(self.tau_s)),
             velocity_limit_rad_s=max(0.0, float(self.velocity_limit_rad_s)),
+            gain_ratio=max(0.0, float(self.gain_ratio)),
         )
 
 
@@ -66,6 +68,7 @@ class ActuatorBridgeModel:
         self,
         params: Sequence[JointActuatorParams],
         initial_target: Sequence[float] | None = None,
+        home_target: Sequence[float] | None = None,
     ) -> None:
         self.params = [param.normalized() for param in params]
         if not self.params:
@@ -81,6 +84,15 @@ class ActuatorBridgeModel:
                 f"initial_target shape {initial.shape} does not match model size {self.size}"
             )
         self._value = initial.copy()
+        self._home = (
+            np.zeros(self.size, dtype=float)
+            if home_target is None
+            else np.asarray(home_target, dtype=float)
+        )
+        if self._home.shape != (self.size,):
+            raise ValueError(
+                f"home_target shape {self._home.shape} does not match model size {self.size}"
+            )
         self._queues: list[list[float]] = []
         for index, param in enumerate(self.params):
             self._queues.append([float(initial[index])] * (param.delay_ticks + 1))
@@ -117,6 +129,10 @@ class ActuatorBridgeModel:
             while len(queue) > param.delay_ticks + 1:
                 queue.pop(0)
             delayed_target = queue[0]
+            if param.gain_ratio != 1.0:
+                delayed_target = self._home[index] + param.gain_ratio * (
+                    delayed_target - self._home[index]
+                )
 
             if param.tau_s > 0.0:
                 alpha = 1.0 - math.exp(-dt / param.tau_s)
@@ -147,6 +163,7 @@ def params_from_fit(
     joint_names: Sequence[str] = JOINT_NAMES,
     source: str = "primary",
     include_unfitted_passthrough: bool = True,
+    include_gain_ratio: bool = False,
 ) -> list[JointActuatorParams]:
     """Build per-joint bridge params from `actuator_response_fit.json`.
 
@@ -167,6 +184,11 @@ def params_from_fit(
                     tau_s=float(combined.get("tau_s", 0.0)),
                     velocity_limit_rad_s=float(
                         combined.get("velocity_limit_rad_s", math.inf)
+                    ),
+                    gain_ratio=(
+                        float((item.get("series") or {}).get("amplitude_ratio", 1.0))
+                        if include_gain_ratio
+                        else 1.0
                     ),
                 ).normalized()
             )

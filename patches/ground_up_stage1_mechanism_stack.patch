@@ -1,0 +1,815 @@
+diff --git a/playground/common/phase_moe_networks.py b/playground/common/phase_moe_networks.py
+new file mode 100644
+index 0000000..7488df9
+--- /dev/null
++++ b/playground/common/phase_moe_networks.py
+@@ -0,0 +1,276 @@
++"""Smooth command/phase mixture-of-experts PPO policy and ONNX export."""
++
++from __future__ import annotations
++
++from collections.abc import Mapping, Sequence
++from pathlib import Path
++
++from brax.training import distribution
++from brax.training import networks as brax_networks
++from brax.training import types
++from brax.training.agents.ppo import networks as ppo_networks
++from flax import linen
++import jax
++import jax.numpy as jnp
++import numpy as np
++
++
++ROUTER_OBSERVATION_INDICES = (6, 7, 8, 99, 100)
++
++
++class PhaseMoEPolicy(linen.Module):
++    """Shared trunk with smoothly weighted expert distribution heads."""
++
++    param_size: int
++    hidden_layer_sizes: Sequence[int]
++    num_experts: int = 4
++
++    @linen.compact
++    def __call__(self, normalized_obs, router_features):
++        hidden = brax_networks.MLP(
++            layer_sizes=list(self.hidden_layer_sizes),
++            activation=linen.swish,
++            activate_final=True,
++            name="shared_trunk",
++        )(normalized_obs)
++        expert_logits = jnp.stack(
++            [
++                linen.Dense(self.param_size, name=f"expert_{index}")(hidden)
++                for index in range(self.num_experts)
++            ],
++            axis=-2,
++        )
++        router_logits = linen.Dense(self.num_experts, name="router")(router_features)
++        router_weights = jax.nn.softmax(router_logits, axis=-1)
++        return jnp.sum(expert_logits * router_weights[..., :, None], axis=-2)
++
++
++def _obs_size(observation_size: types.ObservationSize, key: str) -> int:
++    value = observation_size[key] if isinstance(observation_size, Mapping) else observation_size
++    return int(jax.tree_util.tree_flatten(value)[0][-1])
++
++
++def make_phase_moe_ppo_networks(
++    observation_size: types.ObservationSize,
++    action_size: int,
++    preprocess_observations_fn: types.PreprocessObservationFn = types.identity_observation_preprocessor,
++    policy_hidden_layer_sizes: Sequence[int] = (512, 256, 128),
++    value_hidden_layer_sizes: Sequence[int] = (512, 256, 128),
++    policy_obs_key: str = "state",
++    value_obs_key: str = "privileged_state",
++    num_experts: int = 4,
++    **kwargs,
++) -> ppo_networks.PPONetworks:
++    base = ppo_networks.make_ppo_networks(
++        observation_size=observation_size,
++        action_size=action_size,
++        preprocess_observations_fn=preprocess_observations_fn,
++        policy_hidden_layer_sizes=policy_hidden_layer_sizes,
++        value_hidden_layer_sizes=value_hidden_layer_sizes,
++        policy_obs_key=policy_obs_key,
++        value_obs_key=value_obs_key,
++        **kwargs,
++    )
++    action_distribution = distribution.NormalTanhDistribution(event_size=action_size)
++    module = PhaseMoEPolicy(
++        param_size=action_distribution.param_size,
++        hidden_layer_sizes=policy_hidden_layer_sizes,
++        num_experts=num_experts,
++    )
++    state_size = _obs_size(observation_size, policy_obs_key)
++    if max(ROUTER_OBSERVATION_INDICES) >= state_size:
++        raise ValueError(
++            f"phase MoE router index exceeds state size {state_size}: "
++            f"{ROUTER_OBSERVATION_INDICES}"
++        )
++
++    def init(key):
++        return module.init(
++            key,
++            jnp.zeros((1, state_size)),
++            jnp.zeros((1, len(ROUTER_OBSERVATION_INDICES))),
++        )
++
++    def apply(processor_params, policy_params, obs):
++        raw = obs[policy_obs_key] if isinstance(obs, Mapping) else obs
++        selector = (
++            brax_networks.normalizer_select(processor_params, policy_obs_key)
++            if isinstance(obs, Mapping)
++            else processor_params
++        )
++        normalized = preprocess_observations_fn(raw, selector)
++        router_features = raw[..., jnp.asarray(ROUTER_OBSERVATION_INDICES)]
++        return module.apply(policy_params, normalized, router_features)
++
++    policy_network = brax_networks.FeedForwardNetwork(init=init, apply=apply)
++    return ppo_networks.PPONetworks(
++        policy_network=policy_network,
++        value_network=base.value_network,
++        parametric_action_distribution=action_distribution,
++    )
++
++
++def _policy_params(value):
++    policy = getattr(value, "policy", value)
++    params = policy.get("params") if hasattr(policy, "get") else None
++    if params is None:
++        raise ValueError("phase MoE policy params missing")
++    return params
++
++
++def export_phase_moe_onnx(
++    params,
++    action_size: int,
++    obs_size: int,
++    output_path: str | Path,
++    hidden_layer_sizes: Sequence[int],
++    num_experts: int = 4,
++) -> dict:
++    """Export deterministic final action and verify ONNX against JAX logits."""
++    import onnx
++    from onnx import TensorProto, helper, numpy_helper
++    import onnxruntime as ort
++
++    output_path = Path(output_path)
++    output_path.parent.mkdir(parents=True, exist_ok=True)
++    normalizer = params[0]
++    mean = np.asarray(normalizer.mean["state"], dtype=np.float32)
++    std = np.asarray(normalizer.std["state"], dtype=np.float32)
++    policy_params = _policy_params(params[1])
++
++    initializers = [
++        numpy_helper.from_array(mean, name="obs_mean"),
++        numpy_helper.from_array(std, name="obs_std"),
++        numpy_helper.from_array(
++            np.asarray(ROUTER_OBSERVATION_INDICES, dtype=np.int64), name="router_indices"
++        ),
++    ]
++    nodes = [
++        helper.make_node("Sub", ["obs", "obs_mean"], ["obs_centered"]),
++        helper.make_node("Div", ["obs_centered", "obs_std"], ["obs_normalized"]),
++        helper.make_node("Gather", ["obs", "router_indices"], ["router_features"], axis=1),
++    ]
++
++    hidden = "obs_normalized"
++    trunk = policy_params["shared_trunk"]
++    for index, _ in enumerate(hidden_layer_sizes):
++        layer = trunk[f"hidden_{index}"]
++        weight = f"trunk_{index}_weight"
++        bias = f"trunk_{index}_bias"
++        pre = f"trunk_{index}_pre"
++        sigmoid = f"trunk_{index}_sigmoid"
++        out = f"trunk_{index}_out"
++        initializers.extend(
++            [
++                numpy_helper.from_array(np.asarray(layer["kernel"], dtype=np.float32), name=weight),
++                numpy_helper.from_array(np.asarray(layer["bias"], dtype=np.float32), name=bias),
++            ]
++        )
++        nodes.extend(
++            [
++                helper.make_node("Gemm", [hidden, weight, bias], [pre]),
++                helper.make_node("Sigmoid", [pre], [sigmoid]),
++                helper.make_node("Mul", [pre, sigmoid], [out]),
++            ]
++        )
++        hidden = out
++
++    router = policy_params["router"]
++    initializers.extend(
++        [
++            numpy_helper.from_array(np.asarray(router["kernel"], dtype=np.float32), name="router_weight"),
++            numpy_helper.from_array(np.asarray(router["bias"], dtype=np.float32), name="router_bias"),
++        ]
++    )
++    nodes.extend(
++        [
++            helper.make_node(
++                "Gemm", ["router_features", "router_weight", "router_bias"], ["router_logits"]
++            ),
++            helper.make_node("Softmax", ["router_logits"], ["router_weights"], axis=1),
++        ]
++    )
++
++    weighted = []
++    for index in range(num_experts):
++        expert = policy_params[f"expert_{index}"]
++        weight = f"expert_{index}_weight"
++        bias = f"expert_{index}_bias"
++        logits = f"expert_{index}_logits"
++        gate_index = f"gate_{index}_index"
++        gate_flat = f"gate_{index}_flat"
++        gate = f"gate_{index}"
++        product = f"expert_{index}_weighted"
++        initializers.extend(
++            [
++                numpy_helper.from_array(np.asarray(expert["kernel"], dtype=np.float32), name=weight),
++                numpy_helper.from_array(np.asarray(expert["bias"], dtype=np.float32), name=bias),
++                numpy_helper.from_array(np.asarray(index, dtype=np.int64), name=gate_index),
++            ]
++        )
++        nodes.extend(
++            [
++                helper.make_node("Gemm", [hidden, weight, bias], [logits]),
++                helper.make_node("Gather", ["router_weights", gate_index], [gate_flat], axis=1),
++                helper.make_node("Unsqueeze", [gate_flat], [gate], axes=[1]),
++                helper.make_node("Mul", [logits, gate], [product]),
++            ]
++        )
++        weighted.append(product)
++    nodes.append(helper.make_node("Sum", weighted, ["distribution_logits"]))
++    initializers.extend(
++        [
++            numpy_helper.from_array(np.asarray([0], dtype=np.int64), name="slice_starts"),
++            numpy_helper.from_array(np.asarray([action_size], dtype=np.int64), name="slice_ends"),
++            numpy_helper.from_array(np.asarray([1], dtype=np.int64), name="slice_axes"),
++            numpy_helper.from_array(np.asarray([1], dtype=np.int64), name="slice_steps"),
++        ]
++    )
++    nodes.extend(
++        [
++            helper.make_node(
++                "Slice",
++                ["distribution_logits", "slice_starts", "slice_ends", "slice_axes", "slice_steps"],
++                ["action_location"],
++            ),
++            helper.make_node("Tanh", ["action_location"], ["continuous_actions"]),
++        ]
++    )
++    graph = helper.make_graph(
++        nodes,
++        "open_duck_phase_moe_final_action",
++        [helper.make_tensor_value_info("obs", TensorProto.FLOAT, [1, obs_size])],
++        [
++            helper.make_tensor_value_info(
++                "continuous_actions", TensorProto.FLOAT, [1, action_size]
++            )
++        ],
++        initializer=initializers,
++    )
++    model = helper.make_model(
++        graph,
++        producer_name="open-duck-playground-ground-up",
++        opset_imports=[helper.make_operatorsetid("", 12)],
++    )
++    model.ir_version = min(model.ir_version, 10)
++    onnx.checker.check_model(model)
++    onnx.save(model, output_path)
++
++    dummy = np.linspace(-0.25, 0.25, obs_size, dtype=np.float32)[None, :]
++    network = make_phase_moe_ppo_networks(
++        {"state": (obs_size,), "privileged_state": (obs_size,)},
++        action_size,
++        preprocess_observations_fn=lambda value, stats: (value - stats.mean) / stats.std,
++        policy_hidden_layer_sizes=hidden_layer_sizes,
++        value_hidden_layer_sizes=hidden_layer_sizes,
++        value_obs_key="state",
++        num_experts=num_experts,
++    )
++    logits = np.asarray(network.policy_network.apply(params[0], params[1], {"state": dummy}))
++    expected = np.tanh(logits[:, :action_size])
++    session = ort.InferenceSession(str(output_path), providers=["CPUExecutionProvider"])
++    actual = session.run(["continuous_actions"], {"obs": dummy})[0]
++    max_error = float(np.max(np.abs(expected - actual)))
++    if max_error > 1.0e-5:
++        raise ValueError(f"phase MoE ONNX mismatch: {max_error}")
++    return {"path": str(output_path), "max_action_error": max_error}
+diff --git a/playground/common/recurrent_ppo_networks.py b/playground/common/recurrent_ppo_networks.py
+new file mode 100644
+index 0000000..8f7350f
+--- /dev/null
++++ b/playground/common/recurrent_ppo_networks.py
+@@ -0,0 +1,318 @@
++"""Stateful recurrent PPO policy, collector hook, and ONNX export."""
++
++from __future__ import annotations
++
++from collections.abc import Mapping, Sequence
++from pathlib import Path
++
++from brax.training import distribution
++from brax.training import networks as brax_networks
++from brax.training import types
++from brax.training.agents.ppo import networks as ppo_networks
++from flax import linen
++import flax
++import jax
++import jax.numpy as jnp
++import numpy as np
++
++
++HIDDEN_OBSERVATION_KEY = "policy_hidden"
++
++
++class RecurrentPolicy(linen.Module):
++    param_size: int
++    hidden_size: int
++
++    @linen.compact
++    def __call__(self, normalized_obs, hidden_in):
++        obs_projection = linen.Dense(
++            self.hidden_size, use_bias=False, name="obs_projection"
++        )(normalized_obs)
++        hidden_projection = linen.Dense(
++            self.hidden_size, use_bias=False, name="hidden_projection"
++        )(hidden_in)
++        bias = self.param("hidden_bias", jax.nn.initializers.zeros, (self.hidden_size,))
++        hidden_out = jnp.tanh(obs_projection + hidden_projection + bias)
++        logits = linen.Dense(self.param_size, name="distribution_head")(hidden_out)
++        return logits, hidden_out
++
++
++@flax.struct.dataclass
++class RecurrentPolicyNetwork:
++    init: object
++    apply: object
++    apply_with_state: object
++
++
++def make_recurrent_ppo_networks(
++    observation_size: types.ObservationSize,
++    action_size: int,
++    preprocess_observations_fn: types.PreprocessObservationFn = types.identity_observation_preprocessor,
++    policy_hidden_layer_sizes: Sequence[int] = (512, 256, 128),
++    value_hidden_layer_sizes: Sequence[int] = (512, 256, 128),
++    policy_obs_key: str = "state",
++    value_obs_key: str = "privileged_state",
++    recurrent_hidden_size: int = 64,
++    **kwargs,
++) -> ppo_networks.PPONetworks:
++    del policy_hidden_layer_sizes
++    base = ppo_networks.make_ppo_networks(
++        observation_size=observation_size,
++        action_size=action_size,
++        preprocess_observations_fn=preprocess_observations_fn,
++        policy_hidden_layer_sizes=(recurrent_hidden_size,),
++        value_hidden_layer_sizes=value_hidden_layer_sizes,
++        policy_obs_key=policy_obs_key,
++        value_obs_key=value_obs_key,
++        **kwargs,
++    )
++    action_distribution = distribution.NormalTanhDistribution(event_size=action_size)
++    module = RecurrentPolicy(action_distribution.param_size, recurrent_hidden_size)
++    state_shape = observation_size[policy_obs_key]
++    state_size = int(jax.tree_util.tree_flatten(state_shape)[0][-1])
++
++    def init(key):
++        return module.init(
++            key,
++            jnp.zeros((1, state_size)),
++            jnp.zeros((1, recurrent_hidden_size)),
++        )
++
++    def apply_with_state(processor_params, policy_params, obs):
++        if not isinstance(obs, Mapping) or HIDDEN_OBSERVATION_KEY not in obs:
++            raise ValueError("recurrent policy requires policy_hidden observation")
++        raw = obs[policy_obs_key]
++        normalized = preprocess_observations_fn(
++            raw, brax_networks.normalizer_select(processor_params, policy_obs_key)
++        )
++        return module.apply(policy_params, normalized, obs[HIDDEN_OBSERVATION_KEY])
++
++    def apply(processor_params, policy_params, obs):
++        logits, _ = apply_with_state(processor_params, policy_params, obs)
++        return logits
++
++    policy_network = RecurrentPolicyNetwork(
++        init=init, apply=apply, apply_with_state=apply_with_state
++    )
++    return ppo_networks.PPONetworks(
++        policy_network=policy_network,
++        value_network=base.value_network,
++        parametric_action_distribution=action_distribution,
++    )
++
++
++def make_recurrent_inference_fn(
++    networks: ppo_networks.PPONetworks,
++    compute_value: bool = False,
++    use_distributional_critic: bool = False,
++):
++    """Brax-compatible inference factory that also returns the next hidden state."""
++
++    def make_policy(params: types.Params, deterministic: bool = False):
++        def policy(observations: types.Observation, key_sample: types.PRNGKey):
++            logits, hidden_out = networks.policy_network.apply_with_state(
++                params[0], params[1], observations
++            )
++            action_distribution = networks.parametric_action_distribution
++            if deterministic:
++                action = action_distribution.mode(logits)
++                extras = {"policy_hidden_out": hidden_out}
++            else:
++                raw_action = action_distribution.sample_no_postprocessing(
++                    logits, key_sample
++                )
++                action = action_distribution.postprocess(raw_action)
++                extras = {
++                    "log_prob": action_distribution.log_prob(logits, raw_action),
++                    "raw_action": raw_action,
++                    "distribution_params": logits,
++                    "policy_hidden_out": hidden_out,
++                }
++            if compute_value:
++                value = networks.value_network.apply(params[0], params[2], observations)
++                if use_distributional_critic:
++                    value, quantiles = value
++                    extras["quantiles"] = quantiles
++                extras["value"] = value
++            return action, extras
++
++        return policy
++
++    return make_policy
++
++
++def recurrent_actor_step(env, env_state, policy, key, extra_fields=()):
++    """Brax actor_step with an explicit terminated-episode hidden reset."""
++    from brax.training import acting
++
++    actions, policy_extras = policy(env_state.obs, key)
++    hidden_out = policy_extras["policy_hidden_out"]
++    nstate = env.step(env_state, actions)
++    keep = 1.0 - nstate.done
++    while keep.ndim < hidden_out.ndim:
++        keep = keep[..., None]
++    hidden_out = hidden_out * keep
++    next_obs = dict(nstate.obs)
++    next_obs[HIDDEN_OBSERVATION_KEY] = hidden_out
++    nstate = nstate.replace(obs=next_obs)
++    state_extras = {name: nstate.info[name] for name in extra_fields}
++    return nstate, acting.Transition(
++        observation=env_state.obs,
++        action=actions,
++        reward=nstate.reward,
++        discount=1 - nstate.done,
++        next_observation=nstate.obs,
++        extras={"policy_extras": policy_extras, "state_extras": state_extras},
++    )
++
++
++def install_recurrent_collector_hooks() -> None:
++    """Install process-local hooks before the single-policy PPO job starts."""
++    from brax.training import acting
++
++    acting.actor_step = recurrent_actor_step
++    ppo_networks.make_inference_fn = make_recurrent_inference_fn
++
++
++def _policy_params(value):
++    policy = getattr(value, "policy", value)
++    params = policy.get("params") if hasattr(policy, "get") else None
++    if params is None:
++        raise ValueError("recurrent policy params missing")
++    return params
++
++
++def export_recurrent_onnx(
++    params,
++    action_size: int,
++    obs_size: int,
++    hidden_size: int,
++    output_path: str | Path,
++) -> dict:
++    import onnx
++    from onnx import TensorProto, helper, numpy_helper
++    import onnxruntime as ort
++
++    output_path = Path(output_path)
++    output_path.parent.mkdir(parents=True, exist_ok=True)
++    mean = np.asarray(params[0].mean["state"], dtype=np.float32)
++    std = np.asarray(params[0].std["state"], dtype=np.float32)
++    p = _policy_params(params[1])
++    initializers = [
++        numpy_helper.from_array(mean, name="obs_mean"),
++        numpy_helper.from_array(std, name="obs_std"),
++        numpy_helper.from_array(
++            np.asarray(p["obs_projection"]["kernel"], dtype=np.float32),
++            name="obs_weight",
++        ),
++        numpy_helper.from_array(
++            np.asarray(p["hidden_projection"]["kernel"], dtype=np.float32),
++            name="hidden_weight",
++        ),
++        numpy_helper.from_array(
++            np.asarray(p["hidden_bias"], dtype=np.float32), name="hidden_bias"
++        ),
++        numpy_helper.from_array(
++            np.asarray(p["distribution_head"]["kernel"], dtype=np.float32),
++            name="head_weight",
++        ),
++        numpy_helper.from_array(
++            np.asarray(p["distribution_head"]["bias"], dtype=np.float32),
++            name="head_bias",
++        ),
++        numpy_helper.from_array(np.asarray([0], dtype=np.int64), name="slice_starts"),
++        numpy_helper.from_array(
++            np.asarray([action_size], dtype=np.int64), name="slice_ends"
++        ),
++        numpy_helper.from_array(np.asarray([1], dtype=np.int64), name="slice_axes"),
++        numpy_helper.from_array(np.asarray([1], dtype=np.int64), name="slice_steps"),
++    ]
++    nodes = [
++        helper.make_node("Sub", ["obs", "obs_mean"], ["obs_centered"]),
++        helper.make_node("Div", ["obs_centered", "obs_std"], ["obs_normalized"]),
++        helper.make_node("MatMul", ["obs_normalized", "obs_weight"], ["obs_projected"]),
++        helper.make_node("MatMul", ["h_in", "hidden_weight"], ["hidden_projected"]),
++        helper.make_node("Add", ["obs_projected", "hidden_projected"], ["hidden_sum"]),
++        helper.make_node("Add", ["hidden_sum", "hidden_bias"], ["hidden_pre"]),
++        helper.make_node("Tanh", ["hidden_pre"], ["h_out"]),
++        helper.make_node(
++            "Gemm", ["h_out", "head_weight", "head_bias"], ["distribution_logits"]
++        ),
++        helper.make_node(
++            "Slice",
++            ["distribution_logits", "slice_starts", "slice_ends", "slice_axes", "slice_steps"],
++            ["action_location"],
++        ),
++        helper.make_node("Tanh", ["action_location"], ["continuous_actions"]),
++    ]
++    graph = helper.make_graph(
++        nodes,
++        "open_duck_recurrent_final_action",
++        [
++            helper.make_tensor_value_info("obs", TensorProto.FLOAT, [1, obs_size]),
++            helper.make_tensor_value_info("h_in", TensorProto.FLOAT, [1, hidden_size]),
++        ],
++        [
++            helper.make_tensor_value_info(
++                "continuous_actions", TensorProto.FLOAT, [1, action_size]
++            ),
++            helper.make_tensor_value_info("h_out", TensorProto.FLOAT, [1, hidden_size]),
++        ],
++        initializer=initializers,
++    )
++    model = helper.make_model(
++        graph,
++        producer_name="open-duck-playground-ground-up",
++        opset_imports=[helper.make_operatorsetid("", 12)],
++    )
++    model.ir_version = min(model.ir_version, 10)
++    onnx.checker.check_model(model)
++    onnx.save(model, output_path)
++
++    network = make_recurrent_ppo_networks(
++        {
++            "state": (obs_size,),
++            "privileged_state": (obs_size,),
++            HIDDEN_OBSERVATION_KEY: (hidden_size,),
++        },
++        action_size,
++        preprocess_observations_fn=lambda value, stats: (value - stats.mean) / stats.std,
++        value_obs_key="state",
++        recurrent_hidden_size=hidden_size,
++    )
++    session = ort.InferenceSession(str(output_path), providers=["CPUExecutionProvider"])
++    hidden_jax = np.zeros((1, hidden_size), dtype=np.float32)
++    hidden_onnx = hidden_jax.copy()
++    max_action_error = 0.0
++    max_hidden_error = 0.0
++    for step in range(8):
++        obs = np.linspace(-0.25, 0.25, obs_size, dtype=np.float32)[None, :]
++        obs = obs + np.float32(step * 0.001)
++        logits, next_hidden = network.policy_network.apply_with_state(
++            params[0],
++            params[1],
++            {"state": obs, HIDDEN_OBSERVATION_KEY: hidden_jax},
++        )
++        expected_action = np.tanh(np.asarray(logits)[:, :action_size])
++        actual_action, next_hidden_onnx = session.run(
++            ["continuous_actions", "h_out"], {"obs": obs, "h_in": hidden_onnx}
++        )
++        max_action_error = max(
++            max_action_error, float(np.max(np.abs(expected_action - actual_action)))
++        )
++        max_hidden_error = max(
++            max_hidden_error,
++            float(np.max(np.abs(np.asarray(next_hidden) - next_hidden_onnx))),
++        )
++        hidden_jax = np.asarray(next_hidden)
++        hidden_onnx = next_hidden_onnx
++    if max(max_action_error, max_hidden_error) > 1.0e-5:
++        raise ValueError(
++            f"recurrent ONNX mismatch action={max_action_error} hidden={max_hidden_error}"
++        )
++    return {
++        "path": str(output_path),
++        "steps_checked": 8,
++        "max_action_error": max_action_error,
++        "max_hidden_error": max_hidden_error,
++    }
+diff --git a/playground/common/runner.py b/playground/common/runner.py
+index a7c4d06..67b77fe 100644
+--- a/playground/common/runner.py
++++ b/playground/common/runner.py
+@@ -75,13 +75,34 @@ class BaseRunner(ABC):
+         print(f"Saving checkpoint (step: {current_step}): {path}")
+         orbax_checkpointer.save(path, params, force=True, save_args=save_args)
+         onnx_export_path = f"{self.output_dir}/{d}_{current_step}.onnx"
+-        export_onnx(
+-            params,
+-            self.action_size,
+-            self.ppo_params,
+-            self.obs_size,  # may not work
+-            output_path=onnx_export_path
+-        )
++        if self.args.policy_architecture == "phase_moe":
++            from playground.common.phase_moe_networks import export_phase_moe_onnx
++
++            export_phase_moe_onnx(
++                params,
++                self.action_size,
++                self.obs_size,
++                onnx_export_path,
++                self.ppo_params.network_factory.policy_hidden_layer_sizes,
++            )
++        elif self.args.policy_architecture == "recurrent":
++            from playground.common.recurrent_ppo_networks import export_recurrent_onnx
++
++            export_recurrent_onnx(
++                params,
++                self.action_size,
++                self.obs_size,
++                self.args.recurrent_hidden_size,
++                onnx_export_path,
++            )
++        else:
++            export_onnx(
++                params,
++                self.action_size,
++                self.ppo_params,
++                self.obs_size,  # may not work
++                output_path=onnx_export_path
++            )
+ 
+     def train(self) -> None:
+         self.ppo_params = locomotion_params.brax_ppo_config(
+@@ -112,8 +133,25 @@ class BaseRunner(ABC):
+         
+ 
+         if "network_factory" in self.ppo_params:
++            if self.args.policy_architecture == "phase_moe":
++                from playground.common.phase_moe_networks import make_phase_moe_ppo_networks
++
++                network_builder = make_phase_moe_ppo_networks
++            elif self.args.policy_architecture == "recurrent":
++                from playground.common.recurrent_ppo_networks import (
++                    install_recurrent_collector_hooks,
++                    make_recurrent_ppo_networks,
++                )
++
++                install_recurrent_collector_hooks()
++                network_builder = functools.partial(
++                    make_recurrent_ppo_networks,
++                    recurrent_hidden_size=self.args.recurrent_hidden_size,
++                )
++            else:
++                network_builder = ppo_networks.make_ppo_networks
+             network_factory = functools.partial(
+-                ppo_networks.make_ppo_networks, **self.ppo_params.network_factory
++                network_builder, **self.ppo_params.network_factory
+             )
+             del self.ppo_training_params["network_factory"]
+         else:
+diff --git a/playground/open_duck_mini_v2/custom_rewards.py b/playground/open_duck_mini_v2/custom_rewards.py
+index 6b9fcdb..51afdde 100644
+--- a/playground/open_duck_mini_v2/custom_rewards.py
++++ b/playground/open_duck_mini_v2/custom_rewards.py
+@@ -3,7 +3,8 @@ import jax.numpy as jp
+ 
+ def reward_imitation(
+     base_qpos: jax.Array,
+-    base_qvel: jax.Array,
++    base_linvel: jax.Array,
++    base_angvel: jax.Array,
+     joints_qpos: jax.Array,
+     joints_qvel: jax.Array,
+     contacts: jax.Array,
+@@ -70,10 +71,10 @@ def reward_imitation(
+     )  # normalize the quat
+ 
+     ref_base_lin_vel = reference_frame[linear_vel_slice_start:linear_vel_slice_end]
+-    base_lin_vel = base_qvel[:3]
++    base_lin_vel = base_linvel
+ 
+     ref_base_ang_vel = reference_frame[angular_vel_slice_start:angular_vel_slice_end]
+-    base_ang_vel = base_qvel[3:6]
++    base_ang_vel = base_angvel
+ 
+     ref_joint_pos = reference_frame[joint_pos_slice_start:joint_pos_slice_end]
+     # remove neck head and antennas
+@@ -146,4 +147,4 @@ def reward_imitation(
+     )
+ 
+     reward *= cmd_norm > 0.01  # No reward for zero commands.
+-    return jp.nan_to_num(reward)
+\ No newline at end of file
++    return jp.nan_to_num(reward)
+diff --git a/playground/open_duck_mini_v2/joystick.py b/playground/open_duck_mini_v2/joystick.py
+index 2806ff6..96b370e 100644
+--- a/playground/open_duck_mini_v2/joystick.py
++++ b/playground/open_duck_mini_v2/joystick.py
+@@ -100,6 +100,10 @@ def default_config() -> config_dict.ConfigDict:
+         head_roll_range=[-0.5, 0.5],
+         head_range_factor=1.0,  # to make it easier
+         reference_feature_table_path=None,
++        recurrent_hidden_dim=0,
++        ground_up_command_curriculum=False,
++        ground_up_forward_command_range=[0.04, 0.12],
++        ground_up_zero_command_probability=0.5,
+     )
+ 
+ 
+@@ -307,6 +311,7 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+             "imitation_i": 0,
+             "current_reference_motion": current_reference_motion,
+             "imitation_phase": jp.zeros(2),
++            "policy_hidden": jp.zeros(self._config.recurrent_hidden_dim),
+         }
+ 
+         metrics = {}
+@@ -635,10 +640,13 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+             ]
+         )
+ 
+-        return {
++        observation = {
+             "state": state,
+             "privileged_state": privileged_state,
+         }
++        if self._config.recurrent_hidden_dim:
++            observation["policy_hidden"] = info["policy_hidden"]
++        return observation
+ 
+     def _get_reward(
+         self,
+@@ -669,7 +677,8 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+             "alive": reward_alive(),
+             "imitation": reward_imitation(  # FIXME, this reward is so adhoc...
+                 self.get_floating_base_qpos(data.qpos),  # floating base qpos
+-                self.get_floating_base_qvel(data.qvel),  # floating base qvel
++                self.get_local_linvel(data),  # reference velocity is body-local
++                self.get_gyro(data),  # reference angular velocity is body-local
+                 self.get_actuator_joints_qpos(data.qpos),
+                 self.get_actuator_joints_qvel(data.qvel),
+                 contact,
+@@ -728,6 +737,23 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+             maxval=self._config.head_roll_range[1] * self._config.head_range_factor,
+         )
+ 
++        if self._config.ground_up_command_curriculum:
++            forward = jax.random.uniform(
++                rng1,
++                minval=self._config.ground_up_forward_command_range[0],
++                maxval=self._config.ground_up_forward_command_range[1],
++            )
++            locomotion = jp.where(
++                jax.random.bernoulli(
++                    rng4, p=self._config.ground_up_zero_command_probability
++                ),
++                jp.zeros(3),
++                jp.array([forward, 0.0, 0.0]),
++            )
++            return jp.hstack(
++                [locomotion, neck_pitch, head_pitch, head_yaw, head_roll]
++            )
++
+         # With 10% chance, set everything to zero.
+         return jp.where(
+             jax.random.bernoulli(rng4, p=0.1),
+diff --git a/playground/open_duck_mini_v2/runner.py b/playground/open_duck_mini_v2/runner.py
+index 29fb4ec..86299e0 100644
+--- a/playground/open_duck_mini_v2/runner.py
++++ b/playground/open_duck_mini_v2/runner.py
+@@ -24,6 +24,9 @@ class OpenDuckMiniV2Runner(BaseRunner):
+         if args.imitation_scale is not None:
+             self.env_config.reward_config.scales.imitation = args.imitation_scale
+         self.env_config.reference_feature_table_path = args.reference_feature_table_path
++        if args.policy_architecture == "recurrent":
++            self.env_config.recurrent_hidden_dim = args.recurrent_hidden_size
++        self.env_config.ground_up_command_curriculum = args.ground_up_command_curriculum
+         self.env = self.env_file[1](task=args.task, config=self.env_config)
+         self.eval_env = self.env_file[1](task=args.task, config=self.env_config)
+         self.randomizer = randomize.domain_randomize
+@@ -56,8 +59,15 @@ def main() -> None:
+     parser.add_argument("--ppo_learning_rate", type=float, default=None)
+     parser.add_argument("--ppo_discounting", type=float, default=None)
+     parser.add_argument("--ppo_entropy_cost", type=float, default=None)
++    parser.add_argument(
++        "--policy_architecture",
++        choices=["mlp", "phase_moe", "recurrent"],
++        default="mlp",
++    )
++    parser.add_argument("--recurrent_hidden_size", type=int, default=64)
+     parser.add_argument("--imitation_scale", type=float, default=None)
+     parser.add_argument("--reference_feature_table_path", default=None)
++    parser.add_argument("--ground_up_command_curriculum", action="store_true")
+     parser.add_argument(
+         "--critic_observation", choices=["privileged_state", "state"], default="privileged_state"
+     )

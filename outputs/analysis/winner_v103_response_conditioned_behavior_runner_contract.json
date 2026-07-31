@@ -1,0 +1,205 @@
+{
+  "authority": {
+    "formal_execution_after_valid_v102_artifact": true,
+    "formal_execution_now": false,
+    "gpu_or_igpu": false,
+    "hosted_or_colab": false,
+    "rdkx5_or_robot": false,
+    "retry": false,
+    "robot_clearance": false,
+    "runtime_or_gate5": false,
+    "training": false
+  },
+  "builder_path": "tools\\build_winner_v103_response_conditioned_runner_contract.py",
+  "builder_sha256": "6af1120f713d9a8c3e856b2771a50b895e6ce4e0123a8ab66749c7de5fc266ee",
+  "checks": {
+    "all_values_finite": true,
+    "calibrator_exact": true,
+    "cpu_environment_exact": true,
+    "formal_behavior_cells_zero": true,
+    "formal_runner_outputs_absent": true,
+    "formal_runner_zero_cell_plan_passed": true,
+    "full_stack_nonformal_smoke_passed": true,
+    "matrix_1024_exact": true,
+    "matrix_plan_sha256_exact": true,
+    "preregistration_exact": true,
+    "v101_surrogate_graph_exact": true
+  },
+  "environment": {
+    "CUDA_VISIBLE_DEVICES": "",
+    "JAX_PLATFORMS": "cpu",
+    "robot_or_rdk_access": false
+  },
+  "failed_checks": [],
+  "formal_behavior_cells_executed": 0,
+  "formal_runner_sha256": "cdba6011e79db34fa4c87b832816f62c7b968c74f4770f0ae2af5102744ef584",
+  "formal_runner_zero_cell_plan": {
+    "checks": {
+      "condition_count_exact_64": true,
+      "duration_exact_600": true,
+      "formal_outputs_absent": true,
+      "matrix_commands_exact": true,
+      "matrix_count_exact_1024": true,
+      "matrix_group_counts_exact": true,
+      "matrix_plan_sha256_exact": true,
+      "matrix_plants_exact": true,
+      "matrix_steps_exact": true
+    },
+    "condition_count": 64,
+    "failed_checks": [],
+    "formal_behavior_cells_executed": 0,
+    "group_counts": {
+      "DISCOVERY": 256,
+      "FIXED_ANCHOR": 384,
+      "HELDOUT": 256,
+      "NOMINAL": 32,
+      "SENSOR_TRANSPORT": 96
+    },
+    "matrix_cells": 1024,
+    "matrix_plan_sha256": "10b5d3e407636d276275f3f39145233c3cd63688c3229235411ed2734651e073",
+    "pass": true,
+    "response_cell_template": {
+      "action_dim": 14,
+      "calibration_ticks": 250,
+      "calibrator_sha256": "cb3380ed99b3e9d7e9000904a210227aa397db2a064aa80d8f70e77c8339783b",
+      "graph_authoritative_output": true,
+      "home_return_ticks": 250,
+      "observation_dim": 115,
+      "policy_inputs": [
+        "obs",
+        "previous_action",
+        "h_in",
+        "calibration_context"
+      ],
+      "policy_outputs": [
+        "continuous_actions",
+        "previous_action_out",
+        "h_out"
+      ],
+      "scored_ticks": 600
+    },
+    "selection_rule": {
+      "both_checkpoints_must_pass_all_512": true,
+      "no_closest_or_reward_selection": true,
+      "selected_step_if_both_pass": 2007040
+    }
+  },
+  "input_hashes": {
+    "calibrator": "cb3380ed99b3e9d7e9000904a210227aa397db2a064aa80d8f70e77c8339783b",
+    "reference_features": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212",
+    "v101_cpu_contract": "4f44c2ff9de0ee715b09c1c95048bedb0a43f3334eaa70970dac8c08d6e047d0",
+    "v101_surrogate_policy": "390f3471ebb15f94d76bd06e46e5441f13e4f306f890a6c4e251b2cad88eb415",
+    "v103_preregistration": "1087c9a60b93c359be15d2423bf3f1fc1cbc740e3a7d6fc4a650f6b73cb7efcf"
+  },
+  "matrix_cells": 1024,
+  "matrix_plan_sha256": "10b5d3e407636d276275f3f39145233c3cd63688c3229235411ed2734651e073",
+  "nonformal_full_stack_smoke": {
+    "checks": {
+      "calibration_enabled": true,
+      "calibration_ticks_exact": true,
+      "context_finite": true,
+      "context_shape_exact": true,
+      "cpu_only": true,
+      "duration_complete": true,
+      "hidden_reset_exact": true,
+      "home_return_ticks_exact": true,
+      "host_action_unmodified": true,
+      "one_scored_tick_only": true,
+      "phase_reset_exact": true,
+      "previous_action_reset_exact": true,
+      "trace_context_immutable": true,
+      "trace_finite": true,
+      "trace_graph_authoritative": true,
+      "trace_host_action_exact": true,
+      "trace_one_tick": true
+    },
+    "failed_checks": [],
+    "formal": false,
+    "pass": true,
+    "policy_io": {
+      "action_output_name": "continuous_actions",
+      "context_input_name": "calibration_context",
+      "context_input_shape": [
+        1,
+        64
+      ],
+      "obs_input_name": "obs",
+      "state_input_names": [
+        "h_in",
+        "previous_action"
+      ],
+      "state_input_shapes": {
+        "h_in": [
+          1,
+          64
+        ],
+        "previous_action": [
+          1,
+          14
+        ]
+      },
+      "state_output_names": [
+        "h_out",
+        "previous_action_out"
+      ],
+      "stateful": true
+    },
+    "response_calibration": {
+      "calibration_ticks": 250,
+      "calibrator_abi": {
+        "input_names": [
+          "obs",
+          "previous_action",
+          "h_in"
+        ],
+        "output_names": [
+          "calibration_actions",
+          "previous_action_out",
+          "h_out"
+        ]
+      },
+      "calibrator_sha256": "cb3380ed99b3e9d7e9000904a210227aa397db2a064aa80d8f70e77c8339783b",
+      "context_finite": true,
+      "context_sha256": "8253e31d832387c8cd05b9c5eb2c29b4253218f37b667a1ba7a09162f56c9c90",
+      "context_shape": [
+        1,
+        64
+      ],
+      "enabled": true,
+      "home_return_ticks": 250,
+      "locomotion_hidden_exact_zero": true,
+      "locomotion_phase_reset": [
+        1.0,
+        0.0
+      ],
+      "locomotion_previous_action_exact_zero": true
+    },
+    "response_trace": {
+      "graph_authoritative_every_tick": true,
+      "host_action_delta_exact_zero": true,
+      "one_immutable_context_hash": true,
+      "rows": 1
+    },
+    "result_error": null,
+    "result_status_recorded_not_gating": "HOLD_CANDIDATE_NO_FORWARD_TRACKING",
+    "scored_ticks": 1,
+    "trace": {
+      "all_values_finite": true,
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v103-formal-runner-contract-20260722\\nonformal_smoke.jsonl",
+      "required_fields_every_tick": true,
+      "reset_h_exact_zero": true,
+      "reset_previous_action_exact_zero": true,
+      "rows": 1,
+      "sha256": "173e82f4d1aa3134d3f6eb7ccbe1e40b9cedde58441cfae6a3db337a21d4de02",
+      "ticks_contiguous": true
+    },
+    "unscored_calibration_ticks": 250,
+    "unscored_home_return_ticks": 250
+  },
+  "schema_version": "winner_v103.response_conditioned_behavior_runner_contract.v1",
+  "status": "PASS_WINNER_V103_RESPONSE_CONDITIONED_BEHAVIOR_RUNNER_CONTRACT",
+  "supporting_tool_hashes": {
+    "closed_loop_sim_eval.py": "66f2969d3acb324d21694771b8579a20662b9068b84020cb708667f99fa70504",
+    "run_winner_v3_variable_configuration_behavior.py": "59c697e7a31780661b846191c2634414471246adca250f0529ef66c84a760b5a"
+  }
+}

@@ -14,6 +14,7 @@ DEFAULT_RDK_REPO = "https://github.com/RobVanProd/open-duck-mini-rdkx5.git"
 DEFAULT_PLAYGROUND_REPO = "https://github.com/RobVanProd/Open_Duck_Playground.git"
 DEFAULT_RDK_BRANCH = "main"
 DEFAULT_PLAYGROUND_BRANCH = "main"
+DEFAULT_CUDA_JAX_VERSION = "0.7.2"
 
 
 def bash_bool(value: bool) -> str:
@@ -22,9 +23,21 @@ def bash_bool(value: bool) -> str:
 
 def build_cell(args: argparse.Namespace) -> str:
     candidate_flag = bash_bool(args.run_candidate)
+    training_smoke_diagnostic_flag = bash_bool(args.training_smoke_diagnostic)
+    staged_v21_flag = bash_bool(args.staged_curriculum_v21)
     auto_download_flag = bash_bool(not args.no_auto_download)
     smoke_steps = args.smoke_num_timesteps
     candidate_steps = args.candidate_num_timesteps
+    candidate_disable_bridge_line = (
+        "    --disable-actuator-bridge \\\n"
+        if args.candidate_disable_actuator_bridge
+        else ""
+    )
+    staged_v21_stop_after_phase_line = (
+        f"    --stop-after-phase {args.staged_v21_stop_after_phase} \\\n"
+        if args.staged_v21_stop_after_phase
+        else ""
+    )
     cell = f"""%%bash
 set -euo pipefail
 
@@ -37,7 +50,10 @@ export PLAYGROUND_REPO={args.playground_repo!r}
 export RDK_BRANCH={args.rdk_branch!r}
 export PLAYGROUND_BRANCH={args.playground_branch!r}
 export RUN_CANDIDATE={candidate_flag}
+export TRAINING_SMOKE_DIAGNOSTIC={training_smoke_diagnostic_flag}
+export STAGED_CURRICULUM_V21={staged_v21_flag}
 export CANDIDATE_NUM_TIMESTEPS={candidate_steps}
+export CANDIDATE_RESTORE_CHECKPOINT_PATH={args.candidate_restore_checkpoint_path!r}
 export CUDA_AUTO_DOWNLOAD={auto_download_flag}
 export ARTIFACT_ROOT="/content/open_duck_cuda_artifacts"
 BUNDLE="/content/open_duck_cuda_artifacts_$(date -u +%Y%m%dT%H%M%SZ).tar.gz"
@@ -53,6 +69,11 @@ if [ -z "${{PYTHON_BIN:-}}" ]; then
   export PYTHON_BIN
 fi
 echo "PYTHON_BIN=$PYTHON_BIN"
+if [ -n "$CANDIDATE_RESTORE_CHECKPOINT_PATH" ]; then
+  CANDIDATE_RESTORE_ARGS=(--restore-checkpoint-path "$CANDIDATE_RESTORE_CHECKPOINT_PATH")
+else
+  CANDIDATE_RESTORE_ARGS=()
+fi
 
 prompt_for_github_token() {{
   if [ -n "${{GITHUB_TOKEN:-}}" ]; then
@@ -65,19 +86,8 @@ prompt_for_github_token() {{
     echo "GitHub token: provided by GH_TOKEN"
     return 0
   fi
-  GITHUB_TOKEN="$("$PYTHON_BIN" - <<'PY'
-import getpass
-
-token = getpass.getpass("GitHub token for private repos, or press Enter if public: ")
-print(token.strip())
-PY
-)"
-  export GITHUB_TOKEN
-  if [ -n "$GITHUB_TOKEN" ]; then
-    echo "GitHub token: provided interactively"
-  else
-    echo "GitHub token: empty, assuming public repo access"
-  fi
+  echo "GitHub token: not provided; attempting public repo access only"
+  echo "For private repos, set GITHUB_TOKEN or GH_TOKEN before running this cell."
 }}
 
 setup_git_auth() {{
@@ -147,6 +157,7 @@ bundle_cuda_artifacts() {{
       echo "playground_dirty_files=UNKNOWN"
     fi
     echo "run_candidate=$RUN_CANDIDATE"
+    echo "staged_curriculum_v21=$STAGED_CURRICULUM_V21"
   }} > "$ARTIFACT_ROOT/CUDA_CELL_EXIT_STATUS.txt"
   {{
     echo "python_executable=${{PYTHON_BIN:-UNKNOWN}}"
@@ -208,6 +219,20 @@ PY
       done
     fi
   done
+
+  if [ -d /content/open_duck_staged_runs ]; then
+    DEST_ROOT="$ARTIFACT_ROOT/open_duck_staged_runs"
+    mkdir -p "$DEST_ROOT"
+    while IFS= read -r -d '' FILE; do
+      REL="${{FILE#/content/open_duck_staged_runs/}}"
+      mkdir -p "$DEST_ROOT/$(dirname "$REL")"
+      cp "$FILE" "$DEST_ROOT/$REL" 2>/dev/null || true
+    done < <(
+      find /content/open_duck_staged_runs -type f \\
+        \\( -name '*.md' -o -name '*.json' -o -name '*.onnx' -o -name 'stdout.txt' -o -name 'stderr.txt' \\) \\
+        -print0
+    )
+  fi
 
   if tar -czf "$BUNDLE" -C /content "$(basename "$ARTIFACT_ROOT")"; then
     "$PYTHON_BIN" - <<PY
@@ -277,18 +302,21 @@ clone_or_update_repo "$PLAYGROUND_REPO" /content/Open_Duck_Playground "$PLAYGROU
 
 echo "=== Install CUDA eval/training deps ==="
 "$PYTHON_BIN" -m pip install -U pip
-"$PYTHON_BIN" -m pip install -U \\
-  "jax[cuda12]" \\
+"$PYTHON_BIN" -m pip install \\
+  "jax[cuda12]=={DEFAULT_CUDA_JAX_VERSION}" \\
+  "jaxlib=={DEFAULT_CUDA_JAX_VERSION}" \\
   "playground==0.0.5" \\
-  "mujoco>=3.2.7,<3.10" \\
-  "mujoco-mjx>=3.2.7" \\
-  onnxruntime \\
-  ml-collections \\
-  numpy \\
-  matplotlib \\
-  mediapy \\
-  tensorflow \\
-  tf2onnx
+  "mujoco==3.9.0" \\
+  "mujoco-mjx==3.9.0" \\
+  "onnxruntime==1.27.0" \\
+  "ml-collections==1.1.0" \\
+  "numpy==2.0.2" \\
+  "matplotlib==3.10.0" \\
+  "mediapy==1.2.6" \\
+  "tensorflow==2.20.0" \\
+  "protobuf==5.29.6" \\
+  "onnx==1.22.0"
+"$PYTHON_BIN" -m pip install --no-deps "tf2onnx==1.17.0"
 "$PYTHON_BIN" -m pip install --no-deps -e /content/Open_Duck_Playground
 
 echo "=== Verify key imports ==="
@@ -310,6 +338,59 @@ echo "=== Environment check ==="
 "$PYTHON_BIN" tools/check_training_env.py \\
   --playground-root /content/Open_Duck_Playground
 
+if [ "$STAGED_CURRICULUM_V21" = "1" ]; then
+  echo "=== Policy/sim contract audit for V21 ==="
+  "$PYTHON_BIN" tools/audit_policy_sim_contract.py \\
+    --policy policy/BEST_WALK_ONNX_2.onnx \\
+    --playground-path /content/Open_Duck_Playground \\
+    --env-python "$PYTHON_BIN" \\
+    --instantiate-timeout-s 600 \\
+    --output-md outputs/analysis/cuda_manual/POLICY_SIM_CONTRACT_AUDIT_CUDA.md \\
+    --output-json outputs/analysis/cuda_manual/policy_sim_contract_audit_cuda.json
+
+  echo "=== V21 staged curriculum ==="
+  "$PYTHON_BIN" tools/plan_staged_curriculum_training.py \\
+    --run \\
+    --recipe movement_bootstrap_v21 \\
+    --playground-path /content/Open_Duck_Playground \\
+    --env-python "$PYTHON_BIN" \\
+    --output-root /content/open_duck_staged_runs/v21 \\
+    --output-md outputs/analysis/cuda_manual/STAGED_CURRICULUM_TRAINING_PLAN_V21_CUDA.md \\
+    --output-json outputs/analysis/cuda_manual/staged_curriculum_training_plan_v21_cuda.json \\
+    --platform gpu \\
+    --jax-platforms cuda \\
+    --timesteps-scale {args.staged_v21_timesteps_scale} \\
+    --phase-timeout-s {args.staged_v21_phase_timeout_s} \\
+{staged_v21_stop_after_phase_line}    --phase-gate-freeze-check \\
+    --phase-gate-command-x 0.04 \\
+    --phase-gate-bridge-mode vanilla \\
+    --phase-gate-platform gpu \\
+    --phase-gate-jax-platforms cuda \\
+    --phase-gate-seeds {args.staged_v21_phase_gate_seeds!r}
+
+  echo "STAGED_CURRICULUM_V21=1, so baseline eval/candidate training were skipped."
+  exit 0
+fi
+
+if [ "$TRAINING_SMOKE_DIAGNOSTIC" = "1" ]; then
+  echo "=== CUDA training smoke startup diagnostic ==="
+  "$PYTHON_BIN" tools/diagnose_training_smoke_startup.py \\
+    --playground-path /content/Open_Duck_Playground \\
+    --env-python "$PYTHON_BIN" \\
+    --platform gpu \\
+    --jax-platforms cuda \\
+    --output-dir outputs/analysis/cuda_manual/training_smoke_startup_diagnostic \\
+    --timeout-s 300 \\
+    --smoke-timeout-s 1200 \\
+    --smoke-num-timesteps {smoke_steps} \\
+    --export-min-step 1 \\
+    --ppo-num-envs {args.smoke_ppo_num_envs} \\
+    --ppo-batch-size {args.smoke_ppo_batch_size} \\
+    --run-smoke
+  echo "TRAINING_SMOKE_DIAGNOSTIC=1, so baseline eval/candidate training were skipped."
+  exit 0
+fi
+
 echo "=== Policy/sim contract audit ==="
 "$PYTHON_BIN" tools/audit_policy_sim_contract.py \\
   --policy policy/BEST_WALK_ONNX_2.onnx \\
@@ -323,13 +404,14 @@ echo "=== Closed-loop baseline bridge reproduction ==="
 "$PYTHON_BIN" tools/eval_policy_with_actuator_bridge.py \\
   --mode closed-loop-sim \\
   --policy policy/BEST_WALK_ONNX_2.onnx \\
-  --fit-json outputs/analysis/actuator_response_fit.json \\
+  --fit-json outputs/analysis/actuator_response_fit_corrected_knee.json \\
   --playground-path /content/Open_Duck_Playground \\
   --env-python "$PYTHON_BIN" \\
   --command-x 0.08 \\
   --duration 15 \\
   --bridge-mode all \\
   --jax-platform gpu \\
+  --jax-platforms cuda \\
   --sim-preflight-timeout-s 600 \\
   --closed-loop-timeout-s 1800 \\
   --output-dir outputs/analysis/cuda_manual
@@ -339,6 +421,7 @@ echo "=== CUDA smoke training ==="
   --playground-path /content/Open_Duck_Playground \\
   --env-python "$PYTHON_BIN" \\
   --platform gpu \\
+  --jax-platforms cuda \\
   --run \\
   --output-root /content/open_duck_training_smokes \\
   --num-timesteps {smoke_steps} \\
@@ -359,6 +442,7 @@ if [ "$RUN_CANDIDATE" = "1" ]; then
     --playground-path /content/Open_Duck_Playground \\
     --env-python "$PYTHON_BIN" \\
     --platform gpu \\
+    --jax-platforms cuda \\
     --run \\
     --output-root /content/open_duck_training_runs \\
     --num-timesteps "$CANDIDATE_NUM_TIMESTEPS" \\
@@ -369,9 +453,16 @@ if [ "$RUN_CANDIDATE" = "1" ]; then
     --ppo-batch-size {args.candidate_ppo_batch_size} \\
     --ppo-num-minibatches {args.candidate_ppo_num_minibatches} \\
     --ppo-num-updates-per-batch {args.candidate_ppo_num_updates_per_batch} \\
-    --target-rate-scale -0.01 \\
-    --actuator-tracking-scale 0.0 \\
+    --target-rate-scale {args.candidate_target_rate_scale} \\
+    --actuator-tracking-scale {args.candidate_actuator_tracking_scale} \\
     --tracking-lin-vel-scale {args.candidate_tracking_lin_vel_scale} \\
+    --tracking-ang-vel-scale {args.candidate_tracking_ang_vel_scale} \\
+    --tracking-sigma {args.candidate_tracking_sigma} \\
+    --forward-progress-scale {args.candidate_forward_progress_scale} \\
+    --forward-progress-deadband {args.candidate_forward_progress_deadband} \\
+    --action-rate-scale {args.candidate_action_rate_scale} \\
+    --action-magnitude-scale {args.candidate_action_magnitude_scale} \\
+    --stand-still-scale {args.candidate_stand_still_scale} \\
     --alive-scale {args.candidate_alive_scale} \\
     --imitation-scale {args.candidate_imitation_scale} \\
     --lin-vel-x-min {args.candidate_lin_vel_x_min} \\
@@ -380,7 +471,18 @@ if [ "$RUN_CANDIDATE" = "1" ]; then
     --lin-vel-y-max 0.0 \\
     --ang-vel-yaw-min 0.0 \\
     --ang-vel-yaw-max 0.0 \\
+    --command-resample-steps {args.candidate_command_resample_steps} \\
+    --zero-command-probability {args.candidate_zero_command_probability} \\
     --head-range-factor 0.0 \\
+{candidate_disable_bridge_line.rstrip()}
+    --actuator-bridge-delay-min-ticks {args.candidate_actuator_bridge_delay_min_ticks} \\
+    --actuator-bridge-delay-max-ticks {args.candidate_actuator_bridge_delay_max_ticks} \\
+    --actuator-bridge-tau-min-s {args.candidate_actuator_bridge_tau_min_s} \\
+    --actuator-bridge-tau-max-s {args.candidate_actuator_bridge_tau_max_s} \\
+    --actuator-bridge-velocity-limit-min-rad-s {args.candidate_actuator_bridge_velocity_limit_min_rad_s} \\
+    --actuator-bridge-velocity-limit-max-rad-s {args.candidate_actuator_bridge_velocity_limit_max_rad_s} \\
+    --actuator-bridge-per-joint-variation {args.candidate_actuator_bridge_per_joint_variation} \\
+    "${{CANDIDATE_RESTORE_ARGS[@]}}" \\
     --timeout-s {args.candidate_timeout_s}
 
   RUN_DIR="$(find /content/open_duck_training_runs -maxdepth 1 -type d -name 'smoke_*_gpu' | sort | tail -n 1)"
@@ -389,20 +491,21 @@ if [ "$RUN_CANDIDATE" = "1" ]; then
 
   "$PYTHON_BIN" tools/summarize_training_run.py "$RUN_DIR" \\
     --output-md "outputs/analysis/cuda_manual/${{CANDIDATE}}_training_run_summary.md" \\
-    --output-json "outputs/analysis/cuda_manual/${{CANDIDATE}}_training_run_summary.json"
+    --output-json "outputs/analysis/cuda_manual/${{CANDIDATE}}_training_run_summary.json" || true
 
   echo "=== Candidate closed-loop sim gate: x=0.0 ==="
   "$PYTHON_BIN" tools/eval_policy_with_actuator_bridge.py \\
     --mode closed-loop-sim \\
     --eval-role candidate \\
     --policy "$LATEST_ONNX" \\
-    --fit-json outputs/analysis/actuator_response_fit.json \\
+    --fit-json outputs/analysis/actuator_response_fit_corrected_knee.json \\
     --playground-path /content/Open_Duck_Playground \\
     --env-python "$PYTHON_BIN" \\
     --command-x 0.0 \\
     --duration 15 \\
     --bridge-mode all \\
     --jax-platform gpu \\
+    --jax-platforms cuda \\
     --sim-preflight-timeout-s 600 \\
     --closed-loop-timeout-s 1800 \\
     --output-dir "outputs/analysis/cuda_manual/${{CANDIDATE}}_gate_x0"
@@ -416,13 +519,14 @@ if [ "$RUN_CANDIDATE" = "1" ]; then
     --mode closed-loop-sim \\
     --eval-role candidate \\
     --policy "$LATEST_ONNX" \\
-    --fit-json outputs/analysis/actuator_response_fit.json \\
+    --fit-json outputs/analysis/actuator_response_fit_corrected_knee.json \\
     --playground-path /content/Open_Duck_Playground \\
     --env-python "$PYTHON_BIN" \\
     --command-x 0.08 \\
     --duration 15 \\
     --bridge-mode all \\
     --jax-platform gpu \\
+    --jax-platforms cuda \\
     --sim-preflight-timeout-s 600 \\
     --closed-loop-timeout-s 1800 \\
     --output-dir "outputs/analysis/cuda_manual/${{CANDIDATE}}_gate_x008"
@@ -431,11 +535,17 @@ if [ "$RUN_CANDIDATE" = "1" ]; then
   cp "outputs/analysis/cuda_manual/${{CANDIDATE}}_gate_x008/closed_loop_actuator_bridge_eval.json" \\
     "outputs/analysis/cuda_manual/${{CANDIDATE}}_candidate_gate_x008.json"
 
+  TRAINING_MANIFEST="$RUN_DIR/smoke_manifest.final.json"
+  if [ ! -f "$TRAINING_MANIFEST" ]; then
+    TRAINING_MANIFEST="$RUN_DIR/smoke_manifest.start.json"
+  fi
+
   "$PYTHON_BIN" tools/package_candidate_policy.py "$LATEST_ONNX" \\
     --candidate-name "$CANDIDATE" \\
-    --training-manifest "$RUN_DIR/smoke_manifest.final.json" \\
+    --training-manifest "$TRAINING_MANIFEST" \\
     --contract-audit outputs/analysis/cuda_manual/POLICY_SIM_CONTRACT_AUDIT_CUDA.md \\
-    --actuator-bridge-eval "outputs/analysis/cuda_manual/${{CANDIDATE}}_candidate_gate_x008.md" \\
+    --candidate-gate-x0 "outputs/analysis/cuda_manual/${{CANDIDATE}}_candidate_gate_x0.md" \\
+    --candidate-gate-x008 "outputs/analysis/cuda_manual/${{CANDIDATE}}_candidate_gate_x008.md" \\
     --output-md "outputs/analysis/cuda_manual/${{CANDIDATE}}_policy_package.md" \\
     --output-json "outputs/analysis/cuda_manual/${{CANDIDATE}}_policy_metadata.json" || true
 
@@ -484,9 +594,19 @@ def write_notebook(path: Path, cell: str) -> None:
     path.write_text(json.dumps(notebook, indent=2) + "\n")
 
 
-def write_handoff_dir(path: Path, cell: str, run_candidate: bool) -> None:
+def write_handoff_dir(
+    path: Path, cell: str, run_candidate: bool, staged_curriculum_v21: bool
+) -> None:
     path.mkdir(parents=True, exist_ok=True)
-    stem = "open_duck_cuda_candidate" if run_candidate else "open_duck_cuda_smoke"
+    if staged_curriculum_v21:
+        stem = "open_duck_cuda_v21_staged"
+        mode = "v21-staged-curriculum"
+    elif run_candidate:
+        stem = "open_duck_cuda_candidate"
+        mode = "candidate"
+    else:
+        stem = "open_duck_cuda_smoke"
+        mode = "smoke"
     cell_path = path / f"{stem}_cell.txt"
     notebook_path = path / f"{stem}.ipynb"
     manifest_path = path / "CUDA_COLAB_HANDOFF.md"
@@ -495,7 +615,6 @@ def write_handoff_dir(path: Path, cell: str, run_candidate: bool) -> None:
     write_notebook(notebook_path, cell)
 
     generated_at = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
-    mode = "candidate" if run_candidate else "smoke"
     manifest_path.write_text(
         textwrap.dedent(
             f"""\
@@ -513,8 +632,9 @@ def write_handoff_dir(path: Path, cell: str, run_candidate: bool) -> None:
 
             Upload/open `{notebook_path.name}` in a trusted, manually
             authenticated CUDA/Colab session and run its single code cell.
-            If either repo is private, paste a temporary GitHub token into the
-            cell's hidden prompt. Do not edit the token into the notebook file.
+            If either repo is private, set `GITHUB_TOKEN` or `GH_TOKEN` in the
+            Colab environment before running the `%%bash` cell. The cell does
+            not use an interactive hidden token prompt.
 
             The cell is offline-only for the robot project:
 
@@ -545,8 +665,7 @@ def write_handoff_dir(path: Path, cell: str, run_candidate: bool) -> None:
 
             ```bash
             cd /home/lsd/robots/open-duck-mini-rdkx5
-            python3 tools/import_cuda_artifact_bundle.py \\
-              /path/to/open_duck_cuda_artifacts_<timestamp>.tar.gz
+            python3 tools/ingest_latest_cuda_artifact.py
             ```
 
             Start review from the generated:
@@ -574,10 +693,36 @@ def main() -> int:
     parser.add_argument("--rdk-branch", default=DEFAULT_RDK_BRANCH)
     parser.add_argument("--playground-branch", default=DEFAULT_PLAYGROUND_BRANCH)
     parser.add_argument("--run-candidate", action="store_true")
+    parser.add_argument(
+        "--staged-curriculum-v21",
+        action="store_true",
+        help=(
+            "Generate a single cell that runs the explicit V21 weak-soft-prior "
+            "staged curriculum through tools/plan_staged_curriculum_training.py. "
+            "This skips the older baseline eval/smoke/candidate flow."
+        ),
+    )
+    parser.add_argument(
+        "--training-smoke-diagnostic",
+        action="store_true",
+        help=(
+            "Generate a single cell that runs the staged CUDA training-smoke "
+            "startup diagnostic and skips baseline eval/candidate training."
+        ),
+    )
     parser.add_argument("--smoke-num-timesteps", type=int, default=64)
     parser.add_argument("--smoke-ppo-num-envs", type=int, default=8)
     parser.add_argument("--smoke-ppo-batch-size", type=int, default=8)
     parser.add_argument("--smoke-episode-length", type=int, default=50)
+    parser.add_argument("--staged-v21-timesteps-scale", type=float, default=1.0)
+    parser.add_argument("--staged-v21-phase-timeout-s", type=int, default=7200)
+    parser.add_argument(
+        "--staged-v21-stop-after-phase",
+        type=int,
+        default=0,
+        help="Optional 1-based V21 phase index to stop after; 0 runs all phases.",
+    )
+    parser.add_argument("--staged-v21-phase-gate-seeds", default="0-3")
     parser.add_argument("--candidate-num-timesteps", type=int, default=200_000)
     parser.add_argument("--candidate-ppo-num-envs", type=int, default=512)
     parser.add_argument("--candidate-ppo-num-evals", type=int, default=5)
@@ -586,11 +731,57 @@ def main() -> int:
     parser.add_argument("--candidate-ppo-batch-size", type=int, default=512)
     parser.add_argument("--candidate-ppo-num-minibatches", type=int, default=16)
     parser.add_argument("--candidate-ppo-num-updates-per-batch", type=int, default=4)
-    parser.add_argument("--candidate-tracking-lin-vel-scale", type=float, default=6.0)
-    parser.add_argument("--candidate-alive-scale", type=float, default=5.0)
-    parser.add_argument("--candidate-imitation-scale", type=float, default=0.5)
+    parser.add_argument(
+        "--candidate-restore-checkpoint-path",
+        default="",
+        help=(
+            "Optional checkpoint path visible inside the Colab runtime for "
+            "offline fine-tuning."
+        ),
+    )
+    parser.add_argument("--candidate-target-rate-scale", type=float, default=-0.001)
+    parser.add_argument("--candidate-actuator-tracking-scale", type=float, default=0.0)
+    parser.add_argument("--candidate-tracking-lin-vel-scale", type=float, default=12.0)
+    parser.add_argument("--candidate-tracking-ang-vel-scale", type=float, default=0.0)
+    parser.add_argument("--candidate-tracking-sigma", type=float, default=0.0025)
+    parser.add_argument("--candidate-forward-progress-scale", type=float, default=2.0)
+    parser.add_argument("--candidate-forward-progress-deadband", type=float, default=0.02)
+    parser.add_argument("--candidate-action-rate-scale", type=float, default=-0.1)
+    parser.add_argument("--candidate-action-magnitude-scale", type=float, default=-0.05)
+    parser.add_argument("--candidate-stand-still-scale", type=float, default=-0.2)
+    parser.add_argument("--candidate-alive-scale", type=float, default=0.5)
+    parser.add_argument("--candidate-imitation-scale", type=float, default=0.25)
     parser.add_argument("--candidate-lin-vel-x-min", type=float, default=0.04)
     parser.add_argument("--candidate-lin-vel-x-max", type=float, default=0.12)
+    parser.add_argument("--candidate-command-resample-steps", type=int, default=500)
+    parser.add_argument("--candidate-zero-command-probability", type=float, default=0.1)
+    parser.add_argument(
+        "--candidate-disable-actuator-bridge",
+        action="store_true",
+        help=(
+            "Disable the default candidate actuator bridge for a locomotion "
+            "bootstrap run. Sim gates still evaluate fitted/stress bridge modes."
+        ),
+    )
+    parser.add_argument("--candidate-actuator-bridge-delay-min-ticks", type=int, default=3)
+    parser.add_argument("--candidate-actuator-bridge-delay-max-ticks", type=int, default=8)
+    parser.add_argument("--candidate-actuator-bridge-tau-min-s", type=float, default=0.06)
+    parser.add_argument("--candidate-actuator-bridge-tau-max-s", type=float, default=0.14)
+    parser.add_argument(
+        "--candidate-actuator-bridge-velocity-limit-min-rad-s",
+        type=float,
+        default=2.5,
+    )
+    parser.add_argument(
+        "--candidate-actuator-bridge-velocity-limit-max-rad-s",
+        type=float,
+        default=4.7,
+    )
+    parser.add_argument(
+        "--candidate-actuator-bridge-per-joint-variation",
+        type=float,
+        default=0.15,
+    )
     parser.add_argument("--candidate-timeout-s", type=int, default=7200)
     parser.add_argument(
         "--no-auto-download",
@@ -624,7 +815,12 @@ def main() -> int:
     if args.notebook_output:
         write_notebook(Path(args.notebook_output), cell)
     if args.handoff_dir:
-        write_handoff_dir(Path(args.handoff_dir), cell, args.run_candidate)
+        write_handoff_dir(
+            Path(args.handoff_dir),
+            cell,
+            args.run_candidate,
+            args.staged_curriculum_v21,
+        )
     if not args.output and not args.notebook_output and not args.handoff_dir:
         print(cell, end="")
     return 0

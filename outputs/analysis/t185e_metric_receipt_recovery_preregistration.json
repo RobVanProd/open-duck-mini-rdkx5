@@ -1,0 +1,104 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "deployment_audit": false,
+    "execute_one_saved_artifact_recovery": true,
+    "gate5": false,
+    "hosted_preregistration": false,
+    "hosted_training": false,
+    "optimizer": false,
+    "policy_promotion": false,
+    "rdkx5_or_robot": false
+  },
+  "decision_rule": {
+    "fail": "CLOSE_T185_IN_EPISODE_SINGLE_SUPPORT_PREFIX_AND_RETURN_TO_MECHANISM_SELECTION",
+    "no_optimizer_retry": true,
+    "pass": "EARN_T186_IN_EPISODE_SINGLE_SUPPORT_HOSTED_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "saved_event_files": 0,
+    "simulator_transitions": 0
+  },
+  "preregistered_contract_sha256": "a27691a4d574bed855d6de6bcf67937ce8f2c342c73ac484a252e51ed4cddd87",
+  "question": "Does the frozen T185C event artifact satisfy the intended prefix-exposure and same-episode-resume metric contract when read using the metric namespaces actually emitted by the training driver?",
+  "recovery_contract": {
+    "all_source_receipts_have_kind": true,
+    "authority_unchanged": true,
+    "decision_rule_unchanged": true,
+    "only_new_change": "add kind=file to complete file receipts and freeze updated builder and runner receipts",
+    "prior_metric_recovery": {
+      "event_artifact_immutable": true,
+      "new_behavior_evaluation": false,
+      "new_model_inference": false,
+      "new_optimizer_execution": false,
+      "new_simulator_execution": false,
+      "only_change": "replace the nonexistent positive prefix-active readback with positive accumulated support metrics plus an exact zero terminal prefix-active state and positive resumed original reward",
+      "scientific_contract_change": false
+    },
+    "saved_artifact_contract_unchanged": true
+  },
+  "saved_artifact_contract": {
+    "all_other_t185c_checks_must_remain_true": true,
+    "incorrect_tag_must_be_absent": "eval/episode_reward/t185/prefix_active",
+    "same_episode_reward_rule": "exactly two finite values and every value > 0",
+    "same_episode_reward_tag": "eval/episode_t185/original_reward",
+    "support_tag_rule": "exactly two finite values per tag and every value > 0",
+    "support_tags": [
+      "eval/episode_reward/t185_single_support_balance",
+      "eval/episode_reward/t185_left_support_match",
+      "eval/episode_reward/t185_right_support_match"
+    ],
+    "terminal_prefix_rule": "exactly two finite values and every value == 0",
+    "terminal_prefix_tag": "eval/episode_t185/prefix_active"
+  },
+  "schema_version": "open_duck.t185e_metric_receipt_recovery_preregistration.v1",
+  "sources": {
+    "builder": {
+      "bytes": 5306,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t185e_metric_receipt_recovery_preregistration.py",
+      "sha256": "123a8d9a7ed604c22b97d4fb0fea75e7b1a61d286799c8fd5d5f2bf3f0db0a84"
+    },
+    "event_file": {
+      "bytes": 6127,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t185c_in_episode_single_support_cpu_v3\\smoke\\events.out.tfevents.1785397007.WinLSD",
+      "sha256": "020d610a2162ffe56eb3e4c37e42a9e72aff15a3b0a1abcf8a25a2a85a752847"
+    },
+    "runner": {
+      "bytes": 7240,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t185d_metric_readback_recovery.py",
+      "sha256": "132fa194517b3912f66d4a955518867fd6e764f3c729810ff18bf9aa858056f1"
+    },
+    "t185c_attribution": {
+      "bytes": 3305,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t185c_metric_readback_attribution_20260730.json",
+      "sha256": "a7aeef58a76381107f1ea3c7709cf5fa0d6109c6692278a7f57b2196bc41a6f2"
+    },
+    "t185c_result": {
+      "bytes": 13617,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t185c_in_episode_single_support_cpu_result.json",
+      "sha256": "d39f25a0b8fa4ad4883ccd4bc3f324eac35c3ca9caad7c32805268fde9e5f994"
+    },
+    "t185d_preregistration": {
+      "bytes": 3728,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t185d_metric_readback_recovery_preregistration.json",
+      "sha256": "cee74e94b8f2df7d4e4e583bb2133da64e8c8e483b249a465ee084f9ab5759ee"
+    },
+    "t185d_source_receipt_schema_recovery": {
+      "bytes": 1619,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t185d_source_receipt_schema_recovery_20260730.json",
+      "sha256": "d0a45e015e7112aee7df6ebc2290a3c57f78771ff016e22fec011a55c688d25d"
+    }
+  },
+  "status": "PREREGISTERED_T185E_METRIC_RECEIPT_RECOVERY"
+}

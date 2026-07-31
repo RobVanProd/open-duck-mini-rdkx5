@@ -1,0 +1,86 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "cpu_contract": true,
+    "formal_distillation": false,
+    "full_matrix": false,
+    "gate5": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "all_input_hashes_exact": true,
+    "behavior_not_authorized": true,
+    "class_balance_derived_without_sweep": true,
+    "robot_surface_absent": true,
+    "robust_teacher_green": true,
+    "scale_logits_frozen_as_unsupervised": true,
+    "target_class_changed_from_v134_not_optimizer": true,
+    "transferred_load_attribution_green": true,
+    "two_update_cpu_smoke_only": true
+  },
+  "dataset": {
+    "correction_weight": "4783/17",
+    "preservation_rows": 4783,
+    "preservation_weight": 1.0,
+    "rows": 4800,
+    "smoke_batch": "all 17 torque rows plus first 239 SHA-sorted preservation rows",
+    "supreme_only_rows_reset_to_source": 54,
+    "torque_corrected_rows": 17
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "cpu_template": "217a1551c4cc778e4b957636a40ca6e01eafa51efeaef905eb73e9debc7c26e5",
+    "network_source": "ffd07d0a6e96d846aa1f62a8d131bf892f10db6b2a22710affe3946b7b145ebd",
+    "runner": "384d510cd8d257202b69f25de8e0a572b001b160319d1e1d1b1260e7e57fd8ce",
+    "source_checkpoint": "c1d9b8574c941e2279294de14aca1cb57d4736bdc63635b5aaf1e205fa7f86c1",
+    "training_module": "6b206b23ff6cada49ebb22a04735aaae4cb91c353de0d950883a3ce5c5e058ab",
+    "v121_final_deployed": "bc54ea1bf39e617f76771e7416de91db2ccfe0b1bf903de08faaa64a67ce4aab",
+    "v121_transform": "4bd5eab5343cd8401db1789773fa3cc345727d903cb31222e0ea9870f0e9e640",
+    "v131_behavior_result": "ab1535e11287f191e8ee6b4be5c020c44726c6263465c7cb760892387b07c9ea",
+    "v134_training_module": "632a2e12ae10d940be38858c52e738281ca6a2de1736d1be90b8adcbdbd8baa8",
+    "v142_attribution": "38049a224d0d6190b6415a5691ecbabd9e5915ac8a6b788245abdc08b2234181"
+  },
+  "objective": {
+    "action": "class-balanced MSE against torque-only final targets",
+    "frozen": [
+      "normalizer",
+      "scale_logits kernel and bias",
+      "value tree"
+    ],
+    "hidden": "unweighted MSE on frozen source h_out",
+    "total": "action MSE + hidden MSE",
+    "trainable": "all actor leaves except scale_logits kernel and bias"
+  },
+  "optimizer": {
+    "acceptance": "Armijo decrease with fixed conventional fraction 1e-4",
+    "backtracking": "halve at most 24 times",
+    "direction": "full-smoke-batch gradient",
+    "identical_to_v134": true,
+    "initial_step": "1/max(1, global_gradient_l2)",
+    "search_or_retry": false,
+    "updates": 2
+  },
+  "pass_rule": {
+    "corrected_ratio": "<=0.95 after two updates on smoke and full datasets",
+    "exports": "step 0 and 2 stateful ONNX contracts both pass",
+    "hidden_mse": "<=0.01 times corrected baseline MSE on smoke and full",
+    "leaves": "every non-scale actor leaf changes; scale logits stay exact",
+    "loss": "total and action losses strictly decrease",
+    "preservation_ratio": "<=0.01 on smoke and all 4,783 preservation rows",
+    "step_zero": "deployed inference matches V121 final <=1e-7"
+  },
+  "schema_version": "winner_v143.torque_only_actor_cpu_preregistration.v1",
+  "selection": {
+    "causal_evidence": "V142 showed that the V140 direction repaired the labeled startup knee but transferred closed-loop load to the mature right ankle",
+    "deployment_abi": "unchanged 115/14/64 stateful ONNX",
+    "mechanical_change": "only torque-projected rows retain oracle targets; every supreme-only and unchanged row targets the source action",
+    "optimizer_change_from_v134": false,
+    "parameter_search": false,
+    "source": "V121 final recurrent actor",
+    "teacher": "V131 exact common-safe two-fit oracle traces"
+  },
+  "status": "PREREGISTERED_WINNER_V143_TORQUE_ONLY_ACTOR_CPU_CONTRACT",
+  "stop_rule": "if any check fails, close this exact torque-only actor formulation; do not tune the optimizer, target population, class weight, number of updates, or pass thresholds"
+}

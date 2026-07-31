@@ -1,0 +1,158 @@
+{
+  "status": "PASS_PPO_LOC_BC_FIT_SMOKE",
+  "manifest": "outputs/analysis/phase2_full8_router_tneg1p8_bc_trace_manifest_seed56_weighted.json",
+  "samples": 12000,
+  "hidden_sizes": [
+    512,
+    256,
+    128
+  ],
+  "activation": "swish",
+  "saved_npz": "outputs/analysis/phase2_full8_router_tneg1p8_ppo_loc_bc_seed56_weighted_student/candidate_mlp.npz",
+  "exported_onnx": "outputs/analysis/phase2_full8_router_tneg1p8_ppo_loc_bc_seed56_weighted_student/candidate.onnx",
+  "train_metrics": {
+    "samples": 12000,
+    "mae": 0.0015048526381529592,
+    "rmse": 0.0022326317034465884,
+    "p50_abs_error": 0.000944050142301048,
+    "p95_abs_error": 0.00491177229766423,
+    "p99_abs_error": 0.007632846090778058,
+    "max_abs_error": 0.029113790805735052,
+    "pred_action_saturation_pct": 0.0
+  },
+  "target_rate": {
+    "pair_count": 11984,
+    "p50_rad_s": 0.012744602608192946,
+    "p95_rad_s": 1.2580508893330737,
+    "p99_rad_s": 1.5181272981231193,
+    "max_rad_s": 1.8649726595949219
+  },
+  "sample_weight": {
+    "p50": 1.0,
+    "p95": 4.0,
+    "max": 4.0,
+    "weighted_samples": 16500.0
+  },
+  "loss_rows": [
+    {
+      "step": 1,
+      "loss": 0.15366943180561066
+    },
+    {
+      "step": 1000,
+      "loss": 3.940880924346857e-05
+    },
+    {
+      "step": 2000,
+      "loss": 2.002679138968233e-05
+    },
+    {
+      "step": 3000,
+      "loss": 1.4015599845151883e-05
+    },
+    {
+      "step": 4000,
+      "loss": 1.246587089553941e-05
+    },
+    {
+      "step": 5000,
+      "loss": 1.0993957403115928e-05
+    },
+    {
+      "step": 6000,
+      "loss": 9.905746082949918e-06
+    },
+    {
+      "step": 7000,
+      "loss": 8.006659300008323e-06
+    },
+    {
+      "step": 8000,
+      "loss": 9.156520718534011e-06
+    },
+    {
+      "step": 9000,
+      "loss": 6.001449492032407e-06
+    },
+    {
+      "step": 10000,
+      "loss": 6.109969490353251e-06
+    },
+    {
+      "step": 11000,
+      "loss": 6.65040943204076e-06
+    },
+    {
+      "step": 12000,
+      "loss": 6.044581823516637e-06
+    },
+    {
+      "step": 13000,
+      "loss": 5.212292307987809e-06
+    },
+    {
+      "step": 14000,
+      "loss": 4.2874271457549185e-06
+    },
+    {
+      "step": 15000,
+      "loss": 4.61343825008953e-06
+    },
+    {
+      "step": 16000,
+      "loss": 5.034553851146484e-06
+    },
+    {
+      "step": 17000,
+      "loss": 5.2510663408611435e-06
+    },
+    {
+      "step": 18000,
+      "loss": 4.519846697803587e-06
+    },
+    {
+      "step": 19000,
+      "loss": 5.295017217576969e-06
+    },
+    {
+      "step": 20000,
+      "loss": 5.301514192979084e-06
+    },
+    {
+      "step": 21000,
+      "loss": 3.817271135631017e-06
+    },
+    {
+      "step": 22000,
+      "loss": 3.709786142280791e-06
+    },
+    {
+      "step": 23000,
+      "loss": 3.6277187973610125e-06
+    },
+    {
+      "step": 24000,
+      "loss": 3.519691063047503e-06
+    },
+    {
+      "step": 25000,
+      "loss": 5.978137778583914e-06
+    }
+  ],
+  "onnx_verify": {
+    "path": "outputs/analysis/phase2_full8_router_tneg1p8_ppo_loc_bc_seed56_weighted_student/candidate.onnx",
+    "samples_checked": 64,
+    "max_abs_error": 1.1466969914233904e-07,
+    "p95_abs_error": 5.6821091891826156e-08
+  },
+  "config": {
+    "steps": 25000,
+    "batch_size": 1024,
+    "learning_rate": 0.0005,
+    "target_rate_scale": 0.05,
+    "target_rate_limit_rad_s": 2.0,
+    "action_scale_rad": 0.25,
+    "dt_s": 0.02,
+    "seed": 1
+  }
+}

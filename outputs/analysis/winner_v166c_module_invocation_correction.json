@@ -1,0 +1,50 @@
+{
+  "authority": {
+    "gate5": false,
+    "hosted_training": false,
+    "one_corrected_cpu_rerun": true,
+    "production_contract_change": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "checks": {
+    "corrected_root_absent": true,
+    "failed_before_run_root_creation": true,
+    "mechanism_policy_factor_seed_plant_command_and_gates_unchanged": true,
+    "module_invocation_only": true,
+    "no_result_written": true,
+    "original_preregistration_green": true,
+    "reporting_correction_green": true,
+    "runner_unchanged": true,
+    "wrapper_unchanged": true
+  },
+  "correction": {
+    "code_change": false,
+    "command_form": "python -m tools.run_winner_v166b_transport_reporting_correction",
+    "factor_change": false,
+    "gate_or_stop_rule_change": false,
+    "interpolation_change": false,
+    "mechanism_change": false,
+    "policy_or_matrix_change": false
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "builder": "183f23c52832e924f37443efc5ad350813335f4fd49a184b4e4d6e21138ce7fc",
+    "preregistration": "bf9da2c27e801b8942358d0f88d0f7f89954665dbe13cf8e60b50e3996a8279d",
+    "reporting_correction": "5387506c639498fc315b3d2366acc236644ac051ad1de2f698e35466e125baad",
+    "runner": "9ba38054cbc40f2ed4fe400af1ab2f8fbba1a4db7ddaf295e5c786b696ce82ad",
+    "wrapper": "28c8357358b05ea3629318205fbced7bb4b2906dc5683a830ad0ac08111136f6"
+  },
+  "observed_failure": {
+    "classified_cell_written": false,
+    "command_form": "python tools/run_winner_v166b_transport_reporting_correction.py",
+    "exception": "ModuleNotFoundError: No module named 'tools'",
+    "result_written": false,
+    "run_root_created": false,
+    "stage": "wrapper import before argument parsing and simulation",
+    "trace_written": false
+  },
+  "schema_version": "winner_v166c.module_invocation_correction.v1",
+  "status": "PASS_WINNER_V166C_MODULE_INVOCATION_CORRECTION"
+}

@@ -1,0 +1,448 @@
+{
+  "actuator_bridge_enabled": true,
+  "actuator_tracking_scale": 0.0,
+  "behavior_prior": {
+    "enabled": false,
+    "huber_delta": 0.05,
+    "mlp_npz": null,
+    "scale": -0.05
+  },
+  "command": [
+    "../envs/open-duck-playground/bin/python",
+    "../Open_Duck_Playground/playground/open_duck_mini_v2/runner.py",
+    "--task",
+    "rough_terrain_backlash",
+    "--env",
+    "joystick",
+    "--output_dir",
+    "/home/lsd/robots/open-duck-mini-rdkx5/outputs/phase2_domain_randomization/phase_context_stage_a_narrow_cpu_smoke/smoke_20260706T064603Z_cpu",
+    "--export_min_step",
+    "0",
+    "--num_timesteps",
+    "256",
+    "--ppo_num_envs",
+    "4",
+    "--ppo_num_evals",
+    "1",
+    "--ppo_episode_length",
+    "100",
+    "--ppo_unroll_length",
+    "5",
+    "--ppo_batch_size",
+    "16",
+    "--ppo_num_minibatches",
+    "1",
+    "--ppo_num_updates_per_batch",
+    "1",
+    "--target_rate_scale",
+    "0",
+    "--actuator_tracking_scale",
+    "0",
+    "--restore_checkpoint_path",
+    "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_health_routed_parent_phase_mod_rate150_step0_checkpoint",
+    "--ppo_policy_network",
+    "phase_modulated",
+    "--phase_modulated_policy_hidden_sizes",
+    "512,256",
+    "--phase_modulated_context_hidden_sizes",
+    "64",
+    "--phase_modulated_context_indices",
+    "6,99,100",
+    "--phase_modulated_activation",
+    "swish",
+    "--phase_modulated_scale",
+    "0.5",
+    "--phase_modulated_init_scale_logit",
+    "-2",
+    "--dr_friction_min",
+    "0.98",
+    "--dr_friction_max",
+    "1.02",
+    "--dr_com_jitter_m",
+    "0.002",
+    "--dr_mass_scale_min",
+    "0.99",
+    "--dr_mass_scale_max",
+    "1.01",
+    "--dr_actuator_gain_scale_min",
+    "0.99",
+    "--dr_actuator_gain_scale_max",
+    "1.01",
+    "--dr_leg_geometry_jitter_scale",
+    "0.002",
+    "--enable_actuator_bridge",
+    "--actuator_bridge_delay_min_ticks",
+    "3",
+    "--actuator_bridge_delay_max_ticks",
+    "3",
+    "--actuator_bridge_tau_min_s",
+    "0.06",
+    "--actuator_bridge_tau_max_s",
+    "0.14",
+    "--actuator_bridge_velocity_limit_min_rad_s",
+    "2",
+    "--actuator_bridge_velocity_limit_max_rad_s",
+    "3.25",
+    "--actuator_bridge_per_joint_variation",
+    "0.15"
+  ],
+  "command_shell": "env JAX_PLATFORM_NAME=cpu JAX_PLATFORMS=cpu ../envs/open-duck-playground/bin/python ../Open_Duck_Playground/playground/open_duck_mini_v2/runner.py --task rough_terrain_backlash --env joystick --output_dir /home/lsd/robots/open-duck-mini-rdkx5/outputs/phase2_domain_randomization/phase_context_stage_a_narrow_cpu_smoke/smoke_20260706T064603Z_cpu --export_min_step 0 --num_timesteps 256 --ppo_num_envs 4 --ppo_num_evals 1 --ppo_episode_length 100 --ppo_unroll_length 5 --ppo_batch_size 16 --ppo_num_minibatches 1 --ppo_num_updates_per_batch 1 --target_rate_scale 0 --actuator_tracking_scale 0 --restore_checkpoint_path /home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_health_routed_parent_phase_mod_rate150_step0_checkpoint --ppo_policy_network phase_modulated --phase_modulated_policy_hidden_sizes 512,256 --phase_modulated_context_hidden_sizes 64 --phase_modulated_context_indices 6,99,100 --phase_modulated_activation swish --phase_modulated_scale 0.5 --phase_modulated_init_scale_logit -2 --dr_friction_min 0.98 --dr_friction_max 1.02 --dr_com_jitter_m 0.002 --dr_mass_scale_min 0.99 --dr_mass_scale_max 1.01 --dr_actuator_gain_scale_min 0.99 --dr_actuator_gain_scale_max 1.01 --dr_leg_geometry_jitter_scale 0.002 --enable_actuator_bridge --actuator_bridge_delay_min_ticks 3 --actuator_bridge_delay_max_ticks 3 --actuator_bridge_tau_min_s 0.06 --actuator_bridge_tau_max_s 0.14 --actuator_bridge_velocity_limit_min_rad_s 2 --actuator_bridge_velocity_limit_max_rad_s 3.25 --actuator_bridge_per_joint_variation 0.15",
+  "deploy_performed": false,
+  "elapsed_s": 180.04584249400068,
+  "env_python_configured": "../envs/open-duck-playground/bin/python",
+  "env_python_resolved": "/home/lsd/.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/bin/python3.12",
+  "export_min_step": 0,
+  "jax_platform_env": {
+    "JAX_PLATFORMS": "cpu",
+    "JAX_PLATFORM_NAME": "cpu"
+  },
+  "local_rocm_safe_env": false,
+  "output_dir": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/phase2_domain_randomization/phase_context_stage_a_narrow_cpu_smoke/smoke_20260706T064603Z_cpu",
+  "output_files": [
+    {
+      "mtime": 1783320403.805812,
+      "path": "2026_07_06_024643_0/_CHECKPOINT_METADATA",
+      "size_bytes": 258
+    },
+    {
+      "mtime": 1783320403.797935,
+      "path": "2026_07_06_024643_0/_METADATA",
+      "size_bytes": 9020
+    },
+    {
+      "mtime": 1783320403.7767284,
+      "path": "2026_07_06_024643_0/_sharding",
+      "size_bytes": 3700
+    },
+    {
+      "mtime": 1783320403.7731752,
+      "path": "2026_07_06_024643_0/array_metadatas/process_0",
+      "size_bytes": 4237
+    },
+    {
+      "mtime": 1783320403.8001754,
+      "path": "2026_07_06_024643_0/d/11d26392389d31547b28fd3452ee9d5a",
+      "size_bytes": 4385
+    },
+    {
+      "mtime": 1783320403.8022053,
+      "path": "2026_07_06_024643_0/manifest.ocdbt",
+      "size_bytes": 115
+    },
+    {
+      "mtime": 1783320403.7711751,
+      "path": "2026_07_06_024643_0/ocdbt.process_0/d/3f9f0641a0a94bc415353fa15c2cb3ac",
+      "size_bytes": 212
+    },
+    {
+      "mtime": 1783320403.7901752,
+      "path": "2026_07_06_024643_0/ocdbt.process_0/d/83a8eea1421b5dddf1e3a56e84b534e3",
+      "size_bytes": 1610292
+    },
+    {
+      "mtime": 1783320403.7851753,
+      "path": "2026_07_06_024643_0/ocdbt.process_0/d/e132b3666be26db91bc47f30871393c1",
+      "size_bytes": 702
+    },
+    {
+      "mtime": 1783320403.7801752,
+      "path": "2026_07_06_024643_0/ocdbt.process_0/d/eb130ee447486d74dcf17f5097eeaf16",
+      "size_bytes": 638
+    },
+    {
+      "mtime": 1783320403.7925472,
+      "path": "2026_07_06_024643_0/ocdbt.process_0/manifest.ocdbt",
+      "size_bytes": 242
+    },
+    {
+      "mtime": 1783320403.8146455,
+      "path": "2026_07_06_024643_0.onnx",
+      "size_bytes": 885758
+    },
+    {
+      "mtime": 1783320431.256568,
+      "path": "2026_07_06_024711_320/_CHECKPOINT_METADATA",
+      "size_bytes": 258
+    },
+    {
+      "mtime": 1783320431.249151,
+      "path": "2026_07_06_024711_320/_METADATA",
+      "size_bytes": 9020
+    },
+    {
+      "mtime": 1783320431.2277002,
+      "path": "2026_07_06_024711_320/_sharding",
+      "size_bytes": 3700
+    },
+    {
+      "mtime": 1783320431.2222173,
+      "path": "2026_07_06_024711_320/array_metadatas/process_0",
+      "size_bytes": 4237
+    },
+    {
+      "mtime": 1783320431.2513878,
+      "path": "2026_07_06_024711_320/d/ad28e9fee77a72746504c36d14ca466b",
+      "size_bytes": 8504
+    },
+    {
+      "mtime": 1783320431.253145,
+      "path": "2026_07_06_024711_320/manifest.ocdbt",
+      "size_bytes": 115
+    },
+    {
+      "mtime": 1783320431.2413876,
+      "path": "2026_07_06_024711_320/ocdbt.process_0/d/1b9e2734caf2bf893be9d167c7925ca9",
+      "size_bytes": 1616305
+    },
+    {
+      "mtime": 1783320431.2373877,
+      "path": "2026_07_06_024711_320/ocdbt.process_0/d/250a9853710e0575d1f1dcb200fea663",
+      "size_bytes": 1502
+    },
+    {
+      "mtime": 1783320431.2283876,
+      "path": "2026_07_06_024711_320/ocdbt.process_0/d/526faa67bbb8f61c4384aeadc2783893",
+      "size_bytes": 638
+    },
+    {
+      "mtime": 1783320431.2223876,
+      "path": "2026_07_06_024711_320/ocdbt.process_0/d/c75844caaeea3ac7c9e1141a0b69fcfd",
+      "size_bytes": 189
+    },
+    {
+      "mtime": 1783320431.2440374,
+      "path": "2026_07_06_024711_320/ocdbt.process_0/manifest.ocdbt",
+      "size_bytes": 245
+    },
+    {
+      "mtime": 1783320431.2584162,
+      "path": "2026_07_06_024711_320.onnx",
+      "size_bytes": 885758
+    },
+    {
+      "mtime": 1783320513.6860254,
+      "path": "events.out.tfevents.1783320366.LSD",
+      "size_bytes": 6044
+    },
+    {
+      "mtime": 1780435318.7593744,
+      "path": "scene_rough_terrain_backlash.xml.original",
+      "size_bytes": 1812
+    },
+    {
+      "mtime": 1783320514.0123904,
+      "path": "smoke_manifest.live.json",
+      "size_bytes": 25253
+    },
+    {
+      "mtime": 1783320363.9671805,
+      "path": "smoke_manifest.start.json",
+      "size_bytes": 11211
+    },
+    {
+      "mtime": 1783320513.473024,
+      "path": "stderr.txt",
+      "size_bytes": 9077586
+    },
+    {
+      "mtime": 1783320513.3090227,
+      "path": "stdout.txt",
+      "size_bytes": 4401
+    }
+  ],
+  "platform": "cpu",
+  "playground_path": "/home/lsd/robots/Open_Duck_Playground",
+  "policy_network": {
+    "phase_modulated_activation": "swish",
+    "phase_modulated_context_hidden_sizes": "64",
+    "phase_modulated_context_indices": "6,99,100",
+    "phase_modulated_init_scale_logit": -2.0,
+    "phase_modulated_policy_hidden_sizes": "512,256",
+    "phase_modulated_scale": 0.5,
+    "ppo_policy_network": "phase_modulated"
+  },
+  "ppo_overrides": {
+    "clipping_epsilon": null,
+    "desired_kl": null,
+    "entropy_cost": null,
+    "learning_rate": null,
+    "learning_rate_schedule": null,
+    "learning_rate_schedule_max_lr": null,
+    "learning_rate_schedule_min_lr": null,
+    "max_grad_norm": null,
+    "restore_policy_kl_scale": null
+  },
+  "purpose": "offline actuator bridge PPO smoke; not a deployable policy",
+  "push_recovery_actuator_tracking": {
+    "huber_delta": null,
+    "joint_indices": null,
+    "scale": null,
+    "window_steps": null
+  },
+  "reference_motion_override": {
+    "enabled": false
+  },
+  "restore_checkpoint_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/analysis/phase2_health_routed_parent_phase_mod_rate150_step0_checkpoint",
+  "returncode": 0,
+  "robot_touched": false,
+  "soft_prior": {
+    "config_json": null,
+    "enabled": false,
+    "huber_delta": 0.05,
+    "phase_source": "imitation_i",
+    "scale": -0.05
+  },
+  "status": "PASS_SMOKE_RUN",
+  "stderr_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/phase2_domain_randomization/phase_context_stage_a_narrow_cpu_smoke/smoke_20260706T064603Z_cpu/stderr.txt",
+  "stderr_tail": "pilation doesn't match the machine type for execution. Compile machine features: [+64bit,+adx,+aes,+avx,+avx2,+avx512bf16,+avx512bitalg,+avx512bw,+avx512cd,+avx512dq,+avx512f,+avx512ifma,+avx512vbmi,+avx512vbmi2,+avx512vl,+avx512vnni,+avx512vp2intersect,+avx512vpopcntdq,+avxvnni,+bmi,+bmi2,+clflushopt,+clwb,+clzero,+cmov,+crc32,+cx16,+cx8,+f16c,+fma,+fsgsbase,+fxsr,+gfni,+invpcid,+lzcnt,+mmx,+movbe,+movdir64b,+movdiri,+mwaitx,+pclmul,+pku,+popcnt,+prefetchi,+prfchw,+rdpid,+rdpru,+rdrnd,+rdseed,+sahf,+sha,+shstk,+sse,+sse2,+sse3,+sse4.1,+sse4.2,+sse4a,+ssse3,+vaes,+vpclmulqdq,+wbnoinvd,+xsave,+xsavec,+xsaveopt,+xsaves,+prefer-no-scatter,+prefer-no-gather,-amx-avx512,-amx-bf16,-amx-complex,-amx-fp16,-amx-fp8,-amx-int8,-amx-movrs,-amx-tf32,-amx-tile,-avx10.1,-avx10.2,-avx512fp16,-avxifma,-avxneconvert,-avxvnniint16,-avxvnniint8,-ccmp,-cf,-cldemote,-cmpccxadd,-egpr,-enqcmd,-fma4,-hreset,-kl,-lwp,-movrs,-ndd,-nf,-pconfig,-ppx,-ptwrite,-push2pop2,-raoint,-rtm,-serialize,-sgx,-sha512,-sm3,-sm4,-tbm,-tsxldtrk,-uintr,-usermsr,-waitpkg,-widekl,-xop,-zu] vs host machine features: [prfchw,avx,aes,sahf,pclmul,crc32,xsaves,sse4.1,avx512ifma,xsave,sse4.2,invpcid,64bit,xsavec,avx512vpopcntdq,cmov,avx512vp2intersect,avx512cd,movbe,avxvnni,adx,avx2,movdiri,vpclmulqdq,avx512vl,clflushopt,bmi,sse,gfni,xsaveopt,rdrnd,avx512f,avx512bf16,avx512vnni,cx8,avx512bw,sse3,pku,fsgsbase,clzero,mwaitx,lzcnt,sha,movdir64b,wbnoinvd,ssse3,cx16,bmi2,fma,popcnt,f16c,avx512bitalg,rdpru,clwb,mmx,sse2,rdseed,avx512vbmi2,prefetchi,rdpid,avx512vbmi,shstk,vaes,fxsr,avx512dq,sse4a]. This could lead to execution errors such as SIGILL.\nE0706 02:47:01.094247 2111276 cpu_aot_loader.cc:210] Loading XLA:CPU AOT result. Target machine feature +prefer-no-gather is not  supported on the host machine. Machine type used for XLA:CPU compilation doesn't match the machine type for execution. Compile machine features: [+64bit,+adx,+aes,+avx,+avx2,+avx512bf16,+avx512bitalg,+avx512bw,+avx512cd,+avx512dq,+avx512f,+avx512ifma,+avx512vbmi,+avx512vbmi2,+avx512vl,+avx512vnni,+avx512vp2intersect,+avx512vpopcntdq,+avxvnni,+bmi,+bmi2,+clflushopt,+clwb,+clzero,+cmov,+crc32,+cx16,+cx8,+f16c,+fma,+fsgsbase,+fxsr,+gfni,+invpcid,+lzcnt,+mmx,+movbe,+movdir64b,+movdiri,+mwaitx,+pclmul,+pku,+popcnt,+prefetchi,+prfchw,+rdpid,+rdpru,+rdrnd,+rdseed,+sahf,+sha,+shstk,+sse,+sse2,+sse3,+sse4.1,+sse4.2,+sse4a,+ssse3,+vaes,+vpclmulqdq,+wbnoinvd,+xsave,+xsavec,+xsaveopt,+xsaves,+prefer-no-scatter,+prefer-no-gather,-amx-avx512,-amx-bf16,-amx-complex,-amx-fp16,-amx-fp8,-amx-int8,-amx-movrs,-amx-tf32,-amx-tile,-avx10.1,-avx10.2,-avx512fp16,-avxifma,-avxneconvert,-avxvnniint16,-avxvnniint8,-ccmp,-cf,-cldemote,-cmpccxadd,-egpr,-enqcmd,-fma4,-hreset,-kl,-lwp,-movrs,-ndd,-nf,-pconfig,-ppx,-ptwrite,-push2pop2,-raoint,-rtm,-serialize,-sgx,-sha512,-sm3,-sm4,-tbm,-tsxldtrk,-uintr,-usermsr,-waitpkg,-widekl,-xop,-zu] vs host machine features: [prfchw,avx,aes,sahf,pclmul,crc32,xsaves,sse4.1,avx512ifma,xsave,sse4.2,invpcid,64bit,xsavec,avx512vpopcntdq,cmov,avx512vp2intersect,avx512cd,movbe,avxvnni,adx,avx2,movdiri,vpclmulqdq,avx512vl,clflushopt,bmi,sse,gfni,xsaveopt,rdrnd,avx512f,avx512bf16,avx512vnni,cx8,avx512bw,sse3,pku,fsgsbase,clzero,mwaitx,lzcnt,sha,movdir64b,wbnoinvd,ssse3,cx16,bmi2,fma,popcnt,f16c,avx512bitalg,rdpru,clwb,mmx,sse2,rdseed,avx512vbmi2,prefetchi,rdpid,avx512vbmi,shstk,vaes,fxsr,avx512dq,sse4a]. This could lead to execution errors such as SIGILL.\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\n/home/lsd/robots/envs/open-duck-playground/lib/python3.12/site-packages/jax/_src/abstract_arrays.py:135: RuntimeWarning: overflow encountered in cast\n  return literals.TypedNdArray(np.asarray(x, dtype), weak_type=False)\nE0706 02:48:33.466670 2111276 cpu_aot_loader.cc:210] Loading XLA:CPU AOT result. Target machine feature +prefer-no-scatter is not  supported on the host machine. Machine type used for XLA:CPU compilation doesn't match the machine type for execution. Compile machine features: [+64bit,+adx,+aes,+avx,+avx2,+avx512bf16,+avx512bitalg,+avx512bw,+avx512cd,+avx512dq,+avx512f,+avx512ifma,+avx512vbmi,+avx512vbmi2,+avx512vl,+avx512vnni,+avx512vp2intersect,+avx512vpopcntdq,+avxvnni,+bmi,+bmi2,+clflushopt,+clwb,+clzero,+cmov,+crc32,+cx16,+cx8,+f16c,+fma,+fsgsbase,+fxsr,+gfni,+invpcid,+lzcnt,+mmx,+movbe,+movdir64b,+movdiri,+mwaitx,+pclmul,+pku,+popcnt,+prefetchi,+prfchw,+rdpid,+rdpru,+rdrnd,+rdseed,+sahf,+sha,+shstk,+sse,+sse2,+sse3,+sse4.1,+sse4.2,+sse4a,+ssse3,+vaes,+vpclmulqdq,+wbnoinvd,+xsave,+xsavec,+xsaveopt,+xsaves,+prefer-no-scatter,+prefer-no-gather,-amx-avx512,-amx-bf16,-amx-complex,-amx-fp16,-amx-fp8,-amx-int8,-amx-movrs,-amx-tf32,-amx-tile,-avx10.1,-avx10.2,-avx512fp16,-avxifma,-avxneconvert,-avxvnniint16,-avxvnniint8,-ccmp,-cf,-cldemote,-cmpccxadd,-egpr,-enqcmd,-fma4,-hreset,-kl,-lwp,-movrs,-ndd,-nf,-pconfig,-ppx,-ptwrite,-push2pop2,-raoint,-rtm,-serialize,-sgx,-sha512,-sm3,-sm4,-tbm,-tsxldtrk,-uintr,-usermsr,-waitpkg,-widekl,-xop,-zu] vs host machine features: [prfchw,avx,aes,sahf,pclmul,crc32,xsaves,sse4.1,avx512ifma,xsave,sse4.2,invpcid,64bit,xsavec,avx512vpopcntdq,cmov,avx512vp2intersect,avx512cd,movbe,avxvnni,adx,avx2,movdiri,vpclmulqdq,avx512vl,clflushopt,bmi,sse,gfni,xsaveopt,rdrnd,avx512f,avx512bf16,avx512vnni,cx8,avx512bw,sse3,pku,fsgsbase,clzero,mwaitx,lzcnt,sha,movdir64b,wbnoinvd,ssse3,cx16,bmi2,fma,popcnt,f16c,avx512bitalg,rdpru,clwb,mmx,sse2,rdseed,avx512vbmi2,prefetchi,rdpid,avx512vbmi,shstk,vaes,fxsr,avx512dq,sse4a]. This could lead to execution errors such as SIGILL.\nE0706 02:48:33.466741 2111276 cpu_aot_loader.cc:210] Loading XLA:CPU AOT result. Target machine feature +prefer-no-gather is not  supported on the host machine. Machine type used for XLA:CPU compilation doesn't match the machine type for execution. Compile machine features: [+64bit,+adx,+aes,+avx,+avx2,+avx512bf16,+avx512bitalg,+avx512bw,+avx512cd,+avx512dq,+avx512f,+avx512ifma,+avx512vbmi,+avx512vbmi2,+avx512vl,+avx512vnni,+avx512vp2intersect,+avx512vpopcntdq,+avxvnni,+bmi,+bmi2,+clflushopt,+clwb,+clzero,+cmov,+crc32,+cx16,+cx8,+f16c,+fma,+fsgsbase,+fxsr,+gfni,+invpcid,+lzcnt,+mmx,+movbe,+movdir64b,+movdiri,+mwaitx,+pclmul,+pku,+popcnt,+prefetchi,+prfchw,+rdpid,+rdpru,+rdrnd,+rdseed,+sahf,+sha,+shstk,+sse,+sse2,+sse3,+sse4.1,+sse4.2,+sse4a,+ssse3,+vaes,+vpclmulqdq,+wbnoinvd,+xsave,+xsavec,+xsaveopt,+xsaves,+prefer-no-scatter,+prefer-no-gather,-amx-avx512,-amx-bf16,-amx-complex,-amx-fp16,-amx-fp8,-amx-int8,-amx-movrs,-amx-tf32,-amx-tile,-avx10.1,-avx10.2,-avx512fp16,-avxifma,-avxneconvert,-avxvnniint16,-avxvnniint8,-ccmp,-cf,-cldemote,-cmpccxadd,-egpr,-enqcmd,-fma4,-hreset,-kl,-lwp,-movrs,-ndd,-nf,-pconfig,-ppx,-ptwrite,-push2pop2,-raoint,-rtm,-serialize,-sgx,-sha512,-sm3,-sm4,-tbm,-tsxldtrk,-uintr,-usermsr,-waitpkg,-widekl,-xop,-zu] vs host machine features: [prfchw,avx,aes,sahf,pclmul,crc32,xsaves,sse4.1,avx512ifma,xsave,sse4.2,invpcid,64bit,xsavec,avx512vpopcntdq,cmov,avx512vp2intersect,avx512cd,movbe,avxvnni,adx,avx2,movdiri,vpclmulqdq,avx512vl,clflushopt,bmi,sse,gfni,xsaveopt,rdrnd,avx512f,avx512bf16,avx512vnni,cx8,avx512bw,sse3,pku,fsgsbase,clzero,mwaitx,lzcnt,sha,movdir64b,wbnoinvd,ssse3,cx16,bmi2,fma,popcnt,f16c,avx512bitalg,rdpru,clwb,mmx,sse2,rdseed,avx512vbmi2,prefetchi,rdpid,avx512vbmi,shstk,vaes,fxsr,avx512dq,sse4a]. This could lead to execution errors such as SIGILL.\nE0706 02:48:33.473791 2111276 cpu_aot_loader.cc:210] Loading XLA:CPU AOT result. Target machine feature +prefer-no-scatter is not  supported on the host machine. Machine type used for XLA:CPU compilation doesn't match the machine type for execution. Compile machine features: [+64bit,+adx,+aes,+avx,+avx2,+avx512bf16,+avx512bitalg,+avx512bw,+avx512cd,+avx512dq,+avx512f,+avx512ifma,+avx512vbmi,+avx512vbmi2,+avx512vl,+avx512vnni,+avx512vp2intersect,+avx512vpopcntdq,+avxvnni,+bmi,+bmi2,+clflushopt,+clwb,+clzero,+cmov,+crc32,+cx16,+cx8,+f16c,+fma,+fsgsbase,+fxsr,+gfni,+invpcid,+lzcnt,+mmx,+movbe,+movdir64b,+movdiri,+mwaitx,+pclmul,+pku,+popcnt,+prefetchi,+prfchw,+rdpid,+rdpru,+rdrnd,+rdseed,+sahf,+sha,+shstk,+sse,+sse2,+sse3,+sse4.1,+sse4.2,+sse4a,+ssse3,+vaes,+vpclmulqdq,+wbnoinvd,+xsave,+xsavec,+xsaveopt,+xsaves,+prefer-no-scatter,+prefer-no-gather,-amx-avx512,-amx-bf16,-amx-complex,-amx-fp16,-amx-fp8,-amx-int8,-amx-movrs,-amx-tf32,-amx-tile,-avx10.1,-avx10.2,-avx512fp16,-avxifma,-avxneconvert,-avxvnniint16,-avxvnniint8,-ccmp,-cf,-cldemote,-cmpccxadd,-egpr,-enqcmd,-fma4,-hreset,-kl,-lwp,-movrs,-ndd,-nf,-pconfig,-ppx,-ptwrite,-push2pop2,-raoint,-rtm,-serialize,-sgx,-sha512,-sm3,-sm4,-tbm,-tsxldtrk,-uintr,-usermsr,-waitpkg,-widekl,-xop,-zu] vs host machine features: [prfchw,avx,aes,sahf,pclmul,crc32,xsaves,sse4.1,avx512ifma,xsave,sse4.2,invpcid,64bit,xsavec,avx512vpopcntdq,cmov,avx512vp2intersect,avx512cd,movbe,avxvnni,adx,avx2,movdiri,vpclmulqdq,avx512vl,clflushopt,bmi,sse,gfni,xsaveopt,rdrnd,avx512f,avx512bf16,avx512vnni,cx8,avx512bw,sse3,pku,fsgsbase,clzero,mwaitx,lzcnt,sha,movdir64b,wbnoinvd,ssse3,cx16,bmi2,fma,popcnt,f16c,avx512bitalg,rdpru,clwb,mmx,sse2,rdseed,avx512vbmi2,prefetchi,rdpid,avx512vbmi,shstk,vaes,fxsr,avx512dq,sse4a]. This could lead to execution errors such as SIGILL.\nE0706 02:48:33.473822 2111276 cpu_aot_loader.cc:210] Loading XLA:CPU AOT result. Target machine feature +prefer-no-gather is not  supported on the host machine. Machine type used for XLA:CPU compilation doesn't match the machine type for execution. Compile machine features: [+64bit,+adx,+aes,+avx,+avx2,+avx512bf16,+avx512bitalg,+avx512bw,+avx512cd,+avx512dq,+avx512f,+avx512ifma,+avx512vbmi,+avx512vbmi2,+avx512vl,+avx512vnni,+avx512vp2intersect,+avx512vpopcntdq,+avxvnni,+bmi,+bmi2,+clflushopt,+clwb,+clzero,+cmov,+crc32,+cx16,+cx8,+f16c,+fma,+fsgsbase,+fxsr,+gfni,+invpcid,+lzcnt,+mmx,+movbe,+movdir64b,+movdiri,+mwaitx,+pclmul,+pku,+popcnt,+prefetchi,+prfchw,+rdpid,+rdpru,+rdrnd,+rdseed,+sahf,+sha,+shstk,+sse,+sse2,+sse3,+sse4.1,+sse4.2,+sse4a,+ssse3,+vaes,+vpclmulqdq,+wbnoinvd,+xsave,+xsavec,+xsaveopt,+xsaves,+prefer-no-scatter,+prefer-no-gather,-amx-avx512,-amx-bf16,-amx-complex,-amx-fp16,-amx-fp8,-amx-int8,-amx-movrs,-amx-tf32,-amx-tile,-avx10.1,-avx10.2,-avx512fp16,-avxifma,-avxneconvert,-avxvnniint16,-avxvnniint8,-ccmp,-cf,-cldemote,-cmpccxadd,-egpr,-enqcmd,-fma4,-hreset,-kl,-lwp,-movrs,-ndd,-nf,-pconfig,-ppx,-ptwrite,-push2pop2,-raoint,-rtm,-serialize,-sgx,-sha512,-sm3,-sm4,-tbm,-tsxldtrk,-uintr,-usermsr,-waitpkg,-widekl,-xop,-zu] vs host machine features: [prfchw,avx,aes,sahf,pclmul,crc32,xsaves,sse4.1,avx512ifma,xsave,sse4.2,invpcid,64bit,xsavec,avx512vpopcntdq,cmov,avx512vp2intersect,avx512cd,movbe,avxvnni,adx,avx2,movdiri,vpclmulqdq,avx512vl,clflushopt,bmi,sse,gfni,xsaveopt,rdrnd,avx512f,avx512bf16,avx512vnni,cx8,avx512bw,sse3,pku,fsgsbase,clzero,mwaitx,lzcnt,sha,movdir64b,wbnoinvd,ssse3,cx16,bmi2,fma,popcnt,f16c,avx512bitalg,rdpru,clwb,mmx,sse2,rdseed,avx512vbmi2,prefetchi,rdpid,avx512vbmi,shstk,vaes,fxsr,avx512dq,sse4a]. This could lead to execution errors such as SIGILL.\n",
+  "stdout_path": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/phase2_domain_randomization/phase_context_stage_a_narrow_cpu_smoke/smoke_20260706T064603Z_cpu/stdout.txt",
+  "stdout_tail": "Failed to import warp: No module named 'warp'\nFailed to import mujoco_warp: No module named 'warp'\nxml: /home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_rough_terrain_backlash.xml\nactuators: ['left_hip_yaw', 'left_hip_roll', 'left_hip_pitch', 'left_knee', 'left_ankle', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_roll', 'right_hip_pitch', 'right_knee', 'right_ankle']\njoints: ['floating_base', 'left_hip_yaw', 'left_hip_yaw_backlash', 'left_hip_roll', 'left_hip_roll_backlash', 'left_hip_pitch', 'left_hip_pitch_backlash', 'left_knee', 'left_knee_backlash', 'left_ankle', 'left_ankle_backlash', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_yaw_backlash', 'right_hip_roll', 'right_hip_roll_backlash', 'right_hip_pitch', 'right_hip_pitch_backlash', 'right_knee', 'right_knee_backlash', 'right_ankle', 'right_ankle_backlash']\nbacklash joints: ['left_hip_yaw_backlash', 'left_hip_roll_backlash', 'left_hip_pitch_backlash', 'left_knee_backlash', 'left_ankle_backlash', 'right_hip_yaw_backlash', 'right_hip_roll_backlash', 'right_hip_pitch_backlash', 'right_knee_backlash', 'right_ankle_backlash']\nactuator joints ids: [1, 3, 5, 7, 9, 11, 12, 13, 14, 15, 17, 19, 21, 23]\nactuator joints dict: {'left_hip_yaw': 1, 'left_hip_roll': 3, 'left_hip_pitch': 5, 'left_knee': 7, 'left_ankle': 9, 'neck_pitch': 11, 'head_pitch': 12, 'head_yaw': 13, 'head_roll': 14, 'right_hip_yaw': 15, 'right_hip_roll': 17, 'right_hip_pitch': 19, 'right_knee': 21, 'right_ankle': 23}\nfloating qpos addr: 0 qvel addr: 0\n[Poly ref data] Processing ...\n[Poly ref data] Done processing\nxml: /home/lsd/robots/Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_rough_terrain_backlash.xml\nactuators: ['left_hip_yaw', 'left_hip_roll', 'left_hip_pitch', 'left_knee', 'left_ankle', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_roll', 'right_hip_pitch', 'right_knee', 'right_ankle']\njoints: ['floating_base', 'left_hip_yaw', 'left_hip_yaw_backlash', 'left_hip_roll', 'left_hip_roll_backlash', 'left_hip_pitch', 'left_hip_pitch_backlash', 'left_knee', 'left_knee_backlash', 'left_ankle', 'left_ankle_backlash', 'neck_pitch', 'head_pitch', 'head_yaw', 'head_roll', 'right_hip_yaw', 'right_hip_yaw_backlash', 'right_hip_roll', 'right_hip_roll_backlash', 'right_hip_pitch', 'right_hip_pitch_backlash', 'right_knee', 'right_knee_backlash', 'right_ankle', 'right_ankle_backlash']\nbacklash joints: ['left_hip_yaw_backlash', 'left_hip_roll_backlash', 'left_hip_pitch_backlash', 'left_knee_backlash', 'left_ankle_backlash', 'right_hip_yaw_backlash', 'right_hip_roll_backlash', 'right_hip_pitch_backlash', 'right_knee_backlash', 'right_ankle_backlash']\nactuator joints ids: [1, 3, 5, 7, 9, 11, 12, 13, 14, 15, 17, 19, 21, 23]\nactuator joints dict: {'left_hip_yaw': 1, 'left_hip_roll': 3, 'left_hip_pitch': 5, 'left_knee': 7, 'left_ankle': 9, 'neck_pitch': 11, 'head_pitch': 12, 'head_yaw': 13, 'head_roll': 14, 'right_hip_yaw': 15, 'right_hip_roll': 17, 'right_hip_pitch': 19, 'right_knee': 21, 'right_ankle': 23}\nfloating qpos addr: 0 qvel addr: 0\n[Poly ref data] Processing ...\n[Poly ref data] Done processing\nObservation size: 101\nUsing phase-modulated PPO policy network: hidden=(512, 256) context_hidden=(64,) context_indices=(6, 99, 100)\nPPO params: {'action_repeat': 1, 'batch_size': 16, 'clipping_epsilon': 0.2, 'discounting': 0.97, 'entropy_cost': 0.005, 'episode_length': 100, 'learning_rate': 0.0003, 'max_grad_norm': 1.0, 'normalize_observations': True, 'num_envs': 4, 'num_evals': 1, 'num_minibatches': 1, 'num_resets_per_eval': 1, 'num_timesteps': 256, 'num_updates_per_batch': 1, 'reward_scaling': 1.0, 'unroll_length': 5}\nSaving checkpoint (step: 0): /home/lsd/robots/open-duck-mini-rdkx5/outputs/phase2_domain_randomization/phase_context_stage_a_narrow_cpu_smoke/smoke_20260706T064603Z_cpu/2026_07_06_024643_0\n === EXPORT ONNX === \nDetected phase-modulated PPO policy; using phase-modulated ONNX exporter.\nSaving checkpoint (step: 320): /home/lsd/robots/open-duck-mini-rdkx5/outputs/phase2_domain_randomization/phase_context_stage_a_narrow_cpu_smoke/smoke_20260706T064603Z_cpu/2026_07_06_024711_320\n === EXPORT ONNX === \nDetected phase-modulated PPO policy; using phase-modulated ONNX exporter.\n-----------\nSTEP: 320 reward: 25.894550323486328 reward_std: 12.766319274902344\n-----------\n",
+  "subprocess_env": {
+    "set": {
+      "JAX_PLATFORMS": "cpu",
+      "JAX_PLATFORM_NAME": "cpu"
+    },
+    "unset": []
+  },
+  "summary": {
+    "checkpoint_lines": [
+      "Saving checkpoint (step: 0): /home/lsd/robots/open-duck-mini-rdkx5/outputs/phase2_domain_randomization/phase_context_stage_a_narrow_cpu_smoke/smoke_20260706T064603Z_cpu/2026_07_06_024643_0",
+      "Saving checkpoint (step: 320): /home/lsd/robots/open-duck-mini-rdkx5/outputs/phase2_domain_randomization/phase_context_stage_a_narrow_cpu_smoke/smoke_20260706T064603Z_cpu/2026_07_06_024711_320"
+    ],
+    "export_lines": [],
+    "step_lines": [
+      "STEP: 320 reward: 25.894550323486328 reward_std: 12.766319274902344"
+    ]
+  },
+  "target_rate_scale": 0.0,
+  "terrain_hfield_override": {
+    "backup": "/home/lsd/robots/open-duck-mini-rdkx5/outputs/phase2_domain_randomization/phase_context_stage_a_narrow_cpu_smoke/smoke_20260706T064603Z_cpu/scene_rough_terrain_backlash.xml.original",
+    "backup_sha256": "879768817f5ae5d2c01b5494f855686bb10d1ec444a404efeced8f5766574ffc",
+    "destination": "../Open_Duck_Playground/playground/open_duck_mini_v2/xmls/scene_rough_terrain_backlash.xml",
+    "destination_sha256_after": "1d57275c9b96185d6cba94faf7fa9e81beb4f56b2eca453add98db714f30c4b2",
+    "destination_sha256_before": "879768817f5ae5d2c01b5494f855686bb10d1ec444a404efeced8f5766574ffc",
+    "destination_sha256_restored": "879768817f5ae5d2c01b5494f855686bb10d1ec444a404efeced8f5766574ffc",
+    "enabled": true,
+    "restored": true,
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0075
+  },
+  "timeout_s": 900,
+  "timestamp": "20260706T064603Z",
+  "training_recipe_overrides": {
+    "action_magnitude_huber_delta": null,
+    "action_magnitude_scale": null,
+    "action_rate_huber_delta": null,
+    "action_rate_scale": null,
+    "actuator_tracking_huber_delta": null,
+    "alive_scale": null,
+    "ang_vel_yaw_max": null,
+    "ang_vel_yaw_min": null,
+    "base_height_scale": null,
+    "command_progress_failure_enable": false,
+    "command_progress_failure_min_ratio": null,
+    "command_progress_failure_scale": null,
+    "command_progress_failure_warmup_steps": null,
+    "command_progress_required_ratio": null,
+    "command_progress_scale": null,
+    "command_progress_shortfall_huber_delta": null,
+    "command_progress_shortfall_scale": null,
+    "command_progress_warmup_steps": null,
+    "command_resample_steps": null,
+    "dr_actuator_gain_scale_max": 1.01,
+    "dr_actuator_gain_scale_min": 0.99,
+    "dr_armature_scale_max": null,
+    "dr_armature_scale_min": null,
+    "dr_com_jitter_m": 0.002,
+    "dr_friction_max": 1.02,
+    "dr_friction_min": 0.98,
+    "dr_frictionloss_scale_max": null,
+    "dr_frictionloss_scale_min": null,
+    "dr_leg_geometry_jitter_scale": 0.002,
+    "dr_mass_scale_max": 1.01,
+    "dr_mass_scale_min": 0.99,
+    "dr_qpos_jitter_rad": null,
+    "dr_torso_mass_delta_max": null,
+    "dr_torso_mass_delta_min": null,
+    "forward_contact_support_asymmetry_weight": null,
+    "forward_contact_support_no_contact_weight": null,
+    "forward_contact_support_scale": null,
+    "forward_contact_transition_min_progress_ratio": null,
+    "forward_contact_transition_scale": null,
+    "forward_double_support_dwell_grace_steps": null,
+    "forward_double_support_dwell_scale": null,
+    "forward_double_support_scale": null,
+    "forward_overshoot_allowed_ratio": null,
+    "forward_overshoot_huber_delta": null,
+    "forward_overshoot_scale": null,
+    "forward_phase_single_support_scale": null,
+    "forward_phase_single_support_stance_no_contact_weight": null,
+    "forward_phase_single_support_swing_contact_weight": null,
+    "forward_phase_swing_lift_huber_delta": null,
+    "forward_phase_swing_lift_scale": null,
+    "forward_phase_swing_lift_target_m": null,
+    "forward_pitch_huber_delta": null,
+    "forward_pitch_rate_huber_delta": null,
+    "forward_pitch_rate_scale": null,
+    "forward_pitch_scale": null,
+    "forward_progress_deadband": null,
+    "forward_progress_scale": null,
+    "forward_shortfall_huber_delta": null,
+    "forward_shortfall_required_ratio": null,
+    "forward_shortfall_scale": null,
+    "forward_single_support_scale": null,
+    "forward_swing_advance_huber_delta": null,
+    "forward_swing_advance_scale": null,
+    "forward_swing_advance_target_m": null,
+    "forward_swing_balance_grace_steps": null,
+    "forward_swing_balance_scale": null,
+    "forward_swing_clearance_huber_delta": null,
+    "forward_swing_clearance_scale": null,
+    "forward_swing_clearance_target_m": null,
+    "forward_swing_phase_advance_ticks": null,
+    "forward_swing_target_rate_limit_huber_delta": null,
+    "forward_swing_target_rate_limit_joint_indices": null,
+    "forward_swing_target_rate_limit_scale": null,
+    "forward_swing_target_rate_limit_values": null,
+    "forward_wrong_direction_allowed_reverse_ratio": null,
+    "forward_wrong_direction_huber_delta": null,
+    "forward_wrong_direction_scale": null,
+    "head_range_factor": null,
+    "imitation_scale": null,
+    "lin_vel_x_max": null,
+    "lin_vel_x_min": null,
+    "lin_vel_y_max": null,
+    "lin_vel_y_min": null,
+    "noise_accelerometer": null,
+    "noise_ankle_pos": null,
+    "noise_gravity": null,
+    "noise_gyro": null,
+    "noise_hip_pos": null,
+    "noise_joint_vel": null,
+    "noise_knee_pos": null,
+    "noise_level": null,
+    "orientation_scale": null,
+    "push_enable": null,
+    "push_interval_max_s": null,
+    "push_interval_min_s": null,
+    "push_magnitude_max": null,
+    "push_magnitude_min": null,
+    "push_recovery_actuator_tracking_huber_delta": null,
+    "push_recovery_actuator_tracking_scale": null,
+    "push_recovery_tracking_joint_indices": null,
+    "push_recovery_tracking_window_steps": null,
+    "reset_actuator_qpos_multiplier_max": null,
+    "reset_actuator_qpos_multiplier_min": null,
+    "reset_base_qvel_jitter": null,
+    "reset_base_xy_jitter_m": null,
+    "reset_yaw_jitter_rad": null,
+    "reward_clip_max": null,
+    "reward_clip_min": null,
+    "stand_still_scale": null,
+    "target_rate_huber_delta": null,
+    "tracking_ang_vel_scale": null,
+    "tracking_lin_vel_scale": null,
+    "tracking_sigma": null,
+    "zero_command_probability": null
+  }
+}

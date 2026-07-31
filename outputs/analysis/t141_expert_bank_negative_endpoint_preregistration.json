@@ -1,0 +1,195 @@
+{
+  "authority": {
+    "colab": false,
+    "full_r2_preregistration": false,
+    "gate5": false,
+    "one_cpu_negative_endpoint_matrix": true,
+    "rdkx5_or_robot": false,
+    "training": false
+  },
+  "behavior_contract": {
+    "interpretation": {
+      "core": "minimum physical/semantic validity; thresholds passed by the T4 baseline where comparable",
+      "evaluator_candidate_gate_status": "diagnostic only because T4 invalidated its use as an unqualified feasibility classifier",
+      "replacement_quality": "explicit stretch goals for replacing the behaviorally bad baseline; T4 showed the baseline can fail some of these"
+    },
+    "moving_core": {
+      "bilateral_transitions": true,
+      "maximum_action_saturation_pct": 1.0,
+      "maximum_body_pitch_p95_rad": 0.25,
+      "minimum_base_height_m": 0.12,
+      "minimum_track_ratio": 0.25,
+      "positive_mean_local_velocity": true,
+      "samples": 600
+    },
+    "moving_replacement_quality": {
+      "maximum_action_saturation_pct": 0.0,
+      "maximum_pitch_tracking_p95_rad": 0.2,
+      "maximum_rate_excess_rad_s": 0.0
+    },
+    "x0_core": {
+      "maximum_absolute_mean_local_vx_m_s": 0.02,
+      "maximum_action_saturation_pct": 1.0,
+      "maximum_body_pitch_p95_rad": 0.25,
+      "minimum_base_height_m": 0.12,
+      "samples": 600
+    },
+    "x0_replacement_quality": {
+      "maximum_action_saturation_pct": 0.0,
+      "maximum_pitch_tracking_p95_rad": 0.2,
+      "maximum_rate_excess_rad_s": 0.0
+    }
+  },
+  "calibrator": {
+    "bytes": 55573,
+    "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v96-response-conditioned-mechanics\\winner_v96_universal_calibrator.onnx",
+    "sha256": "0f3aebfd9946a6271fdb14adec3d68d556648f270984639d372c973a7d7dc576"
+  },
+  "checks": {
+    "basis_is_exact_negative_com": true,
+    "frozen_inputs_present": true,
+    "no_training_colab_or_robot": true,
+    "policies_match_t139": true,
+    "t139_transform_green": true,
+    "t140_nominal_identity_green": true
+  },
+  "commands_x_m_s": [
+    0.0,
+    0.074,
+    0.077,
+    0.08
+  ],
+  "condition": {
+    "condition_index": 7,
+    "id": "TORSO_COM_X_NEG",
+    "override": {
+      "torso_com_offset_m": [
+        -0.05,
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "decision_rule": {
+    "fail_decision": "CLOSE_CONTEXT_SELECTED_EXPERT_BANK",
+    "no_retry": true,
+    "pass_decision": "EARN_T142_EXPERT_BANK_FULL_R2_REVALIDATION_PREREGISTRATION_ONLY",
+    "training_selection_weight": 0
+  },
+  "failed_checks": [],
+  "fits": [
+    {
+      "bytes": 18664,
+      "fit_id": "p30",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "a58db8ffc505d2bb64cba7f5618d0e2c65904fc9f9ac37b560a1231e090f5f4f"
+    },
+    {
+      "bytes": 18788,
+      "fit_id": "p31_34",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\fixed_target_p31_34_actuator_fit_20260712.json",
+      "sha256": "2740513f6bdeb4ad3cc5dd6dc1709319389a593fd153c1ce5abae03b66131a57"
+    }
+  ],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 6075,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t141_expert_bank_negative_endpoint_preregistration.py",
+      "sha256": "ac6ff599a1f29c368dc8350567532e6bdf48003793f76dbdde6b9145ccfb7263"
+    },
+    "negative_basis": {
+      "bytes": 9939,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t103_t100c_negative_endpoint_preregistration.json",
+      "sha256": "9b7fb7e0b5fb79f004bec4340ce80b92697c1191f552d0399f8735d30370c7c1"
+    },
+    "runner": {
+      "bytes": 6119,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t141_expert_bank_negative_endpoint.py",
+      "sha256": "b5f986a100bb288aa88c4eb14a9c5305b9ffd582b8217abf05b8ba1b3379de2b"
+    },
+    "t139_transform": {
+      "bytes": 6379,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t139_context_selected_expert_bank_result.json",
+      "sha256": "2aedade500e8c69e43ade2e9d99fe8ed76e3a805e2accbbdc4747a6982d1c903"
+    },
+    "t140_nominal_identity": {
+      "bytes": 4761,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t140_nominal_identity_reuse_result.json",
+      "sha256": "b353edadc608b377a6a3cfb9ac969b5c59a6acdfad97fc3a628016c328576acf"
+    },
+    "test": {
+      "bytes": 1077,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t141_expert_bank_negative_endpoint.py",
+      "sha256": "20034558fbff9eb792f653ea52d5ac48b60fa6fa9d313a76eb6dd259ba18bd98"
+    }
+  },
+  "matrix": {
+    "both_checkpoints_required": true,
+    "cells": 16,
+    "checkpoint_cherry_pick": false,
+    "checkpoints": 2,
+    "commands": 4,
+    "conditions": 1,
+    "fits": 2
+  },
+  "playground": {
+    "manifest": {
+      "bytes": 5190,
+      "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v6\\T19_COMPOSED_SOURCE_MANIFEST.json",
+      "sha256": "d7c9b615c32f0e2c8434e958a900cc38485c0db6fea107b6115a69bbd2122a77"
+    },
+    "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t19-v6"
+  },
+  "policies": [
+    {
+      "bytes": 975221,
+      "checkpoint_id": "T139_EXPERT_BANK_HALF",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t139_context_selected_expert_bank_v1\\1003520\\context_selected_expert_bank.onnx",
+      "sha256": "d6dfde1c5b99aaac4526289676c68122c0504e49263250f72598d0fe6a25dab0",
+      "step": 1003520
+    },
+    {
+      "bytes": 975221,
+      "checkpoint_id": "T139_EXPERT_BANK_FINAL",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t139_context_selected_expert_bank_v1\\2007040\\context_selected_expert_bank.onnx",
+      "sha256": "8c19eb9a497d2aedd378ddd709a520c585cf6459a4e1dd84522fcf0b926b6d42",
+      "step": 2007040
+    }
+  ],
+  "preregistered_contract_sha256": "6adf3cad942c28c820d603bcc889e7899de255d201d7a6a082b45b38561dbdbf",
+  "protection_contract": {
+    "force_limit_tolerance_nm": 5e-06,
+    "instantaneous_stall_current_and_torque": "diagnostic_only",
+    "motor_constant_nm_per_a": 0.784532,
+    "overcurrent_threshold_a": 2.0,
+    "overload_threshold_nm": 1.5298374,
+    "pass_max_consecutive_ticks": 99,
+    "simulator_force_limit_abs_nm": 3.23,
+    "simulator_force_limit_hits": "diagnostic_only",
+    "source": "T5 manufacturer-derived duration rules",
+    "strict_comparison": true,
+    "trip_ticks": 100
+  },
+  "reference_feature_table": {
+    "bytes": 259604,
+    "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+    "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+  },
+  "schema_version": "open_duck.t141_expert_bank_negative_endpoint_preregistration.v1",
+  "seed": 167931544,
+  "status": "PREREGISTERED_T141_EXPERT_BANK_NEGATIVE_ENDPOINT_MATRIX",
+  "support_handoff": {
+    "context_input_name": "calibration_context",
+    "context_is_diagnostic_only": true,
+    "locomotion_hidden_zero": true,
+    "locomotion_phase_reset": [
+      1.0,
+      0.0
+    ],
+    "preserve_applied_target_observer_state": true,
+    "preserve_final_support_action_as_previous_action": true,
+    "source": "T22/T24 exact support-train-through deployment chain and green T27 one-tick runner contract",
+    "unscored_calibration_ticks": 250,
+    "unscored_home_return_ticks": 0
+  }
+}

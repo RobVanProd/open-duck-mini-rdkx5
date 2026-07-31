@@ -1,0 +1,101 @@
+{
+  "authority": {
+    "colab": false,
+    "gate5": false,
+    "rdkx5_or_robot": false,
+    "reuse_exact_completed_blocks": true,
+    "run_only_missing_eight_cells": true,
+    "targeted_y_negative": false,
+    "training": false
+  },
+  "cache_root": "D:\\CodexArtifacts\\open-duck-policy\\t223_global_plateau_nominal_matrix_v1",
+  "checks": {
+    "exactly_two_completed_half_blocks": true,
+    "matrix_still_requires_final_two_blocks": true,
+    "no_unmanifested_partial_files": true,
+    "t223_exact_preregistration": true,
+    "t223_formal_result_absent": true,
+    "zero_optimizer_hosted_or_robot_now": true
+  },
+  "completed_blocks": [
+    {
+      "checkpoint_id": "T222_GLOBAL_PLATEAU_HALF",
+      "fit_id": "p30",
+      "manifest": {
+        "bytes": 6892,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t223_global_plateau_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T222_GLOBAL_PLATEAU_HALF\\p30\\manifest.json",
+        "sha256": "d1660f46b5bb33fc56bc943cb4dc377192cf959cb2daa7eacc56c61031f04973"
+      }
+    },
+    {
+      "checkpoint_id": "T222_GLOBAL_PLATEAU_HALF",
+      "fit_id": "p31_34",
+      "manifest": {
+        "bytes": 6922,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t223_global_plateau_nominal_matrix_v1\\02_FLOOR_FRICTION_HI\\T222_GLOBAL_PLATEAU_HALF\\p31_34\\manifest.json",
+        "sha256": "5798f8fb05ed3356413ee10ef122506788e4c679a3869cb3aeb9a04861a6a118"
+      }
+    }
+  ],
+  "decision_rule": {
+    "fail_decision": "CLOSE_GLOBAL_COMMAND_PLATEAU",
+    "no_retry": true,
+    "pass_decision": "EARN_T224_GLOBAL_PLATEAU_TARGETED_Y_NEGATIVE_MATRIX_PREREGISTRATION_ONLY",
+    "training_selection_weight": 0
+  },
+  "execution_now": {
+    "completed_behavior_cells_reused": 0,
+    "hosted_compute_units": 0,
+    "new_behavior_cells": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 6366,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t223b_interrupted_matrix_recovery_preregistration.py",
+      "sha256": "348f2e4b5229f2a5bf1697eec2f3083d25e9de0574a40ef166b955d51a98daa7"
+    },
+    "runner": {
+      "bytes": 8088,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t223b_interrupted_matrix_recovery.py",
+      "sha256": "9787a3b6244dddb650c86bf92186dcee763aaf20c4bdce97b6fb05756afc0553"
+    },
+    "t223_preregistration": {
+      "bytes": 10314,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t223_global_plateau_nominal_matrix_preregistration.json",
+      "sha256": "e29b43a8a84c35852beac707803297a8c32376db1b773f49844b77b0c8a18958"
+    },
+    "test": {
+      "bytes": 1975,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t223b_interrupted_matrix_recovery.py",
+      "sha256": "a52af17d7b4e97781a48216c0f5240c5e37cb8d14801301a53fcaf35ca7ec0e0"
+    }
+  },
+  "preregistered_contract_sha256": "fa272ef44c4997cea53d8567d75c9a90bfb2c0a3bc1e398009fe0a4662931ae6",
+  "question": "Can the two hash-frozen completed half blocks be reused exactly while running only the missing final/P30 and final/P31-34 blocks to complete the originally preregistered T223 matrix?",
+  "recovery": {
+    "both_checkpoints_still_mandatory": true,
+    "cause": "desktop command output pipe closed during long process",
+    "required_missing_blocks": [
+      {
+        "cells": 4,
+        "checkpoint_id": "T222_GLOBAL_PLATEAU_FINAL",
+        "fit_id": "p30"
+      },
+      {
+        "cells": 4,
+        "checkpoint_id": "T222_GLOBAL_PLATEAU_FINAL",
+        "fit_id": "p31_34"
+      }
+    ],
+    "rerun_completed_cells": false,
+    "reuse_completed_blocks": true,
+    "selection_weight_of_completed_results": 0,
+    "stop_after_first_failure": false
+  },
+  "schema_version": "open_duck.t223b_interrupted_matrix_recovery_preregistration.v1",
+  "source_t223_contract_sha256": "aea78c6a7e09d0196e993a8207b72bc9bcdf8119d5fdac11c1abc328263d35d0",
+  "status": "PREREGISTERED_T223B_INTERRUPTED_MATRIX_RECOVERY"
+}

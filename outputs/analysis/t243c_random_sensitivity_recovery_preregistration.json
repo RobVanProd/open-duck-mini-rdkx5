@@ -1,0 +1,58 @@
+{
+  "authority": {
+    "gate5": false,
+    "hosted": false,
+    "rdkx5_or_robot": false,
+    "read_only_classification": true,
+    "targeted_behavior_preregistration": false,
+    "training": false
+  },
+  "checks": {
+    "graph_structure_and_abi_checks_green": true,
+    "random_mapping_equivalence_itself_is_exact": true,
+    "real_failed_state_population_is_fully_sensitive": true,
+    "t243b_sole_failure_is_random_sensitivity": true,
+    "zero_new_inference_behavior_optimizer_hosted_or_robot": true
+  },
+  "classification_rule": {
+    "fail": "close low-command floor without behavior",
+    "new_inference": false,
+    "pass": "sole failure is synthetic action sensitivity; exact mapping, structure, ABI, finite outputs, and all 281 real failed-state sensitivities are green",
+    "selection_weight": 0
+  },
+  "execution_now": {
+    "behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "onnx_inferences": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_steps": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 5840,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t243c_random_sensitivity_recovery_preregistration.py",
+      "sha256": "62d599f31df219858a3295a47009397e1979d9f4534c3af8aaf65b8377ed39e2"
+    },
+    "runner": {
+      "bytes": 5745,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t243c_random_sensitivity_recovery.py",
+      "sha256": "a8245a2b110e863b8c2c8b26749a36c66f76e0df4d3f52f9a819be03a9ec79c4"
+    },
+    "t243b_result": {
+      "bytes": 112286,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t243b_abi_helper_recovery_result.json",
+      "sha256": "56db55f904c61e88d86dcdb1da19fc4f8e5dbb7cc2f01a58f06264e382b9b3fb"
+    },
+    "test": {
+      "bytes": 1709,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t243c_random_sensitivity_recovery.py",
+      "sha256": "148c65224cde013f1182b117a5f9889b43668e1f2cc324c59745f531f862bdcd"
+    }
+  },
+  "preregistered_contract_sha256": "76a239488d3d90451c581a2d5a6f4ef224ca6437f83db777944827bfc63b2b2e",
+  "question": "Is T243B's sole failed assertion noncausal because its random rows already prove exact branch mapping while every one of the 281 real failed-state rows changes action?",
+  "schema_version": "open_duck.t243c_random_sensitivity_recovery_preregistration.v1",
+  "status": "PREREGISTERED_T243C_RANDOM_SENSITIVITY_RECOVERY"
+}

@@ -1,0 +1,2644 @@
+{
+  "amendment_sha256": "46e6c08864ba143b724975528c942f4cc822955a5334407a526580be197290b6",
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "gate5_authorized": false,
+    "hosted_training_authorized": false,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "s3_behavior_screen_authorized": false,
+    "s3_preregistration_authorized": false,
+    "torque_or_motion": false
+  },
+  "decision": {
+    "reason": "At least one preregistered S0-S2 falsifier failed.",
+    "status": "CLOSE_V124_PREDICTIVE_TORQUE_BOX_WITHOUT_ROLLOUT"
+  },
+  "execution": {
+    "behavior_rollouts": 0,
+    "colab_compute_units": 0,
+    "robot_or_rdk_access": 0,
+    "training_steps": 0
+  },
+  "preregistration_sha256": "61364c864ef3bf97d13df92a79645140a3918ecc8923f52810dd360f16b8042f",
+  "raw_artifact": {
+    "archive_path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v124-s0-s2-raw-20260724\\winner_v124_predictive_torque_s0_s2_result.json",
+    "bytes": 21943621,
+    "repository_committed": false,
+    "sha256": "8e880f7505a0370e8f86d10a0e9d2cbe08017dff641885b74e51328b02e87b9a"
+  },
+  "s0": {
+    "checks": {
+      "bridge_trace_closure": true,
+      "ctrl_equals_applied_target": true,
+      "forcerange_exact_3p23": true,
+      "kp_exact_17p11": true,
+      "kv_exact_zero": true,
+      "model_has_14_actuators": true,
+      "reported_current_closure": true,
+      "sim_dt_exact_0p002": true,
+      "torque_gate_stricter_than_peak_current_gate": true,
+      "torque_trace_closure": true
+    },
+    "pass": true,
+    "source_readback": {
+      "actuators": 14,
+      "current_nm_per_a": 0.784532,
+      "forcerange_nm": [
+        [
+          -3.23,
+          3.23
+        ],
+        [
+          -3.23,
+          3.23
+        ],
+        [
+          -3.23,
+          3.23
+        ],
+        [
+          -3.23,
+          3.23
+        ],
+        [
+          -3.23,
+          3.23
+        ],
+        [
+          -3.23,
+          3.23
+        ],
+        [
+          -3.23,
+          3.23
+        ],
+        [
+          -3.23,
+          3.23
+        ],
+        [
+          -3.23,
+          3.23
+        ],
+        [
+          -3.23,
+          3.23
+        ],
+        [
+          -3.23,
+          3.23
+        ],
+        [
+          -3.23,
+          3.23
+        ],
+        [
+          -3.23,
+          3.23
+        ],
+        [
+          -3.23,
+          3.23
+        ]
+      ],
+      "kp_nm_per_rad": [
+        17.11,
+        17.11,
+        17.11,
+        17.11,
+        17.11,
+        17.11,
+        17.11,
+        17.11,
+        17.11,
+        17.11,
+        17.11,
+        17.11,
+        17.11,
+        17.11
+      ],
+      "kv_nm_s_per_rad": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "qpos_indices": [
+        7,
+        9,
+        11,
+        13,
+        15,
+        17,
+        18,
+        19,
+        20,
+        21,
+        23,
+        25,
+        27,
+        29
+      ],
+      "qvel_indices": [
+        6,
+        8,
+        10,
+        12,
+        14,
+        16,
+        17,
+        18,
+        19,
+        20,
+        22,
+        24,
+        26,
+        28
+      ],
+      "sim_dt_s": 0.002
+    },
+    "summary": {
+      "bridge_max_abs_error_rad": 4.868048653072776e-08,
+      "cells": 32,
+      "ctrl_applied_max_abs_error_rad": 5.960364601875767e-08,
+      "peak_current_gate_equivalent_torque_nm": 1.96133,
+      "reported_current_max_abs_error_a": 0.0,
+      "torque_gate_equivalent_current_a": 2.4375,
+      "torque_max_abs_error_nm": 3.677454830430804e-06
+    }
+  },
+  "s1": {
+    "checks": {
+      "s1b_event_accounting_exact": true,
+      "s1b_integral_identity_positive": true,
+      "s1b_reward_reconstruction": true,
+      "v121_all_events_locally_preventable": true,
+      "v121_event_count_exact_15": true,
+      "v121_no_committed_events": true,
+      "v123_at_least_95pct_locally_preventable": true,
+      "v123_event_count_exact_184": true
+    },
+    "event_summary": {
+      "v121_all_events": [
+        {
+          "checkpoint": "final",
+          "command_x_m_s": 0.074,
+          "committed": false,
+          "decision_tick": 25,
+          "delay_ticks": 3,
+          "event_tick": 28,
+          "feasible_interval_rad": [
+            1.2587552017515038,
+            1.2918770548254253
+          ],
+          "filename": "v121_train_matched_final_p30_all_joint_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": 1.3817973273992539,
+              "delay_ticks": 3,
+              "event_tick": 28,
+              "fit_interval_rad": [
+                1.2502453317348516,
+                "Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": 1.3817973273992539,
+              "delay_ticks": 3,
+              "event_tick": 28,
+              "fit_interval_rad": [
+                1.2587552017515038,
+                "Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "force_abs_nm": 1.917562484741211,
+          "joint": "left_knee",
+          "joint_index": 3,
+          "locally_preventable": true,
+          "plant": "P30_ALL_JOINT",
+          "prediction_error_rad": 0.013796834424138149,
+          "robust_box_interval_rad": [
+            1.2587552017515038,
+            "Infinity"
+          ],
+          "structural_interval_rad": [
+            1.2498261241912842,
+            1.2918770548254253
+          ]
+        },
+        {
+          "checkpoint": "final",
+          "command_x_m_s": 0.077,
+          "committed": false,
+          "decision_tick": 18,
+          "delay_ticks": 3,
+          "event_tick": 21,
+          "feasible_interval_rad": [
+            1.3518416542872436,
+            1.398209118500352
+          ],
+          "filename": "v121_train_matched_final_p30_all_joint_x0.077_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": 1.4655615739822387,
+              "delay_ticks": 3,
+              "event_tick": 21,
+              "fit_interval_rad": [
+                1.3478051033172374,
+                "Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": 1.4655615739822387,
+              "delay_ticks": 3,
+              "event_tick": 21,
+              "fit_interval_rad": [
+                1.3518416542872436,
+                "Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "force_abs_nm": 1.9595699310302734,
+          "joint": "left_knee",
+          "joint_index": 3,
+          "locally_preventable": true,
+          "plant": "P30_ALL_JOINT",
+          "prediction_error_rad": 0.07036026675999163,
+          "robust_box_interval_rad": [
+            1.3518416542872436,
+            "Infinity"
+          ],
+          "structural_interval_rad": [
+            1.3410059560388328,
+            1.398209118500352
+          ]
+        },
+        {
+          "checkpoint": "final",
+          "command_x_m_s": 0.077,
+          "committed": false,
+          "decision_tick": 27,
+          "delay_ticks": 3,
+          "event_tick": 30,
+          "feasible_interval_rad": [
+            1.2625707232907188,
+            1.3016953703314067
+          ],
+          "filename": "v121_train_matched_final_p30_all_joint_x0.077_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": 1.385320376574993,
+              "delay_ticks": 3,
+              "event_tick": 30,
+              "fit_interval_rad": [
+                1.2536066604528353,
+                "Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": 1.385320376574993,
+              "delay_ticks": 3,
+              "event_tick": 30,
+              "fit_interval_rad": [
+                1.2625707232907188,
+                "Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "force_abs_nm": 1.9362049102783203,
+          "joint": "left_knee",
+          "joint_index": 3,
+          "locally_preventable": true,
+          "plant": "P30_ALL_JOINT",
+          "prediction_error_rad": 0.00855611880123619,
+          "robust_box_interval_rad": [
+            1.2625707232907188,
+            "Infinity"
+          ],
+          "structural_interval_rad": [
+            1.2517033128738404,
+            1.3016953703314067
+          ]
+        },
+        {
+          "checkpoint": "final",
+          "command_x_m_s": 0.077,
+          "committed": false,
+          "decision_tick": 28,
+          "delay_ticks": 3,
+          "event_tick": 31,
+          "feasible_interval_rad": [
+            1.2536138948630657,
+            1.2803049322515727
+          ],
+          "filename": "v121_train_matched_final_p30_all_joint_x0.077_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": 1.3770749552249908,
+              "delay_ticks": 3,
+              "event_tick": 31,
+              "fit_interval_rad": [
+                1.245785847593959,
+                "Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": 1.3770749552249908,
+              "delay_ticks": 3,
+              "event_tick": 31,
+              "fit_interval_rad": [
+                1.2536138948630657,
+                "Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "force_abs_nm": 1.922475814819336,
+          "joint": "left_knee",
+          "joint_index": 3,
+          "locally_preventable": true,
+          "plant": "P30_ALL_JOINT",
+          "prediction_error_rad": 0.00238313549011937,
+          "robust_box_interval_rad": [
+            1.2536138948630657,
+            "Infinity"
+          ],
+          "structural_interval_rad": [
+            1.2449753789901734,
+            1.2803049322515727
+          ]
+        },
+        {
+          "checkpoint": "final",
+          "command_x_m_s": 0.077,
+          "committed": false,
+          "decision_tick": 205,
+          "delay_ticks": 3,
+          "event_tick": 208,
+          "feasible_interval_rad": [
+            -0.6628475067068839,
+            -0.61737262634933
+          ],
+          "filename": "v121_train_matched_final_p30_all_joint_x0.077_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": -0.5446449553966523,
+              "delay_ticks": 3,
+              "event_tick": 208,
+              "fit_interval_rad": [
+                -0.6628475067068839,
+                "Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": -0.5446449553966523,
+              "delay_ticks": 3,
+              "event_tick": 208,
+              "fit_interval_rad": [
+                -0.6628475067068839,
+                "Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "force_abs_nm": 1.9154052734375,
+          "joint": "right_ankle",
+          "joint_index": 13,
+          "locally_preventable": true,
+          "plant": "P30_ALL_JOINT",
+          "prediction_error_rad": 0.07045927911996847,
+          "robust_box_interval_rad": [
+            -0.6628475067068839,
+            "Infinity"
+          ],
+          "structural_interval_rad": [
+            -0.6662337760478259,
+            -0.61737262634933
+          ]
+        },
+        {
+          "checkpoint": "final",
+          "command_x_m_s": 0.074,
+          "committed": false,
+          "decision_tick": 16,
+          "delay_ticks": 3,
+          "event_tick": 19,
+          "feasible_interval_rad": [
+            1.3830014266328368,
+            1.4361912247091533
+          ],
+          "filename": "v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": 1.4936420826911927,
+              "delay_ticks": 3,
+              "event_tick": 19,
+              "fit_interval_rad": [
+                1.3800089057299176,
+                "Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": 1.4936420826911927,
+              "delay_ticks": 3,
+              "event_tick": 19,
+              "fit_interval_rad": [
+                1.3830014266328368,
+                "Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "force_abs_nm": 1.972799301147461,
+          "joint": "left_knee",
+          "joint_index": 3,
+          "locally_preventable": true,
+          "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+          "prediction_error_rad": 0.062473150908946895,
+          "robust_box_interval_rad": [
+            1.3830014266328368,
+            "Infinity"
+          ],
+          "structural_interval_rad": [
+            1.378988062247634,
+            1.4361912247091533
+          ]
+        },
+        {
+          "checkpoint": "final",
+          "command_x_m_s": 0.074,
+          "committed": false,
+          "decision_tick": 17,
+          "delay_ticks": 3,
+          "event_tick": 20,
+          "feasible_interval_rad": [
+            1.3627691250246408,
+            1.407589697495103
+          ],
+          "filename": "v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": 1.475345380783081,
+              "delay_ticks": 3,
+              "event_tick": 20,
+              "fit_interval_rad": [
+                1.3595597012046101,
+                "Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": 1.475345380783081,
+              "delay_ticks": 3,
+              "event_tick": 20,
+              "fit_interval_rad": [
+                1.3627691250246408,
+                "Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "force_abs_nm": 2.098968505859375,
+          "joint": "left_knee",
+          "joint_index": 3,
+          "locally_preventable": true,
+          "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+          "prediction_error_rad": 0.08981449526548402,
+          "robust_box_interval_rad": [
+            1.3627691250246408,
+            "Infinity"
+          ],
+          "structural_interval_rad": [
+            1.3503865350335837,
+            1.407589697495103
+          ]
+        },
+        {
+          "checkpoint": "final",
+          "command_x_m_s": 0.074,
+          "committed": false,
+          "decision_tick": 26,
+          "delay_ticks": 3,
+          "event_tick": 29,
+          "feasible_interval_rad": [
+            1.2539084082721212,
+            1.306924128189683
+          ],
+          "filename": "v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": 1.3777675608992577,
+              "delay_ticks": 3,
+              "event_tick": 29,
+              "fit_interval_rad": [
+                1.2428768871664742,
+                "Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": 1.3777675608992577,
+              "delay_ticks": 3,
+              "event_tick": 29,
+              "fit_interval_rad": [
+                1.2539084082721212,
+                "Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "force_abs_nm": 1.975423812866211,
+          "joint": "left_knee",
+          "joint_index": 3,
+          "locally_preventable": true,
+          "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+          "prediction_error_rad": 0.004309473864734237,
+          "robust_box_interval_rad": [
+            1.2539084082721212,
+            "Infinity"
+          ],
+          "structural_interval_rad": [
+            1.2497209657281638,
+            1.306924128189683
+          ]
+        },
+        {
+          "checkpoint": "final",
+          "command_x_m_s": 0.074,
+          "committed": false,
+          "decision_tick": 27,
+          "delay_ticks": 3,
+          "event_tick": 30,
+          "feasible_interval_rad": [
+            1.2440572082922898,
+            1.2783226009756328
+          ],
+          "filename": "v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": 1.3686240974664687,
+              "delay_ticks": 3,
+              "event_tick": 30,
+              "fit_interval_rad": [
+                1.2344827456277956,
+                "Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": 1.3686240974664687,
+              "delay_ticks": 3,
+              "event_tick": 30,
+              "fit_interval_rad": [
+                1.2440572082922898,
+                "Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "force_abs_nm": 2.0141468048095703,
+          "joint": "left_knee",
+          "joint_index": 3,
+          "locally_preventable": true,
+          "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+          "prediction_error_rad": 0.010729737203568401,
+          "robust_box_interval_rad": [
+            1.2440572082922898,
+            "Infinity"
+          ],
+          "structural_interval_rad": [
+            1.2373010425567628,
+            1.2783226009756328
+          ]
+        },
+        {
+          "checkpoint": "final",
+          "command_x_m_s": 0.074,
+          "committed": false,
+          "decision_tick": 394,
+          "delay_ticks": 3,
+          "event_tick": 397,
+          "feasible_interval_rad": [
+            -0.6685711425424659,
+            -0.6217476668804884
+          ],
+          "filename": "v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": -0.5505931186676025,
+              "delay_ticks": 3,
+              "event_tick": 397,
+              "fit_interval_rad": [
+                -0.6685711425424659,
+                "Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": -0.5505931186676025,
+              "delay_ticks": 3,
+              "event_tick": 397,
+              "fit_interval_rad": [
+                -0.6685711425424659,
+                "Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "force_abs_nm": 1.9244651794433594,
+          "joint": "right_ankle",
+          "joint_index": 13,
+          "locally_preventable": true,
+          "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+          "prediction_error_rad": 0.07937832787632942,
+          "robust_box_interval_rad": [
+            -0.6685711425424659,
+            "Infinity"
+          ],
+          "structural_interval_rad": [
+            -0.6706088165789843,
+            -0.6217476668804884
+          ]
+        },
+        {
+          "checkpoint": "final",
+          "command_x_m_s": 0.077,
+          "committed": false,
+          "decision_tick": 17,
+          "delay_ticks": 3,
+          "event_tick": 20,
+          "feasible_interval_rad": [
+            1.371183328572083,
+            1.4213267799764873
+          ],
+          "filename": "v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": 1.482984892845154,
+              "delay_ticks": 3,
+              "event_tick": 20,
+              "fit_interval_rad": [
+                1.3678161345189466,
+                "Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": 1.482984892845154,
+              "delay_ticks": 3,
+              "event_tick": 20,
+              "fit_interval_rad": [
+                1.371183328572083,
+                "Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "force_abs_nm": 1.9967708587646484,
+          "joint": "left_knee",
+          "joint_index": 3,
+          "locally_preventable": true,
+          "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+          "prediction_error_rad": 0.0748333439528941,
+          "robust_box_interval_rad": [
+            1.371183328572083,
+            "Infinity"
+          ],
+          "structural_interval_rad": [
+            1.364123617514968,
+            1.4213267799764873
+          ]
+        },
+        {
+          "checkpoint": "final",
+          "command_x_m_s": 0.077,
+          "committed": false,
+          "decision_tick": 18,
+          "delay_ticks": 3,
+          "event_tick": 21,
+          "feasible_interval_rad": [
+            1.3527778919883802,
+            1.3941815134435893
+          ],
+          "filename": "v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": 1.4663213284015655,
+              "delay_ticks": 3,
+              "event_tick": 21,
+              "fit_interval_rad": [
+                1.3493964243910288,
+                "Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": 1.4663213284015655,
+              "delay_ticks": 3,
+              "event_tick": 21,
+              "fit_interval_rad": [
+                1.3527778919883802,
+                "Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "force_abs_nm": 1.9379215240478516,
+          "joint": "left_knee",
+          "joint_index": 3,
+          "locally_preventable": true,
+          "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+          "prediction_error_rad": 0.06793498422205446,
+          "robust_box_interval_rad": [
+            1.3527778919883802,
+            "Infinity"
+          ],
+          "structural_interval_rad": [
+            1.337214758872986,
+            1.3941815134435893
+          ]
+        },
+        {
+          "checkpoint": "final",
+          "command_x_m_s": 0.077,
+          "committed": false,
+          "decision_tick": 27,
+          "delay_ticks": 3,
+          "event_tick": 30,
+          "feasible_interval_rad": [
+            1.2512247948026145,
+            1.286925577774644
+          ],
+          "filename": "v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": 1.3750794401168824,
+              "delay_ticks": 3,
+              "event_tick": 30,
+              "fit_interval_rad": [
+                1.2420563312835076,
+                "Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": 1.3750794401168824,
+              "delay_ticks": 3,
+              "event_tick": 30,
+              "fit_interval_rad": [
+                1.2512247948026145,
+                "Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "force_abs_nm": 2.0460128784179688,
+          "joint": "left_knee",
+          "joint_index": 3,
+          "locally_preventable": true,
+          "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+          "prediction_error_rad": 0.009362187102437192,
+          "robust_box_interval_rad": [
+            1.2512247948026145,
+            "Infinity"
+          ],
+          "structural_interval_rad": [
+            1.2423549203872681,
+            1.286925577774644
+          ]
+        },
+        {
+          "checkpoint": "final",
+          "command_x_m_s": 0.077,
+          "committed": false,
+          "decision_tick": 28,
+          "delay_ticks": 3,
+          "event_tick": 31,
+          "feasible_interval_rad": [
+            1.2413735299953403,
+            1.2709565397650004
+          ],
+          "filename": "v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.077_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": 1.366134730219841,
+              "delay_ticks": 3,
+              "event_tick": 31,
+              "fit_interval_rad": [
+                1.2324731623065457,
+                "Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": 1.366134730219841,
+              "delay_ticks": 3,
+              "event_tick": 31,
+              "fit_interval_rad": [
+                1.2413735299953403,
+                "Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "force_abs_nm": 2.002410888671875,
+          "joint": "left_knee",
+          "joint_index": 3,
+          "locally_preventable": true,
+          "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+          "prediction_error_rad": 0.002411172404885198,
+          "robust_box_interval_rad": [
+            1.2413735299953403,
+            "Infinity"
+          ],
+          "structural_interval_rad": [
+            1.2353960781097413,
+            1.2709565397650004
+          ]
+        },
+        {
+          "checkpoint": "final",
+          "command_x_m_s": 0.08,
+          "committed": false,
+          "decision_tick": 18,
+          "delay_ticks": 3,
+          "event_tick": 21,
+          "feasible_interval_rad": [
+            1.3531868092448438,
+            1.398211502686143
+          ],
+          "filename": "v121_train_matched_final_p31_34_pitch_with_p30_nonpitch_x0.080_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": 1.466748309135437,
+              "delay_ticks": 3,
+              "event_tick": 21,
+              "fit_interval_rad": [
+                1.3493164416055077,
+                "Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": 1.466748309135437,
+              "delay_ticks": 3,
+              "event_tick": 21,
+              "fit_interval_rad": [
+                1.3531868092448438,
+                "Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "force_abs_nm": 2.0921630859375,
+          "joint": "left_knee",
+          "joint_index": 3,
+          "locally_preventable": true,
+          "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+          "prediction_error_rad": 0.06489420413970959,
+          "robust_box_interval_rad": [
+            1.3531868092448438,
+            "Infinity"
+          ],
+          "structural_interval_rad": [
+            1.3412558345794678,
+            1.398211502686143
+          ]
+        }
+      ],
+      "v121_by_checkpoint": {
+        "final": 15
+      },
+      "v121_by_joint": {
+        "left_knee": 13,
+        "right_ankle": 2
+      },
+      "v123_by_checkpoint": {
+        "final": 84,
+        "half": 100
+      },
+      "v123_by_joint": {
+        "left_ankle": 13,
+        "left_knee": 148,
+        "right_ankle": 18,
+        "right_knee": 5
+      },
+      "v123_nonpreventable_events": [
+        {
+          "checkpoint": "half",
+          "command_x_m_s": 0.074,
+          "committed": false,
+          "decision_tick": 36,
+          "delay_ticks": 2,
+          "event_tick": 38,
+          "feasible_interval_rad": [
+            1.3943826803055233,
+            1.3933248029053211
+          ],
+          "filename": "v123_episode_peak_half_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": 1.504377954363823,
+              "delay_ticks": 2,
+              "event_tick": 38,
+              "fit_interval_rad": [
+                1.3943826803055233,
+                "Infinity"
+              ],
+              "horizon_s": 0.057999999999999996,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": 1.504377954363823,
+              "delay_ticks": 2,
+              "event_tick": 38,
+              "fit_interval_rad": [
+                1.3943826803055233,
+                "Infinity"
+              ],
+              "horizon_s": 0.057999999999999996,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "force_abs_nm": 2.081327438354492,
+          "joint": "right_knee",
+          "joint_index": 12,
+          "locally_preventable": false,
+          "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+          "prediction_error_rad": 0.004240644312463626,
+          "robust_box_interval_rad": [
+            1.3943826803055233,
+            "Infinity"
+          ],
+          "structural_interval_rad": [
+            1.3547763957977295,
+            1.3933248029053211
+          ]
+        },
+        {
+          "checkpoint": "half",
+          "command_x_m_s": 0.074,
+          "committed": false,
+          "decision_tick": 37,
+          "delay_ticks": 2,
+          "event_tick": 39,
+          "feasible_interval_rad": [
+            1.3933204369209757,
+            1.39150733807683
+          ],
+          "filename": "v123_episode_peak_half_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": 1.4988664592504501,
+              "delay_ticks": 2,
+              "event_tick": 39,
+              "fit_interval_rad": [
+                1.3933204369209757,
+                "Infinity"
+              ],
+              "horizon_s": 0.057999999999999996,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": 1.4988664592504501,
+              "delay_ticks": 2,
+              "event_tick": 39,
+              "fit_interval_rad": [
+                1.3933204369209757,
+                "Infinity"
+              ],
+              "horizon_s": 0.057999999999999996,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "force_abs_nm": 2.1976318359375,
+          "joint": "right_knee",
+          "joint_index": 12,
+          "locally_preventable": false,
+          "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+          "prediction_error_rad": 0.008267383158206965,
+          "robust_box_interval_rad": [
+            1.3933204369209757,
+            "Infinity"
+          ],
+          "structural_interval_rad": [
+            1.353585256576538,
+            1.39150733807683
+          ]
+        },
+        {
+          "checkpoint": "half",
+          "command_x_m_s": 0.074,
+          "committed": false,
+          "decision_tick": 38,
+          "delay_ticks": 2,
+          "event_tick": 40,
+          "feasible_interval_rad": [
+            1.3840674723681197,
+            1.374705146342516
+          ],
+          "filename": "v123_episode_peak_half_p31_34_pitch_with_p30_nonpitch_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": 1.488550776362419,
+              "delay_ticks": 2,
+              "event_tick": 40,
+              "fit_interval_rad": [
+                1.3840674723681197,
+                "Infinity"
+              ],
+              "horizon_s": 0.057999999999999996,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": 1.488550776362419,
+              "delay_ticks": 2,
+              "event_tick": 40,
+              "fit_interval_rad": [
+                1.3840674723681197,
+                "Infinity"
+              ],
+              "horizon_s": 0.057999999999999996,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "force_abs_nm": 2.1365528106689453,
+          "joint": "right_knee",
+          "joint_index": 12,
+          "locally_preventable": false,
+          "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+          "prediction_error_rad": 0.020402831260114995,
+          "robust_box_interval_rad": [
+            1.3840674723681197,
+            "Infinity"
+          ],
+          "structural_interval_rad": [
+            1.3537181749343872,
+            1.374705146342516
+          ]
+        }
+      ]
+    },
+    "pass": true,
+    "s1b": {
+      "direct_credit_events": 37,
+      "fraction_removed_by_clipping": 0.9809821832881802,
+      "intended_unclipped_price": 847.9450940512268,
+      "max_setting_ticks": 37,
+      "realized_clipped_reward_price": 16.126064380353053,
+      "realized_fraction": 0.019017816711819825,
+      "reward_reconstruction_max_abs_error": 8.703675125065757e-08,
+      "zero_direct_credit_events": 147,
+      "zero_direct_credit_fraction": 0.7989130434782609
+    },
+    "summary": {
+      "v121_committed": 0,
+      "v121_events": 15,
+      "v121_locally_preventable": 15,
+      "v123_events": 184,
+      "v123_locally_preventable": 181,
+      "v123_preventable_fraction": 0.9836956521739131
+    }
+  },
+  "s2": {
+    "checks": {
+      "existing_dwell_at_most_99_ticks": true,
+      "positive_torque_safe_half_width_every_joint": false,
+      "six_v121_half_moving_cells_exact": true,
+      "zero_empty_robust_intersections": false
+    },
+    "empty_intersection_summary": {
+      "by_joint": {
+        "left_ankle": 3582,
+        "left_hip_pitch": 3582,
+        "left_hip_roll": 1048,
+        "left_hip_yaw": 260,
+        "left_knee": 3582,
+        "right_ankle": 3582,
+        "right_hip_pitch": 3582,
+        "right_knee": 830
+      },
+      "count": 20048,
+      "sample_first_32": [
+        {
+          "decision_tick": 0,
+          "filename": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": -0.6299999952316284,
+              "delay_ticks": 3,
+              "event_tick": 3,
+              "fit_interval_rad": [
+                -0.6110355490050856,
+                -0.6489644416020928
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": -0.6299999952316284,
+              "delay_ticks": 3,
+              "event_tick": 3,
+              "fit_interval_rad": [
+                -0.6109392827563804,
+                -0.6490607078031186
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "joint": "left_hip_pitch",
+          "robust_box_interval_rad": [
+            -0.6109392827563804,
+            -0.6490607078031186
+          ],
+          "structural_interval_rad": [
+            -0.659472416266799,
+            -0.600527583733201
+          ]
+        },
+        {
+          "decision_tick": 0,
+          "filename": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": 1.3680000305175781,
+              "delay_ticks": 3,
+              "event_tick": 3,
+              "fit_interval_rad": [
+                1.381523418427231,
+                1.3544766647140014
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": 1.3680000305175781,
+              "delay_ticks": 3,
+              "event_tick": 3,
+              "fit_interval_rad": [
+                1.3792675286547083,
+                1.3567325406174382
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "joint": "left_knee",
+          "robust_box_interval_rad": [
+            1.381523418427231,
+            1.3544766647140014
+          ],
+          "structural_interval_rad": [
+            1.3393984187692405,
+            1.3966015812307597
+          ]
+        },
+        {
+          "decision_tick": 0,
+          "filename": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": -0.7839999794960022,
+              "delay_ticks": 3,
+              "event_tick": 3,
+              "fit_interval_rad": [
+                -0.7712779178165924,
+                -0.7967220304201171
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": -0.7839999794960022,
+              "delay_ticks": 3,
+              "event_tick": 3,
+              "fit_interval_rad": [
+                -0.7710791352824765,
+                -0.7969208121454313
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "joint": "left_ankle",
+          "robust_box_interval_rad": [
+            -0.7710791352824765,
+            -0.7969208121454313
+          ],
+          "structural_interval_rad": [
+            -0.8119529392719269,
+            -0.7560470607280732
+          ]
+        },
+        {
+          "decision_tick": 0,
+          "filename": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": 0.6349999904632568,
+              "delay_ticks": 3,
+              "event_tick": 3,
+              "fit_interval_rad": [
+                0.6509712811732178,
+                0.6190286947874182
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": 0.6349999904632568,
+              "delay_ticks": 3,
+              "event_tick": 3,
+              "fit_interval_rad": [
+                0.6490674577889334,
+                0.620932521037265
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "joint": "right_hip_pitch",
+          "robust_box_interval_rad": [
+            0.6509712811732178,
+            0.6190286947874182
+          ],
+          "structural_interval_rad": [
+            0.6100000014901161,
+            0.6599999985098839
+          ]
+        },
+        {
+          "decision_tick": 0,
+          "filename": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": -0.7960000038146973,
+              "delay_ticks": 3,
+              "event_tick": 3,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": -0.7960000038146973,
+              "delay_ticks": 3,
+              "event_tick": 3,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "joint": "right_ankle",
+          "robust_box_interval_rad": [
+            "Infinity",
+            "-Infinity"
+          ],
+          "structural_interval_rad": [
+            -0.820430574849248,
+            -0.7715694251507521
+          ]
+        },
+        {
+          "decision_tick": 1,
+          "filename": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": -0.6256957458052784,
+              "delay_ticks": 3,
+              "event_tick": 4,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": -0.6256957458052784,
+              "delay_ticks": 3,
+              "event_tick": 4,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "joint": "left_hip_pitch",
+          "robust_box_interval_rad": [
+            "Infinity",
+            "-Infinity"
+          ],
+          "structural_interval_rad": [
+            -0.6300000055879355,
+            -0.5710551730543375
+          ]
+        },
+        {
+          "decision_tick": 1,
+          "filename": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": 1.396241724267602,
+              "delay_ticks": 3,
+              "event_tick": 4,
+              "fit_interval_rad": [
+                1.416123057116849,
+                1.3890763034036198
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": 1.396241724267602,
+              "delay_ticks": 3,
+              "event_tick": 4,
+              "fit_interval_rad": [
+                1.4107967200665463,
+                1.3882617320292763
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "joint": "left_knee",
+          "robust_box_interval_rad": [
+            1.416123057116849,
+            1.3882617320292763
+          ],
+          "structural_interval_rad": [
+            1.3679999459832908,
+            1.42520310844481
+          ]
+        },
+        {
+          "decision_tick": 1,
+          "filename": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": -0.7779172532167286,
+              "delay_ticks": 3,
+              "event_tick": 4,
+              "fit_interval_rad": [
+                -0.7673828816921112,
+                -0.792826994295636
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": -0.7779172532167286,
+              "delay_ticks": 3,
+              "event_tick": 4,
+              "fit_interval_rad": [
+                -0.7670641294410209,
+                -0.7929058063039757
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "joint": "left_ankle",
+          "robust_box_interval_rad": [
+            -0.7670641294410209,
+            -0.7929058063039757
+          ],
+          "structural_interval_rad": [
+            -0.784,
+            -0.7280941214561463
+          ]
+        },
+        {
+          "decision_tick": 1,
+          "filename": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": 0.6286224751826376,
+              "delay_ticks": 3,
+              "event_tick": 4,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": 0.6286224751826376,
+              "delay_ticks": 3,
+              "event_tick": 4,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "joint": "right_hip_pitch",
+          "robust_box_interval_rad": [
+            "Infinity",
+            "-Infinity"
+          ],
+          "structural_interval_rad": [
+            0.6349999776482582,
+            0.684999974668026
+          ]
+        },
+        {
+          "decision_tick": 1,
+          "filename": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": -0.7833863287046552,
+              "delay_ticks": 3,
+              "event_tick": 4,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": -0.7833863287046552,
+              "delay_ticks": 3,
+              "event_tick": 4,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "joint": "right_ankle",
+          "robust_box_interval_rad": [
+            "Infinity",
+            "-Infinity"
+          ],
+          "structural_interval_rad": [
+            -0.7960000018626452,
+            -0.7471388521641493
+          ]
+        },
+        {
+          "decision_tick": 2,
+          "filename": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": -0.6211999286524952,
+              "delay_ticks": 3,
+              "event_tick": 5,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": -0.6211999286524952,
+              "delay_ticks": 3,
+              "event_tick": 5,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "joint": "left_hip_pitch",
+          "robust_box_interval_rad": [
+            "Infinity",
+            "-Infinity"
+          ],
+          "structural_interval_rad": [
+            -0.6005275949090719,
+            -0.541582762375474
+          ]
+        },
+        {
+          "decision_tick": 2,
+          "filename": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": 1.412061736062169,
+              "delay_ticks": 3,
+              "event_tick": 5,
+              "fit_interval_rad": [
+                1.4332782034211113,
+                1.406231449707882
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": 1.412061736062169,
+              "delay_ticks": 3,
+              "event_tick": 5,
+              "fit_interval_rad": [
+                1.4282182691378136,
+                1.4056832811005435
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "joint": "left_knee",
+          "robust_box_interval_rad": [
+            1.4332782034211113,
+            1.4056832811005435
+          ],
+          "structural_interval_rad": [
+            1.396601473197341,
+            1.4538046356588603
+          ]
+        },
+        {
+          "decision_tick": 2,
+          "filename": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": -0.7892217072378844,
+              "delay_ticks": 3,
+              "event_tick": 5,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": -0.7892217072378844,
+              "delay_ticks": 3,
+              "event_tick": 5,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "joint": "left_ankle",
+          "robust_box_interval_rad": [
+            "Infinity",
+            "-Infinity"
+          ],
+          "structural_interval_rad": [
+            -0.7560470607280732,
+            -0.7001411821842194
+          ]
+        },
+        {
+          "decision_tick": 2,
+          "filename": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": 0.616390420012176,
+              "delay_ticks": 3,
+              "event_tick": 5,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": 0.616390420012176,
+              "delay_ticks": 3,
+              "event_tick": 5,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "joint": "right_hip_pitch",
+          "robust_box_interval_rad": [
+            "Infinity",
+            "-Infinity"
+          ],
+          "structural_interval_rad": [
+            0.6599999538064003,
+            0.7099999508261681
+          ]
+        },
+        {
+          "decision_tick": 2,
+          "filename": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": -0.7892877104412764,
+              "delay_ticks": 3,
+              "event_tick": 5,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": -0.7892877104412764,
+              "delay_ticks": 3,
+              "event_tick": 5,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "joint": "right_ankle",
+          "robust_box_interval_rad": [
+            "Infinity",
+            "-Infinity"
+          ],
+          "structural_interval_rad": [
+            -0.7715694288760424,
+            -0.7227082791775465
+          ]
+        },
+        {
+          "decision_tick": 3,
+          "filename": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": -0.6192637949250639,
+              "delay_ticks": 3,
+              "event_tick": 6,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": -0.6192637949250639,
+              "delay_ticks": 3,
+              "event_tick": 6,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "joint": "left_hip_pitch",
+          "robust_box_interval_rad": [
+            "Infinity",
+            "-Infinity"
+          ],
+          "structural_interval_rad": [
+            -0.5911909445375204,
+            -0.5322461120039225
+          ]
+        },
+        {
+          "decision_tick": 3,
+          "filename": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": 1.4087118476629257,
+              "delay_ticks": 3,
+              "event_tick": 6,
+              "fit_interval_rad": [
+                1.4319910768576585,
+                1.4049443231444292
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": 1.4087118476629257,
+              "delay_ticks": 3,
+              "event_tick": 6,
+              "fit_interval_rad": [
+                1.4249303818280854,
+                1.4023953937908153
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "joint": "left_knee",
+          "robust_box_interval_rad": [
+            1.4319910768576585,
+            1.4023953937908153
+          ],
+          "structural_interval_rad": [
+            1.3679999459832908,
+            1.42520310844481
+          ]
+        },
+        {
+          "decision_tick": 3,
+          "filename": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": -0.7886529108975082,
+              "delay_ticks": 3,
+              "event_tick": 6,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": -0.7886529108975082,
+              "delay_ticks": 3,
+              "event_tick": 6,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "joint": "left_ankle",
+          "robust_box_interval_rad": [
+            "Infinity",
+            "-Infinity"
+          ],
+          "structural_interval_rad": [
+            -0.7280941512584687,
+            -0.6721882727146149
+          ]
+        },
+        {
+          "decision_tick": 3,
+          "filename": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": 0.6223522189073265,
+              "delay_ticks": 3,
+              "event_tick": 6,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": 0.6223522189073265,
+              "delay_ticks": 3,
+              "event_tick": 6,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "joint": "right_hip_pitch",
+          "robust_box_interval_rad": [
+            "Infinity",
+            "-Infinity"
+          ],
+          "structural_interval_rad": [
+            0.6849999299645424,
+            0.7349999269843102
+          ]
+        },
+        {
+          "decision_tick": 3,
+          "filename": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": -0.7937779998243787,
+              "delay_ticks": 3,
+              "event_tick": 6,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": -0.7937779998243787,
+              "delay_ticks": 3,
+              "event_tick": 6,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "joint": "right_ankle",
+          "robust_box_interval_rad": [
+            "Infinity",
+            "-Infinity"
+          ],
+          "structural_interval_rad": [
+            -0.7471388558894396,
+            -0.6982777061909438
+          ]
+        },
+        {
+          "decision_tick": 4,
+          "filename": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": -0.6061791022494435,
+              "delay_ticks": 3,
+              "event_tick": 7,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": -0.6061791022494435,
+              "delay_ticks": 3,
+              "event_tick": 7,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "joint": "left_hip_pitch",
+          "robust_box_interval_rad": [
+            "Infinity",
+            "-Infinity"
+          ],
+          "structural_interval_rad": [
+            -0.6095095380395651,
+            -0.5505647055059671
+          ]
+        },
+        {
+          "decision_tick": 4,
+          "filename": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": 1.4148078813403844,
+              "delay_ticks": 3,
+              "event_tick": 7,
+              "fit_interval_rad": [
+                1.4387963843994798,
+                1.4117496306862505
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": 1.4148078813403844,
+              "delay_ticks": 3,
+              "event_tick": 7,
+              "fit_interval_rad": [
+                1.4315957010513627,
+                1.4090607130140926
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "joint": "left_knee",
+          "robust_box_interval_rad": [
+            1.4387963843994798,
+            1.4090607130140926
+          ],
+          "structural_interval_rad": [
+            1.3823494065850974,
+            1.4395525690466167
+          ]
+        },
+        {
+          "decision_tick": 4,
+          "filename": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": -0.7758731326274574,
+              "delay_ticks": 3,
+              "event_tick": 7,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": -0.7758731326274574,
+              "delay_ticks": 3,
+              "event_tick": 7,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "joint": "left_ankle",
+          "robust_box_interval_rad": [
+            "Infinity",
+            "-Infinity"
+          ],
+          "structural_interval_rad": [
+            -0.7001412417888642,
+            -0.6442353632450104
+          ]
+        },
+        {
+          "decision_tick": 4,
+          "filename": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": 0.6334212665725499,
+              "delay_ticks": 3,
+              "event_tick": 7,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": 0.6334212665725499,
+              "delay_ticks": 3,
+              "event_tick": 7,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "joint": "right_hip_pitch",
+          "robust_box_interval_rad": [
+            "Infinity",
+            "-Infinity"
+          ],
+          "structural_interval_rad": [
+            0.7099999061226845,
+            0.7599999031424522
+          ]
+        },
+        {
+          "decision_tick": 4,
+          "filename": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": -0.7817384049668908,
+              "delay_ticks": 3,
+              "event_tick": 7,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": -0.7817384049668908,
+              "delay_ticks": 3,
+              "event_tick": 7,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "joint": "right_ankle",
+          "robust_box_interval_rad": [
+            "Infinity",
+            "-Infinity"
+          ],
+          "structural_interval_rad": [
+            -0.7227082829028368,
+            -0.673847133204341
+          ]
+        },
+        {
+          "decision_tick": 5,
+          "filename": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": -0.5739690122753381,
+              "delay_ticks": 3,
+              "event_tick": 8,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": -0.5739690122753381,
+              "delay_ticks": 3,
+              "event_tick": 8,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "joint": "left_hip_pitch",
+          "robust_box_interval_rad": [
+            "Infinity",
+            "-Infinity"
+          ],
+          "structural_interval_rad": [
+            -0.6389819487184286,
+            -0.5800371161848307
+          ]
+        },
+        {
+          "decision_tick": 5,
+          "filename": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": 1.4345635763555764,
+              "delay_ticks": 3,
+              "event_tick": 8,
+              "fit_interval_rad": [
+                1.4635176593369321,
+                1.4364709056237028
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": 1.4345635763555764,
+              "delay_ticks": 3,
+              "event_tick": 8,
+              "fit_interval_rad": [
+                1.453743992242465,
+                1.431209004205195
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "joint": "left_knee",
+          "robust_box_interval_rad": [
+            1.4635176593369321,
+            1.431209004205195
+          ],
+          "structural_interval_rad": [
+            1.3970302690118552,
+            1.4542334314733745
+          ]
+        },
+        {
+          "decision_tick": 5,
+          "filename": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": -0.746186646670103,
+              "delay_ticks": 3,
+              "event_tick": 8,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": -0.746186646670103,
+              "delay_ticks": 3,
+              "event_tick": 8,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "joint": "left_ankle",
+          "robust_box_interval_rad": [
+            "Infinity",
+            "-Infinity"
+          ],
+          "structural_interval_rad": [
+            -0.6721883323192597,
+            -0.623396915435791
+          ]
+        },
+        {
+          "decision_tick": 5,
+          "filename": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": 0.6603938565403223,
+              "delay_ticks": 3,
+              "event_tick": 8,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": 0.6603938565403223,
+              "delay_ticks": 3,
+              "event_tick": 8,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "joint": "right_hip_pitch",
+          "robust_box_interval_rad": [
+            "Infinity",
+            "-Infinity"
+          ],
+          "structural_interval_rad": [
+            0.7269559970498085,
+            0.7769559940695763
+          ]
+        },
+        {
+          "decision_tick": 5,
+          "filename": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": -0.7517703714966774,
+              "delay_ticks": 3,
+              "event_tick": 8,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": -0.7517703714966774,
+              "delay_ticks": 3,
+              "event_tick": 8,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "joint": "right_ankle",
+          "robust_box_interval_rad": [
+            "Infinity",
+            "-Infinity"
+          ],
+          "structural_interval_rad": [
+            -0.7262992839366198,
+            -0.6774381342381239
+          ]
+        },
+        {
+          "decision_tick": 6,
+          "filename": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": -0.5463770164549351,
+              "delay_ticks": 3,
+              "event_tick": 9,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": -0.5463770164549351,
+              "delay_ticks": 3,
+              "event_tick": 9,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "joint": "left_hip_pitch",
+          "robust_box_interval_rad": [
+            "Infinity",
+            "-Infinity"
+          ],
+          "structural_interval_rad": [
+            -0.6684543593972921,
+            -0.6095095268636942
+          ]
+        },
+        {
+          "decision_tick": 6,
+          "filename": "v121_train_matched_half_p30_all_joint_x0.074_seed167931544.jsonl",
+          "fit_details": [
+            {
+              "center_rad": 1.4265276244282723,
+              "delay_ticks": 3,
+              "event_tick": 9,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P30_ALL_JOINT"
+            },
+            {
+              "center_rad": 1.4265276244282723,
+              "delay_ticks": 3,
+              "event_tick": 9,
+              "fit_interval_rad": [
+                "Infinity",
+                "-Infinity"
+              ],
+              "horizon_s": 0.078,
+              "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+            }
+          ],
+          "joint": "left_knee",
+          "robust_box_interval_rad": [
+            "Infinity",
+            "-Infinity"
+          ],
+          "structural_interval_rad": [
+            1.368428741797805,
+            1.4256319042593242
+          ]
+        }
+      ]
+    },
+    "occupancy_by_joint": [
+      {
+        "applied_error_max_rad": 0.044374774237645444,
+        "applied_error_p95_rad": 0.03720741915263623,
+        "applied_error_p99p9_rad": 0.04323466539762786,
+        "joint": "left_hip_yaw",
+        "strict_over_2a_equivalent_longest_run_ticks": 0,
+        "strict_over_2a_equivalent_ticks": 0
+      },
+      {
+        "applied_error_max_rad": 0.06973080667088183,
+        "applied_error_p95_rad": 0.06149858985984972,
+        "applied_error_p99p9_rad": 0.06883941690218412,
+        "joint": "left_hip_roll",
+        "strict_over_2a_equivalent_longest_run_ticks": 0,
+        "strict_over_2a_equivalent_ticks": 0
+      },
+      {
+        "applied_error_max_rad": 0.09445432755778538,
+        "applied_error_p95_rad": 0.06866270294593102,
+        "applied_error_p99p9_rad": 0.08803880421162302,
+        "joint": "left_hip_pitch",
+        "strict_over_2a_equivalent_longest_run_ticks": 1,
+        "strict_over_2a_equivalent_ticks": 2
+      },
+      {
+        "applied_error_max_rad": 0.11160944596784383,
+        "applied_error_p95_rad": 0.09472394407529114,
+        "applied_error_p99p9_rad": 0.10640537727938407,
+        "joint": "left_knee",
+        "strict_over_2a_equivalent_longest_run_ticks": 10,
+        "strict_over_2a_equivalent_ticks": 306
+      },
+      {
+        "applied_error_max_rad": 0.11055937582873898,
+        "applied_error_p95_rad": 0.09071770697555162,
+        "applied_error_p99p9_rad": 0.10718807226036349,
+        "joint": "left_ankle",
+        "strict_over_2a_equivalent_longest_run_ticks": 3,
+        "strict_over_2a_equivalent_ticks": 160
+      },
+      {
+        "applied_error_max_rad": 0.016037376196785018,
+        "applied_error_p95_rad": 0.012538839893527158,
+        "applied_error_p99p9_rad": 0.01535790215630186,
+        "joint": "neck_pitch",
+        "strict_over_2a_equivalent_longest_run_ticks": 0,
+        "strict_over_2a_equivalent_ticks": 0
+      },
+      {
+        "applied_error_max_rad": 0.018940819327535635,
+        "applied_error_p95_rad": 0.014683350551315933,
+        "applied_error_p99p9_rad": 0.018482974654056513,
+        "joint": "head_pitch",
+        "strict_over_2a_equivalent_longest_run_ticks": 0,
+        "strict_over_2a_equivalent_ticks": 0
+      },
+      {
+        "applied_error_max_rad": 0.010532886646449587,
+        "applied_error_p95_rad": 0.008836168308575929,
+        "applied_error_p99p9_rad": 0.010079529718469373,
+        "joint": "head_yaw",
+        "strict_over_2a_equivalent_longest_run_ticks": 0,
+        "strict_over_2a_equivalent_ticks": 0
+      },
+      {
+        "applied_error_max_rad": 0.012932011388959608,
+        "applied_error_p95_rad": 0.011160542011527235,
+        "applied_error_p99p9_rad": 0.012800524563746866,
+        "joint": "head_roll",
+        "strict_over_2a_equivalent_longest_run_ticks": 0,
+        "strict_over_2a_equivalent_ticks": 0
+      },
+      {
+        "applied_error_max_rad": 0.030887646709579896,
+        "applied_error_p95_rad": 0.025532389347704233,
+        "applied_error_p99p9_rad": 0.02975761314550179,
+        "joint": "right_hip_yaw",
+        "strict_over_2a_equivalent_longest_run_ticks": 0,
+        "strict_over_2a_equivalent_ticks": 0
+      },
+      {
+        "applied_error_max_rad": 0.064826907314126,
+        "applied_error_p95_rad": 0.05027801970261616,
+        "applied_error_p99p9_rad": 0.061549488767229335,
+        "joint": "right_hip_roll",
+        "strict_over_2a_equivalent_longest_run_ticks": 0,
+        "strict_over_2a_equivalent_ticks": 0
+      },
+      {
+        "applied_error_max_rad": 0.0734677859320001,
+        "applied_error_p95_rad": 0.06514446189314614,
+        "applied_error_p99p9_rad": 0.07245362110647367,
+        "joint": "right_hip_pitch",
+        "strict_over_2a_equivalent_longest_run_ticks": 0,
+        "strict_over_2a_equivalent_ticks": 0
+      },
+      {
+        "applied_error_max_rad": 0.10667592958429095,
+        "applied_error_p95_rad": 0.08500256436294522,
+        "applied_error_p99p9_rad": 0.10188820736694763,
+        "joint": "right_knee",
+        "strict_over_2a_equivalent_longest_run_ticks": 3,
+        "strict_over_2a_equivalent_ticks": 54
+      },
+      {
+        "applied_error_max_rad": 0.10890829558641935,
+        "applied_error_p95_rad": 0.08964852183578548,
+        "applied_error_p99p9_rad": 0.10652138464089013,
+        "joint": "right_ankle",
+        "strict_over_2a_equivalent_longest_run_ticks": 3,
+        "strict_over_2a_equivalent_ticks": 135
+      }
+    ],
+    "pass": false,
+    "reserve_by_joint": [
+      {
+        "joint": "left_hip_yaw",
+        "maximum_horizon_s": 0.078,
+        "measurement_and_goal_floor_rad": 0.002360811041896839,
+        "passing_prediction_error_p99p9_rad": 0.056493774484504926,
+        "positive_half_width": true,
+        "prediction_reserve_rad": 0.05885458552640176,
+        "torque_reserve_nm": 1.0070019583567342,
+        "torque_safe_half_width_rad": 0.05291027420474962,
+        "v121_event_prediction_error_max_rad": 0.0
+      },
+      {
+        "joint": "left_hip_roll",
+        "maximum_horizon_s": 0.078,
+        "measurement_and_goal_floor_rad": 0.002360811041896839,
+        "passing_prediction_error_p99p9_rad": 0.06238947940772805,
+        "positive_half_width": true,
+        "prediction_reserve_rad": 0.0647502904496249,
+        "torque_reserve_nm": 1.107877469593082,
+        "torque_safe_half_width_rad": 0.04701456928152649,
+        "v121_event_prediction_error_max_rad": 0.0
+      },
+      {
+        "joint": "left_hip_pitch",
+        "maximum_horizon_s": 0.078,
+        "measurement_and_goal_floor_rad": 0.002360811041896839,
+        "passing_prediction_error_p99p9_rad": 0.12865907779377722,
+        "positive_half_width": false,
+        "prediction_reserve_rad": 0.13101988883567406,
+        "torque_reserve_nm": 2.241750297978383,
+        "torque_safe_half_width_rad": -0.019255029104522675,
+        "v121_event_prediction_error_max_rad": 0.0
+      },
+      {
+        "joint": "left_knee",
+        "maximum_horizon_s": 0.078,
+        "measurement_and_goal_floor_rad": 0.002360811041896839,
+        "passing_prediction_error_p99p9_rad": 0.11933175114047538,
+        "positive_half_width": false,
+        "prediction_reserve_rad": 0.12169256218237222,
+        "torque_reserve_nm": 2.0821597389403887,
+        "torque_safe_half_width_rad": -0.009927702451220835,
+        "v121_event_prediction_error_max_rad": 0.08981449526548402
+      },
+      {
+        "joint": "left_ankle",
+        "maximum_horizon_s": 0.078,
+        "measurement_and_goal_floor_rad": 0.002360811041896839,
+        "passing_prediction_error_p99p9_rad": 0.11948273616774029,
+        "positive_half_width": false,
+        "prediction_reserve_rad": 0.12184354720963712,
+        "torque_reserve_nm": 2.084743092756891,
+        "torque_safe_half_width_rad": -0.01007868747848574,
+        "v121_event_prediction_error_max_rad": 0.08191320702433585
+      },
+      {
+        "joint": "neck_pitch",
+        "maximum_horizon_s": 0.078,
+        "measurement_and_goal_floor_rad": 0.002360811041896839,
+        "passing_prediction_error_p99p9_rad": 0.01615207036737966,
+        "positive_half_width": true,
+        "prediction_reserve_rad": 0.018512881409276497,
+        "torque_reserve_nm": 0.31675540091272086,
+        "torque_safe_half_width_rad": 0.09325197832187489,
+        "v121_event_prediction_error_max_rad": 0.0
+      },
+      {
+        "joint": "head_pitch",
+        "maximum_horizon_s": 0.057999999999999996,
+        "measurement_and_goal_floor_rad": 0.0023454674880331525,
+        "passing_prediction_error_p99p9_rad": 0.010457653955649644,
+        "positive_half_width": true,
+        "prediction_reserve_rad": 0.012803121443682796,
+        "torque_reserve_nm": 0.21906140790141262,
+        "torque_safe_half_width_rad": 0.09896173828746858,
+        "v121_event_prediction_error_max_rad": 0.0
+      },
+      {
+        "joint": "head_yaw",
+        "maximum_horizon_s": 0.078,
+        "measurement_and_goal_floor_rad": 0.002360811041896839,
+        "passing_prediction_error_p99p9_rad": 0.008918868625184567,
+        "positive_half_width": true,
+        "prediction_reserve_rad": 0.011279679667081407,
+        "torque_reserve_nm": 0.19299531910376286,
+        "torque_safe_half_width_rad": 0.10048518006406998,
+        "v121_event_prediction_error_max_rad": 0.0
+      },
+      {
+        "joint": "head_roll",
+        "maximum_horizon_s": 0.078,
+        "measurement_and_goal_floor_rad": 0.002360811041896839,
+        "passing_prediction_error_p99p9_rad": 0.00884043689893559,
+        "positive_half_width": true,
+        "prediction_reserve_rad": 0.011201247940832429,
+        "torque_reserve_nm": 0.19165335226764285,
+        "torque_safe_half_width_rad": 0.10056361179031896,
+        "v121_event_prediction_error_max_rad": 0.0
+      },
+      {
+        "joint": "right_hip_yaw",
+        "maximum_horizon_s": 0.078,
+        "measurement_and_goal_floor_rad": 0.002360811041896839,
+        "passing_prediction_error_p99p9_rad": 0.03678511920610845,
+        "positive_half_width": true,
+        "prediction_reserve_rad": 0.039145930248005285,
+        "torque_reserve_nm": 0.6697868665433704,
+        "torque_safe_half_width_rad": 0.0726189294831461,
+        "v121_event_prediction_error_max_rad": 0.0
+      },
+      {
+        "joint": "right_hip_roll",
+        "maximum_horizon_s": 0.057999999999999996,
+        "measurement_and_goal_floor_rad": 0.0023454674880331525,
+        "passing_prediction_error_p99p9_rad": 0.030741995043028568,
+        "positive_half_width": true,
+        "prediction_reserve_rad": 0.03308746253106172,
+        "torque_reserve_nm": 0.566126483906466,
+        "torque_safe_half_width_rad": 0.07867739720008966,
+        "v121_event_prediction_error_max_rad": 0.0
+      },
+      {
+        "joint": "right_hip_pitch",
+        "maximum_horizon_s": 0.078,
+        "measurement_and_goal_floor_rad": 0.002360811041896839,
+        "passing_prediction_error_p99p9_rad": 0.12207610778823563,
+        "positive_half_width": false,
+        "prediction_reserve_rad": 0.12443691883013247,
+        "torque_reserve_nm": 2.1291156811835665,
+        "torque_safe_half_width_rad": -0.012672059098981087,
+        "v121_event_prediction_error_max_rad": 0.0
+      },
+      {
+        "joint": "right_knee",
+        "maximum_horizon_s": 0.057999999999999996,
+        "measurement_and_goal_floor_rad": 0.0023454674880331525,
+        "passing_prediction_error_p99p9_rad": 0.04790337279215481,
+        "positive_half_width": true,
+        "prediction_reserve_rad": 0.05024884028018796,
+        "torque_reserve_nm": 0.859757657194016,
+        "torque_safe_half_width_rad": 0.061516019450963424,
+        "v121_event_prediction_error_max_rad": 0.020577949751168445
+      },
+      {
+        "joint": "right_ankle",
+        "maximum_horizon_s": 0.078,
+        "measurement_and_goal_floor_rad": 0.002360811041896839,
+        "passing_prediction_error_p99p9_rad": 0.1530956624544881,
+        "positive_half_width": false,
+        "prediction_reserve_rad": 0.15545647349638494,
+        "torque_reserve_nm": 2.6598602615231464,
+        "torque_safe_half_width_rad": -0.04369161376523356,
+        "v121_event_prediction_error_max_rad": 0.12368992656469346
+      }
+    ],
+    "summary": {
+      "empty_intersections": 20048,
+      "half_moving_cells": 6,
+      "joint_ticks": 50148,
+      "projection_correction_max_rad": 0.03991330061225665,
+      "projection_correction_p95_rad": 0.0025995780694696214,
+      "projection_required_fraction": 0.1381710137991545,
+      "projection_required_joint_ticks": 6929,
+      "worst_existing_strict_over_2a_run_ticks": 10
+    }
+  },
+  "schema_version": "winner_v124.predictive_torque_s0_s2_compact_result.v1",
+  "status": "HOLD_WINNER_V124_PREDICTIVE_TORQUE_S0_S2"
+}

@@ -1,0 +1,101 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "evaluator_correction_authorized": true,
+    "gate5_authorized": false,
+    "hosted_training_authorized": false,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "stage_boundary_diagnostic_authorized": true,
+    "torque_or_motion": false
+  },
+  "causal_attribution": {
+    "cpu_detection_defect": {
+      "cause": "V103 requires the rendered device string to contain 'CpuDevice'; the verified Windows CPU renders TFRT_CPU_0.",
+      "policy_behavior_implicated": false,
+      "present": true
+    },
+    "early_return_readback_defect": {
+      "cause": "The simulator correctly returns HOLD_RESPONSE_CALIBRATION_PREFIX without env readback, then the base classifier broadcasts an empty COM vector against the planned three-vector.",
+      "policy_behavior_implicated": true,
+      "present": true,
+      "underlying_policy_or_calibration_failure_present": true
+    },
+    "policy_failure": {
+      "evidence": "924 cells have at least one non-cpu-only failure; fixing the evaluator cannot promote either checkpoint.",
+      "present": true
+    }
+  },
+  "checks": {
+    "all_1024_cells_present_unique": true,
+    "behavior_failure_count_exact": true,
+    "cpu_label_only_count_exact": true,
+    "exception_condition_count_exact": true,
+    "formal_result_exact": true,
+    "reproduction_exact": true,
+    "runner_exception_count_exact": true,
+    "unguarded_missing_com_readback_expression_present": true,
+    "v103_cpu_string_assumption_present": true
+  },
+  "decision": "AUTHORIZE_EVALUATOR_CORRECTION_AND_STAGE_BOUNDARY_DIAGNOSTIC",
+  "failed_checks": [],
+  "formal_result": {
+    "cells": 1024,
+    "decision": "NO_RESPONSE_CONDITIONED_CHECKPOINT_SELECTED",
+    "passing_cells": 0,
+    "robot_clearance": false,
+    "sha256": "f3a0ed34d46b6013c0910afe29fcd9f424729c94b61b8abdb4f416457ad3922b",
+    "status": "INVALID_WINNER_V103_RESPONSE_CONDITIONED_RESULT",
+    "wall_seconds": 45901.359179735184
+  },
+  "input_hashes": {
+    "base_runner": "59c697e7a31780661b846191c2634414471246adca250f0529ef66c84a760b5a",
+    "com_prefix_reproduction": "ded813c4ca8e96862a6db377b4010c84eac1c49d741484767c5d430599de6581",
+    "formal_result": "f3a0ed34d46b6013c0910afe29fcd9f424729c94b61b8abdb4f416457ad3922b",
+    "formal_runner": "cdba6011e79db34fa4c87b832816f62c7b968c74f4770f0ae2af5102744ef584"
+  },
+  "prospective_correction": {
+    "classify_early_simulator_returns_without_readback_broadcasts": true,
+    "do_not_reinterpret_v103": true,
+    "hosted_retry_authorized": false,
+    "preserve_all_thresholds_and_matrix_cells": true,
+    "run_stage_boundary_diagnostic_before_training": true,
+    "verify_cpu_from_backend_and_device_platforms": true
+  },
+  "raw_cell_evidence": {
+    "behavior_failure_cells": 924,
+    "bytes": 14544450,
+    "cells": 1024,
+    "cpu_label_only_cells": 100,
+    "identity_manifest_sha256": "d1e7c75bc7f1c0054f481b0634ac065fb97caefe856699a086034700c6244346",
+    "per_checkpoint": {
+      "1003520": {
+        "behavior_failure_cells": 462,
+        "cells": 512,
+        "cpu_label_only_cells": 50,
+        "runner_exception_cells": 80
+      },
+      "2007040": {
+        "behavior_failure_cells": 462,
+        "cells": 512,
+        "cpu_label_only_cells": 50,
+        "runner_exception_cells": 80
+      }
+    },
+    "runner_exception_cells": 160,
+    "runner_exception_conditions": [
+      "COM_CORNER_00",
+      "COM_CORNER_01",
+      "COM_CORNER_02",
+      "COM_CORNER_03",
+      "COM_X_NEG",
+      "DISCOVERY_03",
+      "DISCOVERY_09",
+      "DISCOVERY_10",
+      "HELDOUT_04",
+      "HELDOUT_09"
+    ]
+  },
+  "schema_version": "winner_v106.response_gate_attribution.v1",
+  "status": "HOLD_WINNER_V106_V105_POLICY_AND_V103_EVALUATOR"
+}

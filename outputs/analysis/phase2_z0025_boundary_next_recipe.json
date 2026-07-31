@@ -1,0 +1,132 @@
+{
+  "acceptance": [
+    "z=0.0025 x=0.08 no-push passes 8/8, zero falls, no velocity excess, tracking p95 <= 0.20, track ratio >= 0.40.",
+    "z=0.0025 x=0.0 no-push passes 8/8, zero falls, no velocity excess, |mean vx| <= 0.005.",
+    "z=0.0024 x=0.08 and x=0.0 no-push/gentle-push regression gates remain passing.",
+    "Passing z=0.0025 is not robot-validation clearance; it only authorizes the next terrain increment."
+  ],
+  "commands": {
+    "preferred_colab_gpu": {
+      "argv": [
+        "python3",
+        "tools/run_colab_cli_cuda_workflow.py",
+        "--workflow",
+        "phase2-z0025-boundary",
+        "--session",
+        "open-duck-a100-phase2d",
+        "--candidate-name",
+        "phase2_z0025_boundary_cuda",
+        "--candidate-checkpoint-sweep",
+        "--candidate-checkpoint-sweep-commands",
+        "0.0,0.08",
+        "--candidate-checkpoint-sweep-duration",
+        "1.0",
+        "--candidate-checkpoint-sweep-jax-platform",
+        "cpu",
+        "--candidate-timeout-s",
+        "10800",
+        "--run"
+      ],
+      "shell": "python3 \\\n    tools/run_colab_cli_cuda_workflow.py \\\n    --workflow \\\n    phase2-z0025-boundary \\\n    --session \\\n    open-duck-a100-phase2d \\\n    --candidate-name \\\n    phase2_z0025_boundary_cuda \\\n    --candidate-checkpoint-sweep \\\n    --candidate-checkpoint-sweep-commands \\\n    0.0,0.08 \\\n    --candidate-checkpoint-sweep-duration \\\n    1.0 \\\n    --candidate-checkpoint-sweep-jax-platform \\\n    cpu \\\n    --candidate-timeout-s \\\n    10800 \\\n    --run"
+    }
+  },
+  "deploy_performed": false,
+  "diagnosis_status": "PASS_Z0024_AND_HOLD_Z0025_SEED5_SUPPORT_COLLAPSE",
+  "evidence": {
+    "boundary_decision": "outputs/analysis/phase2_stagea2_gain099_terrain_z0024_boundary_decision.json",
+    "boundary_status": "PASS_PHASE2_TERRAIN_RUNG_Z0024",
+    "z0024_x008_gentle_push": {
+      "base_height_min_min_m": 0.14637506008148193,
+      "body_pitch_p95_mean_rad": 0.11452170445023781,
+      "double_support_mean_pct": 74.71666666666667,
+      "duration_complete": 8,
+      "falls": 0,
+      "max_pitch_vel_p95_max_rad_s": 2.40840882062912,
+      "max_tracking_p95_max_rad": 0.1964482188224792,
+      "max_vel_excess_max_rad_s": 0.0,
+      "passes": 8,
+      "path": "outputs/analysis/phase2_stagea2_gain099_x008_rough_z0024_gentle_push_15s_8seed_cpu.json",
+      "push_events_mean": 12.375,
+      "push_success_mean": 0.9703525641025641,
+      "runs": 8,
+      "single_support_mean_pct": 25.233333333333334,
+      "status": "PASS",
+      "track_ratio_mean": 0.41129452009691553,
+      "vx_mean": 0.03290356160775324
+    },
+    "z0024_x0_gentle_push": {
+      "base_height_min_min_m": 0.14620736241340637,
+      "body_pitch_p95_mean_rad": 0.02615788316571286,
+      "double_support_mean_pct": 99.21666666666667,
+      "duration_complete": 8,
+      "falls": 0,
+      "max_pitch_vel_p95_max_rad_s": 0.40266185998916615,
+      "max_tracking_p95_max_rad": 0.06884261965751648,
+      "max_vel_excess_max_rad_s": 0.0,
+      "passes": 8,
+      "path": "outputs/analysis/phase2_stagea2_gain099_x0_rough_z0024_gentle_push_15s_8seed_cpu.json",
+      "push_events_mean": 12.375,
+      "push_success_mean": 0.9703525641025641,
+      "runs": 8,
+      "single_support_mean_pct": 0.7333333333333334,
+      "status": "PASS",
+      "track_ratio_mean": null,
+      "vx_mean": 0.0005955285252728118
+    }
+  },
+  "falsifier": "If z=0.0025 still fails seed 5 by backward support collapse while z=0.0024 regressions remain clean, stop terrain escalation and train a targeted seed-5 support-recovery curriculum at z=0.0024->0.0025 before adding wider DR.",
+  "key_recipe_settings": {
+    "actuator_bridge_velocity_limit_range_rad_s": [
+      2.0,
+      3.25
+    ],
+    "actuator_tracking_scale": -0.005,
+    "base_height_scale": -0.35,
+    "command_progress_required_ratio": 0.5,
+    "command_progress_scale": 3.0,
+    "command_progress_shortfall_scale": -8.0,
+    "forward_progress_scale": 4.0,
+    "narrow_dr": {
+      "com_jitter_m": 0.002,
+      "friction": [
+        0.98,
+        1.02
+      ],
+      "leg_geometry_jitter_scale": 0.001,
+      "mass_scale": [
+        0.995,
+        1.005
+      ]
+    },
+    "num_timesteps": 122880,
+    "ppo_learning_rate": 4e-06,
+    "ppo_num_envs": 64,
+    "push_enable": false,
+    "restore_policy_kl_scale": 3.0,
+    "terrain_hfield_z_scale": 0.0025,
+    "workflow": "phase2-z0025-boundary"
+  },
+  "recipe_intent": [
+    "Warm-start from the trainable A2 checkpoint that produced the gain099 candidate; do not train from scratch.",
+    "Train directly at z=0.0025, the first failing terrain height above the confirmed z=0.0024 rung.",
+    "Use motion-preserving progress pressure and light support/stance penalties, not the stronger z=0.005 support recipe.",
+    "Keep the corrected actuator envelope authoritative and reject any post-training velocity excess.",
+    "Preserve z=0.0024 no-push/gentle-push regressions and x=0.0 command semantics."
+  ],
+  "restore_checkpoint": {
+    "path": "outputs/phase2_domain_randomization/stage_a2_preserve_narrow_flat_no_push_gpu/smoke_20260628T031553Z_gpu/2026_06_27_232221_491520",
+    "present": true
+  },
+  "robot_touched": false,
+  "root_cause_summary": [
+    "The gain099 corrected-bridge candidate passes the full z=0.0024 rough-terrain matrix.",
+    "Seed 5 passes z=0.0024 but fails at z=0.0025 by backward support collapse.",
+    "The z=0.0025 failure has zero corrected-envelope velocity excess, so actuator rate is not the immediate blocker.",
+    "Prior z=0.0035/z=0.005 support and motion-floor variants jumped past the measured cliff and held by low progress or collapse."
+  ],
+  "ssh_used": false,
+  "stage": "stage_z0025_boundary",
+  "status": "PASS_Z0025_BOUNDARY_RECIPE_READY",
+  "supersedes_recipe": "phase2-z0035-motion-floor",
+  "training_started": false
+}

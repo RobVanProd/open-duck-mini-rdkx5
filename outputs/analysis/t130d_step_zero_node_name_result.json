@@ -1,0 +1,169 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "gate5": false,
+    "postexport_preregistration": true,
+    "rdkx5_or_robot": false
+  },
+  "checks": {
+    "abi_bit_exact": true,
+    "all_initializers_bit_exact": true,
+    "complete_model_exact_after_optional_name_clear": true,
+    "hosted_matches_cpu_exporter_byte_exact": true,
+    "no_optimizer_behavior_colab_or_robot": true,
+    "only_preregistered_node_diff": true,
+    "random_chain_bit_exact": true,
+    "trace_rows_bit_exact": true
+  },
+  "classification": "OPTIONAL_ONNX_NODE_NAME_METADATA_ONLY",
+  "decision": "RECOVER_T130_VALIDATION_AND_EARN_T131_T129_HARD_GATE_POSTEXPORT_PREREGISTRATION_ONLY",
+  "execution": {
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_steps": 0
+  },
+  "facts": {
+    "abi": {
+      "cpu_exporter": {
+        "inputs": {
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        }
+      },
+      "expected": {
+        "inputs": {
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        }
+      },
+      "hosted": {
+        "inputs": {
+          "h_in": [
+            1,
+            64
+          ],
+          "obs": [
+            1,
+            115
+          ],
+          "previous_action": [
+            1,
+            14
+          ]
+        },
+        "outputs": {
+          "continuous_actions": [
+            1,
+            14
+          ],
+          "h_out": [
+            1,
+            64
+          ],
+          "previous_action_out": [
+            1,
+            14
+          ]
+        }
+      }
+    },
+    "complete_model_byte_exact_after_clearing_optional_name": true,
+    "differing_node": {
+      "all_fields_except_name_exact": true,
+      "expected_name": "t109_always_on_negative_adapter",
+      "hosted_name": "",
+      "index": 27,
+      "inputs": [
+        "negative_adapter_location"
+      ],
+      "op_type": "Identity",
+      "outputs": [
+        "conditional_adapter_location"
+      ]
+    },
+    "hosted_cpu_exporter_byte_exact": true,
+    "initializer_count": {
+      "expected": 27,
+      "hosted": 27
+    },
+    "initializers_bit_exact": true,
+    "node_count": {
+      "expected": 37,
+      "hosted": 37
+    },
+    "node_diff_indices": [
+      27
+    ],
+    "random_chain": {
+      "bit_exact_steps": 256,
+      "maximum_abs_error": 0.0,
+      "steps": 256
+    },
+    "source_bytes": {
+      "difference": 33,
+      "expected": 960290,
+      "hosted": 960257
+    },
+    "trace": {
+      "always_on_identity_rows": 72,
+      "bit_exact_rows": 72,
+      "maximum_abs_error": 0.0,
+      "rows": 72
+    }
+  },
+  "failed_checks": [],
+  "preregistered_contract_sha256": "362824cba7bfc9a1fd96d2252b35305f608c5ab4055c2e6f90072ff30d7dac0d",
+  "result_sha256": "2a4ad9de38e37426a70df0986dbf7d3b327acdebddaef885692324479fbe0f63",
+  "schema_version": "open_duck.t130d_step_zero_node_name_result.v1",
+  "status": "PASS_T130D_STEP_ZERO_NODE_NAME_RECOVERY"
+}

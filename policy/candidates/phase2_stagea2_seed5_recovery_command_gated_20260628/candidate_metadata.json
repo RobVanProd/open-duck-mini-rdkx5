@@ -1,0 +1,48 @@
+{
+  "candidate": "policy/candidates/phase2_stagea2_seed5_recovery_command_gated_20260628/candidate.onnx",
+  "candidate_sha256": "d0cec0b9dcc666416f0ecc8383a51367529273013d912b26399339e2c4b1c3e6",
+  "corrected_bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+  "decision_artifact": "outputs/analysis/PHASE2_SEED5_NEIGHBOR_RECOVERY_STAGEA2_COMMAND_GATED_DECISION.md",
+  "gate": {
+    "command_x_abs_threshold": 0.02,
+    "command_x_obs_index": 6
+  },
+  "high_command_branch": {
+    "path": "outputs/analysis/phase2_seed5_neighbor_recovery_contactphase_bc_student/candidate.onnx",
+    "sha256": "dbabaa9f6f364a3beb39166f803babac83d575c157046ef3736c76422db78d9c"
+  },
+  "low_command_branch": {
+    "path": "policy/candidates/phase2_stage_a2_gain099_20260628/candidate.onnx",
+    "sha256": "a082be6cf5c486073523bbd0fba4ea3645dc448270ca0a8e28c4ce5a4e8d31c4"
+  },
+  "status": "PASS_ROUGH_TERRAIN_NO_PUSH_HOLD_GENTLE_PUSH_ENVELOPE",
+  "tests": {
+    "rough_z002_no_push_x0": "PASS_CANDIDATE_SIM_GATE_8_OF_8",
+    "rough_z002_no_push_x008": "PASS_CANDIDATE_SIM_GATE_8_OF_8",
+    "rough_z002_gentle_push_x0": "PASS_CANDIDATE_SIM_GATE_8_OF_8",
+    "rough_z002_gentle_push_x008": "HOLD_CANDIDATE_TARGET_VELOCITY",
+    "rough_z002_gentle_push_15s_eval_gain099_x0": "PASS_CANDIDATE_SIM_GATE_8_OF_8_NOT_DEPLOYABLE",
+    "rough_z002_gentle_push_15s_eval_gain099_x008": "PASS_CANDIDATE_SIM_GATE_8_OF_8_NOT_DEPLOYABLE"
+  },
+  "eval_only_diagnostics": {
+    "gain099_rough_z002_gentle_push_15s": {
+      "artifact": "outputs/analysis/PHASE2_GAIN099_EVAL_ONLY_ROUGH_PUSH_15S_DECISION.md",
+      "policy_action_gain": 0.99,
+      "deployable": false,
+      "x0": {
+        "status": "PASS_CANDIDATE_SIM_GATE_8_OF_8",
+        "mean_vx_m_s": 0.0007,
+        "max_velocity_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.0687,
+        "mean_push_success": 0.9704
+      },
+      "x008": {
+        "status": "PASS_CANDIDATE_SIM_GATE_8_OF_8",
+        "mean_track_ratio": 0.4104,
+        "max_velocity_excess_rad_s": 0.0,
+        "max_tracking_p95_rad": 0.1944,
+        "mean_push_success": 0.9704
+      }
+    }
+  }
+}

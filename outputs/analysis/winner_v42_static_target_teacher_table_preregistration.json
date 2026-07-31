@@ -1,0 +1,218 @@
+{
+  "authority": {
+    "pass_authorizes_only": "one separately frozen static-target teacher ABI CPU contract",
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false,
+    "runtime_static_target_or_action_wrapper_authorized": false,
+    "training_authorized": false
+  },
+  "decision": "AUTHORIZE_ONE_CPU_ONLY_15_CONFIGURATION_TEACHER_TABLE",
+  "execution_now": {
+    "candidate_plant_cells": 0,
+    "configuration_tables": 0,
+    "locomotion_training_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0,
+    "selected_target_replay_cells": 0,
+    "static_target_candidates": 0
+  },
+  "interpretation": {
+    "hold": "Close the exact static-target teacher-table route. Do not refine the grid, change the basis, fit only passing configurations, or promote a diagnostic best.",
+    "pass": "A full failure-set static-target teacher table exists; authorize only a separate default-off teacher ABI CPU contract."
+  },
+  "pass_rule": {
+    "all_candidate_actions_graph_bounded": true,
+    "all_selected_target_replays_exact": true,
+    "closest_result_selection": false,
+    "every_configuration_has_a_shared_two_plant_support_target": true,
+    "exact_15_configuration_tables": true,
+    "exact_21870_candidate_plant_cells": true,
+    "exact_729_targets_per_configuration": true
+  },
+  "question": "Does the exact Winner-v41 729-target equilibrium grid contain at least one shared two-plant full-horizon target for every configuration in the frozen 15-configuration Winner-v33 failure union?",
+  "schema_version": "winner_v42.static_target_teacher_table_preregistration.v1",
+  "screen": {
+    "actuator_plants": [
+      "P30_ALL_JOINT",
+      "P31_34_PITCH_WITH_P30_NONPITCH"
+    ],
+    "configuration_ids": [
+      "COM_X_NEG",
+      "COM_CORNER_00",
+      "COM_CORNER_01",
+      "COM_CORNER_02",
+      "COM_CORNER_03",
+      "OPTIONAL_AGGREGATE_HEAVY_AFT",
+      "DISCOVERY_02",
+      "DISCOVERY_03",
+      "DISCOVERY_06",
+      "DISCOVERY_09",
+      "DISCOVERY_10",
+      "HELDOUT_04",
+      "HELDOUT_07",
+      "HELDOUT_09",
+      "HELDOUT_15"
+    ],
+    "duration_ticks": 250,
+    "evaluation": "All 15 tables execute. Diagnostic best targets for configurations with zero shared passes are recorded but never promoted.",
+    "grid_values": [
+      -1.0,
+      -0.75,
+      -0.5,
+      -0.25,
+      0.0,
+      0.25,
+      0.5,
+      0.75,
+      1.0
+    ],
+    "maximum_candidate_plant_cells": 21870,
+    "selection": "unchanged Winner-v41 deterministic shared-target key",
+    "target_semantics": "one selected time-invariant target per configuration",
+    "targets_per_configuration": 729
+  },
+  "source_manifest_sha256": "c2c8a090a6c5d25018610b3bdf1ca34213fc9c5f5d7f605de51aac7fe8c281b8",
+  "source_results": {
+    "winner_v33_failure_configuration_ids": [
+      "COM_CORNER_00",
+      "COM_CORNER_01",
+      "COM_CORNER_02",
+      "COM_CORNER_03",
+      "COM_X_NEG",
+      "DISCOVERY_02",
+      "DISCOVERY_03",
+      "DISCOVERY_06",
+      "DISCOVERY_09",
+      "DISCOVERY_10",
+      "HELDOUT_04",
+      "HELDOUT_07",
+      "HELDOUT_09",
+      "HELDOUT_15",
+      "OPTIONAL_AGGREGATE_HEAVY_AFT"
+    ],
+    "winner_v33_result_lf_sha256": "3a861df06d74b9f90f9016392375cc43d09d9e40ec7a14c04c58feeab7d05f7e",
+    "winner_v33_support_failure_counts": {
+      "final": 30,
+      "half": 25
+    },
+    "winner_v41_repository_attribution": {
+      "artifact_zip_bytes": 472127,
+      "artifact_zip_sha256": "2ed01e17162cbe446f9343e4b1d45afc97713bfc5ef420c919a99671788bf52d",
+      "base_preregistration_lf_sha256": "59173d447b5899e199fdadd09d5025ae2b2f93dd3c976069a294b2c92d7f0ae4",
+      "base_runner_lf_sha256": "111ae5870e94be1b6d859e78c1043d093c345436bb3db834cdc9b9ede4d8724b",
+      "correction_preregistration_lf_sha256": "3a249683a60ec8bfc849a6d8fb2aad05e4cf1ae018caae800442422ccf75567a",
+      "correction_runner_lf_sha256": "79001821b6d4ed040a363df737324daadc8b6929165e676ff9a95fdfbb440810",
+      "first_attempt_failure_receipt_lf_sha256": "9c036a711dee5ab5f950e6105a29f9f84ee5a7d029f203ea6329644bf85c355f",
+      "github_artifact_digest": "sha256:2ed01e17162cbe446f9343e4b1d45afc97713bfc5ef420c919a99671788bf52d",
+      "github_artifact_id": 8522486703,
+      "github_artifact_name": "winner-v41-v2-static-equilibrium-target-feasibility-29902429818",
+      "github_run_attempt": 1,
+      "github_run_head_sha": "e11a3bc42a8a872cd7d2116ec76da09e03aef678",
+      "github_run_id": 29902429818,
+      "importer_lf_sha256": "6e77d77ea25a5004e0dfe3e8f956dcd000be0b06376e2c4eff59c0e1e90b91c7",
+      "raw_result_receipt_sha256": "752b8289e2c074cb60f8fa8802ebf39052a9806b2f7e671132ed7168d5e6874e",
+      "raw_result_sha256": "acc336ae17de45e20f2de646d23fab79494b88b13fa87c0810f8b8be0d187595",
+      "repository": "RobVanProd/open-duck-mini-rdkx5",
+      "workflow_lf_sha256": "e5ca50d5fa771ce35c26ef0f9f650fea129f335fe4d8cf59b239e4b3ef2b003d"
+    },
+    "winner_v41_result_lf_sha256": "ce9dcebd6c94ee0dee1bf100967f6ba2614c4158078ab6f8f3e7361aae007470"
+  },
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v42_static_target_teacher_table_preregistration.py",
+      "sha256": "a696d20df6e5ee7a39d6dbb6c21bc059361fe555e481c879e9bf63343bc338fb"
+    },
+    "calibrator_design": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_training_preregistration.json",
+      "sha256": "1ec76a587c6fa50b92866c1632a7046ae0c6687ed17b1636b664bf45c2e8ba34"
+    },
+    "canonical_p30_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "cpu_smoke": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "environment_preparation": {
+      "hash_mode": "lf",
+      "path": "tools/prepare_winner_v15_cpu_environment.py",
+      "sha256": "33e54c3a16d5684e2d2520270acf25a28df42dc89e9f302c1ef3bd5f37d867c2"
+    },
+    "preregistration_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v42_static_target_teacher_table_preregistration.py",
+      "sha256": "95d7ebd10054ad87e971be63a0cfbe5fca36416f7d064f0ef8bc443fa7e72915"
+    },
+    "result_importer": {
+      "hash_mode": "lf",
+      "path": "tools/import_winner_v42_static_target_teacher_table.py",
+      "sha256": "9aeffcca31c9ea07533b993522f2646ab30ace6b6a6951259d0f054e80dce81b"
+    },
+    "result_importer_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v42_static_target_teacher_table_import.py",
+      "sha256": "64e4e6c52374a749b45528df6b709a4902dc24274b6ffc2ec1e70d3b3f8799a5"
+    },
+    "reviewed_mirror_basis": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v16_support_action_direction.py",
+      "sha256": "1b34b8d26743904e005d844e5f7e07e53f78a555a8a99f0035d3f0a778352c33"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v42_static_target_teacher_table.py",
+      "sha256": "67194905e8a06d5167f699019ea24c82e6d76ea78a0bf365fc570e81cb147abc"
+    },
+    "runner_tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v42_static_target_teacher_table.py",
+      "sha256": "a9b28d2f36b64f6c7a569e9de4f2a1e311423888107094d32a93b9be2da4bc6d"
+    },
+    "runtime_observer": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py",
+      "sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889"
+    },
+    "winner_v33_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v33_prefix_right_pitch_anchor_support_gate_result.json",
+      "sha256": "3a861df06d74b9f90f9016392375cc43d09d9e40ec7a14c04c58feeab7d05f7e"
+    },
+    "winner_v34_failure_set": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v34_prefix_right_pitch_hard_intervention.py",
+      "sha256": "663fb3323ecf06634d09b12e88fe16b469121203a36a5ac492591abd0e330bc7"
+    },
+    "winner_v41_base_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v41_static_equilibrium_target_feasibility.py",
+      "sha256": "111ae5870e94be1b6d859e78c1043d093c345436bb3db834cdc9b9ede4d8724b"
+    },
+    "winner_v41_corrected_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v41_v2_static_equilibrium_target_feasibility.py",
+      "sha256": "79001821b6d4ed040a363df737324daadc8b6929165e676ff9a95fdfbb440810"
+    },
+    "winner_v41_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v41_v2_static_equilibrium_target_feasibility_result.json",
+      "sha256": "ce9dcebd6c94ee0dee1bf100967f6ba2614c4158078ab6f8f3e7361aae007470"
+    },
+    "workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v42-static-target-teacher-table.yml",
+      "sha256": "567bf33bd09eb38ce1aa1004207b744e38a295da3a202396843331f81d836053"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V42_STATIC_TARGET_TEACHER_TABLE"
+}

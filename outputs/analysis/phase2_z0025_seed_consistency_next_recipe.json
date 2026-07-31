@@ -1,0 +1,94 @@
+{
+  "status": "PASS_Z0025_SEED_CONSISTENCY_RECIPE_READY",
+  "stage": "stage_z0025_seed_consistency",
+  "supersedes_recipe": "phase2-z0025-boundary",
+  "robot_touched": false,
+  "ssh_used": false,
+  "deploy_performed": false,
+  "training_started": false,
+  "basis": {
+    "decision_artifact": "outputs/analysis/phase2_z0025_boundary_l4_artifact_first_decision_20260701.json",
+    "z0025_x000": {
+      "status": "PASS_COMMAND_SEMANTICS",
+      "passes": 8,
+      "runs": 8,
+      "falls": 0,
+      "vx_mean_m_s": 0.0006215220757867475
+    },
+    "z0025_x008": {
+      "status": "HOLD_Z0025_BOUNDARY_NOT_PROMOTED",
+      "passes": 4,
+      "runs": 8,
+      "falls": 0,
+      "track_ratio_mean": 0.25528423841186243,
+      "vx_mean_m_s": 0.020422739072948996,
+      "hold_seeds": {
+        "0": "HOLD_CANDIDATE_TARGET_VELOCITY",
+        "3": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS",
+        "4": "HOLD_CANDIDATE_TARGET_VELOCITY",
+        "6": "HOLD_CANDIDATE_LOW_FORWARD_PROGRESS"
+      }
+    }
+  },
+  "recipe_changes": {
+    "forward_swing_target_rate_limit": {
+      "scale": -0.003,
+      "joint_indices": "2,3,4,11,12,13",
+      "values_rad_s": "2.50,3.25,2.75,2.25,2.75,2.00",
+      "huber_delta": 0.03
+    },
+    "target_rate_scale": 0,
+    "forward_progress_scale": 4.2,
+    "command_progress_scale": 3.4,
+    "command_progress_shortfall_scale": -9.0,
+    "command_progress_required_ratio": 0.52
+  },
+  "preferred_colab_command": {
+    "argv": [
+      "python3",
+      "tools/run_colab_cli_cuda_workflow.py",
+      "--workflow",
+      "phase2-z0025-boundary",
+      "--session",
+      "open-duck-l4-z0025-seed-consistency",
+      "--candidate-name",
+      "phase2_z0025_seed_consistency_l4",
+      "--candidate-checkpoint-sweep",
+      "--candidate-checkpoint-sweep-commands",
+      "0.0,0.08",
+      "--candidate-checkpoint-sweep-duration",
+      "1.0",
+      "--candidate-checkpoint-sweep-jax-platform",
+      "cpu",
+      "--candidate-timeout-s",
+      "10800",
+      "--phase2-skip-post-training-gates",
+      "--phase2-forward-swing-target-rate-limit-scale",
+      "-0.003",
+      "--phase2-forward-swing-target-rate-limit-joint-indices",
+      "2,3,4,11,12,13",
+      "--phase2-forward-swing-target-rate-limit-values",
+      "2.50,3.25,2.75,2.25,2.75,2.00",
+      "--phase2-forward-swing-target-rate-limit-huber-delta",
+      "0.03",
+      "--phase2-forward-progress-scale",
+      "4.2",
+      "--phase2-command-progress-scale",
+      "3.4",
+      "--phase2-command-progress-shortfall-scale",
+      "-9.0",
+      "--phase2-command-progress-required-ratio",
+      "0.52",
+      "--exec-remote",
+      "--exec-remote-timeout-s",
+      "14400",
+      "--run"
+    ]
+  },
+  "acceptance": [
+    "z=0.0025 x=0.08 no-push passes 8/8 with zero falls and no velocity excess.",
+    "z=0.0025 x=0.0 no-push passes 8/8 with |mean vx| <= 0.005 m/s.",
+    "If promoted, run z=0.0024 no-push and gentle-push regressions separately from the downloaded ONNX."
+  ],
+  "falsifier": "If velocity excursions are removed but low-progress seeds regress, stop scalar reward tuning and move to targeted seed-conditioned data/teacher correction."
+}

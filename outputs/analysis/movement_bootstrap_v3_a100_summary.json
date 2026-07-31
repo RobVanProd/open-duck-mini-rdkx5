@@ -1,0 +1,44 @@
+{
+  "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+  "robot_touched": false,
+  "artifact_bundle_sha256": "b9d0a05403e332b78531ceedcedbf2393159f3139d1a864bd4016bca89d9ba07",
+  "final_candidate_onnx_sha256": "85e2e29d1539edba991576583cad1869fec2f80e0d4fc0b7c0cd499018a2964d",
+  "training_phases": [
+    {
+      "phase": "phase1_window_progress_no_bridge",
+      "status": "PASS_SMOKE_RUN",
+      "steps": 460800,
+      "final_reward": 9.039175033569336
+    },
+    {
+      "phase": "phase2_window_progress_mild_bridge",
+      "status": "PASS_SMOKE_RUN",
+      "steps": 368640,
+      "final_reward": 11.700050354003906
+    },
+    {
+      "phase": "phase3_window_progress_fitted_bridge",
+      "status": "PASS_SMOKE_RUN",
+      "steps": 430080,
+      "final_reward": 11.158679962158203
+    }
+  ],
+  "candidate_gate": {
+    "command_x": 0.0,
+    "duration_s_requested": 5.0,
+    "bridge_mode": "fitted",
+    "jax_platform": "cpu",
+    "samples": 79,
+    "termination": "fall_or_nan",
+    "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION",
+    "metrics": {
+      "max_action_saturation_pct": 0.0,
+      "max_pitch_tracking_p95_rad": 0.11904547214508056,
+      "max_sent_target_velocity_p95_rad_s": 3.2418966293334934,
+      "max_abs_body_pitch_p95_rad": 1.1393274387307568,
+      "min_base_height_m": 0.029771538451313972,
+      "min_reward_mean": 0.4028788556026507
+    }
+  },
+  "recommendation": "Do not deploy. Recover fitted-bridge x0 stability before another forward-progress candidate."
+}

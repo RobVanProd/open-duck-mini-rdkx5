@@ -1,0 +1,117 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "deployment_audit": false,
+    "execute_one_saved_artifact_recovery": true,
+    "gate5": false,
+    "hosted_preregistration": false,
+    "hosted_training": false,
+    "optimizer": false,
+    "policy_promotion": false,
+    "rdkx5_or_robot": false
+  },
+  "checks": {
+    "all_substantive_cpu_checks_green": true,
+    "event_file_receipt_exact": true,
+    "no_optimizer_retry": true,
+    "source_held_only_on_metric_readback": true,
+    "source_result_hash_exact": true
+  },
+  "decision_rule": {
+    "fail": "CLOSE_T193_CORRECTED_DYNAMIC_REFERENCE_SUPPORT_AND_RETURN_TO_MECHANISM_SELECTION",
+    "no_optimizer_retry": true,
+    "pass": "EARN_T194_CORRECTED_DYNAMIC_REFERENCE_SUPPORT_HOSTED_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "model_inference_rows": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "saved_event_files": 0,
+    "simulator_transitions": 0
+  },
+  "failed_checks": [],
+  "preregistered_contract_sha256": "9301db262e4edf10d9896b05c38afffc54d57f15f80cb5ccd4c05386e0f4d60f",
+  "preserved_t193_checks": {
+    "both_checkpoint_trees_finite": true,
+    "cpu_only": true,
+    "default_off_observation_abi_and_finiteness_exact": true,
+    "default_off_trajectory_bit_exact": true,
+    "enabled_environment_contract_green": true,
+    "every_critic_leaf_changes": true,
+    "graph_abi_and_cpu_chain_exact": true,
+    "no_formal_behavior_hosted_or_hardware": true,
+    "normalizer_bit_exact": true,
+    "only_t170_negative_adapter_head_changes": true,
+    "runner_readback_exact": true,
+    "source_cpu_remap_exact": true,
+    "step_zero_raw_onnx_byte_exact": true,
+    "step_zero_tree_exact": true,
+    "update_structure_exact": true
+  },
+  "question": "Does the immutable T193 event file satisfy the intended bilateral support and reference-exposure contract when the training driver's emitted metric namespaces are read exactly?",
+  "recovery_contract": {
+    "event_artifact_immutable": true,
+    "new_behavior_evaluation": false,
+    "new_model_inference": false,
+    "new_optimizer_execution": false,
+    "new_simulator_execution": false,
+    "only_change": "read environment metrics from eval/episode_t193/* rather than the nonexistent eval/episode_reward/t193/* namespace",
+    "scientific_contract_change": false
+  },
+  "saved_artifact_contract": {
+    "all_other_t193_checks_must_remain_true": true,
+    "incorrect_tags_must_be_absent": [
+      "eval/episode_reward/t193/reference_left_requested",
+      "eval/episode_reward/t193/reference_right_requested"
+    ],
+    "original_reward_tag": "eval/episode_t193/original_reward",
+    "reference_tags": [
+      "eval/episode_t193/reference_left_requested",
+      "eval/episode_t193/reference_right_requested",
+      "eval/episode_t193/reference_single_support_requested"
+    ],
+    "required_minimum_value_exclusive": 0.0,
+    "required_rows_per_tag": 2,
+    "support_tags": [
+      "eval/episode_reward/t193_reference_support_balance",
+      "eval/episode_reward/t193_left_support_match",
+      "eval/episode_reward/t193_right_support_match"
+    ]
+  },
+  "schema_version": "open_duck.t193b_metric_namespace_recovery_preregistration.v1",
+  "sources": {
+    "builder": {
+      "bytes": 7726,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t193b_metric_namespace_recovery_preregistration.py",
+      "sha256": "f3e9647a360b97de5999d9c4acd897a853624e4c8d0003516c7d65f0d9a863be"
+    },
+    "event_file": {
+      "bytes": 6879,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t193_corrected_dynamic_reference_support_cpu_v1\\smoke\\events.out.tfevents.1785405719.WinLSD",
+      "sha256": "cb31417559caa209ccc6b9cf9a0ecac625d6ed4324c93d2c6b4149db09acfe9b"
+    },
+    "runner": {
+      "bytes": 7523,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t193b_metric_namespace_recovery.py",
+      "sha256": "f2fd6b001493351db6fa5b5159a76648001eb28f8c1b2ac7ca0b903f9da66b71"
+    },
+    "t193_result": {
+      "bytes": 14133,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t193_corrected_dynamic_reference_support_cpu_result.json",
+      "sha256": "ed3096d1f4750287c0c2c804ce1c31898b621e4765c5c08803267eae676451e8"
+    },
+    "test": {
+      "bytes": 6373,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t193_corrected_dynamic_reference_support.py",
+      "sha256": "1583164abccc235b711826e815d2a775e14ea20ad6baa4230329237fbcd5aa6f"
+    }
+  },
+  "status": "PREREGISTERED_T193B_METRIC_NAMESPACE_RECOVERY"
+}

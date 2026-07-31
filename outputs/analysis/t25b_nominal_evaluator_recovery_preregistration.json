@@ -1,0 +1,54 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "colab_authorized": false,
+    "gate5_authorized": false,
+    "one_cpu_matrix_recovery": true,
+    "rdkx5_or_robot": false,
+    "training_authorized": false
+  },
+  "checks": {
+    "evaluator_change_is_default_off": true,
+    "invalidity_attribution_green": true,
+    "one_recovery_only": true,
+    "original_matrix_exact_green": true,
+    "policies_matrix_gate_seeds_duration_unchanged": true,
+    "robot_or_rdk_access_zero": true,
+    "training_or_colab_zero": true,
+    "zero_context_cpu_contract_green": true
+  },
+  "correction": {
+    "duration": "BYTE_IDENTICAL",
+    "gate": "BYTE_IDENTICAL",
+    "matrix": "BYTE_IDENTICAL",
+    "only_change": "feed float32 zeros[1,64] to ignored calibration_context",
+    "playground": "BYTE_IDENTICAL",
+    "policies": "BYTE_IDENTICAL",
+    "response_calibrator": false,
+    "seeds": "BYTE_IDENTICAL",
+    "unscored_prefix_ticks": 0
+  },
+  "decision": "RUN_ONE_T25B_CPU_MATRIX_RECOVERY",
+  "execution_now": {
+    "colab_compute_units": 0,
+    "formal_behavior_cells": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "frozen_matrix_sha256": "de2adaff30d62391d4dd8e18de56d3e774bb5655597d9a02ac83ce3209d2aff3",
+  "input_hashes": {
+    "invalidity_attribution": "8dbc9d831820ddc5a6d1e467a30205be04fb92e57ef9c7ccb2e68f11cb212530",
+    "original_preregistration": "ac41bea2aeb21a3838da7f09257d2ccd89d397081362a4e40c384d9eb0b48f79",
+    "zero_context_contract": "82be88ef844f8f7271125f566c89d2e4d6b140630e0c75a11678074efda95028"
+  },
+  "preregistered_contract_sha256": "3a4111e775be285c8eeff229f530be4cceba3801201e06fb926825883dac6d3c",
+  "schema_version": "open_duck.t25b_evaluator_recovery.v1",
+  "source_hashes": {
+    "tools/closed_loop_sim_eval.py": "a5bff87f2cce5e5f5c661a9fe73dee9de77a4c356912279e4771025c3379a4ac",
+    "tools/run_t25b_t23_nominal_behavior.py": "12c6bd372c03825a419d1084aebedbbee9fc09d0d97e8e086fe9bb73f62b6060",
+    "tools/run_winner_v109_recurrent_source_screen.py": "fb3f2c259e70b7c5fbb4a0841c2ff05ff32fc71128160862f9c1a0f0bf2ccae8",
+    "tools/run_winner_v110_pitch_guard_behavior.py": "d179a084627d1568a69e9561f74dfe4be7ca95e86924f2483f5cff335f0c5c86"
+  },
+  "status": "PREREGISTERED_T25B_NOMINAL_EVALUATOR_RECOVERY"
+}

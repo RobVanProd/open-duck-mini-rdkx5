@@ -1,0 +1,59 @@
+{
+  "authority": {
+    "cpu_contract": true,
+    "formal_behavior": false,
+    "full_matrix": false,
+    "gate5": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "checks": {
+    "all_input_hashes_exact": true,
+    "composition_green": true,
+    "robot_surface_absent": true,
+    "two_nonformal_cells_only": true,
+    "v126_single_fit_teacher_exists": true,
+    "v130_rejects_static_linear_readout": true,
+    "zero_training_or_behavior_gate": true
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "base_preregistration": "c8f986ceb24863f33c1fc99170548d2e255cb6a26737d3f74762f8dcd4485a24",
+    "composed_evaluator": "3e71d2c9fce67aee83528c60b1bf888deda160d8f53035eff7b30ba64e46161b",
+    "composer": "4e37d442b2234525d1d4e0a3d5a162b7f131b1f9b5245e3f2b46104f1f60e25c",
+    "composition_manifest": "6dc9332fe32b275f3f1788a017c626b830fae71458c5d9d0286051499332562d",
+    "runner": "da26e195dae23d59968d01cb2b05d4c8277d24f09989df0bb02c2aa8c870fc91",
+    "two_fit_projector": "c9894fa982d0837fbd6281dc778248365c9079e60680c928fd34a50c2e55eb27",
+    "v126_preregistration": "eb40f17d9c08b8362f068567e1620bdafef21ad9123a633c9536f3637a31c899",
+    "v130_result": "7b4078c3ea18c3a3e1d129de3329cca8e71d178d93b836ba37f552544bed33d7"
+  },
+  "matrix": {
+    "cells": 2,
+    "command_x_m_s": 0.08,
+    "duration_ticks": 64,
+    "formal_behavior_cells": 0,
+    "seed": 167931544
+  },
+  "mechanism": {
+    "action_constraints": "absolute + frozen rate + actual-centered guard remain supreme",
+    "active_plants": [
+      "P30_ALL_JOINT",
+      "P31_34_PITCH_WITH_P30_NONPITCH"
+    ],
+    "projection": "alternate exact simulator projections until one action is inside the frozen torque box under both measured fits",
+    "shadow_fit": "the other measured fit in each active cell",
+    "source_policy": "V121_TRAIN_MATCHED_FINAL"
+  },
+  "pass_rule": {
+    "common_action": "robust_safe true and zero empty rows on every tick",
+    "coverage": "all 128 moving rows use the two-fit oracle",
+    "duration": "both cells complete all 64 ticks",
+    "nontrivial": "at least one shared projection occurs",
+    "primary_fit": "prediction exact, zero prediction mismatches, and zero nonempty residual torque violations"
+  },
+  "schema_version": "winner_v131.two_fit_oracle_cpu_preregistration.v1",
+  "status": "PREREGISTERED_WINNER_V131_TWO_FIT_ORACLE_CPU_CONTRACT",
+  "stop_rule": "any failed contract check closes the two-fit teacher screen without an eight-cell run or training"
+}

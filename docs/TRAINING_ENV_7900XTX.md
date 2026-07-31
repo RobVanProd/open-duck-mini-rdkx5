@@ -1,6 +1,6 @@
 # 7900 XTX Training Environment
 
-Last updated: 2026-06-22
+Last updated: 2026-06-30
 
 ## Purpose
 
@@ -166,6 +166,52 @@ export HSA_OVERRIDE_GFX_VERSION=11.0.0
 
 The card is already detected through normal ROCm/JAX device discovery. Forcing
 the override breaks basic JAX before MuJoCo or MJX enter the picture.
+
+## Post-BIOS ROCm Recheck
+
+After the host BIOS/firmware update, the local stack was rechecked on
+2026-06-30 with:
+
+```text
+../envs/open-duck-playground/bin/python tools/isolate_rocm_mjx_failure.py \
+  --playground-path ../Open_Duck_Playground \
+  --env-python ../envs/open-duck-playground/bin/python \
+  --policy policy/BEST_WALK_ONNX_2.onnx \
+  --fit-json outputs/analysis/actuator_response_fit_corrected_knee.json \
+  --output-dir outputs/analysis/rocm_mjx_isolation_post_bios \
+  --command-x 0.08 \
+  --steps 1,2,10 \
+  --platforms gpu,cpu \
+  --include-bridge \
+  --timeout-s 120
+```
+
+Evidence:
+
+```text
+outputs/analysis/rocm_mjx_isolation_post_bios/ROCM_MJX_RUNTIME_ISOLATION.md
+outputs/analysis/rocm_mjx_isolation_post_bios/rocm_mjx_runtime_isolation.json
+```
+
+Result:
+
+```text
+gate_result: HOLD_PLAYGROUND_GPU_STEP
+smallest_failing_subtest: default_gpu_playground_direct_mjx_step
+basic JAX GPU: PASS
+JAX jit/scan GPU: PASS
+minimal MJX GPU: PASS
+Playground reset GPU: PASS
+Playground step GPU: FAIL/TIMEOUT
+closed-loop GPU: FAIL
+closed-loop CPU: PASS
+```
+
+So the BIOS update did not clear the Open Duck Playground ROCm/MJX stepping
+blocker. The local `7900 XTX` remains useful for basic ROCm/JAX smoke tests and
+limited non-Playground experiments, but it is not cleared for Phase 2
+JAX/MJX training. Use local CPU only for reduced-horizon correctness checks.
+Use CUDA/Colab or another known-good accelerator backend for Phase 2 training.
 
 ## PufferLib ROCm Archive Lead
 

@@ -1,0 +1,32 @@
+{
+  "status": "PASS_PPO_BC_WARMSTART_STEP0_EXPORT_FIDELITY",
+  "bc_npz": "outputs/analysis/pitch_chain_4p3_ppo_shape_rate_student_candidate/candidate_mlp.npz",
+  "reference_onnx": "outputs/analysis/pitch_chain_4p3_ppo_shape_rate_student_candidate/candidate.onnx",
+  "output_checkpoint": "outputs/analysis/pitch_chain_4p3_ppo_shape_rate_student_warmstart_checkpoint",
+  "output_onnx": "outputs/analysis/pitch_chain_4p3_ppo_shape_rate_student_warmstart_step0.onnx",
+  "manifest": "outputs/analysis/source_vx_selector_trace_pitch_chain_rate_limited_4p3_manifest.json",
+  "samples_checked": 4000,
+  "scale_logit": -2.0,
+  "scale_std": 0.1279280110429725,
+  "fidelity": {
+    "samples": 4000,
+    "mae": 5.475161302115339e-08,
+    "rmse": 7.446841010505523e-08,
+    "p50_abs_error": 5.21540641784668e-08,
+    "p95_abs_error": 1.4901161193847656e-07,
+    "p99_abs_error": 2.086162567138672e-07,
+    "max_abs_error": 4.172325134277344e-07
+  },
+  "pass_thresholds": {
+    "p95_abs_error": 1e-05,
+    "max_abs_error": 0.0001
+  },
+  "mapping": {
+    "bc_w0_b0": "policy.params.hidden_0",
+    "bc_w1_b1": "policy.params.hidden_1",
+    "bc_w2_b2": "policy.params.hidden_2",
+    "bc_w3_b3": "policy.params.hidden_3 columns 0:14",
+    "scale_logits": "policy.params.hidden_3 columns 14:28, constant",
+    "value_network": "fresh PPO initialization"
+  }
+}

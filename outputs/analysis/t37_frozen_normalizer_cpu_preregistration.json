@@ -1,0 +1,288 @@
+{
+  "assets": {
+    "cpu_topology_template": {
+      "kind": "directory",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v119-transition-cpu-smoke-20260724\\smoke\\2026_07_24_150649_0",
+      "sha256": "16a867c653476d6829ddaf400e5f02fc21658a78d3efc5ddfd167cc497f3ac83"
+    },
+    "frozen_t18_context_abi_onnx": {
+      "bytes": 958485,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t24_t23_postexport_v1\\1003520\\context_abi.onnx",
+      "sha256": "95eef5a37aa68f955a3ecba31af29b60324b12835136e2b14359dcf2f602b6f9"
+    },
+    "frozen_t18_pre_margin_wrapped_onnx": {
+      "bytes": 964682,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t24_t23_postexport_v1\\1003520\\rate_coherent_support.onnx",
+      "sha256": "16cb8417b1e5c4d0a6fdadc8fc2830061712a513a7dcc5321a490302fde63e8c"
+    },
+    "frozen_t18_wrapped_onnx": {
+      "bytes": 965047,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t28_t23_action_margin_policies_v1\\T28_MARGIN_1003520.onnx",
+      "sha256": "b2450530ff3751cfc84ff56f023b880ece8dbc7ee21166d9af7b00e10e14fd24"
+    },
+    "source_checkpoint": {
+      "kind": "directory",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t23b_extracted_20260726\\t23_support_trainthrough_continuation\\training\\2026_07_26_231352_1003520",
+      "sha256": "7a570f670813b0405615d4e253869402129183f7f18d14625fb56f74569db39b"
+    },
+    "source_cpu_remapped_checkpoint": {
+      "kind": "directory",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t31_action_margin_trainthrough_smoke_v1\\cpu_source_checkpoint",
+      "sha256": "1d85b66e4d4dd8c8c52485069e72155ef530d6dd7cad44efe09b80a52078d58c"
+    },
+    "source_v121_half_onnx": {
+      "bytes": 954952,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t23b_extracted_20260726\\t23_support_trainthrough_continuation\\training\\2026_07_26_231352_1003520.onnx",
+      "sha256": "0c8b2d05df4baa796b9e2a95b8020b23538b95e070a6fd0bd8ea9fb26cc9aa2b"
+    }
+  },
+  "authority": {
+    "behavior_evaluation": false,
+    "checkpoint_selection": false,
+    "execute_1024_cpu_steps": true,
+    "gate5": false,
+    "hosted_preregistration": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "all_sources_and_assets_present": true,
+    "all_t36_factorial_variants_green": true,
+    "composed_source_inventory_complete": true,
+    "explicit_identity_update_present": true,
+    "normalization_not_disabled": true,
+    "runner_context_is_default_off": true,
+    "source_normalizer_count_positive": true,
+    "source_normalizer_manifest_complete": true,
+    "t31_cpu_contract_green": true,
+    "t36_selected_normalizer_freeze": true,
+    "t37_requires_t31": true,
+    "welford_builtin_cutoff_is_not_a_freeze": true
+  },
+  "cpu_smoke": {
+    "checks": [
+      "source restore and step-zero deployment hashes exact",
+      "all normalizer leaves and count bit-exact at step 1024",
+      "observation normalization remains enabled",
+      "every policy and critic leaf updates and remains finite",
+      "T19 and T31 transitions remain enabled",
+      "both deployment action-margin contracts pass",
+      "no behavior selection, hosted compute, or robot access"
+    ],
+    "exports": [
+      0,
+      1024
+    ],
+    "ppo_envs": 4,
+    "restore": "T23_SUPPORT_HALF step 1003520",
+    "simulator_steps": 1024
+  },
+  "decision_rule": {
+    "fail": "Close T37 without hosted training or behavior evaluation.",
+    "pass": "Authorize only a separate T38 hosted-continuation preregistration. Do not launch hosted compute."
+  },
+  "failed_checks": [],
+  "normalizer_contract": {
+    "freeze_mechanism": "temporary_identity_update_context",
+    "freeze_scope": "Brax running_statistics.update during train call",
+    "mode": "welford",
+    "normalization_enabled": true,
+    "policy_and_critic_trainable": true,
+    "restoration": "original update restored in finally",
+    "source": "exact T23 half checkpoint",
+    "source_count": 16056320,
+    "source_manifest": {
+      "leaves": {
+        "count/hi": {
+          "dtype": "uint32",
+          "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+          "shape": [],
+          "value": 0
+        },
+        "count/lo": {
+          "dtype": "uint32",
+          "sha256": "8090234f10118cc656b0d116692652410673dd7f44dedc1f46591e656db1c512",
+          "shape": [],
+          "value": 16056320
+        },
+        "mean/policy_hidden": {
+          "dtype": "float32",
+          "sha256": "7af9061d858254e57ba3a4c135c676f30c45719dd01447575a805951047b176b",
+          "shape": [
+            64
+          ]
+        },
+        "mean/privileged_state": {
+          "dtype": "float32",
+          "sha256": "76487830e13b52dd2327df9e53b25a79e5a651c9893be129700711ac09ba2fe5",
+          "shape": [
+            226
+          ]
+        },
+        "mean/state": {
+          "dtype": "float32",
+          "sha256": "34a6d7bbe6b81d909e2cf80bcdedc2931d0d56fc6b0c9f6d3a232f2df2a6bca3",
+          "shape": [
+            115
+          ]
+        },
+        "std/policy_hidden": {
+          "dtype": "float32",
+          "sha256": "8db960f7097e3140fb1c924ca12db355261bbb7ed95782db3419cabf076bdc48",
+          "shape": [
+            64
+          ]
+        },
+        "std/privileged_state": {
+          "dtype": "float32",
+          "sha256": "58323380b0d7149b24b99e121d2a8e997ffdef22d5a993c73a8846fb3732dd67",
+          "shape": [
+            226
+          ]
+        },
+        "std/state": {
+          "dtype": "float32",
+          "sha256": "b17caa4205ab5ef3f7373146757b88ccaef00e0e44f31469944ef1dfdefc7476",
+          "shape": [
+            115
+          ]
+        },
+        "std_eps": {
+          "dtype": "float32",
+          "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+          "shape": [],
+          "value": 0.0
+        },
+        "summed_variance/policy_hidden": {
+          "dtype": "float32",
+          "sha256": "a9c3f0860e56f4be7c45f3d3d10366fdc755e099219214056b34551f1910a124",
+          "shape": [
+            64
+          ]
+        },
+        "summed_variance/privileged_state": {
+          "dtype": "float32",
+          "sha256": "7d1a39727ddebd3e13688fb3023719b94ab90a20d22b4c9247ce4a39f74d7c12",
+          "shape": [
+            226
+          ]
+        },
+        "summed_variance/state": {
+          "dtype": "float32",
+          "sha256": "abbfd183c01b5d9fd3b6f9ae810ea5598ac07fde497744d2bd96a9f3468c8378",
+          "shape": [
+            115
+          ]
+        }
+      },
+      "sha256": "2b3189603848402b7ad89867fb347364bf0461e9edf56dd527be03a7f04f43dc"
+    }
+  },
+  "playground": {
+    "path": "D:\\CodexProjects\\Open_Duck_Playground-composed-t37-v1",
+    "python_inventory": {
+      "playground/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "playground/common/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "playground/common/export_onnx.py": "30bc705bf59babb59c5ba3045b601c838db00ebb569bb9fc6aa520f1e61139cc",
+      "playground/common/onnx_infer.py": "e610c2b94d15cd0ea4be1c0cee8853dc33b10c3b440e6d9bb1b1bb73168f34f2",
+      "playground/common/phase_moe_networks.py": "6480f59f4039884be6743828ffed1c31f76896830b2b38689cad038200283cb7",
+      "playground/common/plot_saved_obs.py": "911fe1de5668c31fdc2a10a4285b8343c04fd4f662a38207d6f06a91fd4e0a8e",
+      "playground/common/poly_reference_motion.py": "cc2430d82a9e41bf2081a4a9bed45731a43aad8b860e5b168f5850eb3748cf21",
+      "playground/common/poly_reference_motion_numpy.py": "585e783722ffb403a14288aafc1fcdf86c8a5d1b39949171a3b2d918028c4406",
+      "playground/common/randomize.py": "c6e7a48f714a2267b3b19d75ffc9ce3938350aabceb3eda61727a3c48f2d6dd8",
+      "playground/common/recurrent_ppo_networks.py": "a501000c6f959276514ba56f935d027b05b171a9ea62bb6a2bc1ecdd2fe8cb4e",
+      "playground/common/reference_residual_ppo_networks.py": "eeb1b758f32bb8a7e53cf59b269bed7f97126cf37ccc4d11090a5f8312b380e6",
+      "playground/common/reference_residual_recurrent_adapter_ppo_networks.py": "ffd07d0a6e96d846aa1f62a8d131bf892f10db6b2a22710affe3946b7b145ebd",
+      "playground/common/rewards.py": "9c327866f2632265f14ef81318046f887aafa64384a06efa6cb264e144bbb1d3",
+      "playground/common/rewards_numpy.py": "f1dba8838b29fdc4701bc3759e2533fa9d51ec550c8f70b83a23d3de64b97f48",
+      "playground/common/runner.py": "a4713f45abc3c8b8ebe88c7cc2bde4c637e4a328ef629dc767ce4318d3ea74d5",
+      "playground/common/t19_support_trainthrough.py": "dc6c4270a4a5569f4c82dc3f9d1f07c395512bea86c15cd62a634fe10c895057",
+      "playground/common/t37_frozen_observation_normalizer.py": "324cb669821cd2964b62bdd1c2241a3bd6108c0ce37d34792f4e0adf8a75eab6",
+      "playground/common/utils.py": "dbeb9fd88bb41aaca5ab242a954cbae7ae9755b7f13ff2d7d2b27cc9094a284c",
+      "playground/common/winner_v127_constrained_ppo_losses.py": "996e292f76a4071f2c3117b0f1dacd9b1a3bf9e31d6d97128ce2f054f9bc6ff1",
+      "playground/common/winner_v127_constrained_ppo_train.py": "9ac5b96d2f810644b4ee2e019c1a8e4f2e5a92b5f1e6455298df5c1ecaa896c0",
+      "playground/common/winner_v171_gradient_geometry.py": "dfbadab3ef4021c71c27c358135bed87307c04f53310fdf9093f6436e00008c3",
+      "playground/common/winner_v173_lexicographic_tangent.py": "b7ff83f8d68f1034ab1ddb5562d4a32a384756a330bb150b8ca69d92a63f3841",
+      "playground/common/winner_v3_variable_configuration.py": "daab44325e6dd98b8b4054fc5c5fe7391ca9e358e7aca97999ef1a2441285ab7",
+      "playground/common/winner_v98_response_calibration_wrapper.py": "04339bf7bbe16f2721ce92bbe62c458e70c1c8a5e9bdfe02424478ebc066a7ba",
+      "playground/common/winner_v98_response_conditioned_export.py": "83c8667828a51bdb379091fbf657725410bae5e0d655273f63cf47bdc913f28c",
+      "playground/common/winner_v98_response_conditioned_ppo_networks.py": "767b0d4dc7d72d6c126eca9ed1f0497ca38214a9e2caa57c8a1e6b5cea3ad17a",
+      "playground/open_duck_mini_v2/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "playground/open_duck_mini_v2/base.py": "0e90b98b113c2e5ff4abd34b64482e3f1b3d365ef95481d1838f8b855de99988",
+      "playground/open_duck_mini_v2/constants.py": "8fafc240bfb8e70c93b722d89148cffb03688882fd4e6250735eccdf53363374",
+      "playground/open_duck_mini_v2/custom_rewards.py": "16fdf5ed409f9abcfa6f68465c4351081c0c255a6683c09aee110c557890cd0c",
+      "playground/open_duck_mini_v2/custom_rewards_numpy.py": "51422e858c4058f5c114004ab6ebd7900cbae544f09aaf430f9398adf9032333",
+      "playground/open_duck_mini_v2/joystick.py": "8e6b04c8e9f71e42f468ca559e0fbeb0651652fc83734d0ccf8348154808f4b3",
+      "playground/open_duck_mini_v2/mujoco_infer.py": "67a933e043fe54a3bf252524e71fbb8a7eff973e8bb693d9fe1f1d6f323b11ed",
+      "playground/open_duck_mini_v2/mujoco_infer_base.py": "4c8fd11e4659126d49985a9c048e1cb5a5cfde5f4d54cdfe433e4b165d3b0ab1",
+      "playground/open_duck_mini_v2/ref_motion_viewer.py": "78c267d86d7de9a942c9bd4007990369eb39a7dae7a410acaa316dd9da0a5322",
+      "playground/open_duck_mini_v2/runner.py": "c51ff7de5a089c3cd1d7a5f1b7b5f848b46093d3b312df330ef98625f95da8a4",
+      "playground/open_duck_mini_v2/standing.py": "123419cb68f3dcf0908b3c77e4c98206de48d719058d38998ddcd69ef32dcdd6"
+    },
+    "python_inventory_sha256": "7aafc6fcab6c995b68d4eec205b1eba22cdf251f368fde250af38b9663fdffcf"
+  },
+  "preregistered_contract_sha256": "42b2665200d900f5cd432cb3663fbe9621ac0baffff8afc958d8bdec90cfef34",
+  "question": "Can the exact T23 half checkpoint take one finite T31 PPO update while every restored observation-normalizer leaf remains bit-exact?",
+  "schema_version": "open_duck.t37_frozen_normalizer_cpu_preregistration.v1",
+  "selection_evidence": {
+    "all_variants_green": true,
+    "new_scalar_search": false,
+    "reward_changes": 0,
+    "selected_mechanism": "Continue T31 with the mature T23-half observation normalizer frozen while actor and critic remain trainable.",
+    "selected_variant": "NORMALIZER_HALF",
+    "selection_precedence": "lowest-complexity one-block repair; no hybrid promotion",
+    "source": "T36 frozen six-variant actor-block factorial"
+  },
+  "sources": {
+    "brax_running_statistics": {
+      "bytes": 12903,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\venvs\\open-duck-policy-py31213\\Lib\\site-packages\\brax\\training\\acme\\running_statistics.py",
+      "sha256": "9591566ebcd151d35dd1a9167de3b1b00df92100892b5889bc9514252fb8c0c4"
+    },
+    "patch": {
+      "bytes": 3617,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\patches\\winner_t37_frozen_observation_normalizer.patch",
+      "sha256": "88c02f5e7cd78f26ea7f70596be10b122227b4d75523131c241cf5bf86bfb02a"
+    },
+    "reference": {
+      "bytes": 259604,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\ground_up_projected_reference_feature_table.npz",
+      "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+    },
+    "runner": {
+      "bytes": 7682,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t37_frozen_normalizer_cpu_smoke.py",
+      "sha256": "54c907c4edafeca3922d0867129d389cc896bd83b0d4025d88a77e66e471bf32"
+    },
+    "t31_result": {
+      "bytes": 35728,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t31_action_margin_trainthrough_cpu_result.json",
+      "sha256": "56496de136758bbcc36e0231535a72fe9de7ac93ab157ee89bbccfaabfe5d37d"
+    },
+    "t36_result": {
+      "bytes": 57413,
+      "kind": "file",
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t36_t32_actor_block_factorial_result.json",
+      "sha256": "32a2158f81db402c2198b58e66d5bc97f7f9d19b3f091109203ff9d042d2f8a1"
+    }
+  },
+  "status": "PREREGISTERED_T37_FROZEN_NORMALIZER_CPU_SMOKE",
+  "transition": {
+    "default_off": true,
+    "deployment_graph_changes": 0,
+    "environment_changes": 0,
+    "flag": "--winner_t37_freeze_observation_normalizer",
+    "requires": "--winner_t31_action_margin_trainthrough",
+    "reward_changes": 0
+  }
+}

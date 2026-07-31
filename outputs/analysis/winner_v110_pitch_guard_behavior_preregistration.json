@@ -1,0 +1,364 @@
+{
+  "authority": {
+    "checkpoint_selection_authorized": false,
+    "cpu_only": true,
+    "formal_behavior_cells_authorized": 16,
+    "gate5_authorized": false,
+    "hosted_training_authorized": false,
+    "rdkx5_or_robot": false,
+    "robot_clearance": false,
+    "torque_or_motion": false
+  },
+  "causal_question": "Does the already-frozen G3 full-tick actual-centered pitch guard remove the isolated peak-current and peak-torque failures while preserving both recurrent checkpoints' nominal behavior?",
+  "checks": {
+    "attribution_exact": true,
+    "current_contract_exact": true,
+    "g3_repair_exact": true,
+    "manufacturer_gate_complete": true,
+    "policy_hashes_exact": true,
+    "policy_sizes_exact": true,
+    "transform_exact": true,
+    "transform_policy_hashes_exact": true
+  },
+  "decision_rule": {
+    "any_noncurrent_failure": "Reject the static repair and attribute before training.",
+    "any_peak_or_duration_failure": "Reject the static repair; current-aware continuation remains a separate preregistration decision.",
+    "both_checkpoints_all_eight_cells_pass": "Select the G3-repaired recurrent actor as the protected source for the minimal response-conditioned extension.",
+    "no_training_or_checkpoint_selection_in_this_screen": true,
+    "only_one_checkpoint_passes": "Reject persistence; do not cherry-pick a checkpoint."
+  },
+  "failed_checks": [],
+  "gate": {
+    "conversion_nm_per_a": 0.784532,
+    "noncurrent_behavior": "unchanged 600-tick candidate, gait, forward-motion, tracking, saturation, rate, envelope, x=0, trace, readback, and CPU checks",
+    "per_joint_peak_current_a_max": 2.5,
+    "per_joint_peak_torque_nm_max": 1.91229675,
+    "rated_current_p95_a": 0.65,
+    "rated_current_p95_role": "reported diagnostic only",
+    "strict_overcurrent_max_consecutive_ticks": 99,
+    "strict_overcurrent_threshold_a": 2.0
+  },
+  "input_hashes": {
+    "attribution": "128afe8af8d84b6fccb05487c9555250e01f60e83e37a49672966ede1e97bebd",
+    "current": "17e841450a2dde66182c3d41a06abf8d14366011f811bcde20adb1f1c8f68ddb",
+    "transform": "d48a2c6766f4e0fbd1771e686970d19c3ba93c618c2c8d3b2f64af836b318f5b"
+  },
+  "matrix": {
+    "cells": 16,
+    "rows": [
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "R64_G3_REPAIRED_HALF",
+        "command_x_m_s": 0.0,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "fd1d3b8ad42b99e92803133ee21da1a1092f9f86977a846fbbabf0db80c74c39",
+        "seed": 167931544,
+        "step": 1003520,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "R64_G3_REPAIRED_HALF",
+        "command_x_m_s": 0.074,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "fd1d3b8ad42b99e92803133ee21da1a1092f9f86977a846fbbabf0db80c74c39",
+        "seed": 167931544,
+        "step": 1003520,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "R64_G3_REPAIRED_HALF",
+        "command_x_m_s": 0.077,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "fd1d3b8ad42b99e92803133ee21da1a1092f9f86977a846fbbabf0db80c74c39",
+        "seed": 167931544,
+        "step": 1003520,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "R64_G3_REPAIRED_HALF",
+        "command_x_m_s": 0.08,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "fd1d3b8ad42b99e92803133ee21da1a1092f9f86977a846fbbabf0db80c74c39",
+        "seed": 167931544,
+        "step": 1003520,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "R64_G3_REPAIRED_HALF",
+        "command_x_m_s": 0.0,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "policy_sha256": "fd1d3b8ad42b99e92803133ee21da1a1092f9f86977a846fbbabf0db80c74c39",
+        "seed": 167931544,
+        "step": 1003520,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "R64_G3_REPAIRED_HALF",
+        "command_x_m_s": 0.074,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "policy_sha256": "fd1d3b8ad42b99e92803133ee21da1a1092f9f86977a846fbbabf0db80c74c39",
+        "seed": 167931544,
+        "step": 1003520,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "R64_G3_REPAIRED_HALF",
+        "command_x_m_s": 0.077,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "policy_sha256": "fd1d3b8ad42b99e92803133ee21da1a1092f9f86977a846fbbabf0db80c74c39",
+        "seed": 167931544,
+        "step": 1003520,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "R64_G3_REPAIRED_HALF",
+        "command_x_m_s": 0.08,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "policy_sha256": "fd1d3b8ad42b99e92803133ee21da1a1092f9f86977a846fbbabf0db80c74c39",
+        "seed": 167931544,
+        "step": 1003520,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "R64_G3_REPAIRED_FINAL",
+        "command_x_m_s": 0.0,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "58373ef4d7656c5f1c3a6834aef2ecd4d9ccd0fb86a3c18593c891a70909a8ed",
+        "seed": 167931544,
+        "step": 2007040,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "R64_G3_REPAIRED_FINAL",
+        "command_x_m_s": 0.074,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "58373ef4d7656c5f1c3a6834aef2ecd4d9ccd0fb86a3c18593c891a70909a8ed",
+        "seed": 167931544,
+        "step": 2007040,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "R64_G3_REPAIRED_FINAL",
+        "command_x_m_s": 0.077,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "58373ef4d7656c5f1c3a6834aef2ecd4d9ccd0fb86a3c18593c891a70909a8ed",
+        "seed": 167931544,
+        "step": 2007040,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "R64_G3_REPAIRED_FINAL",
+        "command_x_m_s": 0.08,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P30_ALL_JOINT",
+        "policy_sha256": "58373ef4d7656c5f1c3a6834aef2ecd4d9ccd0fb86a3c18593c891a70909a8ed",
+        "seed": 167931544,
+        "step": 2007040,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "R64_G3_REPAIRED_FINAL",
+        "command_x_m_s": 0.0,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "policy_sha256": "58373ef4d7656c5f1c3a6834aef2ecd4d9ccd0fb86a3c18593c891a70909a8ed",
+        "seed": 167931544,
+        "step": 2007040,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "R64_G3_REPAIRED_FINAL",
+        "command_x_m_s": 0.074,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "policy_sha256": "58373ef4d7656c5f1c3a6834aef2ecd4d9ccd0fb86a3c18593c891a70909a8ed",
+        "seed": 167931544,
+        "step": 2007040,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "R64_G3_REPAIRED_FINAL",
+        "command_x_m_s": 0.077,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "policy_sha256": "58373ef4d7656c5f1c3a6834aef2ecd4d9ccd0fb86a3c18593c891a70909a8ed",
+        "seed": 167931544,
+        "step": 2007040,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      },
+      {
+        "calibration_ticks": 0,
+        "checkpoint_id": "R64_G3_REPAIRED_FINAL",
+        "command_x_m_s": 0.08,
+        "configuration": null,
+        "duration_ticks": 600,
+        "home_return_ticks": 0,
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH",
+        "policy_sha256": "58373ef4d7656c5f1c3a6834aef2ecd4d9ccd0fb86a3c18593c891a70909a8ed",
+        "seed": 167931544,
+        "step": 2007040,
+        "transport": {
+          "additional_action_delay_ticks": 0,
+          "imu_delay_ticks": 0,
+          "native_quantization": false,
+          "sensor_noise_scales": null
+        }
+      }
+    ],
+    "sha256": "4297e953d16298f62159d7d3b33dc358f0813dd8f3d0d45d10c6963f4ba1ab3b"
+  },
+  "policies": [
+    {
+      "bytes": 957344,
+      "filename": "R64_ZERO_INIT_RECURRENT_ADAPTER_1003520.onnx",
+      "id": "R64_G3_REPAIRED_HALF",
+      "observed_bytes": 957344,
+      "observed_sha256": "fd1d3b8ad42b99e92803133ee21da1a1092f9f86977a846fbbabf0db80c74c39",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v110-pitch-guard-policies-v3-20260724\\R64_ZERO_INIT_RECURRENT_ADAPTER_1003520.onnx",
+      "sha256": "fd1d3b8ad42b99e92803133ee21da1a1092f9f86977a846fbbabf0db80c74c39",
+      "step": 1003520
+    },
+    {
+      "bytes": 957344,
+      "filename": "R64_ZERO_INIT_RECURRENT_ADAPTER_2007040.onnx",
+      "id": "R64_G3_REPAIRED_FINAL",
+      "observed_bytes": 957344,
+      "observed_sha256": "58373ef4d7656c5f1c3a6834aef2ecd4d9ccd0fb86a3c18593c891a70909a8ed",
+      "path": "D:\\CodexArtifacts\\open-duck-mini-rdkx5\\winner-v110-pitch-guard-policies-v3-20260724\\R64_ZERO_INIT_RECURRENT_ADAPTER_2007040.onnx",
+      "sha256": "58373ef4d7656c5f1c3a6834aef2ecd4d9ccd0fb86a3c18593c891a70909a8ed",
+      "step": 2007040
+    }
+  ],
+  "schema_version": "winner_v110.pitch_guard_behavior_preregistration.v1",
+  "status": "PREREGISTERED_WINNER_V110_PITCH_GUARD_BEHAVIOR"
+}

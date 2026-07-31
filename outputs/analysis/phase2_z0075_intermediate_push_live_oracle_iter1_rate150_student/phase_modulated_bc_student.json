@@ -1,0 +1,96 @@
+{
+  "activation": "swish",
+  "config": {
+    "batch_size": 512,
+    "learning_rate": 0.001,
+    "seed": 17,
+    "steps": 4000,
+    "target_rate_limit_rad_s": 1.5,
+    "target_rate_scale": 1.0
+  },
+  "context_hidden_sizes": [
+    32
+  ],
+  "context_indices": [
+    6,
+    99,
+    100
+  ],
+  "exported_onnx": "policy/candidates/phase2_z0075_intermediate_push_live_oracle_iter1_rate150_20260704/candidate.onnx",
+  "loss_rows": [
+    {
+      "loss": 0.8889793753623962,
+      "step": 1
+    },
+    {
+      "loss": 0.0015701224328950047,
+      "step": 500
+    },
+    {
+      "loss": 0.0010297276312485337,
+      "step": 1000
+    },
+    {
+      "loss": 0.0009145200019702315,
+      "step": 1500
+    },
+    {
+      "loss": 0.0007653662469238043,
+      "step": 2000
+    },
+    {
+      "loss": 0.000596804020460695,
+      "step": 2500
+    },
+    {
+      "loss": 0.0006714783958159387,
+      "step": 3000
+    },
+    {
+      "loss": 0.0005166885093785822,
+      "step": 3500
+    },
+    {
+      "loss": 0.00034475166467018425,
+      "step": 4000
+    }
+  ],
+  "manifest": "outputs/analysis/phase2_z0075_intermediate_push_live_oracle_iter1_rate150_run/live_oracle_dagger_aggregate_manifest.json",
+  "modulation_scale": 0.5,
+  "onnx_verify": {
+    "max_abs_error": 2.086162567138672e-07,
+    "p95_abs_error": 1.1920928955078125e-07,
+    "path": "policy/candidates/phase2_z0075_intermediate_push_live_oracle_iter1_rate150_20260704/candidate.onnx",
+    "samples_checked": 64
+  },
+  "sample_weight": {
+    "max": 5.0,
+    "p50": 3.0,
+    "p95": 5.0,
+    "weighted_samples": 131656.0
+  },
+  "samples": 45501,
+  "saved_npz": "policy/candidates/phase2_z0075_intermediate_push_live_oracle_iter1_rate150_20260704/student.npz",
+  "status": "PASS_PHASE_MODULATED_BC_FIT_SMOKE",
+  "target_rate": {
+    "max_rad_s": 1.8325213193893433,
+    "p50_rad_s": 0.16357973217964172,
+    "p95_rad_s": 1.3043014228343914,
+    "p99_rad_s": 1.4860523819923412,
+    "pair_count": 45440
+  },
+  "train_metrics": {
+    "mae": 0.011864234785345118,
+    "max_abs_error": 0.5711095147535311,
+    "p50_abs_error": 0.006826420700873637,
+    "p95_abs_error": 0.03830004463688644,
+    "p99_abs_error": 0.06815579487010837,
+    "pred_action_saturation_pct": 0.0,
+    "rmse": 0.019502000668938178,
+    "samples": 45501
+  },
+  "trunk_hidden_sizes": [
+    128,
+    128
+  ]
+}

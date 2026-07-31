@@ -1,0 +1,130 @@
+{
+  "authority": {
+    "behavior_evaluation": false,
+    "colab": false,
+    "condition_one_preregistration": true,
+    "gate5": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "checks": {
+    "all_policy_contracts_pass": true,
+    "both_checkpoints_uniform_limit": true,
+    "exactly_two_policies": true,
+    "final_transform_activates_on_frozen_samples": true,
+    "half_is_interior_on_frozen_samples": true,
+    "preregistration_hash_exact": true
+  },
+  "failed_checks": [],
+  "policies": [
+    {
+      "changed_action_values": 0,
+      "checkpoint_id": "T23_SUPPORT_HALF",
+      "checks": {
+        "all_outputs_finite": true,
+        "clipped_action_bit_exact": true,
+        "clipped_previous_action_bit_exact": true,
+        "cpu_provider": true,
+        "exactly_two_initializers_appended": true,
+        "exactly_two_nodes_appended": true,
+        "external_abi_exact": true,
+        "hidden_output_bit_exact": true,
+        "interior_source_bit_exact": true,
+        "observed_transform_activation": true,
+        "outputs_strictly_below_threshold": true,
+        "realized_action_feedback_bit_exact": true,
+        "source_initializers_exact": true,
+        "source_node_prefix_exact": true,
+        "source_trace_replay_within_tolerance": true,
+        "x0_source_bit_exact": true
+      },
+      "inputs": [
+        "obs",
+        "previous_action",
+        "h_in",
+        "calibration_context"
+      ],
+      "maximum_source_trace_action_error": 0.0,
+      "maximum_source_trace_hidden_error": 0.0,
+      "maximum_source_trace_previous_action_error": 0.0,
+      "outputs": [
+        "continuous_actions",
+        "previous_action_out",
+        "h_out"
+      ],
+      "pass": true,
+      "sampled_trace_rows": 192,
+      "source": {
+        "bytes": 964682,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t25_t23_nominal_policies_v1\\T23_SUPPORT_1003520.onnx",
+        "sha256": "16cb8417b1e5c4d0a6fdadc8fc2830061712a513a7dcc5321a490302fde63e8c"
+      },
+      "source_nodes": 81,
+      "step": 1003520,
+      "wrapped": {
+        "bytes": 965047,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t28_t23_action_margin_policies_v1\\T28_MARGIN_1003520.onnx",
+        "sha256": "b2450530ff3751cfc84ff56f023b880ece8dbc7ee21166d9af7b00e10e14fd24"
+      },
+      "wrapped_nodes": 83
+    },
+    {
+      "changed_action_values": 39,
+      "checkpoint_id": "T23_SUPPORT_FINAL",
+      "checks": {
+        "all_outputs_finite": true,
+        "clipped_action_bit_exact": true,
+        "clipped_previous_action_bit_exact": true,
+        "cpu_provider": true,
+        "exactly_two_initializers_appended": true,
+        "exactly_two_nodes_appended": true,
+        "external_abi_exact": true,
+        "hidden_output_bit_exact": true,
+        "interior_source_bit_exact": true,
+        "observed_transform_activation": true,
+        "outputs_strictly_below_threshold": true,
+        "realized_action_feedback_bit_exact": true,
+        "source_initializers_exact": true,
+        "source_node_prefix_exact": true,
+        "source_trace_replay_within_tolerance": true,
+        "x0_source_bit_exact": true
+      },
+      "inputs": [
+        "obs",
+        "previous_action",
+        "h_in",
+        "calibration_context"
+      ],
+      "maximum_source_trace_action_error": 0.0,
+      "maximum_source_trace_hidden_error": 0.0,
+      "maximum_source_trace_previous_action_error": 0.0,
+      "outputs": [
+        "continuous_actions",
+        "previous_action_out",
+        "h_out"
+      ],
+      "pass": true,
+      "sampled_trace_rows": 231,
+      "source": {
+        "bytes": 964682,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t25_t23_nominal_policies_v1\\T23_SUPPORT_2007040.onnx",
+        "sha256": "06d96e32545a4666432dea2f4b30848691c0270949b03400213530a494c66060"
+      },
+      "source_nodes": 81,
+      "step": 2007040,
+      "wrapped": {
+        "bytes": 965047,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t28_t23_action_margin_policies_v1\\T28_MARGIN_2007040.onnx",
+        "sha256": "a5f1a57cbb8f7f3cc9b43cf227fc76a867041e2ccaf12756264b17d66fbbb8da"
+      },
+      "wrapped_nodes": 83
+    }
+  ],
+  "preregistered_contract_sha256": "36ddfd458740a14ac3949943ecabecd96860950ea4534e14ec42850837146590",
+  "result_sha256": "2afb502ddea6fed566cad0029ed4a275d62e11c7b7bf3998461843bd19ed8bc9",
+  "saturation_observation_threshold_abs": 0.9800000190734863,
+  "schema_version": "open_duck.t28_t23_action_margin_contract.v1",
+  "status": "PASS_T28_T23_ACTION_MARGIN_TRANSFORM_CONTRACT",
+  "stored_float32_limit_abs": 0.9799999594688416
+}

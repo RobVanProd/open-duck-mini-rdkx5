@@ -1,0 +1,88 @@
+{
+  "authority": {
+    "artifact_reanalysis": false,
+    "behavior_evaluation": false,
+    "deployment_audit": false,
+    "gate5": false,
+    "hosted_training": false,
+    "optimizer": false,
+    "rdkx5_or_robot": false,
+    "t185d_preregistration": true
+  },
+  "checks": {
+    "actual_terminal_prefix_tag_finite_zero": true,
+    "all_substantive_source_checks_green": true,
+    "no_new_optimizer_behavior_hosted_or_robot": true,
+    "requested_prefix_tag_absent": true,
+    "same_episode_original_reward_finite_positive": true,
+    "source_result_hash_exact": true,
+    "source_status_and_only_hold_exact": true,
+    "support_metrics_finite_positive_at_both_evaluations": true
+  },
+  "classification": "POSTRUN_METRIC_NAMESPACE_AND_TERMINAL_STATE_CHECKER_MISMATCH",
+  "decision": "EARN_T185D_SAVED_ARTIFACT_METRIC_READBACK_RECOVERY_PREREGISTRATION_ONLY",
+  "execution_now": {
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_transitions": 0
+  },
+  "failed_checks": [],
+  "interpretation": {
+    "optimizer_rerun_required": false,
+    "prefix_exposure": "finite positive accumulated balance, left-support, and right-support metrics at both evaluations",
+    "same_episode_resume": "the actual non-reward prefix-active metric is terminal state and is zero after the 27-tick prefix",
+    "scientific_contract_change": false
+  },
+  "observed": {
+    "actual_prefix_tag": "eval/episode_t185/prefix_active",
+    "actual_prefix_values": [
+      0.0,
+      0.0
+    ],
+    "original_reward_tag": "eval/episode_t185/original_reward",
+    "original_reward_values": [
+      30.569400787353516,
+      30.505334854125977
+    ],
+    "requested_prefix_tag": "eval/episode_reward/t185/prefix_active",
+    "requested_prefix_tag_present": false,
+    "support_metric_values": {
+      "eval/episode_reward/t185_left_support_match": [
+        4.5078125,
+        5.0234375
+      ],
+      "eval/episode_reward/t185_right_support_match": [
+        3.0078125,
+        3.0703125
+      ],
+      "eval/episode_reward/t185_single_support_balance": [
+        2.557070732116699,
+        2.728134870529175
+      ]
+    }
+  },
+  "result_sha256": "d9296dd377aaede50ed16ed618fb877dcc29612597f7dc13a7f663c4283137da",
+  "schema_version": "open_duck.t185c_metric_readback_attribution.v1",
+  "source_result_sha256": "946ed90393b9a8d0b010a8f1342fa6ff05e479b2f02e1577fb58fbfe5134ffb6",
+  "sources": {
+    "builder": {
+      "bytes": 7375,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t185c_metric_readback_attribution.py",
+      "sha256": "bc42f153325463da11df4dcc218e0982b4b5df2c36805f7cd6a0fdeff6d6525b"
+    },
+    "event_file": {
+      "bytes": 6127,
+      "kind": "file",
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t185c_in_episode_single_support_cpu_v3\\smoke\\events.out.tfevents.1785397007.WinLSD",
+      "sha256": "020d610a2162ffe56eb3e4c37e42a9e72aff15a3b0a1abcf8a25a2a85a752847"
+    },
+    "t185c_result": {
+      "bytes": 13617,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t185c_in_episode_single_support_cpu_result.json",
+      "sha256": "d39f25a0b8fa4ad4883ccd4bc3f324eac35c3ca9caad7c32805268fde9e5f994"
+    }
+  },
+  "status": "PASS_T185C_METRIC_READBACK_ATTRIBUTION"
+}

@@ -1,0 +1,79 @@
+{
+  "authority": {
+    "behavior": false,
+    "cpu_graph_contract": true,
+    "gate5": false,
+    "hosted_training": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "behavior_stop_rule": "if the separately preregistered single causal cell fails any frozen gate, close this mechanism without adjustment",
+  "checks": {
+    "all_input_hashes_exact": true,
+    "amplitude_is_fixed_max_label": true,
+    "float32_contract_tolerance_preregistered": true,
+    "frozen_safety_projection_reapplied": true,
+    "phase_contact_alignment_green": true,
+    "phase_radius_formula_has_no_search": true,
+    "robot_surface_absent": true,
+    "state_local_family_closed_and_not_reused": true,
+    "training_and_behavior_not_authorized": true,
+    "two_labels_same_joint_sign_phase_contact": true,
+    "v140_source_graph_exact": true
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "first_shadow_trace": "eb432bdb64c251dcbb466bd795db381891837086dae9dcc7a2564a7f2a2930b5",
+    "runner": "3b7bb32f05d38a054115079524b9d633668c37eeac23d52f3fad3192277ec6e9",
+    "second_shadow_trace": "a816549061de726762ff01602a3366f78a919e9800132f8faca622836e39b731",
+    "source_deployed": "ae87508d7bd25c7821cb167d7a61d8eeaa28d7d153be72dd9d537236ae5e92f6",
+    "source_raw": "aa1025ae4bd2daf1c513cd81374e8eb7961308a41ca10bbe55f6284944fd6460",
+    "v121_transform": "4bd5eab5343cd8401db1789773fa3cc345727d903cb31222e0ea9870f0e9e640",
+    "v134_loader": "632a2e12ae10d940be38858c52e738281ca6a2de1736d1be90b8adcbdbd8baa8",
+    "v140_result": "44921665d80235246737b333a5149ceacb702d477dcc2c7496395bf0c42ba637",
+    "v144_correction": "4d955dacf6d30a0953c306ab6e7d9a1d87fea872a8b646aebd48c9e528c0dd0c",
+    "v145_loader": "b6f0cb28e86bc3561009af87ad5cc5136641e08057d54c81d74b119d627ded4c",
+    "v150_correction": "032641cb262a8138d8cf1b395d61d2b71cca560590652ae0b92090c945531e00",
+    "v151_result": "fbc794b6d12bbe8f60087f8d417a201ccf5b259f5f2514c730ba4af2ef4a90f2",
+    "v152_alignment": "15d2a253d638dac796e0021cdb46daf70aee08ad3dd56ed1c265031548cfaaf7",
+    "v1_preregistration": "7970123f7ad206b8dc1b10f657107f3c1d266f1247daf41bc60d6bc905b1734a"
+  },
+  "mechanism": {
+    "correction": {
+      "joint": "right ankle / action index 13",
+      "rule": "maximum of the two same-sign exact-oracle labels",
+      "value": 0.002124011516571045
+    },
+    "optimizer_or_training": false,
+    "postprocess": "frozen G3 guard, x=0 deadband, and final rate projection",
+    "source": "V140 selected raw actor",
+    "state_local_initializers": false,
+    "trigger": {
+      "contacts": [
+        0,
+        1
+      ],
+      "phase": [
+        -0.8354877829551697,
+        -0.5495090484619141
+      ],
+      "radius": "half the Euclidean distance to the nearest distinct phase sample in the frozen 6,000-row aggregate"
+    }
+  },
+  "pass_rule": {
+    "causal_rows": "both known precursors receive the frozen correction; first matches its oracle and second is conservatively no smaller",
+    "float32_tolerance": "5e-7 action units, frozen before graph execution from the observed ONNX float32 associativity budget; no physical gate changes",
+    "safety": "reapplied deployment transform contract green",
+    "scope": "all changes occur only inside the phase/contact gate and only on right ankle",
+    "state": "final action feedback exact; h_out exact",
+    "x0": "deadband remains exact"
+  },
+  "schema_version": "winner_v153.phase_contact_residual_preregistration.v1",
+  "status": "PREREGISTERED_WINNER_V153_PHASE_CONTACT_RESIDUAL",
+  "stop_rule": "any graph-contract failure closes the phase/contact residual; do not change phase, contact, radius, amplitude, or tolerance",
+  "supersedes": {
+    "artifact": "winner_v153_phase_contact_residual_preregistration.json",
+    "reason": "The first execution stopped before producing a result because the runner requested a full oracle action vector from a compact reporting artifact that stores only the delta. V2 reads that vector from the already frozen and hashed first shadow trace. The mechanism, source policy, phase, contact, amplitude, radius rule, tolerance, pass rule, and stop rule are unchanged."
+  }
+}

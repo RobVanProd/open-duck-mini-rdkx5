@@ -1,0 +1,207 @@
+{
+  "authority": {
+    "formal_support_cells_authorized_now": 0,
+    "locomotion_training_authorized": false,
+    "manual_mass_com_inertia_measurements_required": false,
+    "optimizer_updates_authorized_now": 0,
+    "pass_authorizes_only": "a separately hash-frozen zero-update CPU gradient/loss contract",
+    "robot_clearance": false,
+    "robot_or_rdk_access": false
+  },
+  "decision": "AUTHORIZE_PREDICTOR_PRESERVING_JOINT_OBJECTIVE_CPU_CONTRACT_ONLY",
+  "findings": {
+    "current_torque_contact_base_and_determinism_not_causal": true,
+    "flat_transport_equation_selected": false,
+    "frozen_auxiliary_head_with_changed_recurrent_representation_is_incompatible": true,
+    "physical_failure_is_tilt_only": true,
+    "source_predictor_beats_constant_on_heldout": true,
+    "winner_v20_context_remains_noncollapsed_by_frozen_threshold": true,
+    "winner_v20_context_separation_magnitude_regressed": true,
+    "winner_v20_predictor_loses_to_constant_on_both_plants_and_checkpoints": true
+  },
+  "schema_version": "winner_v20.joint_recurrent_support_failure_attribution.v1",
+  "selected_next_contract": {
+    "must_preserve": [
+      "115-D observation and 14-D calibration action ABI",
+      "64-state recurrent chain and previous_action chain",
+      "exact Winner-v20 population, boundaries, seeds, and support gate",
+      "no true configuration or plant label input",
+      "half/final persistence and no closest-checkpoint selection"
+    ],
+    "name": "predictor_preserving_joint_recurrent_support",
+    "objective_scope": "the exact Winner-v20 PPO pitch-margin objective plus the existing normalized next-response objective on the same valid transitions",
+    "scale_rule": "freeze one deterministic gradient-balance scale from a zero-update CPU diagnostic; no behavior tuning or scale sweep",
+    "trainable_scope": "existing recurrent core plus existing auxiliary predictor plus existing Stage-2 policy/value leaves"
+  },
+  "source_manifest_sha256": "73ee0d59f857a46db84f8e0daf99d5fe9e3a184834a68773eb4cc1867aec1112",
+  "source_stage1_final": {
+    "heldout_context_separation_linf_min": 0.07595416903495789,
+    "predictor_by_plant": {
+      "P30_ALL_JOINT": {
+        "constant_normalized_mse_all_50": 1.017420735567805,
+        "constant_normalized_mse_noncontact_48": 1.059813266216464,
+        "contact_normalized_mse": 0.00024685714031129254,
+        "learned_normalized_mse_all_50": 0.9850068653083868,
+        "learned_normalized_mse_noncontact_48": 1.02603853231539,
+        "learned_strictly_below_constant": true,
+        "valid_transition_count": 2957
+      },
+      "P31_34_PITCH_WITH_P30_NONPITCH": {
+        "constant_normalized_mse_all_50": 1.09215788775818,
+        "constant_normalized_mse_noncontact_48": 1.1376644664147704,
+        "contact_normalized_mse": 0.0004055807098737028,
+        "learned_normalized_mse_all_50": 1.0661785490237208,
+        "learned_normalized_mse_noncontact_48": 1.1105857560367975,
+        "learned_strictly_below_constant": true,
+        "valid_transition_count": 2629
+      }
+    },
+    "snapshot_sha256": "8c1392c738eddfb098e61c1a6ae2f863eda883e1eba6ac546aef695da6f163af"
+  },
+  "sources": {
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v20_joint_recurrent_support_failure_attribution.py",
+      "sha256": "a38670f1fa665846c7fd0d0be326cef8a91787cf5050930cee95310a8edc5a4a"
+    },
+    "gate_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v20_joint_recurrent_support_gate_result.json",
+      "sha256": "32cabf9ec20a87c1488ad21363839d3587dff105a626150188d48cf2adfb21b3"
+    },
+    "gate_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v20_joint_recurrent_support_gate.py",
+      "sha256": "7225cf25be01bfa5dc827ca25970761726bad7a6bcef0bb287db34a0794ee5e2"
+    },
+    "mechanics": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v20_joint_recurrent_support.py",
+      "sha256": "276f0008049be9e28cbfc7cb430a5fec6c0a092c02e605f08f3ea95e2df942c7"
+    },
+    "stage1_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v13_normalized_response_stage1_v2_result.json",
+      "sha256": "45e12b9993ce5c8f9811af7350ed3198f9376d0d4ea9b25de8b1aee608a5bcc7"
+    },
+    "training_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v20_joint_recurrent_support_training_result.json",
+      "sha256": "55c351a170b2aa34baad9bdd53d8f2d1786f7ab6442309caa06ba9f669d7fd74"
+    },
+    "training_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v20_joint_recurrent_support_training.py",
+      "sha256": "511d8458fdbfba3cdaddc6a29bc2ec8c13612fe79a8eaf4ccead4c983cb606e9"
+    }
+  },
+  "status": "PASS_WINNER_V20_SUPPORT_FAILURE_ATTRIBUTION",
+  "support_gate": {
+    "checkpoints": [
+      {
+        "all_heldout_contexts_separate": true,
+        "all_heldout_repeats_bit_exact": true,
+        "failing_configuration_ids": [
+          "COM_CORNER_00",
+          "COM_CORNER_01",
+          "COM_CORNER_02",
+          "COM_CORNER_03",
+          "COM_X_NEG",
+          "DISCOVERY_03",
+          "HELDOUT_04",
+          "HELDOUT_09"
+        ],
+        "failing_support_cells": 16,
+        "failure_tick_max": 43,
+        "failure_tick_min": 26,
+        "heldout_context_separation_linf_max": 0.011906087398529053,
+        "heldout_context_separation_linf_min": 7.50422477722168e-05,
+        "label": "half",
+        "maximum_abs_tilt_rad": 0.38313837849469057,
+        "maximum_current_a": 1.2374819296235302,
+        "maximum_overcurrent_streak_ticks": 0,
+        "maximum_torque_nm": 0.9708441732114075,
+        "passing_support_cells": 108,
+        "predictor": {
+          "P30_ALL_JOINT": {
+            "constant_normalized_prediction_mse": 0.22241860598263274,
+            "learned_normalized_prediction_mse": 44432280148.41974,
+            "learned_strictly_below_constant": false,
+            "learned_to_constant_ratio": 199768719672.17154
+          },
+          "P31_34_PITCH_WITH_P30_NONPITCH": {
+            "constant_normalized_prediction_mse": 0.22788384074858092,
+            "learned_normalized_prediction_mse": 44432684812.91995,
+            "learned_strictly_below_constant": false,
+            "learned_to_constant_ratio": 194979532848.6741
+          }
+        },
+        "terminal_failed_check_counts": {
+          "roll_pitch": 16
+        },
+        "total_support_cells": 124,
+        "update": 50
+      },
+      {
+        "all_heldout_contexts_separate": true,
+        "all_heldout_repeats_bit_exact": true,
+        "failing_configuration_ids": [
+          "COM_CORNER_00",
+          "COM_CORNER_01",
+          "COM_CORNER_02",
+          "COM_CORNER_03",
+          "COM_X_NEG",
+          "DISCOVERY_03",
+          "DISCOVERY_09",
+          "DISCOVERY_10",
+          "HELDOUT_04",
+          "HELDOUT_09"
+        ],
+        "failing_support_cells": 20,
+        "failure_tick_max": 103,
+        "failure_tick_min": 27,
+        "heldout_context_separation_linf_max": 0.005429387092590332,
+        "heldout_context_separation_linf_min": 4.214048385620117e-05,
+        "label": "final",
+        "maximum_abs_tilt_rad": 0.3824935263936633,
+        "maximum_current_a": 1.3134213468258358,
+        "maximum_overcurrent_streak_ticks": 0,
+        "maximum_torque_nm": 1.0304210760679666,
+        "passing_support_cells": 104,
+        "predictor": {
+          "P30_ALL_JOINT": {
+            "constant_normalized_prediction_mse": 0.5737657341038873,
+            "learned_normalized_prediction_mse": 48463688190.58649,
+            "learned_strictly_below_constant": false,
+            "learned_to_constant_ratio": 84465985523.30339
+          },
+          "P31_34_PITCH_WITH_P30_NONPITCH": {
+            "constant_normalized_prediction_mse": 0.5760567142701035,
+            "learned_normalized_prediction_mse": 48463477084.57522,
+            "learned_strictly_below_constant": false,
+            "learned_to_constant_ratio": 84129697448.24724
+          }
+        },
+        "terminal_failed_check_counts": {
+          "roll_pitch": 20
+        },
+        "total_support_cells": 124,
+        "update": 100
+      }
+    ],
+    "formal_support_cells": 248,
+    "heldout_repeat_cells": 64,
+    "result_decision": "DO_NOT_TRAIN_RESPONSE_CONDITIONED_LOCOMOTION",
+    "result_status": "HOLD_WINNER_V20_JOINT_RECURRENT_SUPPORT_GATE"
+  },
+  "winner_v20_training": {
+    "all_joint_leaves_changed_cumulatively": true,
+    "auxiliary_predictor_bit_exact_frozen": true,
+    "recurrent_leaf_max_abs_delta": {
+      "hidden_bias": 0.012204272672533989,
+      "hidden_weight": 0.013972252607345581,
+      "obs_weight": 0.014275292865931988,
+      "previous_action_weight": 0.01383405551314354
+    }
+  }
+}

@@ -1,0 +1,530 @@
+{
+  "analysis": {
+    "cost": "scale * square(max(0, abs(roll + horizon*roll_rate) - envelope))",
+    "fixed_cost_scale": 0.8017763166551805,
+    "fixed_price_drift_rule": {
+      "hosted_cost_final_strictly_greater_than_half": true,
+      "hosted_cost_half_strictly_less_than_step_zero": true,
+      "hosted_excess_final_strictly_greater_than_half": true,
+      "hosted_excess_half_strictly_less_than_step_zero": true,
+      "paired_half_pass_final_failure": true
+    },
+    "hosted_cost": [
+      1.1485793590545654,
+      1.1083091497421265,
+      1.2855916023254395
+    ],
+    "hosted_excess": [
+      0.7352444529533386,
+      0.6365899443626404,
+      0.746685266494751
+    ],
+    "hosted_metric_order": [
+      "step_zero",
+      "half",
+      "final"
+    ],
+    "passing_envelope_rad": 0.3541802655745987,
+    "prediction_horizon_s": 0.08,
+    "recorded_onnx_replay": "all 16 T207 traces, exact",
+    "selection_weight": 0,
+    "signal_retention_rule": {
+      "all_15_passing_exceedance_rows": 0,
+      "failure_integral_strictly_exceeds_every_pass": true,
+      "failure_minimum_exceedance_rows": 1,
+      "minimum_failure_lead_ticks": 4
+    }
+  },
+  "authority": {
+    "behavior": false,
+    "cpu_contract_preregistration": false,
+    "execute_read_only_autopsy": true,
+    "full_r2": false,
+    "gate5": false,
+    "robot_or_rdk": false,
+    "training": false
+  },
+  "checks": {
+    "matched_half_cell_and_nominal_matrix_pass": true,
+    "new_failure_is_final_p31_x0077_only": true,
+    "old_t194_failure_exact": true,
+    "read_only_no_behavior_training_hosted_robot": true,
+    "sixteen_new_traces_and_old_failure_present": true,
+    "t201b_roll_signal_green": true,
+    "t204_training_validation_green": true,
+    "t207_is_exact_15_of_16_hold": true,
+    "two_composed_graphs_present": true,
+    "two_y_negative_contexts_exact": true
+  },
+  "contexts": {
+    "p30": {
+      "condition_id": "TORSO_COM_Y_NEG",
+      "context": [
+        0.5800173282623291,
+        -0.5945931673049927,
+        -0.6792619824409485,
+        -0.6917221546173096,
+        -0.6885808706283569,
+        0.6048201322555542,
+        0.1847171187400818,
+        0.7417566180229187,
+        -0.5063944458961487,
+        0.7156811952590942,
+        0.7942132353782654,
+        0.47959744930267334,
+        0.7538225650787354,
+        0.7322460412979126,
+        -0.6090723872184753,
+        -0.46034952998161316,
+        -0.6744005680084229,
+        -0.6243632435798645,
+        0.6973139643669128,
+        0.207722008228302,
+        0.8796172738075256,
+        0.6334306597709656,
+        0.640498697757721,
+        -0.4504890441894531,
+        -0.6317108869552612,
+        0.5280655026435852,
+        0.03863558918237686,
+        -0.677825391292572,
+        0.6580488681793213,
+        0.33139386773109436,
+        -0.26318874955177307,
+        0.6180002093315125,
+        -0.3035661280155182,
+        0.6390781998634338,
+        -0.6163024306297302,
+        -0.7403678894042969,
+        0.14554265141487122,
+        -0.497548371553421,
+        0.8216938972473145,
+        0.5727240443229675,
+        -0.0031245665159076452,
+        -0.7065889239311218,
+        -0.7054978013038635,
+        -0.24226732552051544,
+        0.3081253468990326,
+        -0.2933974862098694,
+        -0.04493105411529541,
+        -0.15647079050540924,
+        0.2736755907535553,
+        -0.49023932218551636,
+        -0.28054875135421753,
+        -0.1442708522081375,
+        -0.34188151359558105,
+        0.5113840699195862,
+        0.5542054176330566,
+        0.35036027431488037,
+        0.7760293483734131,
+        0.5306971073150635,
+        -0.5302873253822327,
+        -0.4801355302333832,
+        -0.8071569204330444,
+        -0.7353729009628296,
+        -0.6414777636528015,
+        0.6302157640457153
+      ],
+      "context_sha256": "098cc8a292ef2f209f09f079434fa2cd0e89f02d471740212508e4ee9dffb817",
+      "fit_id": "p30"
+    },
+    "p31_34": {
+      "condition_id": "TORSO_COM_Y_NEG",
+      "context": [
+        0.578777015209198,
+        -0.5965659022331238,
+        -0.6806613802909851,
+        -0.6942094564437866,
+        -0.6884058713912964,
+        0.6042795777320862,
+        0.18345485627651215,
+        0.7415886521339417,
+        -0.5023974776268005,
+        0.7163352966308594,
+        0.7942392230033875,
+        0.48161450028419495,
+        0.7528862953186035,
+        0.7333662509918213,
+        -0.6106430888175964,
+        -0.45925918221473694,
+        -0.6753503084182739,
+        -0.6221381425857544,
+        0.6991726160049438,
+        0.21130649745464325,
+        0.8798244595527649,
+        0.6328909993171692,
+        0.6414726376533508,
+        -0.4496645927429199,
+        -0.63457190990448,
+        0.5263369083404541,
+        0.04330798611044884,
+        -0.6785919666290283,
+        0.6615756750106812,
+        0.32942095398902893,
+        -0.2590620219707489,
+        0.6202223896980286,
+        -0.30770429968833923,
+        0.6365388631820679,
+        -0.617920458316803,
+        -0.741201639175415,
+        0.14163735508918762,
+        -0.4982394278049469,
+        0.8223440647125244,
+        0.5737837553024292,
+        -0.0069126165471971035,
+        -0.7080899477005005,
+        -0.7064435482025146,
+        -0.24246208369731903,
+        0.3092605173587799,
+        -0.29455626010894775,
+        -0.0459166020154953,
+        -0.15189029276371002,
+        0.268724650144577,
+        -0.4951029419898987,
+        -0.2834329307079315,
+        -0.1467045247554779,
+        -0.34293630719184875,
+        0.5149144530296326,
+        0.5556153655052185,
+        0.35314929485321045,
+        0.7773347496986389,
+        0.5318042039871216,
+        -0.5305049419403076,
+        -0.48318466544151306,
+        -0.8070585131645203,
+        -0.7345271110534668,
+        -0.6434925198554993,
+        0.6327222585678101
+      ],
+      "context_sha256": "1877bd45d746f7c79312c5c919c68918c5139dbc382dd90314c8c5d8de9145ec",
+      "fit_id": "p31_34"
+    }
+  },
+  "decision_rule": {
+    "no_optimizer_or_behavior": true,
+    "otherwise": "RETURN_TO_MECHANISM_SELECTION_WITHOUT_DUAL_ROLL_COST",
+    "signal_retained_and_fixed_price_drifted": "EARN_T209_DUAL_ROLL_COST_CPU_CONTRACT_PREREGISTRATION_ONLY"
+  },
+  "execution_now": {
+    "behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "inference_rows": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "trace_rows": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 11234,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t208_t203_persistence_autopsy_preregistration.py",
+      "sha256": "96cd08534e7418750202bd3cb4c0f45083e0fcbaaca521cdb4d11beab21cc712"
+    },
+    "runner": {
+      "bytes": 11985,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t208_t203_persistence_autopsy.py",
+      "sha256": "e66971a42229ff3d84a7020768c12ad6b6f2e0495b13786f07efebe483974369"
+    },
+    "t167_contexts": {
+      "bytes": 128322,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t167_calibration_context_separability_result.json",
+      "sha256": "0d55e78a96317bff9bb1363a65a1de48beaa61217609a768e148b63a59827e35"
+    },
+    "t198_result": {
+      "bytes": 120210,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t198_t194_targeted_y_negative_result.json",
+      "sha256": "8ae8315f9fd8dea263d30bac2f58b2cb4164a1e766e6c9fbba4a9e18d5ca1512"
+    },
+    "t201b_roll_signal": {
+      "bytes": 8836,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t201b_roll_risk_source_transfer_result.json",
+      "sha256": "92aa503a2ad30eae6f3ef118cfe58597b53f21c41910c172854231c19b79cb25"
+    },
+    "t202_cpu_preregistration": {
+      "bytes": 13612,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t202_predicted_roll_risk_cpu_preregistration.json",
+      "sha256": "5b947fe39d2766553870a100f377f50ec20b2df8a4727aa779a4dfa0be7ca571"
+    },
+    "t204_training_validation": {
+      "bytes": 9905,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t204_t203_recovered_training_validation.json",
+      "sha256": "64da6ed7c0db18708e940f1ea59439ed2eda8e1d07ec3bec2fffaeb9c23af7e9"
+    },
+    "t205_composition": {
+      "bytes": 238216,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t205_t203_postexport_composition_result.json",
+      "sha256": "bd9227b363b2f435259497c835c41dfa1032438b967ae5055b3607536fe275b5"
+    },
+    "t206_nominal_result": {
+      "bytes": 120096,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t206_t203_nominal_matrix_result.json",
+      "sha256": "61aef85513252c14ee989efc92e16990c7ef22ff3916e45077df8c4144343996"
+    },
+    "t207_targeted_result": {
+      "bytes": 120207,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t207_t203_targeted_y_negative_result.json",
+      "sha256": "fe00c119a45c59bf720d73515a9830e347f9bd0328f0bb1e0364824f4ff526f3"
+    },
+    "test": {
+      "bytes": 1367,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t208_t203_persistence_autopsy.py",
+      "sha256": "08acc031410a04372fbabe93e1c38385b458acdeed11f50fc474e12fdb4a2183"
+    }
+  },
+  "graphs": {
+    "final": {
+      "bytes": 983104,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t205_t203_postexport_composition_v1\\2007040\\t203_composed.onnx",
+      "sha256": "1bef7764ce6485ac67d4bbcca7629928216cfb46b16809ad51d3f994ced19c21"
+    },
+    "half": {
+      "bytes": 983104,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t205_t203_postexport_composition_v1\\1003520\\t203_composed.onnx",
+      "sha256": "a910cf5b474a22311167694f49360e139e819a638a162af16bc355ed795bcea9"
+    }
+  },
+  "old_t194_failure": {
+    "cell_green": false,
+    "checkpoint_id": "T194_COMPOSED_HALF",
+    "command_x_m_s": 0.077,
+    "fit_id": "p31_34",
+    "samples": 308,
+    "step": 1003520,
+    "termination_reason": "fall_or_nan",
+    "trace": {
+      "bytes": 5525283,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t198_t194_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T194_COMPOSED_HALF\\p31_34\\traces\\x0.077_seed167931544_t194_composed.jsonl",
+      "sha256": "abd6f38ba12e6ba6de339f986880c8d57dc5c1040183b1b43f37c9a41fefd8d1"
+    }
+  },
+  "preregistered_contract_sha256": "40c11d770e94ddb98615f92b9c7929ad1359ad750567916dd048e6fb43c934ba",
+  "question": "Did the frozen predicted-roll signal remain pass-separable in T203 while the fixed-price continuation lost persistence from half to final, thereby earning a separate adaptive cost channel for CPU-contract work only?",
+  "schema_version": "open_duck.t208_t203_persistence_autopsy_preregistration.v1",
+  "status": "PREREGISTERED_T208_T203_PERSISTENCE_AUTOPSY",
+  "traces": [
+    {
+      "cell_green": true,
+      "checkpoint_id": "T203_COMPOSED_HALF",
+      "command_x_m_s": 0.0,
+      "fit_id": "p30",
+      "samples": 600,
+      "step": 1003520,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 8242721,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t207_t203_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T203_COMPOSED_HALF\\p30\\traces\\x0.000_seed167931544_t203_composed.jsonl",
+        "sha256": "7979eaae70507aa24635eda274d815375cd3bf96a39593023abb56e9b318a9a0"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T203_COMPOSED_HALF",
+      "command_x_m_s": 0.074,
+      "fit_id": "p30",
+      "samples": 600,
+      "step": 1003520,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10769496,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t207_t203_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T203_COMPOSED_HALF\\p30\\traces\\x0.074_seed167931544_t203_composed.jsonl",
+        "sha256": "f61335c72b4341c6613dde7f17b422999cae5dda664e62a63ff554b5be827c07"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T203_COMPOSED_HALF",
+      "command_x_m_s": 0.077,
+      "fit_id": "p30",
+      "samples": 600,
+      "step": 1003520,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10770511,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t207_t203_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T203_COMPOSED_HALF\\p30\\traces\\x0.077_seed167931544_t203_composed.jsonl",
+        "sha256": "f54a4676eefc001994175b1e820796e93e0f20f4cebb083f5df2078ae4997e6d"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T203_COMPOSED_HALF",
+      "command_x_m_s": 0.08,
+      "fit_id": "p30",
+      "samples": 600,
+      "step": 1003520,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10771438,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t207_t203_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T203_COMPOSED_HALF\\p30\\traces\\x0.080_seed167931544_t203_composed.jsonl",
+        "sha256": "a711c17cce383b32b6e7f5983ac2b77a4855f417a1cc49c96eba037968d1bede"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T203_COMPOSED_HALF",
+      "command_x_m_s": 0.0,
+      "fit_id": "p31_34",
+      "samples": 600,
+      "step": 1003520,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 8238405,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t207_t203_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T203_COMPOSED_HALF\\p31_34\\traces\\x0.000_seed167931544_t203_composed.jsonl",
+        "sha256": "4ae4ac171d92c2410f3d4f25dc5f5e5d6d1bdd42136c584625eda36dda8a3b84"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T203_COMPOSED_HALF",
+      "command_x_m_s": 0.074,
+      "fit_id": "p31_34",
+      "samples": 600,
+      "step": 1003520,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10768063,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t207_t203_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T203_COMPOSED_HALF\\p31_34\\traces\\x0.074_seed167931544_t203_composed.jsonl",
+        "sha256": "81740db8d8ed467f992315f69ae7937446e56384c4c2d929e7332acf0616b558"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T203_COMPOSED_HALF",
+      "command_x_m_s": 0.077,
+      "fit_id": "p31_34",
+      "samples": 600,
+      "step": 1003520,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10768807,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t207_t203_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T203_COMPOSED_HALF\\p31_34\\traces\\x0.077_seed167931544_t203_composed.jsonl",
+        "sha256": "068b81c175971972e598eae6b305450edb246e2e178c52536c8a11daf66f12b2"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T203_COMPOSED_HALF",
+      "command_x_m_s": 0.08,
+      "fit_id": "p31_34",
+      "samples": 600,
+      "step": 1003520,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10770296,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t207_t203_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T203_COMPOSED_HALF\\p31_34\\traces\\x0.080_seed167931544_t203_composed.jsonl",
+        "sha256": "cbef5e33cbe2465481b293539b3161dbafe623f348b61c3eca2c61c1670d2eb4"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T203_COMPOSED_FINAL",
+      "command_x_m_s": 0.0,
+      "fit_id": "p30",
+      "samples": 600,
+      "step": 2007040,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 8242721,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t207_t203_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T203_COMPOSED_FINAL\\p30\\traces\\x0.000_seed167931544_t203_composed.jsonl",
+        "sha256": "7979eaae70507aa24635eda274d815375cd3bf96a39593023abb56e9b318a9a0"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T203_COMPOSED_FINAL",
+      "command_x_m_s": 0.074,
+      "fit_id": "p30",
+      "samples": 600,
+      "step": 2007040,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10769466,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t207_t203_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T203_COMPOSED_FINAL\\p30\\traces\\x0.074_seed167931544_t203_composed.jsonl",
+        "sha256": "9ffa7f84ec1519df4a64f1cd2a6a87ee50ad9a901314d6bf788de134b02c9e64"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T203_COMPOSED_FINAL",
+      "command_x_m_s": 0.077,
+      "fit_id": "p30",
+      "samples": 600,
+      "step": 2007040,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10770882,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t207_t203_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T203_COMPOSED_FINAL\\p30\\traces\\x0.077_seed167931544_t203_composed.jsonl",
+        "sha256": "757d8a8776daa9b2a3be87861b83dfe264dce8e5d4e9c7d9bd030a32e056f30d"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T203_COMPOSED_FINAL",
+      "command_x_m_s": 0.08,
+      "fit_id": "p30",
+      "samples": 600,
+      "step": 2007040,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10770246,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t207_t203_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T203_COMPOSED_FINAL\\p30\\traces\\x0.080_seed167931544_t203_composed.jsonl",
+        "sha256": "890b1e12f03eea40d45bb48f19c9d17342efb25706f619d095e7d44c8459dd6b"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T203_COMPOSED_FINAL",
+      "command_x_m_s": 0.0,
+      "fit_id": "p31_34",
+      "samples": 600,
+      "step": 2007040,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 8238405,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t207_t203_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T203_COMPOSED_FINAL\\p31_34\\traces\\x0.000_seed167931544_t203_composed.jsonl",
+        "sha256": "4ae4ac171d92c2410f3d4f25dc5f5e5d6d1bdd42136c584625eda36dda8a3b84"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T203_COMPOSED_FINAL",
+      "command_x_m_s": 0.074,
+      "fit_id": "p31_34",
+      "samples": 600,
+      "step": 2007040,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10771201,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t207_t203_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T203_COMPOSED_FINAL\\p31_34\\traces\\x0.074_seed167931544_t203_composed.jsonl",
+        "sha256": "1841217968f5068ebc8c7c3e786ad8a5bee3ba91b87b363d7d96a44408fb844d"
+      }
+    },
+    {
+      "cell_green": false,
+      "checkpoint_id": "T203_COMPOSED_FINAL",
+      "command_x_m_s": 0.077,
+      "fit_id": "p31_34",
+      "samples": 363,
+      "step": 2007040,
+      "termination_reason": "fall_or_nan",
+      "trace": {
+        "bytes": 6512458,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t207_t203_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T203_COMPOSED_FINAL\\p31_34\\traces\\x0.077_seed167931544_t203_composed.jsonl",
+        "sha256": "8677c93a326a89b705f1ae037b0f7fbd491602750773e05cb8d780bfc6d029df"
+      }
+    },
+    {
+      "cell_green": true,
+      "checkpoint_id": "T203_COMPOSED_FINAL",
+      "command_x_m_s": 0.08,
+      "fit_id": "p31_34",
+      "samples": 600,
+      "step": 2007040,
+      "termination_reason": "duration_complete",
+      "trace": {
+        "bytes": 10772482,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t207_t203_targeted_y_negative_v1\\09_TORSO_COM_Y_NEG\\T203_COMPOSED_FINAL\\p31_34\\traces\\x0.080_seed167931544_t203_composed.jsonl",
+        "sha256": "f0b8e4f4ac07ac49cee7b3c25915443d6b48b59ff2587c2db3e1d15a5028d806"
+      }
+    }
+  ]
+}

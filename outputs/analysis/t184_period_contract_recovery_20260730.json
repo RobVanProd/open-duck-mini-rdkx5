@@ -1,0 +1,36 @@
+{
+  "authority": {
+    "behavior": false,
+    "deployment_contract_audit": false,
+    "gate5": false,
+    "hosted_compute": false,
+    "optimizer": false,
+    "rdkx5_or_robot": false,
+    "t184b_preregistration_only": true
+  },
+  "correction": {
+    "correct_gait_period_ticks": 27,
+    "correct_terminal_window_ticks": 54,
+    "correct_ticks_from_last_support_to_done_limit": 27,
+    "incorrect_gait_period_ticks": 20,
+    "incorrect_terminal_window_ticks": 40,
+    "incorrect_ticks_from_last_support_to_done_limit": 20
+  },
+  "evidence": {
+    "reference_fps": 50,
+    "reference_nb_steps_in_period": 27,
+    "reference_period_s": 0.54,
+    "t180b_preregistered_gait_period_ticks": 27
+  },
+  "execution": {
+    "new_behavior_cells": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "invalidated_decision": "EARN_T185_BILATERAL_SINGLE_SUPPORT_CURRICULUM_CPU_CONTRACT_PREREGISTRATION_ONLY",
+  "reason": "T184 confused the 20 ms control tick with the 27-tick frozen reference gait period. The trace integrity and raw support measurements remain valid, but the preregistered period labels and windows do not.",
+  "result_sha256": "c7972281cc5ee484a75833e6330719593cef288cc316e37f34576c7202b19a38",
+  "schema_version": "open_duck.t184_period_contract_recovery.v1",
+  "source_result_sha256": "50589c064cc07eead5af3a9588cf9df40214cd2c5cdffae45e092133733631db",
+  "status": "INVALIDATE_T184_PERIOD_CONTRACT_BEFORE_T185"
+}

@@ -1,0 +1,187 @@
+{
+  "authority": {
+    "formal_behavior_evaluation": false,
+    "full_calibrator_training": false,
+    "hosted_gpu_or_igpu": false,
+    "new_checkpoint_or_onnx": false,
+    "optimizer_updates": 0,
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "robot_clearance": false
+  },
+  "causal_scope": "recover the interrupted smoke evidence from the immutable checkpoint and ONNX; reconstruct deterministic rollouts and gradients only to compare stored Adam moments/parameters; create no new candidate",
+  "checks": {
+    "failed_checkpoint_counts_exact": true,
+    "failed_smoke_exact": true,
+    "population_exact": true,
+    "recovered_artifacts_exact": true,
+    "runner_checks_stored_moments_and_parameters": true,
+    "runner_fixes_only_canary_signature": true,
+    "runner_has_no_optimizer_update": true,
+    "runner_has_zero_authority": true,
+    "runner_protects_artifact_hashes": true,
+    "runner_reconstructs_both_rollouts": true,
+    "runner_reconstructs_gradients_only": true,
+    "runner_writes_no_checkpoint_or_graph": true,
+    "workflow_is_one_shot_branch_path_launch": true
+  },
+  "decision": "AUTHORIZE_ONE_READ_ONLY_RECOVERY_RUN",
+  "failed_smoke": {
+    "artifact_archive_digest": "sha256:02a2468f22ce5a94e8b552c20c40e42effa1e7cbd637fc516a5b6965dbcd6910",
+    "checkpoint_sha256": "5748978f050c222f156d733f709b1ddc76e2b27bebaa00ed726ad53d9fca2288",
+    "commit": "0340ee946a8783434c919fea614b88f199b38a3b",
+    "graph_sha256": "9c0d018cd4d496abf9081584f969a917293ef72ecdcd6047483d6c553389aa4c",
+    "run_id": 29802206612
+  },
+  "failed_smoke_cannot_be_rerun": true,
+  "no_retry": true,
+  "pass_authorizes_only": "a separate prospective full-calibrator training preregistration",
+  "population": {
+    "configuration_ids": [
+      "MASS_LOW",
+      "MASS_HIGH",
+      "COM_X_NEG",
+      "COM_X_POS",
+      "COM_Y_NEG",
+      "COM_Y_POS",
+      "COM_Z_NEG",
+      "COM_Z_POS",
+      "INERTIA_X_LOW",
+      "INERTIA_X_HIGH",
+      "INERTIA_Y_LOW",
+      "INERTIA_Y_HIGH",
+      "INERTIA_Z_LOW",
+      "INERTIA_Z_HIGH",
+      "COM_CORNER_00",
+      "COM_CORNER_01"
+    ],
+    "environment_count": 16,
+    "hidden_plants": {
+      "P30_ALL_JOINT": 8,
+      "P31_34_PITCH_WITH_P30_NONPITCH": 8
+    },
+    "population_sha256": "05d7f69e1f25752db8b4c71ed2d7c867531e9aeee3a0b7c6956bff096e10ea1e",
+    "ticks_per_environment": 250
+  },
+  "required_proofs": [
+    "recovered checkpoint and ONNX hashes stay unchanged before/after",
+    "checkpoint schema, 40 finite arrays, repeat-load identity, and both Adam counts equal one",
+    "deterministically reconstructed Stage-1 normalization, gradients, Adam moments, and checkpoint parameters match",
+    "deterministically reconstructed Stage-2 rollout, gradients, Adam moments, and checkpoint parameters match",
+    "corrected fixed-P30-observer versus hidden-plant canary passes with explicit 0.02 s dt",
+    "all original action/history/support/current/force-range and ONNX-chain checks pass",
+    "no protected-policy inference, formal behavior cell, robot access, optimizer update, checkpoint write, or graph write occurs"
+  ],
+  "schema_version": "winner_v12.calibrator_artifact_recovery_contract.v1",
+  "software_versions": {
+    "jax": "0.7.2",
+    "jaxlib": "0.7.2",
+    "mujoco": "3.9.0",
+    "numpy": "2.0.2",
+    "onnx": "1.22.0",
+    "onnxruntime": "1.27.0",
+    "python": "3.12.13"
+  },
+  "sources": {
+    "actuator_bridge": {
+      "hash_mode": "lf",
+      "path": "tools/actuator_bridge_model.py",
+      "sha256": "bb5ddb1847e773ab21d8ddfadab307ceaf22599a51f686dbb4f6121cde2d0bec"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v12_calibrator_artifact_recovery_contract.py",
+      "sha256": "4e637cf8de6b299b80bb94202debe3c28af8e9713b73e21ab669db3b16a935df"
+    },
+    "calibrator_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_training_preregistration.json",
+      "sha256": "1ec76a587c6fa50b92866c1632a7046ae0c6687ed17b1636b664bf45c2e8ba34"
+    },
+    "decomposed_network": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_decomposed_backend_networks.py",
+      "sha256": "f463223a33f80baf81b2604e0df22c647660f2752a7ca60b8c75a3441460d015"
+    },
+    "domain_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    },
+    "failed_smoke_attribution": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_cpu_smoke_failure_attribution.json",
+      "sha256": "d5dbff4c477464f496845a871ca9c701aa52a79a2f2095e84e955aec962fffcb"
+    },
+    "failed_smoke_contract": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_calibrator_cpu_smoke_contract.json",
+      "sha256": "fb3b3114486f3e7154115557a5131a1e26f6ea5f0e70a5a3d114ffb01707aad7"
+    },
+    "p30_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p30_actuator_fit_20260712.json",
+      "sha256": "908ddb01e5d82e661d77b8f3cb186a84665695660b86b304c6d1ae89c79cdb0b"
+    },
+    "p31_34_fit": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/fixed_target_p31_34_actuator_fit_20260712.json",
+      "sha256": "a39776c06c5e26425e24b50e7dab3f441823e23904cad4977b8c921d9c9ca276"
+    },
+    "playground_composer": {
+      "hash_mode": "lf",
+      "path": "tools/compose_winner_v7_playground.py",
+      "sha256": "47d920af6438bcf93d65d1edfe0b2e20df8bfef298f3fd73fefc73cebcaf1bcd"
+    },
+    "reference_table": {
+      "hash_mode": "raw",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/reference/ground_up_projected_reference_feature_table.npz",
+      "sha256": "8102d9cd139584816d807ca635bcca6d37fa6b3c455848e00395b6d565968212"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_artifact_recovery.py",
+      "sha256": "f564479a49ee74390f699212ae95ef13b8be811bed26c35c845c178dcdc6cf86"
+    },
+    "runtime_observer": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer/winner_v2_contract.py",
+      "sha256": "5c90994a24aa223c94f3a51927228e97000f6118c927561a87a3f2684dcf4889"
+    },
+    "runtime_observer_contract": {
+      "hash_mode": "lf",
+      "path": "artifacts/runtime_handoff/rdkx5_native_20260719/observer_contract.json",
+      "sha256": "63261636dbec7259dbede679d8f22288608963634dcf3570bcc65d544e160350"
+    },
+    "smoke_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_cpu_smoke.py",
+      "sha256": "b6ad53430f3f7cca3a91a90f72dab585cb05e3e2f74be2241af3fd9b6ee7ce87"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v12_calibrator_artifact_recovery_contract.py",
+      "sha256": "51c3eec6e87434be6cab0e725ac08f5c6767b5e1b62e11a672bfc28d2935c240"
+    },
+    "training_primitives": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v12_calibrator_training.py",
+      "sha256": "f5736a357d73baedae2bba1d15254dd688bddf3761eb731d757a971783c77227"
+    },
+    "winner_v11_network": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v11_dynamic_calibration_networks.py",
+      "sha256": "3ac1166920ec1a3fbcfbca5a85870c6afc1dc0e5062023801edbed09fcdc4809"
+    },
+    "winner_v6_network": {
+      "hash_mode": "lf",
+      "path": "patches/winner_v6_dynamic_calibration_networks.py",
+      "sha256": "cfff280a1c592043d7e1849c68a3c99b05574814180506e6608f17877a5dbb90"
+    },
+    "workflow": {
+      "hash_mode": "lf",
+      "path": ".github/workflows/winner-v12-calibrator-artifact-recovery.yml",
+      "sha256": "4b3b0e27db20bf48bd653ba7890b417c7bfdcf8727c6e0eb7b3c81cad5b68c56"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V12_READ_ONLY_RECOVERY"
+}

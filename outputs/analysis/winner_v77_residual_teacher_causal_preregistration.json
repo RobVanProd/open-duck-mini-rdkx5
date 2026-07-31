@@ -1,0 +1,181 @@
+{
+  "authority": {
+    "rdkx5_robot_serial_gpio_i2c_torque_motion": false,
+    "result_authorizes_only": "a separately preregistered mechanism chosen from the frozen classification",
+    "robot_clearance": false,
+    "training_authorized": false
+  },
+  "causal_question": "After isolated persistent-teacher continuation, does the frozen full teacher still rescue every final Winner-v76 failure, and is the mismatch still localized to pitch output?",
+  "classification": {
+    "either_single_intervention_rescues": "pitch_teacher and nonpitch_zero both pass",
+    "no_posthoc_threshold_or_arm_change": true,
+    "nonpitch_output_causal": "nonpitch_zero passes and pitch_teacher fails",
+    "pitch_nonpitch_interaction": "full_teacher passes and both single interventions fail",
+    "pitch_output_causal": "pitch_teacher passes and nonpitch_zero fails",
+    "report_first_tick_and_post_first_tick_alignment_separately": true,
+    "teacher_insufficient": "full_teacher fails"
+  },
+  "decision": "AUTHORIZE_ONE_READ_ONLY_36_CELL_CPU_DIAGNOSTIC_ONLY",
+  "execution_now": {
+    "diagnostic_cells": 0,
+    "locomotion_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0
+  },
+  "frozen_arms": {
+    "full_teacher": "replace all 14 actor outputs with the frozen V42 target before the unchanged graph bound",
+    "graph": "unchanged Winner-v75 final graph",
+    "nonpitch_zero": "replace indices [0,1,5,6,7,8,9,10] with zero before the unchanged graph bound",
+    "pitch_teacher": "replace indices [2,3,4,11,12,13] with the frozen V42 target before the unchanged graph bound",
+    "response_state": "retain graph h_out exactly, matching reviewed V48/V54/V62 intervention semantics"
+  },
+  "frozen_execution": {
+    "arm_count": 4,
+    "checkpoint_count": 1,
+    "diagnostic_cells": 36,
+    "failed_pair_count": 9,
+    "formal_graph_cells_must_match_v76_bit_exact": true,
+    "locomotion_steps": 0,
+    "optimizer_updates": 0,
+    "robot_or_rdk_access": 0,
+    "ticks_per_cell": 250
+  },
+  "frozen_source": {
+    "checkpoint_label": "final",
+    "completed_updates": 655,
+    "failure_pairs": [
+      {
+        "configuration_id": "COM_X_NEG",
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+      },
+      {
+        "configuration_id": "COM_CORNER_01",
+        "plant": "P30_ALL_JOINT"
+      },
+      {
+        "configuration_id": "COM_CORNER_01",
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+      },
+      {
+        "configuration_id": "COM_CORNER_03",
+        "plant": "P30_ALL_JOINT"
+      },
+      {
+        "configuration_id": "COM_CORNER_03",
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+      },
+      {
+        "configuration_id": "COM_CORNER_07",
+        "plant": "P30_ALL_JOINT"
+      },
+      {
+        "configuration_id": "COM_CORNER_07",
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+      },
+      {
+        "configuration_id": "DISCOVERY_03",
+        "plant": "P30_ALL_JOINT"
+      },
+      {
+        "configuration_id": "DISCOVERY_03",
+        "plant": "P31_34_PITCH_WITH_P30_NONPITCH"
+      }
+    ],
+    "formal_failed_cells": 9,
+    "onnx_sha256": "abd438a70904d9fc117bd04520a7ea7555f310a2f0c5259027af0ee6752f9add",
+    "snapshot_sha256": "00a68b8c0f08996afa770cd84218574872851e613cbb8441caa66af84ece73c6",
+    "v76_result_sha256": "19e71696f223b2585f80457095cbdf577d91846c6cf16c2bb739c0ef5fa44737"
+  },
+  "pass_rule": {
+    "all_9_graph_cells_bit_exact_to_v76": true,
+    "all_jax_onnx_hidden_errors_at_most_1e_7": true,
+    "all_previous_action_chains_exact": true,
+    "all_values_finite": true,
+    "exact_36_cells": true,
+    "exact_9_failed_pair_classifications": true
+  },
+  "schema_version": "winner_v77.residual_teacher_causal_preregistration.v1",
+  "source_manifest_sha256": "786765bed13db1cf264a29a4c89ee45c84c1cbccda5734492df914ad388153da",
+  "sources": {
+    "base_gate_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v12_full_calibrator_training_preregistration.json",
+      "sha256": "99500648d6683097a13f894b0949bf4b5494e5653f36878710817bd0952f71dd"
+    },
+    "base_gate_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v12_calibrator_support_gate.py",
+      "sha256": "18873eee55c77a278fc065de64c0b912803bf29b4440cde7f3adaabe1297baca"
+    },
+    "base_runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v62_residual_teacher_causal.py",
+      "sha256": "60a63513d19fabb9049c1429169262383cc94939e4ccdc0fc549631272094592"
+    },
+    "builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v77_residual_teacher_causal_preregistration.py",
+      "sha256": "34a08f75a5aacf3eafaa1ac308fe6037dfc0f3bd6696bdf6e891b8ff1b336863"
+    },
+    "intervention_mechanics": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v48_static_teacher_causal_diagnostic.py",
+      "sha256": "892db8ce547e8a2ee74b9f2352201c8b6334a201fd8cbfdc38f849d65fbc00ac"
+    },
+    "prior_causal_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v62_residual_teacher_causal_result.json",
+      "sha256": "b9b4bc76ed91a4d05ab35acf5222797f469d2f6b3e108a85f1131f38970be7f1"
+    },
+    "runner": {
+      "hash_mode": "lf",
+      "path": "tools/run_winner_v77_residual_teacher_causal.py",
+      "sha256": "8a73c66dc6a72c2c5e80293bb6de608bf6dc191d22c5cdef58a3990f22609f20"
+    },
+    "teacher_table": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v42_static_target_teacher_table_result.json",
+      "sha256": "c465d9b3951941715ee0bb588a0ba24a9c4b15d7a2c99430340bcaea43964469"
+    },
+    "tests": {
+      "hash_mode": "lf",
+      "path": "tests/test_winner_v77_residual_teacher_causal.py",
+      "sha256": "8d725e25936a166d7108861870ef7f59a26307e120452d4e7a49235338cedf1d"
+    },
+    "v75_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v75_functional_numeric_guard_continuation_preregistration.json",
+      "sha256": "3d2d6fc3741e618165792d3195037eb357cf46dcc915d379dc43b04361065d5d"
+    },
+    "v75_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v75_functional_numeric_guard_continuation_result.json",
+      "sha256": "1787d26b32a82eb2b6b27b56718c8315c78e1845f5e5c15444aa3cd15c1dcf02"
+    },
+    "v76_builder": {
+      "hash_mode": "lf",
+      "path": "tools/build_winner_v76_integrated_support_gate_preregistration.py",
+      "sha256": "215481c4f8f1f1ae2910ec09e0a756596c76a3c9ee1f506316108f76fd0185dd"
+    },
+    "v76_preregistration": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v76_integrated_support_gate_preregistration.json",
+      "sha256": "a8817db1d4315ffe338a088345ba7625eeff067f318e18db8583a96a0d435f1a"
+    },
+    "v76_result": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v76_integrated_support_gate_result.json",
+      "sha256": "cb84f2f645497527aec9898e620fe051e0ff9660217d14ce424e5993cc62edf0"
+    },
+    "variable_configuration_domain": {
+      "hash_mode": "lf",
+      "path": "outputs/analysis/winner_v3_variable_configuration_replacement_preregistration.json",
+      "sha256": "79ed8e765be72b035d94958c106758d170cb740379abab88d5582ddd7735a96b"
+    }
+  },
+  "status": "PREREGISTERED_WINNER_V77_RESIDUAL_TEACHER_CAUSAL_DIAGNOSTIC",
+  "transformation": {
+    "base_v62_runner_lf_sha256": "60a63513d19fabb9049c1429169262383cc94939e4ccdc0fc549631272094592",
+    "transformed_source_sha256": "3f0ff71e35379563e078bee6ce133d6e6b321b1c33ec54f134ea17b148adf4de"
+  }
+}

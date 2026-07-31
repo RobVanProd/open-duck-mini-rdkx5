@@ -1,0 +1,71 @@
+{
+  "advance_rule": "only a green cell earns a separately preregistered 16-cell dual-checkpoint nominal matrix at the same fixed factor",
+  "authority": {
+    "cpu_behavior_screen": true,
+    "gate5": false,
+    "hosted_training": false,
+    "policy_graph_change": false,
+    "rdkx5_or_robot": false,
+    "runtime_config_change": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "checks": {
+    "composition_pass": true,
+    "cpu_only_no_training_or_hardware": true,
+    "one_point_not_sweep": true,
+    "policy_hash_exact": true,
+    "previous_phase_advance_not_repeated": true,
+    "runtime_knob_exists": true,
+    "v158_census_pass": true
+  },
+  "failed_checks": [],
+  "gates": {
+    "all_existing_candidate_checks": true,
+    "bilateral_transitions": true,
+    "duration_ticks_exact": 600,
+    "positive_command_consistent_motion": true,
+    "torque_peak_nm_at_most": 1.91229675,
+    "tracking_p95_rad_at_most": 0.2,
+    "zero_rate_excess": true
+  },
+  "input_hashes": {
+    "builder": "b5a932e13b6529d30d4e6fa249af10138a78aad1ba08babb6c12f022f1b25438",
+    "composed_evaluator": "7214a6ed5c306f6cf70a6e2aa7d0665f15e47271510cd4014ecda246c9ffa1a2",
+    "composer": "eab08641b1884a8cd9dc2fd5362f7cc8b9e64167079c1fbc8167fe28a1a80832",
+    "composition_manifest": "3617361d73b320228ad08e2546ce8fa662b2646f3587ec5b434f1828e8fd2be2",
+    "phase_advance_result": "36dcadab572e33889590aa7d8da330680c0d301d1928eb6a64e4803c78870b4b",
+    "runtime": "df82162c9904ebcea7ff7ffdad75f4c0cd7f7b9373a6a2c8a00febd246495e80",
+    "selected_policy": "ae87508d7bd25c7821cb167d7a61d8eeaa28d7d153be72dd9d537236ae5e92f6",
+    "source_evaluator": "1539ba18b5b207a15538a8a8611475f5c73bcd7164f2fe039cad8b279a587e43",
+    "source_evaluator_manifest": "39e842470828208dfea08b17d936d3f0e6f0d45b8f9813a1edd139692e4a6f74",
+    "v140_result": "44921665d80235246737b333a5149ceacb702d477dcc2c7496395bf0c42ba637",
+    "v141_runner": "41cc51abb21dde2fde8fa4cbf36ad50212794fea0a38eb73b2c3705ee96ac034",
+    "v158_reporting_correction": "96feb1995018d2b8614406d9e922794d14beb03b2407330e25b71a46aab4b08b"
+  },
+  "matrix": {
+    "cells": 1,
+    "row": {
+      "checkpoint_id": "V140_SELECTED_FINAL",
+      "command_x_m_s": 0.077,
+      "configuration": null,
+      "duration_ticks": 600,
+      "phase_frequency_factor": 0.95,
+      "phase_frequency_factor_offset": -0.05,
+      "plant": "P30_ALL_JOINT",
+      "seed": 167931544
+    }
+  },
+  "mechanism": {
+    "base_factor": 1.0,
+    "causal_direction": "V158 shows safe actions exist but multi-joint tracking lag creates torque peaks; slower reference transport gives the same closed loop more physical settling time",
+    "factor": 0.95,
+    "magnitude_rule": "one downward controller quantum from the existing runtime; no fitted scalar and no second point",
+    "name": "existing runtime cadence offset",
+    "not_repeated": "the closed three-tick phase-advance reward experiment changed reward timing, not cycle duration",
+    "offset": -0.05
+  },
+  "schema_version": "winner_v159.cadence_screen_preregistration.v1",
+  "status": "PREREGISTERED_WINNER_V159_CADENCE_SCREEN",
+  "stop_rule": "if this exact cell fails any candidate check, close cadence offset as a post-export mechanism; do not try another factor"
+}

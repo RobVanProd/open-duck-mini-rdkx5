@@ -1,0 +1,65 @@
+{
+  "status": "PASS_CORRECTED_Z0024_SOURCE_READY__PLAN_Z005_LIVE_ORACLE_NEXT",
+  "scope": "offline_planning_and_source_manifest",
+  "robot_tests": false,
+  "ssh": false,
+  "deploy": false,
+  "grounded_replay": false,
+  "training_started": false,
+  "source_manifest": {
+    "path": "outputs/analysis/phase2_z0024_corrected_terrain_source_manifest.json",
+    "report": "outputs/analysis/PHASE2_Z0024_CORRECTED_TERRAIN_SOURCE_MANIFEST.md",
+    "dataset_id": "d8498b665c201936",
+    "entries": 8,
+    "samples": 6000,
+    "bc_ready_entries": 8,
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0024,
+    "command_x": 0.08,
+    "bridge": "corrected_fitted"
+  },
+  "source_quality": {
+    "mean_vx_range_m_s": [
+      0.0288,
+      0.0352
+    ],
+    "track_ratio_range": [
+      0.3602,
+      0.4396
+    ],
+    "sent_vel95_range_rad_s": [
+      1.8159,
+      1.8582
+    ],
+    "track95_range_rad": [
+      0.157,
+      0.1595
+    ],
+    "base_height_min_range_m": [
+      0.1464,
+      0.1565
+    ]
+  },
+  "z005_failure_context": {
+    "decision_artifact": "outputs/analysis/PHASE2_Z005_VS_Z0024_SEED5_TRACE_DECISION.md",
+    "status": "HOLD_Z005_TERRAIN_SUPPORT_COLLAPSE",
+    "first_velocity_pitch_divergence_time_s": 0.48,
+    "first_base_height_divergence_time_s": 1.02,
+    "not_primary_cause": "corrected_envelope_velocity_excess"
+  },
+  "planned_next_iteration": {
+    "dry_run_status": "PASS_LIVE_ORACLE_DAGGER_ITERATION_DRY_RUN",
+    "ignored_plan_md": "outputs/analysis/PHASE2_Z005_LIVE_ORACLE_TERRAIN_SUPPORT_ITER0_PLAN.md",
+    "ignored_plan_json": "outputs/analysis/phase2_z005_live_oracle_terrain_support_iter0_plan.json",
+    "student_policy": "policy/candidates/phase2_stagea2_seed5_recovery_command_gated_gain099_20260629/candidate.onnx",
+    "teacher_manifest": "outputs/analysis/phase2_z0024_corrected_terrain_source_manifest.json",
+    "base_manifest": "outputs/analysis/phase2_z0024_corrected_terrain_source_manifest.json",
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.005,
+    "bridge": "corrected_fitted",
+    "x008_seeds": "0-7",
+    "x0_seeds": "0-1",
+    "duration_s": 15.0
+  },
+  "decision": "Proceed next with the bounded z=0.005 live-oracle terrain-support iteration using the corrected z=0.0024 source manifest. Do not use historical old-bridge manifests, do not run another scalar support reward recipe, and do not promote the current candidate for grounded terrain testing."
+}

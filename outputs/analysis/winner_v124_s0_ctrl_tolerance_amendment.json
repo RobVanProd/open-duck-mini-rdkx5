@@ -1,0 +1,40 @@
+{
+  "authority": {
+    "gate5_authorized": false,
+    "hosted_training_authorized": false,
+    "one_exact_s0_s2_rerun_authorized": true,
+    "rdkx5_or_robot": false,
+    "s3_behavior_screen_authorized": false,
+    "torque_or_motion": false
+  },
+  "checks": {
+    "firstpass_wrote_no_behavior_or_training": true,
+    "input_hashes_exact": true,
+    "measured_ctrl_error_inside_existing_preregistered_tolerance": true,
+    "only_s0_ctrl_check_failed": true,
+    "preregistration_was_green": true,
+    "s1_passed_unchanged": true,
+    "s2_failed_unchanged": true
+  },
+  "correction": {
+    "all_other_equations_thresholds_inputs_and_decisions_unchanged": true,
+    "ctrl_applied_tolerance_rad": 6e-08,
+    "measured_firstpass_error_rad": 5.960364601875767e-08,
+    "source": "reuse the already preregistered bridge trace closure tolerance; introduce no new or result-selected threshold"
+  },
+  "decision": "AUTHORIZE_ONE_EXACT_S0_S2_RERUN_WITH_CTRL_TOLERANCE_CORRECTION",
+  "defect": "The implementation added an unpreregistered 1e-12 ctrl/applied float comparison. Both values represent the same applied target, but one trace path is float32; the observed 5.9603646e-8 rad difference is already inside the preregistered 6e-8 bridge closure tolerance.",
+  "execution_now": {
+    "behavior_rollouts": 0,
+    "colab_compute_units": 0,
+    "robot_or_rdk_access": 0,
+    "training_steps": 0
+  },
+  "failed_checks": [],
+  "input_hashes": {
+    "invalid_firstpass": "e7e62c3d84e18cd38b1ab27d67c43897dd4ad1a5371a3359f3c0fc03980d4f81",
+    "preregistration": "61364c864ef3bf97d13df92a79645140a3918ecc8923f52810dd360f16b8042f"
+  },
+  "schema_version": "winner_v124.s0_ctrl_tolerance_amendment.v1",
+  "status": "PREREGISTERED_WINNER_V124_S0_CTRL_TOLERANCE_AMENDMENT"
+}

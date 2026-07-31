@@ -1,0 +1,95 @@
+{
+  "status": "HOLD_INTERMEDIATE_PUSH_ROBUSTNESS",
+  "candidate": "policy/candidates/phase2_z0075_iter21_early_lunge_gain095_rate150_20260704/candidate.onnx",
+  "candidate_sha256": "72aa93c2ab249d2e9b22bb5415ef6c96c7407833fbfd21233892b6daa6afda14",
+  "corrected_bridge": "outputs/analysis/actuator_response_fit_corrected_knee.json",
+  "corrected_bridge_sha256": "3661543d0745073b561eb4fa2ae8f9616368ee8b72cb397f8b953dada532c8c0",
+  "gate": {
+    "task": "rough_terrain_backlash",
+    "terrain_hfield_z_scale": 0.0075,
+    "command_x": 0.08,
+    "bridge_mode": "fitted",
+    "duration_s": 15.0,
+    "seeds": [0, 1, 2, 3, 4, 5, 6, 7],
+    "push_enabled": true,
+    "push_interval_s": [1.0, 1.5],
+    "push_magnitude": [0.075, 0.125],
+    "reset_mode": "home-support",
+    "reset_settle_ticks": 10,
+    "jax_platform": "cpu"
+  },
+  "summary": {
+    "passes": 5,
+    "target_velocity_holds": 2,
+    "fall_or_termination_holds": 1,
+    "track_ratio_mean": 0.2986,
+    "max_vel_excess_mean_rad_s": 0.0085,
+    "push_success_mean": 0.9157
+  },
+  "per_seed": [
+    {"seed": 0, "status": "PASS_CANDIDATE_SIM_GATE", "samples": 750, "termination": "duration_complete", "track_ratio": 0.3391, "max_vel_excess_rad_s": 0.0, "base_height_min_m": 0.1593, "push_success": "11/12"},
+    {"seed": 1, "status": "HOLD_CANDIDATE_TARGET_VELOCITY", "samples": 750, "termination": "duration_complete", "track_ratio": 0.3964, "max_vel_excess_rad_s": 0.0583, "base_height_min_m": 0.1576, "push_success": "12/13"},
+    {"seed": 2, "status": "PASS_CANDIDATE_SIM_GATE", "samples": 750, "termination": "duration_complete", "track_ratio": 0.3225, "max_vel_excess_rad_s": 0.0, "base_height_min_m": 0.1589, "push_success": "12/13"},
+    {"seed": 3, "status": "HOLD_CANDIDATE_TARGET_VELOCITY", "samples": 750, "termination": "duration_complete", "track_ratio": 0.3514, "max_vel_excess_rad_s": 0.0097, "base_height_min_m": 0.1587, "push_success": "12/13"},
+    {"seed": 4, "status": "PASS_CANDIDATE_SIM_GATE", "samples": 750, "termination": "duration_complete", "track_ratio": 0.3014, "max_vel_excess_rad_s": 0.0, "base_height_min_m": 0.1593, "push_success": "11/12"},
+    {"seed": 5, "status": "HOLD_CANDIDATE_FALL_OR_TERMINATION", "samples": 599, "termination": "fall_or_nan", "track_ratio": -0.0672, "max_vel_excess_rad_s": 0.0, "base_height_min_m": 0.0630, "push_success": "9/10"},
+    {"seed": 6, "status": "PASS_CANDIDATE_SIM_GATE", "samples": 750, "termination": "duration_complete", "track_ratio": 0.3567, "max_vel_excess_rad_s": 0.0, "base_height_min_m": 0.1588, "push_success": "12/13"},
+    {"seed": 7, "status": "PASS_CANDIDATE_SIM_GATE", "samples": 750, "termination": "duration_complete", "track_ratio": 0.3886, "max_vel_excess_rad_s": 0.0, "base_height_min_m": 0.1593, "push_success": "9/10"}
+  ],
+  "failure_traces": {
+    "seed_1": {
+      "kind": "single_tick_right_ankle_velocity_excess",
+      "tick": 281,
+      "time_s": 5.62,
+      "joint": "right_ankle",
+      "velocity_rad_s": -2.0583,
+      "limit_rad_s": 2.0,
+      "excess_rad_s": 0.0583,
+      "push_active_on_tick": false,
+      "p95_velocity_excess_rad_s": 0.0
+    },
+    "seed_3": {
+      "kind": "single_tick_right_ankle_velocity_excess",
+      "tick": 150,
+      "time_s": 3.0,
+      "joint": "right_ankle",
+      "velocity_rad_s": -2.0097,
+      "limit_rad_s": 2.0,
+      "excess_rad_s": 0.0097,
+      "push_active_on_tick": false,
+      "p95_velocity_excess_rad_s": 0.0
+    },
+    "seed_5": {
+      "kind": "push_induced_fall",
+      "fall_sample": 599,
+      "last_push_start_tick": 549,
+      "last_push_start_time_s": 10.98,
+      "collapse_tick": 598,
+      "collapse_time_s": 11.96,
+      "final_base_height_m": 0.0630,
+      "final_body_pitch_rad": -1.4099,
+      "final_local_vx_m_s": -1.5263,
+      "target_velocity_excess_rad_s": 0.0
+    }
+  },
+  "seed5_no_push_control": {
+    "status": "PASS_CANDIDATE_SIM_GATE",
+    "samples": 750,
+    "termination": "duration_complete",
+    "track_ratio": 0.3617,
+    "max_target_velocity_excess_rad_s": 0.0,
+    "max_pitch_tracking_p95_rad": 0.1810,
+    "base_height_min_m": 0.1593
+  },
+  "interpretation": [
+    "The full x=0.08 rough/intermediate-push gate does not pass.",
+    "The remaining target-rate holds are single-tick right-ankle max violations with clean p95 velocity.",
+    "Seed 5 passes the same rough terrain without pushes, so the fall is push-induced.",
+    "Next work should target push recovery while preserving the reset-settle10 rough-terrain/no-push gait."
+  ],
+  "next_required": [
+    "push-recovery intervention from seed-5 failure trace",
+    "rerun x=0.08 rough z0.0075 intermediate-push seeds 0-7 with reset_settle_ticks=10",
+    "if x=0.08 passes, run x=0.0 command-semantics seeds 0-7 with reset_settle_ticks=10"
+  ]
+}

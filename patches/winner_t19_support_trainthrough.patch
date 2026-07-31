@@ -1,0 +1,254 @@
+diff --git a/playground/common/runner.py b/playground/common/runner.py
+index 27fb16f..5e9537a 100644
+--- a/playground/common/runner.py
++++ b/playground/common/runner.py
+@@ -275,13 +275,19 @@ class BaseRunner(ABC):
+             progress_fn=self.progress_callback,
+             policy_params_fn=self.policy_params_fn,
+             restore_checkpoint_path=self.restore_checkpoint_path,
+         )
++        wrap_env_fn = wrapper.wrap_for_brax_training
++        if getattr(self.args, "winner_t19_support_trainthrough", False):
++            from playground.common.t19_support_trainthrough import (
++                wrap_for_brax_training,
++            )
++
++            wrap_env_fn = wrap_for_brax_training
+ 
+         _, params, _ = train_fn(
+             environment=self.env,
+             eval_env=self.eval_env,
+-            wrap_env_fn=wrapper.wrap_for_brax_training,
++            wrap_env_fn=wrap_env_fn,
+         )
+diff --git a/playground/open_duck_mini_v2/joystick.py b/playground/open_duck_mini_v2/joystick.py
+index 5bbdfcf..d29d5e1 100644
+--- a/playground/open_duck_mini_v2/joystick.py
++++ b/playground/open_duck_mini_v2/joystick.py
+@@ -27,6 +27,7 @@ from mujoco_playground._src.collision import geoms_colliding
+ from . import constants
+ from . import base as open_duck_mini_v2_base
+ from playground.common import winner_v3_variable_configuration as winner_v3
++from playground.common import t19_support_trainthrough as t19
+ 
+ # from playground.common.utils import LowPassActionFilter
+ from playground.common.poly_reference_motion import PolyReferenceMotion
+@@ -219,6 +220,7 @@ def default_config() -> config_dict.ConfigDict:
+         winner_v3_deviation_scale=0.0,
+         winner_v127_constrained_cost=False,
+         winner_v119_train_transition_match=False,
++        winner_t19_support_trainthrough=False,
+     )
+ 
+ 
+@@ -444,6 +446,8 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+             "ground_up_actuator_bridge_applied_targets": self._default_actuator,
+             "feet_air_time": jp.zeros(2),
+             "last_contact": jp.zeros(2, dtype=bool),
++            "t19_source_motor_targets": self._default_actuator,
++            "t19_support_prefix_valid": jp.asarray(True),
+             "swing_peak": jp.zeros(2),
+             # Push related.
+             "push": jp.array([0.0, 0.0]),
+@@ -639,41 +643,65 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+ 
+         ####
+ 
+-        motor_targets = (
+-            self._default_actuator + action_w_delay * self._config.action_scale
+-        )
+-
+-        if USE_MOTOR_SPEED_LIMITS:
+-            prev_motor_targets = state.info["motor_targets"]
+-
+-            velocity_limits = jp.where(
+-                self._config.ground_up_hard_vector_command_support,
+-                jp.asarray(self._config.ground_up_action_velocity_limits_rad_s),
+-                jp.full(self._actuators, self._config.max_motor_velocity),
+-            )
+-
+-            motor_targets = jp.clip(
+-                motor_targets,
+-                prev_motor_targets
+-                - velocity_limits * self.dt,  # control dt
+-                prev_motor_targets
+-                + velocity_limits * self.dt,  # control dt
+-            )
+-
+-        motor_targets = winner_v119_transition_match(
+-            motor_targets,
+-            state.info["motor_targets"],
+-            self.get_actuator_joints_qpos(state.data.qpos),
+-            self._config.ground_up_action_velocity_limits_rad_s,
+-            self.dt,
+-            self._config.winner_v119_train_transition_match,
+-        )
++        velocity_limits = jp.where(
++            self._config.ground_up_hard_vector_command_support,
++            jp.asarray(self._config.ground_up_action_velocity_limits_rad_s),
++            jp.full(self._actuators, self._config.max_motor_velocity),
++        )
++        motor_targets = (
++            self._default_actuator
++            + action_w_delay * self._config.action_scale
++        )
++        source_previous_targets = jp.where(
++            self._config.winner_t19_support_trainthrough,
++            state.info["t19_source_motor_targets"],
++            state.info["motor_targets"],
++        )
++        if USE_MOTOR_SPEED_LIMITS:
++            motor_targets = jp.clip(
++                motor_targets,
++                source_previous_targets - velocity_limits * self.dt,
++                source_previous_targets + velocity_limits * self.dt,
++            )
++        actual_position = self.get_actuator_joints_qpos(state.data.qpos)
++        actual_position = jp.where(
++            self._config.winner_t19_support_trainthrough,
++            t19.inverse_joint_position(
++                actual_position, self._default_actuator
++            ),
++            actual_position,
++        )
++        motor_targets = winner_v119_transition_match(
++            motor_targets,
++            source_previous_targets,
++            actual_position,
++            self._config.ground_up_action_velocity_limits_rad_s,
++            self.dt,
++            self._config.winner_v119_train_transition_match,
++        )
++        if self._config.winner_t19_support_trainthrough:
++            source_bounded_action = (
++                motor_targets - self._default_actuator
++            ) / self._config.action_scale
++            external_unprojected_action = t19.forward_action(
++                source_bounded_action
++            )
++            external_target = (
++                self._default_actuator
++                + external_unprojected_action * self._config.action_scale
++            )
++            external_velocity_limits = jp.asarray(
++                t19.RATE_LIMITS_RAD_S, dtype=jp.float32
++            )
++            motor_targets = jp.clip(
++                external_target,
++                state.info["motor_targets"]
++                - external_velocity_limits * self.dt,
++                state.info["motor_targets"]
++                + external_velocity_limits * self.dt,
++            )
++            realized_external_action = (
++                motor_targets - self._default_actuator
++            ) / self._config.action_scale
++            state.info["t19_source_motor_targets"] = (
++                self._default_actuator
++                + t19.inverse_action(realized_external_action)
++                * self._config.action_scale
++            )
+ 
+         applied_action = (
+             motor_targets - self._default_actuator
+@@ -909,2 +959,7 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
+             state = jp.where(info["winner_v3_native_quantization"], native_state, state)
++        if self._config.winner_t19_support_trainthrough:
++            state = t19.inverse_observation(
++                state,
++                self._default_actuator,
++            )
+ 
+         accelerometer = self.get_accelerometer(data)
+diff --git a/playground/open_duck_mini_v2/runner.py b/playground/open_duck_mini_v2/runner.py
+index 3c04098..8587e3d 100644
+--- a/playground/open_duck_mini_v2/runner.py
++++ b/playground/open_duck_mini_v2/runner.py
+@@ -98,6 +98,9 @@ class OpenDuckMiniV2Runner(BaseRunner):
+         self.env_config.winner_v119_train_transition_match = (
+             args.winner_v119_train_transition_match
+         )
++        self.env_config.winner_t19_support_trainthrough = (
++            args.winner_t19_support_trainthrough
++        )
+         self.env_config.winner_v127_constrained_cost = (
+             args.winner_v127_constrained_cost
+         )
+@@ -131,13 +134,19 @@ class OpenDuckMiniV2Runner(BaseRunner):
+             ):
+                 raise ValueError("winner-v3 requires hard-vector, measured bridge and applied-target observation")
+-            expected_limits = (
+-                jp.asarray(
+-                    joystick.WINNER_V119_RATE_LIMITS_RAD_S,
+-                    dtype=jp.float32,
+-                )
+-                if args.winner_v119_train_transition_match
+-                else winner_v3.CONSERVATIVE_VELOCITY_LIMITS_RAD_S
+-            )
++            if args.winner_t19_support_trainthrough:
++                from playground.common.t19_support_trainthrough import (
++                    SOURCE_RATE_LIMITS_RAD_S,
++                )
++
++                expected_limits = jp.asarray(
++                    SOURCE_RATE_LIMITS_RAD_S, dtype=jp.float32
++                )
++            else:
++                expected_limits = (
++                    jp.asarray(
++                        joystick.WINNER_V119_RATE_LIMITS_RAD_S,
++                        dtype=jp.float32,
++                    )
++                    if args.winner_v119_train_transition_match
++                    else winner_v3.CONSERVATIVE_VELOCITY_LIMITS_RAD_S
++                )
+             if not bool(
+                 jp.array_equal(
+                     jp.asarray(limits, dtype=jp.float32),
+@@ -154,8 +157,34 @@ class OpenDuckMiniV2Runner(BaseRunner):
+             self.env_config.push_config.enable = False
+         self.env = self.env_file[1](task=args.task, config=self.env_config)
+         self.eval_env = self.env_file[1](task=args.task, config=self.env_config)
++        if args.winner_t19_support_trainthrough:
++            from playground.common.t19_support_trainthrough import (
++                RATE_LIMITS_RAD_S,
++                SOURCE_RATE_LIMITS_RAD_S,
++                SupportPrefixWrapper,
++            )
++
++            if (
++                not args.winner_v3_variable_configuration
++                or not args.winner_v119_train_transition_match
++                or args.policy_architecture
++                != "reference_residual_recurrent_adapter"
++                or args.recurrent_hidden_size != 64
++            ):
++                raise ValueError(
++                    "T19 requires V121 recurrent variable-configuration "
++                    "training with the V119 source transition"
++                )
++            if not bool(
++                jp.array_equal(
++                    jp.asarray(limits, dtype=jp.float32),
++                    jp.asarray(SOURCE_RATE_LIMITS_RAD_S, dtype=jp.float32),
++                )
++            ):
++                raise ValueError("T19 trained source rate vector changed")
++            if RATE_LIMITS_RAD_S.shape != SOURCE_RATE_LIMITS_RAD_S.shape:
++                raise ValueError("T19 external physical rate vector changed")
++            self.env = SupportPrefixWrapper(self.env)
++            self.eval_env = SupportPrefixWrapper(self.eval_env)
+         if args.policy_architecture == "response_conditioned_reference_residual":
+             from playground.common.winner_v98_response_calibration_wrapper import (
+                 wrap_response_calibration,
+@@ -323,6 +352,10 @@ def main() -> None:
+     parser.add_argument("--ground_up_signed_progress_objective", action="store_true")
+     parser.add_argument("--winner_v3_variable_configuration", action="store_true")
+     parser.add_argument("--winner_v119_train_transition_match", action="store_true")
++    parser.add_argument(
++        "--winner_t19_support_trainthrough",
++        action="store_true",
++    )
+     parser.add_argument("--winner_v127_constrained_cost", action="store_true")
+     parser.add_argument(
+         "--winner_v3_deviation_scale",

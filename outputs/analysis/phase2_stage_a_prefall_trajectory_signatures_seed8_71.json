@@ -1,0 +1,915 @@
+{
+  "status": "CANDIDATE_RECOVERY_VARIABLES_IDENTIFIED",
+  "preregistration": "outputs/analysis/PHASE2_STAGE_A_PREFALL_TRAJECTORY_SIGNATURE_PREREGISTRATION.md",
+  "window_ticks": 10,
+  "window_seconds": 0.2,
+  "minimum_auc_each_block": 0.7,
+  "features": [
+    "base_height_drop_m",
+    "abs_pitch_growth_rad",
+    "adverse_forward_velocity_m_s",
+    "actuator_tracking_error_p95_rad",
+    "joint_speed_p95_rad_s",
+    "contact_transition_count"
+  ],
+  "blocks": [
+    {
+      "name": "A",
+      "sweep": "outputs/analysis/phase2_stage_a_reset_neighborhood_expansion_seed8_23.json",
+      "samples": 16,
+      "failures": 5,
+      "duration_complete": 11,
+      "metrics": {
+        "base_height_drop_m": {
+          "roc_auc": 0.4090909090909091,
+          "failure_mean": 0.0,
+          "complete_mean": 0.00024379925294355914
+        },
+        "abs_pitch_growth_rad": {
+          "roc_auc": 0.8545454545454545,
+          "failure_mean": 0.23326576038835561,
+          "complete_mean": 0.10455051520440106
+        },
+        "adverse_forward_velocity_m_s": {
+          "roc_auc": 0.43636363636363634,
+          "failure_mean": -0.054845153440255666,
+          "complete_mean": -0.0189860434059731
+        },
+        "actuator_tracking_error_p95_rad": {
+          "roc_auc": 0.9454545454545454,
+          "failure_mean": 0.46187266349792466,
+          "complete_mean": 0.29534524164416565
+        },
+        "joint_speed_p95_rad_s": {
+          "roc_auc": 0.6363636363636364,
+          "failure_mean": 4.664360842704772,
+          "complete_mean": 4.493881318244067
+        },
+        "contact_transition_count": {
+          "roc_auc": 0.6272727272727273,
+          "failure_mean": 2.6,
+          "complete_mean": 1.9090909090909092
+        }
+      },
+      "per_seed": [
+        {
+          "seed": 8,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0010933727025985718,
+            "abs_pitch_growth_rad": 0.10015242813443605,
+            "adverse_forward_velocity_m_s": -0.11835758425295353,
+            "actuator_tracking_error_p95_rad": 0.4479248642921446,
+            "joint_speed_p95_rad_s": 8.268795800209045,
+            "contact_transition_count": 4.0
+          }
+        },
+        {
+          "seed": 9,
+          "failure": true,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.32236246865905177,
+            "adverse_forward_velocity_m_s": -0.11055192574858666,
+            "actuator_tracking_error_p95_rad": 0.31998651772737496,
+            "joint_speed_p95_rad_s": 3.903618991374969,
+            "contact_transition_count": 5.0
+          }
+        },
+        {
+          "seed": 10,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.10509014522118047,
+            "adverse_forward_velocity_m_s": -0.1431988976895809,
+            "actuator_tracking_error_p95_rad": 0.31632376313209526,
+            "joint_speed_p95_rad_s": 4.759893894195557,
+            "contact_transition_count": 1.0
+          }
+        },
+        {
+          "seed": 11,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.12973078683525247,
+            "adverse_forward_velocity_m_s": -0.006783793144859373,
+            "actuator_tracking_error_p95_rad": 0.27113464474678034,
+            "joint_speed_p95_rad_s": 4.363680982589721,
+            "contact_transition_count": 2.0
+          }
+        },
+        {
+          "seed": 12,
+          "failure": true,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.31657683062457964,
+            "adverse_forward_velocity_m_s": -0.1247581540606916,
+            "actuator_tracking_error_p95_rad": 0.35536610633134835,
+            "joint_speed_p95_rad_s": 4.141051399707794,
+            "contact_transition_count": 3.0
+          }
+        },
+        {
+          "seed": 13,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.18517963457871225,
+            "adverse_forward_velocity_m_s": 0.0034826863557100296,
+            "actuator_tracking_error_p95_rad": 0.2681714415550231,
+            "joint_speed_p95_rad_s": 4.364430141448974,
+            "contact_transition_count": 3.0
+          }
+        },
+        {
+          "seed": 14,
+          "failure": true,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.14506420736377126,
+            "adverse_forward_velocity_m_s": 0.04856553580611944,
+            "actuator_tracking_error_p95_rad": 0.48376603722572314,
+            "joint_speed_p95_rad_s": 5.408232641220093,
+            "contact_transition_count": 2.0
+          }
+        },
+        {
+          "seed": 15,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.06290993916203887,
+            "adverse_forward_velocity_m_s": 0.06153679387643933,
+            "actuator_tracking_error_p95_rad": 0.2954936444759368,
+            "joint_speed_p95_rad_s": 1.9372168958187101,
+            "contact_transition_count": 2.0
+          }
+        },
+        {
+          "seed": 16,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0015884190797805786,
+            "abs_pitch_growth_rad": 0.24864630465173124,
+            "adverse_forward_velocity_m_s": 0.08999723866581917,
+            "actuator_tracking_error_p95_rad": 0.2803559929132461,
+            "joint_speed_p95_rad_s": 3.7653347373008725,
+            "contact_transition_count": 2.0
+          }
+        },
+        {
+          "seed": 17,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.03494006633554312,
+            "adverse_forward_velocity_m_s": 0.01809684173204005,
+            "actuator_tracking_error_p95_rad": 0.2412883043289184,
+            "joint_speed_p95_rad_s": 3.573925125598907,
+            "contact_transition_count": 2.0
+          }
+        },
+        {
+          "seed": 18,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.06494172051283971,
+            "adverse_forward_velocity_m_s": -0.1371811419725418,
+            "actuator_tracking_error_p95_rad": 0.34511259794235216,
+            "joint_speed_p95_rad_s": 6.535787725448608,
+            "contact_transition_count": 1.0
+          }
+        },
+        {
+          "seed": 19,
+          "failure": true,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.09549620380052999,
+            "adverse_forward_velocity_m_s": 0.02154526620870456,
+            "actuator_tracking_error_p95_rad": 0.6173102349042892,
+            "joint_speed_p95_rad_s": 5.267219686508178,
+            "contact_transition_count": 1.0
+          }
+        },
+        {
+          "seed": 20,
+          "failure": true,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.28682909149384545,
+            "adverse_forward_velocity_m_s": -0.1090264894068241,
+            "actuator_tracking_error_p95_rad": 0.532934421300888,
+            "joint_speed_p95_rad_s": 4.601681494712829,
+            "contact_transition_count": 2.0
+          }
+        },
+        {
+          "seed": 21,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.04263717653433673,
+            "adverse_forward_velocity_m_s": 0.039927590265870096,
+            "actuator_tracking_error_p95_rad": 0.2405312001705169,
+            "joint_speed_p95_rad_s": 3.417223894596099,
+            "contact_transition_count": 2.0
+          }
+        },
+        {
+          "seed": 22,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.04674650146921903,
+            "adverse_forward_velocity_m_s": -0.05067040957510471,
+            "actuator_tracking_error_p95_rad": 0.3082163512706756,
+            "joint_speed_p95_rad_s": 4.696829462051391,
+            "contact_transition_count": 0.0
+          }
+        },
+        {
+          "seed": 23,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.1290809638131217,
+            "adverse_forward_velocity_m_s": 0.034304198273457584,
+            "actuator_tracking_error_p95_rad": 0.23424485325813288,
+            "joint_speed_p95_rad_s": 3.749575841426849,
+            "contact_transition_count": 2.0
+          }
+        }
+      ]
+    },
+    {
+      "name": "B",
+      "sweep": "outputs/analysis/phase2_stage_a_early_warning_heldout_seed24_39.json",
+      "samples": 16,
+      "failures": 2,
+      "duration_complete": 14,
+      "metrics": {
+        "base_height_drop_m": {
+          "roc_auc": 0.5,
+          "failure_mean": 0.0,
+          "complete_mean": 0.0
+        },
+        "abs_pitch_growth_rad": {
+          "roc_auc": 0.75,
+          "failure_mean": 0.13311124035256522,
+          "complete_mean": 0.0811696538869425
+        },
+        "adverse_forward_velocity_m_s": {
+          "roc_auc": 0.5357142857142857,
+          "failure_mean": 0.024104922078549862,
+          "complete_mean": 0.010135161189100473
+        },
+        "actuator_tracking_error_p95_rad": {
+          "roc_auc": 0.8214285714285714,
+          "failure_mean": 0.4791750013828277,
+          "complete_mean": 0.36917143304433137
+        },
+        "joint_speed_p95_rad_s": {
+          "roc_auc": 0.8214285714285714,
+          "failure_mean": 6.577287900447844,
+          "complete_mean": 4.449487123319082
+        },
+        "contact_transition_count": {
+          "roc_auc": 0.48214285714285715,
+          "failure_mean": 2.5,
+          "complete_mean": 2.5
+        }
+      },
+      "per_seed": [
+        {
+          "seed": 24,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.07794498614806163,
+            "adverse_forward_velocity_m_s": -0.040410820161923766,
+            "actuator_tracking_error_p95_rad": 0.17127900868654247,
+            "joint_speed_p95_rad_s": 2.9935200214385986,
+            "contact_transition_count": 2.0
+          }
+        },
+        {
+          "seed": 25,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.055283202331834404,
+            "adverse_forward_velocity_m_s": 0.10120569933205843,
+            "actuator_tracking_error_p95_rad": 0.3463291585445403,
+            "joint_speed_p95_rad_s": 3.6408096551895133,
+            "contact_transition_count": 3.0
+          }
+        },
+        {
+          "seed": 26,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.009376711115752268,
+            "adverse_forward_velocity_m_s": 0.06735205864533782,
+            "actuator_tracking_error_p95_rad": 0.42742394208908074,
+            "joint_speed_p95_rad_s": 3.0417822957038876,
+            "contact_transition_count": 2.0
+          }
+        },
+        {
+          "seed": 27,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.04134928451902496,
+            "adverse_forward_velocity_m_s": 0.08598938826471567,
+            "actuator_tracking_error_p95_rad": 0.5878605544567107,
+            "joint_speed_p95_rad_s": 7.624833989143371,
+            "contact_transition_count": 1.0
+          }
+        },
+        {
+          "seed": 28,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.15524770411218045,
+            "adverse_forward_velocity_m_s": 0.029740252695046366,
+            "actuator_tracking_error_p95_rad": 0.5416962027549743,
+            "joint_speed_p95_rad_s": 5.798294711112976,
+            "contact_transition_count": 2.0
+          }
+        },
+        {
+          "seed": 29,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.02575892128491883,
+            "adverse_forward_velocity_m_s": 0.04839660073630512,
+            "actuator_tracking_error_p95_rad": 0.309200981259346,
+            "joint_speed_p95_rad_s": 4.179308319091796,
+            "contact_transition_count": 2.0
+          }
+        },
+        {
+          "seed": 30,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.08228790106653237,
+            "adverse_forward_velocity_m_s": -0.014486552402377128,
+            "actuator_tracking_error_p95_rad": 0.39748601317405685,
+            "joint_speed_p95_rad_s": 4.550218963623046,
+            "contact_transition_count": 3.0
+          }
+        },
+        {
+          "seed": 31,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.04946361109951214,
+            "adverse_forward_velocity_m_s": 0.02914646049030125,
+            "actuator_tracking_error_p95_rad": 0.2217575311660766,
+            "joint_speed_p95_rad_s": 3.501819515228271,
+            "contact_transition_count": 3.0
+          }
+        },
+        {
+          "seed": 32,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.19419229860361692,
+            "adverse_forward_velocity_m_s": 0.05639369860291481,
+            "actuator_tracking_error_p95_rad": 0.42004385292530055,
+            "joint_speed_p95_rad_s": 3.5456816673278806,
+            "contact_transition_count": 3.0
+          }
+        },
+        {
+          "seed": 33,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.12282818311611528,
+            "adverse_forward_velocity_m_s": -0.0719726412658929,
+            "actuator_tracking_error_p95_rad": 0.4483108997344969,
+            "joint_speed_p95_rad_s": 8.191817927360534,
+            "contact_transition_count": 4.0
+          }
+        },
+        {
+          "seed": 34,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.17366304159165855,
+            "adverse_forward_velocity_m_s": -0.0465441394597292,
+            "actuator_tracking_error_p95_rad": 0.3849251568317412,
+            "joint_speed_p95_rad_s": 2.8698555827140804,
+            "contact_transition_count": 1.0
+          }
+        },
+        {
+          "seed": 35,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.08813707030406741,
+            "adverse_forward_velocity_m_s": 0.04601359087973833,
+            "actuator_tracking_error_p95_rad": 0.38621683120727524,
+            "joint_speed_p95_rad_s": 3.7465694904327385,
+            "contact_transition_count": 3.0
+          }
+        },
+        {
+          "seed": 36,
+          "failure": true,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.11329766908364318,
+            "adverse_forward_velocity_m_s": 0.04819943476468325,
+            "actuator_tracking_error_p95_rad": 0.43345759510993953,
+            "joint_speed_p95_rad_s": 5.031646037101745,
+            "contact_transition_count": 3.0
+          }
+        },
+        {
+          "seed": 37,
+          "failure": true,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.15292481162148724,
+            "adverse_forward_velocity_m_s": 1.0409392416477203e-05,
+            "actuator_tracking_error_p95_rad": 0.5248924076557159,
+            "joint_speed_p95_rad_s": 8.122929763793945,
+            "contact_transition_count": 2.0
+          }
+        },
+        {
+          "seed": 38,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.04244439183063381,
+            "adverse_forward_velocity_m_s": -0.14606582820415498,
+            "actuator_tracking_error_p95_rad": 0.306776875257492,
+            "joint_speed_p95_rad_s": 5.0412445783615105,
+            "contact_transition_count": 3.0
+          }
+        },
+        {
+          "seed": 39,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.018397847293285807,
+            "adverse_forward_velocity_m_s": -0.002865511504933238,
+            "actuator_tracking_error_p95_rad": 0.2190930545330047,
+            "joint_speed_p95_rad_s": 3.5670630097389218,
+            "contact_transition_count": 3.0
+          }
+        }
+      ]
+    },
+    {
+      "name": "C",
+      "sweep": "outputs/analysis/phase2_stage_a_disagreement_independent_seed40_71.json",
+      "samples": 32,
+      "failures": 11,
+      "duration_complete": 21,
+      "metrics": {
+        "base_height_drop_m": {
+          "roc_auc": 0.5194805194805194,
+          "failure_mean": 0.00015668300065127286,
+          "complete_mean": 0.00015274045013246082
+        },
+        "abs_pitch_growth_rad": {
+          "roc_auc": 0.7532467532467533,
+          "failure_mean": 0.19243417555126377,
+          "complete_mean": 0.09715244821609029
+        },
+        "adverse_forward_velocity_m_s": {
+          "roc_auc": 0.5367965367965368,
+          "failure_mean": 0.014298706489816225,
+          "complete_mean": -0.0001837775917790286
+        },
+        "actuator_tracking_error_p95_rad": {
+          "roc_auc": 0.8268398268398268,
+          "failure_mean": 0.47790851376273397,
+          "complete_mean": 0.34945529748996096
+        },
+        "joint_speed_p95_rad_s": {
+          "roc_auc": 0.7142857142857143,
+          "failure_mean": 5.141909770532087,
+          "complete_mean": 4.161710466089703
+        },
+        "contact_transition_count": {
+          "roc_auc": 0.5151515151515151,
+          "failure_mean": 2.5454545454545454,
+          "complete_mean": 2.5238095238095237
+        }
+      },
+      "per_seed": [
+        {
+          "seed": 40,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.09370916941985637,
+            "adverse_forward_velocity_m_s": 0.0513250719755888,
+            "actuator_tracking_error_p95_rad": 0.25410211682319633,
+            "joint_speed_p95_rad_s": 4.227375197410583,
+            "contact_transition_count": 3.0
+          }
+        },
+        {
+          "seed": 41,
+          "failure": true,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.24173993751224687,
+            "adverse_forward_velocity_m_s": -0.004463667119853199,
+            "actuator_tracking_error_p95_rad": 0.4161646425724028,
+            "joint_speed_p95_rad_s": 7.316463446617126,
+            "contact_transition_count": 2.0
+          }
+        },
+        {
+          "seed": 42,
+          "failure": true,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.13035819573197072,
+            "adverse_forward_velocity_m_s": 0.0747521635144949,
+            "actuator_tracking_error_p95_rad": 0.5022750943899154,
+            "joint_speed_p95_rad_s": 7.764840173721312,
+            "contact_transition_count": 2.0
+          }
+        },
+        {
+          "seed": 43,
+          "failure": true,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.22488588782451108,
+            "adverse_forward_velocity_m_s": 0.0010992738185450434,
+            "actuator_tracking_error_p95_rad": 0.505384686589241,
+            "joint_speed_p95_rad_s": 5.638788437843322,
+            "contact_transition_count": 2.0
+          }
+        },
+        {
+          "seed": 44,
+          "failure": true,
+          "features": {
+            "base_height_drop_m": 0.0017235130071640015,
+            "abs_pitch_growth_rad": 0.39932595989593406,
+            "adverse_forward_velocity_m_s": -0.06139153437688947,
+            "actuator_tracking_error_p95_rad": 0.35689263343811023,
+            "joint_speed_p95_rad_s": 5.147966480255126,
+            "contact_transition_count": 3.0
+          }
+        },
+        {
+          "seed": 45,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.06762941392389844,
+            "adverse_forward_velocity_m_s": 0.0925458637997508,
+            "actuator_tracking_error_p95_rad": 0.25467438697814937,
+            "joint_speed_p95_rad_s": 4.350510215759277,
+            "contact_transition_count": 2.0
+          }
+        },
+        {
+          "seed": 46,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.07369214819531258,
+            "adverse_forward_velocity_m_s": -0.0766973476856947,
+            "actuator_tracking_error_p95_rad": 0.3485505640506743,
+            "joint_speed_p95_rad_s": 3.636202001571655,
+            "contact_transition_count": 4.0
+          }
+        },
+        {
+          "seed": 47,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.03857491208592938,
+            "adverse_forward_velocity_m_s": 0.03809089818969369,
+            "actuator_tracking_error_p95_rad": 0.28341581225395196,
+            "joint_speed_p95_rad_s": 3.897629189491272,
+            "contact_transition_count": 3.0
+          }
+        },
+        {
+          "seed": 48,
+          "failure": true,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.07206234258503798,
+            "adverse_forward_velocity_m_s": 0.14131297320127487,
+            "actuator_tracking_error_p95_rad": 0.5142949908971786,
+            "joint_speed_p95_rad_s": 5.258856153488159,
+            "contact_transition_count": 2.0
+          }
+        },
+        {
+          "seed": 49,
+          "failure": true,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.19993404802522968,
+            "adverse_forward_velocity_m_s": -0.0261207156261662,
+            "actuator_tracking_error_p95_rad": 0.28860558271408077,
+            "joint_speed_p95_rad_s": 3.9459508180618283,
+            "contact_transition_count": 4.0
+          }
+        },
+        {
+          "seed": 50,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.16229210305984518,
+            "adverse_forward_velocity_m_s": -0.0450823706574738,
+            "actuator_tracking_error_p95_rad": 0.5756938636302947,
+            "joint_speed_p95_rad_s": 5.370701432228088,
+            "contact_transition_count": 2.0
+          }
+        },
+        {
+          "seed": 51,
+          "failure": true,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.34773362332828506,
+            "adverse_forward_velocity_m_s": -0.10539864525198936,
+            "actuator_tracking_error_p95_rad": 0.5321447551250457,
+            "joint_speed_p95_rad_s": 2.806757009029388,
+            "contact_transition_count": 2.0
+          }
+        },
+        {
+          "seed": 52,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.08705998672863871,
+            "adverse_forward_velocity_m_s": -0.12598589546978473,
+            "actuator_tracking_error_p95_rad": 0.3323955237865447,
+            "joint_speed_p95_rad_s": 3.096965527534485,
+            "contact_transition_count": 5.0
+          }
+        },
+        {
+          "seed": 53,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.025594483608883695,
+            "adverse_forward_velocity_m_s": 0.00982253924012184,
+            "actuator_tracking_error_p95_rad": 0.28071178197860713,
+            "joint_speed_p95_rad_s": 2.8544124126434327,
+            "contact_transition_count": 3.0
+          }
+        },
+        {
+          "seed": 54,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0032075494527816772,
+            "abs_pitch_growth_rad": 0.13663072773763457,
+            "adverse_forward_velocity_m_s": -0.11814140526694246,
+            "actuator_tracking_error_p95_rad": 0.39641774296760546,
+            "joint_speed_p95_rad_s": 4.782784652709961,
+            "contact_transition_count": 3.0
+          }
+        },
+        {
+          "seed": 55,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.04636093654356778,
+            "adverse_forward_velocity_m_s": -0.02754386318847537,
+            "actuator_tracking_error_p95_rad": 0.2594521552324294,
+            "joint_speed_p95_rad_s": 4.050340855121612,
+            "contact_transition_count": 3.0
+          }
+        },
+        {
+          "seed": 56,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.15791250784156788,
+            "adverse_forward_velocity_m_s": 0.055798378633335234,
+            "actuator_tracking_error_p95_rad": 0.5006893247365951,
+            "joint_speed_p95_rad_s": 4.308501839637756,
+            "contact_transition_count": 2.0
+          }
+        },
+        {
+          "seed": 57,
+          "failure": true,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.02541740415645252,
+            "adverse_forward_velocity_m_s": 0.11603678688406945,
+            "actuator_tracking_error_p95_rad": 0.5254769593477249,
+            "joint_speed_p95_rad_s": 4.487661790847778,
+            "contact_transition_count": 2.0
+          }
+        },
+        {
+          "seed": 58,
+          "failure": true,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.09482494721702163,
+            "adverse_forward_velocity_m_s": 0.00946345627307892,
+            "actuator_tracking_error_p95_rad": 0.5728857278823851,
+            "joint_speed_p95_rad_s": 5.323247909545898,
+            "contact_transition_count": 3.0
+          }
+        },
+        {
+          "seed": 59,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.09732254232403446,
+            "adverse_forward_velocity_m_s": 0.016532573383301497,
+            "actuator_tracking_error_p95_rad": 0.31563487648963917,
+            "joint_speed_p95_rad_s": 3.429491293430328,
+            "contact_transition_count": 2.0
+          }
+        },
+        {
+          "seed": 60,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.016569953055605588,
+            "adverse_forward_velocity_m_s": -0.061555599514395,
+            "actuator_tracking_error_p95_rad": 0.32276315391063687,
+            "joint_speed_p95_rad_s": 4.058995330333709,
+            "contact_transition_count": 3.0
+          }
+        },
+        {
+          "seed": 61,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.02894104017299728,
+            "adverse_forward_velocity_m_s": 0.016354533936828376,
+            "actuator_tracking_error_p95_rad": 0.23259912431240076,
+            "joint_speed_p95_rad_s": 3.5185583472251887,
+            "contact_transition_count": 4.0
+          }
+        },
+        {
+          "seed": 62,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.07731214067852589,
+            "adverse_forward_velocity_m_s": 0.011387424392160029,
+            "actuator_tracking_error_p95_rad": 0.29422343075275414,
+            "joint_speed_p95_rad_s": 4.507850074768066,
+            "contact_transition_count": 1.0
+          }
+        },
+        {
+          "seed": 63,
+          "failure": true,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.10915799203152628,
+            "adverse_forward_velocity_m_s": 0.07023946326225997,
+            "actuator_tracking_error_p95_rad": 0.5029089480638503,
+            "joint_speed_p95_rad_s": 3.640230405330658,
+            "contact_transition_count": 3.0
+          }
+        },
+        {
+          "seed": 64,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.1046703917028968,
+            "adverse_forward_velocity_m_s": -0.10735690779983997,
+            "actuator_tracking_error_p95_rad": 0.44676045179367047,
+            "joint_speed_p95_rad_s": 8.19654026031494,
+            "contact_transition_count": 1.0
+          }
+        },
+        {
+          "seed": 65,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.2058011851725535,
+            "adverse_forward_velocity_m_s": 0.02640040048863739,
+            "actuator_tracking_error_p95_rad": 0.556993755698204,
+            "joint_speed_p95_rad_s": 3.93600093126297,
+            "contact_transition_count": 2.0
+          }
+        },
+        {
+          "seed": 66,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.21117815373942778,
+            "adverse_forward_velocity_m_s": -0.11941411327570677,
+            "actuator_tracking_error_p95_rad": 0.33224977254867544,
+            "joint_speed_p95_rad_s": 3.8360843777656553,
+            "contact_transition_count": 3.0
+          }
+        },
+        {
+          "seed": 67,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.024171604375842613,
+            "adverse_forward_velocity_m_s": -0.03786327661946416,
+            "actuator_tracking_error_p95_rad": 0.3345678493380546,
+            "joint_speed_p95_rad_s": 2.216227316856384,
+            "contact_transition_count": 2.0
+          }
+        },
+        {
+          "seed": 68,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.08922101865178958,
+            "adverse_forward_velocity_m_s": 0.15636523962020873,
+            "actuator_tracking_error_p95_rad": 0.2935395896434783,
+            "joint_speed_p95_rad_s": 4.611257290840149,
+            "contact_transition_count": 1.0
+          }
+        },
+        {
+          "seed": 69,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.16649084448244753,
+            "adverse_forward_velocity_m_s": 0.1196825884282589,
+            "actuator_tracking_error_p95_rad": 0.2625623732805252,
+            "joint_speed_p95_rad_s": 3.12846554517746,
+            "contact_transition_count": 2.0
+          }
+        },
+        {
+          "seed": 70,
+          "failure": false,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.12906614903664015,
+            "adverse_forward_velocity_m_s": 0.12147593796253205,
+            "actuator_tracking_error_p95_rad": 0.46056359708309164,
+            "joint_speed_p95_rad_s": 5.381025695800781,
+            "contact_transition_count": 2.0
+          }
+        },
+        {
+          "seed": 71,
+          "failure": true,
+          "features": {
+            "base_height_drop_m": 0.0,
+            "abs_pitch_growth_rad": 0.27133559275568586,
+            "adverse_forward_velocity_m_s": -0.05824378319084644,
+            "actuator_tracking_error_p95_rad": 0.53995963037014,
+            "joint_speed_p95_rad_s": 5.230244851112365,
+            "contact_transition_count": 3.0
+          }
+        }
+      ]
+    }
+  ],
+  "passing_features": [
+    "abs_pitch_growth_rad",
+    "actuator_tracking_error_p95_rad"
+  ],
+  "decision": "Treat passing features only as candidate recovery variables requiring causal intervention tests.",
+  "intervention_authorized": false,
+  "offline_only": true
+}

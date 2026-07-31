@@ -1,0 +1,108 @@
+{
+  "status": "HOLD_B0E_A100_TRACKING_REGRESSION",
+  "run": {
+    "session": "open-duck-a100",
+    "hardware": "A100",
+    "jax": "0.7.2",
+    "jaxlib": "0.7.2",
+    "brax": "0.14.2",
+    "mujoco": "3.9.0",
+    "mujoco_mjx": "3.9.0",
+    "backend": "gpu",
+    "device": "cuda:0",
+    "task": "rough_terrain_backlash",
+    "num_timesteps": 160000,
+    "ppo_num_envs": 128,
+    "ppo_num_evals": 4,
+    "episode_length": 750,
+    "elapsed_s": 716.0638071820001
+  },
+  "exports": [
+    {
+      "step": 81920,
+      "sha256": "3cd7a83b10ec843a02483b5931ff492b2dd7ee0301f20d0ee37acc2e135660ad"
+    },
+    {
+      "step": 163840,
+      "sha256": "9c5f115bca70bb5516beffcd222b1be3cd6483b9f90e999be010ee4ba15ca359"
+    },
+    {
+      "step": 245760,
+      "sha256": "3ed9ec4550071632284ad86ea6a1c3ce4ff1500243ae4e0eeb9cabe4e57a5eee"
+    }
+  ],
+  "manual_salvage": {
+    "path": "outputs/analysis/colab_cli/open-duck-a100-phase2-b0e-20260629T092705Z/open_duck_colab_cli_phase2-b0e_20260629T092941Z_manual_salvage.tar.gz",
+    "sha256": "e683711390fa0997ee3a77970e342981b27c4981d7b7316244eaed2b9f3272c4",
+    "reason": "remote driver became idle without writing exit sentinel during checkpoint sweep"
+  },
+  "gate_triage": [
+    {
+      "step": 81920,
+      "command_x": 0.0,
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "track_ratio": null,
+      "pitch_tracking_p95_rad": 0.1942708402872084,
+      "sent_velocity_p95_rad_s": 1.2311743199825287,
+      "velocity_excess_rad_s": 0.0,
+      "body_pitch_p95_rad": 0.03261675989113379,
+      "base_height_min_m": 0.15362870693206787
+    },
+    {
+      "step": 81920,
+      "command_x": 0.08,
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "track_ratio": 0.34926904855819885,
+      "pitch_tracking_p95_rad": 0.22080039381980887,
+      "sent_velocity_p95_rad_s": 1.553611159324646,
+      "velocity_excess_rad_s": 0.0,
+      "body_pitch_p95_rad": 0.057481410576174036,
+      "base_height_min_m": 0.15362440049648285
+    },
+    {
+      "step": 163840,
+      "command_x": 0.0,
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "track_ratio": null,
+      "pitch_tracking_p95_rad": 0.19463149458169938,
+      "sent_velocity_p95_rad_s": 1.2272479754686354,
+      "velocity_excess_rad_s": 0.0,
+      "body_pitch_p95_rad": 0.031195035502314562,
+      "base_height_min_m": 0.15360167622566223
+    },
+    {
+      "step": 163840,
+      "command_x": 0.08,
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "track_ratio": 0.34017847701034043,
+      "pitch_tracking_p95_rad": 0.22085408046960827,
+      "sent_velocity_p95_rad_s": 1.5694584184885048,
+      "velocity_excess_rad_s": 0.0,
+      "body_pitch_p95_rad": 0.0552836568467319,
+      "base_height_min_m": 0.15360167622566223
+    },
+    {
+      "step": 245760,
+      "command_x": 0.0,
+      "status": "PASS_CANDIDATE_SIM_GATE",
+      "track_ratio": null,
+      "pitch_tracking_p95_rad": 0.19478170573711395,
+      "sent_velocity_p95_rad_s": 1.233442112803458,
+      "velocity_excess_rad_s": 0.0,
+      "body_pitch_p95_rad": 0.03100817780941725,
+      "base_height_min_m": 0.1535845845937729
+    },
+    {
+      "step": 245760,
+      "command_x": 0.08,
+      "status": "HOLD_CANDIDATE_TRACKING",
+      "track_ratio": 0.31166241140454076,
+      "pitch_tracking_p95_rad": 0.22084975242614743,
+      "sent_velocity_p95_rad_s": 1.5582313477993013,
+      "velocity_excess_rad_s": 0.0,
+      "body_pitch_p95_rad": 0.05328791048377752,
+      "base_height_min_m": 0.1535845845937729
+    }
+  ],
+  "decision": "Do not promote B0E; later checkpoints do not recover the moving x=0.08 tracking gate."
+}

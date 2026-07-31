@@ -1,0 +1,126 @@
+{
+  "attribution": {
+    "classification": "EARLY_ROLLING_WINDOW_FIT_SPECIFIC_STABILITY_GAP",
+    "failed_condition": {
+      "cells": 16,
+      "condition_id": "JOINT_FRICTIONLOSS_HI",
+      "condition_index": 4,
+      "green_cells": 15
+    },
+    "only_failed_cell": {
+      "action_saturation_pct": 0.0,
+      "checkpoint_id": "T84_ROLLING_HALF",
+      "command_x_m_s": 0.08,
+      "fit_id": "p30",
+      "instant_rate_excess_rad_s": 0.0,
+      "pitch_tracking_p95_rad": 0.17430874109268188,
+      "samples": 479,
+      "termination_reason": "fall_or_nan",
+      "worst_overcurrent_run_ticks": 11,
+      "worst_overload_run_ticks": 11
+    },
+    "passed_before_stop": {
+      "cells": 48,
+      "conditions": 3
+    },
+    "same_fit_later_window_x008_green": true
+  },
+  "authority": {
+    "behavior_execution": false,
+    "behavior_preregistration": false,
+    "candidate_promotion": false,
+    "colab": false,
+    "execute_one_cpu_graph_transform": true,
+    "gate5": false,
+    "rdkx5_or_robot": false,
+    "torque_or_motion": false,
+    "training": false
+  },
+  "checks": {
+    "all_sources_present": true,
+    "exactly_one_failed_cell": true,
+    "failure_is_early_window_p30_x008": true,
+    "failure_is_stability_not_quality_or_protection": true,
+    "other_three_condition_four_blocks_green": true,
+    "same_fit_final_window_x008_is_green": true,
+    "t84_pair_contract_green": true,
+    "t86_stopped_at_exact_condition_four": true,
+    "zero_behavior_training_colab_or_robot": true
+  },
+  "decision_rule": {
+    "fail_decision": "CLOSE_RIGHT_SMOOTHED_ADAPTER_PAIR",
+    "no_retry": true,
+    "pass": "The new half is the exact five-adapter midpoint of both T84 rolling exports; the terminal final is byte-exact to T84 rolling-final; all deployment contracts pass.",
+    "pass_decision": "EARN_T88_RIGHT_SMOOTHED_PAIR_TARGETED_BEHAVIOR_PREREGISTRATION"
+  },
+  "execution_now": {
+    "formal_behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "onnx_graphs_built": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "persistence_contract": {
+    "both_required": true,
+    "exports": [
+      "right_smoothed_half",
+      "right_smoothed_final"
+    ],
+    "no_checkpoint_selection": true,
+    "same_filter_with_terminal_edge_replication": true
+  },
+  "preregistered_contract_sha256": "c89b6a6cbc679260f8720c51d3adb9eda102d8d3a9a883553f5e85d55c243fce",
+  "question": "Does one additional exact right-looking midpoint pass over the two T84 rolling exports produce a valid persistent pair without training or coefficient search?",
+  "schema_version": "open_duck.t87_right_smoothed_pair_preregistration.v1",
+  "sources": {
+    "builder": {
+      "bytes": 11118,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t87_right_smoothed_pair_preregistration.py",
+      "sha256": "bd023dcc978487d45bdf67624f7ddddaa194be8385324042397ef4b792564a95"
+    },
+    "runner": {
+      "bytes": 7556,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t87_right_smoothed_pair_transform.py",
+      "sha256": "9138fa600bfcfdd792a86ba464f52dfeae2bfc2760a989530637687bf6712633"
+    },
+    "t84_result": {
+      "bytes": 31425,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t84_t78_rolling_midpoint_result.json",
+      "sha256": "a3386eea123d7490320a0d31d6088dfa5da2e59422beed85ea5551b6cb53aa17"
+    },
+    "t86_result": {
+      "bytes": 491351,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t86_rolling_midpoint_r2_result.json",
+      "sha256": "8fe4405334def7d2a871f3aae3a4968e28fe928bc5db1902dcd640c2077fb53f"
+    },
+    "test": {
+      "bytes": 2586,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t87_right_smoothed_pair.py",
+      "sha256": "343312dc58df36f3baeb40cacf34794297a0f60bce239dea374d9a6eca29c507"
+    }
+  },
+  "status": "PREREGISTERED_T87_RIGHT_SMOOTHED_ADAPTER_PAIR",
+  "transform": {
+    "all_other_initializers_bit_exact": true,
+    "coefficient": 0.5,
+    "coefficient_sweep": false,
+    "final_raw_and_deployment_byte_exact_to_t84": true,
+    "formula": "float32((float64(earlier) + float64(later)) * 0.5)",
+    "initializers": [
+      "adapter_bias",
+      "adapter_hidden_bias",
+      "adapter_hidden_weight",
+      "adapter_obs_weight",
+      "adapter_weight"
+    ],
+    "right_smoothed_final": "mean(T84_ROLLING_FINAL, T84_ROLLING_FINAL)",
+    "right_smoothed_half": "mean(T84_ROLLING_HALF, T84_ROLLING_FINAL)",
+    "rule": "z[i] = 0.5 * (y[i] + y[min(i+1, N-1)])",
+    "series": [
+      "T84_ROLLING_HALF",
+      "T84_ROLLING_FINAL"
+    ],
+    "terminal_edge_rule": "replicate_last"
+  }
+}
