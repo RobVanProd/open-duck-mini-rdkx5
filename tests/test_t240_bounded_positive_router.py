@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 from pathlib import Path
 import sys
 
@@ -56,3 +57,27 @@ def test_bounded_classification_rejects_upper_false_positive() -> None:
         False,
     ]
     assert all(row["correct"] for row in classified)
+
+
+def test_frozen_result_selects_bounded_router_transform() -> None:
+    path = ROOT / "outputs" / "analysis" / (
+        "t240_bounded_positive_router_result.json"
+    )
+    value = json.loads(path.read_text(encoding="utf-8"))
+    basis = {k: v for k, v in value.items() if k != "result_sha256"}
+    assert value["result_sha256"] == MODULE.canonical_sha256(basis)
+    assert value["status"] == "PASS_T240_BOUNDED_POSITIVE_ROUTER"
+    assert value["decision"] == (
+        "EARN_T241_BOUNDED_POSITIVE_ROUTER_TRANSFORM_"
+        "PREREGISTRATION_ONLY"
+    )
+    assert value["combined"]["correct"] == 40
+    assert value["combined"]["cells"] == 40
+    assert value["combined"]["false_positives"] == 0
+    assert value["combined"]["upper_separation_margin"] > 0.0
+    assert all(value["checks"].values())
+    assert value["execution"]["simulator_steps"] == 0
+    assert value["execution"]["behavior_cells"] == 0
+    assert value["execution"]["optimizer_steps"] == 0
+    assert value["execution"]["hosted_sessions"] == 0
+    assert value["execution"]["robot_or_rdk_access"] == 0
