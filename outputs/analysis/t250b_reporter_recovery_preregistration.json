@@ -1,0 +1,81 @@
+{
+  "authority": {
+    "gate5": false,
+    "hosted": false,
+    "rdkx5_or_robot": false,
+    "run_recovered_cpu_audit": true,
+    "runtime_integration_preregistration": false,
+    "training": false
+  },
+  "checks": {
+    "failure_is_raw_response_schema_assumption": true,
+    "failure_precedes_any_t250_output": true,
+    "frozen_block_extractors_already_produce_full_handoff": true,
+    "original_onnx_and_golden_tick_audit_unchanged": true,
+    "recovery_reads_existing_manifests_and_traces_without_behavior_rerun": true,
+    "t249b_evidence_remains_green": true,
+    "t250_contract_green_and_canonical": true,
+    "zero_simulator_optimizer_hosted_or_robot_now": true
+  },
+  "classification": "reporting-only: the raw worker response stores prefix configuration, while the frozen R2 block extractor reconstructs the complete handoff proof from the immutable trace",
+  "decision_rule": {
+    "fail": "HOLD_T250_REPORTER_RECOVERY",
+    "gate5_on_pass": false,
+    "pass": "RECOVER_T250_AND_PRESERVE_ITS_FROZEN_DECISION",
+    "robot_on_pass": false
+  },
+  "execution_now": {
+    "behavior_cells": 0,
+    "hosted_compute_units": 0,
+    "onnx_inferences": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_steps": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 6238,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t250b_reporter_recovery_preregistration.py",
+      "sha256": "cda31c75998cea5eae00950321fd99b1c05b890d2f07309e96e527cf781b6d06"
+    },
+    "original_t250_runner": {
+      "bytes": 27112,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t250_offline_deployment_contract_audit.py",
+      "sha256": "5f2c6e01d7e45af790c6c5ebd2d457570f45c094895eefbcd95651e4e97cc867"
+    },
+    "recovery_runner": {
+      "bytes": 10002,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t250b_reporter_recovery.py",
+      "sha256": "ef65274fad3265dd3bd28329548d92c9a3c667b225ff63c517d7ca5e61e7fdc3"
+    },
+    "t249b_full_r2_result": {
+      "bytes": 17385,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t249b_reporter_recovery_result.json",
+      "sha256": "02bc02291d73777d6c6479b1d5b9a81471e7d585c347923c1f4cfa32416c06ba"
+    },
+    "t250_contract": {
+      "bytes": 5307,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t250_offline_deployment_contract_audit_preregistration.json",
+      "sha256": "5d515eec90460ab49f5c28bc3ddc5002b1b2d3d1120cdc2ef9675b03293f6bf2"
+    },
+    "test": {
+      "bytes": 1747,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t250b_reporter_recovery.py",
+      "sha256": "5522d3d071ffb490d423bb14d91b240f30db38c6e6b1455dffd520c57ce0bc21"
+    }
+  },
+  "preregistered_contract_sha256": "2ac6ef5489fee033eab1d0728538d520156ba78969c7873af96bba7239b7229e",
+  "recovery_contract": {
+    "patch_original_runner_in_memory": true,
+    "replace_only_fresh_handoff_extraction_and_golden_handoff_source": true,
+    "rerun_behavior_cells": 0,
+    "retain_original_onnx_cpu_chains": true,
+    "retain_original_selection_and_authority_rules": true,
+    "reuse_all_320_behavior_cells": true,
+    "use_corrected_home_offset_extractor_for_condition_18": true,
+    "use_frozen_r2_extractor_for_conditions_19_and_20": true
+  },
+  "schema_version": "open_duck.t250b_reporter_recovery_preregistration.v1",
+  "status": "PREREGISTERED_T250B_REPORTER_RECOVERY"
+}
