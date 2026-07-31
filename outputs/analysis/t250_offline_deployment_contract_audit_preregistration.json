@@ -1,0 +1,113 @@
+{
+  "audit_contract": {
+    "copy_or_modify_policy_binaries": false,
+    "freeze_observation_action_and_two_stage_handoff_semantics": true,
+    "hosted_compute_units": 0,
+    "identify_p30_as_the_fixed_runtime_observer": true,
+    "identify_p31_34_as_robustness_evidence_not_runtime_routing": true,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "run_onnx_checker_and_cpu_only_recurrent_chains": true,
+    "simulator_or_behavior_cells": 0,
+    "verify_all_20_conditions_and_320_cells_green": true,
+    "verify_all_recorded_handoff_checks_green": true,
+    "verify_one_frozen_first_locomotion_tick_field_by_field": true,
+    "verify_policy_and_calibrator_hashes_and_exact_abis": true
+  },
+  "authority": {
+    "gate5": false,
+    "hosted": false,
+    "offline_cpu_audit": true,
+    "rdkx5_or_robot": false,
+    "runtime_integration_preregistration": false,
+    "training": false
+  },
+  "checks": {
+    "audit_is_cpu_read_only": true,
+    "checkpoint_spacing_frozen": true,
+    "exact_two_checkpoint_population": true,
+    "no_training_hosted_behavior_or_robot_now": true,
+    "state_coherent_handoff_contract_preexists": true,
+    "t247_structural_recovery_green": true,
+    "t249b_earned_only_this_audit": true,
+    "t249b_full_r2_green": true,
+    "terminal_checkpoint_selected_without_metric_ranking": true
+  },
+  "decision_rule": {
+    "fail": "HOLD_POLICY_DEPLOYMENT_CONTRACT_AND_RETURN_TO_AUDIT",
+    "gate5_on_pass": false,
+    "pass": "EARN_VERSIONED_RDKX5_STATE_COHERENT_INTEGRATION_PREREGISTRATION_ONLY",
+    "robot_on_pass": false,
+    "training_on_pass": false
+  },
+  "execution_now": {
+    "hosted_compute_units": 0,
+    "onnx_inferences": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_steps": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 7873,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t250_offline_deployment_contract_audit_preregistration.py",
+      "sha256": "9ed77830ca58ccf0840ec0833e386d4bbfb889a49c235d587e16b94d46d82b41"
+    },
+    "runner": {
+      "bytes": 27112,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t250_offline_deployment_contract_audit.py",
+      "sha256": "5f2c6e01d7e45af790c6c5ebd2d457570f45c094895eefbcd95651e4e97cc867"
+    },
+    "t247_reporting_recovery": {
+      "bytes": 2418,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t247b_reporting_recovery_result.json",
+      "sha256": "af928d9cb709d59c9b2a07bcac164ba8d5236c05d0d45486d33fe1fe99edfe01"
+    },
+    "t247_transform_result": {
+      "bytes": 111025,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t247_home_negative_half_adapter_route_result.json",
+      "sha256": "dc759d1285cb7c9140e2f503f089275a5b58ca8004b5b5307d27b45d1eaa6390"
+    },
+    "t249_execution_contract": {
+      "bytes": 13637,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t249_remaining_r2_preregistration.json",
+      "sha256": "85bec200ec8a939b3d48bff0b6a8a204b10989b6a53b1bc34383dc06655a1f6e"
+    },
+    "t249b_full_r2_result": {
+      "bytes": 17385,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t249b_reporter_recovery_result.json",
+      "sha256": "02bc02291d73777d6c6479b1d5b9a81471e7d585c347923c1f4cfa32416c06ba"
+    },
+    "t8_handoff_abi_amendment": {
+      "bytes": 7885,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t8_state_coherent_handoff_abi_amendment.json",
+      "sha256": "d67f8f4bc6c77eeac3b466a7b7f4b32044c2135ca132c503a982e8468b768baa"
+    },
+    "t8_handoff_result": {
+      "bytes": 123271,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t8_state_coherent_handoff_result.json",
+      "sha256": "ed84bf9644e3ae5c364a8b66f5bf73386d44861569e0062d7e154a023746f368"
+    },
+    "test": {
+      "bytes": 2892,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t250_offline_deployment_contract_audit.py",
+      "sha256": "4f3f9995fe1124ce2d2408a39b3c891dafe8e411a6dc6be6942941d6d6ec8cc0"
+    }
+  },
+  "pass_rule": "Every frozen evidence, ABI, ONNX, CPU-chain, handoff, golden-tick, selection, and authority check passes.",
+  "preregistered_contract_sha256": "e6505962e782a3009470ab3629d94d82add4480b516ff0be85e497d88064bc94",
+  "question": "Does the terminal green T247 graph have a complete, hash-frozen, CPU-executable deployment contract whose two-stage handoff exactly matches the 320/320 offline evaluator?",
+  "schema_version": "open_duck.t250_offline_deployment_contract_audit_preregistration.v1",
+  "selection_rule": {
+    "behavior_metric_ranking_or_cherry_pick": false,
+    "deployment_checkpoint": "maximum preregistered continuation step",
+    "persistence_witness_checkpoint_id": "T247_HOME_NEGATIVE_HALF_ADAPTER_HALF",
+    "persistence_witness_sha256": "21c714b0cbe30e43233f6a29d6ccfa058c550f28fab3dd836a73a6015b73f8f2",
+    "persistence_witness_step": 1003520,
+    "selected_checkpoint_id": "T247_HOME_NEGATIVE_HALF_ADAPTER_FINAL",
+    "selected_sha256": "dadfb446ea7c720f274a15bc65e9171c2e74d715ccfaf58adbb408b6c1365a54",
+    "selected_step": 2007040
+  },
+  "status": "PREREGISTERED_T250_OFFLINE_DEPLOYMENT_CONTRACT_AUDIT"
+}
