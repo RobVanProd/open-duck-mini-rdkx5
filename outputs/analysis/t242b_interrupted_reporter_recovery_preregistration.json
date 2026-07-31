@@ -1,0 +1,86 @@
+{
+  "authority": {
+    "gate5": false,
+    "hosted": false,
+    "rdkx5_or_robot": false,
+    "read_only_recovery": true,
+    "resume_t242": false,
+    "training": false
+  },
+  "cache_root": "D:\\CodexArtifacts\\open-duck-policy\\t242_bounded_router_home_offset_v1",
+  "checks": {
+    "completed_block_has_four_traces": true,
+    "exactly_one_completed_first_block": true,
+    "no_unmanifested_partial_cache_files": true,
+    "reporter_traceback_is_frozen": true,
+    "source_requires_all_sixteen_cells": true,
+    "t242_exact_preregistration": true,
+    "t242_formal_result_absent": true,
+    "zero_new_behavior_optimizer_hosted_or_robot": true
+  },
+  "completed_blocks": [
+    {
+      "checkpoint_id": "T241_BOUNDED_ROUTER_HALF",
+      "fit_id": "p30",
+      "manifest": {
+        "bytes": 6887,
+        "path": "D:\\CodexArtifacts\\open-duck-policy\\t242_bounded_router_home_offset_v1\\17_HOME_JOINT_OFFSET_NEG\\T241_BOUNDED_ROUTER_HALF\\p30\\manifest.json",
+        "sha256": "8ae0160d563655ba0b7fe13e8cfcd5ff655dbfe0a059fe0ab05830d84e6f3477"
+      }
+    }
+  ],
+  "decision_rule": {
+    "all_completed_cells_green": "EARN_T242C_MISSING_BLOCK_RECOVERY_PREREGISTRATION_ONLY",
+    "both_checkpoints_still_required_for_any_future_pass": true,
+    "failed_completed_cell": "CLOSE_BOUNDED_POSITIVE_ROUTER; KEEP_REMAINING_12_NOT_RUN",
+    "no_retry": true
+  },
+  "execution_now": {
+    "completed_behavior_cells_reused": 0,
+    "hosted_compute_units": 0,
+    "new_behavior_cells": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 7163,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t242b_interrupted_reporter_recovery_preregistration.py",
+      "sha256": "ee21697aca1ecc02bd286e0da374291cdc77336575b0ed8d2139f481908c3ec9"
+    },
+    "reporter_stderr": {
+      "bytes": 698,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t242_runner_20260731_stderr.log",
+      "sha256": "d4bae3f167c5ec29cfa2ecf6eccaf5bff910b5f5443a5e43f779791941115fd0"
+    },
+    "runner": {
+      "bytes": 7135,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t242b_interrupted_reporter_recovery.py",
+      "sha256": "aa8e7832845c5ba3a84eb6424205aaea1826207dfaa16c7b9d034c202b18d2e1"
+    },
+    "t242_preregistration": {
+      "bytes": 10960,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t242_bounded_router_home_offset_preregistration.json",
+      "sha256": "487c3dde43270013f611bc099db910d3a22159cdad2c346b02ff496d2f0d0785"
+    },
+    "test": {
+      "bytes": 2383,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t242b_interrupted_reporter_recovery.py",
+      "sha256": "b77eef8e7ec18545016290518c0c6047776772cb158763d3d936348aa30a045e"
+    }
+  },
+  "preregistered_contract_sha256": "a44776a9ed485221d9f5b8c24a5d7f96ff91bb463ba1d96f4cbab7fd5241364a",
+  "question": "Does the one immutable completed T242 block already contain a frozen-gate failure, allowing the bounded positive router to be closed without rerunning that block or executing the remaining twelve cells?",
+  "recovery": {
+    "cause": "post-simulation reporter used obsolete manifest['evaluation_path'] instead of manifest['evaluation']['path']",
+    "read_only": true,
+    "rerun_completed_cells": false,
+    "reuse_completed_block": true,
+    "run_missing_cells": false,
+    "selection_weight_of_observed_console_output": 0
+  },
+  "schema_version": "open_duck.t242b_interrupted_reporter_recovery_preregistration.v1",
+  "source_t242_contract_sha256": "5131981e7968346b86b31bb131e23e270fad024a6022f25c54ecd86d679c072b",
+  "status": "PREREGISTERED_T242B_INTERRUPTED_REPORTER_RECOVERY"
+}
