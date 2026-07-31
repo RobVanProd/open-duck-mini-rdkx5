@@ -1,0 +1,114 @@
+{
+  "authority": {
+    "behavior": false,
+    "execute_context_math": true,
+    "gate5": false,
+    "hosted": false,
+    "robot_or_rdk": false,
+    "route_cpu_contract_preregistration": false,
+    "training": false
+  },
+  "checks": {
+    "forty_frozen_contexts_exact": true,
+    "positive_and_control_present_both_fits": true,
+    "reuse_contexts_no_new_calibration_or_behavior": true,
+    "t225_only_upper_z_condition_failed": true,
+    "t226b_corrected_support_question": true,
+    "t232_earned_cpu_falsifier_only": true
+  },
+  "classifier": {
+    "combined": "unit mean of the two per-fit unit directions; threshold midpoint of minimum positive and maximum negative scores",
+    "cross_fit": [
+      {
+        "test": "p31_34",
+        "train": "p30"
+      },
+      {
+        "test": "p30",
+        "train": "p31_34"
+      }
+    ],
+    "direction": "unit(context_positive - context_control) on the training fit",
+    "family": "fixed centroid-direction threshold",
+    "no_model_or_hyperparameter_search": true,
+    "threshold": "midpoint between positive training score and maximum non-positive training score"
+  },
+  "decision_rule": {
+    "fail_decision": "CLOSE_STATIC_STARTUP_CONTEXT_ROUTING_FOR_UPPER_Z_AND_RETURN_TO_DYNAMIC_PRESERVATION",
+    "no_behavior_or_training": true,
+    "no_hosted_run_authorized": true,
+    "pass_decision": "EARN_T234_UPPER_Z_EXACT_ROUTE_CPU_CONTRACT_PREREGISTRATION_ONLY",
+    "pass_if": {
+      "both_cross_fit_tests": "20/20",
+      "combined": "40/40",
+      "combined_false_positives": 0,
+      "combined_margin": ">0",
+      "combined_true_positives": 2,
+      "each_cross_fit_false_positives": 0,
+      "each_cross_fit_true_positives": 1,
+      "each_training_margin": ">0"
+    }
+  },
+  "execution_now": {
+    "behavior_cells": 0,
+    "context_rows": 0,
+    "hosted_sessions": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0,
+    "simulator_calls": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 8202,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t233_upper_z_context_separability_preregistration.py",
+      "sha256": "8cca3a96c64f33fd6fc072f5007dd3255ced7b11d569c14c37dc4fd073d455d9"
+    },
+    "runner": {
+      "bytes": 11293,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t233_upper_z_context_separability.py",
+      "sha256": "9feec0fe017a061bc59a61ad0520b38956f4b49530a2767c27d11ce185f8674a"
+    },
+    "t167_contexts": {
+      "bytes": 128322,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t167_calibration_context_separability_result.json",
+      "sha256": "0d55e78a96317bff9bb1363a65a1de48beaa61217609a768e148b63a59827e35"
+    },
+    "t225_result": {
+      "bytes": 1437963,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t225_global_plateau_full_r2_result.json",
+      "sha256": "2f217244b1659253ca2ad24d31eb0214379bbf0baddceaa7af7c41deed6506a4"
+    },
+    "t226b_result": {
+      "bytes": 3228,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t226b_t216_support_correction_result.json",
+      "sha256": "378a348c6acd65c078951ba6fcad846fd4ae9c57301afa07fa678dc159e87923"
+    },
+    "t232_result": {
+      "bytes": 39165,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t232_t228_nominal_failure_autopsy_result.json",
+      "sha256": "ffaea9598ad343d55de213e7c4ec2a27d5018accb3fedc473815e573bd83c039"
+    },
+    "test": {
+      "bytes": 1705,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t233_upper_z_context_separability.py",
+      "sha256": "1fdbe250bb9cd9acc36f538954b0576f11db45215f8f84e5ac063cae0321e863"
+    }
+  },
+  "population": {
+    "cells": 40,
+    "conditions": 20,
+    "context_dimensions": 64,
+    "control_condition": "FLOOR_FRICTION_HI",
+    "fits": [
+      "p30",
+      "p31_34"
+    ],
+    "positive_condition": "TORSO_COM_Z_POS",
+    "source": "exact frozen T167 calibrator outputs; no new simulator calls"
+  },
+  "preregistered_contract_sha256": "011184cccc8768764f618e99b81cb8fe586aa97228ded20ee8d7f5634fc55c13",
+  "question": "Can the already captured automatic 250-tick startup calibration context isolate TORSO_COM_Z_POS from every other frozen R2 condition across both actuator fits, so a future correction can remain bit-exactly off on nominal walking?",
+  "schema_version": "open_duck.t233_upper_z_context_separability_preregistration.v1",
+  "status": "PREREGISTERED_T233_UPPER_Z_CONTEXT_SEPARABILITY"
+}
