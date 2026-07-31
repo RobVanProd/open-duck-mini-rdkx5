@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 from pathlib import Path
 import sys
 
@@ -47,3 +48,27 @@ def test_transform_adds_bounded_gate(tmp_path: Path) -> None:
     }
     assert len(result["added_nodes"]) == 4
     onnx.checker.check_model(onnx.load(destination))
+
+
+def test_frozen_result_holds_only_on_random_sensitivity() -> None:
+    path = ROOT / "outputs" / "analysis" / (
+        "t241_bounded_positive_router_transform_result.json"
+    )
+    value = json.loads(path.read_text(encoding="utf-8"))
+    basis = {k: v for k, v in value.items() if k != "result_sha256"}
+    assert value["result_sha256"] == MODULE.canonical_sha256(basis)
+    assert value["status"] == (
+        "HOLD_T241_BOUNDED_POSITIVE_ROUTER_TRANSFORM"
+    )
+    assert value["failed_checks"] == ["random_contract_exact"]
+    assert value["checks"]["failed_trace_contract_exact"] is True
+    assert all(
+        graph["trace_replay"]["every_trace_changed"]
+        and graph["trace_replay"]["all_source_replay_exact"]
+        and graph["trace_replay"]["all_transformed_finite"]
+        for graph in value["graphs"]
+    )
+    assert value["execution"]["behavior_cells"] == 0
+    assert value["execution"]["optimizer_steps"] == 0
+    assert value["execution"]["hosted_sessions"] == 0
+    assert value["execution"]["robot_or_rdk_access"] == 0
