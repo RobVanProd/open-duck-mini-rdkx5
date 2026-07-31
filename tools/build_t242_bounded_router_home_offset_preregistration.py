@@ -74,9 +74,16 @@ def main() -> int:
         ),
         "matrix_contract_unchanged": (
             basis["commands_x_m_s"] == [0.0, 0.074, 0.077, 0.08]
-            and basis["support_handoff"]["calibration_ticks"] == 250
-            and basis["support_handoff"]["home_return_ticks"] == 0
-            and basis["support_handoff"]["preserve_handoff_state"] is True
+            and basis["support_handoff"]["unscored_calibration_ticks"] == 250
+            and basis["support_handoff"]["unscored_home_return_ticks"] == 0
+            and basis["support_handoff"][
+                "preserve_final_support_action_as_previous_action"
+            ]
+            is True
+            and basis["support_handoff"][
+                "preserve_applied_target_observer_state"
+            ]
+            is True
         ),
         "both_checkpoints_fresh_cache_no_retry": True,
         "no_training_hosted_robot": True,
