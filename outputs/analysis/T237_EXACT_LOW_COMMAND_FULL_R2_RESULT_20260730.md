@@ -1,0 +1,28 @@
+# T237 exact low-command full R2 result
+
+- Status: `HOLD_T237_EXACT_LOW_COMMAND_FULL_R2`
+- Decision: `CLOSE_EXACT_LOW_COMMAND_HEAD_ROUTE_AT_FIRST_FAILED_R2_CONDITION`
+- Completed conditions: `17/20`
+- Green cells: `256/272`
+- First failure: `HOME_JOINT_OFFSET_NEG`
+- Training/hosted/robot: `0/0/0`
+
+| index | condition | green | tracking p95 | min vx | overcurrent run | overload run |
+|---:|---|---:|---:|---:|---:|---:|
+| 1 | `FLOOR_FRICTION_LO` | 16/16 | 0.172062093 | 0.064826098 | 11 | 11 |
+| 2 | `FLOOR_FRICTION_HI` | 16/16 | 0.172062093 | 0.064826098 | 11 | 11 |
+| 3 | `JOINT_FRICTIONLOSS_LO` | 16/16 | 0.172780550 | 0.068265852 | 11 | 11 |
+| 4 | `JOINT_FRICTIONLOSS_HI` | 16/16 | 0.170685869 | 0.072727220 | 11 | 11 |
+| 5 | `ARMATURE_LO` | 16/16 | 0.172062093 | 0.064826098 | 11 | 11 |
+| 6 | `ARMATURE_HI` | 16/16 | 0.174727011 | 0.067599919 | 10 | 11 |
+| 7 | `TORSO_COM_X_NEG` | 16/16 | 0.171782041 | 0.069409168 | 5 | 6 |
+| 8 | `TORSO_COM_X_POS` | 16/16 | 0.179608667 | 0.020230211 | 8 | 8 |
+| 9 | `TORSO_COM_Y_NEG` | 16/16 | 0.170049983 | 0.027844525 | 10 | 15 |
+| 10 | `TORSO_COM_Y_POS` | 16/16 | 0.172587544 | 0.080941482 | 14 | 14 |
+| 11 | `TORSO_COM_Z_NEG` | 16/16 | 0.173010492 | 0.077645466 | 11 | 12 |
+| 12 | `TORSO_COM_Z_POS` | 16/16 | 0.171086502 | 0.055837212 | 14 | 14 |
+| 13 | `ALL_LINK_MASS_LO` | 16/16 | 0.175267977 | 0.061541401 | 10 | 10 |
+| 14 | `ALL_LINK_MASS_HI` | 16/16 | 0.173037505 | 0.070932416 | 11 | 12 |
+| 15 | `TORSO_MASS_NEG` | 16/16 | 0.170694542 | 0.068953746 | 9 | 10 |
+| 16 | `TORSO_MASS_POS` | 16/16 | 0.173789710 | 0.068977380 | 11 | 11 |
+| 17 | `HOME_JOINT_OFFSET_NEG` | 0/16 | 0.173350477 | -0.212651983 | 3 | 3 |

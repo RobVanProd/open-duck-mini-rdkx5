@@ -41,3 +41,31 @@ def test_t237_preregistration_when_present() -> None:
     assert value["execution_now"]["behavior_cells"] == 0
     assert not value["authority"]["deployment_contract_audit_preregistration"]
     assert not value["authority"]["gate5"]
+
+
+def test_t237_terminal_result_when_present() -> None:
+    path = ANALYSIS / "t237_exact_low_command_full_r2_result.json"
+    if not path.exists():
+        return
+    value = json.loads(path.read_text(encoding="utf-8"))
+    summary = value["summary"]
+    authority = value["authority"]
+    execution = value["execution"]
+
+    assert value["status"] == "HOLD_T237_EXACT_LOW_COMMAND_FULL_R2"
+    assert value["decision"] == (
+        "CLOSE_EXACT_LOW_COMMAND_HEAD_ROUTE_AT_FIRST_FAILED_R2_CONDITION"
+    )
+    assert summary["completed_conditions"] == 17
+    assert summary["expected_conditions"] == 20
+    assert summary["completed_cells"] == 272
+    assert summary["green_cells"] == 256
+    assert summary["first_failed_condition"] == "HOME_JOINT_OFFSET_NEG"
+    assert not summary["matrix_complete"]
+    assert not summary["all_twenty_conditions_green"]
+    assert execution["hosted_compute_units"] == 0
+    assert execution["optimizer_steps"] == 0
+    assert execution["robot_or_rdk_access"] == 0
+    assert not authority["deployment_contract_audit_preregistration"]
+    assert not authority["gate5_hardware_authorized"]
+    assert not authority["rdkx5_or_robot"]
