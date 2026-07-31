@@ -1,0 +1,105 @@
+{
+  "authority": {
+    "continue_conditions_19_then_20_cpu_only": true,
+    "gate5": false,
+    "hosted": false,
+    "offline_deployment_contract_audit_preregistration": false,
+    "rdkx5_or_robot": false,
+    "recover_without_rerunning_completed_cells": true,
+    "training": false
+  },
+  "checks": {
+    "condition_18_progress_green": true,
+    "condition_19_first_block_complete_and_cached": true,
+    "failure_is_reporter_type_mismatch": true,
+    "one_fresh_condition_per_invocation_no_retry": true,
+    "partial_behavior_is_not_rerun": true,
+    "remaining_engine_uses_condition_appropriate_extractor": true,
+    "t249_contract_was_green": true,
+    "zero_new_behavior_optimizer_hosted_or_robot_now": true
+  },
+  "classification": "reporting-only: the KP_LO evaluator completed all four first-block cells and wrote a valid manifest before the home-offset-specific readback correction indexed the wrong override key",
+  "condition_18_progress": {
+    "bytes": 1187,
+    "path": "D:\\CodexArtifacts\\open-duck-policy\\t249_remaining_r2_v1\\progress.json",
+    "sha256": "384b903e005b5c196da74e8bbf363aa71e6c830dcb7f4876c75da7c63aa9e745"
+  },
+  "condition_19_partial_manifest": {
+    "bytes": 6807,
+    "path": "D:\\CodexArtifacts\\open-duck-policy\\t249_remaining_r2_v1\\19_KP_LO\\T247_HOME_NEGATIVE_HALF_ADAPTER_HALF\\p30\\manifest.json",
+    "sha256": "480b8e51e1c200a3c3e464a59b1eada113f8cb6f1b1d28fb5f1f9b5649a54174"
+  },
+  "decision_rule": {
+    "fail": "CLOSE_HOME_NEGATIVE_HALF_ADAPTER_ROUTE_AT_R2_FAILURE",
+    "no_retry": true,
+    "pass": "EARN_T250_OFFLINE_DEPLOYMENT_CONTRACT_AUDIT_PREREGISTRATION_ONLY",
+    "selection_weight": 0
+  },
+  "execution_contract": {
+    "bytes": 13637,
+    "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t249_remaining_r2_preregistration.json",
+    "sha256": "85bec200ec8a939b3d48bff0b6a8a204b10989b6a53b1bc34383dc06655a1f6e"
+  },
+  "execution_now": {
+    "hosted_compute_units": 0,
+    "new_behavior_cells": 0,
+    "optimizer_steps": 0,
+    "robot_or_rdk_access": 0
+  },
+  "failed_checks": [],
+  "frozen_inputs": {
+    "builder": {
+      "bytes": 6652,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\build_t249b_reporter_recovery_preregistration.py",
+      "sha256": "0d3c5a59d52dfcca5387d8698c503566caab91a11a8be30781d362922b4cb283"
+    },
+    "condition_18_progress": {
+      "bytes": 1187,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t249_remaining_r2_v1\\progress.json",
+      "sha256": "384b903e005b5c196da74e8bbf363aa71e6c830dcb7f4876c75da7c63aa9e745"
+    },
+    "condition_19_failed_stderr": {
+      "bytes": 713,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t249_launcher_logs_20260731_c19\\runner.stderr.log",
+      "sha256": "38c54ee02baa6b4abe948ce079f14754defb608fee5525d7c5ee4f509de23998"
+    },
+    "condition_19_partial_manifest": {
+      "bytes": 6807,
+      "path": "D:\\CodexArtifacts\\open-duck-policy\\t249_remaining_r2_v1\\19_KP_LO\\T247_HOME_NEGATIVE_HALF_ADAPTER_HALF\\p30\\manifest.json",
+      "sha256": "480b8e51e1c200a3c3e464a59b1eada113f8cb6f1b1d28fb5f1f9b5649a54174"
+    },
+    "runner": {
+      "bytes": 14256,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t249b_reporter_recovery.py",
+      "sha256": "8dd4fcb13c1764e3f9bbfe71c9b8d77db71459192c4ea996f92b93eda1cc033b"
+    },
+    "t249_contract": {
+      "bytes": 13637,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\outputs\\analysis\\t249_remaining_r2_preregistration.json",
+      "sha256": "85bec200ec8a939b3d48bff0b6a8a204b10989b6a53b1bc34383dc06655a1f6e"
+    },
+    "t249_original_runner": {
+      "bytes": 12844,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tools\\run_t249_remaining_r2.py",
+      "sha256": "36f962f1529414573e6f99cca6703e189cfb8d42ad902a320f36f071e3bc1d78"
+    },
+    "test": {
+      "bytes": 1979,
+      "path": "D:\\CodexProjects\\open-duck-mini-rdkx5-policy\\tests\\test_t249b_reporter_recovery.py",
+      "sha256": "a5d10a65647d062ebde32abdf564c807dd611b443a1b6980a2f4f55b0e5fda2e"
+    }
+  },
+  "preregistered_contract_sha256": "975828a8c49eadb514a4e2b2ff402941197a31b48baf20f0e074f786c72e34d3",
+  "recovery": {
+    "extract_all_other_conditions_with_frozen_r2_helper": true,
+    "extract_joint_offset_with_corrected_helper": true,
+    "maximum_new_conditions_per_invocation": 1,
+    "no_retry": true,
+    "rerun_completed_cells": false,
+    "reuse_condition_18": true,
+    "reuse_condition_19_half_p30": true,
+    "stop_after_first_failed_condition": true
+  },
+  "schema_version": "open_duck.t249b_reporter_recovery_preregistration.v1",
+  "status": "PREREGISTERED_T249B_REPORTER_RECOVERY"
+}
